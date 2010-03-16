@@ -28,3 +28,4 @@ ESTE PROGRAMA ES PROPORCIONADO POR EL TITULAR DEL COPYRIGHT Y LOS COLABORADORES 
 Additionally, this distribution contains the following third-party software: 
 - BeanShell (binary distribution, bsh-2.0b2.jar) is (c) Pat Niemeyer, licensed under the GNU Lesser General Public License (LGPL) (www.gnu.org). Source code downloadable from www.beanshell.org.
 - MicroMod (source distribution, micromod class hierarchy) is (c) Martin Cameron, licensed under the GNU Lesser General Public License (LGPL) 2.1 (www.gnu.org).
+- BasicPlayer API (lib directory: jl1.0.jar, jogg-0.0.7.jar, jorbis-0.0.15.jar, jspeex0.9.7.jar, mp3spi1.9.4.jar, tritonus_share.jar, vorbisspi1.0.2.jar) is part of jlGui (JAVA music player for the Java platform), licensed under the GNU Lesser General Public License (LGPL) 2.1 (www.gnu.org). Source code downloadable from http://www.javazoom.net/jlgui/jlgui.html.

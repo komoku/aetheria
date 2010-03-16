@@ -102,6 +102,16 @@
 				<include name="bsh-2.0b2.jar"/>
 				<include name="micromod.jar"/>
 			</fileset>
+			<fileset dir="${lib}">
+				<include name="commons-logging-api.jar"/>
+				<include name="jl1.0.jar"/>
+				<include name="jogg-0.0.7.jar"/>
+				<include name="jorbis-0.0.15.jar"/>
+				<include name="jspeex0.9.7.jar"/>
+				<include name="mp3spi1.9.4.jar"/>
+				<include name="tritonus_share.jar"/>
+				<include name="vorbisspi.jar"/>
+			</fileset>
 		</copy>
 	</target>
 	

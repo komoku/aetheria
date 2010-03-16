@@ -218,11 +218,33 @@ public class AGESoundClient implements SoundClient
 		javax.sound.sampled.AudioInputStream aii = javax.sound.sampled.AudioSystem.getAudioInputStream ( f );
 		javax.sound.sampled.AudioFormat af = aii.getFormat();
 		
+		javax.sound.sampled.AudioFormat finalFormat = af; //will not be af if format needs to be decoded
+		javax.sound.sampled.AudioInputStream finalStream = aii; //same as with the format
+		
+		
+		if ( f.getAbsolutePath().toLowerCase().endsWith(".ogg") || f.getAbsolutePath().toLowerCase().endsWith(".mp3") )
+		{
+		    AudioFormat baseFormat = aii.getFormat();
+		    finalFormat = new AudioFormat(
+		                AudioFormat.Encoding.PCM_SIGNED,
+		                baseFormat.getSampleRate(),
+		                16,
+		                baseFormat.getChannels(),
+		                baseFormat.getChannels() * 2,
+		                baseFormat.getSampleRate(),
+		                false);
+		         // Get AudioInputStream that will be decoded by underlying VorbisSPI
+		        finalStream = AudioSystem.getAudioInputStream(finalFormat, aii);
+		    //}
+		}
+		
+		
 		//get a Clip
-		javax.sound.sampled.Clip cl = ( javax.sound.sampled.Clip ) javax.sound.sampled.AudioSystem.getLine ( new javax.sound.sampled.DataLine.Info ( javax.sound.sampled.Clip.class , af ) );
+		javax.sound.sampled.Clip cl = ( javax.sound.sampled.Clip ) javax.sound.sampled.AudioSystem.getLine ( new javax.sound.sampled.DataLine.Info ( javax.sound.sampled.Clip.class , finalFormat ) );
 
+		
 		//load the AudioInputStream gotten from the file into the Clip
-		cl.open ( aii );
+		cl.open (  finalStream );
 
 		//put Clip into hashtable
 		audioPreloaded.put ( f.getCanonicalPath() , cl );
