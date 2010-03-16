@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<html>
+  <head>
+    <meta name="generator" content="HTML Tidy, see www.w3.org">
+
+    <title></title>
+    </head>
+
+  <body>
+    <table width="600" align="center">
+      <tr>
+        <td>
+          <h2>Creaci&oacute;n de Mundos para AGE con PUCK: Resumen</h2>
+
+          <p>Un juego en Aetheria Game Engine viene dado por un <em>mundo</em>, y un mundo es una colecci&oacute;n de diferentes <em>objetos</em>, que pueden ser de diversos tipos:</p>
+          <ul>
+            <li><em><strong>Habitaciones</strong></em> (tambi&eacute;n llamadas localidades), que son lugares del mundo conectados entre s&iacute; por <em>caminos</em>. Una habitaci&oacute;n puede representar literalmente una dependencia de una casa; pero tambi&eacute;n podr&iacute;a ser, dependiendo de la ambientaci&oacute;n, un cruce de caminos, una calle, etc. </li>
+            <li><strong><em>Personajes</em></strong>, que son seres vivos que pueblan el mundo, incluyendo al jugador, y que se pueden mover entre habitaciones a trav&eacute;s de los caminos. Por ejemplo, tenderos, camareros, enemigos, animales, el propio jugador, etc. </li>
+            <li><strong><em>Cosas</em></strong>, que son seres inertes que se encuentran en las habitaciones o que llevan los personajes. Por ejemplo, puertas, llaves, cofres, sillas, mesas, espadas, dinero, etc.</li>
+          </ul>
+          <p>Para crear un juego completo, necesitaremos hacer las siguientes cosas (no necesariamente en orden):</p>
+          <ul>
+            <li>Crear los objetos del juego,</li>
+            <li>Crear las <em>relaciones</em> entre ellos (por ejemplo, un camino es una relaci&oacute;n entre dos habitaciones. O, si un personaje lleva un objeto, entonces el personaje y el objeto est&aacute;n relacionados mediante una relaci&oacute;n &quot;lleva&quot;),</li>
+            <li>Dar a los objetos nombres y descripciones para que se muestren en el juego,</li>
+            <li>Dotar a los objetos de comportamiento, es decir, que puedan reaccionar ante lo que hace el jugador y los dem&aacute;s objetos. </li>
+          </ul>          
+        <p>El PUCK (Playable Universe Construction Kit) da soporte a todas estas actividades de la siguiente manera:</p>
+        <ul>
+          <li>La creaci&oacute;n de objetos se hace en el <em>editor gr&aacute;fico</em> que ocupa la parte izquierda de la ventana de PUCK. Las herramientas <em>crear habitaci&oacute;n</em>, <em>crear personaje</em> y <em>crear cosa</em> permiten crear los objetos y colocarlos en el mundo: simplemente haz click sobre la herramienta correspondiente en la barra de herramientas, y a continuaci&oacute;n lleva el objeto creado hasta el lugar del mundo en el que lo quieres poner.<br>
+            Nota: la representaci&oacute;n gr&aacute;fica del mundo es simplemente una herramienta de conveniencia. El lugar del panel donde coloques un objeto no tendr&aacute; ninguna relevancia en el juego, as&iacute; que simplemente col&oacute;calos como m&aacute;s c&oacute;modos te sean para verlos y manipularlos.</li>
+          <li> La creaci&oacute;n de relaciones entre objetos se hace tambi&eacute;n en el editor gr&aacute;fico, mediante las herramientas <em>crear relaci&oacute;n estructural</em> y <em>crear relaci&oacute;n auxiliar</em>. Para crear una relaci&oacute;n, basta con hacer click sobre la herramienta correspondiente, y a continuaci&oacute;n sobre los dos objetos que se desea relacionar. La representaci&oacute;n gr&aacute;fica de cada relaci&oacute;n es una flecha.</li>
+          <li>La descripci&oacute;n de los objetos se hace en los <em>paneles de objeto</em> que aparecen en la parte derecha de la ventana de PUCK. Para acceder al panel de un objeto dado, basta con hacer click sobre &eacute;l en la representaci&oacute;n gr&aacute;fica cuando ninguna herramienta est&aacute; seleccionada. Se nos mostrar&aacute; toda la informaci&oacute;n de ese objeto (nombres, descripciones, etc.) y podremos modificarla.</li>
+          <li> Por &uacute;ltimo, la descripci&oacute;n del comportamiento se hace tambi&eacute;n en los <em>paneles de objeto</em>. &Eacute;sta es la parte de la creaci&oacute;n de un mundo en la que entra en juego la programaci&oacute;n, para lo cual se utiliza el lenguaje de scripting BeanShell. El c&oacute;digo para cada objeto se modifica en la ficha &quot;C&oacute;digo y Propiedades&quot; de su panel de objeto correspondiente. </li>
+          </ul>
+        <p>Veamos ahora en m&aacute;s detalle c&oacute;mo crear un mundo con PUCK. Empezaremos por los <a href="PrimerosPasos.html">Primeros Pasos: Creando Habitaciones y Caminos</a>.</p></td>
+      </tr>
+    </table>
+  </body>
+</html>
+

@@ -1,0 +1,575 @@
+
+
+//System.setProperty("file.encoding","ISO-8559-1");
+
+		void serverintro()
+		{
+			//obj es el mundo
+			obj.escribir("El mundo y la game engine thread están running.\n");
+		}
+		void serverintro()
+		{
+			//obj es el mundo
+			obj.escribir("El mundo y la game engine thread están en marcha (OK).\n");
+		}
+		void intro( Player jugador )
+		{
+		
+			InputOutputClient ioc = jugador.getIO();
+	
+			jugador.waitKeyPress();
+	
+			
+			/*
+			if ( ioc instanceof MultimediaInputOutputClient )
+			{
+				MultimediaInputOutputClient mioc = (MultimediaInputOutputClient) ioc;
+				if ( mioc.isGraphicsEnabled() )
+				{
+					mioc.escribir("\n");
+					mioc.insertCenteredIcon(world.getWorldDir()+"logowh.jpg");
+					mioc.escribir("\n");
+				}
+				else
+				{
+					jugador.escribir("\n\nLA LEYENDA DE GURBA\n\n");
+					jugador.escribir("Libro I: El Despertar de Zogon\n\n");
+				}
+				
+				SoundClient sh = mioc.getSoundClient();
+				try
+				{
+					sh.midiInit();
+					sh.midiPreload(world.getWorldDir()+"title.mid");
+					//sh.midiStart(world.getWorldDir()+"title.mid");
+			
+				}
+				catch ( Exception e )
+				{
+					obj.escribir(e.toString() + e.getMessage());
+				}
+				
+			}
+			
+		
+			jugador.waitKeyPress();
+			
+			*/
+
+			jugador.escribir("Esto es AGE Arena. No se trata de un juego que tenga argumento, simplemente es una prueba o demostración de las capacidades multijugador de Aetheria Game Engine.\n");
+			
+			jugador.waitKeyPress();
+			
+			jugador.escribir("Elimina a tus oponentes. Aniquílalos. Erradícalos. Oblitéralos. Haz que cesen de ser, eso es todo. Si son ellos los que lo hacen contigo, podrás resucitar, para no tener que crear tu personaje otra vez. Si quieres salir, simplemente desconecta (AGE, telnet) o cierra el DCC (IRC). Puedes salir y volver a entrar para generar otro personaje.\n");
+			
+			jugador.waitKeyPress();
+
+			end();
+		}
+		
+		
+		
+		Player assignPlayer ( InputOutputClient cl )
+		{
+			System.out.println("Assigning player.");
+			
+			boolean nameDone = false;
+			
+			String nombre;
+			
+			while ( ! nameDone )
+			
+			{
+			
+				cl.escribir("Introduce tu nombre: ");
+				cl.waitKeyPress();
+				//cl.nothing();
+				//cl.getEntrada();
+				
+				nombre = cl.getInput(null);
+				
+				if ( nombre == null ) 
+				{
+					System.out.println("Inner null return.");
+					end();
+				}
+		
+				boolean already_exists_not_disabled = false;
+		
+				//mirar si es un jugador ya presente "disabled".
+				List pl = world.getPlayerList();
+				for ( int i = 0 ; i < pl.size() ; i++ )
+				{
+					Player p = pl.get(i);
+					if ( p.getState() == Mobile.DISABLED && p.getTitle() != null && p.getTitle().equalsIgnoreCase(nombre) )
+					{
+						cl.escribir("¡Bienvenido de vuelta!\n");
+						p.setNewState ( Mobile.IDLE , 1 );
+						return p;
+					}
+					//not disabled?
+					else if ( p.getTitle() != null && p.getTitle().equalsIgnoreCase(nombre) )
+					{
+						cl.escribir("Escoge otro nombre, ése ya está cogido...\n");
+						already_exists_not_disabled = true;
+						break;
+					}
+				}
+				
+				if ( !already_exists_not_disabled )
+					nameDone = true;
+			
+				
+			}
+			
+	
+			cl.escribir("¡Bienvenido!\n");
+			Player p = world.createPlayerFromTemplate(cl);
+			p.setPlayerName ( nombre );
+			
+			//adv. player creation
+		
+			p.escribir("Asigna puntos a los diferentes atributos pulsando el número correspondiente.\n");
+			
+			
+			
+			int [] stats;
+			
+			boolean statsdone = false;
+			
+			while ( !statsdone )
+			{
+			
+				int pointsLeft = 10;
+				
+				stats = new int[]  {12,12,12,12,12,12} ;
+				
+				while ( pointsLeft > 0 )
+				{
+				
+					p.escribir( "FUE (" + stats[0] + ") [1:Dar, 2:Quitar]\n" );
+					p.escribir( "CON (" + stats[1] + ") [3:Dar, 4:Quitar]\n" );
+					p.escribir( "INT (" + stats[2] + ") [5:Dar, 6:Quitar]\n" );
+					p.escribir( "SAB (" + stats[3] + ") [7:Dar, 8:Quitar]\n" );
+					p.escribir( "DES (" + stats[4] + ") [9:Dar, 10:Quitar]\n" );
+					p.escribir( "CAR (" + stats[5] + ") [11:Dar,12:Quitar]\n" );
+				
+					p.escribir("Puntos por asignar: " + pointsLeft + "\n");
+				
+				
+					String entrada = cl.getInput(null);
+					if (entrada==null) end();
+					entrada = entrada.trim();
+					int entradaNum;
+					
+					try
+					{
+						entradaNum = Integer.valueOf(entrada).intValue();
+						
+						if ( entradaNum > 12 ) throw ( new NumberFormatException() ); 
+						
+						if ( entradaNum % 2 != 0 )
+						{
+							int seleccionada = entradaNum / 2;
+							stats[seleccionada]++;
+							pointsLeft--;
+						}
+						else
+						{
+							int seleccionada = entradaNum / 2 - 1;
+							if ( stats[seleccionada] > 12 )
+							{
+								stats[seleccionada]--;
+								pointsLeft++;
+							}
+							else
+							{
+								p.escribir("No puedes quitar puntos a esa característica.\n");
+							}
+						}
+					}
+					catch ( NumberFormatException nfe )
+					{
+						p.escribir("Por favor, introduce un número entre 1 y 12.\n");
+					}
+				}
+				p.escribir("Tus características son: \n");
+				p.escribir( "FUE (" + stats[0] + ")\n" );
+				p.escribir( "CON (" + stats[1] + ")\n" );
+				p.escribir( "INT (" + stats[2] + ")\n" );
+				p.escribir( "SAB (" + stats[3] + ")\n" );
+				p.escribir( "DES (" + stats[4] + ")\n" );
+				p.escribir( "CAR (" + stats[5] + ")\n" );
+				
+				boolean subloopdone = false;
+				
+				while ( !subloopdone )
+				{
+				
+					p.escribir("Teclea C para continuar y confirmar esas características o V para volver a fijarlas.\n");
+				
+					String entrada = cl.getInput(null);
+					if (entrada==null) end();
+					entrada = entrada.trim();
+				
+					if (entrada != null && entrada.equalsIgnoreCase("C"))
+					{
+						subloopdone = true;
+						statsdone = true;
+					}
+					else if (entrada != null && entrada.equalsIgnoreCase("V"))
+					{
+						
+						subloopdone = true;	
+						statsdone = false;
+					}
+				
+				} //end while not subloopdone
+			
+			} //end while not statsdone
+			
+			//{stats=stat array}
+		
+			
+			p.escribir("Elige las habilidades en las que estarás versado pulsando el número correspondiente.\n");
+			
+			boolean [] skills;
+			
+			boolean skillsdone = false;
+			
+			while ( !skillsdone )
+			{
+			
+				int pointsLeft = 5;
+				
+				skills = new boolean[]  {false,false,false,false,false,false,false,false,false,false,false,false} ;
+				
+				while ( pointsLeft > 0 )
+				{
+				
+					p.escribir("[" + ((skills[0])?"*":" ") + "] Espada " + "[1:Dar, 2:Quitar]\n");
+					p.escribir("[" + ((skills[1])?"*":" ") + "] Hacha " + "[3:Dar, 4:Quitar]\n");
+					p.escribir("[" + ((skills[2])?"*":" ") + "] Lanza " + "[5:Dar, 6:Quitar]\n");
+					p.escribir("[" + ((skills[3])?"*":" ") + "] Arma roma " + "[7:Dar, 8:Quitar]\n");
+					p.escribir("[" + ((skills[4])?"*":" ")+ "] Daga " + "[9:Dar, 10:Quitar]\n");
+					p.escribir("[" + ((skills[5])?"*":" ") + "] Mano a mano " + "[11:Dar, 12:Quitar]\n");
+					p.escribir("[" + ((skills[6])?"*":" ") + "] Escudo " + "[13:Dar, 14:Quitar]\n");
+					p.escribir("[" + ((skills[7])?"*":" ") + "] Magia antimagia " + "[15:Dar, 16:Quitar]\n");
+					p.escribir("[" + ((skills[8])?"*":" ") + "] Magia natural " + "[17:Dar, 18:Quitar]\n");
+					p.escribir("[" + ((skills[9])?"*":" ") + "] Conjuración " + "[19:Dar, 20:Quitar]\n");
+					p.escribir("[" + ((skills[10])?"*":" ") + "] Magia mental " + "[21:Dar, 22:Quitar]\n");
+					p.escribir("[" + ((skills[11])?"*":" ") + "] Defensa " + "[23:Dar, 24:Quitar]\n");
+				
+					p.escribir("Quedan " + pointsLeft + " habilidades por elegir.\n");
+				
+					String entrada = cl.getInput(null);
+					if (entrada==null) end();
+					entrada = entrada.trim();
+					int entradaNum;
+					
+					System.out.println("Jarl.");
+					
+					try
+					{
+						entradaNum = Integer.valueOf(entrada).intValue();
+						
+						if ( entradaNum > 24 ) throw ( new NumberFormatException() ); 
+						
+						if ( entradaNum % 2 != 0 )
+						{
+							int seleccionada = entradaNum / 2;
+							if ( skills[seleccionada] == false )
+							{
+								skills[seleccionada] = true;
+								pointsLeft--;
+							}
+							else
+							{
+								p.escribir("Esa habilidad ya está seleccionada.");
+							}
+						}
+						else
+						{
+							int seleccionada = entradaNum / 2 - 1;
+							if ( skills[seleccionada] == true )
+							{
+								skills[seleccionada]=false;
+								pointsLeft++;
+							}
+							else
+							{
+								p.escribir("Esa habilidad ya está deseleccionada.\n");
+							}
+						}
+					}
+					catch ( NumberFormatException nfe )
+					{
+						p.escribir("Por favor, introduce un número entre 1 y 24.\n");
+					}
+				}
+				
+				p.escribir("Tus habilidades son: \n");
+				p.escribir("[" + ((skills[0])?"*":" ") + "] Espada " + "\n");
+				p.escribir("[" + ((skills[1])?"*":" ") + "] Hacha " + "\n");
+				p.escribir("[" + ((skills[2])?"*":" ") + "] Lanza " + "\n");
+				p.escribir("[" + ((skills[3])?"*":" ") + "] Arma roma " + "\n");
+				p.escribir("[" + ((skills[4])?"*":" ") + "] Daga " + "\n");
+				p.escribir("[" + ((skills[5])?"*":" ") + "] Mano a mano " + "\n");
+				p.escribir("[" + ((skills[6])?"*":" ") + "] Escudo " + "\n");
+				p.escribir("[" + ((skills[7])?"*":" ") + "] Magia antimagia " + "\n");
+				p.escribir("[" + ((skills[8])?"*":" ") + "] Magia natural " + "\n");
+				p.escribir("[" + ((skills[9])?"*":" ") + "] Conjuración " + "\n");
+				p.escribir("[" + ((skills[10])?"*":" ") + "] Magia mental " + "\n");
+				p.escribir("[" + ((skills[11])?"*":" ") + "] Defensa " + "\n");
+				
+				boolean subloopdone = false;
+				
+				while ( !subloopdone )
+				{
+				
+					p.escribir("Teclea C para continuar y confirmar esas características o V para volver a fijarlas.\n");
+				
+					String entrada = cl.getInput(null);
+					if (entrada==null) end();
+					entrada = entrada.trim();
+				
+					if (entrada.equalsIgnoreCase("C"))
+					{
+						subloopdone = true;
+						skillsdone = true;
+					}
+					else if ( entrada.equalsIgnoreCase("V"))
+					{
+						
+						subloopdone = true;	
+						skillsdone = false;
+					}
+				
+				} //end while not subloopdone
+			
+			} //end while not statsdone
+			
+			//{skills = skill array}
+			
+			
+			p.escribir("Elige los objetos con los que empezarás pulsando el número correspondiente.\n");
+			
+			boolean [] items;
+			
+			boolean itemsdone = false;
+			
+			while ( !itemsdone )
+			{
+			
+				int pointsLeft = 3;
+				
+				items = new boolean[]  {false,false,false,false,false,false,false,false,false,false,false,false} ;
+				
+				while ( pointsLeft > 0 )
+				{
+				
+					p.escribir("[" + ((items[0])?"*":" ") + "] Espada corta " + "[1:Dar, 2:Quitar]\n");
+					p.escribir("[" + ((items[1])?"*":" ") + "] Hacha de mano " + "[3:Dar, 4:Quitar]\n");
+					p.escribir("[" + ((items[2])?"*":" ") + "] Bastón golbuniano " + "[5:Dar, 6:Quitar]\n");
+					p.escribir("[" + ((items[3])?"*":" ") + "] Alabarda pesada " + "[7:Dar, 8:Quitar]\n");
+					p.escribir("[" + ((items[4])?"*":" ")+ "] Daga puntiaguda " + "[9:Dar, 10:Quitar]\n");
+					p.escribir("[" + ((items[5])?"*":" ") + "] Escudo redondo " + "[11:Dar, 12:Quitar]\n");
+					p.escribir("[" + ((items[6])?"*":" ") + "] Cota de malla " + "[13:Dar, 14:Quitar]\n");
+					p.escribir("[" + ((items[7])?"*":" ") + "] Yelmo de hierro " + "[15:Dar, 16:Quitar]\n");
+					//p.escribir("[" + ((items[9])?"*":" ") + "] Amuleto de protección " + "[19:Dar, 20:Quitar]\n");
+					//p.escribir("[" + ((items[10])?"*":" ") + "] Amuleto acumulador " + "[21:Dar, 22:Quitar]\n");
+				
+					p.escribir("Quedan " + pointsLeft + " objetos por elegir.\n");
+				
+					String entrada = cl.getInput(null);
+					if (entrada==null) end();
+					entrada = entrada.trim();
+					
+					int entradaNum;
+					
+					System.out.println("Jarl.");
+					
+					try
+					{
+						entradaNum = Integer.valueOf(entrada).intValue();
+						
+						if ( entradaNum > 16 ) throw ( new NumberFormatException() ); 
+						
+						if ( entradaNum % 2 != 0 )
+						{
+							int seleccionada = entradaNum / 2;
+							if ( items[seleccionada] == false )
+							{
+								items[seleccionada] = true;
+								pointsLeft--;
+							}
+							else
+							{
+								p.escribir("Ese objeto ya está seleccionado.");
+							}
+						}
+						else
+						{
+							int seleccionada = entradaNum / 2 - 1;
+							if ( items[seleccionada] == true )
+							{
+								items[seleccionada]=false;
+								pointsLeft++;
+							}
+							else
+							{
+								p.escribir("Ese objeto ya está deseleccionado.\n");
+							}
+						}
+					}
+					catch ( NumberFormatException nfe )
+					{
+						p.escribir("Por favor, introduce un número entre 1 y 16.\n");
+					}
+				}
+				
+				p.escribir("Tus objetos son: \n");
+				p.escribir("[" + ((items[0])?"*":" ") + "] Espada corta " + "\n");
+				p.escribir("[" + ((items[1])?"*":" ") + "] Hacha de mano " + "\n");
+				p.escribir("[" + ((items[2])?"*":" ") + "] Bastón golbuniano " + "\n");
+				p.escribir("[" + ((items[3])?"*":" ") + "] Alabarda pesada " + "\n");
+				p.escribir("[" + ((items[4])?"*":" ") + "] Daga puntiaguda " + "\n");
+				p.escribir("[" + ((items[5])?"*":" ") + "] Escudo redondo " + "\n");
+				p.escribir("[" + ((items[6])?"*":" ") + "] Cota de malla " + "\n");
+				p.escribir("[" + ((items[7])?"*":" ") + "] Yelmo de hierro " + "\n");
+				//p.escribir("[" + ((items[9])?"*":" ") + "] Amuleto de protección " + "\n");
+				//p.escribir("[" + ((items[10])?"*":" ") + "] Amuleto acumulador " + "\n");
+				
+				boolean subloopdone = false;
+				
+				while ( !subloopdone )
+				{
+				
+					p.escribir("Teclea C para continuar y confirmar esas características o V para volver a fijarlas.\n");
+				
+					String entrada = cl.getInput(null);
+					if (entrada==null) end();
+					entrada = entrada.trim();
+				
+					if (entrada.equalsIgnoreCase("C"))
+					{
+						subloopdone = true;
+						itemsdone = true;
+					}
+					else if ( entrada.equalsIgnoreCase("V"))
+					{
+						
+						subloopdone = true;	
+						itemsdone = false;
+					}
+				
+				} //end while not subloopdone
+			
+			} //end while not statsdone
+			
+			//{items = item array}
+			
+			
+			
+			Player p = world.createPlayerFromTemplate(cl);
+			p.setPlayerName ( nombre );
+			
+			p.setStat("FUE",stats[0]);
+			p.setStat("CON",stats[1]);
+			p.setStat("INT",stats[2]);
+			p.setStat("SAB",stats[3]);
+			p.setStat("DES",stats[4]);
+			p.setStat("CAR",stats[5]);
+			
+			int SAB = p.getStat("SAB");
+			
+			p.setSkill( "espada"                , ((skills[0])? SAB*15 : 1 ) );
+			p.setSkill( "hacha"                , ((skills[1])? SAB*15 : 1 ) );
+			p.setSkill( "lanza"                , ((skills[2])? SAB*15 : 1 ) );
+			p.setSkill( "arma roma"                , ((skills[3])? SAB*15 : 1 ) );
+			p.setSkill( "daga"                , ((skills[4])? SAB*15 : 1 ) );
+			p.setSkill( "mano a mano"                , ((skills[5])? SAB*15 : 1 ) );
+			p.setSkill( "escudo"                , ((skills[6])? SAB*15 : 1 ) );
+			p.setSkill( "magia antimagia"                , ((skills[7])? SAB*15 : 1 ) );
+			p.setSkill( "magia natural"                , ((skills[8])? SAB*15 : 1 ) );
+			p.setSkill( "conjuración"                , ((skills[9])? SAB*15 : 1 ) );
+			p.setSkill( "magia mental"                , ((skills[10])? SAB*15 : 1 ) );
+			p.setSkill( "defensa"                , ((skills[11])? SAB*15 : 1 ) );
+			
+			try
+			{
+			
+				System.out.println("CHECKIN' ITEM CONDS");
+			
+				if ( items[0] )
+				{
+					//p.addItem(world.addCloneOfItem(world.getItem("Espada corta")));
+				
+					Item it = world.addCloneOfItem(world.getItem("Espada corta"));
+					//p.escribir(it+"");
+					//p.escribir(it.getName());
+					//p.escribir(it.getDescription(p));
+				
+					System.out.println("DA AICHIM " + it);
+				
+					p.addItem(it);
+			
+				}
+				
+				if ( items[1] )
+				{
+				
+					Item it = world.addCloneOfItem(world.getItem("Hacha de mano"));
+					
+					p.addItem(it);
+				
+				}
+					
+				if ( items[2] )
+					p.addItem(world.addCloneOfItem(world.getItem("Bastón golbuniano")));
+			
+				if ( items[3] )
+					p.addItem(world.addCloneOfItem(world.getItem("Alabarda pesada")));
+					
+				if ( items[4] )
+					p.addItem(world.addCloneOfItem(world.getItem("Daga puntiaguda")));
+				
+				if ( items[5] )
+					p.addItem(world.addCloneOfItem(world.getItem("Escudo circular de madera")));
+					
+				if ( items[6] )
+					p.addItem(world.addCloneOfItem(world.getItem("Cota de malla")));
+					
+				if ( items[7] )
+					p.addItem(world.addCloneOfItem(world.getItem("Yelmo de hierro")));
+		
+		
+				p.getPartsInventory().addItem(world.addCloneOfItem(world.getItem("Mano izquierda")));
+				p.getPartsInventory().addItem(world.addCloneOfItem(world.getItem("Mano derecha")));
+				p.getPartsInventory().addItem(world.addCloneOfItem(world.getItem("Cuello")));
+				p.getPartsInventory().addItem(world.addCloneOfItem(world.getItem("Cabeza")));
+				p.getPartsInventory().addItem(world.addCloneOfItem(world.getItem("Torso")));
+			
+			}
+		
+			
+			catch ( Exception e )
+			{
+				e.printStackTrace();
+			}
+			
+			p.addSpell(world.getSpell("Encantar arma"));
+			p.addSpell(world.getSpell("Bola de fuego"));
+			p.addSpell(world.getSpell("Aturdir"));
+			p.addSpell(world.getSpell("Detectar magia"));
+			p.addSpell(world.getSpell("Invocar bestia"));
+			
+			
+			
+			return p;
+		
+		}
+		
+		
+		
+	

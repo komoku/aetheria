@@ -1,0 +1,644 @@
+
+//generate.bsh
+
+//maze generator
+
+//creates a maze with grid topology and buttons from clones of the room 00000001.
+
+//to be included from World
+
+Room baseRoom = world.getRoom( "10000003" );
+System.out.println("before...");
+AbstractEntity baseLevel = world.getAbstractEntity ( "mazelevel" );
+System.out.println("After...");
+Item baseButton = world.getItem ( "Botón" );
+
+//topology constants
+
+int RECTANGLE = 0;
+int TORUS = 1;
+
+
+
+//only level, row, col really neccesary if done well
+Room generateRoom ( AbstractEntity level , int row , int col , int nrows , int ncols , int topology , float openness , float buttonprob )
+{
+
+	Room r = baseRoom.createNewInstance ( world , false );
+	
+	r.setProperty ( "row" , row );
+	r.setProperty ( "col" , col );
+	
+	r.getPath ( true , Path.ABAJO ).setProperty("closed",true);
+	
+	if ( row > 1 )
+	{
+		//set north exit
+		Room northRoom = world.getRoom ( r.getID() - ncols );
+		r.getPath ( true , Path.NORTE ).setDestination ( northRoom );
+		northRoom.getPath ( true , Path.SUR ).setDestination ( r );
+		
+		boolean closed;
+		float randno = baseRoom.getRandom().nextFloat();
+		if (randno < openness)
+			closed = false;
+		else
+			closed = true;
+		r.getPath ( true , Path.NORTE ).setProperty("closed",closed);
+		northRoom.getPath ( true , Path.SUR ).setProperty("closed",closed);
+		
+	}
+	
+	if ( col > 1 )
+	{
+		//set west exit
+		Room westRoom = world.getRoom ( r.getID() - 1 );
+		r.getPath ( true , Path.OESTE ).setDestination ( westRoom );
+		westRoom.getPath ( true , Path.ESTE ).setDestination ( r );
+		
+		boolean closed;
+		float randno = baseRoom.getRandom().nextFloat();
+		if (randno < openness)
+			closed = false;
+		else
+			closed = true;
+		r.getPath ( true , Path.OESTE ).setProperty("closed",closed);
+		westRoom.getPath ( true , Path.ESTE ).setProperty("closed",closed);
+		
+	}
+	
+	if ( row == 1 && topology == RECTANGLE )
+	{
+		r.getPath ( true , Path.NORTE ).setProperty("closed",true);
+	}
+	
+	if ( col == 1 && topology == RECTANGLE )
+	{
+		r.getPath ( true , Path.OESTE ).setProperty("closed",true);
+	}
+	
+	if ( col == ncols && topology == RECTANGLE )
+	{
+		r.getPath ( true , Path.ESTE ).setProperty("closed",true);
+	}
+	
+	if ( row == nrows && topology == RECTANGLE )
+	{
+		r.getPath ( true , Path.SUR ).setProperty("closed",true);
+	}
+	
+	/* torus not implemented at the moment, this doesn't work for not all rooms are created yet
+	if ( row == 1 && topology == TORUS )
+	{
+		//set north exit
+		Room northRoom = world.getRoom ( r.getID() + ncols*(nrows-1) );
+		r.getPath ( true , Path.NORTE ).setDestination ( northRoom );
+		northRoom.getPath ( true , Path.SUR ).setDestination ( r );
+		
+		boolean closed;
+		float randno = baseRoom.getRandom().nextFloat();
+		if (randno < openness)
+			closed = false;
+		else
+			closed = true;
+		r.getPath ( true , Path.NORTE ).setProperty("closed",closed);
+		northRoom.getPath ( true , Path.SUR ).setProperty("closed",closed);
+	}
+	
+	if ( col == 1 && topology == TORUS )
+	{
+		//set west exit
+		Room westRoom = world.getRoom ( r.getID() + (ncols-1) );
+		r.getPath ( true , Path.OESTE ).setDestination ( northRoom );
+		northRoom.getPath ( true , Path.ESTE ).setDestination ( r );
+		
+		boolean closed;
+		float randno = baseRoom.getRandom().nextFloat();
+		if (randno < openness)
+			closed = false;
+		else
+			closed = true;
+		r.getPath ( true , Path.OESTE ).setProperty("closed",closed);
+		westRoom.getPath ( true , Path.ESTE ).setProperty("closed",closed);
+	}
+	*/
+	
+	
+	float randno = baseRoom.getRandom().nextFloat();
+		if (randno < buttonprob)
+		{
+			Item boton = baseButton.createNewInstance ( world , false , false );
+			boton.setProperty( "effectstring" , getRandomEffectForButton ( level , 20 ) );
+			boton.setRelationshipProperty ( level , "mylevel" , true );
+			r.addItem ( boton ); 
+		}	
+	
+	return r;
+	
+
+}
+
+//return: level id
+int generateLevel ( int nrows , int ncols , int topology , float openness , float buttonprob )
+{
+
+	int starting_id;	
+
+		//create level's abstract entity
+
+		AbstractEntity l;
+
+	
+		System.out.println("The base level is " + baseLevel);
+		l = baseLevel.createNewInstance ( world );
+		//later, l.setProperty("starting_room_id", starting_id);
+		l.setProperty("rows", nrows);
+		l.setProperty("cols", ncols);
+		l.setProperty("topology", topology);
+		l.setProperty("openness", openness);
+		l.setProperty("buttonprob", buttonprob);
+
+	try
+	{
+
+		for ( int row = 1 ; row <= nrows ; row++ )
+		{
+			for ( int col = 1 ; col <= ncols ; col++ )
+			{
+				//System.out.println("Generating " + row + "," + col);
+			
+				Room r = generateRoom ( l , row , col , nrows , ncols , topology , openness , buttonprob );	
+				
+				r.setRelationshipProperty ( l , "mylevel" , true );
+				
+				if ( r == null ) System.out.println("It's null");
+				
+				//System.out.println("Cloned.");
+				
+				if ( row == 1 )
+				{
+					if ( col == 1 )
+					{
+						//System.out.println("Before id");
+						starting_id = r.getItsID();
+						//System.out.println("After id");
+					}
+				}
+					
+				//System.out.println("After the if.");	
+					
+				//System.out.println("Generated " + r.getItsID());
+			}
+		}
+	
+	}
+	catch ( Exception e )
+	{
+		System.out.println("CATCHED!!!!!!!!!!!!!!!!!!");
+		e.printStackTrace();
+	}
+	
+	System.out.println("Starting id to return is " + starting_id);
+	
+	l.setProperty("starting_room_id", starting_id);
+	
+	return l.getID(); //level ID
+	
+
+}
+
+
+Room getRoom ( AbstractEntity level , int row , int col )
+{
+	int starting_room_id = level.getPropertyValueAsInteger("starting_room_id");
+	int nrows = level.getPropertyValueAsInteger("rows");
+	int ncols = level.getPropertyValueAsInteger("cols");
+	return ( world.getRoom (  starting_room_id + (row-1)*ncols + (col-1) ) );
+}
+
+Path[] getBothPaths ( AbstractEntity level , int row , int col , String direction )
+{
+	Room starting_room = getRoom ( level , row , col );
+	Path[] losCaminos = new Path[2];
+	if ( direction.equalsIgnoreCase("N") ) 
+	{
+		losCaminos[0] = starting_room.getPath ( true , Path.NORTE );
+		losCaminos[1] = world.getRoom(losCaminos[0].getDestinationID()).getPath ( true , Path.SUR );
+	}
+	if ( direction.equalsIgnoreCase("S") ) 
+	{
+		losCaminos[0] = starting_room.getPath ( true , Path.SUR );
+		losCaminos[1] = world.getRoom(losCaminos[0].getDestinationID()).getPath ( true , Path.NORTE );
+	}
+	if ( direction.equalsIgnoreCase("E") ) 
+	{
+		losCaminos[0] = starting_room.getPath ( true , Path.ESTE );
+		losCaminos[1] = world.getRoom(losCaminos[0].getDestinationID()).getPath ( true , Path.OESTE );
+	}
+	if ( direction.equalsIgnoreCase("W") || direction.equalsIgnoreCase("O") ) 
+	{
+		losCaminos[0] = starting_room.getPath ( true , Path.OESTE );
+		losCaminos[1] = world.getRoom(losCaminos[0].getDestinationID()).getPath ( true , Path.ESTE );
+	}
+	return losCaminos;
+}
+
+void toggleExit ( AbstractEntity level , String exitstring )
+{
+	//exit string: de la forma "(1,2,W)".
+	StringTokenizer st = new StringTokenizer ( exitstring,"(,) \n\r\t" );
+	int row = Integer.valueOf(st.nextToken()).intValue();
+	int col = Integer.valueOf(st.nextToken()).intValue();
+	String direction = st.nextToken();
+	Path[] losCaminos = getBothPaths ( level , row , col , direction );
+	
+	int topology = level.getPropertyValueAsInteger ( "topology" );
+	int rows = level.getPropertyValueAsInteger( "rows" );
+	int cols = level.getPropertyValueAsInteger( "cols" );
+	if 
+	(
+		( row == 1 && direction.equalsIgnoreCase("N") && topology == RECTANGLE ) ||
+		( row == rows && direction.equalsIgnoreCase("S") && topology == RECTANGLE ) ||
+		( col == 1 && direction.equalsIgnoreCase("W") && topology == RECTANGLE ) ||
+		( col == cols && direction.equalsIgnoreCase("E") && topology == RECTANGLE ) 
+	)
+		return;
+		
+	losCaminos[0].setProperty("closed" , !losCaminos[0].getPropertyValueAsBoolean("closed") );
+	losCaminos[1].setProperty("closed" , !losCaminos[1].getPropertyValueAsBoolean("closed") );
+
+}
+
+void activateButtonEffect ( AbstractEntity level , String effect )
+{
+	//button string: de la forma "(1,2,W) ; (3,4,E)", etc.
+	StringTokenizer st = new StringTokenizer ( effect,"; \n\r\t" );
+	while ( st.hasMoreTokens() )
+	{
+		effectString = st.nextToken();
+		toggleExit ( level , effectString );
+	}
+}
+
+String getRandomEffectForButton ( AbstractEntity level , int effect_length )
+{
+	int nrows = level.getPropertyValueAsInteger("rows");
+	int ncols = level.getPropertyValueAsInteger("cols");
+	
+	String effect = "";
+	Random generator = baseRoom.getRandom();
+	
+	for ( int i = 0 ; i < effect_length ; i++ )
+	{
+		int row = Math.abs(generator.nextInt()) % nrows + 1;
+		int col = Math.abs(generator.nextInt()) % ncols + 1;
+		int dir = Math.abs(generator.nextInt()) % 4;
+		String dirstring;
+		switch ( dir )
+		{
+			case 0 : dirstring = "N"; break;	
+			case 1 : dirstring = "S"; break;	
+			case 2 : dirstring = "W"; break;	
+			case 3 : dirstring = "E"; break;		
+		}
+		if ( effect.length() > 0 ) effect += ";";
+		effect += ( "(" + row + "," + col + "," + dirstring + ")" );
+	}
+	
+	//System.out.println("Effect returned: " + effect);
+	
+	return effect;
+	
+}
+
+Item getButtonIfAny ( Room r )
+{
+	Inventory inv = r.getInventory();
+	for ( int i = 0 ; i < inv.size() ; i++ )
+	{
+		if ( inv.elementAt(i).getTitle().equals("Botón") )
+			return ( inv.elementAt(i) );
+	}
+	return null;
+}
+
+//returns the new node
+//f.ex (1,2)|(3,4);(5,8)...
+String apply ( AbstractEntity level , String node , String operation )
+{
+
+	StringTokenizer st = new StringTokenizer ( node , "|" );
+	
+	String tok1 = st.nextToken();
+	String tok2;
+	if ( st.hasMoreTokens() )
+		tok2 = st.nextToken();
+	else
+		tok2 = "";
+		
+	//{ tok1 : (x,y)   tok2 = (but1x,but1y);(but2x,but2y);... }
+	
+	StringTokenizer st = new StringTokenizer ( tok1 , "(),;| \t\n\r" );
+	int row = Integer.valueOf ( st.nextToken() ).intValue();
+	int col = Integer.valueOf ( st.nextToken() ).intValue();
+	
+	//get room
+	Room ourRoom = getRoom ( level , row , col );
+	
+	if ( operation.equalsIgnoreCase("P") )
+	{
+		Item boton = getButtonIfAny ( ourRoom );
+		String elEfecto = boton.getPropertyValueAsString("effectstring");
+		activateButtonEffect ( level , elEfecto );
+
+		//append button to node
+		
+			
+		//(if button already present remove, else add)
+		
+		Vector seps = new Vector();
+		seps.add ( "("+row+","+col+")" );
+		Vector v = StringMethods.tokenizeWithComplexSeparators ( tok2 , seps , false );
+		
+		if ( v.size() > 1 )
+		{
+			//aparece, lo quitamos
+			tok2 = v.get(0) + v.get(1);
+		}
+		else
+		{
+			//no aparece, lo ponemos
+			tok2 = tok2 + "(" + row + "," + col + ")";
+		}
+		
+	}
+	
+	else if ( operation.equalsIgnoreCase("N") )
+	{
+		row--;
+	}
+	else if ( operation.equalsIgnoreCase("S") )
+	{
+		row++;
+	}
+	else if ( operation.equalsIgnoreCase("W") )
+	{
+		col--;
+	}
+	else if ( operation.equalsIgnoreCase("S") )
+	{
+		col++;
+	}
+	
+	tok1 = "("+row+","+col+")";
+	
+	//return the newly-formed node
+	
+	return ( tok1 + "|" + tok2 );
+
+}
+
+//tells us if given operation is allowed at given search node
+//x,y are really row and col
+boolean allowed ( AbstractEntity level , String node , String operation )
+{
+	//get (x,y) position from node
+	StringTokenizer st = new StringTokenizer ( node , "(),;| \t\n\r" );
+	int x = Integer.valueOf ( st.nextToken() ).intValue();
+	int y = Integer.valueOf ( st.nextToken() ).intValue();
+	
+	
+	//last button pressed if any
+	int ultimo = 0; int penultimo = 0;
+	while ( st.hasMoreTokens() )
+	{
+		penultimo = ultimo;
+		ultimo = Integer.valueOf ( st.nextToken() ).intValue();
+	}
+	
+
+	//get room
+	Room ourRoom = getRoom ( level , x , y );
+	
+	if ( operation.equalsIgnoreCase("P") )
+	{
+		if ( x == penultimo && y == ultimo )
+			return false;	
+		if ( getButtonIfAny ( ourRoom ) != null )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	//get path
+	Path elCamino;
+	if ( operation.equalsIgnoreCase("N") )
+	{
+		elCamino = ourRoom.getPath ( true , Path.NORTE );
+	}
+	if ( operation.equalsIgnoreCase("S") )
+	{
+		elCamino = ourRoom.getPath ( true , Path.SUR );
+	}
+	if ( operation.equalsIgnoreCase("E") )
+	{
+		elCamino = ourRoom.getPath ( true , Path.ESTE );
+	}
+	if ( operation.equalsIgnoreCase("W") )
+	{
+		elCamino = ourRoom.getPath ( true , Path.OESTE );
+	}
+	
+	return elCamino.isOpen();
+
+}
+
+
+List visitedNodes = null;
+int iteraciones = 0;
+int startx; int starty;
+int goalx; int goaly;
+
+boolean nos_sirve ( String node )
+{
+	if ( node.length() > 30 ) return true;
+	if ( iteraciones > 1000 ) return true;
+	if ( node.length() > 15 && iteraciones > 200 ) return true;
+	return false;
+}
+
+//busca de la meta a la salida.
+//no saca nada como salida; pero pone la meta en el nivel.
+String search_solution ( AbstractEntity level , String argNode )
+{
+
+
+	Random generator = baseRoom.getRandom();
+	String curNode;
+
+	if ( argNode == null )
+	{
+		super.visitedNodes = new Vector(); //of String (Node)
+		
+		//randomize a goal
+		
+		int lv_rows = level.getPropertyValueAsInteger("rows");
+		int lv_cols = level.getPropertyValueAsInteger("cols");
+		
+		super.goalx = Math.abs(generator.nextInt()) % lv_rows + 1;
+		super.goaly = Math.abs(generator.nextInt()) % lv_cols + 1;
+		
+		//recursive call does this! super.visitedNodes.add ( "(" + goalx + "," + goaly + ")" );
+		curNode =  "(" + goalx + "," + goaly + ")";
+		
+		//System.out.println("Planetisnow" + visitedNodes);
+		
+		String s = search_solution ( level , curNode );
+	
+		//System.out.println("Returned: " + s);
+		
+		if ( s == null )
+		{
+			world.escribir("Hmm, no voy bien por aquí. Veamos...\n");
+			return search_solution ( level , null );
+		}
+		
+		//get the exit
+		
+		System.out.println("Tokenizer start");
+		StringTokenizer st = new StringTokenizer ( s,"()|;, \n\t\r" );
+		System.out.println("Tokenizer end");
+		super.startx = Integer.valueOf(st.nextToken()).intValue();
+		super.starty = Integer.valueOf(st.nextToken()).intValue();
+	
+		return s;
+	
+	}
+	else
+	{
+	
+		super.iteraciones++;
+	
+		if ( nos_sirve ( argNode ) )
+		{
+			return argNode;
+		}
+	
+		//System.out.println("Iters" + super.iteraciones);
+		//System.out.println("Zeplanet" + super.visitedNodes);
+	
+		super.visitedNodes.add ( argNode );
+		String[] ops_priority = new String[5];
+		int sorteo_prio = Math.abs(generator.nextInt()) % 5;
+		switch ( sorteo_prio )
+		{
+			case 0: ops_priority = new String[] { "P","N","E","S","W" }; break;
+			case 1: ops_priority = new String[] { "N","E","S","W","P" }; break;
+			case 2: ops_priority = new String[] { "E","S","W","P","N" }; break;
+			case 3: ops_priority = new String[] { "S","W","P","N","E" }; break;
+			case 4: ops_priority = new String[] { "W","P","N","E","S" }; break;
+		}
+		for ( int i = 0 ; i < 5 ; i++ )
+		{
+			if ( allowed ( level , argNode , ops_priority[i] ) )
+			{
+				String newNode = apply ( level , argNode , ops_priority[i] );
+				if ( !super.visitedNodes.contains ( newNode ) )
+				{
+					String retval = search_solution ( level , newNode );
+					if ( retval != null ) return retval;
+				}
+				//if we backtrack, we must undo the button's changes in the world status...
+				if ( ops_priority[i].equalsIgnoreCase("P") )
+				{
+					apply ( level , argNode , ops_priority[i] );
+				}
+			}
+			
+
+		}
+		return null; //backtrack
+	}
+
+
+}
+
+
+
+void setUp()
+{
+
+
+	try
+	{
+
+	World world = obj;
+
+	obj.escribir("Generando el laberinto [level 1]...\n");
+	int thelevel = generateLevel ( 10 , 10 , RECTANGLE , (float)0.5 , (float)0.2 );
+	obj.escribir("Laberinto generado [level 1].\n");
+	
+	obj.escribir("Generando el laberinto [level 2]...\n");
+	int thelevel2 = generateLevel ( 15 , 15 , RECTANGLE , (float)0.5 , (float)0.3 );
+	obj.escribir("Laberinto generado [level 2].\n");
+	
+	obj.escribir("Generando el laberinto [level 3]...\n");
+	int thelevel3 = generateLevel ( 20 , 20 , RECTANGLE , (float)0.5 , (float)0.4 );
+	obj.escribir("Laberinto generado [level 3].\n");
+	
+	System.out.println("Thelevel: " + thelevel);
+	
+	obj.escribir("Buscando solución [level 1]...\n");
+	search_solution ( world.getAbstractEntity(thelevel) , null );
+	obj.escribir("Solución buscada [level 1].\n");
+		
+	//startx, starty, goalx, goaly set
+	
+	Room salida1 = getRoom ( world.getAbstractEntity(thelevel) , startx , starty );
+	Room meta1 = getRoom ( world.getAbstractEntity(thelevel) , goalx , goaly );
+	
+	obj.escribir("Buscando solución [level 2]...\n");
+	search_solution ( world.getAbstractEntity(thelevel2) , null );
+	obj.escribir("Solución buscada [level 2].\n");
+	
+	Room salida2 = getRoom ( world.getAbstractEntity(thelevel2) , startx , starty );
+	Room meta2 = getRoom ( world.getAbstractEntity(thelevel2) , goalx , goaly );
+	
+	obj.escribir("Buscando solución [level 3]...\n");
+	search_solution ( world.getAbstractEntity(thelevel3) , null );
+	obj.escribir("Solución buscada [level 3].\n");
+	
+	Room salida3 = getRoom ( world.getAbstractEntity(thelevel3) , startx , starty );
+	Room meta3 = getRoom ( world.getAbstractEntity(thelevel3) , goalx , goaly );
+	
+	world.getRoom("10000001").getPath ( true , Path.ABAJO ).setDestination ( salida1 );
+	meta1.getPath ( true , Path.ABAJO ).setDestination (salida2);
+	meta1.getPath ( true , Path.ABAJO ).setProperty("closed",false);
+	
+	meta2.getPath ( true , Path.ABAJO ).setDestination (salida3);
+	meta2.getPath ( true , Path.ABAJO ).setProperty("closed",false);
+	
+	meta3.getPath ( true , Path.ABAJO ).setDestination (world.getRoom("10000002"));
+	meta3.getPath ( true , Path.ABAJO ).setProperty("closed",false);
+	
+	//add enemies
+	
+	world.getMobile("20000001").setRoom ( meta1 );
+	world.getMobile("20000002").setRoom ( salida1 );
+	world.getMobile("20000003").setRoom ( world.getRoom(salida1.getID()+1) );
+	
+	world.getMobile("Monstruo del laberinto").createNewInstance(world,true,true,true).setRoom(world.getRoom("10000003"));
+	world.getMobile("Monstruo del laberinto").createNewInstance(world,true,true,true).setRoom(world.getRoom("10000005"));
+	world.getMobile("Monstruo del laberinto").createNewInstance(world,true,true,true).setRoom(world.getRoom("10000007"));
+	
+	}
+	catch ( Exception e )
+	{
+		e.printStackTrace();
+	}
+	
+}
