@@ -261,8 +261,10 @@ public class AGESoundClient implements SoundClient
 	{
 		javax.sound.sampled.Clip cl = getPreloadedClip ( f );
 		if ( cl == null )
-				audioPreload ( f );
+			audioPreload ( f );
+		cl = getPreloadedClip ( f );
 		//cl not null [or exception should have been thrown by audioPreload]
+		cl.setFramePosition(0);
 		cl.start();	
 	}
 	
