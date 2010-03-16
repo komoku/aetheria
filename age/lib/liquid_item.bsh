@@ -1,0 +1,81 @@
+
+//liquid.bsh item part
+
+//Na, más que una Description debería ser un Name.
+
+String descriptiveQuantityText ( Item liquido )
+{
+		int cantidad = liquido.getVolume();
+		String cantext = "";
+		
+		if ( cantidad < 2 )
+		{
+			cantext = "un poquito de";	
+		}
+		else if ( cantidad < 4 )
+		{
+			cantext = "un poco de";
+		}
+		else if ( cantidad < 6 )
+		{
+			cantext = "algo de";
+		}
+		else if ( cantidad < 8 )
+		{
+			cantext = "bastante";
+		}
+		else if ( cantidad < 10 )
+		{
+			cantext = "una buena cantidad de";
+		}
+		else
+		{
+			cantext = "una gran cantidad de";
+		}
+	
+		return cantext;
+}
+
+String getDescription ( Entity viewer )
+{
+
+
+	if ( self.getPropertyValueAsBoolean("liquid_container") )
+	{
+		
+		List l1 = self.getRelatedEntitiesByValue("its_liquid",true);
+		if ( l1.size() < 1 )
+			return self.getDescription(viewer);
+		Item contenido = l1.get(0);
+		String cantext = descriptiveQuantityText(contenido);
+		return self.getDescription(viewer) + " Contiene " + cantext + " " + contenido.getSingName(viewer) + ".";
+	
+	}
+	else
+	{
+		return self.getDescription(viewer);
+	}
+
+}
+
+/*
+String getDescription ( Entity viewer )
+{
+	
+	if ( self.getPropertyValueAsBoolean("liquid") )
+	{
+		//liquid description!
+	
+		
+		String cantext = descriptiveQuantityText(self);
+	
+		return cantext + " " + getDescription(viewer);
+	
+	}
+	else
+	{
+		return self.getDescription(viewer);
+	}
+
+}
+*/

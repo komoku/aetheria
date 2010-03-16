@@ -1,0 +1,32 @@
+/*
+Biblioteca light.bsh:
+
+Implementa el soporte de oscuridad, luz y fuentes de luz.
+
+Para utilizarla, deben incluir light.bsh:
+* Las habitaciones que puedan estar oscuras.
+* Los objetos que puedan ser fuente de luz (lightsource). <- (o tal vez no haga falta esto)
+
+Además:
+* Para que una habitación que implemente light.bsh esté oscura, hay que ponerle la propiedad "dark" a true.
+* Para que un objeto (Item) pueda proporcionar luz, hay que ponerle la propiedad "light_source" a true. Para que la proporcione de hecho, hay que ponerle "light_enabled" a true. Es decir, una linterna tendrá que tener "light_source" a true siempre, y "light_enabled" sólo cuando esté encendida.
+
+Opciones adicionales:
+* Cambiar la descripción de una habitación oscura: función bsh set_darkness_description() o propiedad light_darkness_description.
+* Cambiar el mensaje tipo "No puedes hacer eso, está demasiado oscuro": función bsh set_too_dark_sentence() o propiedad light_too_dark_sentence.
+* Cambiar las opciones que se permiten o no se permiten en la oscuridad: funciones bsh allow_command() y disallow_command().
+Todo esto funciona a nivel de habitación (cada habitación puede tener una manera distinta de tratar estos aspectos de la oscuridad).
+
+Implementación:
+* Room::parseCommand(): No permite que el jugador ejecute comandos que no sean ir si la habitación está oscura.
+			Está oscura si ninguna de las fuentes de luz (light_source) que hay en la habitación está light_enabled.
+* Room::onEnterRoom(), Room:onExitRoom(): Mantiene una lista de las fuentes de luz (light_source) que hay en la habitación.
+
+*/
+
+if ( self instanceof Room )
+	source("lib/light_room.bsh");
+
+
+if ( self instanceof Item )
+	//source("lib/light_item.bsh");

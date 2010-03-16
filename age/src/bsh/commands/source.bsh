@@ -1,0 +1,38 @@
+/**
+	Read filename into the interpreter and evaluate it in the current
+	namespace.  Like the Bourne Shell "." command.
+*/
+
+bsh.help.source = "usage: source( filename | URL )";
+
+Object source( String filename ) {
+	//System.setProperty("file.encoding","ISO-8859-1");
+	//System.out.println("O\nO\nO\n");
+	
+	StringBuffer sb = new StringBuffer();
+	BufferedReader br = new BufferedReader ( 
+	//	new InputStreamReader ( new FileInputStream ( filename ) , "ISO-8859-1" ) 
+		new InputStreamReader ( new FileInputStream ( filename ) , "UTF-8" ) 
+	);
+	String linea;
+	while ( (linea=br.readLine()) != null )
+	{
+		sb.append ( linea );
+		sb.append ( "\n" );
+	}
+
+	//return this.interpreter.source( filename, this.caller.namespace );
+
+	return this.interpreter.eval ( sb.toString() , 
+this.caller.namespace );
+
+}
+
+Object source( URL url ) {
+	return this.interpreter.eval( 
+		new InputStreamReader(url.openStream()), this.caller.namespace,  
+		"URL: "+url.toString()
+	);
+}
+
+	

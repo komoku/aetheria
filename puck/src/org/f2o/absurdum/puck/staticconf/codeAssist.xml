@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<puck-code-assist>
+		<menu context="world" name="Redefinir métodos" description="Redefinir métodos de mundo">
+				<item name="intro(Player)" description="Introducción del juego" template-ref="world-intro.tpl"/>
+				<menu name="Método de análisis de la entrada (estándar)" description="Método de análisis de la entrada (estándar)">
+					<item name="parseCommand(Player,String,String)" description="Para cualquier entrada" template-ref="world-parsecommand.tpl"/>
+					<item name="parseCommand(Mobile,String,String,Entity)" description="Referente a una cosa" template-ref="world-item-parsecommand.tpl"/>
+					<item name="parseCommandTwoObjects(Mobile,String,String,String,Entity,Entity)" description="Referente a dos cosas" template-ref="world-item-parsecommandtwoobjects.tpl"/>
+					<item name="parseCommandGeneric(Mobile,String,String,String,Entity,Entity)" description="Referente a una o dos cosas" template-ref="world-item-parsecommandgeneric.tpl"/>
+				</menu>
+				<menu name="Método de análisis de la entrada (para contenedores y objetos contenidos)" description="Método de análisis de la entrada (para contenedores y objetos contenidos)">
+					<item name="parseCommandOnContents(Mobile,String,String,Entity)" description="Referente a una cosa" template-ref="world-item-parsecommandoncontents.tpl"/>
+					<item name="parseCommandOnContentsTwoObjects(Mobile,String,String,String,Vector,Vector,Entity,Entity)" description="Referente a dos cosas" template-ref="world-item-parsecommandoncontentstwoobjects.tpl"/>
+					<item name="parseCommandOnContentsGeneric(Mobile,String,String,String,Vector,Vector,Entity,Entity)" description="Referente a una o dos cosas" template-ref="world-item-parsecommandoncontentsgeneric.tpl"/>
+				</menu>
+				<item name="update(Entity,World)" description="Método de actualización genérico" template-ref="world-update.tpl"/>
+				<item name="before(String,Mobile,Object[])" description="Evento de acción genérico" template-ref="world-genericbefore.tpl"/>
+			</menu>
+		<menu context="room" name="Definir eventos de habitación" description="Definir eventos de habitación">
+				<item name="beforeExit(Mobile,Path)" description="Al salir de la habitación" template-ref="room-beforeexit.tpl"/>
+				<item name="onEnterRoom(Mobile)" description="Al entrar en la habitación" template-ref="room-onenterroom.tpl"/>
+				<item name="onInit()" description="Al inicializarse la habitación" template-ref="room-oninit.tpl"/>
+				<item name="onRoomText()" description="Al aparecer un texto en la habitación" template-ref="room-onroomtext.tpl"/>
+		</menu>
+		<menu context="item" name="Definir eventos de cosa" description="Definir eventos de cosa">
+				<item name="onGet(Mobile)" description="Al coger esta cosa" template-ref="item-onget.tpl"/>
+				<item name="onOpen(boolean)" description="Al abrir esta cosa" template-ref="item-onopen.tpl"/>
+				<item name="onClose(boolean)" description="Al cerrar esta cosa" template-ref="item-onclose.tpl"/>
+				<item name="onPutInside(Mobile,Item,Item)" description="Al poner esta cosa dentro de otra (u otra en ésta)" template-ref="item-onputinside.tpl"/>
+				<item name="onInit()" description="Al inicializarse la cosa" template-ref="item-oninit.tpl"/>
+		</menu>
+		<menu context="room" name="Redefinir métodos de habitación" description="Redefinir métodos de habitación">
+				<item name="parseCommand(Player,String,String)" description="Método de análisis de la entrada" template-ref="room-parsecommand.tpl"/>
+				<item name="update(Entity,World)" description="Método de actualización de la habitación" template-ref="entity-update.tpl"/>
+		</menu>
+		<menu context="mobile" name="Definir eventos de personaje" description="Definir eventos de personaje">
+				<item name="onInit()" description="Al inicializarse el personaje" template-ref="mobile-oninit.tpl"/>
+				<item name="onSay(Mobile,String)" description="Al oír a alguien decir algo" template-ref="mobile-onsay.tpl"/>
+		</menu>
+		<menu context="mobile" name="Redefinir métodos de personaje" description="Redefinir métodos de personaje">
+				<item name="update(Entity,World)" description="Método de actualización del personaje" template-ref="entity-update.tpl"/>
+		</menu>
+		<menu context="abstract entity" name="Definir eventos de entidad abstracta" description="Definir eventos de entidad abstracta">
+				<item name="onInit()" description="Al inicializarse la entidad abstracta" template-ref="absent-oninit.tpl"/>
+		</menu>
+		<menu context="abstract entity" name="Redefinir métodos de entidad abstracta" description="Redefinir métodos de entidad abstracta">
+				<item name="update(Entity,World)" description="Método de actualización de la entidad abstracta" template-ref="entity-update.tpl"/>
+		</menu>
+		<menu context="item" name="Redefinir métodos de cosa" description="Redefinir métodos de cosa">
+				<menu name="Método de análisis de la entrada (estándar)" description="Método de análisis de la entrada (estándar)">
+					<item name="parseCommand(Mobile,String,String)" description="Referente a esta cosa" template-ref="item-parsecommand.tpl"/>
+					<item name="parseCommandObj1(Mobile,String,String,String,Entity)" description="Referente a ésta y otra cosa, en ese orden" template-ref="item-parsecommandobj1.tpl"/>
+					<item name="parseCommandObj2(Mobile,String,String,String,Entity)" description="Referente a otra cosa y ésta, en ese orden" template-ref="item-parsecommandobj2.tpl"/>
+					<item name="parseCommandTwoObjects(Mobile,String,String,String,Entity)" description="Referente a ésta y otra cosa, en cualquier orden" template-ref="item-parsecommandtwoobjects.tpl"/>
+					<item name="parseCommandGeneric(Mobile,String,String,String,Entity,Entity,boolean)" description="Referente a ésta y, opcionalmente, otra cosa" template-ref="item-parsecommandgeneric.tpl"/>
+				</menu>
+				<menu name="Método de análisis de la entrada (para contenedores y objetos contenidos)" description="Método de análisis de la entrada (para contenedores y objetos contenidos)">
+					<item name="parseCommandOnContents(Mobile,String,String)" description="Referente a esta cosa" template-ref="item-parsecommandoncontents.tpl"/>
+					<item name="parseCommandOnContentsObj1(Mobile,String,String,String,Vector,Vector,Entity)" description="Referente a ésta y otra cosa, en ese orden" template-ref="item-parsecommandoncontentsobj1.tpl"/>
+					<item name="parseCommandOnContentsObj2(Mobile,String,String,String,Vector,Vector,Entity)" description="Referente a otra cosa y ésta, en ese orden" template-ref="item-parsecommandoncontentsobj2.tpl"/>
+					<item name="parseCommandOnContentsTwoObjects(Mobile,String,String,String,Vector,Vector,Entity)" description="Referente a ésta y otra cosa, en cualquier orden" template-ref="item-parsecommandoncontentstwoobjects.tpl"/>
+					<item name="parseCommandOnContentsGeneric(Mobile,String,String,String,Vector,Vector,Entity,Entity,boolean)" description="Referente a ésta y, opcionalmente, otra cosa" template-ref="item-parsecommandoncontentsgeneric.tpl"/>
+				</menu>
+				<item name="update(Entity,World)" description="Método de actualización de la cosa" template-ref="entity-update.tpl"/>
+		</menu>
+		<menu name="Obtener entidades" description="Obtener entidades">
+				<item name="Cosa" description="Cosa" template-ref="general-getitem.tpl"/>
+				<item name="Habitación" description="Habitación" template-ref="general-getroom.tpl"/>
+				<item name="Criatura" description="Criatura" template-ref="general-getmobile.tpl"/>
+				<item name="Hechizo" description="Hechizo" template-ref="general-getspell.tpl"/>
+				<item name="Entidad abstracta" description="Entidad abstracta" template-ref="general-getabstractentity.tpl"/>
+		</menu>
+		<menu name="Utilidades generales" description="Utilidades generales">
+				<item name="source(String)" description="Incluir código de fichero externo" template-ref="general-source.tpl"/>
+		</menu>
+</puck-code-assist>

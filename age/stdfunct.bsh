@@ -1,0 +1,140 @@
+import eu.irreality.age.*;
+import eu.irreality.age.debug.*;
+
+//Standard function library
+
+void end ( )
+{
+	throw ( new BSHCodeExecutedOKException() );
+}
+
+boolean getRelacionBoolean ( Entity e1, String propName, Entity e2 )
+{
+	if ( e1 == null ) return false;
+	return e1.getRelationshipPropertyValueAsBoolean(e2,propName);
+}
+
+void setRelacion ( Entity e1 , String propName , Entity e2 , boolean value )
+{
+	e1.setRelationshipProperty ( e2,propName,value );
+}
+
+boolean accion ( String s )
+{
+	return verb.equalsIgnoreCase(s);
+}
+
+boolean equals ( Object o1 , Object o2 )
+{
+	if ( o1 == null ) return o2 == null;
+	if ( o2 == null ) return o1 == null;
+	if ( o1 instanceof String && o2 instanceof String )
+	{
+		return ((String)o1).equalsIgnoreCase((String)o2);
+	}
+	return o1.equals(o2);
+}
+
+Item item ( String s )
+{
+	return world.getItem(s);
+}
+
+Mobile mobile ( String s )
+{
+	return world.getMobile(s);
+}
+
+Room room ( String s )
+{
+	return world.getRoom(s);
+}
+
+AbstractEntity abstractEntity ( String s )
+{
+	return world.getAbstractEntity(s);
+}
+
+Spell spell ( String s )
+{
+	return world.getSpell(s);
+}
+
+Entity entity ( String s )
+{
+	return world.getEntity(s);
+}
+
+Object getProperty ( Entity e , String propName )
+{
+	return e.getPropertyValueAsWrapper ( propName );
+} 
+
+void setProperty ( Entity e , String propName , Object value )
+{
+	e.setProperty ( propName , value );
+}
+
+void setTime ( Entity e , String propName , long timeLeft )
+{
+	e.setPropertyTimeLeft ( propName , timeLeft );
+}
+
+void setProperty ( Entity e , String propName , Object value , long timeLeft )
+{
+	e.setProperty ( propName , value , timeLeft );
+}
+
+Object getRelationship ( Entity e1 , String relName , Entity e2 )
+{
+	return e1.getRelationshipPropertyValueAsWrapper ( e2 , relName );
+}
+
+void setRelationship ( Entity e1 , String relName , Entity e2 , Object value )
+{
+	e1.setRelationshipProperty ( e2 , relName , value );
+}
+
+void setRelationshipTime ( Entity e1 , String relName , Entity e2 , long time )
+{
+	e1.setRelationshipPropertyTimeLeft ( e2 , relName , time );
+}
+
+
+Entity get ( String s )
+{
+	return world.getEntity(s);
+}
+
+Object get ( Entity e , String propName )
+{
+	return getProperty ( e , propName );
+}
+
+void set ( Entity e , String propName , Object value )
+{
+	setProperty ( e , propName , value );
+}
+
+/*
+void set ( Entity e , String propName , Object value , long time )
+{
+	setProperty ( e , propName , value , time );
+}
+*/
+
+Object get ( Entity e1 , String relName , Entity e2 )
+{
+	return getRelationship ( e1 , relName , e2 );
+}
+
+void set ( Entity e1 , String relName , Entity e2 , Object value )
+{
+	setRelationship ( e1 , relName , e2 , value ); 
+}
+
+void setTime ( Entity e1 , String relName , Entity e2 , long time )
+{
+	setRelationshipTime ( e1 , relName , e2 , time );
+}
+

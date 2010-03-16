@@ -1,0 +1,84 @@
+
+
+void setRoute ( Room[] route )
+{
+
+	int curIndex = self.getPropertyValueAsInteger ( "pathwalker_index" );
+	for ( int i = 0 ; i < route.length ; i++ )
+	{
+		Room r = route[i];
+		self.setProperty ( "pathwalker_route_" + i , r.getID() );
+	}
+	self.setProperty( "pathwaker_route_" + i , 0 );
+	self.setProperty ( "pathwalker_walking" , true );
+
+}
+
+void goNextRoom()
+{
+
+//	System.out.println("goNextRoom()");
+
+	int curIndex = self.getPropertyValueAsInteger ( "pathwalker_index" ).intValue();
+	int nextRoomID = self.getPropertyValueAsInteger ( "pathwalker_route_" + curIndex ).intValue();
+	if ( nextRoomID == 0 )
+	{
+		resetIndex();
+		self.setNewState ( Mobile.IDLE , 1 );
+		self.setProperty("pathwalker_walking" , false );
+	}
+	else
+	{
+		Room r = world.getRoom ( nextRoomID );
+		self.setProperty( "pathwalker_index" , curIndex+1 );
+		self.goTo ( r );
+	}
+
+}
+
+void resetRoute()
+{
+	resetIndex();
+	self.setNewState ( Mobile.IDLE , 1 );
+	self.setProperty("pathwalker_walking" , false );
+}
+
+void resetIndex()
+{
+	self.setProperty ( "pathwalker_index" , 0 );
+}
+
+void pathwalker_update ( PropertyEntry pe , World mundo )
+{
+	
+//	System.out.println("PATHWALKER UPDATE");
+	
+//	System.out.println(""+ pe.getName() + " " + pe.getValue() );
+
+	if ( pe.getName().equalsIgnoreCase("state") && pe.getValueAsInteger() == (Mobile.IDLE) && self.getPropertyValueAsBoolean("pathwalker_walking") )
+	{
+	
+//		System.out.println("GONEXTROOM");
+		
+		goNextRoom();
+		end();
+	
+	}
+	
+	else if ( pe.getName().equalsIgnoreCase("state") && pe.getValueAsInteger() == (Mobile.IDLE) )
+	{
+//		System.out.println("IDLESTATE REFRESH");
+		//always ready for a getRoute()
+		self.setNewState ( Mobile.IDLE , 1 );
+		
+	}
+
+}
+
+void update ( PropertyEntry pe , World mundo )
+{
+
+//	System.out.println("PATHW UPD");
+
+	pathwalker_update ( pe , mundo );
+}

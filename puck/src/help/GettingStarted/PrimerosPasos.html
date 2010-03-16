@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<html>
+  <head>
+    <meta name="generator" content="HTML Tidy, see www.w3.org">
+
+    <title></title>
+    <link href="file:///C|/Java%20Programs/puck/help/styles/helpstyles.css" rel="stylesheet" type="text/css">
+  </head>
+
+  <body>
+    <table width="600" align="center">
+      <tr>
+        <td><h2>Primeros Pasos: Creando Habitaciones y Caminos </h2>
+
+          <h4>Habitaciones y Caminos </h4>
+          <p>Veamos ahora c&oacute;mo podemos usar PUCK para definir un mundo. Lo primero que haremos ser&aacute; crear un par de habitaciones unidas entre s&iacute; mediante un camino, de manera que el jugador pueda hacer algo como esto: </p>
+          <p>&nbsp;</p>
+          <p class="transcript"><strong><em>&gt; mirar</em></strong><br>
+  Te encuentras al este del gran r&iacute;o Pecos. Hay muchos &aacute;rboles bajos a tu alrededor. Un precario puente de madera lo atraviesa, hacia el oeste.<br>
+  <em><strong>&gt; ir hacia el oeste</strong></em><br>
+          Atraviesas el puente hacia el oeste cuidadosamente. Las tablas de madera que lo forman crujen inquietantemente; pero llegas sano y salvo a la otra orilla.<br>
+          Te encuentras al oeste del gran r&iacute;o Pecos. Hay unos cuantos &aacute;rboles altos a tu alrededor. Un tosco puente de madera lo atraviesa, hacia el este.<br>
+          <strong><em>&gt; ir por el puente</em></strong><br>
+          Atraviesas el puente hacia el este con sumo cuidado. Las tablas que lo componen emiten crujidos inquietantes; pero llegas sin incidencias a la otra orilla.<br>
+          Te encuentras al este del gran r&iacute;o Pecos. Hay muchos &aacute;rboles bajos a tu alrededor. Un precario puente de madera lo atraviesa, hacia el oeste.</p>
+          <p>&nbsp;</p>
+          <p>Para ello, lo primero que debemos hacer es ir al men&uacute; &quot;Archivo - Nuevo&quot;, que nos crear&aacute; un nuevo mundo en blanco para trabajar.</p>
+          <p>Al hacer esto veremos a la izquierda el editor gr&aacute;fico en blanco, que es donde colocaremos nuestros objetos; y a la derecha el panel de objeto asociado al mundo. En este panel aparece un formulario con una serie de <em>propiedades del mundo</em>. Es recomendable cubrir al menos el <em>nombre corto</em> y el <em>nombre largo</em>, que AGE utilizar&aacute; para identificar el mundo. El nombre corto deber&iacute;a estar formado por una &uacute;nica palabra, aconsejablemente de no m&aacute;s de doce caracteres; mientras que el nombre largo puede ser un t&iacute;tulo de la longitud que se desee, y es lo que se mostrar&aacute; al jugador como nombre de la aventura.</p>
+          <p>El resto de campos (autor, versi&oacute;n, fecha...) son datos meramente informativos que se mostrar&aacute;n al jugador cuando vaya a cargar el juego.</p>
+          <p>Si queremos dejar estas propiedades para m&aacute;s tarde, o modificarlas en alg&uacute;n momento, es conveniente saber que podemos volver cuando queramos a este panel de mundo, simplemente seleccionando una zona vac&iacute;a del editor gr&aacute;fico.</p>
+          <p>Pero pasemos a la acci&oacute;n: vamos a crear las dos habitaciones del ejemplo, situadas una al oeste de otra y separadas por un camino (puente). Para ello hacemos lo siguiente:</p>
+          <ul>
+              <li>
+              Hacemos click en icono de la herramienta &quot;a&ntilde;adir habitaci&oacute;n&quot; de la barra de herramientas: <img src="../images/addRoom.gif" width="48" height="48"></li>
+            <li>Movemos el cursor por el editor gr&aacute;fico. Veremos que aparece un cuadrado (la habitaci&oacute;n que estamos creando) que se mueve junto a nuestro cursor. Hacemos click, y la habitaci&oacute;n quedar&aacute; fija en el editor. A la derecha podremos ver su panel de objeto.</li>
+            <li>Hagamos que esta habitaci&oacute;n represente la orilla oeste del gran r&iacute;o Pecos. Para ello, cubrimos los campos del panel de objeto:
+              <ul>
+                <li>Donde pone &quot;Nombre &uacute;nico&quot;, pondremos un nombre corto como por ejemplo &quot;Oeste Pecos&quot;. Este nombre no se mostrar&aacute; al jugador, se utiliza para identificar internamente la habitaci&oacute;n en el juego y distinguirla de las dem&aacute;s. Nosotros tambi&eacute;n lo utilizaremos cuando nos queramos referir a esta habitaci&oacute;n en el futuro. </li>
+                <li>Donde pone &quot;Descripciones&quot; ir&aacute;n las descripciones de la habitaci&oacute;n, que son lo que se muestra al jugador cuando teclea &quot;mirar&quot; o cuando entra en la misma. Puede extra&ntilde;arte que no haya una sola &quot;Descripci&oacute;n&quot;, sino un campo para &quot;Descripciones&quot;. Esto es porque las descripciones en AGE no son un texto est&aacute;tico, sino algo que puede variar seg&uacute;n distintas condiciones (por ejemplo, la descripci&oacute;n de una localidad puede ser distinta seg&uacute;n si es de d&iacute;a o de noche). El sistema que se utiliza para hacer posible esto es que la descripci&oacute;n que se muestra al jugador est&eacute; formada por distintos trozos que se pueden mostrar o no dependiendo de las condiciones que se den. En este caso, nos conformaremos con una descripci&oacute;n est&aacute;tica, con lo cual s&oacute;lo necesitaremos uno de estos trozos, y sin ninguna condici&oacute;n asociada. Para ello, donde pone &quot;Descripci&oacute;n&quot; teclearemos la descripci&oacute;n completa de la habitaci&oacute;n:<br>
+                  <em>Te encuentras al oeste del gran r&iacute;o Pecos. Hay unos cuantos &aacute;rboles altos a tu alrededor. Un tosco puente de madera lo atraviesa, hacia el este.</em> <br>
+                  Y pulsamos el bot&oacute;n &quot;A&ntilde;adir&quot;. Vemos que la descripci&oacute;n introducida aparecer&aacute; en el cuadro &quot;Descripciones&quot;, precedida de la palabra &quot;Siempre&quot;. Esto &uacute;ltimo quiere decir que esta descripci&oacute;n se mostrar&aacute; siempre que un jugador mire la habitaci&oacute;n, es decir, no est&aacute; sujeta a condici&oacute;n alguna.</li>
+                <li>Por el momento no necesitamos a&ntilde;adir nada m&aacute;s a esta habitaci&oacute;n. Es bueno saber que, si m&aacute;s tarde queremos modificar sus datos, basta con hacer click sobre su representaci&oacute;n en el editor gr&aacute;fico (cuando no estemos usando ninguna herramienta) para poder ver y modificar de nuevo su panel de objeto. </li>
+              </ul>
+            </li>
+            <li>
+              Del mismo modo que creamos la habitaci&oacute;n anterior, creamos una nueva para representar la orilla este del r&iacute;o. Para ello, tenemos que volver a hacer click en la herramienta &quot;a&ntilde;adir habitaci&oacute;n&quot;, ya que cada uso de la herramienta sirve para a&ntilde;adir una sola vez. Colocaremos la nueva habitaci&oacute;n a la derecha de la anterior, dado que se encuentra al este. Si no hemos dejado espacio suficiente en el editor gr&aacute;fico para colocarla, podemos utilizar las herramientas de desplazamiento y zoom:<br>
+              <img src="../images/move.gif" width="48" height="48">
+            Para usar la herramienta de desplazamiento, hacemos click sobre su icono en la barra de herramientas. A continuaci&oacute;n, hacemos un click sobre el editor gr&aacute;fico, y movemos el cursor: los objetos del editor se desplazar&aacute;n con &eacute;l. Con otro click dejamos de usar la herramienta.<br>
+            <img src="../images/zoom.gif" align="right" width="48" height="48">            <br>
+            La herramienta zoom se utiliza del mismo modo. Despu&eacute;s de hacer click en su icono y en el editor gr&aacute;fico, podemos mover el rat&oacute;n hacia arriba para alejar la vista o hacia abajo para acercarla.</li>
+            <li>Rellenamos el nombre &uacute;nico y la descripci&oacute;n de la nueva habitaci&oacute;n de la misma manera que lo hab&iacute;amos hecho con la anterior, reflejando que estamos al este del Pecos.</li>
+            <li>Ahora vamos a crear la conexi&oacute;n entre las dos habitaciones. Como podemos ver en el texto de lo que queremos conseguir, las dos localidades deben estar unidas por un puente que cruza de este a oeste. El puente se debe poder cruzar en las dos direcciones; pero es importante saber que en AGE los caminos son <em>de una sola direcci&oacute;n</em>. Por lo tanto, para permitir el tr&aacute;nsito en las dos direcciones tenemos que crear dos caminos: uno de oeste a este y otro de este a oeste. N&oacute;tese que, aunque esto pueda parecer inc&oacute;modo para casos simples, hace el sistema m&aacute;s poderoso, porque se puede dar tratamiento distinto a cada sentido del camino, incluyendo permitir el paso en un solo sentido, tener descripciones distintas para ambos, hacer que suceda algo al cruzar en un sentido dado, etc.</li>
+            <li>Para crear los caminos, utilizaremos la herramienta &quot;a&ntilde;adir relaci&oacute;n estructural&quot; de la barra de herramientas, que est&aacute; identificada por este icono:<br>
+            <img src="../images/addStruct.gif" width="48" height="48"> <br>
+            Las relaciones en AGE son formas de expresar cualquier tipo de relaci&oacute;n, permanente o temporal, entre dos objetos. Existen dos tipos de relaciones: <em>relaciones estructurales</em> y <em>relaciones auxiliares</em>. Las estructurales se llaman as&iacute; porque son las que definen la estructura del mundo: nos dicen d&oacute;nde est&aacute;n los objetos. Tambi&eacute;n se caracterizan porque un objeto no tendr&iacute;a ning&uacute;n sentido si no estuviese (o al menos pudiese estar) conectado al resto del mundo mediante relaciones estructurales. Las relaciones auxiliares se utilizan para definir otros aspectos de las interacciones entre objetos.</li>
+            <li>Un camino se modela en AGE como una relaci&oacute;n estructural entre una habitaci&oacute;n y otra, de ah&iacute; que se cree con esta herramienta. Para crear un camino entre las dos habitaciones, seguimos los siguientes pasos:
+              <ul>
+                <li>Hacemos click sobre la herramienta &quot;a&ntilde;adir relaci&oacute;n estructural&quot;<br>
+                <img src="../images/addStruct.gif" width="48" height="48"> </li>
+                <li>Hacemos click sobre la habitaci&oacute;n que representa el Oeste del Pecos.</li>
+                <li>Hacemos click sobre la otra habitaci&oacute;n. Veremos que aparece una flecha entre las dos habitaciones, que representa el camino que las une.</li>
+                <li> Al igual que los objetos, podemos ver que las relaciones tambi&eacute;n tienen paneles de objeto. Nada m&aacute;s crear esta relaci&oacute;n camino, podremos ver en la parte derecha de la ventana de PUCK su panel correspondiente. El panel tiene algunos campos ya cubiertos, como son las habitaciones origen y destino (que son las que marcamos en el mapa) y la <em>direcci&oacute;n est&aacute;ndar</em>, que es un punto cardinal asociado al camino. Como hab&iacute;amos colocado una habitaci&oacute;n a la derecha de la otra, el camino aparecer&aacute; autom&aacute;ticamente marcado con la direcci&oacute;n est&aacute;ndar &quot;este&quot;. Esto implica que se podr&aacute; utilizar con comandos como &quot;ir al este &quot;. Si a pesar de haber colocado las habitaciones de esa manera &eacute;ste no era el comportamiento que quer&iacute;amos, podemos cambiar la direcci&oacute;n est&aacute;ndar (o quitarla para no tener ninguna) en el panel de objeto correspondiente al camino. Del mismo modo podr&iacute;amos cambiar en cualquier momento las habitaciones origen y destino, podemos ver que para esto se utiliza el &quot;nombre &uacute;nico&quot; que hace referencia a cada habitaci&oacute;n.</li>
+                <li>Debajo de estos campos podemos ver una lista, inicialmente vac&iacute;a, de <em>comandos personalizados</em>. En esta lista podemos introducir todas aquellas palabras que el jugador pueda usar para referirse a este camino adem&aacute;s del punto cardinal dado por la direcci&oacute;n est&aacute;ndar. Como queremos que el jugador pueda teclear cosas como &quot;ir puente&quot; o &quot;ir por el puente&quot;, a&ntilde;adimos &quot;puente&quot;: para ello, introducimos la palabra donde pone &quot;Comando&quot; y pulsamos el bot&oacute;n &quot;A&ntilde;adir&quot;.</li>
+                <li>A continuaci&oacute;n podemos ver un &aacute;rea para <em>descripciones</em>, que ya deber&iacute;a resultarnos familiar. Las descripciones para los caminos funcionan exactamente igual que para las habitaciones; pero se muestran cuando el jugador cruza el camino correspondiente. As&iacute;, para obtener el comportamiento que buscamos para este camino, debemos teclear en el campo &quot;Descripci&oacute;n&quot;:<br>
+                  <em>Atraviesas el puente hacia el este con sumo cuidado. Las tablas que lo componen emiten crujidos inquietantes; pero llegas sin incidencias a la otra orilla.</em></li>
+                <li>Con esto tenemos todo lo que necesit&aacute;bamos por el momento para este camino. Cuando volvamos a necesitar modificar este panel de objeto, basta con que hagamos click sobre la flecha que representa el camino en el mapa para acceder a &eacute;l.</li>
+              </ul>
+            </li>
+            <li>Para crear el otro camino, como es imaginable, basta con repetir el mismo proceso; pero haciendo click primero sobre la habitaci&oacute;n del este y luego sobre la del oeste. Nos aparecer&aacute; otra flecha en direcci&oacute;n opuesta, que no se solapa con la anterior para que podamos hacer click f&aacute;cilmente en cualquiera de ellas accediendo a su correspondiente panel de objeto. La descripci&oacute;n y el comando personalizado se introducen del mismo modo. </li>
+          </ul>          
+          <h4>&nbsp;</h4>
+          <h4>Creando un Personaje Jugador</h4>
+          <p>Con esto ya hemos creado un m&iacute;nimo mundo con el que jugar; pero nos falta un elemento necesario para que la aventura tenga sentido: un personaje que pueda recorrerlo. En AGE, los jugadores est&aacute;n en la piel de personajes que habitan en el mundo e interact&uacute;an con &eacute;l (aunque tambi&eacute;n pueden crearse personajes que no sean jugadores). Por lo tanto, incluso en un juego para un solo jugador deberemos poner al menos un personaje que represente a ese jugador para que se pueda jugar. Para ello, utilizaremos la herramienta &quot;a&ntilde;adir personaje&quot; de la barra de herramientas:<br>
+            <img src="../images/addChar.gif" width="48" height="48"> <br>
+            Y haremos lo siguiente:</p>
+          <ul>
+            <li>Para usar esta herramienta, procedemos de la misma manera que cuando a&ntilde;adimos habitaciones al mundo: hacemos click sobre su icono en la barra de herramientas, deslizamos el cursor por el editor gr&aacute;fico y hacemos click sobre el punto en que queremos dejar al personaje. Ser&aacute; conveniente que lo coloquemos cerca de la habitaci&oacute;n donde queremos que el jugador aparezca al principio del juego; pero -ojo, importante- <strong><em>no</em></strong> dentro de ella. Esto es porque en el editor gr&aacute;fico el hecho de que algo est&eacute; dentro de una habitaci&oacute;n no se representa colocando su icono dentro de la misma; sino uniendo la habitaci&oacute;n a ese algo mediante una relaci&oacute;n estructural. Representar unas cosas dentro de otras podr&iacute;a parecer m&aacute;s natural a simple vista; pero resultar&iacute;a engorroso cuando una habitaci&oacute;n contuviese gran n&uacute;mero de personajes o cosas.</li>
+            <li>As&iacute; pues, el siguiente paso ser&aacute; crear la relaci&oacute;n estructural entre la habitaci&oacute;n (que puede ser la oeste o la este, dependiendo de d&oacute;nde quer&eacute;is que empiece el personaje: lo que creamos con PUCK es siempre el <em>estado inicial</em> del mundo, que luego podr&aacute; cambiar durante el juego cuando los personajes se muevan) y el personaje. Para ello, utilizamos la herramienta &quot;crear relaci&oacute;n estructural&quot; que ya conocemos:<br>
+              <img src="../images/addStruct.gif" width="48" height="48"><br>
+            y hacemos click primero sobre la habitaci&oacute;n y luego sobre el personaje (el orden es importante). Esto nos crear&aacute; una relaci&oacute;n estructural de tipo &quot;contiene&quot; que significa que la habitaci&oacute;n contiene al personaje, y que, al contrario que la relaci&oacute;n &quot;camino&quot; que ve&iacute;amos antes, no tiene nada que configurar.</li>
+            <li>Para que todo funcione, s&oacute;lo falta una cosa: especificar que el personaje que hemos creado es un jugador. Para ello, hacemos click sobre &eacute;l para obtener su panel de objeto, y marcamos la casilla que dice &quot;jugador&quot;. Esto hace que, cuando alguien arranque la aventura, el AGE lo ponga en la piel de este personaje (en juegos multijugador las cosas son algo m&aacute;s complicadas; pero ya las veremos).</li>
+            <li>Si hurgamos en el panel de objeto asociado al personaje podemos ver que tiene diversos datos configurables, como por ejemplo nombre &uacute;nico y descripciones. Estas &uacute;ltimas funcionan del mismo modo que las de las habitaciones y caminos, y en este caso se mostrar&iacute;an si el jugador se mirase a s&iacute; mismo. Puedes cubrirlas si quieres; aunque no son necesarias para el comportamiento que quer&iacute;amos.</li>
+          </ul>          
+          <p>Ahora s&iacute; que tenemos un mundo de AGE completo y jugable (aunque, de momento, no muy emocionante). No se puede decir que haya sido dif&iacute;cil, &iquest;verdad? Pues ahora vamos a mejorarlo. Ser&aacute; en la siguiente secci&oacute;n del tutorial: <a href="DescYCosas.html">Seres Inertes</a>. </p>
+          <p>&nbsp;</p>
+          <p>2. Descripciones adicionales y cosas (Seres Inertes) </p>
+          <p>3. Puertas y contenedores</p>
+          <p>4. Un poco de c&oacute;digo y descripciones din&aacute;micas</p>
+          <p>5. Multijugador y plantillas de jugador</p>
+          <p>6. Personajes seudointeligentes</p>
+          <p>7. Armas, armaduras y enemigos </p></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+  </body>
+</html>
+

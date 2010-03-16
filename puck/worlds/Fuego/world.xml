@@ -1,0 +1,2714 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<World author="Al-Khwarizmi" date="2008-09-15" moduleName="Fuego" type="Aventura de velocidad" version="1.2" worldDir="." worldName="Fuego">
+<IdeMetaInf>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Habitación de hotel" x="120" y="260"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Pasillo (oeste)" x="120" y="180"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Pasillo (este)" x="240" y="180"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Almacén" x="240" y="80"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Dentro del ascensor (inalcanzable)" x="360" y="80"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Sala del ascensor" x="360" y="180"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Sala de mantenimiento este" x="480" y="180"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Limbo" x="400" y="380"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.CharacterNode" name="mujer joven" x="340" y="20"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.CharacterNode" name="Jugador" x="60" y="260"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Camastrujamiento Terminaloide" x="40" y="20"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Cama" x="100" y="340"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Mesilla de noche" x="180" y="340"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Teléfono fijo" x="300" y="280"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Telefono móvil" x="280" y="360"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Extintor" x="120" y="120"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Puerta de madera" x="60" y="220"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Puerta del almacén" x="300" y="120"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Pata de cabra" x="280" y="40"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Antorcha improvisada" x="40" y="360"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Puerta del ascensor" x="420" y="120"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Puerta verde" x="440" y="240"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Llamas" x="400" y="320"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Incendio" x="360" y="320"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Bomberos" x="360" y="380"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Pata de la cama" x="0" y="320"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Pata de la mesilla" x="200" y="260"/>
+</IdeMetaInf>
+<Code language="BeanShell"><![CDATA[/*Introducción del juego para un jugador*/
+
+
+void intro( Player aPlayer )
+{
+
+	if ( aPlayer.getPropertyValueAsBoolean("sawIntro") )
+		return;
+		
+	aPlayer.setProperty("sawIntro",true);
+	
+	//aPlayer: jugador al que le hacemos la introducción.
+
+	System.out.println("INTRO BEGIN");
+
+	aPlayer.borrarPantalla();
+	aPlayer.write("¡¡¡¡MUY IMPORTANTE!!!!\n");
+	aPlayer.write("Nota para jugar esta aventura:\n");
+	aPlayer.write("Pon el modo Tiempo Real AHORA (Servidor - Modo de Juego - Tiempo Real). En esta aventura es importante hacer las cosas con cierta rapidez, así que es un desafío pasársela a tiempo real.\n");
+	
+	aPlayer.write("\n****\n\n");
+	
+	
+	aPlayer.write("Selecciona el nivel de dificultad:\n");
+	aPlayer.write("1. Poco hecho\n");
+	aPlayer.write("2. Al punto\n");
+	aPlayer.write("3. Tostadito\n");
+	aPlayer.write("4. REQUEMADO EN LOS FUEGOS DEL MALDITO INFIERNO\n");
+	
+	aPlayer.setParseRoutine ( aPlayer , "parseDifLevel" );
+	
+}
+
+
+
+/*Inicialización*/
+void serverintro()
+{
+	if ( world.getAbstractEntity("Incendio").getPropertyValueAsBoolean("initted") )
+		return;
+		
+	world.getAbstractEntity("Incendio").setProperty("initted",true);
+
+
+	world.getAbstractEntity("Bomberos").setProperty("firemenState","idle",10000);
+	world.getAbstractEntity("Incendio").setProperty("power",0,1);
+}
+
+/*Método de análisis sintáctico de la entrada*/
+void parseCommand( Player aPlayer , String verb , String args )
+{
+	
+	//aPlayer: jugador que introduce un comando.
+	//verb: comando que introduce, por ejemplo "coger"
+	//args: resto de la orden que introduce, por ejemplo "el cuchillo grande"
+	
+	if ( verb.equalsIgnoreCase("llamar") && args.toLowerCase().indexOf("bomberos") >= 0 && !args.toLowerCase().endsWith("móvil") )
+	{
+		aPlayer.forceCommand("llamar a los bomberos por el móvil");
+		end();
+	}
+	
+	//terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
+	//por defecto ante ella
+	//terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
+	//comando y ejecución de la acción correspondiente
+
+
+	if ( verb.equalsIgnoreCase("forzar") || verb.equalsIgnoreCase("abrir") || verb.equalsIgnoreCase("atacar") || verb.equalsIgnoreCase("hundir")
+		|| verb.equalsIgnoreCase("golpear") || verb.equalsIgnoreCase("embestir") || verb.equalsIgnoreCase("romper") )
+	{
+
+		if (  (args.toLowerCase().indexOf("pata")>=0) && (args.toLowerCase().indexOf("ascensor") >= 0) && !world.getItem("Pata de cabra").getPropertyValueAsBoolean("forcing") )
+		{
+			if ( !args.toLowerCase().equals("la puerta del ascensor con la pata de cabra") )
+			{
+				aPlayer.forceCommand("forzar la puerta del ascensor con la pata de cabra");
+				end();
+			}
+		}
+		else if (  (args.toLowerCase().indexOf("pata")>=0 ) && (args.toLowerCase().indexOf("puerta") >= 0) && !world.getItem("Pata de cabra").getPropertyValueAsBoolean("forcing") )
+		{
+			if ( !args.toLowerCase().equals("la puerta verde con la pata de cabra") )
+			{
+				aPlayer.forceCommand("forzar la verde con la pata de cabra");	
+				end();
+			}	
+		}
+	}
+
+	if ( verb.equalsIgnoreCase("quemar") || verb.equalsIgnoreCase("encender") || verb.equalsIgnoreCase("prender") )
+	{
+		if (  (args.toLowerCase().indexOf("pata")>=0) && (args.toLowerCase().indexOf("fuego")<args.toLowerCase().indexOf("pata")) && aPlayer.getRoom().hasItem(world.getItem("Llamas")) )
+		{
+			aPlayer.forceCommand("encender la pata en el fuego");
+			end();
+		}
+	}
+
+	
+}]]></Code>
+<PlayerList>
+<Player id="Jugador"/>
+</PlayerList>
+<VisualConfiguration>
+<Colors>
+<Story color="#ff9966"/>
+<Information color="#ff9999"/>
+<Default color="#ffff99"/>
+<Input color="#ff9999"/>
+<Description color="#ffcc66"/>
+<Foreground color="#ffffff"/>
+<Denial color="#ff3300"/>
+<Action color="#cc6600"/>
+<Background color="#000000"/>
+<Error color="#cc0000"/>
+</Colors>
+<Font filename="Courier.ttf" name="Courier" size="12.0"/>
+</VisualConfiguration>
+<Rooms>
+<Room name="Habitación de hotel">
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")==0)</Condition>Te encuentras en tu habitación del América, el viejo hotel de tres estrellas en el que decidiste pasar la noche. Visto lo visto, te arrepientes de no haber escogido uno más caro.\nEs de noche y las luces están apagadas; pero la de la luna que entra por la ventana es suficiente para ver que el mobiliario es escaso: además de la cama, sólo hay una pequeña mesilla de noche. Una puerta de madera lleva al pasillo.</Description>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")==1)</Condition>Te encuentras en tu habitación del hotel América, ahora bien iluminada por las llamas que devoran parte de la alfombra, la cama y una de las paredes. Cada vez hay que andar con más cuidado para no quemarse, y el abundante humo vuelve el aire irrespirable. En la habitación hay una cama, una pequeña mesilla de noche y una puerta que conduce al pasillo del hotel.</Description>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")&gt;=2)</Condition>La habitación es un infierno. Hay llamas por todas partes, apenas puedes avanzar un paso sin quemarte alguna parte de tu cuerpo. La cama y la mesilla de noche están en llamas, el aire casi no se puede respirar ya con el humo... ¡Tienes que salir de aquí cuanto antes!</Description>
+</DescriptionList>
+<ExtraDescriptionList>
+<ExtraDescription>
+<Name>ventana</Name>
+<Name>patio</Name>
+<Name>fuera</Name>
+<Name>calle</Name>
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")==0)</Condition>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+La ventana de la habitación da a un patio de luces... y mirando hacia abajo, ves un montón de fuego, el patio está siendo consumido por llamas que alcanzan varios pisos de altura. Imposible salir por ahí, ¡qué horror!</Description>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")==1)</Condition>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+La ventana de la habitación da a un patio de luces... y mirando hacia abajo, ves un montón de fuego, el patio está siendo consumido por llamas que alcanzan varios pisos de altura. Imposible salir por ahí, ¡qué horror!</Description>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")&gt;=2)</Condition>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  Hay demasiadas llamas como para poder llegar cerca de la ventana, es imposible.</Description>
+</DescriptionList>
+</ExtraDescription>
+<ExtraDescription>
+<Name>colchón</Name>
+<Name>colchon</Name>
+<DescriptionList>
+<Description>Un colchón estándar, nada del otro mundo.</Description>
+</DescriptionList>
+</ExtraDescription>
+</ExtraDescriptionList>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada en una habitación*/
+void parseCommand( Player aPlayer , String verb , String args )
+{
+	
+	//aPlayer: jugador que introduce un comando.
+	//verb: comando que introduce, por ejemplo "coger"
+	//args: resto de la orden que introduce, por ejemplo "el cuchillo grande"
+	
+	if ( verb.equalsIgnoreCase("hacer") && ParserMethods.refersToEntity(args,world.getItem("Cama"),false) )
+	{
+		aPlayer.write("Estás de broma, ¿verdad? ¡El hotel está ardiendo! No es el momento de hacer la maldita cama.");
+		end();
+	}
+
+	if ( verb.equalsIgnoreCase("arrancar") || verb.equalsIgnoreCase("romper") )
+	{
+		if ( ParserMethods.refersToEntity(args,world.getItem("Pata de la cama"),false) )
+		{
+			aPlayer.forceCommand("coger " + args);
+			end();
+		}
+		else
+		{
+			aPlayer.writeDenial("¿Cómo? ¿Qué quieres arrancar?");
+			end();
+		}
+	}	
+
+	if ( verb.equalsIgnoreCase("descolgar") || verb.equalsIgnoreCase("llamar") )
+	{
+		if ( ParserMethods.refersToEntity(args,world.getItem("Teléfono fijo"),false) )
+		{
+			aPlayer.forceCommand("coger " + args);
+			end();
+		}
+	}
+	
+	//terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
+	//por defecto ante ella
+	//terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
+	//comando y ejecución de la acción correspondiente
+	
+}]]></Code>
+<PathList>
+<Path destination="Pasillo (oeste)" direction="norte" exitTime="3" standard="true">
+<AssociatedItem id="Puerta de madera"/>
+<PropertyList/>
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">!self.isOpen()</Condition>La puerta de la habitación está cerrada, tendrías que abrirla antes.</Description>
+<Description>
+<Condition language="BeanShell">self.isOpen()</Condition>Sales apresuradamente de la habitación.</Description>
+</DescriptionList>
+<CommandList>
+<Command name="salir"/>
+<Command name="fuera"/>
+<Command name="pasillo"/>
+</CommandList>
+</Path>
+</PathList>
+<Inventory>
+<ItemRef id="Cama"/>
+<ItemRef id="Pata de la cama"/>
+<ItemRef id="Mesilla de noche"/>
+<ItemRef id="Puerta de madera"/>
+<ItemRef id="Pata de la mesilla"/>
+</Inventory>
+<MobileList>
+<MobRef id="Jugador"/>
+</MobileList>
+<RelationshipList>
+<Relationship id="Pasillo (oeste)">
+<PropertyList/>
+</Relationship>
+<Relationship id="Cama">
+<PropertyList/>
+</Relationship>
+<Relationship id="Pata de la cama">
+<PropertyList/>
+</Relationship>
+<Relationship id="Mesilla de noche">
+<PropertyList/>
+</Relationship>
+<Relationship id="Puerta de madera">
+<PropertyList/>
+</Relationship>
+<Relationship id="Jugador">
+<PropertyList/>
+</Relationship>
+<Relationship id="Pata de la mesilla">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+<Room name="Pasillo (oeste)">
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")==0)</Condition>Te encuentras en un tramo del pasillo que debería prolongarse hacia el oeste y el este; pero al oeste las fieras llamas llegan del suelo al techo, haciendo imposible pasar. Hacia el este el paso está libre, y al sur está la puerta que conduce a tu habitación.</Description>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")==1)</Condition>Esta sección del pasillo ya está en llamas. Hacia el este la situación parece mejor por el momento, y al sur está la puerta que conduce a tu habitación.</Description>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")&gt;=2)</Condition>Las llamas te rodean por todas partes y te queman, tienes que salir de aquí enseguida. El fuego ya no te permite ver nada a tu alrededor.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<PathList>
+<Path destination="Habitación de hotel" direction="sur" exitTime="3" standard="true">
+<AssociatedItem id="Puerta de madera"/>
+<PropertyList/>
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">!self.isOpen()</Condition>La puerta de la habitación está cerrada, tendrías que abrirla antes.</Description>
+<Description>
+<Condition language="BeanShell">self.isOpen()</Condition>Entras de nuevo en la habitación.</Description>
+</DescriptionList>
+<CommandList>
+<Command name="entrar"/>
+<Command name="dentro"/>
+<Command name="habitación"/>
+<Command name="habitacion"/>
+</CommandList>
+</Path>
+<Path destination="Pasillo (este)" direction="este" exitTime="3" standard="true">
+<PropertyList/>
+<DescriptionList>
+<Description>Te diriges hacia el este por el pasillo.</Description>
+</DescriptionList>
+<CommandList>
+<Command name="almacén"/>
+<Command name="almacen"/>
+<Command name="pasillo"/>
+</CommandList>
+</Path>
+</PathList>
+<Inventory>
+<ItemRef id="Puerta de madera"/>
+<ItemRef id="Extintor"/>
+</Inventory>
+<MobileList/>
+<RelationshipList>
+<Relationship id="Habitación de hotel">
+<PropertyList/>
+</Relationship>
+<Relationship id="Pasillo (este)">
+<PropertyList/>
+</Relationship>
+<Relationship id="Puerta de madera">
+<PropertyList/>
+</Relationship>
+<Relationship id="Extintor">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+<Room name="Pasillo (este)">
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")==0)</Condition>Te encuentras en una sección de pasillo que se prolonga hacia el oeste y hacia el este. Al oeste se encuentra tu habitación, mientras que al este puedes ver un ensanchamiento del pasillo. Directamente al norte hay una puerta con un cartel que pone "almacén".</Description>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")==1)</Condition>Te encuentras en una sección de pasillo que ya empieza a ser devorada por las llamas. Hacia el oeste, donde está tu habitación, el fuego es tan intenso que sería muy difícil pasar. Hacia el este la situación es mejor, y el pasillo se ensancha. Directamente al norte, hay una puerta que pone "almacén".</Description>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")&gt;=2)</Condition>Esta sección de pasillo está siendo devorada por el incendio. Las llamas te queman a cada momento, y te resulta muy difícil respirar. El fuego que hay por todas partes no te permite ver nada.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<PathList>
+<Path destination="Pasillo (oeste)" direction="oeste" exitTime="3" standard="true">
+<PropertyList/>
+<DescriptionList>
+<Description>Vuelves por el pasillo hacia el oeste, hacia tu habitación.</Description>
+</DescriptionList>
+<CommandList>
+<Command name="habitación"/>
+<Command name="habitacion"/>
+</CommandList>
+</Path>
+<Path destination="Almacén" direction="norte" exitTime="3" standard="true">
+<AssociatedItem id="Puerta del almacén"/>
+<PropertyList/>
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">self.isOpen()</Condition>Entras en el almacén.</Description>
+<Description>
+<Condition language="BeanShell">self.isClosed()</Condition>La puerta del almacén está cerrada, tienes que abrirla para entrar.</Description>
+</DescriptionList>
+<CommandList>
+<Command name="almacén"/>
+<Command name="almacen"/>
+<Command name="entrar"/>
+<Command name="dentro"/>
+</CommandList>
+</Path>
+<Path destination="Sala del ascensor" direction="este" exitTime="3" standard="true">
+<PropertyList/>
+<DescriptionList>
+<Description>Te diriges hacia el este, hacia donde se ensancha el pasillo.</Description>
+</DescriptionList>
+<CommandList>
+<Command name="ascensor"/>
+<Command name="ensanchamiento"/>
+</CommandList>
+</Path>
+</PathList>
+<Inventory>
+<ItemRef id="Puerta del almacén"/>
+</Inventory>
+<MobileList/>
+<RelationshipList>
+<Relationship id="Pasillo (oeste)">
+<PropertyList/>
+</Relationship>
+<Relationship id="Almacén">
+<PropertyList/>
+</Relationship>
+<Relationship id="Sala del ascensor">
+<PropertyList/>
+</Relationship>
+<Relationship id="Puerta del almacén">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+<Room name="Almacén">
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")==0)</Condition>Te encuentras en un pequeño almacén, lleno de trastos sucios e inservibles.</Description>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")==1)</Condition>Te encuentras en un pequeño almacén, lleno de trastos sucios e inservibles. Las llamas ya han entrado, y la puerta y algunos de los objetos del suelo están ardiendo. Pronto no se podrá estar aquí.</Description>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")&gt;=2)</Condition>El almacén se ha convertido en un horno, las llamas se propagan por todas partes y llegan hasta el techo, quemándote a cada momento.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList>
+<PropertyEntry name="dark" timeUnitsLeft="0" value="1"/>
+</PropertyList>
+<Code language="BeanShell"><![CDATA[include("lib/light.bsh");
+ 
+void onInit()
+{
+	set_too_dark_sentence("¡Está demasiado oscuro para hacer nada, y corres peligro de que te coma un gru!");
+  	set_darkness_description("Este almacén está oscuro como boca de lobo. Corres el riesgo de ser devorado por un gru.");
+}
+
+/*Método de análisis sintáctico de la entrada en una habitación*/
+/*
+//NAH, USAMOS LA BIBLIOTECA LIGHT
+void parseCommand( Player aPlayer , String verb , String args )
+{
+	
+	//aPlayer: jugador que introduce un comando.
+	//verb: comando que introduce, por ejemplo "coger"
+	//args: resto de la orden que introduce, por ejemplo "el cuchillo grande"
+	
+	if ( self.getPropertyValueAsInteger("fire_level") == 0 ) //si no hay fuego, no hay luz a no ser que lleves o que esté aquí la antorcha
+	{
+		if ( !aPlayer.hasItem("Antorcha improvisada")  && !self.hasItem("Antorcha improvisada") )
+		{
+			if ( !verb.equalsIgnoreCase("ir") && !verb.equalsIgnoreCase("decir") && !verb.equalsIgnoreCase("gritar") )
+			{
+				aPlayer.writeDenial("Está oscuro como boca de lobo, no ves lo suficiente para hacer nada.");
+				end();
+			}
+		}
+	}
+
+	
+	//terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
+	//por defecto ante ella
+	//terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
+	//comando y ejecución de la acción correspondiente
+	
+}
+*/]]></Code>
+<PathList>
+<Path destination="Pasillo (este)" direction="sur" exitTime="3" standard="true">
+<AssociatedItem id="Puerta del almacén"/>
+<PropertyList/>
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">self.isOpen()</Condition>Sales del almacén al pasillo.</Description>
+<Description>
+<Condition language="BeanShell">!self.isOpen()</Condition>La puerta del almacén está cerrada, tendrías que abrirla para salir.</Description>
+</DescriptionList>
+<CommandList>
+<Command name="salir"/>
+<Command name="fuera"/>
+<Command name="pasillo"/>
+<Command name="habitación"/>
+<Command name="habitacion"/>
+<Command name="sala"/>
+</CommandList>
+</Path>
+</PathList>
+<Inventory>
+<ItemRef id="Puerta del almacén"/>
+<ItemRef id="Pata de cabra"/>
+</Inventory>
+<MobileList/>
+<RelationshipList>
+<Relationship id="Pasillo (este)">
+<PropertyList/>
+</Relationship>
+<Relationship id="Puerta del almacén">
+<PropertyList/>
+</Relationship>
+<Relationship id="Pata de cabra">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+<Room name="Dentro del ascensor (inalcanzable)">
+<DescriptionList/>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[//Evento que captura el envío de un texto a la habitación.
+void onRoomText ( String text )
+{
+	//text: texto que ha sido enviado a la habitación.
+	if ( text.indexOf("ugador") < 0 )
+		world.getRoom("Sala del ascensor").informActionAuto(null,null,null,text,false);
+}]]></Code>
+<PathList>
+<Path destination="Sala del ascensor" direction="sur" exitTime="0" standard="true">
+<PropertyList/>
+<DescriptionList/>
+<CommandList/>
+</Path>
+</PathList>
+<Inventory/>
+<MobileList>
+<MobRef id="mujer joven"/>
+</MobileList>
+<RelationshipList>
+<Relationship id="Sala del ascensor">
+<PropertyList/>
+</Relationship>
+<Relationship id="mujer joven">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+<Room name="Sala del ascensor">
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")==0)</Condition>En este lugar, el pasillo se ensancha proporcionando espacio para esperar al ascensor, que está al norte. Al sur puedes ver las escaleras; pero es imposible acceder a ellas, ya que están ardiendo y parecen parcialmente derrumbadas. La luz danzarina de este fuego ilumina la sala. Hacia el este hay una puerta verde.</Description>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")==1)</Condition>Este ensanchamiento del pasillo ya está siendo pasto de las llamas, y no será transitable por mucho tiempo. Al norte está el ascensor. Al sur puedes ver las escaleras; pero es imposible acceder a ellas, ya que están ardiendo y parecen parcialmente derrumbadas. Hacia el este hay una puerta verde.</Description>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")&gt;=2)</Condition>Las abrasadoras llamas que hay a tu alrededor te queman y te impiden ver exactamente dónde te encuentras.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*
+Método que captura el evento lanzado cuando una criatura abandona una habitación
+por un camino dado.
+*/
+void beforeExit ( Mobile creature , Path path )
+{
+ 	
+ 	//creature: criatura que abandona la habitación.
+ 	//self: habitación que abandona (es decir, esta habitación).
+ 	//path: salida que utiliza para abandonarla.
+ 
+	if ( path.equals( self.getPath(true,Path.NORTE) ) )
+	{
+
+		if ( world.getItem("Puerta del ascensor").isClosed() )
+		{
+			creature.writeDenial("La puerta del ascensor está cerrada.\n");
+			end();
+		}
+		else
+		{
+			creature.writeDenial("¿Meterte en un ascensor que no funciona y donde estaba atrapada esa mujer? ¡Ni de broma!\n");
+			end();
+		}
+
+	}
+
+ 	//terminar con end() para que la criatura no consiga salir (se interrumpe la acción).						
+  	//terminar normal para que la acción se lleve a cabo.
+  
+}
+
+
+/*Método de análisis sintáctico de la entrada en una habitación*/
+void parseCommand( Player aPlayer , String verb , String args )
+{
+	
+	//aPlayer: jugador que introduce un comando.
+	//verb: comando que introduce, por ejemplo "coger"
+	//args: resto de la orden que introduce, por ejemplo "el cuchillo grande"
+	
+	if ( verb.equalsIgnoreCase("forzar") || verb.equalsIgnoreCase("atacar") || verb.equalsIgnoreCase("hundir")
+		|| verb.equalsIgnoreCase("golpear") || verb.equalsIgnoreCase("embestir") || verb.equalsIgnoreCase("romper") || verb.equalsIgnoreCase("patear")  )
+	{
+		if ( ParserMethods.refersToEntity(args,world.getItem("Puerta verde"),false) )
+		{
+			aPlayer.writeDenial("Golpeas la puerta verde con todas tus fuerzas; pero no cede. Tal vez con algún objeto contundente tendrías más posibilidades.\n");
+			end();
+		}
+		else if ( ParserMethods.refersToEntity(args,world.getItem("Puerta del ascensor"),false) )
+		{
+			aPlayer.writeDenial("Golpeas la puerta del ascensor con todas tus fuerzas; pero no cede. Necesitarás algo más que fuerza bruta para abrir la puerta metálica de seguridad.\n");
+			end();
+		}
+	}
+
+	
+	//terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
+	//por defecto ante ella
+	//terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
+	//comando y ejecución de la acción correspondiente
+	
+}
+
+
+
+//Evento que captura el envío de un texto a la habitación.
+void onRoomText ( String text )
+{
+	//text: texto que ha sido enviado a la habitación.
+	if ( text.indexOf("ugador") >= 0 )
+		world.getRoom("Dentro del ascensor (inalcanzable)").informActionAuto(null,null,null,text,false);
+}]]></Code>
+<PathList>
+<Path destination="Pasillo (este)" direction="oeste" exitTime="3" standard="true">
+<PropertyList/>
+<DescriptionList>
+<Description>Te diriges hacia el oeste por el pasillo.</Description>
+</DescriptionList>
+<CommandList>
+<Command name="pasillo"/>
+<Command name="almacén"/>
+<Command name="habitación"/>
+<Command name="habitacion"/>
+</CommandList>
+</Path>
+<Path destination="Dentro del ascensor (inalcanzable)" direction="norte" exitTime="1" standard="true">
+<PropertyList/>
+<DescriptionList/>
+<CommandList>
+<Command name="ascensor"/>
+<Command name="elevador"/>
+<Command name="cabina"/>
+</CommandList>
+</Path>
+<Path destination="Sala de mantenimiento este" direction="este" exitTime="3" standard="true">
+<AssociatedItem id="Puerta verde"/>
+<PropertyList/>
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">self.isClosed()</Condition>No puedes pasar, la puerta verde está cerrada.</Description>
+<Description>
+<Condition language="BeanShell">self.isOpen()</Condition>Te diriges hacia el este entrando por la puerta verde.</Description>
+</DescriptionList>
+<CommandList>
+<Command name="mantenimiento"/>
+<Command name="sala"/>
+</CommandList>
+</Path>
+</PathList>
+<Inventory>
+<ItemRef id="Puerta del ascensor"/>
+<ItemRef id="Puerta verde"/>
+</Inventory>
+<MobileList/>
+<RelationshipList>
+<Relationship id="Pasillo (este)">
+<PropertyList/>
+</Relationship>
+<Relationship id="Dentro del ascensor (inalcanzable)">
+<PropertyList/>
+</Relationship>
+<Relationship id="Sala de mantenimiento este">
+<PropertyList/>
+</Relationship>
+<Relationship id="Puerta del ascensor">
+<PropertyList/>
+</Relationship>
+<Relationship id="Puerta verde">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+<Room name="Sala de mantenimiento este">
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")==0)</Condition>Te encuentras en lo que seguramente es una sala donde descansa el personal de mantenimiento, pues el único mobiliario es un par de sofás raídos. Una puerta verde da al pasillo, y la luz de la luna entra por una amplia ventana abierta.</Description>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")==1)</Condition>Una sala de descanso en la que ya han entrado las llamas, que se ceban en dos viejos sofás. Una puerta verde da al pasillo, y la luz de la luna entra por una amplia ventana abierta.</Description>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")&gt;=2)</Condition>El fuego lo devora todo, y te hace imposible ver nada más que el vago contorno de una puerta y una ventana.</Description>
+</DescriptionList>
+<ExtraDescriptionList>
+<ExtraDescription>
+<Name>sofás</Name>
+<Name>sofá</Name>
+<Name>sofas</Name>
+<Name>sofa</Name>
+<DescriptionList>
+<Description>Unos sofás viejos y raídos, no hay nada interesante en ellos.</Description>
+</DescriptionList>
+</ExtraDescription>
+<ExtraDescription>
+<Name>ventana</Name>
+<Name>fuera</Name>
+<Name>calle</Name>
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">world.getAbstractEntity("Bomberos").getPropertyValueAsString("firemenState").equals("idle")</Condition>
+
+
+
+
+
+
+
+
+
+
+
+La ventana da a la calle, donde se ven algunos curiosos mirando hacia arriba. Pero te encuentras en un décimo piso y no parece que haya ninguna cornisa, así que es imposible salir por ahí sin matarse.</Description>
+<Description>
+<Condition language="BeanShell">world.getAbstractEntity("Bomberos").getPropertyValueAsString("firemenState").equals("coming")</Condition>
+
+
+
+
+
+
+
+
+
+
+
+La ventana da a la calle, donde se ven algunos curiosos mirando hacia arriba. Pero te encuentras en un décimo piso y no parece que haya ninguna cornisa, así que es imposible salir por ahí sin matarse.</Description>
+<Description>
+<Condition language="BeanShell">world.getAbstractEntity("Bomberos").getPropertyValueAsString("firemenState").equals("installing") || world.getAbstractEntity("Bomberos").getPropertyValueAsString("firemenState").equals("exitingCar")</Condition>
+
+
+
+
+
+
+
+
+
+
+
+La ventana da a la calle, donde puedes ver, muy abajo (te encuentras en un décimo piso) un coche de bomberos y a un hombre con megáfono.</Description>
+<Description>
+<Condition language="BeanShell">world.getAbstractEntity("Bomberos").getPropertyValueAsString("firemenState").equals("announcing")</Condition>
+
+
+
+
+
+
+
+
+
+
+
+La ventana da a la calle, donde puedes ver, muy abajo (te encuentras en un décimo piso) un coche de bomberos y a un hombre con megáfono. También ves que hay una cama elástica justo debajo de la ventana.</Description>
+</DescriptionList>
+</ExtraDescription>
+<ExtraDescription>
+<Name>hombre</Name>
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">world.getAbstractEntity("Bomberos").getPropertyValueAsString("firemenState").equals("announcing") || world.getAbstractEntity("Bomberos").getPropertyValueAsString("firemenState").equals("installing")</Condition>
+
+
+
+
+
+
+
+
+
+
+
+Se trata de un bombero que lleva un megáfono.</Description>
+</DescriptionList>
+</ExtraDescription>
+</ExtraDescriptionList>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada en una habitación*/
+void parseCommand( Player aPlayer , String verb , String args )
+{
+	
+	//aPlayer: jugador que introduce un comando.
+	//verb: comando que introduce, por ejemplo "coger"
+	//args: resto de la orden que introduce, por ejemplo "el cuchillo grande"
+	
+	if ( verb.equalsIgnoreCase("saltar") || verb.equalsIgnoreCase("tirar") || verb.equalsIgnoreCase("tirarse") || verb.equalsIgnoreCase("tirarme")
+		|| verb.equalsIgnoreCase("tirate") || verb.equalsIgnoreCase("tírate") || ( verb.equalsIgnoreCase("me") && args.toLowerCase().startsWith("tiro") )  )	
+	{
+		if ( args.toLowerCase().indexOf("ventana") >= 0 ||
+			args.toLowerCase().indexOf("calle") >= 0 ||
+ 			args.toLowerCase().indexOf("fuera") >= 0 ||
+			args.toLowerCase().indexOf("abajo") >= 0 )
+		{
+			//saltar por la ventana
+			aPlayer.writeAction("Saltas por la ventana.\n");
+			aPlayer.writeAction("¡AaaaaaaaaAAAAAAAAAAAAAaaaaaaaaaaaaaaaAAAaahh!\n");
+			aPlayer.waitKeyPress();
+			if ( world.getAbstractEntity("Bomberos").getPropertyValueAsString("firemenState") != null && world.getAbstractEntity("Bomberos").getPropertyValueAsString("firemenState").equals("announcing") )
+			{
+				aPlayer.writeAction("¡Una cama elástica amortigua tu caída!\n");
+				//aPlayer.write("Has conseguido escapar al incendio.\n");
+				if ( world.getItem("Puerta del ascensor").isClosed() )
+					world.getRoom("Limbo").setProperty("ending",1);
+				else
+				{
+					if ( world.getAbstractEntity("Incendio").getPropertyValueAsInteger("power") >= 50 || world.getMobile("mujer joven").getPropertyValueAsBoolean("angry") )
+						world.getRoom("Limbo").setProperty("ending",2);
+					else
+						world.getRoom("Limbo").setProperty("ending",3);
+				}
+				aPlayer.setRoom(world.getRoom("Limbo"));
+				aPlayer.forceCommand("mirar");
+				end();
+			}
+			else
+			{
+				aPlayer.writeAction("¡BUM! La caída de diez pisos acaba con tu vida. Mueres.\n");
+				aPlayer.die();
+				aPlayer.setRoom(world.getRoom("Limbo"));
+				aPlayer.forceCommand("mirar");
+		      		end();
+			}
+		}
+	}
+
+
+	//terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
+	//por defecto ante ella
+	//terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
+	//comando y ejecución de la acción correspondiente
+	
+}]]></Code>
+<PathList>
+<Path destination="Sala del ascensor" direction="oeste" exitTime="3" standard="true">
+<AssociatedItem id="Puerta verde"/>
+<PropertyList/>
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">self.isOpen()</Condition>Te diriges hacia donde estaba el ascensor, saliendo por la puerta verde.</Description>
+<Description>
+<Condition language="BeanShell">self.isClosed()</Condition>No puedes pasar, la puerta verde está cerrada.</Description>
+</DescriptionList>
+<CommandList>
+<Command name="ascensor"/>
+<Command name="pasillo"/>
+<Command name="almacén"/>
+<Command name="habitación"/>
+<Command name="fuera"/>
+</CommandList>
+</Path>
+</PathList>
+<Inventory>
+<ItemRef id="Puerta verde"/>
+</Inventory>
+<MobileList/>
+<RelationshipList>
+<Relationship id="Sala del ascensor">
+<PropertyList/>
+</Relationship>
+<Relationship id="Puerta verde">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+<Room name="Limbo">
+<DescriptionList/>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[void parseCommand ( Player p , String verb , String args )
+{	
+	
+	switch ( self.getPropertyValueAsInteger("ending") )
+	{	
+		case 0:
+			p.write("Estás muerto. Has perdido.\n");
+			end();
+			break;
+		case 1:
+			p.write("Has conseguido escapar al incendio y salvado tu vida.\n");
+			p.write("Tu llamada a los bomberos fue la primera que se recibió, la recepción del hotel fue destruida por la bomba terrorista que provocó el incendio.\n");
+			p.write("Sin embargo, vivirás una vida triste y atormentada por los remordimientos. Jamás podrás volver a dormir bien, porque en tus sueños siempre aparecerán los gritos desesperados de la mujer que estaba en el ascensor y no salvaste.\n");
+			p.write("Dependiendo de tus principios morales, puedes considerar que has ganado; pero hay un final mejor que éste.\n");
+			end();
+			break;
+		case 2:
+			p.write("Has conseguido escapar al incendio y salvado tu vida.\n");
+			p.write("Tu llamada a los bomberos fue la primera que se recibió, la recepción del hotel fue destruida por la bomba terrorista que provocó el incendio.\n");
+			p.write("Además, has salvado la vida de una camarera del hotel. Tus amigos te admiran como a un héroe.\n");
+			p.write("Has ganado, pero aún hay un final mejor que éste.\n");
+			end();
+			break;
+		case 3:
+			p.write("Has conseguido escapar al incendio y salvado tu vida.\n");
+			p.write("Tu llamada a los bomberos fue la primera, la recepción del hotel fue destruida por la bomba terrorista que provocó el incendio.\n");
+			p.write("Además, has salvado la vida de una camarera del hotel. Tus amigos te admiran como a un héroe.\n");
+			p.write("Maravillada por la firmeza, rapidez y valentía que mostraste en el incendio, la camarera se enamora de ti, y tú le correspondes.\n");
+			p.write("Vivís muchos años juntos, sois felices y coméis perdices y bogavante.\n");
+			end();
+			break;
+	}
+
+}]]></Code>
+<PathList/>
+<Inventory/>
+<MobileList/>
+<RelationshipList/>
+</Room>
+</Rooms>
+<Items>
+<Item closeable="false" gender="false" lockable="false" name="Camastrujamiento Terminaloide" openable="false" unlockable="false" volume="5" weight="5">
+<SingularNames>
+<Description>cama</Description>
+</SingularNames>
+<PluralNames>
+<Description>camas</Description>
+</PluralNames>
+<SingularReferenceNames>
+<Name>cama</Name>
+<Name>lecho</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>camas</Name>
+<Name>lechos</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">(world.getRoom("Habitación de hotel").getPropertyValueAsInteger("fire_level")==0)</Condition>Una cama de hotel estándar, de las de toda la vida. Deshecha, para más señas.</Description>
+<Description>
+<Condition language="BeanShell">(world.getRoom("Habitación de hotel").getPropertyValueAsInteger("fire_level")==1)</Condition>Las llamas están empezando a cebarse en parte de la cama. En un rato no será más que cenizas.</Description>
+<Description>
+<Condition language="BeanShell">(world.getRoom("Habitación de hotel").getPropertyValueAsInteger("fire_level")==2)</Condition>Es imposible ver la cama o lo que queda de ella, ha sido engullida por las abrasadoras llamas.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<RelationshipList/>
+</Item>
+<Item closeable="false" gender="false" lockable="false" name="Cama" openable="false" unlockable="false" volume="5000" weight="5000">
+<SingularNames/>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>##cama</Name>
+<Name>##cama</Name>
+<Name>##cama</Name>
+<Name>##cama</Name>
+<Name>##cama</Name>
+<Name>##cama</Name>
+<Name>cama</Name>
+<Name>lecho</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>##camas</Name>
+<Name>##camas</Name>
+<Name>##camas</Name>
+<Name>camas</Name>
+<Name>lechos</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">(world.getRoom("Habitación de hotel").getPropertyValueAsInteger("fire_level")==0)</Condition>Una cama de hotel estándar, de las de toda la vida. Poco más que una estructura con cuatro patas de madera sobre la que descansa el colchón. Deshecha, para más señas.</Description>
+<Description>
+<Condition language="BeanShell">(world.getRoom("Habitación de hotel").getPropertyValueAsInteger("fire_level")==1)</Condition>Las llamas están empezando a cebarse en parte de la cama. En un rato no será más que cenizas.</Description>
+<Description>
+<Condition language="BeanShell">(world.getRoom("Habitación de hotel").getPropertyValueAsInteger("fire_level")&gt;=2)</Condition>Es imposible ver la cama o lo que queda de ella, ha sido engullida por las abrasadoras llamas.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<RelationshipList/>
+</Item>
+<Item closeable="false" gender="false" lockable="false" name="Mesilla de noche" openable="false" unlockable="false" volume="4000" weight="4000">
+<SingularNames/>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>##mesilla</Name>
+<Name>##mesilla</Name>
+<Name>##mesilla</Name>
+<Name>##mesilla</Name>
+<Name>##mesilla</Name>
+<Name>##mesilla</Name>
+<Name>##mesilla</Name>
+<Name>##mesilla</Name>
+<Name>mesilla de noche</Name>
+<Name>mesita de noche</Name>
+<Name>mesilla</Name>
+<Name>mesita</Name>
+<Name>mesa</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>mesillas de noche</Name>
+<Name>mesitas de noche</Name>
+<Name>mesillas</Name>
+<Name>mesitas</Name>
+<Name>mesas</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">(world.getRoom("Habitación de hotel").getPropertyValueAsInteger("fire_level")==0)</Condition>Una pequeña mesilla de noche, sencilla y algo envejecida. Encima puedes ver %INVENTORY</Description>
+<Description>
+<Condition language="BeanShell">(world.getRoom("Habitación de hotel").getPropertyValueAsInteger("fire_level")==1)</Condition>Una pequeña mesilla de noche, sencilla y algo envejecida. El fuego todavía no ha llegado hasta ella, aunque ya está a punto. Encima puedes ver %INVENTORY</Description>
+<Description>
+<Condition language="BeanShell">(world.getRoom("Habitación de hotel").getPropertyValueAsInteger("fire_level")&gt;=2)</Condition>La mesilla está siendo consumida por las llamas, ya no puedes ver ningún detalle. Deberías escapar de aquí.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Inventory>
+<ItemRef id="Teléfono fijo"/>
+<ItemRef id="Telefono móvil"/>
+</Inventory>
+<RelationshipList>
+<Relationship id="Teléfono fijo">
+<PropertyList/>
+</Relationship>
+<Relationship id="Telefono móvil">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Item>
+<Item closeable="false" gender="true" lockable="false" name="Teléfono fijo" openable="false" unlockable="false" volume="5" weight="5">
+<SingularNames>
+<Description>teléfono fijo</Description>
+</SingularNames>
+<PluralNames>
+<Description>teléfonos fijos</Description>
+</PluralNames>
+<SingularReferenceNames>
+<Name>teléfono fijo</Name>
+<Name>telefono fijo</Name>
+<Name>fijo</Name>
+<Name>teléfono</Name>
+<Name>telefono</Name>
+<Name>auricular</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>teléfonos fijos</Name>
+<Name>telefonos fijos</Name>
+<Name>fijos</Name>
+<Name>teléfonos</Name>
+<Name>telefonos</Name>
+<Name>auriculares</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>Un teléfono negro, conectado a un cable, con un teclado y un auricular.</Description>
+</DescriptionList>
+<ExtraDescriptionList>
+<ExtraDescription>
+<Name>cable</Name>
+<DescriptionList>
+<Description>Un cable telefónico estándar. Nada que te deba entretener cuando EL HOTEL ESTÁ ARDIENDO.</Description>
+</DescriptionList>
+</ExtraDescription>
+<ExtraDescription>
+<Name>teclado</Name>
+<DescriptionList>
+<Description>Un teclado telefónico normal.</Description>
+</DescriptionList>
+</ExtraDescription>
+<ExtraDescription>
+<Name>auricular</Name>
+<DescriptionList>
+<Description>El auricular del teléfono fijo. Está colgado.</Description>
+</DescriptionList>
+</ExtraDescription>
+</ExtraDescriptionList>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[void before_do_get ( Mobile getter , Inventory inv , String toAppend )
+{
+ 	
+ 	//getter: criatura que coge esta cosa.
+ 	//self: cosa que ha cogido (es decir, esta cosa).
+	if ( !self.getPropertyValueAsBoolean("gotten") )
+	{
+		getter.writeAction("Descuelgas el teléfono fijo. Escuchando en el auricular, compruebas que no hay línea, seguramente algún cable haya resultado dañado por el fuego.\n");
+		getter.writeAction("Sin embargo, al descolgar ves algo interesante: debajo del espacio que ocupaba el auricular hay una lista de números de teléfono útiles. Entre ellos: \"BOMBEROS - 080\".\n");
+		self.setProperty("gotten",true); 	  
+		end();
+	}
+	else
+	{
+		getter.writeAction("Ya viste que no había línea. Además del número de los bomberos, que era el 080, no parece que pueda haber nada útil en el teléfono fijo.\n");	
+		end();
+	}
+
+}
+
+
+/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "comer"
+	//args: resto de la orden que introduce, por ejemplo "la seta"
+	
+	if ( verb.equalsIgnoreCase("descolgar") || verb.equalsIgnoreCase("llamar") )
+	{
+		aCreature.forceCommand("coger " + args);
+		end();
+	}
+
+	
+	//terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
+	//por defecto ante ella
+	//terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
+	//comando y ejecución de la acción correspondiente
+	
+}]]></Code>
+<RelationshipList/>
+</Item>
+<Item closeable="false" gender="true" lockable="false" name="Telefono móvil" openable="false" unlockable="false" volume="5" weight="5">
+<SingularNames>
+<Description>teléfono móvil</Description>
+</SingularNames>
+<PluralNames>
+<Description>teléfonos móviles</Description>
+</PluralNames>
+<SingularReferenceNames>
+<Name>teléfono móvil</Name>
+<Name>móvil</Name>
+<Name>movil</Name>
+<Name>teléfono</Name>
+<Name>telefono</Name>
+<Name>nokia</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>teléfonos móviles</Name>
+<Name>móviles</Name>
+<Name>moviles</Name>
+<Name>teléfonos</Name>
+<Name>telefonos</Name>
+<Name>nokias</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>Se trata de tu teléfono móvil: un Nokia del año de la polka, sobrio pero fiable.</Description>
+<Description>
+<Condition language="BeanShell">!self.getPropertyValueAsBoolean("on")</Condition>Está apagado.</Description>
+<Description>
+<Condition language="BeanShell">self.getPropertyValueAsBoolean("on")</Condition>Está encendido.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "comer"
+	//args: resto de la orden que introduce, por ejemplo "la seta"
+	
+	if ( verb.equalsIgnoreCase("encender") )
+	{
+		if ( self.getPropertyValueAsBoolean("on") == false )
+		{
+			aCreature.writeAction("Enciendes el móvil, que te saluda con una musiquilla inane.\n");
+			self.setProperty("on",true);
+			end();
+		}
+		else
+		{
+			aCreature.writeAction("El móvil ya está encendido.\n");
+			end();
+		}
+	}
+	else if ( verb.equalsIgnoreCase("apagar") )
+	{
+		if ( self.getPropertyValueAsBoolean("on") == true )
+		{
+			aCreature.writeAction("Apagas el móvil. Hay que ver qué meticuloso eres, preocupándote por el ahorro de energía EN UN MALDITO INCENDIO.\n");
+			self.setProperty("on",false);
+			end();
+		}
+		else
+		{
+			aCreature.writeAction("El móvil ya está apagado.\n");
+			end();
+		}
+	}
+	else if ( verb.equalsIgnoreCase("llamar") )
+	{
+		if ( !self.getPropertyValueAsBoolean("on") )
+		{
+			aCreature.writeDenial("El móvil está apagado, tendrías que encenderlo primero para llamar.\n");
+			end();
+		}
+		if ( args.toLowerCase().indexOf("bombero") >= 0 )
+		{
+			if ( world.getItem("Teléfono fijo").getPropertyValueAsBoolean("gotten") == true )
+			{
+				if ( self.getPropertyValueAsBoolean("bomberosCalled") == false )
+				{
+					aCreature.writeAction("Llamas a los bomberos por el móvil.\n");
+					aCreature.write("- Bomberos, ¿dígame?\n");
+					aCreature.write("- ¡Hay fuego en el hotel América! ¡FUEGO! ¡FUEGOOOOOOOO!\n");
+					aCreature.write("- Muy bien, señor. Ahora mismo le mandamos a alguien para allí. Intente no palmarla mientras tanto. Buenas noches.\n");
+					aCreature.write("*click*\n");
+					self.setProperty("bomberosCalled",true);
+					world.getAbstractEntity("Bomberos").setProperty("firemenState","coming",40); //vendrán en 40 segs
+					end();
+				}
+				else
+				{
+					aCreature.writeDenial("Ya llamaste a los bomberos antes. ¡No pierdas más tiempo!\n");
+					end();
+				}
+			}
+			else
+			{
+				aCreature.writeDenial("Por desgracia, no tienes ni idea de cuál es el número de los bomberos.\n");
+				end();
+			}
+		}
+		else if ( args.indexOf("080") >= 0 )
+		{
+			if ( world.getItem("Teléfono fijo").getPropertyValueAsBoolean("gotten") == true )
+			{
+				if ( self.getPropertyValueAsBoolean("bomberosCalled") == false )
+				{
+					aCreature.writeAction("Llamas a los bomberos por el móvil.\n");
+					aCreature.write("- Bomberos, ¿dígame?\n");
+					aCreature.write("- ¡Hay fuego en el hotel América! ¡FUEGO! ¡FUEGOOOOOOOO!\n");
+					aCreature.write("- Muy bien, señor. Ahora mismo le mandamos a alguien para allí. Intente no palmarla mientras tanto. Buenas noches.\n");
+					aCreature.write("*click*\n");
+					self.setProperty("bomberosCalled",true);
+					world.getAbstractEntity("Bomberos").setProperty("firemenState","coming",40); //vendrán en 40 segs
+					end();
+				}
+				else
+				{
+					aCreature.writeDenial("Ya llamaste a los bomberos antes. ¡No pierdas más tiempo!\n");
+					end();
+				}
+			}
+			else
+			{
+				aCreature.writeDenial("No estarás intentando usar información obtenida en vidas pasadas, ¿verdad? ¡Porque eso es TRAMPA!\n");
+				end();
+			}
+		}
+		else
+		{
+			aCreature.writeDenial("¿Llamar por el móvil a quién?\n");
+			end();
+		}
+
+	}
+	
+	//terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
+	//por defecto ante ella
+	//terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
+	//comando y ejecución de la acción correspondiente
+	
+}]]></Code>
+<RelationshipList/>
+</Item>
+<Item closeable="false" gender="true" lockable="false" name="Extintor" openable="false" unlockable="false" volume="50" weight="50">
+<SingularNames>
+<Description>extintor</Description>
+</SingularNames>
+<PluralNames>
+<Description>extintores</Description>
+</PluralNames>
+<SingularReferenceNames>
+<Name>extintor</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>extintores</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>Un extintor rojo brillante. Está lleno de instrucciones de uso detalladas en letra muy pequeña, como si alguien se fuese a parar a leer eso durante un incendio.</Description>
+</DescriptionList>
+<ExtraDescriptionList>
+<ExtraDescription>
+<Name>instrucciones</Name>
+<DescriptionList>
+<Description>He insinuado que NADIE se pararía a leer las instrucciones del extintor en medio de un incendio. Y lo he insinuado por ALGO.</Description>
+</DescriptionList>
+</ExtraDescription>
+</ExtraDescriptionList>
+<PropertyList>
+<PropertyEntry name="usesRemaining" timeUnitsLeft="0" value="2"/>
+</PropertyList>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "comer"
+	//args: resto de la orden que introduce, por ejemplo "la seta"
+	
+	if ( verb.equalsIgnoreCase("apagar") || verb.equalsIgnoreCase("extinguir") || verb.equalsIgnoreCase("vaciar") )
+	{
+		if ( args.toLowerCase().indexOf("fuego") >= 0 || args.toLowerCase().indexOf("llama") >= 0 || args.toLowerCase().indexOf("incendio") >= 0 )
+		{
+			if ( aCreature.getRoom().hasItem(world.getItem("Llamas")) )
+			{
+			
+				int usesRemaining = self.getPropertyValueAsInteger("usesRemaining");
+				if ( usesRemaining > 0 )
+				{
+					usesRemaining--;
+					self.setProperty("usesRemaining",usesRemaining);
+					aCreature.write("Dirigiendo el extintor hacia la base de las llamas, lo vacías frenéticamente, consiguiendo que el fuego retroceda un poco.\n");
+					world.getAbstractEntity("Incendio").execCode("extinguish",new Object[0]);
+					end();
+				}
+				else
+				{
+					aCreature.writeDenial("Intentas apagar las llamas con el extintor; pero ya no le queda más espuma: está vacío.\n");
+					end();
+				}
+			}
+			else
+			{
+				aCreature.writeDenial("Ahora mismo no hay llamas que apagar con el extintor aquí.\n");
+				end();
+			}
+		}
+	}
+
+	if ( verb.equalsIgnoreCase("forzar") || verb.equalsIgnoreCase("abrir") || verb.equalsIgnoreCase("atacar") || verb.equalsIgnoreCase("hundir")
+		|| verb.equalsIgnoreCase("golpear") || verb.equalsIgnoreCase("embestir") || verb.equalsIgnoreCase("romper") )
+	{
+		if ( aCreature.getRoom().equals(world.getRoom("Sala del ascensor")) && (args.toLowerCase().indexOf("ascensor")>=0) || (args.toLowerCase().indexOf("elevador")>=0) )
+		{
+			if ( world.getItem("Puerta del ascensor").isClosed() )
+			{
+				aCreature.writeAction("Golpeas la puerta del ascensor con el extintor; pero es metálica, y no consigues nada más que hacer ruido.\n");
+				//aCreature.setNewState( Mobile.IDLE, 3 );
+				aCreature.setNewState( Mobile.IDLE, 3 );
+				aCreature.setProperty("delay",true,3);
+				end();
+			}
+		}
+		else if ( aCreature.getRoom().equals(world.getRoom("Sala del ascensor")) && (args.toLowerCase().indexOf("puerta")>=0) || (args.toLowerCase().indexOf("verde")>=0) ) //forzar puerta normal
+		{
+			if ( !aCreature.getPropertyValueAsBoolean("forcing_puerta_verde_1") )
+			{
+				aCreature.writeAction("Intentas cargarte la puerta verde a golpes con el extintor...\n");
+				//aCreature.setNewState( Mobile.IDLE, 5 );
+				aCreature.setProperty("delay",true,5);
+				aCreature.setProperty( "forcing_puerta_verde_1" , true , 3 );
+				end();
+			}
+			else if ( !aCreature.getPropertyValueAsBoolean("forcing_puerta_verde_2") )
+			{
+				aCreature.writeAction("Golpeas de nuevo la puerta verde...\n");
+				//aCreature.setNewState( Mobile.IDLE, 5 );
+				aCreature.setProperty("delay",true,5);
+				aCreature.setProperty( "forcing_puerta_verde_2" , true , 3 );
+				end();
+			}
+			else if ( !aCreature.getPropertyValueAsBoolean("forcing_puerta_verde_3") )
+			{
+				aCreature.writeAction("Golpeas una vez más la puerta verde...\n");
+				//aCreature.setNewState( Mobile.IDLE, 5 );
+				aCreature.setProperty("delay",true,5);
+				aCreature.setProperty( "forcing_puerta_verde_3" , true , 3 );
+				aCreature.setProperty("using_extintor" , true , 10000);
+				end();
+			}
+			else
+			{
+				aCreature.writeDenial("La puerta verde ya ha cedido antes.\n");
+				end();
+			}
+		}
+	}
+
+
+	
+	//terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
+	//por defecto ante ella
+	//terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
+	//comando y ejecución de la acción correspondiente
+	
+}]]></Code>
+<RelationshipList/>
+</Item>
+<Item closeable="true" gender="false" lockable="false" name="Puerta de madera" openable="true" unlockable="false" volume="4000" weight="4000">
+<SingularNames/>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>puerta de madera</Name>
+<Name>puerta</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>puertas de madera</Name>
+<Name>puertas</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>Una puerta de madera pintada de blanco.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<OpenDescriptionList>
+<Description>
+<Condition language="BeanShell">self.isOpen()</Condition>FAIL:La puerta ya está abierta.</Description>
+<Description>
+<Condition language="BeanShell">!self.isOpen()</Condition>SUCCESS:Abres la puerta de la habitación. Chirría un poco.</Description>
+</OpenDescriptionList>
+<CloseDescriptionList>
+<Description>
+<Condition language="BeanShell">!self.isOpen()</Condition>FAIL:La puerta ya está cerrada.</Description>
+<Description>
+<Condition language="BeanShell">self.isOpen()</Condition>SUCCESS:Cierras la puerta de la habitación.</Description>
+</CloseDescriptionList>
+<PropertyList>
+<PropertyEntry name="closed" timeUnitsLeft="0" value="true"/>
+</PropertyList>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "comer"
+	//args: resto de la orden que introduce, por ejemplo "la seta"
+	
+	if ( verb.equalsIgnoreCase("llamar") )
+	{
+		aCreature.writeAction("Toc, toc...\n");
+		aCreature.write("No obtienes respuesta.\n");
+		end();
+	}
+	
+	//terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
+	//por defecto ante ella
+	//terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
+	//comando y ejecución de la acción correspondiente
+	
+}]]></Code>
+<RelationshipList/>
+</Item>
+<Item closeable="true" gender="false" lockable="false" name="Puerta del almacén" openable="true" unlockable="false" volume="4000" weight="4000">
+<SingularNames/>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>puerta del almacén</Name>
+<Name>puerta del almacen</Name>
+<Name>puerta blanca</Name>
+<Name>puerta</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>puertas del almacén</Name>
+<Name>puertas del almacen</Name>
+<Name>puertas blancas</Name>
+<Name>puertas</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>Una puerta blanca con un cartel que pone "almacén".</Description>
+<Description>
+<Condition language="BeanShell">self.isClosed()</Condition>Está cerrada.</Description>
+<Description>
+<Condition language="BeanShell">!self.isClosed()</Condition>Está abierta.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<OpenDescriptionList>
+<Description>
+<Condition language="BeanShell">self.isOpen()</Condition>FAIL:La puerta ya está abierta.</Description>
+<Description>
+<Condition language="BeanShell">!self.isOpen()</Condition>SUCCESS:Abres sin problemas la puerta.</Description>
+</OpenDescriptionList>
+<CloseDescriptionList>
+<Description>
+<Condition language="BeanShell">self.isOpen()</Condition>SUCCESS:Cierras sin problemas la puerta.</Description>
+<Description>
+<Condition language="BeanShell">!self.isOpen()</Condition>FAIL:La puerta ya está cerrada.</Description>
+</CloseDescriptionList>
+<PropertyList>
+<PropertyEntry name="open" timeUnitsLeft="0" value="0"/>
+<PropertyEntry name="closed" timeUnitsLeft="0" value="1"/>
+</PropertyList>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "comer"
+	//args: resto de la orden que introduce, por ejemplo "la seta"
+	
+	if ( verb.equalsIgnoreCase("llamar") )
+	{
+		aCreature.writeAction("Toc, toc...\n");
+		aCreature.write("No obtienes respuesta.\n");
+		end();
+	}
+	
+	//terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
+	//por defecto ante ella
+	//terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
+	//comando y ejecución de la acción correspondiente
+	
+}]]></Code>
+<RelationshipList/>
+</Item>
+<Item closeable="false" gender="false" lockable="false" name="Pata de cabra" openable="false" unlockable="false" volume="4" weight="4">
+<SingularNames>
+<Description>pata de cabra</Description>
+</SingularNames>
+<PluralNames>
+<Description>patas de cabra</Description>
+</PluralNames>
+<SingularReferenceNames>
+<Name>pata de cabra</Name>
+<Name>pata</Name>
+<Name>palanca</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>patas de cabra</Name>
+<Name>patas</Name>
+<Name>palancas</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>Se trata de una barra de metal robusta, con uno de sus extremos afilado y curvo.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "comer"
+	//args: resto de la orden que introduce, por ejemplo "la seta"
+	
+	if ( verb.equalsIgnoreCase("forzar") || verb.equalsIgnoreCase("abrir") || verb.equalsIgnoreCase("atacar") || verb.equalsIgnoreCase("hundir")
+		|| verb.equalsIgnoreCase("golpear") || verb.equalsIgnoreCase("embestir") || verb.equalsIgnoreCase("romper") )
+	{
+		if ( aCreature.getRoom().equals(world.getRoom("Sala del ascensor")) && (args.toLowerCase().indexOf("ascensor")>=0) || (args.toLowerCase().indexOf("elevador")>=0) )
+		{
+			if ( world.getItem("Puerta del ascensor").isClosed() )
+			{
+				aCreature.writeAction("Intentas forzar la puerta del ascensor con la pata de cabra...\n");
+				//aCreature.setNewState( Mobile.IDLE, 3 );
+				aCreature.setProperty("delay",true,3);
+				aCreature.setProperty( "forcing_elevator_door_1" , true , 2 );
+				end();
+			}
+		}
+		else if ( aCreature.getRoom().equals(world.getRoom("Sala del ascensor")) && (args.toLowerCase().indexOf("puerta")>=0) || (args.toLowerCase().indexOf("verde")>=0) ) //forzar puerta normal
+		{
+			if ( !aCreature.getPropertyValueAsBoolean("forcing_puerta_verde_1") )
+			{
+				aCreature.writeAction("Intentas cargarte la puerta verde a golpes con la pata de cabra...\n");
+				//aCreature.setNewState( Mobile.IDLE, 5 );
+				aCreature.setProperty("delay",true,5);
+				aCreature.setProperty( "forcing_puerta_verde_1" , true , 3 );
+				end();
+			}
+			else if ( !aCreature.getPropertyValueAsBoolean("forcing_puerta_verde_2") )
+			{
+				aCreature.writeAction("Golpeas de nuevo la puerta verde...\n");
+				//aCreature.setNewState( Mobile.IDLE, 5 );
+				aCreature.setProperty("delay",true,5);
+				aCreature.setProperty( "forcing_puerta_verde_2" , true , 3 );
+				end();
+			}
+			else if ( !aCreature.getPropertyValueAsBoolean("forcing_puerta_verde_3") )
+			{
+				aCreature.writeAction("Golpeas una vez más la puerta verde...\n");
+				//aCreature.setNewState( Mobile.IDLE, 5 );
+				aCreature.setProperty("delay",true,5);
+				aCreature.setProperty( "forcing_puerta_verde_3" , true , 3 );
+				end();
+			}
+			else
+			{
+				aCreature.writeDenial("La puerta verde ya ha cedido antes.\n");
+				end();
+			}
+		}
+	}
+	
+	//terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
+	//por defecto ante ella
+	//terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
+	//comando y ejecución de la acción correspondiente
+	
+}]]></Code>
+<RelationshipList/>
+</Item>
+<Item closeable="false" gender="false" lockable="false" name="Antorcha improvisada" openable="false" unlockable="false" volume="4" weight="4">
+<SingularNames>
+<Description>antorcha improvisada</Description>
+</SingularNames>
+<PluralNames>
+<Description>antorchas improvisadas</Description>
+</PluralNames>
+<SingularReferenceNames>
+<Name>antorcha improvisada</Name>
+<Name>antorcha</Name>
+<Name>pata de la cama</Name>
+<Name>pata de cama</Name>
+<Name>pata</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>antorchas improvisadas</Name>
+<Name>antorchas</Name>
+<Name>patas de la cama</Name>
+<Name>patas de cama</Name>
+<Name>patas</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>Una pata de tu cama a la que has prendido fuego, y que te sirve como antorcha.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList>
+<PropertyEntry name="light_source" timeUnitsLeft="0" value="1"/>
+<PropertyEntry name="light_enabled" timeUnitsLeft="0" value="1"/>
+</PropertyList>
+<RelationshipList/>
+</Item>
+<Item closeable="true" gender="false" lockable="false" name="Puerta del ascensor" openable="true" unlockable="false" volume="4000" weight="4000">
+<SingularNames/>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>puerta del ascensor</Name>
+<Name>ascensor</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>puertas del ascensor</Name>
+<Name>ascensores</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>La típica puerta metálica de seguridad que tienen todos los ascensores de hoy en día.</Description>
+<Description>
+<Condition language="BeanShell">self.isClosed()</Condition>Está cerrada.</Description>
+<Description>
+<Condition language="BeanShell">!self.isClosed()</Condition>Está abierta.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<OpenDescriptionList>
+<Description>
+<Condition language="BeanShell">self.isClosed()</Condition>FAIL:La puerta del ascensor está cerrada, y no tienes fuerza para abrirla a mano.</Description>
+<Description>
+<Condition language="BeanShell">!self.isClosed()</Condition>FAIL:La puerta del ascensor ya está abierta.</Description>
+</OpenDescriptionList>
+<CloseDescriptionList>
+<Description>
+<Condition language="BeanShell">self.isClosed()</Condition>FAIL:La puerta del ascensor ya está cerrada.</Description>
+<Description>
+<Condition language="BeanShell">!self.isClosed()</Condition>FAIL:No tiene mucho sentido cerrar la puerta del ascensor.</Description>
+</CloseDescriptionList>
+<PropertyList>
+<PropertyEntry name="open" timeUnitsLeft="0" value="0"/>
+<PropertyEntry name="closed" timeUnitsLeft="0" value="1"/>
+</PropertyList>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "comer"
+	//args: resto de la orden que introduce, por ejemplo "la seta"
+	
+	//aCreature.write("Referred to the Puerta!");
+	
+	//terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
+	//por defecto ante ella
+	//terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
+	//comando y ejecución de la acción correspondiente
+
+	if ( verb.equalsIgnoreCase("llamar") )
+	{
+		aCreature.write("Llamas al ascensor; pero no produce ningún efecto. Seguramente no funciona.\n");
+		end();
+	}
+	
+}]]></Code>
+<RelationshipList/>
+</Item>
+<Item closeable="true" gender="false" lockable="false" name="Puerta verde" openable="true" unlockable="true" volume="4000" weight="4000">
+<SingularNames/>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>puerta verde</Name>
+<Name>puerta</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>puertas verdes</Name>
+<Name>puertas</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>Una puerta verde, más bien hortera.</Description>
+<Description>
+<Condition language="BeanShell">self.isClosed()</Condition>Está cerrada.</Description>
+<Description>
+<Condition language="BeanShell">self.isOpen()</Condition>Está abierta.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<OpenDescriptionList>
+<Description>
+<Condition language="BeanShell">(self.isClosed() &amp;&amp; !self.isLocked())</Condition>SUCCESS:Abres la puerta verde.</Description>
+<Description>
+<Condition language="BeanShell">(self.isClosed() &amp;&amp; self.isLocked())</Condition>FAIL:La puerta verde está cerrada con llave.</Description>
+<Description>
+<Condition language="BeanShell">!self.isClosed()</Condition>FAIL:La puerta verde ya está abierta.</Description>
+</OpenDescriptionList>
+<CloseDescriptionList>
+<Description>
+<Condition language="BeanShell">self.isClosed()</Condition>FAIL:La puerta verde ya está cerrada.</Description>
+<Description>
+<Condition language="BeanShell">self.isOpen()</Condition>SUCCESS:Cierras la puerta verde.</Description>
+</CloseDescriptionList>
+<UnlockDescriptionList/>
+<PropertyList>
+<PropertyEntry name="closed" timeUnitsLeft="0" value="true"/>
+<PropertyEntry name="locked" timeUnitsLeft="0" value="true"/>
+</PropertyList>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "comer"
+	//args: resto de la orden que introduce, por ejemplo "la seta"
+	
+	if ( verb.equalsIgnoreCase("llamar") )
+	{
+		aCreature.writeAction("Toc, toc...\n");
+		aCreature.write("No obtienes respuesta.\n");
+		end();
+	}
+	
+	//terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
+	//por defecto ante ella
+	//terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
+	//comando y ejecución de la acción correspondiente
+	
+}]]></Code>
+<RelationshipList/>
+</Item>
+<Item closeable="false" gender="true" lockable="false" name="Llamas" openable="false" unlockable="false" volume="0" weight="0">
+<SingularNames/>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>fuego</Name>
+<Name>llamas</Name>
+<Name>llama</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>fuegos</Name>
+<Name>llamas</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>Llamas que lo consumen todo, lenguas de fuego letales que avanzan inexorablemente.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[void before_do_get ( Mobile getter , Inventory inv , String toAppend )
+{
+
+ 	getter.writeAction("¡AYYYY! Te quemas.\n");	  
+	end();
+}
+
+/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "comer"
+	//args: resto de la orden que introduce, por ejemplo "la seta"
+	
+	if ( verb.equalsIgnoreCase("apagar") || verb.equalsIgnoreCase("extinguir") || verb.equalsIgnoreCase("vaciar") )
+	{
+		if ( args.toLowerCase().indexOf("extintor") >= 0 )
+		{
+			aCreature.forceCommand("apagar las llamas con el extintor");
+			end();
+		}
+		else if ( verb.equalsIgnoreCase("apagar") || verb.equalsIgnoreCase("extinguir") )
+		{
+			aCreature.writeDenial("¿Apagar las llamas con qué?\n");
+		}
+	}
+	
+	if ( verb.equalsIgnoreCase("encender") || verb.equalsIgnoreCase("rozar") || verb.equalsIgnoreCase("prender") || verb.equalsIgnoreCase("acercar") )
+	{
+		if ( args.toLowerCase().indexOf("pata") >= 0 && aCreature.hasItem(world.getItem("Pata de la cama")) )
+		{
+			aCreature.writeAction("Acercas la pata de la cama a las llamas, prendiendo fuego a la punta.\n");
+			aCreature.write("¡La pata de la cama te sirve como antorcha improvisada!\n");
+			aCreature.removeItem(world.getItem("Pata de la cama"));
+			aCreature.addItem(world.getItem("Antorcha improvisada"));
+			end();
+		}
+	}
+
+
+	//terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
+	//por defecto ante ella
+	//terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
+	//comando y ejecución de la acción correspondiente
+	
+}]]></Code>
+<RelationshipList/>
+</Item>
+<Item closeable="false" gender="false" lockable="false" name="Pata de la cama" openable="false" unlockable="false" volume="5" weight="5">
+<SingularNames>
+<Description>
+<Condition language="BeanShell">self.getPropertyValueAsBoolean("gotten")==true</Condition>pata</Description>
+</SingularNames>
+<PluralNames>
+<Description>
+<Condition language="BeanShell">self.getPropertyValueAsBoolean("gotten")==true</Condition>patas</Description>
+</PluralNames>
+<SingularReferenceNames>
+<Name>pata de la cama</Name>
+<Name>pata de cama</Name>
+<Name>pata</Name>
+<Name>patas de la cama</Name>
+<Name>patas de cama</Name>
+<Name>patas</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>patas de la cama</Name>
+<Name>patas de cama</Name>
+<Name>patas</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>La pata de la cama es un robusto trozo de madera de unos treinta centímetros de largo.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[void before_do_get ( Mobile getter , Inventory inv , String toAppend )
+{
+ 	
+ 	//getter: criatura que coge esta cosa.
+ 	//self: cosa que ha cogido (es decir, esta cosa).
+	if ( !self.getPropertyValueAsBoolean("gotten") )
+	{
+		getter.writeAction("¡MMPFH! ¡URGGNGNGN! *crack* Con gran esfuerzo, arrancas una pata de la cama y te la quedas.\n");
+		getter.addItem(self);
+		getter.getRoom().removeItem(self);
+		self.setProperty("gotten",true); 	  
+		getter.getRoom().removeItem(world.getItem("Pata de la mesilla")); //para que este objeto inexistente no overridee cosas como "mirar pata".
+		end();
+	}
+
+}
+
+
+/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "comer"
+	//args: resto de la orden que introduce, por ejemplo "la seta"
+	if ( verb.equalsIgnoreCase("coger") )
+	{
+		if ( aCreature.hasItem(self) )
+		{
+			aCreature.writeDenial("No ves mucho sentido a arrancar más patas de la cama, con una debería de llegar.\n");
+			end();
+		}
+	}
+	
+	//terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
+	//por defecto ante ella
+	//terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
+	//comando y ejecución de la acción correspondiente
+	
+}
+]]></Code>
+<RelationshipList/>
+</Item>
+<Item closeable="false" gender="false" lockable="false" name="Pata de la mesilla" openable="false" unlockable="false" volume="0" weight="0">
+<SingularNames/>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>pata de la mesilla</Name>
+<Name>pata de la mesita</Name>
+<Name>pata de mesilla</Name>
+<Name>pata de mesita</Name>
+<Name>pata</Name>
+<Name>patas de mesilla</Name>
+<Name>patas de mesita</Name>
+<Name>patas de la mesita</Name>
+<Name>patas de la mesilla</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>La mesilla no tiene patas, pero la cama sí.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[void before_do_get ( Mobile getter , Inventory inv , String toAppend )
+{
+ 	
+	getter.writeDenial("La mesilla no tiene ninguna pata. La cama sí que tiene cuatro, muy hermosas.\n");
+	end();
+
+}]]></Code>
+<RelationshipList/>
+</Item>
+</Items>
+<Mobiles>
+<Mobile gender="true" hp="10" maxhp="10" maxmp="10" mp="10" properName="true" name="mujer joven">
+<SingularNames>
+<Description>
+<Condition language="BeanShell">viewer == null</Condition>una mujer joven</Description>
+<Description>
+<Condition language="BeanShell">(viewer != null) &amp;&amp; (self.getRelationshipPropertyValueAsString(viewer,"nombre") == null || self.getRelationshipPropertyValueAsString(viewer,"nombre").equals("unknown")) &amp;&amp; !viewer.getPropertyValueAsBoolean("knowsMujerJoven")</Condition>una mujer joven</Description>
+<Description>
+<Condition language="BeanShell">(viewer != null) &amp;&amp; (self.getRelationshipPropertyValueAsString(viewer,"nombre") == null || self.getRelationshipPropertyValueAsString(viewer,"nombre").equals("unknown")) &amp;&amp; viewer.getPropertyValueAsBoolean("knowsMujerJoven")</Condition>la mujer joven</Description>
+<Description>
+<Condition language="BeanShell">(viewer != null &amp;&amp; self.getRelationshipPropertyValueAsString(viewer,"nombre") != null &amp;&amp; !self.getRelationshipPropertyValueAsString(viewer,"nombre").equals("unknown"))</Condition>la joven María</Description>
+</SingularNames>
+<PluralNames>
+<Description>mujeres jóvenes</Description>
+</PluralNames>
+<SingularReferenceNames>
+<Name>María</Name>
+<Name>mujer joven</Name>
+<Name>joven</Name>
+<Name>mujer</Name>
+<Name>joven María</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>mujeres</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>Una mujer bastante guapa, escasamente vestida, y sudorosa debido a la tensión experimentada en el ascensor.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList>
+<PropertyEntry name="state" timeUnitsLeft="1" value="1"/>
+</PropertyList>
+<Code language="BeanShell"><![CDATA[void update ( PropertyEntry pe , World mundo )
+{
+
+	if ( pe.getName().equalsIgnoreCase("state") )
+	{
+		
+		if ( self.getRoom().equals(world.getRoom("Dentro del ascensor (inalcanzable)") ) )
+		{
+			
+			Random r = self.getRandom();
+
+			if ( (r.nextInt()%5) == 0 )
+			{
+				shout();
+			}
+			if ( world.getItem("Puerta del ascensor").isOpen() )
+			{
+				//self.goTo(world.getRoom("Sala del ascensor"));
+				self.setRoom(world.getRoom("Sala del ascensor"));
+				world.getRoom("Sala del ascensor").informActionAuto(null,null,null,"Una mujer joven y sudorosa sale del ascensor y se echa en tus brazos, llorando.\n",false);
+			}
+			else
+			{
+				self.setNewState ( Mobile.IDLE , 1 );
+			}
+		}
+		else if ( self.getRoom().equals(world.getRoom("Sala del ascensor") ) )
+		{
+			checkThanks();
+			if ( world.getItem("Puerta verde").isClosed() )
+			{
+				self.setNewState ( Mobile.IDLE , 2 ); //do moar stuff instd. of this
+				if ( !self.getPropertyValueAsBoolean("opening_door_1") )
+					self.setProperty("opening_door_1",true,1);
+			}
+			else
+			{
+				self.say("¡Sígueme!");
+				self.goTo(world.getRoom("Sala de mantenimiento este"));
+			}
+		}
+		else if ( self.getRoom().equals(world.getRoom("Sala de mantenimiento este") ) )
+		{
+			checkThanks();
+			if ( world.getAbstractEntity("Bomberos").getPropertyValueAsString("firemenState").equalsIgnoreCase("idle") || world.getAbstractEntity("Bomberos").getPropertyValueAsString("firemenState").equalsIgnoreCase("coming") )
+			{
+				checkWarn();
+				self.setNewState ( Mobile.IDLE , 1 );
+			}
+			else if (  world.getAbstractEntity("Bomberos").getPropertyValueAsString("firemenState").equalsIgnoreCase("exitingCar") || world.getAbstractEntity("Bomberos").getPropertyValueAsString("firemenState").equalsIgnoreCase("installing") )
+			{
+				checkCheer();
+				self.setNewState ( Mobile.IDLE , 1 );
+			}
+			else if ( world.getAbstractEntity("Bomberos").getPropertyValueAsString("firemenState").equalsIgnoreCase("announcing") && world.getMobile("Jugador").getRoom().equals(world.getRoom("Sala de mantenimiento este")) )
+			{
+				if ( self.getPropertyValueAsBoolean("veryAngry") )
+					self.say("Ahí te quedas, cabronazo.");
+				else
+					self.say("¡Venga, saltemos, que hay una cama elástica!");
+				self.getRoom().informActionAuto(null,null,null,"La mujer salta por la ventana.\n",false);
+				self.setRoom(world.getRoom("Limbo"));
+			}
+			else 
+				self.setNewState ( Mobile.IDLE , 1 );
+		}
+		else
+		{
+			checkThanks();
+			self.setNewState ( Mobile.IDLE , 1 );
+		}
+
+	}
+	else if ( pe.getName().equalsIgnoreCase("opening_door_1") )
+	{
+		self.getRoom().informAction ( self , null , null , "$1 saca una llave del bolsillo y abre la puerta verde.\n" , null , "Sacas una llave del bolsillo y abres la puerta verde.\n" , true );
+		self.setProperty("opening_door_1",false,100000);
+		world.getItem("Puerta verde").setProperty("locked",false);
+		world.getItem("Puerta verde").setProperty("closed",false);
+		world.getItem("Puerta verde").setProperty("open",true);
+	}
+}
+
+void checkThanks()
+{
+	Mobile player = world.getMobile("Jugador");
+	if ( self.getRoom().hasMobile(player) && !self.getPropertyValueAsBoolean("thanked") )
+	{
+		self.sayTo(player,"¡Muchas gracias por sacarme de ahí! Pero esto es horrible... el fuego viene por las escaleras y por el pasillo...");
+		if ( self.getRoom().equals(world.getRoom("Sala del ascensor") ) )
+			self.sayTo(player,"¡Vamos a ver si podemos aguantar en la sala que hay al este!");
+		self.setProperty("thanked",true);
+	}
+}
+
+void checkWarn()
+{
+	Mobile player = world.getMobile("Jugador");
+	if ( self.getRoom().hasMobile(player) && !self.getPropertyValueAsBoolean("warned") )
+	{
+		self.sayTo(player,"Aquí aguantaremos un poco, pero no podemos salir... Dios mío, espero que alguien haya llamado a los bomberos.");
+		self.setProperty("warned",true);
+	}
+}
+
+void checkCheer()
+{
+	Mobile player = world.getMobile("Jugador");
+	if ( self.getRoom().hasMobile(player) && !self.getPropertyValueAsBoolean("cheered") )
+	{
+		self.sayTo(player,"Mira, mira por la ventana... ¡están ahí los bomberos! Ojalá puedan salvarnos.");
+		self.setProperty("cheered",true);
+	}
+}
+
+void shout()
+{
+	Random r = self.getRandom();
+	int rand = r.nextInt();
+	if ( rand%4 == 0 )
+	{
+		world.getRoom("Pasillo (oeste)").informActionAuto(null,null,null,"Oyes un grito agudo procedente del este.\n",false);
+		world.getRoom("Almacén").informActionAuto(null,null,null,"Oyes un grito agudo procedente del este.\n",false);
+		world.getRoom("Pasillo (este)").informActionAuto(null,null,null,"Hacia el este, una mujer grita: \"¡Ayuda!\"\n",false);
+		world.getRoom("Sala del ascensor").informActionAuto(null,null,null,"Dentro del ascensor, oyes a una mujer golpear la puerta y gritar: \"¡Ayuda!\"\n",false);
+		world.getRoom("Sala de mantenimiento este").informActionAuto(null,null,null,"Hacia el este, una mujer grita: \"¡Ayuda!\"\n",false);
+	}
+	else if ( rand%4 == 1 )
+	{	
+		world.getRoom("Pasillo (oeste)").informActionAuto(null,null,null,"Oyes lo que parece una voz femenina chillando desde el este.\n",false);
+		world.getRoom("Almacén").informActionAuto(null,null,null,"Oyes lo que parece una voz femenina chillando desde el este.\n",false);
+		world.getRoom("Pasillo (este)").informActionAuto(null,null,null,"En algún lugar cercano hacia el este, una mujer chilla: \"¡Que alguien me saque de aquí!\"\n",false);
+		world.getRoom("Sala del ascensor").informActionAuto(null,null,null,"Dentro del ascensor, oyes a una mujer golpear la puerta y chillar: \"¡Sácame de aquí! ¡Por favor!\"\n",false);
+		world.getRoom("Sala de mantenimiento este").informActionAuto(null,null,null,"Hacia el este, una mujer chilla: \"¡Que alguien me saque de aquí!\"\n",false);
+	}
+	else if ( rand%4 == 2 )
+	{	
+		world.getRoom("Pasillo (oeste)").informActionAuto(null,null,null,"Oyes un grito femenino desde algún lugar al este de aquí.\n",false);
+		world.getRoom("Almacén").informActionAuto(null,null,null,"Oyes un grito femenino desde algún lugar al este de aquí.\n",false);
+		world.getRoom("Pasillo (este)").informActionAuto(null,null,null,"Hacia el este, una mujer grita: \"¡Sacadme de aquí!\"\n",false);
+		world.getRoom("Sala del ascensor").informActionAuto(null,null,null,"Dentro del ascensor, oyes a una mujer golpear la puerta y gritar: \"¡Quiero salir!\"\n",false);
+		world.getRoom("Sala de mantenimiento este").informActionAuto(null,null,null,"Hacia el este, una mujer grita: \"¡Sacadme de aquí!\"\n",false);
+	}
+	else if ( rand%4 == 3 )
+	{
+		world.getRoom("Pasillo (oeste)").informActionAuto(null,null,null,"Oyes una voz aguda gritando al este de aquí.\n",false);
+		world.getRoom("Almacén").informActionAuto(null,null,null,"Oyes una voz aguda gritando al este de aquí.\n",false);
+		world.getRoom("Pasillo (este)").informActionAuto(null,null,null,"En algún lugar cercano, al este, una mujer berrea: \"¡Socorro!\"\n",false);
+		world.getRoom("Sala del ascensor").informActionAuto(null,null,null,"Dentro del ascensor, oyes a una mujer golpear la puerta y berrear: \"¡Estoy encerrada! ¡Sácame!\"\n",false);
+		world.getRoom("Sala de mantenimiento este").informActionAuto(null,null,null,"Hacia el este, una mujer berrea: \"¡Socorro!\"\n",false);
+	}
+	
+}
+
+
+void parseCommand ( Mobile player , String verb , String args )
+{
+	
+	if ( verb.equalsIgnoreCase("matar") || verb.equalsIgnoreCase("atacar") || verb.equalsIgnoreCase("violar") )
+	{
+		self.setProperty(("veryAngry"),true);
+		defendFrom(player);
+		end();
+	}
+	if ( verb.equalsIgnoreCase("tocar") || verb.equalsIgnoreCase("besar") || verb.equalsIgnoreCase("acariciar") || verb.equalsIgnoreCase("abusar") )
+	{
+		if ( !self.getPropertyValueAsBoolean("angry") )
+		{
+			self.getRoom().informActionAuto(null,null,null,"La mujer te propina una sonora bofetada.\n",false);
+			self.sayTo(player,"¿Qué haces? ¡Ni se te ocurra tocarme, salido!");
+			self.setProperty(("angry"),true);
+			end();
+		}
+		else
+		{
+			self.setProperty("veryAngry",true);
+			defendFrom(player);
+			end();
+		}
+	}
+}
+
+void defendFrom ( Player p )
+{
+	self.getRoom().informActionAuto(null,null,null,"La mujer saca un spray anti-violadores del bolsillo y lo vacía sobre tu cara.\n",false);
+	p.write("¡Te quedas aturdido!\n");
+	p.setProperty("delay",true,40);
+}
+
+
+
+void onSay ( Mobile m , String text )
+{
+
+	String lText = text.toLowerCase();
+
+	/*
+	if ( m == null )
+	{
+		self.say("You're NULL.");
+	}
+	*/
+	
+	if ( world.getItem("Puerta del ascensor").isClosed() )
+	{
+		if ( lText.indexOf("que tal") >= 0 || lText.indexOf("qué tal") >= 0 || lText.indexOf("cómo va") >= 0 || lText.indexOf("cómo estás") >= 0 || lText.indexOf("como estas") >= 0 || lText.indexOf("como estás") >= 0 || lText.indexOf("te sientes") >= 0 )
+		{
+			self.say("¡Mal! ¡Estoy encerrada en este maldito ascensor, y si no me sacas, moriré quemada!");
+		}
+		else if ( lText.indexOf("hola") >= 0 || lText.indexOf("buenas") >= 0 || lText.indexOf("saludo") >= 0 || lText.indexOf("buenos d") >= 0 )
+		{
+			self.say("Hola... al fin viene alguien... ¡sácame de aquí, por favor!");
+		}
+		else if ( ( lText.indexOf("incendio") >= 0 ) || ( lText.indexOf("fuego") >= 0 ) )
+		{
+			self.say("No sé cuál habrá sido la causa del incendio, pero diría que explotó algo, yo oí una explosión muy fuerte.");
+		}
+		else if ( lText.indexOf("no sé") >= 0 || lText.indexOf("no puedo") >= 0 || ( lText.indexOf("cómo")>=0 && lText.indexOf("sac")>=0 ) || ( lText.indexOf("como")>=0 && lText.indexOf("sac")>=0 ) )
+		{
+			self.say("Escucha, en el almacén hay una pata de cabra para cuando se atasca el ascensor, puedes hacer palanca con ella y abrirme.");
+		}
+		else
+		{
+			java.util.Random generador = self.getRandom();
+			int numero = Math.abs( generador.nextInt() % 4 );
+			switch ( numero )
+			{
+				case 0 :
+					self.say("No quiero hablar... ¡sólo quiero que me saques de aquí!");
+					break;
+				case 1 :
+					self.say("¡Sácame de aquí, por favor!");
+					break;
+				case 2 :
+					self.say("¡Voy a morir!");
+					break;
+				case 3 :
+					self.say("¡Quiero salir de aquí!");
+					break;
+				case 4 :
+					self.say("¡Esto es horrible! ¡Sácame, por favor!");
+					break;
+			}
+		}
+
+
+		return;
+	}
+
+		
+	if ( lText.indexOf("que tal") >= 0 || lText.indexOf("qué tal") >= 0 || lText.indexOf("cómo va") >= 0 || lText.indexOf("cómo estás") >= 0 || lText.indexOf("como estas") >= 0 || lText.indexOf("como estás") >= 0 || lText.indexOf("te sientes") >= 0 )
+	{
+		self.say("Bueno, tengo miedo pero estoy bien. Menos mal que me sacaste de ese ascensor, moriría seguro.");
+	}
+		
+	else if ( lText.indexOf("hola") >= 0 || lText.indexOf("buenas") >= 0 || lText.indexOf("saludo") >= 0 || lText.indexOf("buenos d") >= 0 )
+	{
+		self.say("Hola...");
+		String nombre = self.getRelationshipPropertyValueAsString ( m , "nombre" );
+		if ( nombre == null || nombre.equals("unknown") )
+		{
+			self.say("¿Cómo te llamas?");
+			self.setRelationshipProperty ( m , "esperandonombre" , true );
+		}
+	}
+		
+	else if ( ( lText.indexOf("te llama") >= 0 ) || ( lText.indexOf("tu nombre") >= 0 ) )
+	{
+		String nombre = self.getRelationshipPropertyValueAsString ( m , "nombre" );
+		if ( nombre == null || nombre.equals("unknown") )
+		{
+			self.say("Yo soy María, ¿y tú?");
+			self.setRelationshipProperty ( m , "esperandonombre" , true );
+		}
+		else
+		{
+			self.say("Yo soy María.");
+		}
+	}
+		
+	else if ( lText.indexOf("me llamo ") >= 0 || lText.indexOf("nombre es ") >= 0 || lText.indexOf("uedes llamarme ") >= 0 || lText.indexOf("soy ") >= 0  )
+	{
+		Vector posibilidades = new Vector();
+		posibilidades.add("me llamo "); posibilidades.add("nombre es "); posibilidades.add("uedes llamarme "); posibilidades.add("soy ");
+		Vector tokenios = StringMethods.tokenizeWithComplexSeparators ( lText , posibilidades );	
+		if ( tokenios.size() > 1 )
+		{
+			System.out.println("Tokenios: " + tokenios);
+			String nombre = (String) tokenios.get(1);
+			//hacer que el nombre empiece por mayúscula
+			if ( !Character.isUpperCase(nombre.charAt(0)) )
+				nombre = Character.toUpperCase(nombre.charAt(0)) + nombre.substring(1);
+			self.setRelationshipProperty ( m , "nombre" , nombre );
+			self.setRelationshipProperty ( m , "esperandonombre" , false );
+			self.say("Encantado, " 	+ self.getRelationshipPropertyValueAsString ( m , "nombre" ) + ". Yo soy María." );
+		}
+	}
+
+	else if ( ( lText.indexOf("folla") >= 0 || lText.indexOf("virgen") >= 0 || lText.indexOf("sexo") >= 0 ) )
+	{
+		self.say("Serás guarro... intenta aprovecharte de mí y verás.");
+	}	
+
+	else if ( ( lText.indexOf("novio") >= 0 ) )
+	{
+		self.say("¿Y a ti qué te importa?");
+	}	
+
+	else if ( ( lText.indexOf("incendio") >= 0 ) || ( lText.indexOf("fuego") >= 0 ) )
+	{
+		self.say("No sé cuál habrá sido la causa del incendio, pero diría que explotó algo, yo oí una explosión muy fuerte.");
+	}	
+
+	else if ( lText.indexOf("me llamo ") >= 0 || lText.indexOf("nombre es ") >= 0 || lText.indexOf("uedes llamarme") >= 0 )
+	{
+		Vector posibilidades = new Vector();
+		posibilidades.add("me llamo "); posibilidades.add("nombre es "); posibilidades.add("uedes llamarme ");
+		Vector tokenios = StringMethods.tokenizeWithComplexSeparators ( lText , posibilidades );	
+		if ( tokenios.size() > 1 )
+		{
+			System.out.println("Tokenios: " + tokenios);
+			String nombre = (String) tokenios.get(1);
+			//hacer que el nombre empiece por mayúscula
+			if ( !Character.isUpperCase(nombre.charAt(0)) )
+				nombre = Character.toUpperCase(nombre.charAt(0)) + nombre.substring(1);
+			self.setRelationshipProperty ( m , "nombre" , nombre );
+			self.setRelationshipProperty ( m , "esperandonombre" , false );
+			self.say("Encantado, " 	+ self.getRelationshipPropertyValueAsString ( m , "nombre" ) + ". Yo soy María." );
+		}
+	}
+
+	else
+	{
+		//si estamos esperando nombre, asumiremos que lo que nos dice lo es.
+		if ( self.getRelationshipPropertyValueAsBoolean ( m , "esperandonombre" ) )
+		{
+			if ( StringMethods.numToks ( lText , ' ' ) > 3 )
+			{
+				self.say("Uy, ese nombre es muy largo. Dudo que pueda recordarlo. ¿No te puedo llamar por algún nombre más corto?");	
+			}
+			else
+			{
+				//hacer que el nombre empiece por mayúscula
+				if ( !Character.isUpperCase(lText.charAt(0)) )
+				lText = Character.toUpperCase(lText.charAt(0)) + lText.substring(1);
+				self.setRelationshipProperty ( m , "nombre" , (String)lText );
+				self.setRelationshipProperty ( m , "esperandonombre" , false );
+				System.out.println("Name-relationship is " + self.getRelationshipPropertyValueAsString ( m , "nombre" ) );
+				self.say("Encantado, " + self.getRelationshipPropertyValueAsString ( m , "nombre" ) + ". Yo soy María.");	
+			}
+		}	
+		else
+		{
+			java.util.Random generador = self.getRandom();
+			int numero = Math.abs( generador.nextInt() % 4 );
+			switch ( numero )
+			{
+				case 0 :
+					self.say("Lo siento, realmente no estoy para hablar mucho. Deberíamos concentrarnos en intentar salir de aquí.");
+					break;
+				case 1 :
+					self.say("Creo que deberíamos salir de aquí y dejar la conversación para después...");
+					break;
+				case 2 :
+					self.say("Mira, ya tendremos tiempo de hablar si sobrevivimos.");
+					break;
+				case 3 :
+					self.say("Creo que es mejor que nos concentremos en salir de aquí, y ya hablaremos en otro momento.");
+					break;
+				case 4 :
+					self.say("Lo siento, pero ahora mismo lo que quiero es salir de aquí, no hablar.");
+					break;
+			}		
+		}
+	}
+
+}]]></Code>
+<Traits>
+<SkillList/>
+</Traits>
+<Inventory/>
+<RelationshipList/>
+<CurrentRoom id="Dentro del ascensor (inalcanzable)"/>
+<LastRoom id="Dentro del ascensor (inalcanzable)"/>
+</Mobile>
+<Mobile gender="true" hp="10" maxhp="10" maxmp="10" mp="10" name="Jugador">
+<SingularNames>
+<Description>Jugador</Description>
+</SingularNames>
+<PluralNames>
+<Description>Jugadores</Description>
+</PluralNames>
+<SingularReferenceNames>
+<Name>Jugador</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>Jugadores</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>Eres tú mismo, y no deberías pararte en esos detalles... ¡tu hotel está ardiendo!</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[void update ( PropertyEntry pe , World mundo )
+{
+	if ( pe.getName().equalsIgnoreCase("forcing_elevator_door_1") )
+	{
+		self.setProperty("forcing_elevator_door_1",false,100000);
+		self.setProperty("forcing_elevator_door_2",true,2);
+		self.writeAction("Haces palanca... ¡UMMMMPFH!\n");
+	}
+	if ( pe.getName().equalsIgnoreCase("forcing_elevator_door_2") )
+	{
+		self.setProperty("forcing_elevator_door_2",false,100000);
+		self.writeAction("¡Lo consigues!\n");
+		world.getItem("Puerta del ascensor").setProperty("closed",false);
+		world.getItem("Puerta del ascensor").setProperty("open",true);
+	}
+	if ( pe.getName().equalsIgnoreCase("forcing_puerta_verde_1") )
+	{
+		if ( world.getItem("Puerta verde").getPropertyValueAsBoolean("closed") )
+		{
+			self.setProperty("forcing_puerta_verde_1",true,100000);
+			self.writeAction("¡Uuumpfh! ¡BUM!\n");
+			self.write("La puerta verde está dañada; pero todavía no ha cedido.\n");
+		}
+		else
+		{
+			self.writeAction("Viendo que la puerta ya está abierta, interrumpes tu intento de derribarla.\n");
+			self.setProperty("forcing_puerta_verde_1",true,100000);
+		}
+	}
+	if ( pe.getName().equalsIgnoreCase("forcing_puerta_verde_2") )
+	{
+		if ( world.getItem("Puerta verde").getPropertyValueAsBoolean("closed") )
+		{
+			self.setProperty("forcing_puerta_verde_2",true,100000);
+			self.writeAction("¡Uuuuumpfh! ¡BUUUM!\n");
+			self.write("La puerta verde está muy dañada, debería ceder con otro golpe.\n");
+		}
+		else
+		{
+			self.writeAction("Viendo que la puerta ya está abierta, interrumpes tu intento de derribarla.\n");
+			self.setProperty("forcing_puerta_verde_2",true,100000);
+		}
+	}
+	if ( pe.getName().equalsIgnoreCase("forcing_puerta_verde_3") )
+	{		
+		if ( world.getItem("Puerta verde").getPropertyValueAsBoolean("closed") )
+		{
+			self.setProperty("forcing_puerta_verde_3",true,100000);
+			self.writeAction("¡Uuuuumpfh! ¡CRASH!\n");
+			if ( self.getPropertyValueAsBoolean("using_extintor") )
+				self.write("La puerta verde cede a tu golpe con el extintor.\n");
+			else
+				self.write("La puerta verde cede a tu golpe con la pata de cabra.\n");
+			world.getItem("Puerta verde").setProperty("locked",false);
+			world.getItem("Puerta verde").setProperty("closed",false);
+		}
+		else
+		{
+			self.writeAction("Viendo que la puerta ya está abierta, interrumpes tu intento de derribarla.\n");
+			self.setProperty("forcing_puerta_verde_3",true,100000);
+		}
+	}
+	if ( pe.getName().equalsIgnoreCase("state") )
+	{
+		if ( self.getPropertyValueAsBoolean("delay") )
+		{
+			self.setNewState( Mobile.IDLE , 1 );
+			end();
+		}
+	}
+	if ( pe.getName().equalsIgnoreCase("delay") )
+	{
+		self.setProperty("delay",false,10000);
+	}
+	checkDeathByFire();
+}
+
+void checkDeathByFire()
+{
+	if ( self.getRoom().getPropertyValueAsInteger("fire_level") > 2 )
+	{
+		self.write("Llega un momento en que te encuentras rodeado de humo y fuego por todas partes, no ves nada y no puedes moverte hacia ninguna parte.\n");
+		self.waitKeyPress();
+		self.write("Tus pulmones se llenan de asfixiante humo, a la vez que las llamas devoran con crueldad tu cuerpo.\n");
+		self.write("Es una agonía horrible aunque, por suerte, también rápida. El fuego abrasador enseguida termina con tu vida.\n");
+		self.die();
+		self.setRoom(world.getRoom("Limbo"));
+	}
+}
+
+
+void onRoomText ( String text )
+{
+	if ( text.indexOf("na mujer") >= 0 )
+	{
+		self.setProperty("knowsMujer",true,10000);
+	}
+	if ( text.indexOf("na mujer joven") >= 0 )
+	{
+		self.setProperty("knowsMujerJoven",true,10000);
+	}
+}
+
+boolean parseDifLevel ( Player aPlayer , String entrada )
+{
+
+		entrada = entrada.trim();
+		int entradaNum;
+		try
+		{
+				entradaNum = Integer.valueOf(entrada).intValue();
+				if ( entradaNum > 4 || entradaNum < 1 ) throw ( new NumberFormatException() ); 		
+				if ( entradaNum == 1 )
+					world.getAbstractEntity("Incendio").setProperty("TIME_MULTIPLIER",8);
+				if ( entradaNum == 2 )
+					world.getAbstractEntity("Incendio").setProperty("TIME_MULTIPLIER",4);
+				if ( entradaNum == 3 )
+					world.getAbstractEntity("Incendio").setProperty("TIME_MULTIPLIER",2);
+				if ( entradaNum == 4 )
+					world.getAbstractEntity("Incendio").setProperty("TIME_MULTIPLIER",1);
+					
+				aPlayer.borrarPantalla();
+
+				aPlayer.write("¡BOOOOOOOOOM! ¡BOOOOOOOOOM! ¡Aaah!\n");
+
+				aPlayer.write("Dos ensordecedores estampidos, acompañados de agudos gritos de terror, te despiertan de golpe. Levantándote al momento de la cama, te das cuenta de que te encuentras bien; pero algo horrible debe de haber pasado en el hotel. Desde alguna otra parte del edificio te llega el grito inconfundible de alguien que se desgañita: \"¡FUEGO! ¡FUEGO!\"\n");
+				return true;	
+		}
+		catch ( NumberFormatException nfe )
+		{
+				aPlayer.escribir("Por favor, introduce un número entre 1 y 4. El 1 es el nivel más fácil, el 4 el más difícil.\n");
+				//aPlayer.setParseRoutine ( aPlayer , "parseDifLevel" );
+				return false;
+		}
+
+
+}
+
+]]></Code>
+<Traits>
+<SkillList/>
+</Traits>
+<Inventory/>
+<RelationshipList/>
+<CurrentRoom id="Habitación de hotel"/>
+<LastRoom id="Habitación de hotel"/>
+</Mobile>
+</Mobiles>
+<Spells/>
+<AbstractEntities>
+<AbstractEntity name="Incendio">
+<PropertyList>
+<PropertyEntry name="power" timeUnitsLeft="1" value="1"/>
+</PropertyList>
+<Code language="BeanShell"><![CDATA[void update ( PropertyEntry pe , World mundo )
+{
+	updateFire();
+}
+
+void updateFire()
+{
+
+	//increase the fire's power
+	int curPower = self.getPropertyValueAsInteger("power");
+	int newPower = curPower+1;
+	self.setProperty("power",newPower,1);
+	
+	//effects according to power
+
+	int multiplier = world.getAbstractEntity("Incendio").getPropertyValueAsInteger("TIME_MULTIPLIER");
+
+	if ( curPower < 5 * multiplier )
+	{
+		setFireLevel(world.getRoom("Habitación de hotel"),0);
+		setFireLevel(world.getRoom("Pasillo (oeste)"),0);
+		setFireLevel(world.getRoom("Pasillo (este)"),0);
+		setFireLevel(world.getRoom("Almacén"),0);
+		setFireLevel(world.getRoom("Sala del ascensor"),0);
+		world.getRoom("Almacén").setProperty("dark",true);
+	}
+	else if ( curPower >= 5 * multiplier && curPower < 10 * multiplier )
+	{
+		setFireLevel(world.getRoom("Habitación de hotel"),1);
+		setFireLevel(world.getRoom("Pasillo (oeste)"),1);
+		setFireLevel(world.getRoom("Pasillo (este)"),0);
+		setFireLevel(world.getRoom("Almacén"),0);
+		setFireLevel(world.getRoom("Sala del ascensor"),0);
+		world.getRoom("Almacén").setProperty("dark",true);
+	}
+	else if ( curPower >= 10 * multiplier && curPower < 15 * multiplier )
+	{
+		setFireLevel(world.getRoom("Habitación de hotel"),2);
+		setFireLevel(world.getRoom("Pasillo (oeste)"),2);
+		setFireLevel(world.getRoom("Pasillo (este)"),1);
+		setFireLevel(world.getRoom("Almacén"),0);
+		setFireLevel(world.getRoom("Sala del ascensor"),0);
+		world.getRoom("Almacén").setProperty("dark",true);
+	}
+	else if ( curPower >= 15 * multiplier && curPower < 20 * multiplier )
+	{	
+		setFireLevel(world.getRoom("Habitación de hotel"),3);
+		setFireLevel(world.getRoom("Pasillo (oeste)"),3);
+		setFireLevel(world.getRoom("Pasillo (este)"),2);
+		setFireLevel(world.getRoom("Almacén"),1);
+		setFireLevel(world.getRoom("Sala del ascensor"),0);
+		world.getRoom("Almacén").setProperty("dark",false);
+	}
+	else if ( curPower >= 20 * multiplier && curPower < 25 * multiplier )
+	{	
+		setFireLevel(world.getRoom("Habitación de hotel"),3);
+		setFireLevel(world.getRoom("Pasillo (oeste)"),3);
+		setFireLevel(world.getRoom("Pasillo (este)"),3);
+		setFireLevel(world.getRoom("Almacén"),2);
+		setFireLevel(world.getRoom("Sala del ascensor"),1);
+		world.getRoom("Almacén").setProperty("dark",false);
+	}
+	else if ( curPower >= 25 * multiplier && curPower < 30 * multiplier )
+	{	
+		setFireLevel(world.getRoom("Habitación de hotel"),3);
+		setFireLevel(world.getRoom("Pasillo (oeste)"),3);
+		setFireLevel(world.getRoom("Pasillo (este)"),3);
+		setFireLevel(world.getRoom("Almacén"),3);
+		setFireLevel(world.getRoom("Sala del ascensor"),2);
+		world.getRoom("Almacén").setProperty("dark",false);
+	}
+	else if ( curPower >= 30 * multiplier && curPower < 35 * multiplier )
+	{	
+		setFireLevel(world.getRoom("Habitación de hotel"),3);
+		setFireLevel(world.getRoom("Pasillo (oeste)"),3);
+		setFireLevel(world.getRoom("Pasillo (este)"),3);
+		setFireLevel(world.getRoom("Almacén"),3);
+		setFireLevel(world.getRoom("Sala del ascensor"),3);
+		setFireLevel(world.getRoom("Sala de mantenimiento este"),1);
+		world.getRoom("Almacén").setProperty("dark",false);
+	}
+	else if ( curPower >= 35 * multiplier && curPower < 40 * multiplier )
+	{	
+		setFireLevel(world.getRoom("Habitación de hotel"),3);
+		setFireLevel(world.getRoom("Pasillo (oeste)"),3);
+		setFireLevel(world.getRoom("Pasillo (este)"),3);
+		setFireLevel(world.getRoom("Almacén"),3);
+		setFireLevel(world.getRoom("Sala del ascensor"),3);
+		setFireLevel(world.getRoom("Sala de mantenimiento este"),2);
+		world.getRoom("Almacén").setProperty("dark",false);
+	}
+	else if ( curPower >= 40 * multiplier )
+	{	
+		setFireLevel(world.getRoom("Habitación de hotel"),3);
+		setFireLevel(world.getRoom("Pasillo (oeste)"),3);
+		setFireLevel(world.getRoom("Pasillo (este)"),3);
+		setFireLevel(world.getRoom("Almacén"),3);
+		setFireLevel(world.getRoom("Sala del ascensor"),3);
+		setFireLevel(world.getRoom("Sala de mantenimiento este"),3);
+		world.getRoom("Almacén").setProperty("dark",false);
+	}
+
+}
+
+void setFireLevel ( Room r , int level )
+{
+	int prevLevel = r.getPropertyValueAsInteger("fire_level");
+	r.setProperty("fire_level",level);
+	Item llamas = world.getItem("Llamas");	
+
+	if ( !r.hasItem(llamas) && level >= 1 ) 
+	{
+		r.addItem(llamas);
+		r.informActionAuto(llamas, null, null, "¡Las llamas se extienden a tu alrededor!\n", true);
+	}
+	if ( r.hasItem(llamas) && level <= 0 )
+	{
+		r.removeItem(llamas);
+		r.informActionAuto(llamas, null, null, "¡Las llamas retroceden un poco!\n", true);
+	}
+	if ( r.getPropertyValueAsBoolean("dark") && level >= 1 )
+	{
+		r.setProperty("dark",false);
+		r.informActionAuto(llamas, null, null, "La luz emitida por el fuego te permite ver a tu alrededor.\n", true);
+	}
+	if ( r.equals(world.getRoom("Almacén")) && !r.getPropertyValueAsBoolean("dark") && level <=0 )
+	{
+		r.setProperty("dark",true);
+		r.informActionAuto(llamas, null, null, "La habitación vuelve a quedar a oscuras.\n", true);
+	}
+	if ( prevLevel < 2 && level == 2 )
+	{
+		r.informActionAuto(llamas, null,null,"¡Las llamas se extienden cada vez más! Deberías irte rápido de este lugar o morirás abrasado.\n",true);
+	}
+
+}
+
+
+
+void extinguish()
+{
+	int curPower = self.getPropertyValueAsInteger("power");
+	int newPower = curPower-15;
+	self.setProperty("power",newPower,1);
+	updateFire();
+}]]></Code>
+<RelationshipList/>
+</AbstractEntity>
+<AbstractEntity name="Bomberos">
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[void update ( PropertyEntry pe , World mundo )
+{
+
+	if ( pe.getName().equalsIgnoreCase("firemenState") )
+	{	
+
+		if ( self.getPropertyValueAsString("firemenState").equals("coming") )
+		{
+			self.setProperty("firemenState","exitingCar",5);
+			world.getRoom("Sala de mantenimiento este").informActionAuto(null,null,null,"Oyes sirenas que se acercan en la calle.\n",false);
+			world.getRoom("Sala del ascensor").informActionAuto(null,null,null,"Oyes sonidos de sirenas procedentes del este.\n",false);
+		}
+		else if ( self.getPropertyValueAsString("firemenState").equals("exitingCar") )
+		{
+			self.setProperty("firemenState","installing",5);
+			world.getRoom("Sala de mantenimiento este").informActionAuto(null,null,null,"Una voz amplificada por megafonía suena desde la calle: ¡ATENCIÓN! ¡SOMOS LOS BOMBEROS! MANTENGAN LA CALMA, VAMOS A COLOCAR CAMAS ELÁSTICAS BAJO LAS VENTANAS. TENDRÁN QUE SALTAR PARA SALTAR SU VIDA, CUANDO YO LES DIGA.\n",false);
+			world.getRoom("Sala del ascensor").informActionAuto(null,null,null,"Oyes una voz masculina procedente del este.\n",false);
+		}
+		else if ( self.getPropertyValueAsString("firemenState").equals("installing") || self.getPropertyValueAsString("firemenState").equals("announcing") )
+		{
+			self.setProperty("firemenState","announcing",10);
+			world.getRoom("Sala de mantenimiento este").informActionAuto(null,null,null,"Una voz amplificada por megafonía suena desde la calle: ¡ATENCIÓN! ¡SOMOS LOS BOMBEROS! HEMOS INSTALADO CAMAS ELÁSTICAS BAJO LAS VENTANAS. INTENTEN ACCEDER A UNA VENTANA Y SALTEN PARA SALVAR SU VIDA.\n",false);
+			world.getRoom("Sala del ascensor").informActionAuto(null,null,null,"Oyes una voz masculina procedente del este.\n",false);	
+		}
+	
+	}
+}]]></Code>
+<RelationshipList/>
+</AbstractEntity>
+</AbstractEntities>
+</World>

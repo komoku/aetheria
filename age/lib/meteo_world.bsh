@@ -1,0 +1,76 @@
+//To include in World
+
+//Parameters:
+
+if ( weather_changetime == void )
+	weather_changetime = 1000;
+if ( weather_initial == void )
+	weather_initial = SUNNY;
+	
+//Method to set weather conditions:
+
+void setWeatherConditions ( int weather_state_val )
+{
+
+	System.out.println("Set WC");
+
+	boolean ejecutado = false;
+	try
+	{
+		ejecutado = world.execCode( "beforeWeatherChange" , new Object[] { new Integer( ( world.getRoom(0) ).getPropertyValueAsInteger("weather") ) ,  new Integer (weather_state_val) } );
+	}	
+	catch (bsh.TargetError bshte)
+	{
+		escribir("bsh.TargetError found at world's beforeWeatherChange routine" );
+	}
+	if ( ejecutado ) return;
+	
+	System.out.println("Set WC Pass 2");
+
+	List rooms = world.getRooms();
+	for ( int i = 0 ; i < rooms.size() ; i++ )
+	{
+	
+		Room current = rooms.get(i);
+		
+		System.out.println("Set WC Pass Room");
+		
+		boolean ejecutado = false;
+		try
+		{
+			System.out.println("Set WC Gonna try execution");
+			ejecutado = current.execCode( "beforeWeatherChange" , new Object[] { new Integer ( current.getPropertyValueAsInteger("weather") ) , new Integer (weather_state_val) } );
+		}
+		catch (bsh.TargetError bshte)
+		{
+			world.escribir("bsh.TargetError found at room's beforeWeatherChange routine" );
+		}
+		if ( ejecutado ) continue;
+		
+		System.out.println("Set WC Set Prop");
+		current.setProperty ( "weather" , weather_state_val , weather_changetime );
+	
+	}
+	
+}	
+	
+//Init state set:
+
+void meteo_serverintro()
+{
+	setWeatherConditions ( SUNNY );
+}
+
+void serverintro() 
+{
+	System.out.println("Server Intro");
+	meteo_serverintro();
+}
+
+
+
+//PUT THIS IN ROOM [DONE]
+//ONLY WORLD::UPD ( ENT,ENT )? NAAH
+//DON'T UPDATE ON NEGATIVE NUMBERS, OR AT LEAST DON'T CALL BSH
+//AND USE FLAG TO SEE IF OBJECT HAS UPDATE()
+

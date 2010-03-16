@@ -1,0 +1,24 @@
+// Decompiled by DJ v2.9.9.60 Copyright 2000 Atanas Neshkov  Date: 21/10/02 16:07:39
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+
+package bsh;
+
+import java.io.PrintStream;
+import java.io.Reader;
+
+public interface ConsoleInterface
+{
+
+    public abstract Reader getIn();
+
+    public abstract PrintStream getOut();
+
+    public abstract PrintStream getErr();
+
+    public abstract void println(String s);
+
+    public abstract void print(String s);
+
+    public abstract void error(String s);
+}

@@ -1,0 +1,2100 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<World worldName="agearena" moduleName="AGE Arena Beta Version"
+ worldDir="." 
+ author="Carlos Gómez (solrac888@yahoo.com - http://www.irreality.org)" version="0.1 Beta"
+ parserVersion="0.6.1c" date="03.10.27" type="Rolero"> 
+	<PlayerList></PlayerList>
+	<FileList></FileList>
+	<VisualConfiguration>
+	<Colors>	
+		<Background color="#FFFFFF"/>
+		<Foreground color="#000000"/>
+		<Default color="#000000"/>
+		<Description color="#339933"/>
+		<Information color="#FF9900"/>
+		<Action color="#0033FF"/>
+		<Denial color="#990000"/>
+		<Error color="#FF0000"/>
+		<Story color="#990099"/>
+		<Input color="#999999"/>
+	</Colors>
+	<Font filename="bookos.ttf" name="Times New Roman Bold" size="15"/>
+	</VisualConfiguration>
+	<Code language="BeanShell">
+		source ( world.getWorldPath() + "servercode.bsh" );
+		source("lib/meteo.bsh");	
+	</Code>
+	<PlayerGeneration>
+		<Template id="20000000" name="Nuestro Héroe" extends="0" clones="0" type="null" properName="true" hp="100" mp="100" maxhp="100" maxmp="100" gender="true">
+			<PropertyList>
+  				<PropertyEntry name="state" value="1" timeUnitsLeft="1" /> 
+  			</PropertyList>
+  			<RelationshipList /> 
+  			<CurrentRoom id="10000001" /> 
+  			<LastRoom id="10000001" /> 
+			<DescriptionList>
+  				<Description stateComparand="0" stateMask="0">Vienes a ser tú.</Description> 
+  			</DescriptionList>
+			<SingularNames>
+  				<Description stateComparand="0" stateMask="0">Héroe</Description> 
+  			</SingularNames>
+			<PluralNames>
+  				<Description stateComparand="0" stateMask="0">Héroes</Description> 
+  			</PluralNames>
+			<SingularReferenceNames>
+  				<Name>Héroe</Name> 
+  			</SingularReferenceNames>
+			<PluralReferenceNames>
+  				<Name>Héroes</Name> 
+  			</PluralReferenceNames>
+  			<Inventory weight="0" volume="0" weightLimit="100" volumeLimit="100"></Inventory>
+  			<SpellList><SpellRef id="Aturdir"/><SpellRef id="Bola de fuego"/><SpellRef id="Encantar arma"/><SpellRef id="Detectar magia"/><SpellRef id="Invocar bestia"/></SpellList>
+  			<Parts>
+  				<Inventory weight="0" volume="0" weightLimit="10000" volumeLimit="10000"></Inventory>
+  			</Parts>
+			<WieldedWeaponsInventory>
+				<Inventory weight="0" volume="0" weightLimit="10000" volumeLimit="10000"><ItemRef /><ItemRef /></Inventory>
+  			</WieldedWeaponsInventory>
+			<WieldingLimbsInventory>
+				<Inventory weight="2" volume="2" weightLimit="10000" volumeLimit="10000"><ItemRef id="30000001" /><ItemRef id="30000002" /></Inventory>
+  			</WieldingLimbsInventory>
+  			<Traits>
+  				<SkillList>
+  				</SkillList>
+  			</Traits>
+ 
+ 			<Code language="BeanShell"> 			
+ 			
+ 			//on looked at
+ 			void parseCommand ( Player p , String verb , String args )
+ 			{
+ 				System.out.println("Nice!");
+ 			}
+ 			
+  			String parseCommand ( String verb , String args )
+			{
+	
+				if ( verb.equalsIgnoreCase("encantar") || verb.equalsIgnoreCase("encanto") || verb.equalsIgnoreCase("encanta") )
+				{
+					//System.out.println("Reached Theez Pointe.");
+					return ( "conjurar encantar arma sobre " + args );
+				}
+				else if ( verb.equalsIgnoreCase("invocar") || verb.equalsIgnoreCase("invoco") || verb.equalsIgnoreCase("invoca") )
+				{
+					return ( "conjurar invocar bestia" );
+				}
+				else if ( verb.equalsIgnoreCase("aturdir") || verb.equalsIgnoreCase("aturdo") || verb.equalsIgnoreCase("aturde") )
+				{
+					return ( "conjurar aturdir sobre " + args );
+				}
+				else if ( verb.equalsIgnoreCase("detectar") || verb.equalsIgnoreCase("detecto") || verb.equalsIgnoreCase("detecta") )
+				{
+					return ( "conjurar detectar magia " + args );
+				}
+				else if ( verb.equalsIgnoreCase("bola") )
+				{
+					return ( "conjurar bola de fuego " + args );
+				}
+				else if ( verb.equalsIgnoreCase("hechizos") )
+				{
+					showHechizos();
+					end();
+				}
+				else if ( verb.equalsIgnoreCase("atacar") &amp;&amp; self.getRoom().equals( world.getRoom("Sala Pacífica") ) )
+				{
+					self.escribir("No en esta sala. Fuera, en la arena, es el lugar para combatir.\n");
+					end();
+				}
+				else if ( verb.equalsIgnoreCase("usar") )
+				{
+					self.escribir("Hombre, no sé... ¿Si yo fuese humano, también me dirías eso de \"usar\"? Las espadas se blanden, los hechizos se hacen, las antorchas se encienden, los botones se pulsan. Nadie va por la vida real diciendo que ha \"usado\" algo de eso.");
+					end();
+				}
+				
+				return null;
+
+			}
+			
+			void showHechizos()
+			{
+					self.escribir("Dispones de los siguientes hechizos:\n\n");
+					self.escribir("Encantar arma [conjuración]\n");
+					self.escribir("Invocar bestia [conjuración]\n");
+					self.escribir("Detectar magia [antimagia]\n");
+					self.escribir("Bola de fuego [natural]\n");
+					self.escribir("Aturdir [mental]\n");
+			}
+			
+			//código rastrero para que el público anime
+			
+			void infoChoqueArmas ( Mobile objetivo )
+			{
+				self.getRoom().informActionAuto(null,null,null,"El público lanza una sonora ovación.\n",false);
+			}
+			
+			void infoAcierto ( Mobile objetivo , int danyo )
+			{
+				int randno = Math.abs( self.getRandom().nextInt() % 4 );
+				if ( randno == 0 )
+					self.getRoom().informActionAuto(null,null,null,"Se oyen gritos de \"¡Sí!\" entre el público.\n",false);
+				else if ( randno == 1 )
+					self.getRoom().informActionAuto(null,null,null,"Se oyen murmullos entre el público.\n",false);
+				else if ( randno == 2 )
+					self.getRoom().informActionAuto(null,null,null,"El público ruge enfervorizado.\n",false);
+					
+			}
+			
+			
+			void infoIntentoAtaque ( Mobile objetivo )
+			{
+				Random rand = self.getRandom();
+				Mobile animado;
+				int randno = java.lang.Math.abs( rand.nextInt() % 2 );
+				if ( randno == 0 ) animado = self;
+				else animado = objetivo;
+				String nombre = animado.getTitle();
+				
+				rand = self.getRandom();
+				randno = java.lang.Math.abs( rand.nextInt() % 4 );
+				
+				if ( randno == 0 )
+					self.getRoom().informActionAuto(animado,null,null,"Parte del público anima: " + nombre + "... " + nombre + "...\n",true);
+			}
+			</Code>
+  			
+  		</Template>
+  	</PlayerGeneration>
+  	
+	<Rooms>
+	
+		<Room id="10000000" name="Limbo" extends="0">
+			<PropertyList><PropertyEntry name="state" value="0" timeUnitsLeft="0"/></PropertyList>
+			<DescriptionList><Description stateComparand="0" stateMask="0"> Estás en el Limbo.</Description></DescriptionList>
+			<PathList/>
+			<MobileList><MobRef id="Bestia menor"/></MobileList>
+			<Code language="BeanShell">
+				void parseCommand ( Player p , String verb , String args )
+				{
+					
+					if ( !verb.equalsIgnoreCase("resucitar") )
+					{
+					
+						p.escribir("Estás muerto, tío.\n");
+		
+						p.escribir("Puedes \"resucitar\", o si no, desconecta para salir.\n");
+		
+						end();
+					
+					}
+					
+					else
+					{
+					
+						p.escribir("Resucitas. Que conste que esto es un cachondeo; pero bueno.\n");
+						
+						p.forceCommand("mirar");
+					
+						p.setHP ( p.getMaxHP() );
+						p.setMP ( p.getMaxMP() );
+						
+						p.setNewState ( 1 /*IDLE*/ , 1 );
+						
+						p.setRoom ( world.getRoom("10000001") );
+						
+						//clonamos inventario porque items estarán en cadáver
+						p.setInventory ( p.getInventory().cloneCopyingItems ( world , true , true ) );
+						
+						end();
+						
+					}
+					
+				}
+			</Code>
+		</Room>
+		
+		<Room id="10000001" name="Sala Pacífica">
+			<DescriptionList>
+				<Description>Te encuentras en la pequeña cámara que para unos es antesala de la gloria y para otros de la muerte. Aquí es donde los luchadores de la arena, como tú, pueden prepararse, equiparse o conversar antes de entrar en combate. Un imponente arco en la pared, al norte, conduce a la arena.</Description>
+			</DescriptionList>
+			<PathList>
+				<Path destination="Arena" standard="true" direction="norte">
+					<DescriptionList>
+						<Description>
+						Tras tomar aire un par de veces para perder los nervios, entras con paso firme en la arena.
+						</Description>
+					</DescriptionList>
+					<CommandList>
+  						<Command name="arena"/><Command name="coliseo"/><Command name="ruedo"/><Command name="fuera"/><Command name="arco"/><Command name="arcada"/>
+  					</CommandList>
+				</Path>
+			</PathList>
+			<ExtraDescriptionList>
+				<ExtraDescription>
+					<Name>cámara</Name><Name>sala</Name><Name>habitación</Name><Name>camara</Name><Name>habitacion</Name>
+					<DescriptionList>
+						<Description>Te encuentras en la pequeña cámara que para unos es antesala de la gloria y para otros de la muerte. Aquí es donde los luchadores de la arena, como tú, pueden prepararse, equiparse o conversar antes de entrar en combate. Un imponente arco en la pared, al norte, conduce a la arena.</Description>
+					</DescriptionList>
+				</ExtraDescription>
+				<ExtraDescription>
+					<Name>arco</Name><Name>arcada</Name>
+					Un arco de medio punto en la pared norte de la sala, que conduce a la arena.
+				</ExtraDescription>
+				<ExtraDescription>
+					<Name>arena</Name><Name>ruedo</Name>
+					La arena. Una extensión plana y redonda donde dos o más luchadores se juegan la vida para contentar a la audiencia, buscando la gloria y la inmortalidad. No hay marcha atrás para quienes combaten en la arena: hay que matar o morir.
+				</ExtraDescription>
+				<ExtraDescription>
+					<Name>suelo</Name><Name>pavimento</Name><Name>empedrado</Name>
+					El suelo de esta sala está formado por grandes baldosas cuadradas. Nada que destacar.
+				</ExtraDescription>
+				<ExtraDescription>
+					<Name>pared</Name><Name>paredes</Name>
+					Numerosas inscripciones hechas por antiguos luchadores decoran las paredes.
+				</ExtraDescription>
+				<ExtraDescription>
+					<Name>inscripciones</Name><Name>inscripcion</Name><Name>inscripción</Name>
+					La mayoría de las inscripciones dejan constancia, simplemente, de nombres de gente que ha pasado por aquí. Nada interesante.
+				</ExtraDescription>
+				<ExtraDescription>
+					<Name>techo</Name>
+					Es un techo estándar.
+				</ExtraDescription>
+			</ExtraDescriptionList>
+			<Code language="BeanShell">
+  			//en vez de molestarnos en que las inscripciones sean un objeto, tratamos el único comando coherente que se puede referir a ellas a pelo.
+  			void parseCommand ( Player jugador , String verb , String arguments )
+			{
+				if ( verb.equalsIgnoreCase( "leer" ) )
+				{
+					if ( arguments.indexOf("inscripción")>=0 || arguments.indexOf("inscripciones")>=0 || arguments.indexOf("pared")>=0 || arguments.indexOf("paredes")>=0 )
+					{
+						//sustituimos el comando por mirar.
+						jugador.forceCommand("mirar inscripciones");
+						end();
+					}
+				}
+			}		
+  			</Code>
+		</Room>
+ 
+  		
+  		<Room id="10000002" name="Arena">
+  			<DescriptionList>
+  				<Description>Te encuentras en la Arena, el lugar donde los luchadores más aguerridos del globo se juegan la vida y el honor. Se trata de una gran extensión circular cubierta de arena (como su nombre indica) y rodeada de gradas desde las que el público vitorea a sus favoritos.</Description>
+  			</DescriptionList>
+  			<PathList>
+  				<Path destination="Limbo" standard="true" direction="sur">
+  					<PropertyList><PropertyEntry name="closed" value="true" timeUnitsLeft="0"/></PropertyList>
+  					<DescriptionList>
+  						<Description>Ah, no, no, no. No vas a deshonrarte así. El luchador que entra en la arena sólo puede salir muerto o habiendo vencido a todos los oponentes que le desafíen.</Description>
+  					</DescriptionList>
+  					<CommandList>
+  						<Command name="habitación"/><Command name="cámara"/><Command name="camara"/><Command name="habitacion"/>Command name="dentro"/>Command name="arco"/>
+  					</CommandList>
+  				</Path>
+  			</PathList>  			
+  			<ExtraDescriptionList>
+				<ExtraDescription>
+					<Name>arco</Name><Name>arcada</Name>
+					Un arco de medio punto, en la pared sur de la arena, conduce a la sala de donde has venido.
+				</ExtraDescription>
+				<ExtraDescription>
+					<Name>arena</Name><Name>ruedo</Name>
+					La arena. Una extensión plana y redonda donde dos o más luchadores se juegan la vida para contentar a la audiencia, buscando la gloria y la inmortalidad. No hay marcha atrás para quienes combaten en la arena: hay que matar o morir.
+				</ExtraDescription>
+				<ExtraDescription>
+					<Name>suelo</Name><Name>pavimento</Name><Name>empedrado</Name>
+					El suelo está cubierto de fina arena. Ya el nombre lo dice.
+				</ExtraDescription>
+				<ExtraDescription>
+					<Name>pared</Name><Name>paredes</Name>
+					Paredes de piedra que separan a los luchadores de las gradas, pues las más bajas están a al menos dos metros de altura.
+				</ExtraDescription>
+				<ExtraDescription>
+					<Name>gradas</Name><Name>grada</Name>
+					Las gradas están abarrotadas de espectadores.
+				</ExtraDescription>
+				<ExtraDescription>
+					<Name>público</Name><Name>publico</Name><Name>espectadores</Name>
+					Hay miles y miles de espectadores. Ver a un par de personas matándose entre sí siempre ha sido un espectáculo muy apreciado por estos lares. Panem et circenses, que decían los antiguos.
+				</ExtraDescription>
+			</ExtraDescriptionList>
+  			<Code language="BeanShell">	
+  				source("lib/meteo.bsh");
+  				void beforeWeatherChange ( int before , int now )
+  				{
+  					
+  					System.out.println("Before WC");
+  				
+  					//self.informActionAuto ( null , null , null , "Prue1\n" , false );
+  			
+  					int weather = now;
+  				
+  					if ( weather == SUNNY )
+  					{
+  						self.informActionAuto ( null , null , null , "Las nubes desaparecen y el sol brilla sobre la arena.\n" , false );
+  					}
+  					else if ( weather == RAINY )
+  					{
+  						if ( before == SUNNY )
+  							self.informActionAuto ( null , null , null , "Unos negros nubarrones cubren el cielo y empiezan a descargar lluvia sobre la zona.\n" , false );
+  						else if ( before == CLOUDY || before == SNOWY )
+  							self.informActionAuto ( null , null , null , "Las nubes, que hasta ahora parecían inofensivas, empiezan a descargar lluvia.\n" , false );
+  					}
+  					else //( weather == CLOUDY || weather == SNOWY )
+  					{
+  						if ( before == RAINY )
+  						{
+  							self.informActionAuto ( null , null , null , "La lluvia se convierte en fina llovizna y finalmente para.\n" , false );
+  						}
+  						else if ( before == SUNNY )
+  						{
+  							self.informActionAuto ( null , null , null , "Blancas nubes tapan el sol y cubren el cielo.\n" , false );
+  						}
+  						else
+  						{
+  							//self.informActionAuto ( null , null , null , "Prue2\n" , false );
+  							;
+  						}
+  						
+  					}
+  				}	
+  			</Code>
+  		</Room>
+  		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</Rooms>
+	
+
+	
+	<Items>
+	
+		<Item id="30000000" name="null" extends="0" clones="0" type="none" volume="0" weight="0" enabled="false" isVirtual="false" canGet="false" openable="false" closeable="false" lockable="false" unlockable="false" gender="false">
+  			<PropertyList /> 
+  		</Item>
+  		
+  		
+  		
+		<Item id="30000001" name="Mano izquierda" extends="0" clones="0" type="weapon" volume="1" weight="1" enabled="false" isVirtual="false" canGet="false" openable="false" closeable="false" lockable="false" unlockable="false" gender="false">
+				<PropertyList>
+			  <PropertyEntry name="state" value="0" timeUnitsLeft="0" /> 
+			  </PropertyList>
+				<DescriptionList>
+			  <Description stateComparand="0" stateMask="0">Es una mano.</Description> 
+			  </DescriptionList>
+			<SingularNames>
+			  <Description stateComparand="0" stateMask="0">mano izquierda</Description> 
+			  </SingularNames>
+			<PluralNames>
+			  <Description stateComparand="0" stateMask="0">mano izquierda</Description> 
+			  </PluralNames>
+			<SingularReferenceNames>
+			  <Name>Mano izquierda</Name> 
+			  <Name>izquierda</Name> 
+			  <Name>mano</Name> 
+			  </SingularReferenceNames>
+			<PluralReferenceNames>
+			  <Name>Manos izquierdas</Name> 
+			  <Name>izquierdas</Name> 
+			  <Name>manos</Name> 
+			  </PluralReferenceNames>
+			<Parts>
+				<Inventory weight="1" volume="1" weightLimit="10000" volumeLimit="10000"><ItemRef id="30000008"/></Inventory>
+			</Parts>
+			<WeaponSpecs>
+			<Attack minUsage="0">
+			  <InvolvedSkills>
+			  	<Skill name="mano a mano" relevance="1.0" /> 
+			  </InvolvedSkills> 
+			  <Probability steepness="0.0" /> 
+			  <Time steepness="-1.0" starting="0.0" /> 
+			  <RecoverTime steepness="0.0" starting="0.0" /> 
+			  <DamageList>
+  				<Damage type="1" formula="1D4" /> 
+  			  </DamageList>
+			  </Attack>
+			<Defense minUsage="0">
+			  <InvolvedSkills>
+			  	<Skill name="mano a mano" relevance="0.5" />
+			  	<Skill name="defensa" relevance="0.5" />
+			  </InvolvedSkills> 
+			  <Probability steepness="0.0" /> 
+			  <Time steepness="-1.0" starting="0.0" /> 
+			  <RecoverTime steepness="-1.0" starting="0.0" /> 
+			  </Defense>
+			  </WeaponSpecs>
+			  </Item>
+		<Item id="30000002" name="Mano derecha" extends="0" clones="0" type="weapon" volume="1" weight="1" enabled="false" isVirtual="false" canGet="false" openable="false" closeable="false" lockable="false" unlockable="false" gender="false">
+			<PropertyList>
+			  <PropertyEntry name="state" value="0" timeUnitsLeft="0" /> 
+			  </PropertyList>
+			<DescriptionList>
+			  <Description stateComparand="0" stateMask="0">Es una mano.</Description> 
+			  </DescriptionList>
+			<SingularNames>
+			  <Description stateComparand="0" stateMask="0">mano derecha</Description> 
+			  </SingularNames>
+			<PluralNames>
+			  <Description stateComparand="0" stateMask="0">mano derecha</Description> 
+			  </PluralNames>
+			<SingularReferenceNames>
+			  <Name>Mano derecha</Name> 
+			  <Name>derecha</Name> 
+			  <Name>mano</Name> 
+			  </SingularReferenceNames>
+			<PluralReferenceNames>
+			  <Name>Manos derechas</Name> 
+			  <Name>derechas</Name> 
+			  <Name>manos</Name> 
+			  </PluralReferenceNames>
+			<WeaponSpecs>
+			<Attack minUsage="0">
+			  <InvolvedSkills>
+			  	<Skill name="mano a mano" relevance="1.0" />
+			  	<Skill name="defensa" relevance="0.5" />
+			  </InvolvedSkills> 
+			  <Probability steepness="0.0" /> 
+			  <Time steepness="-1.0" starting="0.0" /> 
+			  <RecoverTime steepness="-1.0" starting="0.0" /> 
+			  <DamageList>
+  				<Damage type="1" formula="1D4" /> 
+  			  </DamageList>
+			  </Attack>
+			<Defense minUsage="0">
+			  <InvolvedSkills>
+			  	<Skill name="mano a mano" relevance="0.5" />
+			  	<Skill name="defensa" relevance="0.5" />
+			  </InvolvedSkills> 
+			  <Probability steepness="0.0" /> 
+			  <Time steepness="-1.0" starting="0.0" /> 
+			  <RecoverTime steepness="-1.0" starting="0.0" /> 
+			  </Defense>
+			  </WeaponSpecs>
+		</Item>
+
+  		
+  		
+ 		<Item id="30000003" name="Espada corta" extends="0" clones="0" type="weapon" volume="3" weight="7" enabled="false" isVirtual="false" canGet="true" openable="false" closeable="false" lockable="false" unlockable="false" gender="false">
+			<PropertyList>
+  				<PropertyEntry name="state" value="0" timeUnitsLeft="0" /> 
+  			</PropertyList>
+			<DescriptionList>
+  				<Description stateComparand="0" stateMask="0">Es una espada corta equilibrada y bien afilada, de empuñadura tallada en marfil.</Description> 
+  			</DescriptionList>
+			<SingularNames>
+  				<Description stateComparand="0" stateMask="0">espada corta</Description> 
+  			</SingularNames>
+			<PluralNames>
+  				<Description stateComparand="0" stateMask="0">espadas cortas</Description> 
+  			</PluralNames>
+			<SingularReferenceNames>
+  				<Name>Espada corta</Name> 
+  				<Name>espada</Name> 
+  				<Name>arma</Name> 
+  			</SingularReferenceNames>
+			<PluralReferenceNames>
+  				<Name>Espadas cortas</Name> 
+  				<Name>espadas</Name> 
+  				<Name>armas</Name> 
+  			</PluralReferenceNames>
+			<WeaponSpecs>
+				<WieldableLimbs>
+				<Requirement>
+  					<Name>mano derecha</Name> 
+  					<Name>mano</Name> 
+  				</Requirement>
+  				</WieldableLimbs>
+				<Attack minUsage="0">
+					<InvolvedSkills>
+  						<Skill name="espada" relevance="1.0" /> 
+  					</InvolvedSkills>
+  					<Probability steepness="0.0" /> 
+  					<Time steepness="-1.0" starting="30.0" /> 
+  					<RecoverTime steepness="-1.0" starting="30.0" /> 
+					<DamageList>
+  						<Damage type="1" formula="1FUE+1D8-4" /> 
+  					</DamageList>
+  				</Attack>
+				<Defense minUsage="0">
+					<InvolvedSkills>
+  						<Skill name="espada" relevance="1.0" /> 
+  					</InvolvedSkills>
+  					<Probability steepness="0.0" /> 
+  					<Time steepness="-1.0" starting="20.0" /> 
+ 					<RecoverTime steepness="-1.0" starting="30.0" /> 
+ 					 <DamageList>
+  						<Damage type="1" formula="1D6" /> 
+  					</DamageList>
+  				</Defense>
+  			</WeaponSpecs>
+  		</Item>
+
+ 		<Item id="30000004" name="Garrote tosco" extends="0" clones="0" type="weapon" volume="3" weight="7" enabled="false" isVirtual="false" canGet="true" openable="false" closeable="false" lockable="false" unlockable="false" gender="true">
+			<PropertyList>
+  				<PropertyEntry name="state" value="0" timeUnitsLeft="0" /> 
+  			</PropertyList>
+			<DescriptionList>
+  				<Description stateComparand="0" stateMask="0">Es uno de los típicos garrotes rudimentarios con pinchos que utilizan los goblins.</Description> 
+  			</DescriptionList>
+			<SingularNames>
+  				<Description stateComparand="0" stateMask="0">garrote tosco</Description> 
+  			</SingularNames>
+			<PluralNames>
+  				<Description stateComparand="0" stateMask="0">garrote tosco</Description> 
+  			</PluralNames>
+			<SingularReferenceNames>
+  				<Name>Garrote tosco</Name> 
+  				<Name>garrote</Name> 
+  				<Name>arma</Name> 
+  			</SingularReferenceNames>
+			<PluralReferenceNames>
+  				<Name>Garrotes toscos</Name> 
+  				<Name>garrotes</Name> 
+  				<Name>armas</Name> 
+  			</PluralReferenceNames>
+			<WeaponSpecs>
+				<WieldableLimbs>
+				<Requirement>
+  						<Name>mano derecha</Name> 
+  						<Name>mano</Name> 
+  				</Requirement>
+  				</WieldableLimbs>
+				<Attack minUsage="0">
+					<InvolvedSkills>
+  						<Skill name="contundente" relevance="1.0" /> 
+  					</InvolvedSkills>
+  					<Probability steepness="0.0" /> 
+  					<Time steepness="-1.0" starting="30.0" /> 
+  					<RecoverTime steepness="-1.0" starting="30.0" /> 
+					<DamageList>
+  						<Damage type="1" formula="1D8-1" /> 
+  					</DamageList>
+  				</Attack>
+				<Defense minUsage="0">
+					<InvolvedSkills>
+  						<Skill name="contundente" relevance="1.0" /> 
+  					</InvolvedSkills>
+  					<Probability steepness="0.0" /> 
+  					<Time steepness="-1.0" starting="20.0" /> 
+ 					<RecoverTime steepness="-1.0" starting="30.0" /> 
+ 					<DamageList>
+  						<Damage type="1" formula="1D6" /> 
+  					</DamageList>
+  				</Defense>
+  			</WeaponSpecs>
+  		</Item>
+  		
+  		 <Item id="30000005" name="Escudo circular de madera" extends="0" clones="0" type="weapon" volume="4" weight="3" enabled="false" isVirtual="false" canGet="true" openable="false" closeable="false" lockable="false" unlockable="false" gender="true">
+			<PropertyList>
+  				<PropertyEntry name="state" value="0" timeUnitsLeft="0" /> 
+  			</PropertyList>
+			<DescriptionList>
+  				<Description stateComparand="0" stateMask="0">Es un escudo goblin, apenas un trozo de madera toscamente tallado.</Description> 
+  			</DescriptionList>
+			<SingularNames>
+  				<Description stateComparand="0" stateMask="0">escudo circular de madera</Description> 
+  			</SingularNames>
+			<PluralNames>
+  				<Description stateComparand="0" stateMask="0">escudos circulares de madera</Description> 
+  			</PluralNames>
+			<SingularReferenceNames>
+  				<Name>Escudo circular de madera</Name> 
+  				<Name>escudo circular</Name> 
+  				<Name>escudo de madera</Name>
+  				<Name>escudo</Name>
+  				<Name>arma</Name> 
+  			</SingularReferenceNames>
+			<PluralReferenceNames>
+  				<Name>Escudos circulares de madera</Name> 
+  				<Name>escudos circulares</Name> 
+  				<Name>escudos de madera</Name> 
+  				<Name>escudos</Name>
+  				<Name>armas</Name> 
+  			</PluralReferenceNames>
+			<WeaponSpecs>
+				<WieldableLimbs>
+				<Requirement>
+  					<Name>mano izquierda</Name> 
+  					<Name>mano</Name> 
+  				</Requirement>
+  				</WieldableLimbs>
+				<Attack minUsage="0">
+					<InvolvedSkills>
+  						<Skill name="improvisado" relevance="1.0" /> 
+  					</InvolvedSkills>
+  					<Probability steepness="-1.0" /> 
+  					<Time steepness="-1.0" starting="40.0" /> 
+  					<RecoverTime steepness="-1.0" starting="32.0" /> 
+					<DamageList>
+  						<Damage type="1" formula="1D3" /> 
+  					</DamageList>
+  				</Attack>
+				<Defense minUsage="0">
+					<InvolvedSkills>
+  						<Skill name="defensa" relevance="1.0" /> 
+  					</InvolvedSkills>
+  					<Probability steepness="0.2" /> 
+  					<Time steepness="-1.0" starting="18.0" /> 
+ 					<RecoverTime steepness="-1.0" starting="26.0" /> 
+ 					<DamageList>
+  						<Damage type="1" formula="3D6" /> 
+  					</DamageList>
+  				</Defense>
+  			</WeaponSpecs>
+  		</Item>
+  		
+  		<Item id="30000006" name="Garrote tosco" type="weapon" clones="4" />
+  		<Item id="30000007" name="Escudo circular de madera" type="weapon" clones="5" />
+  		
+  		<Item id="30000008" name="Dedo índice de la mano derecha" extends="0" clones="0" type="none" volume="1" weight="1" enabled="false" isVirtual="false" canGet="false" openable="false" closeable="false" lockable="false" unlockable="false" gender="true">
+			<PropertyList>
+  				<PropertyEntry name="state" value="0" timeUnitsLeft="0" /> 
+  			</PropertyList>
+			<DescriptionList>
+  				<Description stateComparand="0" stateMask="0">Es un simple dedo.</Description> 
+  			</DescriptionList>
+			<SingularNames>
+  				<Description stateComparand="0" stateMask="0">dedo</Description> 
+  			</SingularNames>
+			<PluralNames>
+  				<Description stateComparand="0" stateMask="0">dedo</Description> 
+  			</PluralNames>
+			<SingularReferenceNames>
+  				<Name>Dedo índice de la mano derecha</Name> 
+  				<Name>Índice derecho</Name> 
+  				<Name>Dedo índice</Name> 
+  				<Name>Índice</Name> 
+  				<Name>Dedo</Name> 
+  			</SingularReferenceNames>
+			<PluralReferenceNames>
+  				<Name>Dedos índice de la mano derecha</Name> 
+  				<Name>Índices derechos</Name> 
+  				<Name>Dedos índice</Name> 
+  				<Name>Índices</Name> 
+  				<Name>Dedos</Name>
+  			</PluralReferenceNames>
+  		</Item>
+   		
+  		<Item id="30000009" name="Guante derecho de cuero" extends="0" clones="0" type="wearable" volume="2" weight="2" enabled="false" isVirtual="false" canGet="true" openable="false" closeable="false" lockable="false" unlockable="false" gender="true">
+			<PropertyList>
+  				<PropertyEntry name="state" value="0" timeUnitsLeft="0" /> 
+  			</PropertyList>
+			<DescriptionList>
+  				<Description stateComparand="0" stateMask="0">Es un guante de cuero duro para la mano derecha.</Description> 
+  			</DescriptionList>
+			<SingularNames>
+  				<Description stateComparand="0" stateMask="0">guante derecho de cuero</Description> 
+  			</SingularNames>
+			<PluralNames>
+  				<Description stateComparand="0" stateMask="0">guantes derechos de cuero</Description> 
+  			</PluralNames>
+			<SingularReferenceNames>
+  				<Name>Guante derecho de cuero</Name> 
+  				<Name>Guante de cuero</Name> 
+  				<Name>Guante derecho</Name>
+  				<Name>Guante</Name>
+  				<Name>armadura</Name> 
+  			</SingularReferenceNames>
+			<PluralReferenceNames>
+    				<Name>Guantes derechos de cuero</Name> 
+  				<Name>Guantes de cuero</Name> 
+  				<Name>Guantes derechos</Name>
+  				<Name>Guantes</Name>
+  				<Name>armaduras</Name> 
+  			</PluralReferenceNames>
+			<WearableSpecs>
+				<WearableLimbs>
+					<Requirement>
+						<Name>mano derecha</Name>
+					</Requirement>
+				</WearableLimbs>
+				 <DamageList>
+  					<Damage type="1" formula="20D6" /> 
+  				</DamageList>
+  			</WearableSpecs>
+  		</Item>
+  		
+  		<Item id="30000010" name="Cuello" extends="0" clones="0" type="none" volume="1" weight="1" enabled="false" isVirtual="false" canGet="false" openable="false" closeable="false" lockable="false" unlockable="false" gender="true">
+			<PropertyList>
+  				<PropertyEntry name="state" value="0" timeUnitsLeft="0" /> 
+  			</PropertyList>
+			<DescriptionList>
+  				<Description stateComparand="0" stateMask="0">Es un simple cuello.</Description> 
+  			</DescriptionList>
+			<SingularNames>
+  				<Description stateComparand="0" stateMask="0">cuello</Description> 
+  			</SingularNames>
+			<PluralNames>
+  				<Description stateComparand="0" stateMask="0">cuello</Description> 
+  			</PluralNames>
+			<SingularReferenceNames>
+  				<Name>Cuello</Name> 
+  			</SingularReferenceNames>
+			<PluralReferenceNames>
+  				<Name>Cuellos</Name> 
+  			</PluralReferenceNames>
+  		</Item>
+  		
+  		<Item id="30000011" name="Daga katmai" extends="0" clones="0" type="weapon" volume="2" weight="3" enabled="false" isVirtual="false" canGet="true" openable="false" closeable="false" lockable="false" unlockable="false" gender="false">
+			<PropertyList>
+  				<PropertyEntry name="state" value="0" timeUnitsLeft="0" /> 
+  			</PropertyList>
+			<DescriptionList>
+  				<Description stateComparand="0" stateMask="0">Una pequeña daga, curvilínea y muy afilada, fabricada en un metal negro.</Description> 
+  			</DescriptionList>
+			<SingularNames>
+  				<Description stateComparand="0" stateMask="0">daga katmai</Description> 
+  			</SingularNames>
+			<PluralNames>
+  				<Description stateComparand="0" stateMask="0">dagas katmai</Description> 
+  			</PluralNames>
+			<SingularReferenceNames>
+  				<Name>daga katmai</Name> 
+  				<Name>daga</Name> 
+  				<Name>arma</Name> 
+  			</SingularReferenceNames>
+			<PluralReferenceNames>
+  				<Name>dagas katmai</Name> 
+  				<Name>dagas</Name> 
+  				<Name>armas</Name> 
+  			</PluralReferenceNames>
+			<WeaponSpecs>
+				<WieldableLimbs>
+					<Requirement>
+  						<Name>mano derecha</Name> 
+  						<Name>mano</Name> 
+  					</Requirement>
+  				</WieldableLimbs>
+				<Attack minUsage="0">
+					<InvolvedSkills>
+  						<Skill name="daga" relevance="1.0" /> 
+  					</InvolvedSkills>
+  					<Probability steepness="0.0" /> 
+  					<Time steepness="-1.0" starting="25.0" /> 
+  					<RecoverTime steepness="-1.0" starting="20.0" /> 
+					<DamageList>
+  						<Damage type="1" formula="1FUE+1D10" /> 
+  					</DamageList>
+  				</Attack>
+				<Defense minUsage="0">
+					<InvolvedSkills>
+  						<Skill name="espada" relevance="1.0" /> 
+  					</InvolvedSkills>
+  					<Probability steepness="0.0" /> 
+  					<Time steepness="-1.0" starting="20.0" /> 
+ 					<RecoverTime steepness="-1.0" starting="30.0" /> 
+ 					 <DamageList>
+  						<Damage type="1" formula="1D4" /> 
+  					</DamageList>
+  				</Defense>
+  			</WeaponSpecs>
+  		</Item>
+  		
+	  
+		
+		
+		<Item id="30000012" name="Garra izquierda" extends="0" clones="0" type="weapon" volume="1" weight="1" enabled="false" isVirtual="false" canGet="false" openable="false" closeable="false" lockable="false" unlockable="false" gender="false">
+				<PropertyList>
+			  <PropertyEntry name="state" value="0" timeUnitsLeft="0" /> 
+			  </PropertyList>
+			<DescriptionList>
+			  <Description stateComparand="0" stateMask="0">Es una afilada garra.</Description> 
+			  </DescriptionList>
+			<SingularNames>
+			  <Description stateComparand="0" stateMask="0">garra izquierda</Description> 
+			  </SingularNames>
+			<PluralNames>
+			  <Description stateComparand="0" stateMask="0">garra izquierda</Description> 
+			  </PluralNames>
+			<SingularReferenceNames>
+			  <Name>Garra izquierda</Name> 
+			  <Name>izquierda</Name> 
+			  <Name>garra</Name> 
+			  </SingularReferenceNames>
+			<PluralReferenceNames>
+			  <Name>Garras izquierdas</Name> 
+			  <Name>izquierdas</Name> 
+			  <Name>garras</Name> 
+			  </PluralReferenceNames>
+			<WeaponSpecs>
+			<Attack minUsage="0">
+			  <InvolvedSkills>
+  						<Skill name="garra" relevance="1.0" /> 
+  			</InvolvedSkills>
+			  <Probability steepness="0.0" /> 
+			  <Time steepness="-1.0" starting="25.0" /> 
+			  <RecoverTime steepness="0.0" starting="20.0" /> 
+			  <DamageList>
+			  <Damage type="1" formula="1FUE+1D4" />
+			  </DamageList>
+			  </Attack>
+			<Defense minUsage="0">
+			  <InvolvedSkills>
+  						<Skill name="garra" relevance="1.0" /> 
+  				</InvolvedSkills>
+			  <Probability steepness="0.0" /> 
+			  <Time steepness="-1.0" starting="20.0" /> 
+			  <RecoverTime steepness="-1.0" starting="30.0" /> 
+			  <DamageList>
+			  <Damage type="1" formula="1D8" /> 
+			  </DamageList>
+			  </Defense>
+			  </WeaponSpecs>
+		</Item>
+  		<Item id="30000013" name="Garra derecha" extends="Garra izquierda" clones="0" type="weapon" volume="1" weight="1" enabled="false" isVirtual="false" canGet="false" openable="false" closeable="false" lockable="false" unlockable="false" gender="false">
+  			<SingularNames>
+			  <Description stateComparand="0" stateMask="0">garra derecha</Description> 
+			  </SingularNames>
+			<PluralNames>
+			  <Description stateComparand="0" stateMask="0">garra derecha</Description> 
+			  </PluralNames>
+			<SingularReferenceNames>
+			  <Name>Garra derecha</Name> 
+			  <Name>derecha</Name> 
+			  <Name>garra</Name> 
+			  </SingularReferenceNames>
+			<PluralReferenceNames>
+			  <Name>Garras derechas</Name> 
+			  <Name>derechas</Name> 
+			  <Name>garras</Name> 
+			 </PluralReferenceNames>
+			 
+			 
+			 <WeaponSpecs>
+			<Attack minUsage="0">
+			  <InvolvedSkills>
+  						<Skill name="garra" relevance="1.0" /> 
+  			</InvolvedSkills>
+			  <Probability steepness="0.0" /> 
+			  <Time steepness="-1.0" starting="25.0" /> 
+			  <RecoverTime steepness="0.0" starting="20.0" /> 
+			  <Damage type="1" formula="1FUE+1D5" />
+			  </Attack>
+			<Defense minUsage="0">
+			  <InvolvedSkills>
+  						<Skill name="garra" relevance="1.0" /> 
+  				</InvolvedSkills>
+			  <Probability steepness="0.0" /> 
+			  <Time steepness="-1.0" starting="20.0" /> 
+			  <RecoverTime steepness="-1.0" starting="30.0" /> 
+			  <Damage type="1" formula="1D8" /> 
+			  </Defense>
+			  </WeaponSpecs>
+			 
+  		</Item>
+  		
+  		
+  		
+  		<Item name="Hacha de mano" extends="0" clones="0" type="weapon" volume="3" weight="7" enabled="false" isVirtual="false" canGet="true" openable="false" closeable="false" lockable="false" unlockable="false" gender="true">
+			<PropertyList>
+  				<PropertyEntry name="state" value="0" timeUnitsLeft="0" /> 
+  			</PropertyList>
+			<DescriptionList>
+  				<Description stateComparand="0" stateMask="0">Un hacha diseñada para el combate, sobria pero efectiva.</Description> 
+  			</DescriptionList>
+			<SingularNames>
+  				<Description stateComparand="0" stateMask="0">hacha de mano</Description> 
+  			</SingularNames>
+			<PluralNames>
+  				<Description stateComparand="0" stateMask="0">hachas de mano</Description> 
+  			</PluralNames>
+			<SingularReferenceNames>
+  				<Name>Hacha de mano</Name> 
+  				<Name>hacha</Name> 
+  				<Name>arma</Name> 
+  			</SingularReferenceNames>
+			<PluralReferenceNames>
+  				<Name>Hachas de mano</Name> 
+  				<Name>hachas</Name> 
+  				<Name>armas</Name> 
+  			</PluralReferenceNames>
+			<WeaponSpecs>
+				<WieldableLimbs>
+				<Requirement>
+  					<Name>mano derecha</Name> 
+  					<Name>mano</Name> 
+  				</Requirement>
+  				</WieldableLimbs>
+				<Attack minUsage="0">
+					<InvolvedSkills>
+  						<Skill name="hacha" relevance="1.0" /> 
+  					</InvolvedSkills>
+  					<Probability steepness="0.0" /> 
+  					<Time steepness="-1.0" starting="33.0" /> 
+  					<RecoverTime steepness="-1.0" starting="30.0" /> 
+					<DamageList>
+  						<Damage type="1" formula="1FUE+1D8-2" /> 
+  					</DamageList>
+  				</Attack>
+				<Defense minUsage="0">
+					<InvolvedSkills>
+  						<Skill name="hacha" relevance="1.0" /> 
+  					</InvolvedSkills>
+  					<Probability steepness="0.0" /> 
+  					<Time steepness="-1.0" starting="24.0" /> 
+ 					<RecoverTime steepness="-1.0" starting="30.0" /> 
+ 					 <DamageList>
+  						<Damage type="1" formula="1D6" /> 
+  					</DamageList>
+  				</Defense>
+  			</WeaponSpecs>
+  		</Item>
+  		
+  		<Item name="Bastón golbuniano" extends="0" clones="0" type="weapon" volume="6" weight="20" enabled="false" isVirtual="false" canGet="true" openable="false" closeable="false" lockable="false" unlockable="false" gender="true">
+			<PropertyList>
+  				<PropertyEntry name="state" value="0" timeUnitsLeft="0" /> 
+  			</PropertyList>
+			<DescriptionList>
+  				<Description stateComparand="0" stateMask="0">Uno de los bastones de combate fabricados por los Mecánicos de Golbun, armas muy potentes para los que las saben manejar. Se trata de un bastón metálico largo, que puede ser usado con efectividad para el ataque y la defensa; pero ha de ser manejado con ambas manos.</Description> 
+  			</DescriptionList>
+			<SingularNames>
+  				<Description stateComparand="0" stateMask="0">bastón golbuniano</Description> 
+  			</SingularNames>
+			<PluralNames>
+  				<Description stateComparand="0" stateMask="0">bastones golbunianos</Description> 
+  			</PluralNames>
+			<SingularReferenceNames>
+  				<Name>Bastón golbuniano</Name> 
+  				<Name>Baston golbuniano</Name> 
+  				<Name>bastón</Name>
+  				<Name>baston</Name> 
+  				<Name>arma</Name> 
+  			</SingularReferenceNames>
+			<PluralReferenceNames>
+  				<Name>Bastones golbunianos</Name> 
+  				<Name>Bastones golbunianos</Name> 
+  				<Name>bastones</Name>
+  				<Name>bastones</Name> 
+  				<Name>armas</Name> 
+  			</PluralReferenceNames>
+			<WeaponSpecs>
+				<WieldableLimbs>
+				<Requirement>
+  					<Name>mano derecha</Name> 
+  					<Name>mano</Name> 
+  				</Requirement>
+  				<Requirement>
+  					<Name>mano izquierda</Name> 
+  					<Name>mano</Name> 
+  				</Requirement>
+  				</WieldableLimbs>
+				<Attack minUsage="0">
+					<InvolvedSkills>
+  						<Skill name="arma roma" relevance="1.0" /> 
+  					</InvolvedSkills>
+  					<Probability steepness="-0.1" /> 
+  					<Time steepness="-1.0" starting="37.0" /> 
+  					<RecoverTime steepness="-1.0" starting="32.0" /> 
+					<DamageList>
+  						<Damage type="1" formula="1FUE+1D10+2" /> 
+  					</DamageList>
+  				</Attack>
+				<Defense minUsage="0">
+					<InvolvedSkills>
+  						<Skill name="arma roma" relevance="0.5" /> 
+  						<Skill name="defensa" relevance="0.5" /> 
+  					</InvolvedSkills>
+  					<Probability steepness="0.05" /> 
+  					<Time steepness="-1.0" starting="24.0" /> 
+ 					<RecoverTime steepness="-1.0" starting="30.0" /> 
+ 					 <DamageList>
+  						<Damage type="1" formula="1FUE+1D6" /> 
+  					</DamageList>  					
+  				</Defense>
+  			</WeaponSpecs>
+  		</Item>
+  		
+  		<Item name="Alabarda pesada" extends="0" clones="0" type="weapon" volume="6" weight="21" enabled="false" isVirtual="false" canGet="true" openable="false" closeable="false" lockable="false" unlockable="false" gender="false">
+			<PropertyList>
+  				<PropertyEntry name="state" value="0" timeUnitsLeft="0" /> 
+  			</PropertyList>
+			<DescriptionList>
+  				<Description stateComparand="0" stateMask="0">Una alabarda de unos dos metros de largo, de mango ricamente ornamentado.</Description> 
+  			</DescriptionList>
+			<SingularNames>
+  				<Description stateComparand="0" stateMask="0">alabarda pesada</Description> 
+  			</SingularNames>
+			<PluralNames>
+  				<Description stateComparand="0" stateMask="0">alabarda pesada</Description> 
+  			</PluralNames>
+			<SingularReferenceNames>
+  				<Name>Alabarda pesada</Name> 
+  				<Name>Alabarda</Name> 
+  				<Name>Albarda</Name>
+  				<Name>lanza</Name> 
+  				<Name>arma</Name> 
+  			</SingularReferenceNames>
+			<PluralReferenceNames>
+  				<Name>Alabardas pesadas</Name> 
+  				<Name>Alabardas</Name> 
+  				<Name>Albardas</Name>
+  				<Name>Lanzas</Name> 
+  				<Name>armas</Name> 
+  			</PluralReferenceNames>
+			<WeaponSpecs>
+				<WieldableLimbs>
+				<Requirement>
+  					<Name>mano derecha</Name> 
+  					<Name>mano</Name> 
+  				</Requirement>
+  				<Requirement>
+  					<Name>mano izquierda</Name> 
+  					<Name>mano</Name> 
+  				</Requirement>
+  				</WieldableLimbs>
+				<Attack minUsage="0">
+					<InvolvedSkills>
+  						<Skill name="lanza" relevance="1.0" /> 
+  					</InvolvedSkills>
+  					<Probability steepness="-0.1" /> 
+  					<Time steepness="-1.0" starting="37.0" /> 
+  					<RecoverTime steepness="-1.0" starting="33.0" /> 
+					<DamageList>
+  						<Damage type="1" formula="1FUE+1D10+4" /> 
+  					</DamageList>
+  				</Attack>
+				<Defense minUsage="0">
+					<InvolvedSkills>
+  						<Skill name="lanza" relevance="0.5" /> 
+  						<Skill name="defensa" relevance="0.5" /> 
+  					</InvolvedSkills>
+  					<Probability steepness="-0.3" /> 
+  					<Time steepness="-1.0" starting="25.0" /> 
+ 					<RecoverTime steepness="-1.0" starting="31.0" /> 
+ 					 <DamageList>
+  						<Damage type="1" formula="1D3" /> 
+  					</DamageList>  					
+  				</Defense>
+  			</WeaponSpecs>
+  		</Item>
+  		
+  		<Item name="Daga puntiaguda" extends="0" clones="0" type="weapon" volume="2" weight="3" enabled="false" isVirtual="false" canGet="true" openable="false" closeable="false" lockable="false" unlockable="false" gender="false">
+			<PropertyList>
+  				<PropertyEntry name="state" value="0" timeUnitsLeft="0" /> 
+  			</PropertyList>
+			<DescriptionList>
+  				<Description stateComparand="0" stateMask="0">Una pequeña daga de acero, de hoja rectilínea y muy afilada.</Description> 
+  			</DescriptionList>
+			<SingularNames>
+  				<Description stateComparand="0" stateMask="0">daga puntiaguda</Description> 
+  			</SingularNames>
+			<PluralNames>
+  				<Description stateComparand="0" stateMask="0">dagas puntiagudas</Description> 
+  			</PluralNames>
+			<SingularReferenceNames>
+  				<Name>daga puntiaguda</Name> 
+  				<Name>daga</Name> 
+  				<Name>arma</Name> 
+  			</SingularReferenceNames>
+			<PluralReferenceNames>
+  				<Name>dagas puntiagudas</Name> 
+  				<Name>dagas</Name> 
+  				<Name>armas</Name> 
+  			</PluralReferenceNames>
+			<WeaponSpecs>
+				<WieldableLimbs>
+					<Requirement>
+  						<Name>mano derecha</Name> 
+  						<Name>mano</Name> 
+  					</Requirement>
+  				</WieldableLimbs>
+				<Attack minUsage="0">
+					<InvolvedSkills>
+  						<Skill name="daga" relevance="1.0" /> 
+  					</InvolvedSkills>
+  					<Probability steepness="0.0" /> 
+  					<Time steepness="-1.0" starting="25.0" /> 
+  					<RecoverTime steepness="-1.0" starting="20.0" /> 
+					<DamageList>
+  						<Damage type="1" formula="1FUE+1D6" /> 
+  					</DamageList>
+  				</Attack>
+				<Defense minUsage="0">
+					<InvolvedSkills>
+  						<Skill name="daga" relevance="1.0" /> 
+  						<Skill name="defensa" relevance="1.0" /> 
+  					</InvolvedSkills>
+  					<Probability steepness="0.0" /> 
+  					<Time steepness="-1.0" starting="20.0" /> 
+ 					<RecoverTime steepness="-1.0" starting="30.0" /> 
+ 					 <DamageList>
+  						<Damage type="1" formula="1D4" /> 
+  					</DamageList>
+  				</Defense>
+  			</WeaponSpecs>
+  		</Item>
+  		
+  		
+  		
+  		<Item name="Cota de malla" extends="0" clones="0" type="wearable" volume="10" weight="20" enabled="false" isVirtual="false" canGet="true" openable="false" closeable="false" lockable="false" unlockable="false" gender="false">
+			<PropertyList>
+  				<PropertyEntry name="state" value="0" timeUnitsLeft="0" /> 
+  			</PropertyList>
+			<DescriptionList>
+  				<Description stateComparand="0" stateMask="0">Se trata de una cota de malla pesada de gran calidad.</Description> 
+  			</DescriptionList>
+			<SingularNames>
+  				<Description stateComparand="0" stateMask="0">cota de malla</Description> 
+  			</SingularNames>
+			<PluralNames>
+  				<Description stateComparand="0" stateMask="0">cotas de malla</Description> 
+  			</PluralNames>
+			<SingularReferenceNames>
+  				<Name>Cota de malla</Name> 
+  				<Name>Cota</Name> 
+  				<Name>malla</Name>
+  				<Name>armadura</Name> 
+  			</SingularReferenceNames>
+			<PluralReferenceNames>
+  				<Name>Cota de malla</Name> 
+  				<Name>Cota</Name> 
+  				<Name>malla</Name>
+  				<Name>armadura</Name> 
+  			</PluralReferenceNames>
+			<WearableSpecs>
+				<WearableLimbs>
+					<Requirement>
+						<Name>torso</Name>
+					</Requirement>
+				</WearableLimbs>
+				 <DamageList>
+  					<Damage type="1" formula="1D15" /> 
+  				</DamageList>
+  			</WearableSpecs>
+  		</Item>
+  		
+  		<Item name="Yelmo de hierro" extends="0" clones="0" type="wearable" volume="5" weight="10" enabled="false" isVirtual="false" canGet="true" openable="false" closeable="false" lockable="false" unlockable="false" gender="true">
+			<PropertyList>
+  				<PropertyEntry name="state" value="0" timeUnitsLeft="0" /> 
+  			</PropertyList>
+			<DescriptionList>
+  				<Description stateComparand="0" stateMask="0">Un pesado yelmo de hierro con un visor un tanto oxidado.</Description> 
+  			</DescriptionList>
+			<SingularNames>
+  				<Description stateComparand="0" stateMask="0">yelmo de hierro</Description> 
+  			</SingularNames>
+			<PluralNames>
+  				<Description stateComparand="0" stateMask="0">yelmos de hierro</Description> 
+  			</PluralNames>
+			<SingularReferenceNames>
+  				<Name>Yelmo de hierro</Name> 
+  				<Name>yelmo</Name> 
+  				<Name>casco</Name>
+  				<Name>armadura</Name> 
+  			</SingularReferenceNames>
+			<PluralReferenceNames>
+  				<Name>Yelmos de hierro</Name> 
+  				<Name>yelmos</Name> 
+  				<Name>cascos</Name>
+  				<Name>armaduras</Name> 
+  			</PluralReferenceNames>
+			<WearableSpecs>
+				<WearableLimbs>
+					<Requirement>
+						<Name>cabeza</Name>
+					</Requirement>
+				</WearableLimbs>
+				 <DamageList>
+  					<Damage type="1" formula="1D10" /> 
+  				</DamageList>
+  			</WearableSpecs>
+  		</Item>
+  		
+  		<Item name="Cabeza" extends="0" clones="0" type="none" volume="2" weight="2" enabled="false" isVirtual="false" canGet="false" openable="false" closeable="false" lockable="false" unlockable="false" gender="false">
+			<PropertyList>
+  				<PropertyEntry name="state" value="0" timeUnitsLeft="0" /> 
+  			</PropertyList>
+			<DescriptionList>
+  				<Description stateComparand="0" stateMask="0">Es una simple cabeza.</Description> 
+  			</DescriptionList>
+			<SingularNames>
+  				<Description stateComparand="0" stateMask="0">cabeza</Description> 
+  			</SingularNames>
+			<PluralNames>
+  				<Description stateComparand="0" stateMask="0">cabeza</Description> 
+  			</PluralNames>
+			<SingularReferenceNames>
+  				<Name>Cabeza</Name> 
+  			</SingularReferenceNames>
+			<PluralReferenceNames>
+  				<Name>Cabezas</Name> 
+  			</PluralReferenceNames>
+  		</Item>
+  		
+  		<Item name="Torso" extends="0" clones="0" type="none" volume="4" weight="3" enabled="false" isVirtual="false" canGet="false" openable="false" closeable="false" lockable="false" unlockable="false" gender="true">
+			<PropertyList>
+  				<PropertyEntry name="state" value="0" timeUnitsLeft="0" /> 
+  			</PropertyList>
+			<DescriptionList>
+  				<Description stateComparand="0" stateMask="0">Es un simple torso.</Description> 
+  			</DescriptionList>
+			<SingularNames>
+  				<Description stateComparand="0" stateMask="0">torso</Description> 
+  			</SingularNames>
+			<PluralNames>
+  				<Description stateComparand="0" stateMask="0">torso</Description> 
+  			</PluralNames>
+			<SingularReferenceNames>
+  				<Name>Torso</Name> 
+  			</SingularReferenceNames>
+			<PluralReferenceNames>
+  				<Name>Torsos</Name> 
+  			</PluralReferenceNames>
+  		</Item>
+  		
+  		
+  		
+		
+	</Items>
+	
+	
+	
+	<Mobiles>
+		
+		<Mobile id="20000000" name="Guardia goblin" extends="0" clones="0" type="null" properName="false" hp="20" mp="0" maxhp="20" maxmp="0" gender="true">
+			<PropertyList>
+  				<PropertyEntry name="state" value="1" timeUnitsLeft="1" />
+  			</PropertyList>
+  			<RelationshipList /> 
+  			<CurrentRoom id="10000002" /> 
+  			<LastRoom id="10000002" /> 
+			<DescriptionList>
+  				<Description stateComparand="0" stateMask="0">Un goblin verde y feo. Ugh.</Description> 
+  			</DescriptionList>
+			<SingularNames>
+  				<Description stateComparand="0" stateMask="0">Guardia goblin</Description> 
+ 			</SingularNames>
+			<PluralNames>
+  				<Description stateComparand="0" stateMask="0">Guardias goblin</Description> 
+  			</PluralNames>
+			<SingularReferenceNames>
+  				<Name>Guardia goblin</Name>
+  				<Name>goblin</Name>
+  				<Name>guardia</Name>
+  				<Name>trasgo</Name>
+  				<Name>bicho</Name> 
+  			</SingularReferenceNames>
+  			<PluralReferenceNames>
+  				<Name>Guardias goblin</Name>
+  				<Name>goblins</Name>
+  				<Name>guardias</Name>
+  				<Name>trasgos</Name>
+  				<Name>bichos</Name> 
+  			</PluralReferenceNames>
+			<Inventory weight="10" volume="7" weightLimit="10000" volumeLimit="10000"><ItemRef id="30000004" /><ItemRef id="30000005" /></Inventory>
+			<WieldedWeaponsInventory>
+				<Inventory weight="10" volume="7" weightLimit="10000" volumeLimit="10000"><ItemRef id="30000004" /><ItemRef id="30000005" /></Inventory>
+  			</WieldedWeaponsInventory>
+			<WieldingLimbsInventory>
+				<Inventory weight="2" volume="2" weightLimit="10000" volumeLimit="10000"><ItemRef id="30000002" /><ItemRef id="30000001" /></Inventory>
+  			</WieldingLimbsInventory>
+  			<VirtualInventory>
+				<Inventory weight="3" volume="4" weightLimit="10000" volumeLimit="10000"><ItemRef id="30000005" /></Inventory>
+  			</VirtualInventory>
+			<ConversationalAI>
+				<Mapping command="hola$buenas">
+  					<Description stateComparand="0" stateMask="0">¡Grrrrrrrrrr!</Description> 
+  				</Mapping>
+				<Mapping command="matar">
+					<Description stateComparand="0" stateMask="0">¡GRRRHRRHM!</Description>
+				</Mapping>
+  			</ConversationalAI>
+  		</Mobile>
+
+
+		<Mobile id="20000001" name="Soldado goblin" extends="0" clones="0" type="null" properName="false" hp="100" mp="0" maxhp="100" maxmp="0" gender="true">
+			<PropertyList>
+  				<PropertyEntry name="state" value="1" timeUnitsLeft="1" />
+  			</PropertyList>
+  			<RelationshipList /> 
+  			<CurrentRoom id="10000002" /> 
+  			<LastRoom id="10000002" /> 
+			<DescriptionList>
+  				<Description stateComparand="0" stateMask="0">Un goblin verde y feo. Ugh.</Description> 
+  			</DescriptionList>
+			<SingularNames>
+  				<Description stateComparand="0" stateMask="0">Soldado goblin</Description> 
+ 			</SingularNames>
+			<PluralNames>
+  				<Description stateComparand="0" stateMask="0">Soldados goblin</Description> 
+  			</PluralNames>
+			<SingularReferenceNames>
+  				<Name>Soldado goblin</Name>
+  				<Name>goblin</Name>
+  				<Name>soldado</Name>
+  				<Name>trasgo</Name>
+  				<Name>bicho</Name> 
+  			</SingularReferenceNames>
+  			<PluralReferenceNames>
+  				<Name>Soldados goblin</Name>
+  				<Name>goblins</Name>
+  				<Name>soldados</Name>
+  				<Name>trasgos</Name>
+  				<Name>bichos</Name> 
+  			</PluralReferenceNames>
+			<Inventory weight="10" volume="7" weightLimit="10000" volumeLimit="10000"><ItemRef id="30000006" /><ItemRef id="30000007" /></Inventory>
+			<WieldedWeaponsInventory>
+				<Inventory weight="10" volume="7" weightLimit="10000" volumeLimit="10000"><ItemRef id="30000006" /><ItemRef id="30000007" /></Inventory>
+  			</WieldedWeaponsInventory>
+			<WieldingLimbsInventory>
+				<Inventory weight="2" volume="2" weightLimit="10000" volumeLimit="10000"><ItemRef id="30000002" /><ItemRef id="30000001" /></Inventory>
+  			</WieldingLimbsInventory>
+  			<VirtualInventory>
+				<Inventory weight="7" volume="3" weightLimit="10000" volumeLimit="10000"><ItemRef id="30000006" /></Inventory>
+  			</VirtualInventory>
+			<ConversationalAI>
+				<Mapping command="hola$buenas">
+  					<Description stateComparand="0" stateMask="0">¡Grrrrrrrrrrhrrr!</Description> 
+  				</Mapping>
+				<Mapping command="matar">
+					<Description stateComparand="0" stateMask="0">¡GRRRHRRHMHM!</Description>
+				</Mapping>
+  			</ConversationalAI>
+  			<Traits>
+  				<SkillList>
+  					<Skill name="contundente" value="1000" /> 
+  				</SkillList>
+  			</Traits>
+  			<Code language="BeanShell">
+  				void infoIntentoAtaque ( Mobile objetivo )
+  				{
+  					self.getRoom().informAction(self,null,"$1 emite un rugido de furia.\n","$1 emite un rugido de furia.\n","Emites un rugido de furia.\n",false);
+  				}
+  			</Code>
+  		</Mobile>
+
+		<Mobile id="20000002" name="Asesino katmai" extends="0" clones="0" type="null" properName="false" hp="100" mp="0" maxhp="100" maxmp="0" gender="true">
+			<PropertyList>
+  				<PropertyEntry name="state" value="1" timeUnitsLeft="1" />
+  			</PropertyList>
+  			<RelationshipList /> 
+  			<CurrentRoom id="10000002" /> 
+  			<LastRoom id="10000002" /> 
+			<DescriptionList>
+  				<Description stateComparand="0" stateMask="0">Una criatura de las sombras, negra, pequeña y muy ágil.</Description> 
+  			</DescriptionList>
+			<SingularNames>
+  				<Description stateComparand="0" stateMask="0">Asesino katmai</Description> 
+ 			</SingularNames>
+			<PluralNames>
+  				<Description stateComparand="0" stateMask="0">Asesinos katmai</Description> 
+  			</PluralNames>
+			<SingularReferenceNames>
+  				<Name>asesino katmai</Name>
+  				<Name>katmai</Name>
+  				<Name>asesino</Name>
+  				<Name>bicho</Name> 
+  			</SingularReferenceNames>
+  			<PluralReferenceNames>
+  				<Name>asesinos katmai</Name>
+  				<Name>katmais</Name>
+  				<Name>asesinos</Name>
+  				<Name>bichos</Name> 
+  			</PluralReferenceNames>
+			<Inventory weight="3" volume="2" weightLimit="10000" volumeLimit="10000"><ItemRef id="Daga katmai" /></Inventory>
+			<WieldedWeaponsInventory>
+				<Inventory weight="3" volume="2" weightLimit="10000" volumeLimit="10000"><ItemRef id="Daga katmai" /></Inventory>
+  			</WieldedWeaponsInventory>
+			<WieldingLimbsInventory>
+				<Inventory weight="2" volume="2" weightLimit="10000" volumeLimit="10000"><ItemRef id="30000002" /><ItemRef id="30000001" /></Inventory>
+  			</WieldingLimbsInventory>
+  			<VirtualInventory>
+				<Inventory weight="3" volume="2" weightLimit="10000" volumeLimit="10000"><ItemRef id="Daga katmai" /></Inventory>
+  			</VirtualInventory>
+			<ConversationalAI>
+				<Mapping command="hola$buenas">
+  					<Description stateComparand="0" stateMask="0">¡Grrrrrrrrrrhrrr!</Description> 
+  				</Mapping>
+				<Mapping command="matar">
+					<Description stateComparand="0" stateMask="0">¡GRRRHRRHMHM!</Description>
+				</Mapping>
+  			</ConversationalAI>
+  			<Traits>
+  				<SkillList>
+  					<Skill name="contundente" value="1000" /> 
+  					<Skill name="daga" value="1000" />
+  				</SkillList>
+  			</Traits>
+  			<Code language="BeanShell">
+  			
+  				void infoIntentoAtaque ( Mobile objetivo )
+  				{
+  					Weapon w = self.getCurrentWeapon();
+  					String wName = w.constructName2OneItem();
+  					System.out.println("Weapon name: " + wName);
+  					System.out.println("Weapon ID: " + w.getID());
+  					Random r = self.getRandom();
+  					int k = r.nextInt() % 4;
+  					if ( ( k % 4 ) == 0 )
+  					{
+  						self.say("¡Raaaaaaahhh!");
+  					}
+  					self.getRoom().informAction(self,objetivo,"$1 se lanza furiosamente sobre $2 con " + wName + "...\n","$1 se lanza furiosamente sobre ti con " + wName + "...\n","Te lanzas furiosamente sobre $2 con " + wName + "...\n",false);
+  					end();
+  				}
+  			
+  				void infoAcierto ( Mobile objetivo , int danyo )
+  				{
+  					Weapon w = self.getCurrentWeapon();
+  					String wName = w.constructName2OneItem();
+  					if ( danyo > 0 )
+  					{
+	  					self.getRoom().informAction ( self , objetivo ,
+										"$1 acierta a $2 con " + wName + " infligiéndole " + objetivo.estimateDamage(danyo) + "...\n" ,
+										"$1 te acierta con " + wName + " infligiéndote " + objetivo.estimateDamage(danyo) + "...\n" ,
+										"Aciertas a $2 con " + wName + " infligiéndole " + objetivo.estimateDamage(danyo) + "...\n" ,
+										true );
+  					}
+  					else
+  					{
+  					
+  					
+  						  self.getRoom().informAction ( self , objetivo ,
+							"$1 acierta a $2 con " + wName + " sin dañarlo" + "...\n" ,
+							
+							"$1 te acierta con " + wName + "; pero no consigue hacerte daño" + "...\n" ,
+							
+							"Aciertas a $2 con " + wName + "; pero no consigues hacerle daño" + "...\n" ,
+							true );
+  					}
+  					if ( danyo*10 &gt; objetivo.getMaxHP()  )
+  					{
+  						Random r = self.getRandom();
+  						
+  						int rint = r.nextInt() % 3;
+  						switch ( rint )
+  						{
+  							case 0:
+  								self.say("¡Sí! ¡Sangre!");
+  								break;
+  							case 1:
+  								self.say("¡Sufre!");
+  								break;
+  							case 2:
+  								self.say("¡Más sangre! ¡Más!");
+  								break;
+  						}
+  						
+  					}
+  					if ( objetivo.getHP() &lt;= 0 )
+  						self.say("¡Muere!");
+  					else if ( objetivo.getHP() * 5 &lt; objetivo.getMaxHP()  )
+  						self.say("¡Sólo un poco más!");
+  					end();
+  				}
+  			</Code>
+  		</Mobile>
+  		
+  		
+  		
+  		
+  		<Mobile name="Bestia menor" extends="0" clones="0" type="null" properName="false" hp="100" mp="0" maxhp="100" maxmp="0" gender="false">
+			<PropertyList>
+  				<PropertyEntry name="state" value="1" timeUnitsLeft="1" />
+  			</PropertyList>
+  			<RelationshipList /> 
+  			<CurrentRoom id="10000000" /> 
+  			<LastRoom id="10000000" /> 
+			<DescriptionList>
+  				<Description stateComparand="0" stateMask="0">Una pequeña criatura peluda, de horribles y puntiagudas garras y penetrantes ojos rojos. Nada agradable de ver.</Description> 
+  			</DescriptionList>
+			<SingularNames>
+  				<Description stateComparand="0" stateMask="0">bestia menor</Description> 
+ 			</SingularNames>
+			<PluralNames>
+  				<Description stateComparand="0" stateMask="0">bestia menor</Description> 
+  			</PluralNames>
+			<SingularReferenceNames>
+  				<Name>bestia menor</Name>
+  				<Name>bestia</Name>
+  				<Name>bicho</Name> 
+  			</SingularReferenceNames>
+  			<PluralReferenceNames>
+  				<Name>bestias menores</Name>
+  				<Name>bestias</Name>
+  				<Name>bichos</Name> 
+  			</PluralReferenceNames>
+			<Inventory weightLimit="10000" volumeLimit="10000"></Inventory>
+			<WieldedWeaponsInventory>
+				<Inventory weightLimit="10000" volumeLimit="10000"></Inventory>
+  			</WieldedWeaponsInventory>
+			<Parts>
+				<Inventory weightLimit="10000" volumeLimit="10000"><ItemRef id="Garra izquierda" /><ItemRef id="Garra derecha" /></Inventory>
+  			</Parts>
+			<ConversationalAI>
+				<Mapping command="hola$buenas">
+  					<Description stateComparand="0" stateMask="0">¡Arrrrghnrrrr!</Description> 
+  				</Mapping>
+				<Mapping command="matar">
+					<Description stateComparand="0" stateMask="0">¡RRRRRRAAAHHRRRR!</Description>
+				</Mapping>
+  			</ConversationalAI>
+  			<Traits>
+  				<SkillList>
+  					<Skill name="garra" value="600" /> 
+  					<Skill name="cuerpo a cuerpo" value="600" />
+  				</SkillList>
+  			</Traits>
+  			<Code language="BeanShell">
+  			
+  				//nay! source("ElDespertarDeZogon/entrenador.bsh");
+  			
+  				void infoIntentoAtaque ( Mobile objetivo )
+  				{
+  					Weapon w = self.getCurrentWeapon();
+  					String wName = w.constructName2OneItem();
+  					System.out.println("Weapon name: " + wName);
+  					System.out.println("Weapon ID: " + w.getID());
+  					Random r = self.getRandom();
+  					int k = r.nextInt() % 4;
+  					if ( ( k % 4 ) == 0 )
+  					{
+  						self.getRoom().informAction(self,null,"$1 lanza un rugido estremecedor.\n","$1 lanza un rugido estremecedor.\n","Lanzas un rugido estremecedor.\n",true);
+  					}
+  					self.getRoom().informAction(self,objetivo,"$1 se abalanza babeando sobre $2...\n","$1 se abalanza babeando sobre ti...\n","Te abalanzas babeando sobre $2...\n",true);
+  					end();
+  				}
+  			
+  				void infoAcierto ( Mobile objetivo , int danyo )
+  				{
+  					Weapon w = self.getCurrentWeapon();
+  					String wName = w.constructName2OneItem();
+  					if ( wName.indexOf("garra")>= 0 )
+  					{
+	  					if ( danyo > 0 )
+	  					{
+		  					self.getRoom().informAction ( self , objetivo ,
+		  									"$1 clava " + wName + " en la carne de $2, infligiéndole " + objetivo.estimateDamage(danyo) + "...\n" ,
+		  									"$1 te clava " + wName + " en la carne, desgarrando e infligiéndote " + objetivo.estimateDamage(danyo) + "...\n" ,
+		  									"Clavas " + wName + " en la carne de $2, infligiéndole " + objetivo.estimateDamage(danyo) + "...\n" ,
+											true );
+	  					}
+	  					else
+	  					{
+	  					
+	  					
+	  						  self.getRoom().informAction ( self , objetivo ,
+								"$1 acierta a $2 con " + wName + " sin dañarlo" + "...\n" ,
+								"$1 te acierta con " + wName + "; pero no consigue hacerte daño" + "...\n" ,
+								"Aciertas a $2 con " + wName + "; pero no consigues hacerle daño" + "...\n" ,
+								true );
+	  					}
+	  					if ( danyo*10 &gt; objetivo.getMaxHP()  )
+	  					{
+	  						Random r = self.getRandom();
+	  						
+	  						int rint = r.nextInt() % 3;
+	  						switch ( rint )
+	  						{
+	  							case 0:
+	  								self.say("¡GRRRAHHHH!");
+	  								break;
+	  							case 1:
+	  								self.say("¡ARRRGHNGHRR!");
+	  								break;
+	  							case 2:
+	  								self.say("¡GNAAAHRRRR!");
+	  								break;
+	  						}
+	  						
+	  					}
+	  					if ( objetivo.getHP() &lt;= 0 )
+	  						  self.getRoom().informAction(self,null,"$1 mira al cielo y aúlla, satisfecha.\n","$1 mira al cielo y aúlla, satisfecha.\n","Miras al cielo y aúllas, satisfecha.\n",true);				
+	  					else if ( objetivo.getHP() * 5 &lt; objetivo.getMaxHP()  )
+	  						  self.getRoom().informAction(self,null,"$1 brilla con un aura verde...\n","$1 brilla con un aura verde...\n","Brillas con un aura verde...\n",true);		
+	  					end();
+  					}
+  				}
+  				
+  				void afterDie ( Item cadaver )
+  				{
+  					cadaver.getRoomReferences().get(0).removeItem(cadaver);
+  					cadaver.getRoomReferences().get(0).informActionAuto(cadaver,null,null,"$1 se va volviendo transparente rápidamente hasta que desaparece.",false);
+  					this.setNewState(Mobile.IDLE,1);
+  					this.setRoom(world.getRoom("Limbo"));	
+  				}
+  				
+  			</Code>
+  		</Mobile>
+	
+	
+	
+	</Mobiles>
+	
+	<Spells>
+		<Spell name="Encantar arma">
+			<CastProbability steepness="0"/>
+			<CastTime starting="10" steepness="0"/>
+			<Duration starting="100" steepness="0"/>
+			<InvolvedSkills>
+				<Skill name="conjuración"/>
+			</InvolvedSkills>
+			<ManaCost starting="10" steepness="0"/>
+			<Intensity starting="4" steepness="0"/>
+			<EffectList><EffectRef id="encantar arma" intensity="4"/></EffectList>
+			<Code language="BeanShell">
+			void beforeCast ( Entity caster , Entity target )
+			{
+					if ( target == null )
+					{
+						caster.escribir("¿Qué arma quieres encantar?\n");
+						end();
+					}
+					else if ( !(target instanceof Weapon) )
+					{
+						caster.escribir("Eso no es un arma.\n");
+						end();
+					}
+					else if ( !caster.hasItem((Item)target) )
+					{
+						caster.escribir("Sólo puedes encantar las armas que llevas.\n");
+						end();
+					}
+					else if ( target.getRelationshipPropertyValueAsBoolean(self,"cast") )
+					{
+						caster.escribir("Ya está bajo el efecto de ese hechizo.\n");
+						end();
+					}
+					else
+					{
+						caster.say ( "¡Zugh anzik wogah!" );
+					}
+			}
+			void beforeFail ( Entity caster , Entity target )
+			{
+					if ( target == null )
+					{
+						caster.escribir("¿Qué arma quieres encantar?\n");
+						end();
+					}
+					else if ( !(target instanceof Weapon) )
+					{
+						caster.escribir("Eso no es un arma.\n");
+						end();
+					}
+					else if ( !caster.hasItem((Item)target) )
+					{
+						caster.escribir("Sólo puedes encantar las armas que llevas.\n");
+						end();
+					}
+					else if ( target.getRelationshipPropertyValueAsBoolean(self,"cast") )
+					{
+						caster.escribir("Ya está bajo el efecto de ese hechizo.\n");
+						end();
+					}
+					else
+					{
+						caster.say ( "¡Zugh anzik wogah!" );
+					}
+			}
+			
+			</Code>
+		</Spell>
+		<Spell name="Bola de fuego">
+			<CastProbability steepness="0"/>
+			<CastTime starting="10" steepness="0"/>
+			<Duration starting="0" steepness="0"/>
+			<InvolvedSkills>
+				<Skill name="magia natural"/>
+			</InvolvedSkills>
+			<ManaCost starting="10" steepness="0"/>
+			<Intensity starting="4" steepness="0"/>
+			<EffectList><EffectRef id="daño de fuego" intensity="4"/></EffectList>
+			<Code language="BeanShell">
+			void prepare ( Entity caster , Entity target )
+			{
+				caster.say ( "¡Azh anzik umgah..." );
+				((Mobile)caster).getRoom().informAction(caster,target,null,"$1 comienza a formar una bola de fuego con sus manos...\n","$1 comienza a formar una bola de fuego con sus manos...\n","Comienzas a formar una bola de fuego con tus manos...\n",true);	
+			}
+			void beforeCast ( Entity caster , Entity target )
+			{
+					if ( target == null )
+					{
+						caster.escribir("¿A quién quieres apuntar?\n");
+						end();
+					}
+					else if ( !(target instanceof Mobile) )
+					{
+						caster.escribir("Eso no es una criatura.\n");
+						end();
+					}
+					else if ( target.getRelationshipPropertyValueAsBoolean(self,"cast") )
+					{
+						//absurd
+						//caster.escribir("Ya está bajo el efecto de ese hechizo.\n");
+						end();
+					}
+					else if ( !((Mobile)caster).getRoom().hasMobile(target) )
+					{
+						caster.escribir( target.constructName2OneItem(caster) + " no está a tu alcance.\n" );
+						end();
+					}
+					else
+					{
+						caster.say ( "...Annon Rodisnik Ferkzanli!" );
+					}
+			}
+			void beforeFail ( Entity caster , Entity target )
+			{
+					if ( target == null )
+					{
+						caster.escribir("¿A quién quieres apuntar?\n");
+						end();
+					}
+					else if ( !(target instanceof Mobile) )
+					{
+						caster.escribir("Eso no es una criatura.\n");
+						end();
+					}
+					else if ( target.getRelationshipPropertyValueAsBoolean(self,"cast") )
+					{
+						//absurd
+						//caster.escribir("Ya está bajo el efecto de ese hechizo.\n");
+						end();
+					}
+					else if ( !((Mobile)caster).getRoom().hasMobile(target) )
+					{
+						caster.escribir( target.constructName2OneItem(caster) + " no está a tu alcance.\n" );
+						end();
+					}
+					else
+					{
+						caster.say ( "...Annon Rodisnik Ferkzanli!" );
+					}
+			}
+			</Code>
+		</Spell>
+		<Spell name="Aturdir">
+			<CastProbability steepness="0"/>
+			<CastTime starting="10" steepness="0"/>
+			<Duration starting="0" steepness="0"/>
+			<InvolvedSkills>
+				<Skill name="magia mental"/>
+			</InvolvedSkills>
+			<ManaCost starting="10" steepness="0"/>
+			<Intensity starting="4" steepness="0"/>
+			<EffectList><EffectRef id="aturdir" intensity="4"/></EffectList>
+			<Code language="BeanShell">
+			void prepare ( Entity caster , Entity target )
+			{
+				caster.say ( "¡Innen jaiz orreit..." );
+				((Mobile)caster).getRoom().informAction(caster,target,null,"$1 hace unos extraños gestos con las manos...\n","$1 hace unos extraños gestos con las manos...\n","Haces unos extraños gestos con las manos...\n",true);	
+			}
+			void beforeCast ( Entity caster , Entity target )
+			{
+					if ( target == null )
+					{
+						caster.escribir("¿A quién quieres apuntar?\n");
+						end();
+					}
+					else if ( !(target instanceof Mobile) )
+					{
+						caster.escribir("Eso no es una criatura.\n");
+						end();
+					}
+					else if ( target.getRelationshipPropertyValueAsBoolean(self,"cast") )
+					{
+						//absurd
+						//caster.escribir("Ya está bajo el efecto de ese hechizo.\n");
+						end();
+					}
+					else if ( !((Mobile)caster).getRoom().hasMobile(target) )
+					{
+						caster.escribir( target.constructName2OneItem(caster) + " no está a tu alcance.\n" );
+						end();
+					}
+					else
+					{
+						caster.say ( "...Kaist zinnernat morisnil!" );
+					}
+			}
+			void beforeFail ( Entity caster , Entity target )
+			{
+					if ( target == null )
+					{
+						caster.escribir("¿A quién quieres apuntar?\n");
+						end();
+					}
+					else if ( !(target instanceof Mobile) )
+					{
+						caster.escribir("Eso no es una criatura.\n");
+						end();
+					}
+					else if ( target.getRelationshipPropertyValueAsBoolean(self,"cast") )
+					{
+						//absurd
+						//caster.escribir("Ya está bajo el efecto de ese hechizo.\n");
+						end();
+					}
+					else if ( !((Mobile)caster).getRoom().hasMobile(target) )
+					{
+						caster.escribir( target.constructName2OneItem(caster) + " no está a tu alcance.\n" );
+						end();
+					}
+					else
+					{
+						caster.say ( "...Kaist zinnernat morisnil!" );
+					}
+			}
+			</Code>
+		</Spell>
+		<Spell name="Detectar magia">
+			<CastProbability steepness="0"/>
+			<CastTime starting="10" steepness="0"/>
+			<Duration starting="0" steepness="0"/>
+			<InvolvedSkills>
+				<Skill name="magia antimagia"/>
+			</InvolvedSkills>
+			<ManaCost starting="0" steepness="0"/>
+			<Intensity starting="4" steepness="0"/>
+			<EffectList><EffectRef id="detectar magia" intensity="4"/></EffectList>
+			<Code language="BeanShell">
+			void prepare ( Entity caster , Entity target )
+			{
+				((Mobile)caster).getRoom().informAction(caster,target,null,"$1 alza las manos y mira hacia el infinito...\n","$1 alza las manos y mira hacia el infinito...\n","Alzas las manos y miras hacia el infinito...\n",true);	
+			}
+			void beforeCast ( Entity caster , Entity target )
+			{
+				if ( target == null )
+					caster.say("¡Ach Zig Mernikla Farnerikla!");
+				else
+					caster.say("¡Ach Zig Mernikla Partarlskarn!");
+				//continue
+			}
+			void beforeFail ( Entity caster , Entity target )
+			{
+				if ( target == null )
+					caster.say("¡Ach Zig Mernikla Farnerikla!");
+				else
+					caster.say("¡Ach Zig Mernikla Partarlskarn!");
+				//continue
+			}
+			</Code>
+		</Spell>
+		<Spell name="Invocar bestia">
+			<CastProbability steepness="0"/>
+			<CastTime starting="10" steepness="0"/>
+			<Duration starting="10" steepness="0"/>
+			<InvolvedSkills>
+				<Skill name="conjuración"/>
+			</InvolvedSkills>
+			<ManaCost starting="10" steepness="0"/>
+			<Intensity starting="4" steepness="0"/>
+			<EffectList><EffectRef id="invocar bestia menor" intensity="4"/></EffectList>
+			<Code language="BeanShell">
+				void prepare ( Entity caster , Entity target )
+				{
+					((Mobile)caster).getRoom().informAction(caster,target,null,"$1 mueve los brazos arriba y abajo...\n","$1 mueve los brazos arriba y abajo...\n","Mueves las manos arriba y abajo...\n",true);	
+				}
+				void beforeCast ( Entity caster , Entity target )
+				{
+					caster.say("¡Inzelda zontar nunil!");
+					if ( world.getMobile("Bestia menor").getRoom() != world.getRoom("Limbo") )
+					{
+						caster.escribir("Parece que no hay ninguna bestia en las dimensiones oscuras que pueda venir.\n");
+						end();
+					}
+				}
+				void beforeFail ( Entity caster , Entity target )
+				{
+					caster.say("¡Inzelda zontar nunil!");
+				}
+			</Code>
+		</Spell>
+	</Spells>
+	
+	<AbstractEntities>
+		<AbstractEntity type="effect" name="encantar arma">
+			<Code language="BeanShell">
+				boolean cast ( Entity caster , Entity target , int intensity )
+				{
+					//{target is Weapon}
+						Weapon targetW = (Weapon) target;
+						((Mobile)caster).getRoom().informActionAuto(targetW,null,null,"$1 brilla con un aura azulada.\n",false);
+						target.addDamageBonus(2);
+						return true;
+				}
+				void fail ( Entity caster , Entity target )
+				{
+						
+					//{target is Weapon}
+						
+						Weapon targetW = (Weapon) target;
+						((Mobile)caster).escribir("Unos tímidos destellos azules salen de tus manos; pero tu hechizo falla.\n");
+						return;
+	
+				}
+				void fade ( Entity target )
+				{
+					Weapon targetW = (Weapon) target;
+					List propiet = target.getMobileReferences();
+					Mobile prop = (Mobile) propiet.get(0);
+					prop.getRoom().informActionAuto(targetW,null,null,"El brillo de $1 se debilita hasta desvanecerse.\n",false);
+					System.out.println("El brillo se apaga.\n");
+					target.addDamageBonus(-2);
+				}
+			</Code>
+		</AbstractEntity>
+		<AbstractEntity type="effect" name="aturdir">
+			<Code language="BeanShell">
+				boolean cast ( Entity caster , Entity target , int intensity )
+				{
+				
+					//don't worry about the 10.000: state'll be re-changed by fade()
+					target.setNewState(Mobile.SURPRISE_RECOVER,10000);
+					((Mobile)caster).getRoom().informAction(caster,target,null,"$2 queda aturdido por el hechizo de $1...\n","Quedas aturdido por el hechizo de $1.\n","Tu hechizo aturde a $2.\n",true);
+					return true;
+				}
+				void fail ( Entity caster , Entity target )
+				{
+					Double aleat = ((Mobile)caster).getRandom().nextDouble();
+					if ( aleat &lt; 0.7 )
+						((Mobile)caster).escribir("Tu hechizo de aturdimiento falla, " + ((Mobile)target).constructName2OneItem(caster) + " no parece afectado.");
+					else
+					{
+						((Mobile)caster).escribir("¡Tu hechizo de aturdimiento falla y se vuelve contra ti, dejándote confuso!");
+						((Mobile)caster).setNewState(Mobile.SURPRISE_RECOVER,500);
+					}
+				}
+				void fade ( Entity target )
+				{
+					if ( target.getState() == Mobile.SURPRISE_RECOVER ) //podría no tener ya este estado, tal vez porque algo (un golpe...) lo sacara de su aturdimiento.
+						target.setNewState(Mobile.IDLE,1);
+				}
+			</Code>
+		</AbstractEntity>
+		<AbstractEntity type="effect" name="invocar bestia menor">
+			<Code language="BeanShell">
+				boolean cast ( Entity caster , Entity target , int intensity )
+				{
+					//target doesn't do anything.
+					
+					world.getMobile("Bestia menor").setRoom( ((Mobile)caster).getRoom() );
+					((Mobile)caster).getRoom().informActionAuto(world.getMobile("Bestia menor"),null,null,"¡$1 aparece de la nada!\n",true);	
+					return true;
+					
+				}
+				void fade ( Entity target )
+				{
+					world.getMobile("Bestia menor").getRoom().informActionAuto( world.getMobile("Bestia menor"),null,null,"¡$1 desaparece súbitamente!\n",true );
+					world.getMobile("Bestia menor").setRoom( world.getRoom("Limbo") );
+				}
+				boolean fail ( Entity caster , Entity target  )
+				{
+					caster.escribir("Tu hechizo de invocación falla.\n");
+				}
+			</Code>
+		</AbstractEntity>
+		<AbstractEntity type="effect" name="daño de fuego">
+			<Code language="BeanShell">
+				boolean cast ( Entity caster , Entity target , int intensity )
+				{
+					//preCD: target is Mobile
+					System.out.println("JAAAAAAAARL");
+
+					Mobile targetM = (Mobile) target;
+					ArrayList damList = new ArrayList();
+					damList.add ( new Integer(0) );
+					damList.add ( new Integer(20) );
+					int danoHecho = target.tryToDealDamage ( damList , false );
+					((Mobile)caster).getRoom().informAction(caster,target,null,"La bola de fuego sale de las manos de $1 y golpea a $2.\n","La bola de fuego sale de las manos de $1 y te golpea.\n","La bola de fuego sale de tus manos y golpea a $2.\n",true);
+					return true;
+				}
+				void fail ( Entity caster , Entity target )
+				{
+					
+					((Mobile)caster).getRoom().informAction(caster,target,null,"La bola de fuego flaquea y se apaga.\n","La bola de fuego flaquea y se apaga.\n","La bola de fuego flaquea y se apaga.\n", true);
+					return;
+				}
+				/* nonsense, duration is zero
+				void fade ( Entity target )
+				{
+					//((Mobile)caster).getRoom().informActionAuto(targetW,null,null,"$1 brilla con un aura azulada.\n",false);
+					//System.out.println("El brillo se apaga.\n");
+					//target.addDamageBonus(-2);
+				}
+				*/
+			</Code>
+		</AbstractEntity>
+		<AbstractEntity type="effect" name="detectar magia">
+			<Code language="BeanShell">
+				boolean cast ( Entity caster , Entity target , int intensity )
+				{
+					//target nullable
+					System.out.println("JAAAAAAAARL");
+					if ( target == null )
+					{
+						//detectar magia in room
+						
+						EntityList el = caster.getReachableEntities();
+					
+						boolean detected = false;
+					
+						for ( int i = 0 ; i &lt; el.size() ; i++ )
+						{
+							Entity current = el.get(i);
+							List effects = current.getRelatedEntitiesByValue("cast",true);
+							if ( effects.size() > 0 )
+							{
+								if ( current instanceof Nameable )
+								{
+									detected = true;
+									caster.escribir("Detectas magia en torno a " + ((Nameable)current).constructName2(1,caster) + ".\n");
+								}
+							}
+						}
+						
+						if ( !detected )
+						{
+							caster.escribir("No detectas influencias mágicas por aquí.\n");
+						}
+						
+						return true;
+					
+					}
+					else
+					{
+						
+						//target not null: details about target
+					
+						List effects = target.getRelatedEntitiesByValue("cast",true);
+						if ( effects.size() > 0 )
+						{
+							caster.escribir("Parece que " + ((Nameable)target).constructName2(1,caster) + " está bajo la influencia de un efecto de " + ((Effect)effects.get(0)).getTitle() + ".\n" );	
+						}
+						else if ( target instanceof Nameable )
+						{
+							caster.escribir("No detectas influencias mágicas en " + ((Nameable)target).constructName2(1,caster) + ".\n");
+						}
+				
+						return true;
+					}
+				}
+				void fail ( Entity caster , Entity target )
+				{
+					caster.escribir("Tu hechizo falla y no consigues detectar nada.\n");
+				}
+				/* nonsense, duration is zero
+				void fade ( Entity target )
+				{
+					//((Mobile)caster).getRoom().informActionAuto(targetW,null,null,"$1 brilla con un aura azulada.\n",false);
+					//System.out.println("El brillo se apaga.\n");
+					//target.addDamageBonus(-2);
+				}
+				*/
+			</Code>
+		</AbstractEntity>
+		
+		
+	</AbstractEntities>
+	
+	
+</World>

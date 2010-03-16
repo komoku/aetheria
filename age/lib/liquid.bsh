@@ -1,0 +1,150 @@
+
+//liquid.bsh
+//allows this Item to be a liquid or a liquid-container
+
+//liquids have the property liquid (bool) and the volume is very important on'em.
+//liquid-containers have the property liquid_container.
+//also the relationship its_liquid with its liquid.
+
+//acciones soportadas:
+
+//vaciar liquid_container (en suelo) -> IMPLEMENTED
+//vaciar liquid_container en liquid_container -> IMPLEMENTED
+//llenar liquid_container con/de liquid (en suelo) -> IMPLEMENTED
+//llenar liquid_container con liquid_container
+//beber de liquid_container
+
+//coger liquid (en suelo) con liquid_container -> llenar liquid_container con/de liquid (en suelo) -> IMPLEMENTED
+//dejar liquid (en suelo) -> vaciar liquid_container (en suelo)
+
+
+//global methods
+
+
+//spill liquid from a liquid-container into the Void.
+void before_spill_liquid ( Entity cont1 )
+{
+	List l1 = cont1.getRelatedEntitiesByValue("its_liquid",true);
+	
+	Item liquidOnFirst = null;
+	
+	if ( l1 != null && l1.size() > 0 )
+		liquidOnFirst = (Item) l1.get(0);
+		
+	if ( liquidOnFirst == null ) return 0; //no liquid to transfer
+	
+	cont1.getContents().removeItem(liquidOnFirst);
+	cont1.setRelationshipProperty(liquidOnFirst,"its_liquid",false);
+	
+	
+}
+
+//transfer liquid from a liquid-container to another. We talk about Entities because it1 and it2 can be Items or Rooms.
+int before_transfer_liquid ( Entity cont1 , Entity cont2 )
+{	
+
+	System.out.println("############Liquid before transfer exec from " + cont1 + " to " + cont2);
+
+	//{it1, it2 are liquid-containers}
+	
+	List l1 = cont1.getRelatedEntitiesByValue("its_liquid",true);
+	List l2 = cont2.getRelatedEntitiesByValue("its_liquid",true);
+	
+	System.out.println("List one is " + l1);
+	
+	Item liquidOnFirst = null;
+	Item liquidOnSecond = null;
+	
+	if ( l1 != null && l1.size() > 0 )
+		liquidOnFirst = (Item) l1.get(0);
+	
+	if ( l2 != null && l2.size() > 0 )
+		liquidOnSecond = (Item) l2.get(0);
+	
+	System.out.println("##Step 1.\n");
+	
+	if ( liquidOnFirst == null ) return 0; //no liquid to transfer
+	
+	Inventory targetInv = cont2.getContents();
+	System.out.println("##Step 1.5.\n");
+	int remaining_volume_on_second = targetInv.getVolumeLimit()- ( liquidOnSecond==null ? 0 : liquidOnSecond.getVolume() );
+	
+	System.out.println("##Step 2. Available volume on second: " + remaining_volume_on_second + "\n");
+	
+	if ( remaining_volume_on_second <= 0 ) return 0; //no room on second container to transfer anything (it's full!)
+	
+	int quantity_to_transfer = remaining_volume_on_second;
+	
+	if ( liquidOnFirst.getVolume() < quantity_to_transfer ) quantity_to_transfer = liquidOnFirst.getVolume();
+	
+	System.out.println("To transfer " + liquidOnFirst + " from " + cont1 + " to " +  cont2 + ": " + quantity_to_transfer);
+	
+	if ( quantity_to_transfer <= 0 ) return 0; //no liquid to pass to second container, first is empty.
+	
+	//do transfer:
+	
+	System.out.println("##Step 3. Initting liquid transfer.\n");
+	
+	if ( liquidOnSecond == null )
+	{
+		liquidOnFirst.setVolume ( liquidOnFirst.getVolume() - quantity_to_transfer );
+		if ( liquidOnFirst.getVolume() <= 0 )
+		{
+			cont1.getContents().removeItem(liquidOnFirst);
+			cont1.setRelationshipProperty(liquidOnFirst,"its_liquid",false);
+		}
+		Item mix = mix_liquids ( liquidOnFirst , quantity_to_transfer , liquidOnSecond , 0 );
+		cont2.getContents().addItem ( mix );
+		cont2.setRelationshipProperty ( mix , "its_liquid" , true );
+	}
+	else if ( liquidOnFirst.isSame ( liquidOnSecond ) )
+	{
+		liquidOnFirst.setVolume ( liquidOnFirst.getVolume() - quantity_to_transfer );
+		if ( liquidOnFirst.getVolume() <= 0 )
+		{
+			cont1.getContents().removeItem(liquidOnFirst);
+			cont1.setRelationshipProperty(liquidOnFirst,"its_liquid",false);
+		}
+		liquidOnSecond.setVolume ( liquidOnSecond.getVolume() + quantity_to_transfer );
+	}
+	
+	else
+	{
+		liquidOnFirst.setVolume ( liquidOnFirst.getVolume() - quantity_to_transfer );
+		if ( liquidOnFirst.getVolume() <= 0 )
+		{
+			cont1.getContents().removeItem(liquidOnFirst);
+			cont1.setRelationshipProperty(liquidOnFirst,"its_liquid",false);
+		}
+		int tempVolume = liquidOnSecond.getVolume();
+		cont2.getContents().removeItem ( liquidOnSecond );
+		Item mix = mix_liquids ( liquidOnFirst , quantity_to_transfer , liquidOnSecond , tempVolume );
+		cont2.getContents().addItem ( mix );
+		cont2.setRelationshipProperty ( mix , "its_liquid" , true );
+	}
+
+	//current.getPropertyValueAsBoolean ("liquid");
+
+	System.out.println("##Step 4. Done. Transferred " + quantity_to_transfer + " centilitres.\n");
+
+	return quantity_to_transfer;
+
+}
+
+Item mix_liquids ( Item liquid1 , int volume1 , Item liquid2 , int volume2 ) //devuelve la mezcla. De momento, que sea el líquido 1.
+{
+	Item newLiquid = liquid1.createNewInstance(world,false,false);
+	newLiquid.setVolume ( volume1 + (liquid2==null?0:volume2 ) );
+	System.out.println("Volume set to " + newLiquid.getVolume());
+	return ( newLiquid );
+}
+
+
+
+
+if ( self instanceof World )
+	source("lib/liquid_world.bsh");
+
+
+if ( self instanceof Item )
+	source("lib/liquid_item.bsh");

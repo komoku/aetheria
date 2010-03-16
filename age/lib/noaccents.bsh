@@ -1,0 +1,31 @@
+//noaccents.bsh - work without accented characters
+
+
+
+//command preprocessing
+
+String preprocessCommand ( Mobile sujeto , String cmd )
+{
+
+	return libinvoke ( "preprocessCommand" , new Object[] { sujeto , cmd } );
+
+}
+
+String noaccents_preprocessCommand ( Mobile sujeto , String s )
+{	
+	
+	s = s.replaceAll("[èéêë]","e");
+    s = s.replaceAll("[ûùúü]","u");
+    s = s.replaceAll("[ïîí]","i");
+    s = s.replaceAll("[àâá]","a");
+    s = s.replaceAll("[óòô]","o");
+
+    s = s.replaceAll("[ÈÉÊË]","E");
+    s = s.replaceAll("[ÛÙÚÜ]","U");
+    s = s.replaceAll("[ÏÎÍ]","I");
+    s = s.replaceAll("[ÀÂÁ]","A");
+    s = s.replaceAll("[ÓÒ]","O");
+	
+	return s;
+
+}

@@ -1,0 +1,64 @@
+// Decompiled by DJ v2.9.9.60 Copyright 2000 Atanas Neshkov  Date: 21/10/02 16:09:04
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+
+package bsh;
+
+import java.util.Hashtable;
+
+public class Capabilities
+{
+    public static class Unavailable extends RuntimeException
+    {
+
+        public Unavailable(String s)
+        {
+            super(s);
+        }
+    }
+
+
+    public Capabilities()
+    {
+    }
+
+    public static boolean haveSwing()
+    {
+        return classExists("javax.swing.JButton");
+    }
+
+    public static boolean canGenerateInterfaces()
+    {
+        return classExists("java.lang.reflect.Proxy");
+    }
+
+    public static boolean haveAccessibility()
+    {
+        return accessibility && classExists("java.lang.reflect.AccessibleObject") && classExists("bsh.reflect.ReflectManagerImpl");
+    }
+
+    public static void setAccessibility(boolean flag)
+    {
+        accessibility = flag;
+    }
+
+    public static boolean classExists(String s)
+    {
+        Object obj = classes.get(s);
+        if(obj == null)
+        {
+            try
+            {
+                obj = Class.forName(s);
+            }
+            catch(ClassNotFoundException classnotfoundexception) { }
+            if(obj != null)
+                classes.put(obj, "unused");
+        }
+        return obj != null;
+    }
+
+    private static boolean accessibility = false;
+    private static Hashtable classes = new Hashtable();
+
+}

@@ -1,0 +1,151 @@
+
+
+Puertas (asociar a caminos). <- DONE.
+
+Item types: weapon, wearable.
+
+Format:
+
+type="weapon"
+type="wearable"
+
+<- "wields", "wears" relationships should work.
+<- should not be necessary to use the wielding limbs and worn items inventory.
+
+Relationship:
+limb -> "wields=true" -> item => seems to be on asf. Can't find "wears" though. But it may be there (nothing really worn).
+
+
+
+Item weight.
+Mob HP, MP...
+
+Mob properName: ¿a chápuz?
+
+
+Character to item reltypes (simple inventory, wields, wears, has-limb...)
+
+
+En el propio mundo,
+
+
+<puck_info>
+	<Room name="adfadf" xcoord="32" ycoord="10"/>
+	<Mob name="jarar" xcoord="43" ycoord="51"/>
+</puck_info>
+
+(sólo nodos, no hace falta paths) <- Done.
+
+Plantillas de nodos:
+
+- Puerta
+- Contenedor abrible
+- Etc.
+
+Plantillas de múltiples nodos (soporte de):
+
+- Character with limbs
+- Path with openable door
+- ...
+
+Límites de peso/volumen en inventarios
+
+Flag canGet: ¿realmente eso se soporta en AGE?
+
+Plantillas de juego:
+
+- Simple Adventure
+- Simple MUD
+- Multiplayer Adventure
+- ...
+
+Plantillas para eventos:
+
+- Al abrir
+- Al cerrar
+- Al entrar...
+
+
+Item gender. <- Done.
+
+
+Player List is simpler than Player Template for single-pl!
+
+
+Support abbreviated extra description format on read? <- Done.
+
+
+
+Doors:
+
+(openable, closeable, etc. flags) -> done
+
+type="none" volume="4000" weight="5000" enabled="false" isVirtual="false" canGet="false" openable="true" closeable="true" lockable="true" unlockable="true"
+
+(closed, locked state) <- add shortcut for these states without going to properties?
+
+  			<PropertyList>
+  				<PropertyEntry name="closed" value="true" timeUnitsLeft="0"/>
+  				<PropertyEntry name="locked" value="false" timeUnitsLeft="0"/>
+  			</PropertyList>
+  			
+ 
+ (invisible in room description "puedes ver una...")
+  			
+ <SingularNames>
+  				<Description><Condition language="BeanShell">false</Condition>No tiene.</Description>
+  			</SingularNames>
+  			<PluralNames>
+  				<Description><Condition language="BeanShell">false</Condition>No tienen.</Description>
+  			</PluralNames>
+  							
+  			
+Spell.
+
+AbstractEntity.
+
+Effect.
+
+
+
+
+Abrir mundos sin META-INF: "Please locate Entrada de Karonia in a position". O algo así.
+O simplemente ponerlos todos en matriz.
+
+x x x x x x x x x
+x x x x x x x x x
+x x x x x x x x x
+...
+
+- File list (in World).
+
+- Font (in World - Visual Conf)
+
+- Wielding Limbs, Wielded Weapons, etc.
+
+- ConversationalAI (conversación palabras clave con XML). Supongo que hacerlo similar a extra descriptions, ya que el formato es distinto pero el concepto es el mismo => reusar código
+
+
+
+
+
+
+
+
+
+
+
+
+
+NEEDED FOR VAMPIRO:
+
+world:
+
+void serverintro() and/or
+void intro ( Player player )
+
+
+
+
+
+

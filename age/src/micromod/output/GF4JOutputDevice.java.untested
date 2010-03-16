@@ -1,0 +1,104 @@
+
+package micromod.output;
+
+/*
+	MicroMod - Java MOD Player
+	Copyright (C) 1999-2001  Martin Cameron
+
+	This library is free software; you can redistribute it and/or
+	modify it under the terms of the GNU Lesser General Public
+	License as published by the Free Software Foundation; either
+	version 2 of the License, or (at your option) any later version.
+
+	This library is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+	Lesser General Public License for more details.
+
+	You should have received a copy of the GNU Lesser General Public
+	License along with this library; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+	The author can be contacted at eMail address: javanerd@geocities.com
+	The page for official MicroMod releases is: http://website.lineone.net/~martin.cameron/
+*/
+
+import gameframe.*;
+import gameframe.core.*;
+import gameframe.sound.*;
+
+/**
+	GF4J library output device for MicroMod. You need to have GF4J (GameFrame
+	for Java) installed in order for this to work. You can download GF4J
+	from <a href="http://www.gamedev.net/hosted/javanerd">http://www.gamedev.net/hosted/javanerd</a>
+	@author Pasi Keränen javanerd@geocities.com
+*/
+public class GF4JOutputDevice extends PCM16StreamOutputDevice{
+	protected int samplingRate;
+	protected SoundEngine soundEngine;
+	protected SampleOutputStream outputStream;
+
+	/**
+		Constructs the GF4J library sound output device.
+		@param focusComponent The focus component must be given as some implementations require it
+		@param converter The AudioFormatConverter that represents the desired output format.
+		@param bufferTimeMs The number of ms of audio to hold in the buffer of the output device.
+		@param samplingRate The sampling rate.
+	*/
+	public GF4JOutputDevice(java.awt.Component focusComponent, AudioFormatConverter conv, int bufferTimeMs, int samplingRate) throws Exception{
+		// Check if we need to initialize GF4J
+		if(!GameFrame.isInitialized()){
+			GameFrame.init();
+			GameFrame.createSoundEngine(focusComponent);
+		}
+		soundEngine = GameFrame.getSoundEngine();
+		this.samplingRate=samplingRate;
+		initialise(converter);
+
+		// Set up audio format
+		PCMFormat pcmFormat = new PCMFormat();
+		pcmFormat.samplesPerSecond=samplingRate;
+		pcmFormat.numChannels=converter.getNumberOfChannels();
+		pcmFormat.bytesPerSample=converter.getBytesPerFrame()/pcmFormat.numChannels;
+		pcmFormat.bitsPerSample=pcmFormat.bytesPerSample*8;
+		pcmFormat.fBigEndian=converter.isBigEndian();
+		pcmFormat.blockAlign=converter.getBytesPerFrame();
+		pcmFormat.averageBytesPerSecond=samplingRate*pcmFormat.blockAlign;
+		outputStream=soundEngine.getSampleOutputStream(pcmFormat, bufferTimeMs);
+
+		// Success
+		System.out.println("Simple GF4J OutputDevice Version 0.1 Initialised.");
+	}
+
+	/**
+		Write the specified bytes to the audio device, from index 0 to length-1
+		This method should block until the data can be written.
+	*/
+	protected void write(byte[] data, int length){
+		outputStream.write( data, length );
+	}
+
+	public int getSamplingRate() {
+		return samplingRate;
+	}
+
+	public void start() {
+		if(!outputStream.isPlaying()) outputStream.start();
+	}
+
+	public void pause() {
+		if(outputStream.isPlaying()) outputStream.stop();
+	}
+
+	public void stop() {
+		if(outputStream.isPlaying()){
+			outputStream.drain();
+			outputStream.stop();
+		}
+	}
+
+	public void close() {
+		if(GameFrame.isInitialized()) GameFrame.getInstance().finalize();
+	}
+}
+

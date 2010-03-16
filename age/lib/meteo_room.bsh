@@ -1,0 +1,36 @@
+//To include in Room
+
+//State change:
+
+void meteo_update ( PropertyEntry pe , World mundo )
+{
+			
+	if ( pe.getName().equals("weather") )
+	{
+		
+		//randomize weather on all the world!
+		
+		int theweather = Math.abs ( mundo.getRandom().nextInt()%4 );
+		
+		try
+		{
+			mundo.execCode ( "setWeatherConditions" , new Object[] { new Integer ( theweather ) } );
+		}
+		catch (bsh.TargetError bshte)
+		{
+			mundo.escribir("bsh.TargetError found at world's setWeatherConditions routine" );
+		}
+		
+		//state changes propagate so only one Room 'll have to exec this one.
+		
+	}
+	
+	//continue with entity's update
+	
+}
+
+void update ( PropertyEntry pe , World mundo )
+{
+	System.out.println("Gonna call meteo's update on prop " + pe.getName() + " tu " + pe.getTimeLeft());
+	meteo_update ( pe , mundo );
+}

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<project name="PUCK" default="distwithage" basedir=".">
+    <description>
+        Build File para el Playable Universe Construction Kit
+    </description>
+  <!-- set global properties for this build -->
+  <property name="src" location="src"/>
+  <property name="build" location="build"/>
+  <property name="lib" location="../lib"/>
+  <property name="conf" location="conf"/>
+  <property name="dist" location="dist"/>
+  <property name="fulldist" location="fulldist"/> <!--Distribution including AGE-->
+  <property name="worlds" location="worlds"/>
+  <property name="corejar" value="PuckCore2.jar"/>
+  <property name="onejar" value="PuckFull2.jar"/>
+  <property name="age" value="../age/"/>
+  <!--<property name="defaultconf" location="defaultconf"/>-->
+
+
+  <target name="clean"
+	        description="clean up" >
+	    <echo message="Limpiando..."/>    
+	    <!-- Delete the ${build} and ${dist} directory trees -->
+	    <delete dir="${build}" failonerror="false"/>
+	  	<delete dir="${dist}" failonerror="false"/>
+  </target>
+	
+  <target name="init" depends="clean">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <echo message="Creando directorio build..."/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  </target>
+
+<!--
+	<target name="makeparser" depends="init"
+		description="generate sparser source files using javacc">
+		<echo message="Usando javacc para generar el codigo fuente del sparser..."/>
+			<javacc target="${src}/parser/sparser/SchemataParser.jj"
+    		javacchome="${lib}/javacc-3.2"
+    		static="true"
+			/>
+	</target>
+-->
+
+  <target name="compile" depends="init"
+        description="compile the source " >
+        <echo message="Compilando..."/>
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac sourcepath="" srcdir="${src}" destdir="${build}" classpath=".;${lib}/jhall.jar;${lib}/jhelpaction.jar;${lib}/AgeCore.jar;${lib}/bsh-2.0b2.jar;${lib}/micromod.jar;${lib}/jsyntaxpane-0.9.5-20100209.jar" debug="true">
+  		<include name="**/*.java"/>
+  		<exclude name="**/conf/**"/>
+    	<!--exclude does not seem to work-->
+  	</javac>
+	<copy todir="${build}">
+		<fileset dir="${src}">
+			<include name="**/Messages.*"/>
+			<include name="**/codeAssist.xml"/>
+			<include name="**/*.tpl"/>
+		</fileset>
+	</copy>
+  	
+	<!--
+	<copy todir="${build}">
+   	 <fileset dir="${lib}" excludes="javacc-3.2/** readme.txt" includes="*.jar"/>
+  	</copy>
+  	<copy todir="${build}">
+  		<fileset dir="${defaultconf}" excludes="readme.txt"/>
+  	</copy>
+  	-->
+  </target>
+	
+	<target name="corejar" depends="compile" description="generate core jar file">
+		<echo message="Generando archivo .jar del núcleo..."/>
+		<copy todir="${build}/images">
+		    <fileset dir="${src}/images"/>
+		</copy>
+		<copy todir="${build}/skins">
+		    <fileset dir="${src}/skins"/>
+		</copy>
+		<copy todir="${build}/help">
+		    <fileset dir="${src}/help"/>
+		</copy>
+		<jar jarfile="${build}/${corejar}" manifest="${conf}/MANIFEST.MF" basedir="${build}" includes="**"/>
+	</target>
+	
+	<target name="onejar" depends="corejar" description="generate one-jar jar file">
+		<echo message="Generando archivo .jar de arranque..."/>
+		<copy file="${build}/${corejar}" todir="${build}/onejartmp/main"/>
+		<copy todir="${build}/onejartmp/lib">
+			<fileset dir="${lib}">
+				<include name="**/*.jar"/>
+			</fileset>
+		</copy>
+		
+		<javac srcdir="${conf}/onejar/boot" destdir="${build}/onejartmp/" debug="true"/>
+		
+		<!--	
+		<copy todir="${build}/onejartmp/">
+			<fileset dir="${conf}/onejar/boot">
+			</fileset>
+		</copy>
+		-->
+		
+		<copy todir="${build}/onejartmp/help">
+		    <fileset dir="${src}/help"/>
+			<!--don't know why this is needed, but help doesn't work inside 2 jars.-->
+			<!--prolly 'cause the core jar calls a lib jar, then the lib jar calls help-->
+			<!--(i.e. the core jar doesn't call help directly)-->
+		</copy>
+		<copy todir="${build}/onejartmp/images">
+				    <fileset dir="${src}/images"/>
+					<!--same reason as help (help uses images)-->
+		</copy>
+		<copy todir="${build}/skins">
+		    <fileset dir="${src}/skins"/>
+		</copy>
+		<jar jarfile="${build}/${onejar}" manifest="${conf}/onejar/boot/boot-manifest.mf" basedir="${build}/onejartmp/" includes="**"/>
+	  	<!--<delete dir="${build}/onejartmp"/>-->
+	</target>
+	
+	<target name="distwithage" depends="dist" description="generate a distribution of AGE+PUCK">
+		<echo message="Creando distribución combinada AGE+PUCK..."/>
+		<ant dir="${age}" target="dist" inheritAll="false"/>
+		<mkdir dir="${fulldist}"/>
+		<copydir src="${age}/dist" dest="${fulldist}"/>
+		<copydir src="${dist}" dest="${fulldist}"/>
+	</target>
+	
+	<target name="dist" depends="corejar" description="generate a distribution with the core jar and associated files">
+		<echo message="Generando distribución de PUCK..."/>
+		<echo message="Copiando jar..."/>
+		<copy file="${build}/${corejar}" todir="${dist}"/>
+		<echo message="Copiando scripts..."/>
+		<copy todir="${dist}">
+			<fileset dir="${conf}/scripts"/>
+		</copy>
+		<echo message="Copiando bibliotecas..."/>
+		<copy todir="${dist}/lib">
+			<fileset dir="${lib}">
+				<include name="**/*.jar"/>
+				<exclude name="**/AgeCore.jar"/> <!--not needed in lib directory-->
+			</fileset>
+		</copy>
+		<copy todir="${dist}/worlds">
+			<fileset dir="${worlds}"/>
+		</copy>
+		<!--
+		<copy todir="${dist}/help">
+			<fileset dir="${src}/help"/>
+		</copy>
+		-->
+		<!--
+		<copy todir="${dist}/images">
+			<fileset dir="${src}/images"/>
+		</copy>
+		-->
+	</target>
+
+</project>

@@ -1,0 +1,31 @@
+
+
+The World editor:
+
+-> Use std. XML loading function from AGE to load World's XML file and create a World instance.
+
+-> On a World creation or opening (there is a default template), create JLists of Rooms, Items, Mobiles, Spells and AbstractEntities with option to add, apart from edit.
+
+-> On selecting an entry from one of the lists, the right part of the editor window is filled with all the things (descriptions, inventories, etc.) associated with it.
+
+	Name -> Text Field
+	
+	Extends -> Combo Box
+	Clones -> Combo Box
+	
+	Gender -> Checkbox
+	Weight, Volume -> Text Field	
+
+	Inventory -> List, Combo Box for Add Function
+
+	Path List -> List, new dialog for Add Function
+
+	Description List -> List, new window for each Description
+
+	Name List -> List, text field for Add Function
+
+	Property List -> List, text fields for Add Function
+
+	Code -> Text field	
+
+-> "Validate" button: tries to integrate changes into XML and reports errors.

@@ -1,0 +1,24 @@
+2006-12-15
+
+* Add node action changes cursor.
+* PUCK submitted to SVN repository.
+
+2007-04-07
+
+* Added complete support for description list panels with SUCCESS: and FAIL: description.
+* Added incomplete support for open/close/lock/unlockables
+  (the panel is there, but it does not read or write the XML for these characteristics)
+  
+2007-04-08
+
+* Added complete, untested support for open/close/lock/unlockable
+* Added complete, untested support for container items
+* Added complete, untested support for item-item parts inventories and key lists
+	(not for mobile parts inventories!)
+	
+
+2007-07-02
+
+* Resource-independent way of locating cursors and icons (via getResource).
+* Bugfix: corrected exception which was thrown when user attempts to draw an arrow in mid-air.
+* Working ant build file, included merging everything to a single jar with one-jar.

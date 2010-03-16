@@ -1,0 +1,37 @@
+
+//simplegen.bsh
+//generador simple de strings para PSI's
+//uso:
+//        String[][] in = { {"a","b"} , {"c","d"} }; 
+//        String s = simpleGenerator(in);
+
+//s puede dar: ab,ac,bc,bd
+
+//se puede cargar desde Room, Item, Mobile o World.
+//Cualquier cosa con método getRandom().
+
+String simpleGenerator ( String [] [] input )
+{
+
+	java.util.Random numberGenerator = self.getRandom();	
+	String result ="";
+
+	System.out.println("This friggin' fun's input: " + input);
+	System.out.println("Input zebra zebra: " + input[0][0]);
+
+	for ( int i = 0 ; i < input.length ; i++ )
+	{
+		String [] possibilities = input[i];
+		int selectedInd = Math.abs( numberGenerator.nextInt() ) % possibilities.length;
+		
+		System.out.println("Index: " + selectedInd + ", len: " + possibilities.length );
+		
+		System.out.println("Friggin' possibilities: " + possibilities + " , len " + possibilities.length + " , zebra " + possibilities[0] );
+		
+		String selected = possibilities[selectedInd];
+		result += selected;
+	}
+
+	return result;
+
+}
