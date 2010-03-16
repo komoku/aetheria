@@ -1,0 +1,75 @@
+//include this in a Mobile.
+
+//if attack is not null, then attack those. Else, if dontAttack is not null, then attack all but those. Else, attack anyone but itself.
+Mobile[] attack = null;
+Mobile[] dontAttack = null;
+
+//can also redefine attackDecision for direct control on decision to attack or not.
+
+void setAttack ( Mobile[] attack )
+{
+	super.attack = attack;
+}
+
+void setDontAttack ( Mobile[] dontAttack )
+{
+	super.dontAttack = attack;
+}
+
+boolean isInAttackArray ( Mobile m )
+{
+	if ( attack == null ) return false;
+	for ( int i = 0 ; i < attack.length ; i++ )
+	{
+		if ( attack[i] == m ) return true;
+	}
+	return false;
+}
+
+boolean isInDontAttackArray ( Mobile m )
+{
+	if ( dontAttack == null ) return false;
+	for ( int i = 0 ; i < dontAttack.length ; i++ )
+	{
+		if ( dontAttack[i] == m ) return true;
+	}
+	return false;
+}
+
+boolean attackDecision ( Mobile m )
+{
+	Debug.println("Taking attack decision.");
+	if ( m == self ) return false;
+	else if ( attack != null )
+	{
+		if ( isInAttackArray ( m ) )
+			return true;
+		else
+			return false;
+	}
+	else if ( dontAttack != null )
+	{
+		if ( isInDontAttackArray ( m ) )
+			return false;
+		else
+			return true;
+	}
+	else
+		return true;
+}
+		
+void onEnterRoom ( Mobile m )
+{
+		
+	Debug.println("Hey, someone's entering.");		
+	if ( !self.hasEnemy(m) )
+	{
+		if ( attackDecision(m) )
+		{
+			Debug.println("Returned " + attackDecision(m));
+			self.addEnemy(m);
+		}
+	}
+
+		
+}

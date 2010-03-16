@@ -1,0 +1,14 @@
+//Weather library
+//To include in World and Room, for weather changes affect all rooms at once.
+
+final int SUNNY = 0; //default
+final int CLOUDY = 1;
+final int RAINY = 2;
+final int SNOWY = 3;
+String s = "q";
+
+if ( self instanceof World )
+	source ( "lib/meteo_world.bsh" );
+	
+if ( self instanceof Room )
+	source ( "lib/meteo_room.bsh" );

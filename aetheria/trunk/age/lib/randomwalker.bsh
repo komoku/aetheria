@@ -1,0 +1,129 @@
+
+//randomwalker.bsh
+//include at a Mobile to make it walk randomly from room to room, with given (Room) limits.
+
+Room[] limits;
+
+void setLimits ( Room[] limites )
+{
+	super.limits = limites;
+}
+
+boolean isLimit ( Room r )
+{
+	if ( limits == null ) return false;
+	for ( int i = 0 ; i < limits.length ; i++ )
+	{
+		if ( limits[i] == r ) return true;
+	}
+	return false;
+}
+
+void makeMove ( )
+{
+	
+	System.out.println("Getting room and suchlike.");
+	
+	Room r = self.getRoom();
+	
+	if ( r == null ) return;
+	
+	Path[] p = r.getValidExits();
+	
+	int nValidasParaNosotros = 0;
+	
+	System.out.println("Initializiing everything.\n");
+	
+	for ( int i = 0 ; i < p.length ; i++ )
+	{
+		if ( !isLimit ( world.getRoom(p[i].getDestinationID()) ) && !(p[i].isClosed()) )
+			nValidasParaNosotros++;
+	}
+	
+	System.out.println("There are " + nValidasParaNosotros + " valid ones.");
+	
+	if ( nValidasParaNosotros == 0 ) 
+	{
+		self.setNewState ( Mobile.IDLE , 1 ); //don't do anything
+		return;
+	}
+	
+	Random rand = r.getRandom();
+	
+	int nAleat = Math.abs(rand.nextInt()) % nValidasParaNosotros;
+	
+	int jarl = 0;
+	Path aTomar;
+	
+	System.out.println("aTomar " + aTomar);
+	
+	for ( int i = 0 ; i < p.length ; i++ )
+	{
+		if ( !isLimit ( world.getRoom(p[i].getDestinationID()) ) && !(p[i].isClosed()) )
+		{
+			if ( jarl == nAleat )
+			{
+				aTomar = p[i];
+				break;
+			}
+			jarl++;
+		}
+	}
+	
+	self.go ( aTomar ); //this includes setting the state
+	
+	return;
+
+}
+
+
+
+void randomwalker_update ( PropertyEntry pe , World mundo )
+{
+
+
+	
+	if ( pe.getName().equalsIgnoreCase("state") && ( pe.getValueAsInteger() == (Mobile.IDLE) ) )
+	{
+		
+		System.out.println("Gonna see if randwalker has enemies.");
+		if ( self.hasEnemies() )
+		{
+			System.out.println("Randwalker has enemies.");
+			MobileList enemigos = self.getEnemies();
+			for ( int i = 0 ; i < enemigos.size() ; i++ )
+			{
+				Mobile m = enemigos.elementAt(i);	
+				System.out.println("Current mobile to search for is " + m);
+				System.out.println("Mobiles in room are " + self.getRoom().getMobiles());
+				if ( self.getRoom().hasMobile ( m ) ) //si el enemigo esta alcanzable
+				{
+					System.out.println("Found the enemy in our room.");
+					return; //let other updates act, don't move, we have enemies, that's important!
+				}				
+			}
+			
+		}
+		else
+		{
+			System.out.println("No. Doesn't have any.");
+		}
+		
+		System.out.println("Calling make move.");
+		makeMove();
+		System.out.println("Called make move.");
+		end();
+	
+	}
+	
+
+	
+}
+
+void update ( PropertyEntry pe , World mundo )
+{
+
+	System.out.println("RANDW UPD");
+
+	randomwalker_update ( pe , mundo );
+}

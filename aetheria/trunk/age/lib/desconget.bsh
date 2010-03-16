@@ -1,0 +1,69 @@
+boolean ITEM_DESCRIPTION_ON_GET = true;
+boolean WEIGHT_ESTIMATION_ON_GET = true;
+
+void messageAfterGet ( Mobile m , Item it )
+{
+	libinvoke ( "messageAfterGet" , new Object[] { m , it } );
+}
+
+void desconget_messageAfterGet ( Mobile m , Item it )
+{
+
+	if ( ITEM_DESCRIPTION_ON_GET )
+	{
+		m.writeDescription(it.getDescription(m)+"\n");
+	}
+	
+	if ( WEIGHT_ESTIMATION_ON_GET )
+	{
+	
+		Item ourItem = it;
+	
+		//dar una aproximacion del peso
+		double factorApr = 0.9+Math.random()/5;
+		int pesoApr;
+		pesoApr = (int)Math.round( factorApr*ourItem.getWeight() );
+				
+		int pesoApr_kilos = pesoApr / 8;
+		int pesoApr_cuartos = (pesoApr % 8) /2 ;
+		String pesoDescription = "";
+				
+		if ( pesoApr_kilos == 0 )
+		{
+			if ( pesoApr_cuartos == 0 ) 
+			{
+				pesoDescription = "Pesa muy poquito.";
+			}
+			else if ( pesoApr_cuartos == 2 )
+			{
+				pesoDescription = "Pesará medio kilo.";
+			}
+			else if ( pesoApr_cuartos == 1 )
+			{
+				pesoDescription = "Pesará un cuarto kilo, más o menos.";
+			}
+			else if ( pesoApr_cuartos == 3 )
+			{
+				pesoDescription = "Pesará cerca de un kilo.";
+			}
+		}
+		else
+		{
+			if ( pesoApr_cuartos == 0 || pesoApr_cuartos == 1 )
+			{
+				pesoDescription = "Pesará aproximadamente " + pesoApr_kilos + " kilo" + (pesoApr_kilos>1?"s":"") + ".";
+			}
+			else if ( pesoApr_cuartos == 2 || pesoApr_cuartos == 3 )
+			{
+				pesoDescription = "Debe de pesar algo más de " + pesoApr_kilos + " kilo" + (pesoApr_kilos>1?"s":"") + ".";
+			}
+		}
+				
+		//write( io.getColorCode("description") + pesoDescription + io.getColorCode("reset") + "\n" );
+		m.writeDescription(pesoDescription+"\n");	
+	
+	}
+	
+	end();
+
+}

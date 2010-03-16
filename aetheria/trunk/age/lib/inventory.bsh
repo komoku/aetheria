@@ -1,0 +1,92 @@
+//to include in Mobile (player)
+
+boolean SHOW_LIMB_FOR_WEAPON = true;
+boolean SHOW_LIMB_FOR_WEARABLE = false;
+
+
+void showInventory ( )
+{
+	libinvoke ( "showInventory" , new Object[] { } );
+}
+
+
+void inventory_showInventory()
+{
+
+		Inventory inventory = self.getInventory();
+	
+		if ( inventory != null )
+		{
+		
+			String str = inventory.toString(self);
+			if ( str.equalsIgnoreCase("nada.") ) self.writeInformation ( "No tienes nada.\n" );
+			else
+			{
+				self.writeInformation ( "Tienes " + str + "\n" );
+				
+				Inventory limbs = self.getFlattenedPartsInventory();
+				//cosas que blandes
+				Inventory wieldedWeapons = self.getWieldedWeapons(); //this shadows the homonymous attribute
+				if ( wieldedWeapons != null )
+					for ( int i = 0 ; i < wieldedWeapons.size() ; i++ )
+					{
+						if ( wieldedWeapons.elementAt(i) != null )
+						{
+							Item arma = wieldedWeapons.elementAt(i);
+							//buscar miembro que blande el arma
+							for ( int j = 0 ; j < limbs.size() ; j++ )
+							{
+								Item miembro = limbs.elementAt(j);
+								if ( miembro.getRelationshipPropertyValueAsBoolean(arma,"wields") )
+								{
+									if ( SHOW_LIMB_FOR_WEAPON )
+										self.writeInformation( "Blandes " + arma.constructName2OneItem(self)  + " en " + miembro.constructName2OneItem(self) + ".\n" );
+									else
+										self.writeInformation("Estás blandiendo " + arma.constructName2OneItem(self) + ".\n" );
+								}
+							}
+						}
+					}
+				//cosas que llevas puestas
+				Inventory wornItems = self.getWornItems(); //this shadows the homonymous attribute
+				
+				if ( wornItems != null )
+					for ( int i = 0 ; i < wornItems.size() ; i++ )
+					{
+						if ( wornItems.elementAt(i) != null )
+						{
+							Item vestido = wornItems.elementAt(i);
+							Vector miembrosOcupados = new Vector();
+							//buscar miembros que visten el wearable
+							for ( int j = 0 ; j < limbs.size() ; j++ )
+							{
+								Item miembro = limbs.elementAt(j);
+								if ( miembro.getRelationshipPropertyValueAsBoolean(vestido,"wears") )
+								{
+									miembrosOcupados.add(miembro);
+								}
+							}
+							//output
+							String toOutput="";
+							for ( int j = 0 ; j < miembrosOcupados.size() ; j++ )
+							{
+								Item limb = (Item)miembrosOcupados.get(j);
+								if ( j == 0 )
+									toOutput += limb.constructName2OneItem(self);
+								else if ( j > 0 && j == miembrosOcupados.size() - 1 )
+									toOutput += " y " + limb.constructName2OneItem(self);
+								else
+									toOutput += ", " + limb.constructName2OneItem(self);
+							}
+							if ( SHOW_LIMB_FOR_WEARABLE )
+								self.writeInformation( "Llevas " + vestido.constructName2OneItem(self)  + " en " + toOutput + ".\n");
+							else
+								self.writeInformation( "Llevas puesto " + vestido.constructName2OneItem(self) + ".\n" );
+						}
+					}
+			}
+		}
+		else self.writeInformation( "No tienes nada.\n" + io.getColorCode("reset") );
+		end();
+		
+}

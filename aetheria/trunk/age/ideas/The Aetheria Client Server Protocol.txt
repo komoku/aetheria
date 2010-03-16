@@ -1,0 +1,96 @@
+
+CONTROL MESSAGES:
+
+
+protocol_version_statement <version>
+protocol_version_ack [ok|nok]
+
+service_list_request
+service_list_begin
+service_list_line <servicename: gamelist|gamestart|gamejoin|gamedownload|gamedownloadlist>
+service_list_end
+
+goodbye
+
+callservice <servicename> [params]
+
+* for service "gamelist":
+game_list_begin
+game_list_line <id> <state> <players> <curstate> <gamename>
+game_list_end
+-> can use callservice gamejoin <id> with i's.
+
+
+
+SERVER-TO-CLIENT, CLIENT-HANDLING MESSAGES (REMOTE METHOD INVOCATIONS):
+
+
+Client specifications (color codes, sound handler, etc.) are gotten at the beginning, when initting the client-proxy:
+
+client_init_begin (server to client)
+client_type_request
+client_type_reply <sound|nosound> <images|noimages> [color|nocolor] [title|notitle] : <client type name string>
+
+/*NOT NEEDED
+client_visualconf_request
+client_visualconf_reply_begin
+client_visualconf_reply_line <XML text>
+client_visualconf_reply_end
+*/
+
+visualconf_init_begin
+visualconf_line <XML text>
+visualconf_init_end <ok|nok>
+
+
+/*
+colorcode_request [S->C]
+colorcode_info_begin
+colorcode_info_line <color code>
+colorcode_info_end
+*/
+colorcode_change [C->S]
+colorcode_change_ack [S->C]
+colorcode_info_begin
+colorcode_info_line
+colorcode_info_end
+
+
+client_init_done <successful|unsuccessful>
+
+Once that's been done:
+
+ClientProxy to clients:
+
+write <string>
+write_title <string> [pos]
+clear_screen
+force_input <output enabled?> <string>
+get_input <string>
+get_input_return <string>
+/*get_input_asynchronous <string>*/
+insert_icon [centered] <filename>
+set_input_string <string>
+set_mode <sync|async>
+
+wait_key_press
+key_pressed
+
+SoundHandlerProxy to clients:
+
+audio_preload <filename>
+audio_start <filename>
+audio_stop <filename>
+audio_stop <filnename>
+audio_unload <filename>
+(...)
+
+Server to clients:
+
+set_mode <sync|async>
+
+CLIENT-TO-SERVER (REMOTE METHOD RETURNS):
+
+re:<msgname> <loquesea>
+
+CLIENT_TO_SERVER (ASYNC MODE EVENTS)

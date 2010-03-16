@@ -1,0 +1,79 @@
+// Decompiled by DJ v2.9.9.60 Copyright 2000 Atanas Neshkov  Date: 21/10/02 16:11:53
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+
+package bsh;
+
+import java.util.StringTokenizer;
+import java.util.Vector;
+
+public class StringUtil
+{
+
+    public StringUtil()
+    {
+    }
+
+    public static String[] split(String s, String s1)
+    {
+        Vector vector = new Vector();
+        for(StringTokenizer stringtokenizer = new StringTokenizer(s, s1); stringtokenizer.hasMoreTokens(); vector.addElement(stringtokenizer.nextToken()));
+        String as[] = new String[vector.size()];
+        vector.copyInto(as);
+        return as;
+    }
+
+    public static String[] bubbleSort(String as[])
+    {
+        Vector vector = new Vector();
+        for(int i = 0; i < as.length; i++)
+            vector.addElement(as[i]);
+
+        int j = vector.size();
+        boolean flag = true;
+        while(flag) 
+        {
+            flag = false;
+            for(int k = 0; k < j - 1; k++)
+                if(((String)vector.elementAt(k)).compareTo((String)vector.elementAt(k + 1)) > 0)
+                {
+                    String s = (String)vector.elementAt(k + 1);
+                    vector.removeElementAt(k + 1);
+                    vector.insertElementAt(s, k);
+                    flag = true;
+                }
+
+        }
+        String as1[] = new String[j];
+        vector.copyInto(as1);
+        return as1;
+    }
+
+    public static String maxCommonPrefix(String s, String s1)
+    {
+        int i;
+        for(i = 0; s.regionMatches(0, s1, 0, i); i++);
+        return s.substring(0, i - 1);
+    }
+
+    public static String methodString(String s, Class aclass[])
+    {
+        StringBuffer stringbuffer = new StringBuffer(s + "(");
+        if(aclass.length > 0)
+            stringbuffer.append(" ");
+        for(int i = 0; i < aclass.length - 1; i++)
+        {
+            Class class1 = aclass[i];
+            stringbuffer.append((class1 != null ? class1.getName() : "null") + ", ");
+        }
+
+        if(aclass.length > 0)
+        {
+            Class class2 = aclass[aclass.length - 1];
+            stringbuffer.append(class2 != null ? class2.getName() : "null");
+            stringbuffer.append(" ");
+        }
+        stringbuffer.append(")");
+        return stringbuffer.toString();
+    }
+}

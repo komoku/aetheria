@@ -1,0 +1,18 @@
+> ir al norte
+Ibas a dirigirte hacia el norte; pero te ves sorprendido por la aparición del troll gris, que te bloquea el paso.
+El troll gris llega desde el norte.
+El troll gris se inclina sobre ti...
+Crees que te daría tiempo a bloquear el golpe del troll gris con la espada corta.
+Seguramente podrías esquivar el ataque del troll gris a tiempo.
+> bloquear con la espada
+Intentas defenderte del troll gris con la espada corta.
+Estás preparado para bloquear...
+Te defiendes del troll gris con la espada corta, recibiendo aun así gran daño...
+Estás muy gravemente herido.
+El troll gris se inclina sobre ti...
+Te recuperas de tu movimiento defensivo.
+Crees que te daría tiempo a bloquear el golpe del troll gris con la espada corta.
+Tal vez serías capaz de esquivar el ataque del troll gris a tiempo.
+> huir al sur
+El troll gris te golpea duramente con el puño derecho, infligiéndote gran daño...
+Mueres.

@@ -1,0 +1,42 @@
+// Decompiled by DJ v2.9.9.60 Copyright 2000 Atanas Neshkov  Date: 21/10/02 16:22:33
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+
+package bsh;
+
+import bsh.util.AWTConsole;
+import bsh.util.Util;
+import java.io.PrintStream;
+
+// Referenced classes of package bsh:
+//            Interpreter, EvalError, Capabilities
+
+public class Console
+{
+
+    public Console()
+    {
+    }
+
+    public static void main(String args[])
+    {
+        if(!Capabilities.classExists("bsh.util.Util"))
+            System.out.println("Can't find the BeanShell utilities...");
+        if(Capabilities.haveSwing())
+        {
+            Util.startSplashScreen();
+            try
+            {
+                (new Interpreter()).eval("desktop()");
+            }
+            catch(EvalError evalerror)
+            {
+                System.err.println("Couldn't start desktop: " + evalerror);
+            }
+        } else
+        {
+            System.err.println("Can't find javax.swing package: starting lame AWT Console...");
+            AWTConsole.main(args);
+        }
+    }
+}

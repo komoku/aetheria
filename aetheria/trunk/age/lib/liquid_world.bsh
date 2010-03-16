@@ -1,0 +1,315 @@
+
+//liquid.bsh world part
+
+
+//allow liquids to be permanently lost if spilled on a non-liquid-container room?
+boolean allow_liquid_spilling = true;
+
+
+//metonimia implementation
+void liquid_before ( String actionName , Object[] args )
+{
+	Object[] realArgs = new Object[args.length];
+	boolean hayLiquidos = false;
+	for ( int i = 0 ; i < args.length ; i++ )
+	{
+		Object current = args[i];
+		if ( current instanceof Entity && current.getPropertyValueAsBoolean ("liquid") )
+		{
+			hayLiquidos = true;
+			realArgs[i] = current.getPropertyValueAsEntity("its_container");
+		}
+		else
+		{
+			;	
+		}
+	}
+	if ( hayLiquidos )
+	{
+		self.executeAction ( actionName , realArgs );
+		end();
+	}
+}
+
+//command parsing
+
+String parseCommand ( Mobile sujeto , String cmd , String args )
+{
+	//liquid_parseCommand ( sujeto , cmd ,  args );
+
+	libinvoke ( "parseCommand" , new Object[] { sujeto , cmd , args } );
+
+	return null;
+
+}
+
+String liquid_parseCommand ( Mobile sujeto , String cmd ,  String args )
+{
+	
+	String arguments = args;
+	
+	System.out.println("#########Exxeccing liquid parsecommand.");
+	
+	if ( cmd.equalsIgnoreCase("vaciar") )
+	{
+	
+		//possible targets, all items.
+		EntityList possibleTargets = new EntityList();
+		Inventory flattened = sujeto.getFlattenedInventory();
+		for ( int i = 0 ; i < flattened.size() ; i++ )
+		{
+			possibleTargets.addEntity ( flattened.elementAt(i) );
+		}
+		flattened = sujeto.getRoom().getFlattenedInventory();
+		for ( int i = 0 ; i < flattened.size() ; i++ )
+		{
+			possibleTargets.addEntity ( flattened.elementAt(i) );
+		}
+		
+		//two targets:
+		Vector[] patternMatchVectorSingSing = possibleTargets.patternMatchTwo ( possibleTargets , arguments , false , false ); //en singular y en singular
+		
+		if ( patternMatchVectorSingSing != null && patternMatchVectorSingSing[0].size() > 0 )
+		{
+			
+			//references to Entities found
+		
+			Vector[] theVectors = patternMatchVectorSingSing;
+		
+			Entity ent1 = (Entity) theVectors[0].elementAt(0);
+			Entity ent2 = (Entity) theVectors[1].elementAt(0);
+			
+			boolean isCont1 = ent1.getPropertyValueAsBoolean("liquid_container");
+			boolean isCont2 = ent2.getPropertyValueAsBoolean("liquid_container");
+
+			if ( !isCont1 || !isCont2 )
+			{
+			
+				//if 2 is a non-liquid-container room, spill
+				if ( allow_liquid_spilling && isCont1 && ent2 instanceof Room )
+				{
+				
+					List l1 = ent1.getRelatedEntitiesByValue("its_liquid",true);
+					if ( l1.size() == 0 )
+					{
+						sujeto.getRoom().informActionAuto( sujeto , ent1 , null , "$1 derrama el contenido de $2 sin conseguir nada, pues no contiene líquido.\n" , true );
+						end();
+					}
+				
+					sujeto.executeAction ( "spill_liquid" , new Object[] { ent1 } );
+					sujeto.getRoom().informActionAuto( sujeto , ent1 , null , "$1 derrama el contenido de $2.\n" , true );
+					end();
+				}		
+			
+			
+				//no liquid-containers, la librería de líquidos no maneja esta opción
+				return null; //(leave as-is)
+			} 					
+		
+			List l1 = ent1.getRelatedEntitiesByValue("its_liquid",true);
+			
+			if ( ent1 == ent2 )
+			{
+				sujeto.getRoom().informActionAuto( sujeto , ent1 , null , "$1 hace extraños movimientos con $2 como si quisiera trasvasar su contenido sin moverlo del sitio.\n" , true );
+				
+				end();
+			}
+			
+			if ( l1.size() == 0 )
+			{
+			
+				sujeto.getRoom().informActionAuto( sujeto , ent1 , new Entity[] { ent2 } , "$1 vacía $2 en $3 sin conseguir nada, pues $2 no contiene líquido.\n" , true );
+			
+				end();
+			
+			}
+			else
+			{
+		
+				sujeto.executeAction ( "transfer_liquid" , new Object[] { ent1 , ent2 } );
+				
+				sujeto.getRoom().informActionAuto( sujeto , ent1 , new Entity[] { ent2 } , "$1 vacía $2 en $3.\n" , true );
+				
+				end();
+			
+			}
+		
+		}
+		
+		//just one target:
+		
+		Vector patternMatchVectorSing = possibleTargets.patternMatch ( arguments , false );
+		
+		if ( patternMatchVectorSing != null && patternMatchVectorSing.size() > 0 )
+		{
+		
+			Entity ent1 = (Entity) patternMatchVectorSing.elementAt(0);
+		
+			Entity ent2 = (Entity) sujeto.getRoom();
+			
+			Entity[] arr = new Entity[] { ent2 };
+			
+			System.out.println("##Ent2 is " + ent2);
+		
+			boolean isCont1 = ent1.getPropertyValueAsBoolean("liquid_container");
+			boolean isCont2 = sujeto.getRoom().getPropertyValueAsBoolean("liquid_container");
+		
+			if ( !isCont1 || !isCont2 )
+			{
+			
+				//if 2 is a non-liquid-container room, spill
+				if ( allow_liquid_spilling && isCont1 && ent2 instanceof Room )
+				{
+				
+					List l1 = ent1.getRelatedEntitiesByValue("its_liquid",true);
+					if ( l1.size() == 0 )
+					{
+						sujeto.getRoom().informActionAuto( sujeto , ent1 , null , "$1 derrama el contenido de $2 sin conseguir nada, pues no contiene líquido.\n" , true );
+						end();
+					}
+				
+					sujeto.executeAction ( "spill_liquid" , new Object[] { ent1 } );
+					sujeto.getRoom().informActionAuto( sujeto , ent1 , null , "$1 derrama el contenido de $2.\n" , true );
+					end();
+				}	
+			
+			
+				//no liquid-containers, la librería de líquidos no maneja esta opción
+				return null;
+			} 
+		 
+		 	List l1 = ent1.getRelatedEntitiesByValue("its_liquid",true);
+			
+			if ( l1.size() == 0 )
+			{
+			
+				sujeto.getRoom().informActionAuto( sujeto , ent1 , null , "$1 derrama el contenido de $2 sin conseguir nada, pues no contiene líquido.\n" , true );
+			
+				end();
+			
+			}
+		 
+			sujeto.executeAction ( "transfer_liquid" , new Object[] { ent1 , sujeto.getRoom() } );
+		
+			System.out.println ( "Arguments:" + sujeto +","+ ent1 +"," + arr +"," + "$1 derrama el contenido de $2.\n" +"," + true );
+		
+			sujeto.getRoom().informActionAuto( sujeto , ent1 , null , "$1 derrama el contenido de $2.\n" , true );
+		
+			System.out.println("Informed of everythin'.");
+		
+			end();
+		
+		}
+		
+	}
+	
+	else if ( cmd.equalsIgnoreCase("coger") || cmd.equalsIgnoreCase("llenar") )
+	{
+	
+		//coger (liquido) con (recipiente)
+		if ( arguments.toLowerCase().indexOf(" con ") >= 0 || arguments.toLowerCase().indexOf(" de ") >= 0 || arguments.toLowerCase().indexOf(" en ") >= 0 )
+		{
+		
+			System.out.println("Possible get-with candidate! Alarm!");
+		
+			//possible targets, all items.
+			EntityList possibleTargets = new EntityList();
+			Inventory flattened = sujeto.getFlattenedInventory();
+			for ( int i = 0 ; i < flattened.size() ; i++ )
+			{
+				possibleTargets.addEntity ( flattened.elementAt(i) );
+			}
+			flattened = sujeto.getRoom().getFlattenedInventory();
+			for ( int i = 0 ; i < flattened.size() ; i++ )
+			{
+				possibleTargets.addEntity ( flattened.elementAt(i) );
+			}
+		
+			
+			//two targets:
+			Vector[] patternMatchVectorSingSing = possibleTargets.patternMatchTwo ( possibleTargets , arguments , false , false ); //en singular y en singular
+		
+			if ( patternMatchVectorSingSing != null && patternMatchVectorSingSing[0].size() > 0 )
+			{
+			
+				//references to Entities found
+		
+				Vector[] theVectors = patternMatchVectorSingSing;
+		
+				Entity ent1 = (Entity) theVectors[0].elementAt(0);
+				Entity ent2 = (Entity) theVectors[1].elementAt(0);
+			
+				boolean isLiq1 = ent1.getPropertyValueAsBoolean("liquid");
+				boolean isCont2 = ent2.getPropertyValueAsBoolean("liquid_container");
+				boolean isLiq2 = ent2.getPropertyValueAsBoolean("liquid");
+				boolean isCont1 = ent1.getPropertyValueAsBoolean("liquid_container");
+
+				System.out.println("Liquid and container conditions give " + isLiq1 + "," + isCont2);
+
+				if ( !isLiq1 || !isCont2 )
+				{
+					if ( !isLiq2 || !isCont1 )
+					{
+						//la librería de líquidos no maneja esta opción
+						return null; //(leave as-is)
+					}
+					else
+					{
+						
+						//swapeamos 1 y 2
+						temp = ent2;
+						ent2 = ent1;
+						ent1 = temp;
+						
+						//siempre manejaremos estas condiciones
+						isLiq1 = isLiq2;
+						isCont2 = isCont1;
+					}
+				}
+				 					
+		
+				//buscar liquido en la habitacion
+				
+				System.out.println("Gonna, hum, actually, hum, see the, hum, roome.");
+				
+				Room habitacion = sujeto.getRoom();
+				
+				List l1 = habitacion.getRelatedEntitiesByValue("its_liquid",true);
+				
+				for ( int i = 0 ; i < l1.size() ; i++ )
+				{
+				
+					Entity e = (Entity) l1.get(0);
+				
+					if ( e.isSame(ent1) )
+					{
+						System.out.println("Did, hum, actually, hum, see it.");
+					
+						sujeto.executeAction ( "transfer_liquid" , new Object[] { habitacion , ent2 } );
+						
+						sujeto.getRoom().informActionAuto( sujeto , ent1 , new Entity[]{ent2} , "$1 coge $2 con $3.\n" , true );
+						
+						end();
+					
+					}
+				
+				}
+				
+			
+			} //end vector patternmatch	
+		
+		} //end con is on arguments
+		
+		
+	} //end coger command
+	
+	
+	return null;
+
+}
+
+void before ( String actionName , Object[] args )
+{
+	System.out.println("#########Exxeccing liquid before.");
+	liquid_before ( actionName , args );
+}

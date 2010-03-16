@@ -1,0 +1,140 @@
+import bsh.*;
+libinvoke ( name , args )
+		{
+		
+			Debug.println("LIBINVOKE");
+		
+			//BshMethod[] metodos = this.caller.caller.namespace.getMethods();
+			BshMethod[] metodos = global.namespace.getMethods();
+			
+			Debug.println(this.callstack);
+			
+			boolean returned_null = false;
+			
+			for ( int i = 0 ; i < liblist.size() ; i++ )
+			{
+				String thislibname = liblist.get(i);
+				String thismethodname = thislibname + "_" + name;
+					
+				Debug.println("Testing lib = " + thismethodname);
+				Debug.println("Metlen = " + metodos.length);
+				//Debug.println("Altlen = " + this.caller.namespace.getMethods().length);
+				Debug.println("Altlen2 = " + this.caller.caller.namespace.getMethods().length);
+				
+				for ( int m = 0 ; m < metodos.length ; m++ )
+				{
+	
+					Debug.println("Testing method = " + metodos[m]);
+	
+					if ( thismethodname.equals( metodos[m].getName() ) )
+					{
+					
+
+						/*						
+					
+						//check if method compatible
+						boolean compatible = true;
+						if ( args.length != metodos[m].getArgumentTypes().length )
+							compatible = false;
+						else
+						{
+							for ( int w = 0 ; w < args.length ; w++ )
+							{
+								if ( args[w] != null )
+								{
+									if ( !args[w].isAssignableFrom (  (metodos[m].getArgumentTypes())[w]  ) )
+									{
+									compatible = false;
+									break;
+									}
+								}
+							}
+						}
+						if ( !compatible ) break; //next method
+						
+						*/
+					
+						Debug.println("Execcing = " + metodos[m]);
+						/*jarl =*/ //this.invokeMethod ( thislibname + "_" + name , args ); 		
+						
+						if ( metodos[m].getReturnType() != Void.TYPE )
+						{
+							try
+							{
+								//Debug.println("Invoking.");
+								jarl = metodos[m].invoke ( args , this.interpreter /*, this.callstack*/ );
+								//Debug.println("Invoked.");
+							}
+							catch ( TargetError te )
+							{
+								throw ( te );
+							}
+							catch ( EvalError ee )
+							{
+								//Debug.println("EvalError." + ee);
+								break; //method signature not compatible
+							}
+							//Debug.println("Finally.");
+							if ( jarl == null )
+							{
+								returned_null = true;
+								break; //valor null: continuamos ejecutando para más librerías. Sólo devolveremos null si
+												//se devuelve null todas las veces.	
+							}
+							else
+								return jarl;
+						}
+						else
+						{
+							try
+							{
+								//Debug.println("Invoking.");
+								metodos[m].invoke ( args , this.interpreter /*, this.callstack*/ );
+								//Debug.println("Invoked.");
+							}
+							catch ( TargetError te )
+							{
+								throw ( te );
+							}
+							catch ( EvalError ee )
+							{
+								//Debug.println("EvalError.");
+								break; //method signature not compatible <- TODO: could be something else!!! Important, distinguish errors! Else we don't catch EvalErrors for other methods.
+							}
+							//Debug.println("Finally.");
+							//método void, seguimos con siguiente librería
+							break;
+						}
+						
+						//set jarl to method's return value here!
+						//@@TODO
+						/*
+						if ( jarl == void ) //métodos que no devuelven valor (void), seguimos con la siguiente librería
+							break;
+						else
+						{
+							if ( jarl == null )
+							{
+								break; //valor null: continuamos ejecutando para más librerías. Sólo devolveremos null si
+												//se devuelve null todas las veces.
+								returned_null = true;
+							}
+							else
+								return jarl;
+						}
+						*/
+						
+					}
+				}
+			
+			}
+			
+			if ( returned_null )
+			{
+				Debug.println("Libinvoke goes null.");
+				return null;
+			}
+			
+			Debug.println("Libinvoke doesn't go null.");
+			
+		}

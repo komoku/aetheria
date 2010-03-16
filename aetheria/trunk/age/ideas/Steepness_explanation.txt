@@ -1,0 +1,5 @@
+Steepness=0: Aprendizaje normal.
+Steepness=-1: Aprendizaje lento.
+Steepness=1: Aprendizaje rápido.
+
+Para tiempos está bien un -1 (si el tiempo empieza en 30 o así, no querremos que se reduzca a cero, sería irreal. Usar -2 o por ahí ya es demasiado lento).

@@ -1,0 +1,758 @@
+// Decompiled by DJ v2.9.9.60 Copyright 2000 Atanas Neshkov  Date: 21/10/02 16:23:03
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+
+package bsh;
+
+import java.io.*;
+
+// Referenced classes of package bsh:
+//            Parser, NameSpace, This, Primitive, 
+//            TargetError, EvalError, CommandLineReader, CallStack, 
+//            SimpleNode, InterpreterError, ReturnControl, ParseException, 
+//            TokenMgrError, ConsoleInterface, JJTParserState, Name, 
+//            LHS, BshClassManager, ASCII_UCodeESC_CharStream
+
+public class Interpreter
+    implements Runnable, ConsoleInterface, Serializable
+{
+
+    public Interpreter(Reader reader, PrintStream printstream, PrintStream printstream1, boolean flag, NameSpace namespace, Interpreter interpreter, String s)
+    {
+        parser = new Parser(reader);
+        long l = System.currentTimeMillis();
+        in = reader;
+        out = printstream;
+        err = printstream1;
+        interactive = flag;
+        debug = printstream1;
+        parent = interpreter;
+        sourceFileInfo = s;
+        if(namespace == null)
+            globalNameSpace = new NameSpace("global");
+        else
+            globalNameSpace = namespace;
+        if(!(getu("bsh") instanceof This))
+            initRootSystemObject();
+        if(flag)
+            loadRCFiles();
+        long l1 = System.currentTimeMillis();
+        debug("Time to initialize interpreter: " + (l1 - l));
+    }
+
+    public Interpreter(Reader reader, PrintStream printstream, PrintStream printstream1, boolean flag, NameSpace namespace)
+    {
+        this(reader, printstream, printstream1, flag, namespace, null, null);
+    }
+
+    public Interpreter(Reader reader, PrintStream printstream, PrintStream printstream1, boolean flag)
+    {
+        this(reader, printstream, printstream1, flag, null);
+    }
+
+    public Interpreter(ConsoleInterface consoleinterface, NameSpace namespace)
+    {
+        this(consoleinterface.getIn(), consoleinterface.getOut(), consoleinterface.getErr(), true, namespace);
+        setConsole(consoleinterface);
+    }
+
+    public Interpreter(ConsoleInterface consoleinterface)
+    {
+        this(consoleinterface, null);
+    }
+
+    public Interpreter()
+    {
+        this(((Reader) (new StringReader(""))), System.out, System.err, false, null);
+        evalOnly = true;
+        setu("bsh.evalOnly", new Primitive(true));
+    }
+
+    public void setConsole(ConsoleInterface consoleinterface)
+    {
+        console = consoleinterface;
+        setu("bsh.console", consoleinterface);
+        setOut(consoleinterface.getOut());
+        setErr(consoleinterface.getErr());
+    }
+
+    private void initRootSystemObject()
+    {
+        setu("bsh", (new NameSpace("Bsh Object")).getThis(this));
+        if(systemObject == null)
+            systemObject = (new NameSpace("Bsh System Object")).getThis(this);
+        setu("bsh.system", systemObject);
+        This this1 = (new NameSpace("Bsh Command Help Text")).getThis(this);
+        setu("bsh.help", this1);
+        try
+        {
+            setu("bsh.cwd", System.getProperty("user.dir"));
+        }
+        catch(SecurityException securityexception)
+        {
+            setu("bsh.cwd", ".");
+        }
+        setu("bsh.interactive", new Primitive(interactive));
+        setu("bsh.evalOnly", new Primitive(evalOnly));
+    }
+
+    public void setNameSpace(NameSpace namespace)
+    {
+        globalNameSpace = namespace;
+    }
+
+    public NameSpace getNameSpace()
+    {
+        return globalNameSpace;
+    }
+
+    public static void main(String args[])
+    {
+        if(args.length > 0)
+        {
+            String s = args[0];
+            String args1[];
+            if(args.length > 1)
+            {
+                args1 = new String[args.length - 1];
+                System.arraycopy(args, 1, args1, 0, args.length - 1);
+            } else
+            {
+                args1 = new String[0];
+            }
+            Interpreter interpreter = new Interpreter();
+            interpreter.setu("bsh.args", args1);
+            try
+            {
+                interpreter.source(s, interpreter.globalNameSpace);
+            }
+            catch(FileNotFoundException filenotfoundexception)
+            {
+                System.out.println("File not found: " + filenotfoundexception);
+            }
+            catch(TargetError targeterror)
+            {
+                System.out.println("Script threw exception: " + targeterror);
+                if(targeterror.inNativeCode())
+                    targeterror.printStackTrace(DEBUG, System.err);
+            }
+            catch(EvalError evalerror)
+            {
+                System.out.println("Evaluation Error: " + evalerror);
+            }
+            catch(IOException ioexception)
+            {
+                System.out.println("I/O Error: " + ioexception);
+            }
+        } else
+        {
+            Object obj;
+            if(System.getProperty("os.name").startsWith("Windows") && System.getProperty("java.version").startsWith("1.1."))
+                obj = new FilterInputStream(System.in) {
+
+                    public int available()
+                        throws IOException
+                    {
+                        return 0;
+                    }
+
+                };
+            else
+                obj = System.in;
+            CommandLineReader commandlinereader = new CommandLineReader(new InputStreamReader(((InputStream) (obj))));
+            Interpreter interpreter1 = new Interpreter(commandlinereader, System.out, System.err, true);
+            interpreter1.run();
+        }
+    }
+
+    public void run()
+    {
+        if(evalOnly)
+            throw new RuntimeException("bsh Interpreter: No stream");
+        if(interactive)
+            try
+            {
+                eval("printBanner();");
+            }
+            catch(EvalError evalerror)
+            {
+                println("BeanShell 1.2b6 - by Pat Niemeyer (pat@pat.net)");
+            }
+        boolean flag = false;
+        CallStack callstack = new CallStack();
+        callstack.push(globalNameSpace);
+        while(!flag) 
+            try
+            {
+                System.out.flush();
+                System.err.flush();
+                Thread.yield();
+                if(interactive)
+                    print("bsh % ");
+                flag = Line();
+                if(get_jjtree().nodeArity() > 0)
+                {
+                    SimpleNode simplenode = (SimpleNode)get_jjtree().rootNode();
+                    if(DEBUG)
+                        simplenode.dump(">");
+                    Object obj = simplenode.eval(callstack, this);
+                    if(callstack.depth() > 1)
+                        throw new InterpreterError("Callstack growing: " + callstack);
+                    if(obj instanceof ReturnControl)
+                        obj = ((ReturnControl)obj).value;
+                    if(obj != Primitive.VOID)
+                    {
+                        setVariable("$_", obj);
+                        Object obj1 = getu("bsh.show");
+                        if((obj1 instanceof Boolean) && ((Boolean)obj1).booleanValue())
+                            println("<" + obj + ">");
+                    }
+                }
+            }
+            catch(ParseException parseexception)
+            {
+                error("Parser Error: " + parseexception.getMessage(DEBUG));
+                if(DEBUG)
+                    parseexception.printStackTrace();
+                if(!interactive)
+                    flag = true;
+                parser.reInitInput(in);
+            }
+            catch(InterpreterError interpretererror)
+            {
+                error("Internal Error: " + interpretererror.getMessage());
+                interpretererror.printStackTrace();
+                if(!interactive)
+                    flag = true;
+            }
+            catch(TargetError targeterror)
+            {
+                error("// Uncaught Exception: " + targeterror);
+                if(targeterror.inNativeCode())
+                    targeterror.printStackTrace(DEBUG, err);
+                if(!interactive)
+                    flag = true;
+                setVariable("$_e", targeterror.getTarget());
+            }
+            catch(EvalError evalerror1)
+            {
+                if(interactive)
+                    error(evalerror1.toString());
+                else
+                    error(evalerror1.getMessage());
+                if(DEBUG)
+                    evalerror1.printStackTrace();
+                if(!interactive)
+                    flag = true;
+            }
+            catch(Exception exception)
+            {
+                error("Unknown error: " + exception);
+                exception.printStackTrace();
+                if(!interactive)
+                    flag = true;
+            }
+            catch(TokenMgrError tokenmgrerror)
+            {
+                error("Error parsing input: " + tokenmgrerror);
+                parser.reInitTokenInput(in);
+                if(!interactive)
+                    flag = true;
+            }
+            finally
+            {
+                get_jjtree().reset();
+                if(callstack.depth() > 1)
+                {
+                    callstack.clear();
+                    callstack.push(globalNameSpace);
+                }
+            }
+        if(interactive && !noExitOnEOF)
+            System.exit(0);
+    }
+
+    public Object source(String s, NameSpace namespace)
+        throws FileNotFoundException, IOException, EvalError
+    {
+        File file = pathToFile(s);
+        debug("Sourcing file: " + file);
+        BufferedReader bufferedreader = new BufferedReader(new FileReader(file));
+        return eval(bufferedreader, namespace, s);
+    }
+
+    public Object source(String s)
+        throws FileNotFoundException, IOException, EvalError
+    {
+        return source(s, globalNameSpace);
+    }
+
+    public Object eval(Reader reader, NameSpace namespace, String s)
+        throws EvalError
+    {
+        Object obj;
+        Interpreter interpreter;
+        CallStack callstack;
+        boolean flag;
+        obj = null;
+        debug("eval: nameSpace = " + namespace);
+        interpreter = new Interpreter(reader, out, err, false, namespace, this, s);
+        callstack = new CallStack();
+        callstack.push(namespace);
+        flag = false;
+          goto _L1
+_L3:
+        SimpleNode simplenode = null;
+        try
+        {
+            flag = interpreter.Line();
+            if(interpreter.get_jjtree().nodeArity() > 0)
+            {
+                simplenode = (SimpleNode)interpreter.get_jjtree().rootNode();
+                simplenode.setSourceFile(s);
+                if(TRACE)
+                    println("// " + simplenode.getText());
+                obj = simplenode.eval(callstack, interpreter);
+                if(callstack.depth() > 1)
+                    throw new InterpreterError("Callstack growing: " + callstack);
+                if(obj instanceof ReturnControl)
+                {
+                    obj = ((ReturnControl)obj).value;
+                    break; /* Loop/switch isn't completed */
+                }
+            }
+        }
+        catch(ParseException parseexception)
+        {
+            if(DEBUG)
+                error(parseexception.getMessage(DEBUG));
+            parseexception.setErrorSourceFile(s);
+            throw parseexception;
+        }
+        catch(InterpreterError interpretererror)
+        {
+            interpretererror.printStackTrace();
+            throw new EvalError("Sourced file: " + s + " internal Error: " + interpretererror.getMessage(), simplenode);
+        }
+        catch(TargetError targeterror)
+        {
+            if(targeterror.getNode() == null)
+                targeterror.setNode(simplenode);
+            targeterror.reThrow("Sourced file: " + s);
+            continue; /* Loop/switch isn't completed */
+        }
+        catch(EvalError evalerror)
+        {
+            if(DEBUG)
+                evalerror.printStackTrace();
+            if(evalerror.getNode() == null)
+                evalerror.setNode(simplenode);
+            evalerror.reThrow("Sourced file: " + s);
+            continue; /* Loop/switch isn't completed */
+        }
+        catch(Exception exception)
+        {
+            exception.printStackTrace();
+            throw new EvalError("Sourced file: " + s + " unknown error: " + exception.getMessage(), simplenode);
+        }
+        catch(TokenMgrError tokenmgrerror)
+        {
+            throw new EvalError("Sourced file: " + s + " Token Parsing Error: " + tokenmgrerror.getMessage(), simplenode);
+        }
+        continue; /* Loop/switch isn't completed */
+        local;
+        interpreter.get_jjtree().reset();
+        if(callstack.depth() > 1)
+        {
+            callstack.clear();
+            callstack.push(namespace);
+        }
+        JVM INSTR ret 16;
+_L1:
+        if(!flag) goto _L3; else goto _L2
+_L2:
+        return Primitive.unwrap(obj);
+    }
+
+    public Object eval(Reader reader)
+        throws EvalError
+    {
+        return eval(reader, globalNameSpace, "eval stream");
+    }
+
+    public Object eval(String s)
+        throws EvalError
+    {
+        debug("eval(String): " + s);
+        return eval(s, globalNameSpace);
+    }
+
+    public Object eval(String s, NameSpace namespace)
+        throws EvalError
+    {
+        String s1 = s.endsWith(";") ? s : s + ";";
+        return eval(((Reader) (new StringReader(s1))), namespace, "<Inline eval of: " + s1 + " >");
+    }
+
+    public final void error(String s)
+    {
+        if(console != null)
+        {
+            console.error("// Error: " + s + "\n");
+        } else
+        {
+            err.println("// Error: " + s);
+            err.flush();
+        }
+    }
+
+    public Reader getIn()
+    {
+        return in;
+    }
+
+    public PrintStream getOut()
+    {
+        return out;
+    }
+
+    public PrintStream getErr()
+    {
+        return err;
+    }
+
+    public final void println(String s)
+    {
+        print(s + "\n");
+    }
+
+    public final void print(String s)
+    {
+        if(console != null)
+        {
+            console.print(s);
+        } else
+        {
+            out.print(s);
+            out.flush();
+        }
+    }
+
+    public static final void debug(String s)
+    {
+        if(DEBUG)
+            debug.println("// Debug: " + s);
+    }
+
+    public Object get(String s)
+        throws EvalError
+    {
+        Object obj = globalNameSpace.get(s, this);
+        return Primitive.unwrap(obj);
+    }
+
+    Object getu(String s)
+    {
+        try
+        {
+            return get(s);
+        }
+        catch(EvalError evalerror)
+        {
+            throw new InterpreterError("set: " + evalerror);
+        }
+    }
+
+    public void set(String s, Object obj)
+        throws EvalError
+    {
+        if(obj == null)
+            obj = Primitive.NULL;
+        CallStack callstack = new CallStack();
+        LHS lhs = globalNameSpace.getNameResolver(s).toLHS(callstack, this);
+        lhs.assign(obj);
+    }
+
+    void setu(String s, Object obj)
+    {
+        try
+        {
+            set(s, obj);
+        }
+        catch(EvalError evalerror)
+        {
+            throw new InterpreterError("set: " + evalerror);
+        }
+    }
+
+    public void set(String s, long l)
+        throws EvalError
+    {
+        set(s, new Primitive(l));
+    }
+
+    public void set(String s, int i)
+        throws EvalError
+    {
+        set(s, new Primitive(i));
+    }
+
+    public void set(String s, double d)
+        throws EvalError
+    {
+        set(s, new Primitive(d));
+    }
+
+    public void set(String s, float f)
+        throws EvalError
+    {
+        set(s, new Primitive(f));
+    }
+
+    public void set(String s, boolean flag)
+        throws EvalError
+    {
+        set(s, new Primitive(flag));
+    }
+
+    public void unset(String s)
+        throws EvalError
+    {
+        CallStack callstack = new CallStack();
+        LHS lhs = globalNameSpace.getNameResolver(s).toLHS(callstack, this);
+        if(lhs.type != 0)
+        {
+            throw new EvalError("Can't unset, not a variable: " + s);
+        } else
+        {
+            lhs.assign(null);
+            return;
+        }
+    }
+
+    /**
+     * @deprecated Method getVariable is deprecated
+     */
+
+    public Object getVariable(String s)
+    {
+        Object obj = globalNameSpace.getVariable(s);
+        return Primitive.unwrap(obj);
+    }
+
+    /**
+     * @deprecated Method setVariable is deprecated
+     */
+
+    public void setVariable(String s, Object obj)
+    {
+        try
+        {
+            globalNameSpace.setVariable(s, obj);
+        }
+        catch(EvalError evalerror)
+        {
+            error(evalerror.toString());
+        }
+    }
+
+    /**
+     * @deprecated Method setVariable is deprecated
+     */
+
+    public void setVariable(String s, int i)
+    {
+        try
+        {
+            globalNameSpace.setVariable(s, new Primitive(i));
+        }
+        catch(EvalError evalerror)
+        {
+            error(evalerror.toString());
+        }
+    }
+
+    /**
+     * @deprecated Method setVariable is deprecated
+     */
+
+    public void setVariable(String s, float f)
+    {
+        try
+        {
+            globalNameSpace.setVariable(s, new Primitive(f));
+        }
+        catch(EvalError evalerror)
+        {
+            error(evalerror.toString());
+        }
+    }
+
+    /**
+     * @deprecated Method setVariable is deprecated
+     */
+
+    public void setVariable(String s, boolean flag)
+    {
+        try
+        {
+            globalNameSpace.setVariable(s, new Primitive(flag));
+        }
+        catch(EvalError evalerror)
+        {
+            error(evalerror.toString());
+        }
+    }
+
+    public Object getInterface(Class class1)
+        throws EvalError
+    {
+        return globalNameSpace.getThis(this).getInterface(class1);
+    }
+
+    private JJTParserState get_jjtree()
+    {
+        return parser.jjtree;
+    }
+
+    private ASCII_UCodeESC_CharStream get_jj_input_stream()
+    {
+        return parser.jj_input_stream;
+    }
+
+    private boolean Line()
+        throws ParseException
+    {
+        return parser.Line();
+    }
+
+    void loadRCFiles()
+    {
+        try
+        {
+            String s = System.getProperty("user.home") + File.separator + ".bshrc";
+            source(s, globalNameSpace);
+        }
+        catch(Exception exception)
+        {
+            debug("Could not find rc file: " + exception);
+        }
+    }
+
+    public File pathToFile(String s)
+        throws IOException
+    {
+        File file = new File(s);
+        if(!file.isAbsolute())
+        {
+            String s1 = (String)getu("bsh.cwd");
+            file = new File(s1 + File.separator + s);
+        }
+        return new File(file.getCanonicalPath());
+    }
+
+    public static void redirectOutputToFile(String s)
+    {
+        try
+        {
+            PrintStream printstream = new PrintStream(new FileOutputStream(s));
+            System.setOut(printstream);
+            System.setErr(printstream);
+        }
+        catch(IOException ioexception)
+        {
+            System.err.println("Can't redirect output to file: " + s);
+        }
+    }
+
+    public void setClassLoader(ClassLoader classloader)
+    {
+        BshClassManager.setClassLoader(classloader);
+    }
+
+    static void staticInit()
+    {
+        try
+        {
+            debug = System.err;
+            DEBUG = Boolean.getBoolean("debug");
+            TRACE = Boolean.getBoolean("trace");
+            String s = System.getProperty("outfile");
+            if(s != null)
+                redirectOutputToFile(s);
+        }
+        catch(SecurityException securityexception)
+        {
+            System.err.println("Could not init static:" + securityexception);
+        }
+        catch(Exception exception)
+        {
+            System.err.println("Could not init static(2):" + exception);
+        }
+        catch(Throwable throwable)
+        {
+            System.err.println("Could not init static(3):" + throwable);
+        }
+    }
+
+    public String getSourceFileInfo()
+    {
+        if(sourceFileInfo != null)
+            return sourceFileInfo;
+        else
+            return "<unknown source>";
+    }
+
+    public Interpreter getParent()
+    {
+        return parent;
+    }
+
+    public void setOut(PrintStream printstream)
+    {
+        out = printstream;
+    }
+
+    public void setErr(PrintStream printstream)
+    {
+        err = err;
+    }
+
+    private void readObject(ObjectInputStream objectinputstream)
+        throws IOException, ClassNotFoundException
+    {
+        objectinputstream.defaultReadObject();
+        if(console != null)
+        {
+            setOut(console.getOut());
+            setErr(console.getErr());
+        } else
+        {
+            setOut(System.out);
+            setErr(System.err);
+        }
+    }
+
+    public static final String VERSION = "1.2b6";
+    public static boolean DEBUG;
+    public static boolean TRACE;
+    static transient PrintStream debug;
+    static This systemObject;
+    public static boolean strictJava = false;
+    transient Parser parser;
+    NameSpace globalNameSpace;
+    transient Reader in;
+    transient PrintStream out;
+    transient PrintStream err;
+    ConsoleInterface console;
+    Interpreter parent;
+    String sourceFileInfo;
+    public boolean noExitOnEOF;
+    private boolean evalOnly;
+    private boolean interactive;
+
+    static 
+    {
+        staticInit();
+    }
+}

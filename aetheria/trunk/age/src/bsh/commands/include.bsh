@@ -1,0 +1,42 @@
+/**
+	Cargar una librería.
+*/
+
+bsh.help.source = "usage: source( filename | URL )";
+
+Object include( String filename ) 
+{
+
+	StringBuffer sb = new StringBuffer();
+	BufferedReader br = new BufferedReader ( new InputStreamReader ( new FileInputStream ( filename ) , "ISO-8859-1" ) );
+	String linea;
+	while ( (linea=br.readLine()) != null )
+	{
+		sb.append ( linea );
+		sb.append ( "\n" );
+	}
+
+	if ( this.caller.liblist == void )
+	{
+		this.caller.liblist = new java.util.Vector();
+	}
+	
+	fname = new File(filename).getName();
+	
+	java.util.StringTokenizer st = new java.util.StringTokenizer(fname,".");
+	
+	this.caller.liblist.add ( st.nextToken() );
+
+	if ( this.caller.libsloaded == void )
+	{
+		this.caller.libsloaded = true;
+		String temp = "source(\"libinvoke.bsh\");";
+		this.interpreter.eval (	temp , this.caller.namespace );
+	}
+	
+
+
+	return this.interpreter.eval ( sb.toString() , this.caller.namespace );
+
+}
+

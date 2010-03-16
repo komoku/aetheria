@@ -1,0 +1,14 @@
+#Mensajes por defecto de AGE
+#para idioma español
+
+#Cuando coges el objeto $item
+you.get.item=Coges $item.\n
+
+#Cuando $1 coge el objeto $item
+someone.gets.item=$1 coge $item.\n
+
+#Cuando no puedes coger un item porque no es cogible (fijo en el sitio)
+denial.get.ungettable=No tiene mucho sentido intentar coger $item.\n
+
+#Cuando el parser no entiende algo
+error.parsing=No entiendo...\n

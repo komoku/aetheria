@@ -1,0 +1,53 @@
+Mobile's Movement Inner Workings As Of 04.09.11:
+
+Movement Decision
+  => Call Mobile::go ( Path );
+     => Check if path exists
+     => Exec onWalkAway/beforeExit events
+     => Set attribute movingState_Path to used path.
+     => Check if path is open
+     => Call Path::go ( Mobile );
+         => Set Mobile's state to GO/MOVING
+         => Set Mobile's target to destination room
+	 => Set Mobile's TU's to exitTime*12/speed
+
+On GO/MOVING's changeState
+  => Show path movement description
+  => Inform "$1 se va hacia..." excluding self
+  => Call Mobile::setRoom ( Room )
+  => Inform "$1 llega desde..." excluding self
+  => Exec onEnterRoom events for Room, Mobiles
+
+
+Way to Implement the Surprising Mechanism (for Enemies):
+
+On GO/MOVING's changeState, after showing path movement description, add:
+
+foreach Mobile @ destination room being my enemy,
+	check its state,
+		if ( state is go )
+			if ( dest room = my original room )
+				then surprise it.
+				-> change its state to stunned,
+				-> write to him he's been surprised,
+				-> write to me I've surprised him.
+
+It's a coherent system, preventing non-interactive crossings and assuring one of the two Mobiles which would cross will be surprised.
+
+Besides, the surprised Mobile is guaranteed not to see the movement description, its movement will just plainly not take place at all.
+
+Note, however, that beforeExit/onWalkAway events will be executed for the surprised Mobile which doesn't actually move. This shouldn't be a problem.
+
+
+For Non-Enemies, we can implement the Crossing Information Mechanism:
+
+On GO/MOVING changeState, before showing path movement description, add:
+
+foreach Mobile @ destination room not being my enemy,
+	check its state,
+		if ( state is go )
+			if ( dest room = my original room )
+				then inform me "You cross XX while going YY",
+				and inform him "You cross XX while going YY"
+
+Or execute event "on crossing"

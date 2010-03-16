@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<project name="AGE" default="dist" basedir=".">
+    <description>
+        Build File para el Aetheria Game Engine
+    </description>
+  <!-- set global properties for this build -->
+  <property name="src" location="src"/>
+  <property name="build" location="antbuild"/>
+  <property name="lib" location="../lib"/>
+  <property name="bshlib" location="lib"/>
+  <property name="conf" location="conf"/>
+  <property name="dist" location="dist"/>
+  <property name="corejar" value="AgeCore.jar"/>
+  <property name="onejar" value="AgeFull.jar"/>
+  <!--<property name="defaultconf" location="defaultconf"/>-->
+
+  <target name="init" depends="clean">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <echo message="Creando directorio build..."/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  </target>
+
+<!--
+	<target name="makeparser" depends="init"
+		description="generate sparser source files using javacc">
+		<echo message="Usando javacc para generar el codigo fuente del sparser..."/>
+			<javacc target="${src}/parser/sparser/SchemataParser.jj"
+    		javacchome="${lib}/javacc-3.2"
+    		static="true"
+			/>
+	</target>
+-->
+
+  <target name="compile" depends="init"
+        description="compile the source " >
+        <echo message="Compilando..."/>
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac sourcepath="" srcdir="${src}" destdir="${build}" classpath=".;${lib}/bsh-2.0b2.jar;${lib}/micromod.jar" target="1.4" source="1.4" debug="true" encoding="iso-8859-1">
+  		<include name="**/*.java"/>
+  		<exclude name="**/conf/**"/>
+    	<!--exclude does not seem to work-->
+  	</javac>
+  	<!--
+	<copy todir="${build}">
+		<fileset dir="${src}">
+			<include name="**/Messages.*"/>
+		</fileset>
+	</copy>
+	-->
+  	
+	<!--
+	<copy todir="${build}">
+   	 <fileset dir="${lib}" excludes="javacc-3.2/** readme.txt" includes="*.jar"/>
+  	</copy>
+  	<copy todir="${build}">
+  		<fileset dir="${defaultconf}" excludes="readme.txt"/>
+  	</copy>
+  	-->
+  </target>
+	
+	<target name="corejar" depends="compile" description="generate core jar file">
+		<echo message="Generando archivo .jar del núcleo..."/>
+		<!--<copy todir="${build}/images">
+		    <fileset dir="${src}/images"/>
+		</copy>
+		<copy todir="${build}/help">
+		    <fileset dir="${src}/help"/>
+		</copy>
+		-->
+		<copy todir="${build}/bsh/commands">
+			<fileset dir="${src}/bsh/commands"/>
+		</copy>
+		<jar jarfile="${build}/${corejar}" manifest="${conf}/MANIFEST.MF" basedir="${build}" includes="**"/>
+	</target>
+	
+	<target name="dist" depends="corejar" description="generate distribution">
+		<echo message="Generando distribución..."/>
+		<copy file="${build}/${corejar}" todir="${dist}"/>
+		<copy todir="${dist}">
+			<fileset dir=".">
+				<include name="*.lan"/>
+				<include name="*.cfg"/>
+				<include name="stdfunct.bsh"/>
+				<include name="libinvoke.bsh"/>
+				<include name="*.LAN"/>
+				<include name="*.CFG"/>
+				<include name="*.opt"/>
+			</fileset>
+			<fileset dir="${conf}/scripts"/>
+		</copy>
+		<copy todir="${dist}/lang">
+			<fileset dir="${conf}/lang"/>
+		</copy>
+		<copy todir="${dist}/images">
+			<fileset dir="images"/>
+		</copy>
+		<copy todir="${dist}/lib">
+			<fileset dir="${bshlib}"/>
+			<fileset dir=".">
+				<include name="bsh-2.0b2.jar"/>
+				<include name="micromod.jar"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="onejar" depends="corejar" description="generate one-jar jar file">
+		<echo message="Generando archivo .jar de arranque..."/>
+		<copy file="${build}/${corejar}" todir="${build}/onejartmp/main"/>
+		<copy todir="${build}/onejartmp/lib">
+			<fileset dir="${lib}">
+				<include name="**/*.jar"/>
+				<exclude name="**/AgeCore.jar"/>
+			</fileset>
+			<fileset dir=".">
+				<include name="bsh-2.0b2.jar"/>
+				<include name="micromod.jar"/>
+			</fileset>
+		</copy>
+		
+		<javac srcdir="${conf}/onejar/boot" destdir="${build}/onejartmp/" debug="true"/>
+		
+		<!--	
+		<copy todir="${build}/onejartmp/">
+			<fileset dir="${conf}/onejar/boot">
+			</fileset>
+		</copy>
+		-->
+		
+		<!--
+		<copy todir="${build}/onejartmp/help">
+		    <fileset dir="${src}/help"/>-->
+			<!--don't know why this is needed, but help doesn't work inside 2 jars.-->
+			<!--prolly 'cause the core jar calls a lib jar, then the lib jar calls help-->
+			<!--(i.e. the core jar doesn't call help directly)-->
+		<!--
+		</copy>
+	    -->
+	
+		<!--
+		<copy todir="${build}/onejartmp/images">
+				    <fileset dir="${src}/images"/>-->
+					<!--same reason as help (help uses images)-->
+		<!--
+		</copy>-->
+		<jar jarfile="${build}/${onejar}" manifest="${conf}/onejar/boot/boot-manifest.mf" basedir="${build}/onejartmp/" includes="**"/>
+	  	<!--<delete dir="${build}/onejartmp"/>-->
+	</target>
+
+  <target name="clean"
+        description="clean up" >
+    <echo message="Limpiando..."/>    
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+  	 <delete dir="${dist}"/>
+  </target>
+</project>

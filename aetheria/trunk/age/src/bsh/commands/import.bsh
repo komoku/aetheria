@@ -1,0 +1,82 @@
+/**
+	Cargar una librería.
+*/
+
+//[nota de 04-08-05]: percibo que THIS DOESN'T WORK. INCLUDE DOES.
+//Comparación thislibname.equals( metodos[m] ) es incorrecta aquí. ¿Es el único fallo?
+//¿O por el contrario corregido esto molaría más el import que el include, al ser más "general"?
+//(pero añadir el código de invoke sólo si libsloaded es void)
+//(include necesita libinvoke, import no)
+
+//[nota de 04-08-05, más tarde]: Ah, el motivo de que no funcione el import es que invoke(name,args) sólo vale
+//para métodos que no están definidos. Si el método está definido, no se llama. :/
+
+bsh.help.source = "usage: source( filename | URL )";
+
+Object import( String filename ) 
+{
+
+	StringBuffer sb = new StringBuffer();
+	BufferedReader br = new BufferedReader ( new InputStreamReader ( new FileInputStream ( filename ) , "ISO-8859-1" ) );
+	String linea;
+	while ( (linea=br.readLine()) != null )
+	{
+		sb.append ( linea );
+		sb.append ( "\n" );
+	}
+
+	if ( this.caller.liblist == void )
+	{
+		this.caller.liblist = new java.util.Vector();
+	}
+	java.util.StringTokenizer st = new java.util.StringTokenizer((new File(filename)).getName(),".");
+	this.caller.liblist.add ( filename.nextToken() );
+
+	if ( this.caller.libsloaded == void )
+	{
+		this.caller.libsloaded = true;
+		
+		//agregar código para invoke(name,args) que ejecuta los métodos de librería
+		this.interpreter.eval
+		(	
+		
+			"invoke ( name , args )
+			{
+				
+				String[] metodos = this.namespace.getMethodNames();
+			
+				for ( int i = 0 ; i < liblist.size() ; i++ )
+				{
+					String thislibname = liblist.get(i);
+					String thismethodname = thislibname + "_" + name;
+					
+					for ( int m = 0 ; m < metodos.length ; m++ )
+					{
+						if ( thismethodname.equals( metodos[m] ) )
+						{
+							this.invokeMethod ( thislibname + "_" + name , args ); 		
+							break; //break porque no se va a llamar a otro método de la misma librería.
+						}
+					}
+				
+				}
+			}
+			
+			" , this.caller.namespace 
+		);
+		
+		
+	}
+	
+
+
+	return this.interpreter.eval ( sb.toString() , this.caller.namespace );
+
+}
+
+Object source( URL url ) {
+	return this.interpreter.eval( 
+		new InputStreamReader(url.openStream()), this.caller.namespace,  
+		"URL: "+url.toString()
+	);
+}

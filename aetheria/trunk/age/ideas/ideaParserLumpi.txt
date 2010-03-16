@@ -1,0 +1,22 @@
+
+
+
+
+
+
+
+
+
+
+
+<AbstractEntity name="Operadores">
+	<Code language="custom" interpreterMethod="readOperators">
+		<Operator name="plantaPalBolsillo" command="coger planta">
+			<PropertyPrecondition entity="jugador" property="vePlanta" value="true"></PropertyPrecondition>
+			<RelationshipPrecondition source="jugador" target="camino este" property="isIn" value="true"></RelationshipPrecondition>
+			<RelationshipPrecondition source="planta" target="camino este" property="isIn" value="true"></RelationshipPrecondition>
+			<RelationshipPostcondition source="planta" target="camino este" property="isIn" value="false"></RelationshipPostcondition>
+			<RelationshipPostcondition source="jugador" target="planta" property="carries" value="false"></PropertyPostcondition>
+		</Operator>
+	</Code>
+</AbstractEntity>
