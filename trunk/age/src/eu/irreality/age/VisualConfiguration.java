@@ -335,6 +335,7 @@ public class VisualConfiguration
 			Y si no, pues nada. Por defecto habemus.
 		*/
 		
+		boolean usingDefaultFont = true; //if we haven't set a specific font but revert to default
 		
 		if ( nl.getLength() > 0 )
 		{
@@ -370,6 +371,7 @@ public class VisualConfiguration
 				if ( fuentes[f].getFontName().equalsIgnoreCase(fontName) )
 				{
 					laFuente = fuentes[f].deriveFont((float)fontSize);
+					usingDefaultFont = false;
 					break;
 				}
 			}
@@ -393,12 +395,16 @@ public class VisualConfiguration
 					java.io.InputStream is = new java.io.FileInputStream ( f );
 					Font fuente = Font.createFont ( Font.TRUETYPE_FONT , is );
 					laFuente = fuente.deriveFont((float)fontSize);
+					usingDefaultFont = false;
 				}
 				catch ( Exception ex )
 				{
 					Debug.println(ex);
 				}
 			}
+			
+			if ( usingDefaultFont && el.hasAttribute("size") ) //at least set the size
+				laFuente = laFuente.deriveFont((float)fontSize);
 			
 
 		}
