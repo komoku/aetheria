@@ -1,10 +1,10 @@
 /*
 Método que captura el evento lanzado cuando una criatura entra en una habitación.
 */
-void onEnterRoom ( Mobile creature )
+void onEnterRoom ( Mobile aCreature )
 {
  	
- 	//creature: criatura que entra en la habitación.
+ 	//aCreature: criatura que entra en la habitación.
  	//self: habitación en la que entra (es decir, esta habitación).
  	  
 }
