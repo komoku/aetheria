@@ -10,6 +10,7 @@
   <property name="bshlib" location="lib"/>
   <property name="conf" location="conf"/>
   <property name="dist" location="dist"/>
+  <property name="worlds" location="../worlds"/>
   <property name="corejar" value="AgeCore.jar"/>
   <property name="onejar" value="AgeFull.jar"/>
   <!--<property name="defaultconf" location="defaultconf"/>-->
@@ -96,13 +97,14 @@
 		<copy todir="${dist}/images">
 			<fileset dir="images"/>
 		</copy>
+		<copy todir="${dist}/worlds">
+					<fileset dir="${worlds}"/>
+		</copy>
 		<copy todir="${dist}/lib">
 			<fileset dir="${bshlib}"/>
-			<fileset dir=".">
+			<fileset dir="${lib}">
 				<include name="bsh-2.0b2.jar"/>
 				<include name="micromod.jar"/>
-			</fileset>
-			<fileset dir="${lib}">
 				<include name="commons-logging-api.jar"/>
 				<include name="jl1.0.jar"/>
 				<include name="jogg-0.0.7.jar"/>
