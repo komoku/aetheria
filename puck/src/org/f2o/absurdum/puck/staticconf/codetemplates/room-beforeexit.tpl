@@ -2,10 +2,10 @@
 Método que captura el evento lanzado cuando una criatura abandona una habitación
 por un camino dado.
 */
-void beforeExit ( Mobile creature , Path path )
+void beforeExit ( Mobile aCreature , Path path )
 {
  	
- 	//creature: criatura que abandona la habitación.
+ 	//aCreature: criatura que abandona la habitación.
  	//self: habitación que abandona (es decir, esta habitación).
  	//path: salida que utiliza para abandonarla.
  
