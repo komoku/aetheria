@@ -628,18 +628,17 @@ public class WorldPanel extends GraphElementPanel
 	
 
 	/**
+	 * 
 	 * @param entityNode The valid XML element defining an entity.
-	 * @param metaInfNode The meta-inf node with info like coordinates of nodes, their size, etc. May be null.
 	 * @param namesToNodes Names-to-nodes map. May be null.
-	 * @param changeNameIfNotUnique Generate an unique name for the node if it's not already unique?
+	 * @param dispSize Display size for the node, -1 for default size (e.g. for pasted nodes).
+	 * @param coords (x,y) coordinates to add the node. May be null for random coordinates.
 	 */
-	public void addEntityFromXML ( Element entityNode, Element metaInfNode , Map namesToNodes )
+	public void addEntityFromXML ( Element entityNode , Map namesToNodes , int dispSize , Point coords )
 	{
 		String entityName = entityNode.getAttribute("name");
 		//entityName = UniqueNameEnforcer.makeUnique(entityName,namesToNodes); //didn't work, because then we call initFromXML which ignores this
 		String entityId = entityNode.getAttribute("id");
-		Point coords = findCoords(metaInfNode,entityName);
-		int dispSize = findDisplaySize(metaInfNode,entityName);
 		coords = assignRandomCoordsIfNeeded(coords);
 		
 		//add the node
@@ -674,6 +673,22 @@ public class WorldPanel extends GraphElementPanel
 		gep.getPropertiesPanel().loadWithoutShowing(rn);
 		rn.getAssociatedPanel().initFromXML(entityNode);
 		rn.getAssociatedPanel().initMinimal(); //updated with data from xml
+	}
+	
+	/**
+	 * @param entityNode The valid XML element defining an entity.
+	 * @param metaInfNode The meta-inf node with info like coordinates of nodes, their size, etc. May be null.
+	 * @param namesToNodes Names-to-nodes map. May be null.
+	 * @param changeNameIfNotUnique Generate an unique name for the node if it's not already unique?
+	 */
+	public void addEntityFromXML ( Element entityNode, Element metaInfNode , Map namesToNodes )
+	{
+		String entityName = entityNode.getAttribute("name");
+		//entityName = UniqueNameEnforcer.makeUnique(entityName,namesToNodes); //didn't work, because then we call initFromXML which ignores this
+		String entityId = entityNode.getAttribute("id");
+		Point coords = findCoords(metaInfNode,entityName);
+		int dispSize = findDisplaySize(metaInfNode,entityName);
+		addEntityFromXML ( entityNode , namesToNodes , dispSize , coords );
 	}
 	
 	
