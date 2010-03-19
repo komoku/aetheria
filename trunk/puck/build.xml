@@ -9,8 +9,8 @@
   <property name="lib" location="../lib"/>
   <property name="conf" location="conf"/>
   <property name="dist" location="dist"/>
-  <property name="fulldist" location="fulldist"/> <!--Distribution including AGE-->
-  <property name="worlds" location="worlds"/>
+  <property name="fulldist" location="fulldist"/> <!--Distribution including AGE and PUCK-->
+  <property name="worlds" location="../worlds"/>
   <property name="corejar" value="PuckCore2.jar"/>
   <property name="onejar" value="PuckFull2.jar"/>
   <property name="age" value="../age/"/>
@@ -143,9 +143,9 @@
 				<exclude name="**/AgeCore.jar"/> <!--not needed in lib directory-->
 			</fileset>
 		</copy>
-		<copy todir="${dist}/worlds">
+		<!--<copy todir="${dist}/worlds">
 			<fileset dir="${worlds}"/>
-		</copy>
+		</copy>-->
 		<!--
 		<copy todir="${dist}/help">
 			<fileset dir="${src}/help"/>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<project name="AGE + PUCK" default="makekits" basedir=".">
+    <description>
+        Build File para el Playable Universe Construction Kit
+    </description>
+  <!-- set global properties for this build -->
+  <property name="playkit" location="dist/PlayersKit"/> <!--Distribution including AGE only-->
+  <property name="devkit" location="dist/DevelopersKit"/> <!--Distribution including AGE and PUCK-->
+  <property name="zipdir" location="dist"/>
+  <property name="puck" value="puck"/>
+  <property name="agedist" value="age/dist"/>
+  <property name="puckdist" value="puck/fulldist"/>
+  <!--<property name="defaultconf" location="defaultconf"/>-->
+	
+	<target name="makekits" description="generate a distribution of AGE+PUCK">
+		<echo message="Creando Player's Kit y Developer's Kit de AGE y PUCK..."/>
+		<ant dir="${puck}" target="distwithage" inheritAll="false"/>
+		<!--Now copy AGE distribution up to fancy directory-->
+		<mkdir dir="${playkit}"/>
+		<copydir src="${agedist}" dest="${playkit}"/>
+		<mkdir dir="${devkit}"/>
+		<copydir src="${puckdist}" dest="${devkit}"/>
+		<!--generate zipfiles-->
+		<tstamp/>
+		<zip destfile="${zipdir}/AgePlayersKit-${DSTAMP}${TSTAMP}.zip" basedir="${playkit}"/>
+		<zip destfile="${zipdir}/AgeMinimal-${DSTAMP}${TSTAMP}.zip" basedir="${playkit}" excludes="worlds/**"/>
+		<zip destfile="${zipdir}/AgeDevelopersKit-${DSTAMP}${TSTAMP}.zip" basedir="${devkit}"/>
+	</target>
+
+</project>
