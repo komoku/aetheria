@@ -7,6 +7,7 @@
  */
 package org.f2o.absurdum.puck.gui;
 
+import java.awt.Point;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
@@ -56,7 +57,13 @@ public class PasteNodeAction extends AbstractAction
 			org.w3c.dom.Element e = (org.w3c.dom.Element) DOMUtils.stringToNode(theString);
 			e.setAttribute("name",e.getAttribute("name")+"(copy)");
 			WorldPanel wp = (WorldPanel) panel.getWorldNode().getAssociatedPanel();
-			wp.addEntityFromXML(e,null,null);
+			Point coords = null;
+			Point mousePos = panel.getMousePosition();
+			if ( mousePos != null ) //entity is pasted at mouse position if possible
+			{
+				coords = new Point(panel.panelToMapX(mousePos.x),panel.panelToMapY(mousePos.y));
+			}
+			wp.addEntityFromXML(e,null,-1,coords);
 		}
 		catch ( Exception e )
 		{
