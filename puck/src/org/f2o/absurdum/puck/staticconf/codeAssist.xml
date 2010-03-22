@@ -38,6 +38,21 @@
 				<item name="onSay(Mobile,String)" description="Al oír a alguien decir algo" template-ref="mobile-onsay.tpl"/>
 		</menu>
 		<menu context="mobile" name="Redefinir métodos de personaje" description="Redefinir métodos de personaje">
+				<menu name="Método de análisis de la entrada (estándar)" description="Método de análisis de la entrada (estándar)">
+					<item name="parseCommand(String,String)" description="Introducida por este jugador" template-ref="mobile-parsecommand-emitter.tpl"/>
+					<item name="parseCommand(Mobile,String,String)" description="Referente a este personaje" template-ref="item-parsecommand.tpl"/>
+					<item name="parseCommandObj1(Mobile,String,String,String,Entity)" description="Referente a este personaje y otra entidad, en ese orden" template-ref="item-parsecommandobj1.tpl"/>
+					<item name="parseCommandObj2(Mobile,String,String,String,Entity)" description="Referente a otra entidad y este personaje, en ese orden" template-ref="item-parsecommandobj2.tpl"/>
+					<item name="parseCommandTwoObjects(Mobile,String,String,String,Entity)" description="Referente a ésta y otra entidad, en cualquier orden" template-ref="item-parsecommandtwoobjects.tpl"/>
+					<item name="parseCommandGeneric(Mobile,String,String,String,Entity,Entity,boolean)" description="Referente a ésta y, opcionalmente, otra entidad" template-ref="item-parsecommandgeneric.tpl"/>
+				</menu>
+				<menu name="Método de análisis de la entrada (para contenedores y objetos contenidos)" description="Método de análisis de la entrada (para contenedores y objetos contenidos)">
+					<!--<item name="parseCommandOnContents(Mobile,String,String)" description="Referente a este personaje" template-ref="item-parsecommandoncontents.tpl"/>-->
+					<item name="parseCommandOnContentsObj1(Mobile,String,String,String,Vector,Vector,Entity)" description="Referente a este personaje y otra entidad, en ese orden" template-ref="item-parsecommandoncontentsobj1.tpl"/>
+					<item name="parseCommandOnContentsObj2(Mobile,String,String,String,Vector,Vector,Entity)" description="Referente a otra entidad y este personaje, en ese orden" template-ref="item-parsecommandoncontentsobj2.tpl"/>
+					<item name="parseCommandOnContentsTwoObjects(Mobile,String,String,String,Vector,Vector,Entity)" description="Referente a ésta y otra entidad, en cualquier orden" template-ref="item-parsecommandoncontentstwoobjects.tpl"/>
+					<item name="parseCommandOnContentsGeneric(Mobile,String,String,String,Vector,Vector,Entity,Entity,boolean)" description="Referente a ésta y, opcionalmente, otra entidad" template-ref="item-parsecommandoncontentsgeneric.tpl"/>
+				</menu>
 				<item name="update(Entity,World)" description="Método de actualización del personaje" template-ref="entity-update.tpl"/>
 		</menu>
 		<menu context="abstract entity" name="Definir eventos de entidad abstracta" description="Definir eventos de entidad abstracta">
