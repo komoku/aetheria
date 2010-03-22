@@ -5,6 +5,7 @@
 package eu.irreality.age;
 import java.io.*;
 import java.util.*;
+import java.util.logging.Level;
 
 
 //for MOD
@@ -13,6 +14,7 @@ import micromod.resamplers.*;
 import micromod.output.*;
 import micromod.output.converters.*; 
 import javax.sound.sampled.*;
+
 
 import javazoom.jlgui.basicplayer.BasicController;
 import javazoom.jlgui.basicplayer.BasicPlayer;
@@ -257,6 +259,16 @@ public class AGESoundClient implements SoundClient
 	
 	public void audioStartUnpreloaded ( final File f ) throws IOException
 	{
+	    /*
+	    	Log theLog = LogFactory.getLog(BasicPlayer.class);
+	    	if ( theLog instanceof Jdk14Logger )
+	    	{
+	    	    Jdk14Logger logToDisable = (Jdk14Logger)theLog;
+	    	    logToDisable.
+	    	}
+	    	*/
+	    java.util.logging.Logger log = java.util.logging.Logger.getLogger("javazoom.jlgui.basicplayer.BasicPlayer");
+	    log.setLevel(Level.SEVERE);
 		BasicPlayer bp = new BasicPlayer();
 		try
 		{
