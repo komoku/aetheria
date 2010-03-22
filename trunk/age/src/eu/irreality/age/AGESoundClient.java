@@ -14,6 +14,12 @@ import micromod.output.*;
 import micromod.output.converters.*; 
 import javax.sound.sampled.*;
 
+import javazoom.jlgui.basicplayer.BasicController;
+import javazoom.jlgui.basicplayer.BasicPlayer;
+import javazoom.jlgui.basicplayer.BasicPlayerEvent;
+import javazoom.jlgui.basicplayer.BasicPlayerException;
+import javazoom.jlgui.basicplayer.BasicPlayerListener;
+
 import eu.irreality.age.debug.Debug;
 
 
@@ -153,57 +159,6 @@ public class AGESoundClient implements SoundClient
 	/*begin AUDIO*/
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
-/*
-
-		//prueba MIDI
-		
-		try
-		{
-			javax.sound.midi.Sequencer seqr = javax.sound.midi.MidiSystem.getSequencer();
-			javax.sound.midi.Sequence seq = javax.sound.midi.MidiSystem.getSequence ( new java.io.File ( "prueba.mid" ) );
-			seqr.open();
-			seqr.setSequence(seq);
-			//seqr.setTempoFactor((float)20.0);
-			//seqr.start();
-		}
-		catch ( Exception exc )
-		{	
-			System.out.println(exc);
-		}
-		
-		
-		
-		//prueba WAV
-		
-		try
-		{
-			javax.sound.sampled.AudioInputStream aii = javax.sound.sampled.AudioSystem.getAudioInputStream ( new java.io.File("prueba.wav") );
-			javax.sound.sampled.AudioFormat af = aii.getFormat();
-			
-			
-			//cogemos una línea [getline] que soporte el formato [af]
-			javax.sound.sampled.Clip cl = (javax.sound.sampled.Clip) javax.sound.sampled.AudioSystem.getLine ( new javax.sound.sampled.DataLine.Info ( javax.sound.sampled.Clip.class , af ) ); 
-			
-			
-			cl.open ( aii );
-		}
-		catch ( Exception exc )
-		{
-			System.out.println(exc);
-		}
-
-*/
-
 	//AUDIO
 	
 	//a Clip is a DataLine whose audio gets preloaded.
@@ -242,7 +197,6 @@ public class AGESoundClient implements SoundClient
 		//get a Clip
 		javax.sound.sampled.Clip cl = ( javax.sound.sampled.Clip ) javax.sound.sampled.AudioSystem.getLine ( new javax.sound.sampled.DataLine.Info ( javax.sound.sampled.Clip.class , finalFormat ) );
 
-		
 		//load the AudioInputStream gotten from the file into the Clip
 		cl.open (  finalStream );
 
@@ -279,7 +233,7 @@ public class AGESoundClient implements SoundClient
 		}
 	}
 	
-	public void audioStart ( File f ) throws javax.sound.sampled.UnsupportedAudioFileException , javax.sound.sampled.LineUnavailableException , java.io.IOException
+	public void audioStartPreloaded ( File f ) throws javax.sound.sampled.UnsupportedAudioFileException , javax.sound.sampled.LineUnavailableException , java.io.IOException
 	{
 		javax.sound.sampled.Clip cl = getPreloadedClip ( f );
 		if ( cl == null )
@@ -290,13 +244,81 @@ public class AGESoundClient implements SoundClient
 		cl.start();	
 	}
 	
-	public void audioStop ( File f )
+	public void audioStopPreloaded ( File f )
 	{
 		javax.sound.sampled.Clip cl = getPreloadedClip ( f );
 		if ( cl == null )
 				return;
 		//cl not null
 		cl.stop();
+	}
+	
+	private Map basicPlayers = Collections.synchronizedMap(new HashMap());
+	
+	public void audioStartUnpreloaded ( final File f ) throws IOException
+	{
+		BasicPlayer bp = new BasicPlayer();
+		try
+		{
+			bp.open(f);
+		}
+		catch ( BasicPlayerException bpe )
+		{
+			bpe.printStackTrace();
+			throw new IOException(bpe);
+		}
+		basicPlayers.put(f.getAbsolutePath(),bp);
+		bp.addBasicPlayerListener( new BasicPlayerListener()
+		{
+
+			public void opened(Object arg0, Map arg1) {	}
+			public void progress(int arg0, long arg1, byte[] arg2, Map arg3) {}
+			public void setController(BasicController arg0) {}
+			public void stateUpdated(BasicPlayerEvent arg0) 
+			{
+				if ( arg0.getCode() == BasicPlayerEvent.EOM )
+				{
+					basicPlayers.remove(f.getAbsolutePath());
+				}
+			}
+			
+		}
+		);
+		try
+		{
+			bp.play();
+		}
+			catch ( BasicPlayerException bpe )
+		{
+				bpe.printStackTrace();
+			throw new IOException(bpe);
+		}
+	}
+	
+	public void audioStopUnpreloaded ( File f )
+	{
+		BasicPlayer bp = (BasicPlayer) basicPlayers.get(f.getAbsolutePath());
+		if ( bp != null )
+		{
+			try
+			{
+				bp.stop();
+			}
+			catch ( BasicPlayerException bpe )
+			{
+				bpe.printStackTrace();
+			}
+			basicPlayers.remove(f.getAbsolutePath());
+		}
+	}
+	
+	public void audioStart ( File f ) throws javax.sound.sampled.UnsupportedAudioFileException , javax.sound.sampled.LineUnavailableException , java.io.IOException
+	{
+		javax.sound.sampled.Clip cl = getPreloadedClip ( f );
+		if ( cl == null )
+			audioStartUnpreloaded ( f );
+		else
+			audioStartPreloaded ( f );
 	}
 	
 	public void audioStart ( String s ) throws javax.sound.sampled.UnsupportedAudioFileException , javax.sound.sampled.LineUnavailableException , java.io.IOException
@@ -306,7 +328,7 @@ public class AGESoundClient implements SoundClient
 	
 	public void audioStop ( String s )
 	{
-		audioStop ( new File ( s ) );
+		audioStopUnpreloaded ( new File ( s ) );
 	}
 	
 		
