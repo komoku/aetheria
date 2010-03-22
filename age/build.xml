@@ -113,6 +113,7 @@
 				<include name="mp3spi1.9.4.jar"/>
 				<include name="tritonus_share.jar"/>
 				<include name="vorbisspi.jar"/>
+				<include name="basicplayer3.0.jar"/>
 			</fileset>
 		</copy>
 	</target>

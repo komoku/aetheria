@@ -1,0 +1,68 @@
+//To include in Mobile
+
+void advancedcombat_init ( )
+{
+	self.set ( "check.for.enemies" , true , 1 );
+}
+
+static final int NO_ROOM = -1;
+static final int RANDOM_ROOM = -2;
+
+int goToRoom = NO_ROOM;
+
+void advancedcombat_update ( PropertyEntry pe , World w )
+{
+
+	if ( pe.getName().equals("check.for.enemies") )
+	{
+		
+		//upgrade room to move to, in case it's necessary to move
+		MobileList enemies = self.getEnemies();
+		if ( enemies != null && enemies.size() > 0 ) //we have enemies
+		{
+			for ( int i = 0 ; i < enemies.size() ; i++ )
+			{
+				Mobile enemy = (Mobile) enemies.get(i);
+				if ( self.getRoom().hasMobile(enemy) )
+				{
+					if ( enemy.getState() == MOVING ) //the enemy is leaving. we must pursue him!
+					{
+						goToRoom = enemy.getTarget();
+					}
+					else
+					{
+						goToRoom = NO_ROOM;
+					}
+				}
+				else
+				{
+					goToRoom = RANDOM_ROOM;
+				}
+			}
+		}
+		
+		//nothing else to do
+		self.set("check.for.enemies",true,1);
+		end();
+		
+	}
+	
+	if ( pe.getName().equals("state") )
+	{
+		
+		//we override the state change so the mobile will move (only if necessary)
+		
+		if ( goToRoom != NO_ROOM )
+		{
+			boolean success = false;
+			if ( goToRoom == RANDOM_ROOM )
+				success = makeRandomValidMove();
+			else
+				success = goTo(goToRoom);
+			if ( success ) end(); //if we don't succeed, normal setState will be executed (as if there's no room to go).
+		}
+		
+		
+	}
+
+}

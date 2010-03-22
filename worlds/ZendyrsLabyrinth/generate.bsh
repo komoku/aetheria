@@ -11,7 +11,7 @@ Room baseRoom = world.getRoom( "10000003" );
 System.out.println("before...");
 AbstractEntity baseLevel = world.getAbstractEntity ( "mazelevel" );
 System.out.println("After...");
-Item baseButton = world.getItem ( "Botón" );
+Item baseButton = world.getItem ( "BotÃ³n" );
 
 //topology constants
 
@@ -316,7 +316,7 @@ Item getButtonIfAny ( Room r )
 	Inventory inv = r.getInventory();
 	for ( int i = 0 ; i < inv.size() ; i++ )
 	{
-		if ( inv.elementAt(i).getTitle().equals("Botón") )
+		if ( inv.elementAt(i).getTitle().equals("BotÃ³n") )
 			return ( inv.elementAt(i) );
 	}
 	return null;
@@ -503,7 +503,7 @@ String search_solution ( AbstractEntity level , String argNode )
 		
 		if ( s == null )
 		{
-			world.escribir("Hmm, no voy bien por aquí. Veamos...\n");
+			world.escribir("Hmm, no voy bien por aquÃ­. Veamos...\n");
 			return search_solution ( level , null );
 		}
 		
@@ -592,25 +592,25 @@ void setUp()
 	
 	System.out.println("Thelevel: " + thelevel);
 	
-	obj.escribir("Buscando solución [level 1]...\n");
+	obj.escribir("Buscando soluciÃ³n [level 1]...\n");
 	search_solution ( world.getAbstractEntity(thelevel) , null );
-	obj.escribir("Solución buscada [level 1].\n");
+	obj.escribir("SoluciÃ³n buscada [level 1].\n");
 		
 	//startx, starty, goalx, goaly set
 	
 	Room salida1 = getRoom ( world.getAbstractEntity(thelevel) , startx , starty );
 	Room meta1 = getRoom ( world.getAbstractEntity(thelevel) , goalx , goaly );
 	
-	obj.escribir("Buscando solución [level 2]...\n");
+	obj.escribir("Buscando soluciÃ³n [level 2]...\n");
 	search_solution ( world.getAbstractEntity(thelevel2) , null );
-	obj.escribir("Solución buscada [level 2].\n");
+	obj.escribir("SoluciÃ³n buscada [level 2].\n");
 	
 	Room salida2 = getRoom ( world.getAbstractEntity(thelevel2) , startx , starty );
 	Room meta2 = getRoom ( world.getAbstractEntity(thelevel2) , goalx , goaly );
 	
-	obj.escribir("Buscando solución [level 3]...\n");
+	obj.escribir("Buscando soluciÃ³n [level 3]...\n");
 	search_solution ( world.getAbstractEntity(thelevel3) , null );
-	obj.escribir("Solución buscada [level 3].\n");
+	obj.escribir("SoluciÃ³n buscada [level 3].\n");
 	
 	Room salida3 = getRoom ( world.getAbstractEntity(thelevel3) , startx , starty );
 	Room meta3 = getRoom ( world.getAbstractEntity(thelevel3) , goalx , goaly );

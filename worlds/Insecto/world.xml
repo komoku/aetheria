@@ -127,7 +127,7 @@ void parseCommand( Player aPlayer , String verb , String args )
 <Background color="#ffffe8"/>
 <Error color="#663300"/>
 </Colors>
-<Font filename="Courier.ttf" name="Courier" size="12.0"/>
+<Font filename="Courier.ttf" name="Arial" size="16.0"/>
 </VisualConfiguration>
 <Rooms>
 <Room name="Habitación de Kovacic">
