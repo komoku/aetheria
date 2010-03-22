@@ -123,8 +123,14 @@
 	<target name="distwithage" depends="dist" description="generate a distribution of AGE+PUCK">
 		<echo message="Creando distribución combinada AGE+PUCK..."/>
 		<ant dir="${age}" target="dist" inheritAll="false"/>
-		<mkdir dir="${fulldist}"/>
-		<copydir src="${age}/dist" dest="${fulldist}"/>
+		<mkdir dir="${fulldist}"/>		
+		<!--copydir src="${age}/dist" dest="${fulldist}"/>-->
+		<copy todir="${fulldist}">
+			<fileset dir="${age}/dist">
+				<exclude name="worlds/Morluck/**"/>
+				<exclude name="worlds/Morluck"/>
+			</fileset>
+		</copy>
 		<copydir src="${dist}" dest="${fulldist}"/>
 	</target>
 	

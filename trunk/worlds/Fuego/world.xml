@@ -146,7 +146,7 @@ void parseCommand( Player aPlayer , String verb , String args )
 <Background color="#000000"/>
 <Error color="#cc0000"/>
 </Colors>
-<Font filename="Courier.ttf" name="Courier" size="12.0"/>
+<Font filename="Courier.ttf" name="Arial" size="16.0"/>
 </VisualConfiguration>
 <Rooms>
 <Room name="Habitación de hotel">

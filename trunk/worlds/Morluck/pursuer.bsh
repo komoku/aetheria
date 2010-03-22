@@ -1,0 +1,107 @@
+//To include in Mobile
+
+
+void onInit()
+{
+	libinvoke ( "onInit" , new Object[] {} );
+}
+
+void update ( PropertyEntry pe , World w )
+{
+	libinvoke ( "update" , new Object[] { pe , w } );
+}
+
+void pursuer_onInit ( )
+{
+	set ( self , "check.for.enemies" , true );
+	setTime ( self , "check.for.enemies" , 1 );
+}
+
+static final int NO_ROOM = -1;
+static final int RANDOM_ROOM = -2;
+
+int goToRoom = NO_ROOM;
+
+void pursuer_update ( PropertyEntry pe , World w )
+{
+
+	if ( pe.getName().equals("check.for.enemies") )
+	{
+	
+		//System.err.println("CHECKAN GAEMS");
+		
+		//upgrade room to move to, in case it's necessary to move
+		MobileList enemies = self.getEnemies();
+		if ( enemies != null && enemies.size() > 0  && goToRoom == NO_ROOM  && self.getState() != Mobile.MOVING ) //we have enemies and no movement scheduled or in progress
+		{
+			for ( int i = 0 ; i < enemies.size() ; i++ )
+			{
+				Mobile enemy = (Mobile) enemies.get(i);
+				if ( self.getRoom().hasMobile(enemy) )
+				{
+					if ( enemy.getState() == Mobile.MOVING ) //the enemy is leaving. we must pursue him!
+					{
+						//System.err.println("TARGETAN GAEMS");
+						goToRoom = enemy.getTarget();
+					}
+					else
+					{
+						goToRoom = NO_ROOM;
+						break; //we have an enemy here, so don't even bother to move elsewhere
+					}
+				}
+				else
+				{
+					//System.err.println("RANDTARGETAN GAEMS");
+					//if ( goToRoom == NO_ROOM )
+						goToRoom = RANDOM_ROOM; //we have enemies but we don't know where they all are/went
+				}
+			}
+		}
+		
+		//nothing else to do
+		set ( self , "check.for.enemies" , true );
+		setTime ( self , "check.for.enemies" , 1 );
+		end();
+		
+	}
+	
+	if ( pe.getName().equals("state") && self.getState() != Mobile.ATTACKING && self.getState() != Mobile.DEAD ) //an ATTACKING state has to end to deal the damage and interrupt if possible. And dead mobs don't move, of course.
+	{
+		
+		//we override the state change so the mobile will move (only if necessary)
+		
+		if ( goToRoom != NO_ROOM )
+		{
+			boolean weHaveEnemiesHere = false;
+			MobileList enemies = self.getEnemies();
+			for ( int i = 0 ; i < enemies.size() ; i++ )
+			{
+				Mobile enemy = (Mobile) enemies.get(i);
+				if ( self.getRoom().hasMobile(enemy) )
+				{
+					weHaveEnemiesHere = true;
+					break;
+				}
+			}
+		
+			if ( !weHaveEnemiesHere )
+			{
+			
+				//System.err.println("GOAN GAEMS " + goToRoom);
+				boolean success = false;
+				if ( goToRoom == RANDOM_ROOM )
+					success = self.makeRandomValidMove();
+				else
+					success = self.goTo(goToRoom);
+				goToRoom = NO_ROOM;
+				if ( success ) end(); //if we don't succeed, normal setState will be executed (as if there's no room to go).
+			
+			}
+			
+		}
+		
+		
+	}
+
+}
