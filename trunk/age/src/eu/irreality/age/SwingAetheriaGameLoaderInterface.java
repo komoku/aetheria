@@ -15,9 +15,17 @@ import javax.xml.transform.*;
 import javax.xml.transform.stream.*;
 import javax.xml.transform.dom.*;
 import org.xml.sax.*;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.w3c.dom.*;
 
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.swing.sdi.SwingSDIInterface;
 
 import javax.xml.parsers.*;
 
@@ -220,24 +228,98 @@ public class SwingAetheriaGameLoaderInterface
 	{
 
 
+		
+		if ( args.length > 0 )
+		{
+			//parse command line
+			
+			Option sdi = new Option( "sdi", "use single-document interface" );
+			Option worldFile = OptionBuilder.withArgName( "file" )
+            .hasArg()
+            .withDescription(  "The world file to play" )
+            .create( "worldfile" );	
+			Option logFile   = OptionBuilder.withArgName( "file" )
+            .hasArg()
+            .withDescription(  "Log file to load the game from (requires a world file)" )
+            .create( "logfile" );
+			Option stateFile   = OptionBuilder.withArgName( "file" )
+            .hasArg()
+            .withDescription(  "State file to load the game from (requires a world file)" )
+            .create( "statefile" );
+			
+			Options options = new Options();
 
+			options.addOption( sdi );
+			options.addOption( worldFile );
+			options.addOption( logFile );
+			options.addOption( stateFile );
+			
+			CommandLineParser parser = new GnuParser();
+		    try 
+		    {
+		        // parse the command line arguments
+		        CommandLine line = parser.parse( options, args );
+		        
+		        String desiredWorldFile = null;
+		        String desiredLogFile = null;
+		        String desiredStateFile = null;
+		        
+		        if ( line.hasOption("statefile") ) desiredStateFile = line.getOptionValue("statefile");
+		        if ( line.hasOption("logfile") ) desiredLogFile = line.getOptionValue("logfile");
+		        if ( line.hasOption("worldfile") ) desiredWorldFile = line.getOptionValue("worldfile");
+		        if ( desiredWorldFile == null && line.getArgs().length > 0 ) desiredWorldFile = line.getArgs()[0];
+		        boolean desiredSdi = Boolean.valueOf( line.getOptionValue("sdi") ).booleanValue();
+		        
+		        if ( SwingAetheriaGUI.getInstance() != null )
+		        {
+		        	//abrir un fichero en una instancia de AGE ya abierta
+					System.out.println("Opening file in existing instance...");
+					createLocalGameFromFile(desiredWorldFile,true,desiredLogFile!=null,desiredLogFile,desiredStateFile);
+					return;
+		        }
+		        else
+		        {
+		        	
+		        	System.out.println("Working directory: " + Paths.getWorkingDirectory() );
+		    		setLookAndFeel();
+		    		
+		    		if ( !desiredSdi )
+		    			new SwingAetheriaGUI();
+		        	
+		        	createLocalGameFromFile(desiredWorldFile,!desiredSdi,desiredLogFile!=null,desiredLogFile,desiredStateFile);
+
+		        }
+		        
+		    }
+		    catch( ParseException exp ) {
+		        // oops, something went wrong
+		        System.err.println( "Parsing failed.  Reason: " + exp.getMessage() );
+		    }
+			
+		    
+		}
+		else
+		{
+			setLookAndFeel();
+    		new SwingAetheriaGUI();
+		}
+		
+
+		/*
 		if ( args.length > 0 && SwingAetheriaGUI.getInstance() != null )
 		{
 			//abrir un fichero en una instancia de AGE ya abierta
 			System.out.println("Opening file in existing instance...");
-			SwingAetheriaGUI.createLocalGameFromFile(args[0]);
+			createLocalGameFromFile(args[0]);
 			return;
 		}
+		*/
 
 
 
 
 		//System.out.println("Arguments to main(): " + args.length );
-		System.out.println("Working directory: " + Paths.getWorkingDirectory() );
-
 		
-
-		setLookAndFeel();
 
 
 		//prueba MIDI
@@ -273,73 +355,55 @@ public class SwingAetheriaGameLoaderInterface
 
 
 
-		new SwingAetheriaGUI();
+		
 
-
+		/*
 		if ( args.length > 0 )
 		{
 			System.out.println("Opening file in newly created instance...");
-			SwingAetheriaGUI.createLocalGameFromFile(args[0]);
+			createLocalGameFromFile(args[0]);
 		}
+		*/
 
 
 	}
+	
+	
+	/**
+	 * This is a simple game creation function prepared to call from the outside without needing any data except for the game file.
+	 * This can be used for the PUCK IDE's "go" button.
+	 *
+	 */
+	public static void createLocalGameFromFile( String file )
+	{
+		createLocalGameFromFile ( file , true );
+		
+	}
+	
+	public static void createLocalGameFromFile ( String file , boolean mdi )
+	{
+		if ( mdi )
+			new SwingAetheriaGameLoader
+			( file  , SwingAetheriaGUI.getInstance().panel , false , null , null, false );
+		else
+			new SwingSDIInterface(file,false,null,null);
+	}
+	
+	public static void createLocalGameFromFile ( String file , boolean mdi , boolean usarLog , String logFile , String stateFile )
+	{
+		if ( mdi )
+			new SwingAetheriaGameLoader
+			( file  , SwingAetheriaGUI.getInstance().panel , usarLog , logFile , stateFile , false );
+		else
+			new SwingSDIInterface(file,usarLog,logFile,stateFile);
+	}
+	
+	
 }
 
-/*class PanelImagen extends JDesktopPane
-{
-	Image img;
-	Color background;
 
-	public PanelImagen( Image img , Color background )
-	{
-		this.img = img;
-		this.background = background;
-		setBackground(background);
-		setVisible(true);
-	}
-	public void paint ( Graphics g )
-	{
-		super.paint(g);
-		g.drawImage(img,1,1,400,400,Color.black,this);
-	}
 
-}
 
-class PanelEscritorio extends JDesktopPane
-{
-	Image img;
-	Color background;
-
-	public PanelEscritorio ( Image img , Color background )
-	{
-		super();
-		PanelImagen pi = new PanelImagen(img,background);
-		add(pi);
-		setLayer(pi,highestLayer());
-		setBackground(background);
-		setVisible(true);
-	}
-}*/
-
-/*class PanelEscritorio extends JDesktopPane
-{
-	Image img;
-	Color background;
-
-	public PanelEscritorio( Image img , Color background )
-	{
-		this.img = img;
-		this.background = background;
-		setBackground(background);
-		setVisible(true);
-	}
-	public void paint ( Graphics g )
-	{
-		//g.drawImage(img,1,1,400,400,Color.black,this);
-		super.paint(g);
-	}
-}*/
 
 
 class SwingAetheriaGUI extends JFrame
@@ -363,18 +427,6 @@ class SwingAetheriaGUI extends JFrame
 				((SwingAetheriaGameLoader)frames[i]).exitNow();
 			}
 		}
-	}
-
-
-	/**
-	 * This is a simple game creation function prepared to call from the outside without needing any data except for the game file.
-	 * This can be used for the PUCK IDE's "go" button.
-	 *
-	 */
-	public static void createLocalGameFromFile( String file )
-	{
-		new SwingAetheriaGameLoader
-		( file  , getInstance().panel , false , null , null, false );		
 	}
 
 
