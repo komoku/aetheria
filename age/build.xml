@@ -38,7 +38,7 @@
         description="compile the source " >
         <echo message="Compilando..."/>
     <!-- Compile the java code from ${src} into ${build} -->
-    <javac sourcepath="" srcdir="${src}" destdir="${build}" classpath=".;${lib}/bsh-2.0b2.jar;${lib}/micromod.jar;${lib}/basicplayer3.0.jar;${lib}/jl1.0.jar" target="1.4" source="1.4" debug="true" encoding="iso-8859-1">
+    <javac sourcepath="" srcdir="${src}" destdir="${build}" classpath=".;${lib}/bsh-2.0b2.jar;${lib}/micromod.jar;${lib}/basicplayer3.0.jar;${lib}/jl1.0.jar;${lib}/commons-cli-1.2.jar" target="1.4" source="1.4" debug="true" encoding="iso-8859-1">
   		<include name="**/*.java"/>
   		<exclude name="**/conf/**"/>
     	<!--exclude does not seem to work-->
@@ -114,6 +114,7 @@
 				<include name="tritonus_share.jar"/>
 				<include name="vorbisspi.jar"/>
 				<include name="basicplayer3.0.jar"/>
+				<include name="commons-cli-1.2.jar"/>
 			</fileset>
 		</copy>
 	</target>
