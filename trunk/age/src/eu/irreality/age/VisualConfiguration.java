@@ -403,7 +403,7 @@ public class VisualConfiguration
 				}
 			}
 			
-			if ( usingDefaultFont && el.hasAttribute("size") ) //at least set the size
+			if ( usingDefaultFont && el.hasAttribute("size") && laFuente != null ) //at least set the size
 				laFuente = laFuente.deriveFont((float)fontSize);
 			
 
