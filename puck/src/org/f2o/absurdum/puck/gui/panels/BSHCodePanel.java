@@ -158,7 +158,8 @@ class BSHCodeFrame extends JFrame
 		southPanel.add(lineNumLabel);
 		southPanel.add(savButton);
 		southPanel.add(canButton);
-		getContentPane().add ( southPanel , BorderLayout.SOUTH );
+		//restore this for save, cancel buttons
+		//getContentPane().add ( southPanel , BorderLayout.SOUTH );
 		savButton.addActionListener ( new ActionListener() 
 				{
 					public void actionPerformed ( ActionEvent evt )

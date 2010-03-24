@@ -176,9 +176,8 @@ public class SwingAetheriaGameLoaderInterface
 	{
 		if ( SwingAetheriaGUI.getInstance() != null )
 		{
-			System.err.println("2 Showing previous instance...");
+			System.err.println("Showing previous instance...");
 			SwingAetheriaGUI.getInstance().setVisible(true);
-			System.err.println("2 Done.");
 			System.err.flush();
 		}
 	}
@@ -268,9 +267,9 @@ public class SwingAetheriaGameLoaderInterface
 		        if ( line.hasOption("logfile") ) desiredLogFile = line.getOptionValue("logfile");
 		        if ( line.hasOption("worldfile") ) desiredWorldFile = line.getOptionValue("worldfile");
 		        if ( desiredWorldFile == null && line.getArgs().length > 0 ) desiredWorldFile = line.getArgs()[0];
-		        boolean desiredSdi = Boolean.valueOf( line.getOptionValue("sdi") ).booleanValue();
+		        boolean desiredSdi = line.hasOption("sdi");  //Boolean.valueOf( line.getOptionValue("sdi") ).booleanValue();	    
 		        
-		        if ( SwingAetheriaGUI.getInstance() != null )
+		        if ( SwingAetheriaGUI.getInstance() != null && !desiredSdi )
 		        {
 		        	//abrir un fichero en una instancia de AGE ya abierta
 					System.out.println("Opening file in existing instance...");
@@ -395,7 +394,10 @@ public class SwingAetheriaGameLoaderInterface
 			new SwingAetheriaGameLoader
 			( file  , SwingAetheriaGUI.getInstance().panel , usarLog , logFile , stateFile , false );
 		else
-			new SwingSDIInterface(file,usarLog,logFile,stateFile);
+		{
+		    SwingAetheriaGameLoaderInterface.loadFont();
+		    new SwingSDIInterface(file,usarLog,logFile,stateFile);
+		}
 	}
 	
 	
