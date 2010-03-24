@@ -37,6 +37,7 @@ import org.f2o.absurdum.puck.gui.clipboard.CopyAction;
 import org.f2o.absurdum.puck.gui.clipboard.CutAction;
 import org.f2o.absurdum.puck.gui.clipboard.PasteAction;
 import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
+import org.f2o.absurdum.puck.gui.dialog.ExecuteDialog;
 import org.f2o.absurdum.puck.gui.dialog.IconSizesDialog;
 import org.f2o.absurdum.puck.gui.dialog.ShowHideDialog;
 import org.f2o.absurdum.puck.gui.graph.GraphEditingPanel;
@@ -63,6 +64,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -84,6 +86,9 @@ public class PuckFrame extends JFrame
 	private JMenuItem saveMenuItem;
 	
 	private String editingFileName = null;
+	
+	private ExecuteDialog ed = null;
+	
 	
 	/**
 	 * Maximizes this frame if supported by the platform.
@@ -107,6 +112,11 @@ public class PuckFrame extends JFrame
 	
 	public void runCurrentFileInAge ( )
 	{
+	    if ( ed == null )
+		ed = new ExecuteDialog(this);
+	    ed.setVisible(true);
+	    
+	    /*
 		if ( askForSaveOrCancel() )
 		{
 			String[] str = new String[1];
@@ -115,7 +125,32 @@ public class PuckFrame extends JFrame
 			eu.irreality.age.SwingAetheriaGameLoaderInterface.main(str);
 			eu.irreality.age.SwingAetheriaGameLoaderInterface.setStandalone(false);
 		}
+		*/
 	}
+	
+	public void runCurrentFileInAge ( boolean onMdi , String withLog )
+	{
+		    List arguments = new ArrayList();
+		    arguments.add("-worldfile");
+		    arguments.add(editingFileName);
+		    if ( withLog != null )
+		    {
+			arguments.add("-logfile");
+			arguments.add(withLog);
+		    }
+		    if ( !onMdi )
+		    {
+			arguments.add("-sdi");
+		    }
+		    String[] str = (String[]) arguments.toArray(new String[0]);
+		    
+		    if ( onMdi )
+			eu.irreality.age.SwingAetheriaGameLoaderInterface.showIfAlreadyOpen(); //could be closed by user, re-show
+		    eu.irreality.age.SwingAetheriaGameLoaderInterface.main(str);
+		    if ( onMdi )
+			eu.irreality.age.SwingAetheriaGameLoaderInterface.setStandalone(false);
+	}
+	
 	
 	/**
 	 * Saves the changes in the file the user are editing, provide that the user has already assigned a path to it.
@@ -182,6 +217,32 @@ public class PuckFrame extends JFrame
 			return false;
 	}
 	
+	
+	public boolean saveOrSaveAs()
+	{
+		try
+		{
+			boolean done;
+			if ( editingFileName != null )
+			{
+				saveChangesInCurrentFile ( );
+				done = true;
+			}
+			else
+			{
+				done = saveAs();
+			}
+			return done;
+		}
+		catch ( Exception e )
+		{
+			JOptionPane.showMessageDialog(PuckFrame.this,e,"Whoops!",JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	
 	/**
 	 * Asks the user to save the file being edited (before doing an action that needs this). 
 	 * @return true if the file has been saved and action can be undertaken, false if the file has not been saved (because user chose not to save it, or because of an exception) and action cannot be undertaken.
@@ -191,26 +252,7 @@ public class PuckFrame extends JFrame
 		int option = JOptionPane.showConfirmDialog(PuckFrame.this,Messages.getInstance().getMessage("confirm.save.text"),Messages.getInstance().getMessage("confirm.save.title"),JOptionPane.YES_NO_OPTION,JOptionPane.INFORMATION_MESSAGE);
 		if ( option == JOptionPane.YES_OPTION ) 
 		{
-			try
-			{
-				boolean done;
-				if ( editingFileName != null )
-				{
-					saveChangesInCurrentFile ( );
-					done = true;
-				}
-				else
-				{
-					done = saveAs();
-				}
-				return done;
-			}
-			catch ( Exception e )
-			{
-				JOptionPane.showMessageDialog(PuckFrame.this,e,"Whoops!",JOptionPane.ERROR_MESSAGE);
-				e.printStackTrace();
-				return false;
-			}
+		    return saveOrSaveAs();
 		}
 		else
 		{
