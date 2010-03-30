@@ -58,7 +58,7 @@ public class CommandLineClient implements InputOutputClient
 		this.gameLog = gameLog;
 		this.rebotFriendly = rebotFriendly;
 		this.unstrict = unstrict;
-		if ( rebotFriendly ) echoEnabled = false;
+		if ( rebotFriendly ) echoText="> "; /*echoEnabled = false;*/
 		try
 		{
 			reader = new BufferedReader ( new InputStreamReader ( System.in , encoding ) );
@@ -80,7 +80,8 @@ public class CommandLineClient implements InputOutputClient
 			writer.println("******************************************************************");
 			writer.println();
 			writer.println();
-			waitKeyPress();
+			if ( !rebotFriendly )
+				waitKeyPress();
 			
 		}
 		catch ( Exception e )
