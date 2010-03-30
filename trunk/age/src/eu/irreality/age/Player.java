@@ -3307,7 +3307,7 @@ public class Player extends Mobile implements Informador
 
 			Thread th = Thread.currentThread();
 
-			Debug.println("WKP Thread: " + th + "( " + SwingUtilities.isEventDispatchThread() + " )");
+			//Debug.println("WKP Thread: " + th + "( " + SwingUtilities.isEventDispatchThread() + " )");
 
 			if ( th instanceof GameEngineThread )
 			{
