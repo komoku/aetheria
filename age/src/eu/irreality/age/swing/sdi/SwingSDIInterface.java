@@ -68,7 +68,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 
 	private Object mundoSemaphore = new Object();
 
-	private void setMainPanel ( JPanel panel )
+	public void setMainPanel ( JPanel panel )
 	{
 		if ( mainPanel != null ) getContentPane().remove(mainPanel);
 		mainPanel = panel;

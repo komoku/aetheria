@@ -335,7 +335,7 @@ de la ventana hasta acabar de cargar.
 		return mainPanel;
 	}
 	
-	private void setMainPanel ( JPanel p )
+	public void setMainPanel ( JPanel p )
 	{
 		if ( mainPanel != null ) getContentPane().remove(mainPanel);
 		mainPanel = p;
