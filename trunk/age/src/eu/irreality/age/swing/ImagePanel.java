@@ -6,15 +6,14 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-public class ImagePanel extends JPanel
+import eu.irreality.age.ImageConstants;
+
+public class ImagePanel extends JPanel implements ImageConstants
 {
 	
 	private ImageIcon theImage;
 	
-	public static final int NO_SCALING = 0;
-	public static final int FIT_HEIGHT = 1;
-	public static final int FIT_WIDTH = 2;
-	public static final int FIT_BOTH = 3;
+
 	
 	private int scalingMode = NO_SCALING;
 		
@@ -63,6 +62,8 @@ public class ImagePanel extends JPanel
 		{
 			drawX = panelWidth/2 - imageWidth/2;
 			drawY = panelHeight/2 - imageHeight/2;
+			drawW = imageWidth;
+			drawH = imageHeight;
 		}
 		if ( scalingMode == FIT_WIDTH )
 		{

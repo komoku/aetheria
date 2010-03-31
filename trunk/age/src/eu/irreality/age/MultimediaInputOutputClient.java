@@ -17,5 +17,6 @@ public interface MultimediaInputOutputClient extends InputOutputClient
 	
 	public void insertCenteredIcon ( String fileName );
 	
+	public void useImage ( String fileName , int mode , int location , int scaling );
 		
 }

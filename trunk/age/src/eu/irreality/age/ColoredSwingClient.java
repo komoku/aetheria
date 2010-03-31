@@ -14,6 +14,7 @@ import java.text.*;
 import java.awt.*;
 import javax.swing.text.*;
 
+import eu.irreality.age.swing.FancyJTextPane;
 import eu.irreality.age.swing.ImagePanel;
 import eu.irreality.age.windowing.AGEClientWindow;
 
@@ -26,7 +27,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 {
 
 	private JTextField elCampoTexto;
-	private JTextPane elAreaTexto;
+	private FancyJTextPane elAreaTexto;
 	private JScrollPane elScrolling;
 	private SwingEditBoxListener elEscuchador;	
 	private Vector gameLog;
@@ -99,6 +100,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		colorCodesTable.put("input","%AAAAAA%");
 		colorCodesTable.put("reset","% %");
 		elAreaTexto.setBackground ( Color.black );
+		laVentana.getMainPanel().setBackground( elAreaTexto.getBackground() );
 		elAreaTexto.setForeground ( Color.white );
 		StyleConstants.setForeground(atributos,Color.black);
 		elAreaTexto.setFont(SwingAetheriaGameLoaderInterface.font);
@@ -122,6 +124,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		colorCodesTable.put("input","%555555%");
 		colorCodesTable.put("reset"," ");
 		elAreaTexto.setBackground ( new Color ( 255 , 255 , 211 ) );
+		laVentana.getMainPanel().setBackground( elAreaTexto.getBackground() );
 		elAreaTexto.setForeground ( Color.black );
 		StyleConstants.setForeground(atributos,Color.white);
 		
@@ -160,7 +163,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		}
 		elAreaTexto.setBackground ( c.getBackgroundColor() );
 		elAreaTexto.setForeground ( c.getForegroundColor() );
-		//laVentana.getMainPanel().setBackground ( c.getBackgroundColor() ); 
+		laVentana.getMainPanel().setBackground ( c.getBackgroundColor() ); 
 		StyleConstants.setForeground(atributos,c.getForegroundColor());
 		elAreaTexto.repaint();
 		elAreaTexto.setFont(c.getFont());
@@ -294,7 +297,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		return true;
 	}
 	
-	public ColoredSwingClient ( AGEClientWindow window , JTextField nCampo , JScrollPane scrolling, JTextPane nArea , Vector gameLog )
+	public ColoredSwingClient ( AGEClientWindow window , JTextField nCampo , JScrollPane scrolling, FancyJTextPane nArea , Vector gameLog )
 	{
 		laVentana = window;
 		elCampoTexto=nCampo;
@@ -454,14 +457,17 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 					
 		//Thread.yield();
 
-		elAreaTexto = new JTextPane();
+		elAreaTexto = new FancyJTextPane();
 					
 		laVentana.updateNow();
 
 		elScrolling = new JScrollPane ( elAreaTexto );
 		elScrolling.setVerticalScrollBarPolicy( JScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
+		elScrolling.setBorder(BorderFactory.createEmptyBorder());
+		elScrolling.setViewportBorder(BorderFactory.createEmptyBorder());
 		elAreaTexto.setForeground(java.awt.Color.white);
 		elAreaTexto.setBackground(java.awt.Color.black);
+		laVentana.getMainPanel().setBackground(java.awt.Color.black);
 			
 		//elAreaTexto.setContentType("text/html; charset=iso-8859-1");			
 
@@ -939,9 +945,26 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	private ImagePanel leftFrame = null;
 	private ImagePanel rightFrame = null;
 	
+	public void removeFrames()
+	{
+		topFrame = null;
+		bottomFrame = null;
+		leftFrame = null;
+		rightFrame = null;
+		
+		//get innermost panel
+		Container current = elAreaTexto.getParent();
+		while ( !(current instanceof JPanel) )
+			current = current.getParent();
+		laVentana.setMainPanel((JPanel)current);
+		
+		laVentana.getMainPanel().revalidate();
+		refreshFocus();
+	}
+	
 	public void addFrame ( int position , int size )
 	{
-		if ( position == SwingConstants.TOP )
+		if ( position == ImageConstants.TOP )
 		{
 			JPanel newMainPanel = new JPanel();
 			topFrame = new ImagePanel();
@@ -959,43 +982,59 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 			laVentana.setMainPanel(newMainPanel);
 			
 		}
-		else if ( position == SwingConstants.BOTTOM )
+		else if ( position == ImageConstants.BOTTOM )
 		{
 			JPanel newMainPanel = new JPanel();
 			bottomFrame = new ImagePanel();
 			bottomFrame.setBackground(elAreaTexto.getBackground());
 			bottomFrame.setPreferredSize(new Dimension(laVentana.getMainPanel().getWidth(),size));
 			bottomFrame.setMaximumSize(new Dimension(10000,size));
+			/*
 			newMainPanel.setLayout(new BoxLayout(newMainPanel,BoxLayout.PAGE_AXIS));
 			newMainPanel.add(laVentana.getMainPanel());
 			newMainPanel.add(bottomFrame);
+			*/
+			newMainPanel.setLayout(new BorderLayout());
+			newMainPanel.add(laVentana.getMainPanel(),BorderLayout.CENTER);
+			newMainPanel.add(bottomFrame,BorderLayout.SOUTH);
 			laVentana.setMainPanel(newMainPanel);
 		}
-		else if ( position == SwingConstants.LEFT )
+		else if ( position == ImageConstants.LEFT )
 		{
 			JPanel newMainPanel = new JPanel();
 			leftFrame = new ImagePanel();
 			leftFrame.setBackground(elAreaTexto.getBackground());
 			leftFrame.setPreferredSize(new Dimension(size,laVentana.getMainPanel().getHeight()));
 			leftFrame.setMaximumSize(new Dimension(size,100000));
+			/*
 			newMainPanel.setLayout(new BoxLayout(newMainPanel,BoxLayout.LINE_AXIS));
 			newMainPanel.add(leftFrame);
 			newMainPanel.add(laVentana.getMainPanel());
+			*/
+			newMainPanel.setLayout(new BorderLayout());
+			newMainPanel.add(leftFrame,BorderLayout.WEST);
+			newMainPanel.add(laVentana.getMainPanel(),BorderLayout.CENTER);
 			laVentana.setMainPanel(newMainPanel);
 		}
-		else if ( position == SwingConstants.RIGHT )
+		else if ( position == ImageConstants.RIGHT )
 		{
 			JPanel newMainPanel = new JPanel();
 			rightFrame = new ImagePanel();
 			rightFrame.setBackground(elAreaTexto.getBackground());
 			rightFrame.setPreferredSize(new Dimension(size,laVentana.getMainPanel().getHeight()));
 			rightFrame.setMaximumSize(new Dimension(size,100000));
+			/*
 			newMainPanel.setLayout(new BoxLayout(newMainPanel,BoxLayout.LINE_AXIS));
 			newMainPanel.add(laVentana.getMainPanel());
 			newMainPanel.add(rightFrame);
+			*/
+			newMainPanel.setLayout(new BorderLayout());
+			newMainPanel.add(laVentana.getMainPanel(),BorderLayout.CENTER);
+			newMainPanel.add(rightFrame,BorderLayout.EAST);
 			laVentana.setMainPanel(newMainPanel);
 		}
-		((JComponent)laVentana).revalidate();
+		laVentana.getMainPanel().revalidate();
+		//((JComponent)laVentana).revalidate();
 		refreshFocus();
 	}
 	
@@ -1003,10 +1042,10 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	{
 		switch ( position )
 		{
-			case SwingConstants.TOP : return topFrame;
-			case SwingConstants.BOTTOM : return bottomFrame;
-			case SwingConstants.LEFT : return leftFrame;
-			case SwingConstants.RIGHT : return rightFrame;
+			case ImageConstants.TOP : return topFrame;
+			case ImageConstants.BOTTOM : return bottomFrame;
+			case ImageConstants.LEFT : return leftFrame;
+			case ImageConstants.RIGHT : return rightFrame;
 			default : return null;
 		}
 	}
@@ -1026,5 +1065,40 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		theFrame.repaint();
 	}
 
+	public void showImageInBackground ( String fileName )
+	{
+		if ( fileName == null ) 
+			elAreaTexto.setBackgroundImage(null);
+		else
+			elAreaTexto.setBackgroundImage(new ImageIcon(fileName).getImage());
+	}
+	
+	public void useImage ( String fileName , int mode , int location , int scaling )
+	{
+		if ( mode == ImageConstants.INLINE )
+		{
+			if ( location == ImageConstants.LEFT )
+				insertIcon(fileName);
+			else 
+				insertCenteredIcon(fileName);
+		}
+		else if ( mode == ImageConstants.BACKGROUND )
+			showImageInBackground(fileName);
+		else if ( mode == ImageConstants.FRAME )
+			showImageInFrame(fileName,location,scaling);
+	}
+	
+	public void useImage ( String fileName , int mode , int location ) 
+	{ 
+		useImage(fileName,mode,location,ImageConstants.NO_SCALING);
+	}
+	
+	public void useImage ( String fileName , int mode )
+	{
+		if ( mode == ImageConstants.FRAME )
+			useImage(fileName,mode,ImageConstants.TOP);
+		else
+			useImage(fileName,mode,ImageConstants.CENTER);
+	}
 
 }
