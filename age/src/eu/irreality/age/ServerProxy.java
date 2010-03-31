@@ -270,6 +270,18 @@ public class ServerProxy extends Thread implements ARSPConstants
 				}	
 			}
 		}
+		else if ( command.equalsIgnoreCase( USE_IMAGE ) )
+		{
+			if ( cliente.isGraphicsEnabled() )
+			{
+				StringTokenizer argTok = new StringTokenizer ( arguments , " " );
+				String one = argTok.nextToken().trim();
+				String two = argTok.nextToken().trim();
+				String three = argTok.nextToken().trim();
+				String tail = argTok.nextToken("").trim();
+				cliente.useImage(tail,Integer.valueOf(one).intValue(),Integer.valueOf(two).intValue(),Integer.valueOf(three).intValue());
+			}
+		}
 		/* inexistent
 		else if ( command == SET_INPUT_STRING )
 		{

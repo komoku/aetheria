@@ -28,6 +28,7 @@ public interface ARSPConstants
 	public String GET_INPUT_RETURN = "gr";
 	//public String GET_INPUT_ASYNCHRONOUS = "ga";
 	public String INSERT_ICON = "icon";
+	public String USE_IMAGE = "image";
 	public String SET_INPUT_STRING = "set_input_string";
 	public String SET_MODE = "set_mode";
 	public String WAIT_KEY_PRESS = "wait_key_press";
