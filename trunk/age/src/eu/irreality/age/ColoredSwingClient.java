@@ -14,6 +14,7 @@ import java.text.*;
 import java.awt.*;
 import javax.swing.text.*;
 
+import eu.irreality.age.swing.ImagePanel;
 import eu.irreality.age.windowing.AGEClientWindow;
 
 import java.awt.datatransfer.Clipboard;
@@ -159,6 +160,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		}
 		elAreaTexto.setBackground ( c.getBackgroundColor() );
 		elAreaTexto.setForeground ( c.getForegroundColor() );
+		//laVentana.getMainPanel().setBackground ( c.getBackgroundColor() ); 
 		StyleConstants.setForeground(atributos,c.getForegroundColor());
 		elAreaTexto.repaint();
 		elAreaTexto.setFont(c.getFont());
@@ -464,7 +466,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		//elAreaTexto.setContentType("text/html; charset=iso-8859-1");			
 
 		elAreaTexto.setFont(SwingAetheriaGameLoaderInterface.font);
-		elAreaTexto.setMargin(new Insets(20,20,20,20));			
+		elAreaTexto.setMargin(new Insets(20,20,10,20));			
 					
 		elAreaTexto.setVisible(true);
 		elScrolling.setVisible(true);
@@ -930,5 +932,99 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		this.echoText = echoText;
 	}
 	
+	
+	//frame management
+	private ImagePanel topFrame = null;
+	private ImagePanel bottomFrame = null;
+	private ImagePanel leftFrame = null;
+	private ImagePanel rightFrame = null;
+	
+	public void addFrame ( int position , int size )
+	{
+		if ( position == SwingConstants.TOP )
+		{
+			JPanel newMainPanel = new JPanel();
+			topFrame = new ImagePanel();
+			topFrame.setBackground(elAreaTexto.getBackground());
+			topFrame.setPreferredSize(new Dimension(laVentana.getMainPanel().getWidth(),size));
+			topFrame.setMaximumSize(new Dimension(10000,size));
+			/*
+			newMainPanel.setLayout(new BoxLayout(newMainPanel,BoxLayout.PAGE_AXIS));
+			newMainPanel.add(topFrame);
+			newMainPanel.add(laVentana.getMainPanel());
+			*/
+			newMainPanel.setLayout(new BorderLayout());
+			newMainPanel.add(topFrame,BorderLayout.NORTH);
+			newMainPanel.add(laVentana.getMainPanel(),BorderLayout.CENTER);
+			laVentana.setMainPanel(newMainPanel);
+			
+		}
+		else if ( position == SwingConstants.BOTTOM )
+		{
+			JPanel newMainPanel = new JPanel();
+			bottomFrame = new ImagePanel();
+			bottomFrame.setBackground(elAreaTexto.getBackground());
+			bottomFrame.setPreferredSize(new Dimension(laVentana.getMainPanel().getWidth(),size));
+			bottomFrame.setMaximumSize(new Dimension(10000,size));
+			newMainPanel.setLayout(new BoxLayout(newMainPanel,BoxLayout.PAGE_AXIS));
+			newMainPanel.add(laVentana.getMainPanel());
+			newMainPanel.add(bottomFrame);
+			laVentana.setMainPanel(newMainPanel);
+		}
+		else if ( position == SwingConstants.LEFT )
+		{
+			JPanel newMainPanel = new JPanel();
+			leftFrame = new ImagePanel();
+			leftFrame.setBackground(elAreaTexto.getBackground());
+			leftFrame.setPreferredSize(new Dimension(size,laVentana.getMainPanel().getHeight()));
+			leftFrame.setMaximumSize(new Dimension(size,100000));
+			newMainPanel.setLayout(new BoxLayout(newMainPanel,BoxLayout.LINE_AXIS));
+			newMainPanel.add(leftFrame);
+			newMainPanel.add(laVentana.getMainPanel());
+			laVentana.setMainPanel(newMainPanel);
+		}
+		else if ( position == SwingConstants.RIGHT )
+		{
+			JPanel newMainPanel = new JPanel();
+			rightFrame = new ImagePanel();
+			rightFrame.setBackground(elAreaTexto.getBackground());
+			rightFrame.setPreferredSize(new Dimension(size,laVentana.getMainPanel().getHeight()));
+			rightFrame.setMaximumSize(new Dimension(size,100000));
+			newMainPanel.setLayout(new BoxLayout(newMainPanel,BoxLayout.LINE_AXIS));
+			newMainPanel.add(laVentana.getMainPanel());
+			newMainPanel.add(rightFrame);
+			laVentana.setMainPanel(newMainPanel);
+		}
+		((JComponent)laVentana).revalidate();
+		refreshFocus();
+	}
+	
+	private ImagePanel getFrame ( int position )
+	{
+		switch ( position )
+		{
+			case SwingConstants.TOP : return topFrame;
+			case SwingConstants.BOTTOM : return bottomFrame;
+			case SwingConstants.LEFT : return leftFrame;
+			case SwingConstants.RIGHT : return rightFrame;
+			default : return null;
+		}
+	}
+	
+	public void showImageInFrame ( String fileName , int position )
+	{
+		showImageInFrame ( fileName , position , ImagePanel.NO_SCALING );
+	}
+	
+	public void showImageInFrame ( String fileName , int position , int scalingMode )
+	{
+		ImagePanel theFrame = getFrame ( position );
+		if ( theFrame == null ) addFrame ( position , 200 );
+		theFrame = getFrame ( position ); //{not null}
+		theFrame.setImage(new ImageIcon(fileName));
+		theFrame.setScalingMode(scalingMode);
+		theFrame.repaint();
+	}
+
 
 }

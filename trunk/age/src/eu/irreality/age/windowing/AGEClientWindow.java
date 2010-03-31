@@ -40,6 +40,7 @@ public interface AGEClientWindow extends AGELoggingWindow
     public void updateNow();
     
     public JPanel getMainPanel();
+    public void setMainPanel(JPanel p); //changes the panel that the window is showing
     
     public void guardarLog();
     public void guardarEstado();
