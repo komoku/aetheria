@@ -86,6 +86,21 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	}
 	
 	
+	private void reformatAllText() //into default foreground color, sadly
+	{
+		try
+		{
+			String text = elAreaTexto.getText();
+			elAreaTexto.getDocument().remove(0,elAreaTexto.getDocument().getLength());
+			write(text);
+		}
+		catch ( BadLocationException ble )
+		{
+			System.out.println(ble);
+		}
+	}
+	
+	
 	public void setDefaultConfiguration ( )
 	{
 		//color configuration
@@ -103,7 +118,11 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		laVentana.getMainPanel().setBackground( elAreaTexto.getBackground() );
 		elAreaTexto.setForeground ( Color.white );
 		StyleConstants.setForeground(atributos,Color.black);
+		StyleConstants.setForeground(atributos,Color.white);
 		elAreaTexto.setFont(SwingAetheriaGameLoaderInterface.font);
+		
+		reformatAllText();
+		
 		elAreaTexto.repaint();
 	}
 	
@@ -126,7 +145,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		elAreaTexto.setBackground ( new Color ( 255 , 255 , 211 ) );
 		laVentana.getMainPanel().setBackground( elAreaTexto.getBackground() );
 		elAreaTexto.setForeground ( Color.black );
-		StyleConstants.setForeground(atributos,Color.white);
+		StyleConstants.setForeground(atributos,Color.black);
 		
 		
 		//set goudy medieval where available
@@ -134,6 +153,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		String fontName = "Lucida Handwriting Cursiva";
 		float fontSize = (float) 16.0;
 		Font laFuente = SwingAetheriaGameLoaderInterface.font;
+		laFuente = new Font("Serif",Font.PLAIN,(int)fontSize);
 			Font[] fuentes = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
 			Font fuenteElegida;
 			for ( int f = 0 ; f < fuentes.length ; f++ )
@@ -147,7 +167,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 			}
 		elAreaTexto.setFont(laFuente);
 		
-		
+		reformatAllText();
 		
 		elAreaTexto.repaint();
 	}
@@ -409,7 +429,11 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 				if ( window.getMundo() != null )
 				{
 					VisualConfiguration vc = ( window.getMundo().getVisualConfiguration() );
-					if ( vc != null ) setVisualConfiguration ( vc );
+					if ( vc != null ) 
+					{
+						setVisualConfiguration ( vc );
+						reformatAllText();
+					}
 				}
 			}
 		} );
@@ -648,6 +672,9 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		write(s);
 	}
 
+	
+	//private StringBuffer rawText = new StringBuffer(""); //this attribute stores all the text written to the text area WITH color codes included
+	
 	public void write ( String s )
 	{
 		
@@ -656,6 +683,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 			write("null");
 			return;
 		}
+		
+		//rawText.append(s);
 	
 		//parse color codes
 		StringTokenizer st = new StringTokenizer ( s , "%" );
