@@ -106,6 +106,18 @@ public class ServerProxy extends Thread implements ARSPConstants
 			cliente.clearScreen();
 			
 		/*sound handler cmd's*/	
+		else if ( command.equalsIgnoreCase( STOP_ALL_SOUND ) )
+		{
+			try
+			{
+				if ( cliente.isSoundEnabled() );
+					cliente.getSoundClient().stopAllSound();
+			}
+			catch ( Exception e )
+			{
+				e.printStackTrace();
+			}
+		}
 		else if ( command.equalsIgnoreCase( MIDI_INIT ) )
 		{
 			try

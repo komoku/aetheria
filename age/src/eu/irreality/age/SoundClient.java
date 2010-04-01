@@ -32,4 +32,7 @@ public interface SoundClient
 	public void audioStop ( String s );
 	//public void audioStop ( File f );
 	
+	
+	public void stopAllSound();
+	
 }

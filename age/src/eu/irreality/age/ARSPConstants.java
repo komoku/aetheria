@@ -76,5 +76,6 @@ public interface ARSPConstants
 	public String AUDIO_UNLOAD = "audio_unload";
 	public String AUDIO_START = "audio_start";
 	public String AUDIO_STOP = "audio_stop";
+	public String STOP_ALL_SOUND = "stop_all_sound";
 	
 }

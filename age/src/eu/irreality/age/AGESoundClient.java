@@ -481,8 +481,40 @@ public class AGESoundClient implements SoundClient
 	
 	
 	
-	
-	
+	/**
+	 * Method to stop all current sound, useful e.g. when closing an AGE window.
+	 */
+	public void stopAllSound()
+	{
+		//stop basic player sound
+		for (Iterator iterator = basicPlayers.values().iterator(); iterator.hasNext();) 
+		{
+			BasicPlayer bp = (BasicPlayer) iterator.next();
+			try
+			{
+				bp.stop();
+			}
+			catch ( BasicPlayerException bpe )
+			{
+				bpe.printStackTrace();
+			}
+		}
+		basicPlayers.clear();
+		
+		//stop midi
+		if ( seqr != null )
+			seqr.stop();
+		
+		//stop MOD
+		try
+		{
+			stopMOD();
+		}
+		catch ( Exception e )
+		{
+			e.printStackTrace();
+		}
+	}
 	
 
 }

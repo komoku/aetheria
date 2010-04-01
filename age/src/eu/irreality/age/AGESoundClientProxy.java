@@ -103,5 +103,12 @@ public class AGESoundClientProxy implements ARSPConstants , SoundClient
 		pw.flush();
 	}
 	
+	
+	public void stopAllSound()
+	{
+		pw.println(STOP_ALL_SOUND);
+		pw.flush();
+	}
+	
 
 }
