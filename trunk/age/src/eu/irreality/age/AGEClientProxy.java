@@ -241,6 +241,16 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 		pw.println(USE_IMAGE + " " + parm1 + " " + parm2 + " " + parm3 + " " + fname);
 		pw.flush();
 	}
+	public void addFrame ( int parm1 , int parm2 )
+	{		
+		pw.println(ADD_FRAME + " " + parm1 + " " + parm2 );
+		pw.flush();
+	}
+	public void removeFrames()
+	{
+		pw.println(REMOVE_FRAMES);
+		pw.flush();
+	}
 	public boolean isGraphicsEnabled()
 	{ return opt_images; 
 	}
