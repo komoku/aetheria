@@ -8,6 +8,7 @@ import java.util.*;
 import java.io.*;
 
 import eu.irreality.age.debug.Debug;
+import eu.irreality.age.debug.ExceptionPrinter;
 public class Item extends Entity implements Descriptible , SupportingCode , Nameable
 {
 	
@@ -968,6 +969,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		{
 			te.printStackTrace();
 			mundo.writeError("BeanShell error on initting item " + this + ": error was " + te);
+			mundo.writeError(ExceptionPrinter.getExceptionReport(te));
 		}
 		
 	}

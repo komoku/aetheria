@@ -10,6 +10,7 @@ import bsh.*;
 import java.io.*;
 
 import eu.irreality.age.debug.Debug;
+import eu.irreality.age.debug.ExceptionPrinter;
 import eu.irreality.age.messages.DefaultMessages;
 public class Mobile extends Entity implements Descriptible , SupportingCode , Nameable
 {
@@ -1059,6 +1060,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			te.printStackTrace();
 			mundo.write("BeanShell error on initting mobile " + this + ": error was " + te);
+			mundo.writeError(ExceptionPrinter.getExceptionReport(te));
 		}
 	
 	}
@@ -1828,6 +1830,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			catch ( bsh.TargetError te )
 			{
 				write(""+te);
+				writeError(ExceptionPrinter.getExceptionReport(te));
 				te.printStackTrace();
 			}
 			
@@ -1965,6 +1968,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			catch ( bsh.TargetError te )
 			{
 					write(io.getColorCode("error") + "bsh.TargetError found at event_say, mob number " + getID() + io.getColorCode("reset") );
+					writeError(ExceptionPrinter.getExceptionReport(te));
 			}
 			
 			String respuesta = getPSIAnswer ( loQueDice );
@@ -2370,7 +2374,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			}
 			catch ( bsh.TargetError bshte )
 			{
-				write( io.getColorCode("error") + "bsh.TargetError found onExitRoom , room number " + habitacionActual.getID() + ": " + bshte + io.getColorCode("reset") );
+				writeError( io.getColorCode("error") + "bsh.TargetError found onExitRoom , room number " + habitacionActual.getID() + ": " + bshte + io.getColorCode("reset") );
+				writeError(ExceptionPrinter.getExceptionReport(bshte));
 			}
 			
 			if ( !endfound )
@@ -2384,7 +2389,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				}
 				catch ( bsh.TargetError bshte )
 				{
-					write( io.getColorCode("error") + "bsh.TargetError found onExitRoom , room number " + habitacionActual.getID() + ": " + bshte + io.getColorCode("reset") );
+					writeError( io.getColorCode("error") + "bsh.TargetError found onExitRoom , room number " + habitacionActual.getID() + ": " + bshte + io.getColorCode("reset") );
+					writeError(ExceptionPrinter.getExceptionReport(bshte));
 				}
 			
 			}
@@ -2598,7 +2604,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				}
 				catch ( bsh.TargetError bshte )
 				{
-					write( io.getColorCode("error") + "bsh.TargetError found onExitRoom , room number " + habitacionActual.getID() + ": " + bshte + io.getColorCode("reset") );
+					writeError( io.getColorCode("error") + "bsh.TargetError found onExitRoom , room number " + habitacionActual.getID() + ": " + bshte + io.getColorCode("reset") );
+					writeError(ExceptionPrinter.getExceptionReport(bshte));
 				}
 					
 				habitacionActual.informAction(this,null,"$1 se va hacia " + exitname + ".\n" , null , null , false );	
@@ -2646,6 +2653,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				catch ( bsh.TargetError bshte )
 				{
 					write( io.getColorCode("error") + "bsh.TargetError found onEnterRoom , room number " + habitacionActual.getID() + ": " + bshte + io.getColorCode("reset") );
+					writeError(ExceptionPrinter.getExceptionReport(bshte));
 				}
 				
 				//-> si hay Mobiles, pueden reaccionar también a que entres (onEnterRoom de Mobile)
@@ -2665,6 +2673,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							catch ( bsh.TargetError bshte )
 							{
 								write( io.getColorCode("error") + "bsh.TargetError found onEnterRoom , mobile number " + bichoActual.getID() + ": " + bshte + io.getColorCode("reset") );
+								writeError(ExceptionPrinter.getExceptionReport(bshte));
 							}
 						
 					}
@@ -2806,6 +2815,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					catch ( bsh.TargetError te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at infoChoqueArmas(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
+						writeError(ExceptionPrinter.getExceptionReport(te));
 					}
 					if ( !ejec )
 						habitacionActual.informAction ( this , objetivo , "Las armas de $1 y $2 chocan en el aire...\n" , "Tu arma y la de $1 chocan en el aire...\n" , "Tu arma y la de $2 chocan en el aire...\n" , true );
@@ -2838,6 +2848,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at infoNoTiempoBloquear(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 						if ( !ejec )
 							habitacionActual.informAction ( this , objetivo , null , "No te da tiempo a bloquear el ataque de $1...\n" , "A $2 no le da tiempo a bloquear tu ataque...\n" , true );
@@ -2858,6 +2869,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at infoNoTiempoEsquivar(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 						if ( !ejec )
 							habitacionActual.informAction ( this , objetivo , null , "No te da tiempo a esquivar el ataque de $1...\n" , "A $2 no le da tiempo a esquivar tu ataque...\n" , true );
@@ -2881,6 +2893,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at infoAcierto(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 						if ( !ejec )
 						{
@@ -2923,6 +2936,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at infoAcierto(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 						if ( !ejec )
 							habitacionActual.informAction ( this , objetivo ,
@@ -2959,7 +2973,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				}
 				catch ( bsh.TargetError te )
 				{
-					write(io.getColorCode("error") + "bsh.TargetError found at infoAcierto(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );					}
+					write(io.getColorCode("error") + "bsh.TargetError found at infoAcierto(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );					
+					writeError(ExceptionPrinter.getExceptionReport(te));
+				}
 				if ( !ejec )
 				{
 					habitacionActual.informAction ( this , objetivo , "El ataque de $1 falla a $2.\n" , "El ataque de $1 te falla.\n" , "Tu ataque falla a $2.\n" , true );
@@ -2988,6 +3004,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					catch ( bsh.TargetError te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at infoAcierto(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );					
+						writeError(ExceptionPrinter.getExceptionReport(te));
 					}
 					if ( !ejec )
 					{
@@ -3014,6 +3031,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					catch ( bsh.TargetError te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at infoAcierto(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );					
+						writeError(ExceptionPrinter.getExceptionReport(te));
 					}
 					if ( !ejec )
 					{
@@ -3056,6 +3074,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					catch ( bsh.TargetError te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at infoBloqueo(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );					
+						writeError(ExceptionPrinter.getExceptionReport(te));
 					}
 					if ( !ejec )
 					{
@@ -3120,6 +3139,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at infoBloqueo(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );					
+							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 						if ( !ejec )
 						{
@@ -3159,6 +3179,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at infoBloqueo(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );					
+							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 						if ( !ejec )
 						{
@@ -3198,6 +3219,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				catch ( bsh.TargetError te )
 				{
 					write(io.getColorCode("error") + "bsh.TargetError found at infoFallo(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );					
+					writeError(ExceptionPrinter.getExceptionReport(te));
 				}
 				if ( !ejec )
 				{
@@ -3245,6 +3267,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					catch ( bsh.TargetError te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at infoEsquivada(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );					
+						writeError(ExceptionPrinter.getExceptionReport(te));
 					}
 					if ( !ejec )
 					{
@@ -3285,6 +3308,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at infoEsquivadaFallida(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );					
+							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 						if ( !ejec )
 						{
@@ -3324,6 +3348,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at infoEsquivadaFallida(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );					
+							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 						if ( !ejec )
 						{
@@ -3659,6 +3684,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		catch (bsh.TargetError bshte)
 		{
 			write("bsh.TargetError found at die routine" );
+			writeError(ExceptionPrinter.getExceptionReport(bshte));
 		}
 		if ( ejecutado ) return;		
 		
@@ -3691,7 +3717,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		}
 		catch (bsh.TargetError bshte)
 		{
-			write("bsh.TargetError found at die routine" );
+			write("bsh.TargetError found at afterDie routine" );
+			writeError(ExceptionPrinter.getExceptionReport(bshte));
 		}
 		
 		
@@ -3945,6 +3972,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		catch ( bsh.TargetError te )
 		{
 			write(io.getColorCode("error") + "bsh.TargetError found at infoIntentoAtaque(), target id was " + target.getID() + ", error was " + te + io.getColorCode("reset") );					
+			writeError(ExceptionPrinter.getExceptionReport(te));
 		}
 		if ( !ejec )
 		{
@@ -3975,6 +4003,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		catch ( bsh.TargetError te )
 		{
 			write(io.getColorCode("error") + "bsh.TargetError found at infoIntentoBloqueo(), target id was " + target.getID() + ", error was " + te + io.getColorCode("reset") );					
+			writeError(ExceptionPrinter.getExceptionReport(te));
 		}
 		if ( !ejec )
 		{		
@@ -4018,6 +4047,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		catch ( bsh.TargetError te )
 		{
 			write(io.getColorCode("error") + "bsh.TargetError found at infoIntentoEsquivada(), target id was " + target.getID() + ", error was " + te + io.getColorCode("reset") );					
+			writeError(ExceptionPrinter.getExceptionReport(te));
 		}
 		if ( !ejec )
 		{	
@@ -5576,6 +5606,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			{
 				//escribir("bsh.TargetError found at fail routine" );
 				;
+				writeError(ExceptionPrinter.getExceptionReport(bshte));
 			}
 			if ( ejecutado ) return;
 			
@@ -5731,6 +5762,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				catch ( bsh.TargetError te )
 				{
 					write( io.getColorCode("error") + "bsh.TargetError found at event onGet , item number " + ourItem.getID() + io.getColorCode("reset") + "\n"  );
+					writeError(ExceptionPrinter.getExceptionReport(te));
 				}
 				
 				if ( !eventEnded )
@@ -5790,6 +5822,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				catch ( bsh.TargetError te )
 				{
 					write( io.getColorCode("error") + "bsh.TargetError found at event onGet , item number " + ourItem.getID() + io.getColorCode("reset") + "\n"  );
+					writeError(ExceptionPrinter.getExceptionReport(te));
 				}
 				
 				//velar por el principio de conservacion de la masa
@@ -5805,6 +5838,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				catch ( bsh.TargetError te )
 				{
 					write( io.getColorCode("error") + "bsh.TargetError found at messageAfterGet , item number " + ourItem.getID() + io.getColorCode("reset") + "\n"  );
+					writeError(ExceptionPrinter.getExceptionReport(te));
 				}
 				
 				if ( !execced )
@@ -6103,6 +6137,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			write("bsh.TargetError found at general before method" );
 			bshte.printStackTrace();
+			writeError(ExceptionPrinter.getExceptionReport(bshte));
 		}
 		
 		if ( ejecutado_algo ) return true;
@@ -6117,6 +6152,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			write("bsh.TargetError found at subject before method" );
 			bshte.printStackTrace();
+			writeError(ExceptionPrinter.getExceptionReport(bshte));
 		}
 		
 		if ( ejecutado_algo ) return true;
@@ -6139,6 +6175,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			{
 				write("bsh.TargetError found at direct object before method" );
 				bshte.printStackTrace();
+				writeError(ExceptionPrinter.getExceptionReport(bshte));
 			}
 			
 			if ( ejecutado_algo ) return true;
@@ -6158,6 +6195,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			{
 				write("bsh.TargetError found at indirect object before method" );
 				bshte.printStackTrace();
+				writeError(ExceptionPrinter.getExceptionReport(bshte));
 			}
 			
 			if ( ejecutado_algo ) return true;

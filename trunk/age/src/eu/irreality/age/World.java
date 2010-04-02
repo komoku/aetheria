@@ -20,6 +20,7 @@ import org.xml.sax.*;
 import org.w3c.dom.*;
 
 import eu.irreality.age.debug.Debug;
+import eu.irreality.age.debug.ExceptionPrinter;
 
 public class World implements Informador , SupportingCode
 {
@@ -2247,9 +2248,10 @@ public class World implements Informador , SupportingCode
 		}
 		catch (bsh.TargetError bshte)
 		{
-			write("bsh.TargetError found at assignPlayer routine" );
+			writeError("bsh.TargetError found at assignPlayer routine\n" );
+			writeError(ExceptionPrinter.getExceptionReport(bshte));
 			Debug.println ( bshte.printTargetError(bshte) );
-			write ( bshte.printTargetError(bshte) );
+			writeError( bshte.printTargetError(bshte) );
 			bshte.printStackTrace();
 		}
 		
@@ -2388,7 +2390,8 @@ public class World implements Informador , SupportingCode
 				}
 				catch (bsh.TargetError bshte)
 				{
-					write("bsh.TargetError found at intro routine" );
+					write("bsh.TargetError found at intro routine\n" );
+					writeError(ExceptionPrinter.getExceptionReport(bshte));
 				}
 			
 			}

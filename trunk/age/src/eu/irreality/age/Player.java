@@ -10,6 +10,7 @@ import java.io.*; //logs
 import javax.swing.SwingUtilities;
 
 import eu.irreality.age.debug.Debug;
+import eu.irreality.age.debug.ExceptionPrinter;
 /**
  * Clase del personaje, jugador.
  *
@@ -349,6 +350,7 @@ public class Player extends Mobile implements Informador
 				{
 					write( io.getColorCode("error") + "bsh.TargetError found at customParse(), execcing from ID " + getID() + " the routine " + routineName + " of " + ourEntity.getID()  );
 					bshte.printStackTrace();
+					writeError(ExceptionPrinter.getExceptionReport(bshte));
 				}
 				if ( retVal.getRetVal() == null || ! ( retVal.getRetVal() instanceof Boolean ) )
 				{
@@ -537,6 +539,7 @@ public class Player extends Mobile implements Informador
 			catch ( bsh.TargetError te )
 			{
 				write(io.getColorCode("error") + "bsh.TargetError found at preprocessCommand, raw command was " + commandstring + ", error was " + te + io.getColorCode("reset") );
+				writeError(ExceptionPrinter.getExceptionReport(te));
 			}
 			if ( executed )
 			{
@@ -643,6 +646,7 @@ public class Player extends Mobile implements Informador
 		catch ( bsh.TargetError te )
 		{
 			write(io.getColorCode("error") + "bsh.TargetError found at player's parseCommand, command was " + command + arguments + ", error was " + te + io.getColorCode("reset") );
+			writeError(ExceptionPrinter.getExceptionReport(te));
 		}
 
 		if ( ejecutado )
@@ -887,6 +891,7 @@ public class Player extends Mobile implements Informador
 		{
 			te.printStackTrace();
 			write(io.getColorCode("error") + "bsh.TargetError found at parseCommand(), command was " + command + arguments + ", room number " + habitacionActual.getID() + ", error was " + te + io.getColorCode("reset") );
+			writeError(ExceptionPrinter.getExceptionReport(te));
 		}
 
 		if ( ejecutado ) 
@@ -929,6 +934,7 @@ public class Player extends Mobile implements Informador
 		catch ( bsh.TargetError te )
 		{
 			write(io.getColorCode("error") + "bsh.TargetError found at world's parseCommand, command was " + command + arguments + ", error was " + te + io.getColorCode("reset") );
+			writeError(ExceptionPrinter.getExceptionReport(te));
 		}
 
 		if ( ejecutado )
@@ -2209,6 +2215,7 @@ public class Player extends Mobile implements Informador
 			catch ( bsh.TargetError bshte )
 			{
 				write( io.getColorCode("error") + "bsh.TargetError found onExitRoom , room number " + habitacionActual.getID() + ": " + bshte + io.getColorCode("reset") );
+				writeError(ExceptionPrinter.getExceptionReport(bshte));
 			}
 
 			habitacionActual.informAction(this,null,"$1 se va hacia " + exitname + ".\n" , null , null , false );	
@@ -2232,6 +2239,7 @@ public class Player extends Mobile implements Informador
 			catch ( bsh.TargetError bshte )
 			{
 				write( io.getColorCode("error") + "bsh.TargetError found onEnterRoom , room number " + habitacionActual.getID() + ": " + bshte + io.getColorCode("reset") );
+				writeError(ExceptionPrinter.getExceptionReport(bshte));
 			}
 
 
@@ -2251,6 +2259,7 @@ public class Player extends Mobile implements Informador
 					catch ( bsh.TargetError bshte )
 					{
 						write( io.getColorCode("error") + "bsh.TargetError found onEnterRoom , mobile number " + bichoActual.getID() + ": " + bshte + "\n" + bshte.getMessage() + io.getColorCode("reset") );
+						writeError(ExceptionPrinter.getExceptionReport(bshte));
 						bshte.printStackTrace();
 					}
 
@@ -2388,6 +2397,7 @@ public class Player extends Mobile implements Informador
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsObj1(), command was " + command + fullArguments + ", entity " + currentObject1 + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 
 						if ( !ejecutado )
@@ -2399,6 +2409,7 @@ public class Player extends Mobile implements Informador
 							catch ( bsh.TargetError te )
 							{
 								write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsTwoObjects(), command was " + command + fullArguments + ", entity " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
+								writeError(ExceptionPrinter.getExceptionReport(te));
 							}
 						}
 						if ( !ejecutado )
@@ -2410,6 +2421,7 @@ public class Player extends Mobile implements Informador
 							catch ( bsh.TargetError te )
 							{
 								write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric(), command was " + command + fullArguments + ", entity " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
+								writeError(ExceptionPrinter.getExceptionReport(te));
 							}
 						}
 					}
@@ -2426,6 +2438,7 @@ public class Player extends Mobile implements Informador
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsObj2(), command was " + command + fullArguments + ", entity " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 
 						if ( !ejecutado )
@@ -2437,6 +2450,7 @@ public class Player extends Mobile implements Informador
 							catch ( bsh.TargetError te )
 							{
 								write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsTwoObjects(), command was " + command + fullArguments + ", entity " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
+								writeError(ExceptionPrinter.getExceptionReport(te));
 							}
 						}
 						if ( !ejecutado )
@@ -2448,6 +2462,7 @@ public class Player extends Mobile implements Informador
 							catch ( bsh.TargetError te )
 							{
 								write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric(), command was " + command + fullArguments + ", first object was " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
+								writeError(ExceptionPrinter.getExceptionReport(te));
 							}
 						}
 					}
@@ -2465,6 +2480,7 @@ public class Player extends Mobile implements Informador
 							catch ( bsh.TargetError te )
 							{
 								write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsTwoObjects() executed from world, command was " + command + fullArguments + ", entity " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
+								writeError(ExceptionPrinter.getExceptionReport(te));
 							}
 						}
 						if ( !ejecutado )
@@ -2476,6 +2492,7 @@ public class Player extends Mobile implements Informador
 							catch ( bsh.TargetError te )
 							{
 								write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric() executed from world, command was " + command + fullArguments + ", first object was " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
+								writeError(ExceptionPrinter.getExceptionReport(te));
 							}
 						}		  
 					}
@@ -2501,6 +2518,7 @@ public class Player extends Mobile implements Informador
         					catch ( bsh.TargetError te )
         					{
         						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandObj1(), command was " + command + args1 + args2 + ", entity number " + obj1.getID() + ", second object was " + obj2.getID() + ", error was " + te + io.getColorCode("reset") );
+        						writeError(ExceptionPrinter.getExceptionReport(te));
         					}
 				    	}
 					if ( !ejecutado )
@@ -2512,6 +2530,7 @@ public class Player extends Mobile implements Informador
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandTwoObjects(), command was " + command + args1 + args2 + ", entity number " + obj1.getID() + ", second object was " + obj2.getID() + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 					}
 					if ( !ejecutado )
@@ -2524,6 +2543,7 @@ public class Player extends Mobile implements Informador
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric(), command was " + command + args1 + args2 + ", entity number " + obj1 + ", second object was " + obj2 + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 					}
 				} //obj1 instof suppcode
@@ -2547,6 +2567,7 @@ public class Player extends Mobile implements Informador
         					catch ( bsh.TargetError te )
         					{
         						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandObj2(), command was " + command + args1 + args2 + ", entity number " + obj2.getID() + ", first object was " + obj1.getID() + ", error was " + te + io.getColorCode("reset") );
+        						writeError(ExceptionPrinter.getExceptionReport(te));
         					}
 				    	}
 					if ( !ejecutado )
@@ -2558,6 +2579,7 @@ public class Player extends Mobile implements Informador
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandTwoObjects(), command was " + command + args1 + args2 + ", entity number " + obj2.getID() + ", first object was " + obj1.getID() + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 					}
 					if ( !ejecutado )
@@ -2570,6 +2592,7 @@ public class Player extends Mobile implements Informador
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric(), command was " + command + args1 + args2 + ", entity number " + obj1 + ", second object was " + obj2 + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 					}
 				} //obj2 instof suppcode
@@ -2585,6 +2608,7 @@ public class Player extends Mobile implements Informador
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandTwoObjects() executed from world, command was " + command + args1 + args2 + ", entity number " + obj2.getID() + ", first object was " + obj1.getID() + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 					
 				    }
@@ -2598,6 +2622,7 @@ public class Player extends Mobile implements Informador
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric() executed from world, command was " + command + args1 + args2 + ", entity number " + obj1 + ", second object was " + obj2 + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 				    }
 				}
@@ -2670,6 +2695,7 @@ public class Player extends Mobile implements Informador
 					catch ( bsh.TargetError te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContents(), command was " + command + fullArguments + ", entity " + currentObject + ", error was " + te + io.getColorCode("reset") );
+						writeError(ExceptionPrinter.getExceptionReport(te));
 					}
 					if ( !ejecutado )
 					{
@@ -2681,6 +2707,7 @@ public class Player extends Mobile implements Informador
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric(), command was " + command + fullArguments + ", entity number " + currentObject + ", second object was " + null + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 					}
 				}
@@ -2693,7 +2720,8 @@ public class Player extends Mobile implements Informador
 				    }
 				    catch ( bsh.TargetError te )
 				    {
-					write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContents() executed from world, command was " + command + fullArguments + ", entity " + currentObject + ", error was " + te + io.getColorCode("reset") );
+				    	write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContents() executed from world, command was " + command + fullArguments + ", entity " + currentObject + ", error was " + te + io.getColorCode("reset") );
+				    	writeError(ExceptionPrinter.getExceptionReport(te));
 				    }
 				}
 
@@ -2751,6 +2779,7 @@ public class Player extends Mobile implements Informador
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommand(), command was " + command + fullArguments + ", item number " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 					}
 					if ( !ejecutado )
@@ -2762,6 +2791,7 @@ public class Player extends Mobile implements Informador
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric(), command was " + command + fullArguments + ", entity number " + objetivo + ", second object was " + objetivo + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 					}
 				}
@@ -2777,7 +2807,8 @@ public class Player extends Mobile implements Informador
         			    }
         			    catch ( bsh.TargetError te )
         			    {
-        				write(io.getColorCode("error") + "bsh.TargetError found at parseCommand() executed from world, command was " + command + fullArguments + ", item number " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
+        			    	write(io.getColorCode("error") + "bsh.TargetError found at parseCommand() executed from world, command was " + command + fullArguments + ", item number " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
+        			    	writeError(ExceptionPrinter.getExceptionReport(te));
         			    }
 			    }
 			    if ( !ejecutado )
@@ -2789,6 +2820,7 @@ public class Player extends Mobile implements Informador
 				catch ( bsh.TargetError te )
 				{
 					write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric() executed from world, command was " + command + fullArguments + ", entity number " + objetivo + ", second object was " + objetivo + ", error was " + te + io.getColorCode("reset") );
+					writeError(ExceptionPrinter.getExceptionReport(te));
 				}
 			    }
 			}
@@ -2834,6 +2866,7 @@ public class Player extends Mobile implements Informador
 								catch ( bsh.TargetError te )
 								{
 									write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContents(), command was " + command + fullArguments + ", entity " + currentObject + ", error was " + te + io.getColorCode("reset") );
+									writeError(ExceptionPrinter.getExceptionReport(te));
 								}
 							}
 							if ( !ejecutado )
@@ -2845,6 +2878,7 @@ public class Player extends Mobile implements Informador
 								catch ( bsh.TargetError te )
 								{
 									write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric(), command was " + command + fullArguments + ", entity number " + currentObject + ", second object was " + null + ", error was " + te + io.getColorCode("reset") );
+									writeError(ExceptionPrinter.getExceptionReport(te));
 								}
 							}
 						}
@@ -2859,6 +2893,7 @@ public class Player extends Mobile implements Informador
 								catch ( bsh.TargetError te )
 								{
 									write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContents() executed from world, command was " + command + fullArguments + ", entity " + currentObject + ", error was " + te + io.getColorCode("reset") );
+									writeError(ExceptionPrinter.getExceptionReport(te));
 								}
 						    }
 						    if ( !ejecutado )
@@ -2870,6 +2905,7 @@ public class Player extends Mobile implements Informador
 							catch ( bsh.TargetError te )
 							{
 								write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric() executed from world, command was " + command + fullArguments + ", entity number " + currentObject + ", second object was " + null + ", error was " + te + io.getColorCode("reset") );
+								writeError(ExceptionPrinter.getExceptionReport(te));
 							}
 						    }
 						}
@@ -2922,6 +2958,7 @@ public class Player extends Mobile implements Informador
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommand(), command was " + command + fullArguments + ", item number " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 					}
 					if ( !ejecutado )
@@ -2933,6 +2970,7 @@ public class Player extends Mobile implements Informador
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric(), command was " + command + fullArguments + ", entity number " + objetivo + ", second object was " + objetivo + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 					}
 				}
@@ -2947,6 +2985,7 @@ public class Player extends Mobile implements Informador
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommand() executed from world, command was " + command + fullArguments + ", item number " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 				    }
 				}
@@ -3035,6 +3074,7 @@ public class Player extends Mobile implements Informador
 				catch ( bsh.TargetError te )
 				{
 					write(io.getColorCode("error") + "bsh.TargetError found at parseCommand(), command was " + command + fullArguments + ", item number " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
+					writeError(ExceptionPrinter.getExceptionReport(te));
 				}
 				if ( !ejecutado )
 				{
@@ -3045,6 +3085,7 @@ public class Player extends Mobile implements Informador
 					catch ( bsh.TargetError te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric(), command was " + command + fullArguments + ", entity number " + objetivo + ", second object was " + objetivo + ", error was " + te + io.getColorCode("reset") );
+						writeError(ExceptionPrinter.getExceptionReport(te));
 					}
 				}
 			}
@@ -3106,6 +3147,7 @@ public class Player extends Mobile implements Informador
 					catch ( bsh.TargetError te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at parseCommand(), command was " + command + fullArguments + ", item number " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
+						writeError(ExceptionPrinter.getExceptionReport(te));
 					}
 					if ( !ejecutado )
 					{
@@ -3116,6 +3158,7 @@ public class Player extends Mobile implements Informador
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric(), command was " + command + fullArguments + ", entity number " + objetivo + ", second object was " + objetivo + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 					}
 				}
@@ -3284,6 +3327,7 @@ public class Player extends Mobile implements Informador
 		catch ( bsh.TargetError bshte )
 		{
 			write( io.getColorCode("error") + "bsh.TargetError found onShowRoom , room number " + habitacionActual.getID() + ": " + bshte + io.getColorCode("reset") );
+			writeError(ExceptionPrinter.getExceptionReport(bshte));
 		}
 
 		//}
