@@ -25,6 +25,7 @@ import javax.swing.JOptionPane;
 import org.f2o.absurdum.puck.gui.cursors.CursorHandler;
 import org.f2o.absurdum.puck.gui.graph.GraphEditingPanel;
 import org.f2o.absurdum.puck.gui.graph.Node;
+import org.f2o.absurdum.puck.gui.panels.EntityPanel;
 import org.f2o.absurdum.puck.gui.panels.WorldPanel;
 import org.f2o.absurdum.puck.i18n.Messages;
 import org.f2o.absurdum.puck.util.debug.Debug;
@@ -57,6 +58,10 @@ public class PasteNodeAction extends AbstractAction
 			org.w3c.dom.Element e = (org.w3c.dom.Element) DOMUtils.stringToNode(theString);
 			e.setAttribute("name",e.getAttribute("name")+"(copy)");
 			WorldPanel wp = (WorldPanel) panel.getWorldNode().getAssociatedPanel();
+			while(wp.nameToNode(e.getAttribute("name"))!=null)
+			{
+				e.setAttribute("name",e.getAttribute("name")+"(otra)");
+			}
 			Point coords = null;
 			Point mousePos = panel.getMousePosition();
 			if ( mousePos != null ) //entity is pasted at mouse position if possible

@@ -363,7 +363,7 @@ public class StructuralArrow extends Arrow
 			g.setColor(textColor);
 
 			Font oldFont = g.getFont();
-			Font newFont = oldFont.deriveFont((float)10.0);
+			Font newFont = oldFont.deriveFont(getNameFontSize());
 			g.setFont(newFont);
 			int swidth = g.getFontMetrics().stringWidth(getName());
 			int textXCoord = (int)(srcX+dstX)/2+5 - swidth/2;
@@ -423,7 +423,7 @@ public class StructuralArrow extends Arrow
 			//prepare font to draw placeholder texts
 			Font oldFont = g.getFont();
 			//Font newFont = oldFont.deriveFont(Font.ITALIC,(float)10.0);
-			Font newFont = oldFont.deriveFont((float)10.0);
+			Font newFont = oldFont.deriveFont(getNameFontSize());
 			g.setColor(Color.DARK_GRAY);
 			g.setFont(newFont);
 			

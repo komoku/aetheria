@@ -44,6 +44,7 @@ import org.f2o.absurdum.puck.gui.DeleteNodeAction;
 import org.f2o.absurdum.puck.gui.PasteNodeAction;
 import org.f2o.absurdum.puck.gui.PropertiesPanel;
 import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
+import org.f2o.absurdum.puck.gui.panels.EntityPanel;
 import org.f2o.absurdum.puck.gui.panels.RoomPanel;
 import org.f2o.absurdum.puck.gui.panels.WorldPanel;
 import org.f2o.absurdum.puck.i18n.Messages;
@@ -313,6 +314,10 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 		if ( n instanceof CharacterNode )
 			charNodes.add(n);
 		*/
+		
+		WorldPanel wp = (WorldPanel) this.getWorldNode().getAssociatedPanel();
+		wp.updateMaps(n);
+		
 	}
 	
 	public void removeNode ( Node n )
@@ -330,14 +335,8 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 			nodeVectorN.remove(n);
 		}
 			
-		/*
-		if ( n instanceof RoomNode )
-			roomNodes.remove(n);
-		if ( n instanceof ItemNode )
-			itemNodes.remove(n);
-		if ( n instanceof CharacterNode )
-			charNodes.remove(n);
-		*/
+		WorldPanel wp = (WorldPanel) this.getWorldNode().getAssociatedPanel();
+		wp.removeFromMaps(n);
 		
 	}
 	
@@ -357,15 +356,6 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 			nodeVectorN.remove(n);
 		}
 		
-		/*
-		if ( n instanceof RoomNode )
-			roomNodes.remove(n);
-		if ( n instanceof ItemNode )
-			itemNodes.remove(n);
-		if ( n instanceof CharacterNode )
-			charNodes.remove(n);
-		*/
-		
 		//remove arrows pointing to this node
 		for ( int i = 0 ; i < nodes.size() ; i++ )
 		{
@@ -378,6 +368,9 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 					no.removeArrow(a);
 			}
 		}
+		
+		WorldPanel wp = (WorldPanel) this.getWorldNode().getAssociatedPanel();
+		wp.removeFromMaps(n);
 		
 	}
 	
@@ -863,7 +856,8 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 				}
 				else
 				{
-					propP.show(worldN);					
+					propP.show(worldN);	
+					resetSelections();
 				}
 			}
 		}
@@ -891,6 +885,8 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 			repaint();
 		}
 	}
+	
+
 
 	public void mouseDragged(MouseEvent arg0) 
 	{
@@ -1083,6 +1079,16 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 		toolMotionListener = null;
 	}
 
+	
+	public void centerViewOn(Node n)
+	{
+		double nodeX = mapToPanelX ( n.getBounds().getCenterX() );
+		double nodeY = mapToPanelY ( n.getBounds().getCenterY() );
+		double viewCenterX = this.getWidth() / 2;
+		double viewCenterY = this.getHeight() / 2;
+		viewXOffset += ((nodeX-viewCenterX)/viewZoom);
+		viewYOffset += ((nodeY-viewCenterY)/viewZoom);
+	}
 
 
 	/**

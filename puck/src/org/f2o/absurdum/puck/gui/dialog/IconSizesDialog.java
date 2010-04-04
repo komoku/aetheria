@@ -24,14 +24,18 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.f2o.absurdum.puck.gui.PuckFrame;
 import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
 import org.f2o.absurdum.puck.gui.graph.AbstractEntityNode;
+import org.f2o.absurdum.puck.gui.graph.Arrow;
 import org.f2o.absurdum.puck.gui.graph.CharacterNode;
 import org.f2o.absurdum.puck.gui.graph.ItemNode;
+import org.f2o.absurdum.puck.gui.graph.Node;
 import org.f2o.absurdum.puck.gui.graph.RoomNode;
 import org.f2o.absurdum.puck.gui.graph.SpellNode;
 import org.f2o.absurdum.puck.i18n.Messages;
@@ -50,6 +54,9 @@ public class IconSizesDialog extends JDialog
 	private JSlider spellSlider = new JSlider(5,80);
 	private JSlider absSlider = new JSlider(5,80);
 	
+	private JSpinner nodeFontSpinner = new JSpinner(new SpinnerNumberModel(Node.getNameFontSize(),4.0,80.0,1.0));
+	private JSpinner arrowFontSpinner = new JSpinner(new SpinnerNumberModel(Arrow.getNameFontSize(),4.0,80.0,1.0));
+	
 	//private JButton bApply = new JButton("button.app");
 	//private JButton bCancel = new JButton("button.can");
 	private JButton bClose = new JButton(Messages.getInstance().getMessage("button.clo"));
@@ -65,6 +72,9 @@ public class IconSizesDialog extends JDialog
 		charSlider.setValue(CharacterNode.getDefaultSize());
 		spellSlider.setValue(SpellNode.getDefaultSize());
 		absSlider.setValue(AbstractEntityNode.getDefaultSize());
+		
+		nodeFontSpinner.setValue(Node.getNameFontSize());
+		arrowFontSpinner.setValue(Arrow.getNameFontSize());
 		
 		/*
 		roomSlider.setLabelTable(roomSlider.createStandardLabels(10));
@@ -161,27 +171,80 @@ public class IconSizesDialog extends JDialog
 				}
 		);
 		
+		nodeFontSpinner.addChangeListener ( new ChangeListener() 
+				{
+					public void stateChanged(ChangeEvent e)
+					{
+						SpinnerNumberModel snm = (SpinnerNumberModel) nodeFontSpinner.getModel();
+						String s = ""+snm.getNumber().floatValue();
+						PuckConfiguration.getInstance().setProperty("graphNodeFontSize",s);
+						parent.repaint();
+					}
+				}
+		);
+		
+		arrowFontSpinner.addChangeListener ( new ChangeListener() 
+		{
+			public void stateChanged(ChangeEvent e)
+			{
+				SpinnerNumberModel snm = (SpinnerNumberModel) arrowFontSpinner.getModel();
+				String s = ""+snm.getNumber().floatValue();
+				PuckConfiguration.getInstance().setProperty("graphArrowFontSize",s);
+				parent.repaint();
+			}
+		}
+);
+		
 		
 		this.getContentPane().setLayout ( new BorderLayout() );
 		
 		JPanel mainPanel = new JPanel();
-		mainPanel.setLayout ( new GridLayout(5,2)  );
-	
+		mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.PAGE_AXIS));
 		
-		mainPanel.add(new JLabel(Messages.getInstance().getMessage("sizes.room")));
-		mainPanel.add(roomSlider);
+		JPanel iconSizesPanel = new JPanel();
 		
-		mainPanel.add(new JLabel(Messages.getInstance().getMessage("sizes.item")));
-		mainPanel.add(itemSlider);
+		iconSizesPanel.setLayout ( new GridLayout(5,2)  );
 		
-		mainPanel.add(new JLabel(Messages.getInstance().getMessage("sizes.character")));
-		mainPanel.add(charSlider);
+		iconSizesPanel.add(new JLabel(Messages.getInstance().getMessage("sizes.room")));
+		iconSizesPanel.add(roomSlider);
 		
-		mainPanel.add(new JLabel(Messages.getInstance().getMessage("sizes.spell")));
-		mainPanel.add(spellSlider);
+		iconSizesPanel.add(new JLabel(Messages.getInstance().getMessage("sizes.item")));
+		iconSizesPanel.add(itemSlider);
 		
-		mainPanel.add(new JLabel(Messages.getInstance().getMessage("sizes.abstract")));
-		mainPanel.add(absSlider);
+		iconSizesPanel.add(new JLabel(Messages.getInstance().getMessage("sizes.character")));
+		iconSizesPanel.add(charSlider);
+		
+		iconSizesPanel.add(new JLabel(Messages.getInstance().getMessage("sizes.spell")));
+		iconSizesPanel.add(spellSlider);
+		
+		iconSizesPanel.add(new JLabel(Messages.getInstance().getMessage("sizes.abstract")));
+		iconSizesPanel.add(absSlider);
+		
+		iconSizesPanel.setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("sizes.icons")));
+		
+		mainPanel.add(iconSizesPanel);
+		
+		JPanel fontSizesPanel = new JPanel();
+		
+		fontSizesPanel.setLayout( new GridLayout(2,2) );
+		
+		fontSizesPanel.add(new JLabel(Messages.getInstance().getMessage("sizes.font.node")));
+		JPanel nodeFontSpinnerPanel = new JPanel();
+		nodeFontSpinnerPanel.setLayout(new BoxLayout(nodeFontSpinnerPanel,BoxLayout.LINE_AXIS));
+		nodeFontSpinnerPanel.add(Box.createHorizontalGlue());
+		nodeFontSpinnerPanel.add(nodeFontSpinner);
+		fontSizesPanel.add(nodeFontSpinnerPanel);
+		
+		fontSizesPanel.add(new JLabel(Messages.getInstance().getMessage("sizes.font.arrow")));
+		JPanel arrowFontSpinnerPanel = new JPanel();
+		arrowFontSpinnerPanel.setLayout(new BoxLayout(arrowFontSpinnerPanel,BoxLayout.LINE_AXIS));
+		arrowFontSpinnerPanel.add(Box.createHorizontalGlue());
+		arrowFontSpinnerPanel.add(arrowFontSpinner);
+		fontSizesPanel.add(arrowFontSpinnerPanel);
+		
+		fontSizesPanel.setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("sizes.fonts")));
+		
+		mainPanel.add(fontSizesPanel);
 		
 		this.getContentPane().add(mainPanel,BorderLayout.CENTER);
 		

@@ -62,6 +62,10 @@ public class PuckConfiguration
 		defaultProperties.setProperty("showArrowNames","true");
 		
 		defaultProperties.setProperty("codeFrameFontSize", "18.0");
+		defaultProperties.setProperty("graphArrowFontSize", "10.0");
+		defaultProperties.setProperty("graphNodeFontSize", "11.0");
+		
+		defaultProperties.setProperty("runInSDI", "false");
 		
 	}
 	
