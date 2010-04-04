@@ -147,7 +147,7 @@ public class CharacterNode extends Node
 		{
 			g.setColor(Color.BLACK);
 			Font oldFont = g.getFont();
-			Font newFont = oldFont.deriveFont((float)11.0);
+			Font newFont = oldFont.deriveFont(getNameFontSize());
 			g.setFont(newFont);
 			int swidth = g.getFontMetrics().stringWidth(getName());
 			g.drawString(getName(),(int)bounds.getX()+12-swidth/2,(int)bounds.getY()+12);
@@ -185,7 +185,7 @@ public class CharacterNode extends Node
 		{
 			g.setColor(Color.BLACK);
 			Font oldFont = g.getFont();
-			Font newFont = oldFont.deriveFont((float)11.0);
+			Font newFont = oldFont.deriveFont(getNameFontSize());
 			g.setFont(newFont);
 			int swidth = g.getFontMetrics().stringWidth(getName());
 			g.drawString(getName(),x+12-swidth/2,y+12);

@@ -38,6 +38,7 @@ import org.f2o.absurdum.puck.gui.clipboard.CutAction;
 import org.f2o.absurdum.puck.gui.clipboard.PasteAction;
 import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
 import org.f2o.absurdum.puck.gui.dialog.ExecuteDialog;
+import org.f2o.absurdum.puck.gui.dialog.FindEntityDialog;
 import org.f2o.absurdum.puck.gui.dialog.IconSizesDialog;
 import org.f2o.absurdum.puck.gui.dialog.ShowHideDialog;
 import org.f2o.absurdum.puck.gui.graph.GraphEditingPanel;
@@ -88,6 +89,7 @@ public class PuckFrame extends JFrame
 	private String editingFileName = null;
 	
 	private ExecuteDialog ed = null;
+	private FindEntityDialog fed = null;
 	
 	
 	/**
@@ -113,7 +115,7 @@ public class PuckFrame extends JFrame
 	public void runCurrentFileInAge ( )
 	{
 	    if ( ed == null )
-		ed = new ExecuteDialog(this);
+	    	ed = new ExecuteDialog(this);
 	    ed.setVisible(true);
 	    
 	    /*
@@ -348,6 +350,14 @@ public class PuckFrame extends JFrame
 			thereIsSomething = true;
 		}
 		openRecentMenu.setEnabled(thereIsSomething);
+	}
+	
+	public void showFindEntityDialog ( )
+	{
+	    if ( fed == null )
+	    	fed = new FindEntityDialog(this,false);
+	    fed.requestFocus();
+	    fed.setVisible(true);
 	}
 	
 	/**
@@ -641,8 +651,20 @@ public class PuckFrame extends JFrame
 		
 
 
-	        JMenu editMenu = new JMenu("Edit");
+	        JMenu editMenu = new JMenu(Messages.getInstance().getMessage("menu.edit"));
 	        editMenu.setMnemonic(KeyEvent.VK_E);
+	        
+	        JMenuItem findMenuItem = new JMenuItem(Messages.getInstance().getMessage("menu.find.entity"));
+	        findMenuItem.addActionListener(new ActionListener()
+	        {
+	        	public void actionPerformed ( ActionEvent e )
+	        	{
+	        		showFindEntityDialog();
+	        	}
+	        }
+	        );
+	        editMenu.add(findMenuItem);
+	        editMenu.add(new JSeparator());
 
 	        JMenuItem aMenuItem = new JMenuItem(new CutAction());
 	        aMenuItem.setText(Messages.getInstance().getMessage("menuaction.cut"));

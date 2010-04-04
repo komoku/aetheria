@@ -569,6 +569,8 @@ public class Player extends Mobile implements Informador
 
 		//modular execCommand()
 
+		if ( commandstring.isEmpty() ) return false; //empty strings can result if, for example, input was ",something", etc.
+		
 		return execCommand ( commandstring  );
 
 	}

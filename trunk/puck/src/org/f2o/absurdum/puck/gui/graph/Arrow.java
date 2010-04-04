@@ -10,6 +10,8 @@ package org.f2o.absurdum.puck.gui.graph;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
+
 /**
  * @author carlos
  *
@@ -71,6 +73,24 @@ public abstract class Arrow implements GraphElement
 		
 		paint(g,(int)coords[0],(int)coords[1],(int)coords[2],(int)coords[3]);
 
+	}
+	
+	public static float getNameFontSize()
+	{
+		String sizeProp = PuckConfiguration.getInstance().getProperty("graphArrowFontSize");
+		if ( sizeProp != null )
+		{
+			try
+			{
+				return Float.valueOf(sizeProp);
+			}
+			catch ( NumberFormatException nfe )
+			{
+				return (float) 10.0;
+			}
+		}
+		else
+			return (float) 10.0;
 	}
 	
 }

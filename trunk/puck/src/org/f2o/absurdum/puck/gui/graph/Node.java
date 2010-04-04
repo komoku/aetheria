@@ -13,6 +13,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
 import org.f2o.absurdum.puck.gui.panels.GraphElementPanel;
 
 /**
@@ -80,7 +81,23 @@ public abstract class Node implements GraphElement
 	
 	public abstract void setExplicitSize ( int size );
 	
-	
+	public static float getNameFontSize()
+	{
+		String sizeProp = PuckConfiguration.getInstance().getProperty("graphNodeFontSize");
+		if ( sizeProp != null )
+		{
+			try
+			{
+				return Float.valueOf(sizeProp);
+			}
+			catch ( NumberFormatException nfe )
+			{
+				return (float) 11.0;
+			}
+		}
+		else
+			return (float) 11.0;
+	}
 	
 
 	

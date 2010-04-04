@@ -17,8 +17,11 @@ import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -313,6 +316,18 @@ public class WorldPanel extends GraphElementPanel
 		result.setAttribute("version",tfVersion.getText());
 		result.setAttribute("date",tfDate.getText());
 		result.setAttribute("type",tfType.getText());
+		
+		/*check for duplicate unique names and change them if needed*/
+		Set usedNames = new LinkedHashSet();
+		for ( int i = 0 ; i < gep.getNodes().size() ; i++ )
+		{
+			Node n = (Node) gep.getNodes().get(i);
+			if ( n.getAssociatedPanel() instanceof EntityPanel ) //entity node
+			{
+					EntityPanel ep = (EntityPanel) n.getAssociatedPanel();
+					ep.checkAndIndexUniqueName();
+			}
+		}
 		
 		/*meta-inf*/
 		Element metaElt = d.createElement("IdeMetaInf");
@@ -630,11 +645,11 @@ public class WorldPanel extends GraphElementPanel
 	/**
 	 * 
 	 * @param entityNode The valid XML element defining an entity.
-	 * @param namesToNodes Names-to-nodes map. May be null.
+	 * @param namesToNodes Names-to-nodes map. Unused parameter.
 	 * @param dispSize Display size for the node, -1 for default size (e.g. for pasted nodes).
 	 * @param coords (x,y) coordinates to add the node. May be null for random coordinates.
 	 */
-	public void addEntityFromXML ( Element entityNode , Map namesToNodes , int dispSize , Point coords )
+	public void addEntityFromXML ( Element entityNode , Map unusedParameter , int dispSize , Point coords )
 	{
 		String entityName = entityNode.getAttribute("name");
 		//entityName = UniqueNameEnforcer.makeUnique(entityName,namesToNodes); //didn't work, because then we call initFromXML which ignores this
@@ -656,11 +671,15 @@ public class WorldPanel extends GraphElementPanel
 			rn = new AbstractEntityNode(coords.x,coords.y);
 		else
 			rn = null;
+		
+		//this also updates the maps:
 		gep.addNode(rn);
 		
+		//this is currently redundant, done by gep.addNode(...), probably can remove <- no, not the ID! the ID is not redundant.
 		if ( namesToNodes != null ) //should not be null if called when building the world. Should be null if called from a paste action, f. ex.
 		{
 			namesToNodes.put(entityName,rn);
+			nodesToNames.put(rn, entityName);
 			if ( entityId.length() > 0 )
 			{
 				namesToNodes.put(entityId,rn);
@@ -673,6 +692,9 @@ public class WorldPanel extends GraphElementPanel
 		gep.getPropertiesPanel().loadWithoutShowing(rn);
 		rn.getAssociatedPanel().initFromXML(entityNode);
 		rn.getAssociatedPanel().initMinimal(); //updated with data from xml
+		panelsToNodes.put(rn.getAssociatedPanel(),rn);
+				
+		
 	}
 	
 	/**
@@ -693,9 +715,54 @@ public class WorldPanel extends GraphElementPanel
 	
 	
 
+	/**This map converts both unique names and legacy numeric ID's of entities to their associated PUCK map nodes.
+	 * It is used for searches and to check that no two nodes are given the same unique name.*/
+	private Map namesToNodes = new TreeMap();
+	
+	/**This map converts PUCK entity nodes to their unique names that are stored in namesToNodes (but not to numeric ID's). The
+	 * only purpose of this map is actually to be able to update namesToNodes when a node changes its name.*/
+	private Map nodesToNames = new HashMap();
+	
+	private Map panelsToNodes = new HashMap();
 	
 	
+	public Node nameToNode ( String name )
+	{
+		return (Node) namesToNodes.get(name);
+	}
 	
+	public String nodeToName ( Node node )
+	{
+		return (String) nodesToNames.get(node);
+	}
+	
+	public Node panelToNode ( EntityPanel panel )
+	{
+		return (Node) panelsToNodes.get(panel);
+	}
+	
+	public void updateMaps ( Node node )
+	{
+		GraphElementPanel panel = node.getAssociatedPanel();
+		String name = node.getName(); //note that getAssociatedPanel() may set the name if this is a newly created node -> order of these two lines is important
+		String oldName = (String) nodesToNames.get(node);
+		nodesToNames.remove(node);
+		nodesToNames.put(node,name);
+		if ( oldName != null )
+			namesToNodes.remove(oldName);
+		namesToNodes.put(name,node);
+		panelsToNodes.remove(panel);
+		panelsToNodes.put(panel,node);
+	}
+	
+	public void removeFromMaps ( Node node) 
+	{
+		String name = node.getName();
+		GraphElementPanel panel = node.getAssociatedPanel();
+		nodesToNames.remove(node);
+		namesToNodes.remove(name);
+		panelsToNodes.remove(panel);
+	}
 	
 	
 //	from World node... the big great initializer, initializing the GEP too!!!
@@ -804,11 +871,10 @@ public class WorldPanel extends GraphElementPanel
 		NodeList spellNodes = e.getElementsByTagName("Spell");
 		
 		//converts names of nodes (and legacy numeric ID's, if present) to nodes
-		Map namesToNodes = new HashMap();	
-			
-		//converts legacy numeric ID's to node names
-		//UNUSED at the moment
-		Map idsToNames = new HashMap();
+		namesToNodes = new HashMap();	
+		
+		nodesToNames = new HashMap();
+		panelsToNodes = new HashMap();
 		
 		if ( metaInfNode == null )
 		{
