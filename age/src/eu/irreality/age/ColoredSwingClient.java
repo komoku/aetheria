@@ -679,6 +679,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	
 	public void write ( String s )
 	{
+	    
+	    //System.err.println("Selectionan gaems " + elAreaTexto.getSelectionStart() + " " + elAreaTexto.getSelectionEnd() );
 		
 		if ( s == null )
 		{
@@ -768,8 +770,12 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		
 		//System.out.println(elAreaTexto.getText());
 		
-		elAreaTexto.moveCaretPosition(elAreaTexto.getText().length());
+		//elAreaTexto.moveCaretPosition(elAreaTexto.getText().length());
+		elAreaTexto.setCaretPosition(elAreaTexto.getText().length()); //this doesn't select
 		elAreaTexto.setVisible(true);
+		
+		
+		//System.err.println("Selectionan gaems " + elAreaTexto.getSelectionStart() + " " + elAreaTexto.getSelectionEnd() );
 	
 	}
 	
