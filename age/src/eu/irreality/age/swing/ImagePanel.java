@@ -80,7 +80,7 @@ public class ImagePanel extends JPanel implements ImageConstants
 			drawX = panelWidth/2 - drawW/2;
 		}
 		//if scalingMode is FIT_BOTH, default.
-		g.drawImage(theImage.getImage(),drawX,drawY,drawW,drawH,null);
+		g.drawImage(theImage.getImage(),drawX,drawY,drawW,drawH,this);
 	}
 	
 
