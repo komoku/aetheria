@@ -4,6 +4,7 @@
  */
 package eu.irreality.age;
 import java.io.*;
+import java.nio.ByteOrder;
 import java.util.*;
 import java.util.logging.Level;
 
@@ -181,6 +182,9 @@ public class AGESoundClient implements SoundClient
 		
 		if ( f.getAbsolutePath().toLowerCase().endsWith(".ogg") || f.getAbsolutePath().toLowerCase().endsWith(".mp3") )
 		{
+		    //boolean bigEndian = ByteOrder.nativeOrder().equals(ByteOrder.BIG_ENDIAN);
+		    
+		    
 		    AudioFormat baseFormat = aii.getFormat();
 		    finalFormat = new AudioFormat(
 		                AudioFormat.Encoding.PCM_SIGNED,
@@ -190,6 +194,7 @@ public class AGESoundClient implements SoundClient
 		                baseFormat.getChannels() * 2,
 		                baseFormat.getSampleRate(),
 		                false);
+		                //bigEndian);
 		         // Get AudioInputStream that will be decoded by underlying VorbisSPI
 		        finalStream = AudioSystem.getAudioInputStream(finalFormat, aii);
 		    //}
