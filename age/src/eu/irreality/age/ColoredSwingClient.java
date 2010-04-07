@@ -984,6 +984,24 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	
 	public void removeFrames()
 	{
+		try {
+			SwingUtilities.invokeAndWait( new Runnable() 
+			{
+				public void run()
+				{
+					doRemoveFrames();
+				}
+			}
+			);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void doRemoveFrames()
+	{
 		topFrame = null;
 		bottomFrame = null;
 		leftFrame = null;
@@ -999,7 +1017,25 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		refreshFocus();
 	}
 	
-	public void addFrame ( int position , int size )
+	public void addFrame ( final int position , final int size )
+	{
+		try {
+			SwingUtilities.invokeAndWait( new Runnable() 
+			{
+				public void run()
+				{
+					doAddFrame(position,size);
+				}
+			}
+			);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void doAddFrame ( int position , int size )
 	{
 		if ( position == ImageConstants.TOP )
 		{
