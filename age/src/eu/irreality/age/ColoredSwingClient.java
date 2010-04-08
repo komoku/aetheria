@@ -14,6 +14,7 @@ import java.text.*;
 import java.awt.*;
 import javax.swing.text.*;
 
+import eu.irreality.age.swing.FancyJTextField;
 import eu.irreality.age.swing.FancyJTextPane;
 import eu.irreality.age.swing.ImagePanel;
 import eu.irreality.age.windowing.AGEClientWindow;
@@ -26,7 +27,7 @@ import java.awt.event.*;
 public class ColoredSwingClient implements MultimediaInputOutputClient
 {
 
-	private JTextField elCampoTexto;
+	private FancyJTextField elCampoTexto;
 	private FancyJTextPane elAreaTexto;
 	private JScrollPane elScrolling;
 	private SwingEditBoxListener elEscuchador;	
@@ -319,7 +320,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		return true;
 	}
 	
-	public ColoredSwingClient ( AGEClientWindow window , JTextField nCampo , JScrollPane scrolling, FancyJTextPane nArea , Vector gameLog )
+	public ColoredSwingClient ( AGEClientWindow window , FancyJTextField nCampo , JScrollPane scrolling, FancyJTextPane nArea , Vector gameLog )
 	{
 		laVentana = window;
 		elCampoTexto=nCampo;
@@ -506,7 +507,18 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 
 		laVentana.getMainPanel().add(elScrolling,BorderLayout.CENTER);
 					
-		elCampoTexto = new JTextField(200);
+		elCampoTexto = new FancyJTextField(200);
+		
+		/*
+		JPanel promptPanel = new JPanel();
+		JLabel promptLabel = new JLabel("Prompt: ");
+		promptPanel.add(promptLabel);
+		promptPanel.setOpaque(false);
+		elCampoTexto.add(promptPanel);
+		promptPanel.setVisible(true);
+		promptLabel.setVisible(true);
+		System.err.println("Prompt created");
+		*/
 
 		elCampoTexto.setFont(SwingAetheriaGameLoaderInterface.font.deriveFont((float)24.0));
 		
@@ -1172,6 +1184,29 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 			useImage(fileName,mode,ImageConstants.TOP);
 		else
 			useImage(fileName,mode,ImageConstants.CENTER);
+	}
+	
+	public void setPrompts ( final String left , final String right )
+	{
+		try 
+		{
+			SwingUtilities.invokeAndWait( new Runnable() 
+			{
+				public void run()
+				{
+					elCampoTexto.setPrompts(left,right);
+				}
+			}
+			);
+		} 
+		catch (InterruptedException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (InvocationTargetException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 
 }
