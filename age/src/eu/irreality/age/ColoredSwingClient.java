@@ -1273,6 +1273,31 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		}
 	}
 	
+	public static void execInDispatchThread ( Runnable r )
+	{
+		if ( SwingUtilities.isEventDispatchThread() )
+		{
+			r.run();
+		}
+		else
+		{
+			try
+			{
+				SwingUtilities.invokeLater(r);
+			}
+			catch ( Exception ie )
+			{
+				ie.printStackTrace();
+			}
+		}
+	}
+	
+	public void setMargins ( final int top , final int left , final int bottom , final int right )
+	{
+		execInDispatchThread(new Runnable() { public void run() { elAreaTexto.setMargin(new Insets(top,left,bottom,right)); /*elCampoTexto.setMargin(new Insets(0,left,0,right));*/ } });
+	}
+	
+	
 	/*
 	public void setOutputAreaForeground ( final Color c )
 	{
