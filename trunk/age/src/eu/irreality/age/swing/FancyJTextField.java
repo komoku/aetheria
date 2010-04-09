@@ -104,6 +104,28 @@ public class FancyJTextField extends JTextField
 			return "";
 		} 
 	}
+	
+	private boolean promptsEnabled = true;
+	private String storedLeftPrompt = "";
+	private String storedRightPrompt = "";
+	
+	public void setPromptsEnabled(boolean enable)
+	{
+		if ( promptsEnabled && !enable )
+		{
+			storedLeftPrompt = leftPrompt;
+			storedRightPrompt = rightPrompt;
+			setPrompts("","");
+			promptsEnabled = false;
+		}
+		else if ( !promptsEnabled && enable )
+		{
+			setPrompts(storedLeftPrompt,storedRightPrompt);
+			storedLeftPrompt = "";
+			storedRightPrompt = "";
+			promptsEnabled = true;
+		}
+	}
 		
 	
 }

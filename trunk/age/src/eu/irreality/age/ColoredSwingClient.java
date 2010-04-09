@@ -38,6 +38,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	private Document doc;
 	private MutableAttributeSet atributos = new SimpleAttributeSet();
 	
+	private Color textFieldForeground = Color.black; //this color will turn to red sometimes in real time
+	
 
 	//if deactivated, all input-getting methods will automatically return no input
 	//use this only when exiting the client
@@ -123,6 +125,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		StyleConstants.setForeground(atributos,Color.black);
 		StyleConstants.setForeground(atributos,Color.white);
 		elAreaTexto.setFont(SwingAetheriaGameLoaderInterface.font);
+		elCampoTexto.setFont(SwingAetheriaGameLoaderInterface.font.deriveFont((float)24.0));
 		
 		reformatAllText();
 		
@@ -169,6 +172,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 				}
 			}
 		elAreaTexto.setFont(laFuente);
+		elCampoTexto.setFont(laFuente.deriveFont((float)24.0));
 		
 		reformatAllText();
 		
@@ -190,6 +194,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		StyleConstants.setForeground(atributos,c.getForegroundColor());
 		elAreaTexto.repaint();
 		elAreaTexto.setFont(c.getFont());
+		elCampoTexto.setFont(c.getFont().deriveFont((float)24.0));
 		this.vc = c;
 	}
 	
@@ -853,9 +858,9 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	{
 		if ( deactivated ) return;
 		
-		System.out.println("Keywait");
+		//System.out.println("Keywait");
 		elEscuchador.setPressAnyKeyState ( true );
-		System.out.println("Keywait flag set");
+		//System.out.println("Keywait flag set");
 		//ponemos un color de fondo algo mas claro
 		//Color c1 = elAreaTexto.getBackground();
 		//Color c2 = c1.brighter();
@@ -864,9 +869,9 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		
 		try
 		{
-			System.out.println("Keywait I said");
+			//System.out.println("Keywait I said");
 			wait();
-			System.out.println("Keywait I yelled");
+			//System.out.println("Keywait I yelled");
 		}
 		catch ( InterruptedException intex )
 		{
@@ -885,7 +890,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	
 		if ( deactivated ) return null;
 		
-		setTextFieldForeground(Color.black);
+		setTextFieldForeground(textFieldForeground);
 	
 		try
 		{
@@ -1208,5 +1213,90 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 			e.printStackTrace();
 		}
 	}
+	
+	public static Color parseColor ( String colorString )
+	{
+		String colorHex;
+		if ( colorString.length() > 0 && colorString.charAt(0) == '#' )
+			colorHex = colorString.substring(1);
+		else colorHex = colorString;
+		int ncolor = Integer.parseInt(colorHex,16);
+		return new Color ( ncolor );
+	}
+	
+	/**
+	 * High-level method that sets the default colour for the input field.
+	 * Do not confuse with setTextFieldForeground which momentarily changes the colour (ignoring the default colour if necessary).
+	 * @param color
+	 */
+	public void setInputFieldForeground ( final Color color )
+	{
+		textFieldForeground = color;
+		setTextFieldForeground(color);
+	}
+	
+	public void setInputFieldBackground ( final Color color )
+	{
+		if ( SwingUtilities.isEventDispatchThread() )
+		{
+			elCampoTexto.setBackground(color);
+		}
+		else
+		{
+			try
+			{
+				SwingUtilities.invokeLater(new Runnable() { public void run() { elCampoTexto.setBackground(color); } });
+			}
+			catch ( Exception ie )
+			{
+				ie.printStackTrace();
+			}
+		}
+	}
+	
+	public void setOutputAreaBackground ( final Color color )
+	{
+		if ( SwingUtilities.isEventDispatchThread() )
+		{
+			elAreaTexto.setBackground(color);
+		}
+		else
+		{
+			try
+			{
+				SwingUtilities.invokeLater(new Runnable() { public void run() { elAreaTexto.setBackground(color); } });
+			}
+			catch ( Exception ie )
+			{
+				ie.printStackTrace();
+			}
+		}
+	}
+	
+	/*
+	public void setOutputAreaForeground ( final Color c )
+	{
+		if ( SwingUtilities.isEventDispatchThread() )
+		{
+			StyleConstants.setForeground(atributos,c);
+		}
+		else
+		{
+			try
+			{
+				SwingUtilities.invokeLater(new Runnable() { public void run() { StyleConstants.setForeground(atributos,c); } });
+			}
+			catch ( Exception ie )
+			{
+				ie.printStackTrace();
+			}
+		}
+	}
+	*/
+	
+	public void setInputFieldBackground ( String s ) { setInputFieldBackground(parseColor(s)); }
+	public void setInputFieldForeground ( String s ) { setInputFieldForeground(parseColor(s)); }
+	public void setOutputAreaBackground ( String s ) { setOutputAreaBackground(parseColor(s)); }
+	//public void setOutputAreaForeground ( String s ) { setOutputAreaForeground(parseColor(s)); }
 
 }
