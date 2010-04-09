@@ -10,10 +10,12 @@ import java.util.Vector;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import eu.irreality.age.swing.FancyJTextField;
+
 class SwingEditBoxListener implements ActionListener , KeyListener
 {
 
-	JTextField elCampoJTexto;
+	FancyJTextField elCampoJTexto;
 	//JTextComponent elAreaJTexto;
 	ColoredSwingClient cl;
 	//Player esperando;
@@ -28,7 +30,7 @@ class SwingEditBoxListener implements ActionListener , KeyListener
 		ncommands++;
 	}
 
-	public SwingEditBoxListener ( JTextField nCampoJTexto , Vector gameLog , ColoredSwingClient cl )
+	public SwingEditBoxListener ( FancyJTextField nCampoJTexto , Vector gameLog , ColoredSwingClient cl )
 	{
 		elCampoJTexto = nCampoJTexto;
 		//elAreaJTexto = nAreaJTexto;
@@ -146,8 +148,8 @@ class SwingEditBoxListener implements ActionListener , KeyListener
 	
 	public void setPressAnyKeyState ( final boolean value )
 	{
-		System.out.println("In PAK, Thread is " + Thread.currentThread());
-		System.out.println("And it's " + SwingUtilities.isEventDispatchThread());
+		//System.out.println("In PAK, Thread is " + Thread.currentThread());
+		//System.out.println("And it's " + SwingUtilities.isEventDispatchThread());
 		
 		if ( SwingUtilities.isEventDispatchThread() )
 			doSetPressAnyKeyState(value);
@@ -183,6 +185,7 @@ class SwingEditBoxListener implements ActionListener , KeyListener
 			//esperamos por una tecla
 			elCampoJTexto.setForeground(Color.black);
 			System.out.println("Setting PAK 1");
+			elCampoJTexto.setPromptsEnabled(false);
 			elCampoJTexto.setText("Pulsa cualquier tecla...");
 			System.out.println("Setting PAK 2");
 			elCampoJTexto.setEditable(false);
@@ -194,6 +197,7 @@ class SwingEditBoxListener implements ActionListener , KeyListener
 		{
 			//ejecución normal
 			System.out.println("Setting UNPAK 1");
+			elCampoJTexto.setPromptsEnabled(true);
 			elCampoJTexto.setText("");
 			System.out.println("Setting UNPAK 2");
 			elCampoJTexto.setEditable(true);
