@@ -730,18 +730,7 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 				resetSelections();
 				selectNode(n);					
 				
-				if ( arg0.getButton() == MouseEvent.BUTTON3 )
-				{
-					JPopupMenu jpm = new JPopupMenu();
-					JMenuItem cutItem = new JMenuItem(new CutNodeAction(n,this));
-					jpm.add(cutItem);
-					JMenuItem copyItem = new JMenuItem(new CopyNodeAction(n,this));
-					jpm.add(copyItem);
-					jpm.add(new JSeparator());
-					JMenuItem delItem = new JMenuItem(new DeleteNodeAction(n,this));
-					jpm.add(delItem);
-					jpm.show(this,arg0.getX(),arg0.getY());
-				}
+				showNodeMenuIfApplicable(arg0,n);
 				
 			}
 			else 
@@ -755,13 +744,7 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 					resetSelections();
 					selectArrow(a);
 					
-					if ( arg0.getButton() == MouseEvent.BUTTON3 )
-					{
-						JPopupMenu jpm = new JPopupMenu();
-						JMenuItem delItem = new JMenuItem(new DeleteArrowAction(a,this));
-						jpm.add(delItem);
-						jpm.show(this,arg0.getX(),arg0.getY());
-					}
+					showArrowMenuIfApplicable(arg0,a);
 					
 				}
 				else
@@ -769,13 +752,7 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 					resetSelections();
 					propP.show(worldN);			
 					
-					if ( arg0.getButton() == MouseEvent.BUTTON3 )
-					{
-						JPopupMenu jpm = new JPopupMenu();
-						JMenuItem pasteItem = new JMenuItem(new PasteNodeAction(this));
-						jpm.add(pasteItem);
-						jpm.show(this,arg0.getX(),arg0.getY());
-					}
+					showEmptySpaceMenuIfApplicable(arg0);
 				}
 			}
 		}
@@ -823,6 +800,44 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 	double lastPressX = 0.0;
 	double lastPressY = 0.0;
 	
+	public void showEmptySpaceMenuIfApplicable ( MouseEvent arg0 )
+	{
+		if ( arg0.isPopupTrigger() )
+		{
+			JPopupMenu jpm = new JPopupMenu();
+			JMenuItem pasteItem = new JMenuItem(new PasteNodeAction(this));
+			jpm.add(pasteItem);
+			jpm.show(this,arg0.getX(),arg0.getY());
+		}
+	}
+	
+	public void showArrowMenuIfApplicable( MouseEvent arg0 , Arrow a )
+	{
+		if ( arg0.isPopupTrigger() )
+		{
+			JPopupMenu jpm = new JPopupMenu();
+			JMenuItem delItem = new JMenuItem(new DeleteArrowAction(a,this));
+			jpm.add(delItem);
+			jpm.show(this,arg0.getX(),arg0.getY());
+		}
+	}
+	
+	public void showNodeMenuIfApplicable ( MouseEvent arg0 , Node n )
+	{
+		if ( arg0.isPopupTrigger() )
+		{
+			JPopupMenu jpm = new JPopupMenu();
+			JMenuItem cutItem = new JMenuItem(new CutNodeAction(n,this));
+			jpm.add(cutItem);
+			JMenuItem copyItem = new JMenuItem(new CopyNodeAction(n,this));
+			jpm.add(copyItem);
+			jpm.add(new JSeparator());
+			JMenuItem delItem = new JMenuItem(new DeleteNodeAction(n,this));
+			jpm.add(delItem);
+			jpm.show(this,arg0.getX(),arg0.getY());
+		}
+	}
+	
 	public void mousePressed(MouseEvent arg0) 
 	{
 		lastPressX = arg0.getX();
@@ -836,7 +851,9 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 			{
 				propP.show(n);
 				resetSelections();
-				selectNode(n);			
+				selectNode(n);		
+				
+				showNodeMenuIfApplicable(arg0,n);
 			}
 			else 
 			{
@@ -846,18 +863,15 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 					propP.show(a);
 					resetSelections();
 					selectArrow(a);	
-					if ( arg0.getButton() == MouseEvent.BUTTON3 )
-					{
-						JPopupMenu jpm = new JPopupMenu();
-						JMenuItem delItem = new JMenuItem(new DeleteArrowAction(a,this));
-						jpm.add(delItem);
-						jpm.show(this,arg0.getX(),arg0.getY());
-					}
+					//if ( arg0.getButton() == MouseEvent.BUTTON3 )
+					showArrowMenuIfApplicable(arg0,a);
 				}
 				else
 				{
 					propP.show(worldN);	
 					resetSelections();
+					
+					showEmptySpaceMenuIfApplicable(arg0);
 				}
 			}
 		}
@@ -883,6 +897,17 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 			addNode(specialNode);
 			setSpecialNode(null);
 			repaint();
+		}
+		else
+		{
+		    Node n = nodeAt(panelToMapX(arg0.getX()),panelToMapY(arg0.getY()));
+		    if ( n!=null ) showNodeMenuIfApplicable(arg0,n);
+		    else
+		    {
+			Arrow a = arrowAt(panelToMapX(arg0.getX()),panelToMapY(arg0.getY()));
+			if ( a != null ) showArrowMenuIfApplicable(arg0,a);
+			else showEmptySpaceMenuIfApplicable(arg0);
+		    }
 		}
 	}
 	
