@@ -22,9 +22,26 @@
 		<copydir src="${puckdist}" dest="${devkit}"/>
 		<!--generate zipfiles-->
 		<tstamp/>
+		<!-- (old zips without permissions)
 		<zip destfile="${zipdir}/AgePlayersKit-${DSTAMP}${TSTAMP}.zip" basedir="${playkit}"/>
 		<zip destfile="${zipdir}/AgeMinimal-${DSTAMP}${TSTAMP}.zip" basedir="${playkit}" excludes="worlds/**"/>
 		<zip destfile="${zipdir}/AgeDevelopersKit-${DSTAMP}${TSTAMP}.zip" basedir="${devkit}"/>
+		-->
+		<zip destfile="${zipdir}/AgePlayersKit-${DSTAMP}${TSTAMP}.zip">
+			<zipfileset dir="${playkit}" excludes="**/*.sh,**/*.command"/>
+			<zipfileset dir="${playkit}" includes="**/*.sh" filemode="755"/>
+			<zipfileset dir="${playkit}" includes="**/*.command" filemode="755"/>
+		</zip>
+		<zip destfile="${zipdir}/AgeMinimal-${DSTAMP}${TSTAMP}.zip">
+			<zipfileset dir="${playkit}" excludes="**/*.sh,**/*.command,worlds/**"/>
+			<zipfileset dir="${playkit}" includes="**/*.sh" filemode="755"/>
+			<zipfileset dir="${playkit}" includes="**/*.command" filemode="755"/>
+		</zip>
+		<zip destfile="${zipdir}/AgeDevelopersKit-${DSTAMP}${TSTAMP}.zip">
+			<zipfileset dir="${devkit}" excludes="**/*.sh,**/*.command"/>
+			<zipfileset dir="${devkit}" includes="**/*.sh" filemode="755"/>
+			<zipfileset dir="${devkit}" includes="**/*.command" filemode="755"/>
+		</zip>
 	</target>
 
 </project>
