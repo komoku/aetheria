@@ -6,6 +6,7 @@ package eu.irreality.age;
 import javax.swing.*;
 
 import eu.irreality.age.debug.Debug;
+import eu.irreality.age.debug.ExceptionPrinter;
 import eu.irreality.age.swing.sdi.SwingSDIInterface;
 import eu.irreality.age.windowing.AGEClientWindow;
 import eu.irreality.age.windowing.AGELoggingWindow;
@@ -232,7 +233,9 @@ public class GameEngineThread extends Thread
 		}
 		catch ( Exception e )
 		{
-		    theWorld.write("The followan has been thrown: " + e);
+		    //theWorld.write("The followan has been thrown: " + e);
+		    theWorld.writeError("Exception thrown by serverIntro routine:");
+			theWorld.writeError(ExceptionPrinter.getExceptionReport(e));
 		}
 		finally
 		{
@@ -288,7 +291,8 @@ public class GameEngineThread extends Thread
 				//the world creator messed something up, probably!
 				if ( theWorld != null ) theWorld.writeError(""+e);
 				System.err.println("Exception during world update:");
-				e.printStackTrace();
+				e.printStackTrace();	
+				theWorld.writeError(ExceptionPrinter.getExceptionReport(e));
 			}
 			
 			if ( exitFlag ) 
