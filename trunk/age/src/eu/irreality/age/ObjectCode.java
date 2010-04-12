@@ -203,19 +203,12 @@ public class ObjectCode
 		}
 		catch ( EvalError pe )
 		{
-			theWorld.writeError("Error de sintaxis en el código BeanShell.\n");
-			theWorld.writeError("En concreto: " + pe); System.err.println(pe.getMessage()); pe.printStackTrace();
-			theWorld.writeError("Información adicional BSH:");
-			theWorld.writeError("Rutina: " + aroutine + "\n");
-			theWorld.writeError("Llamador: " + theCaller + "\n");
-			theWorld.writeError("Argumentos: ");
-			for ( int i = 0 ; i < theArguments.length ; i++ )
-				theWorld.writeError(theArguments[i] + " "); 
-			theWorld.writeError("\n");
+			reportEvalError(pe,aroutine,theCaller,theArguments);
 		}
 		catch ( Exception e )
 		{
 		    theWorld.writeError("Catched the followan: " + e);
+		    e.printStackTrace();
 		}
 		return false;
 	}
@@ -348,17 +341,7 @@ public class ObjectCode
 		}
 		catch ( EvalError pe )
 		{
-			theWorld.writeError("Error de sintaxis en el código BeanShell.\n");
-			theWorld.writeError("En concreto: " + pe); System.err.println(pe.getMessage()); pe.printStackTrace();
-			theWorld.writeError("Error de sintaxis en el código BeanShell.\n");
-			theWorld.writeError("En concreto: " + pe); System.err.println(pe.getMessage()); pe.printStackTrace();
-			theWorld.writeError("Información adicional BSH:");
-			theWorld.writeError("Rutina: " + aroutine + "\n");
-			theWorld.writeError("Llamador: " + theCaller + "\n");
-			theWorld.writeError("Argumentos: ");
-			for ( int i = 0 ; i < theArguments.length ; i++ )
-				theWorld.writeError(theArguments[i] + " "); 
-			theWorld.writeError("\n");
+			reportEvalError(pe,aroutine,theCaller,theArguments);
 		}
 		return false;
 	}
@@ -475,19 +458,26 @@ public class ObjectCode
 		}
 		catch ( EvalError pe )
 		{
-			theWorld.writeError("Error de sintaxis en el código BeanShell.\n");
-			theWorld.writeError("En concreto: " + pe); System.err.println(pe.getMessage()); pe.printStackTrace();
-			theWorld.writeError("Error de sintaxis en el código BeanShell.\n");
-			theWorld.writeError("En concreto: " + pe); System.err.println(pe.getMessage()); pe.printStackTrace();
-			theWorld.writeError("Información adicional BSH:");
-			theWorld.writeError("Rutina: " + aroutine + "\n");
-			theWorld.writeError("Llamador: " + theCaller + "\n");
-			theWorld.writeError("Argumentos: ");
-			for ( int i = 0 ; i < theArguments.length ; i++ )
-				theWorld.writeError(theArguments[i] + " "); 
-			theWorld.writeError("\n");
+			reportEvalError(pe,aroutine,theCaller,theArguments);
 		}
 		return false;
+	}
+	
+	void reportEvalError ( EvalError pe , String aroutine , Object theCaller , Object[] theArguments )
+	{
+		theWorld.writeError("Error de sintaxis en el código BeanShell.\n");
+		//theWorld.writeError("En concreto: " + pe + "\n"); 
+		theWorld.writeError("Error: "+pe.getMessage()+"\n"); 
+		//theWorld.writeError("["+pe.getErrorSourceFile()+"]"); 
+		theWorld.writeError("En: código del objeto " + theCaller + "\n"); 
+		//System.err.println(pe.getMessage());
+		//pe.printStackTrace();
+		theWorld.writeError("Cargado para llamar la rutina: " + aroutine + "\n");
+		//theWorld.writeError("Objeto del código: " + theCaller + "\n");
+		theWorld.writeError("Con argumentos: ");
+		for ( int i = 0 ; i < theArguments.length ; i++ )
+			theWorld.writeError(theArguments[i] + " "); 
+		theWorld.writeError("\n");
 	}
 	
 	

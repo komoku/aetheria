@@ -2498,4 +2498,16 @@ public class World implements Informador , SupportingCode
 		writeWithTemplate("error",s);
 	}
 	
+	public String toString()
+	{
+		StringBuffer sb = new StringBuffer();
+		sb.append("[World: ");
+		if ( worldname != null && worldname.length() > 0 ) sb.append(worldname);
+		else sb.append("(unnamed world)");
+		sb.append(", internal handle ");
+		sb.append(super.toString());
+		sb.append("]");
+		return sb.toString();
+	}
+	
 }
