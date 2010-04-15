@@ -6997,6 +6997,21 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		}
 	}
 	
+	public boolean playAudioIfAvailable ( String audioFileName , int loopTimes )
+	{
+		SoundClient sc = getSoundClientIfAvailable();
+		if ( sc == null ) return false;
+		try
+		{
+			sc.audioStart(audioFileName,loopTimes);
+			return true;
+		}
+		catch ( Exception e )
+		{
+			return false;
+		}
+	}
+	
 	public boolean stopAudioIfAvailable ( String audioFileName )
 	{
 		SoundClient sc = getSoundClientIfAvailable();

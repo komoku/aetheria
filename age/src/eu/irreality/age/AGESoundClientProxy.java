@@ -92,6 +92,11 @@ public class AGESoundClientProxy implements ARSPConstants , SoundClient
 		pw.println(AUDIO_START + " " + f );
 		pw.flush();
 	}
+	public void audioStart ( String f , int loopTimes )
+	{
+		pw.println(AUDIO_START + loopTimes + " " + f );
+		pw.flush();
+	}
 	public void audioStop ( String f )
 	{
 		pw.println(AUDIO_STOP + " " + f );
