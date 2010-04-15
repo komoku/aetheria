@@ -4,6 +4,8 @@
  */
 package eu.irreality.age;
 
+import java.io.File;
+
 
 public interface SoundClient
 {
@@ -30,6 +32,7 @@ public interface SoundClient
 	//public void audioStart ( File f ) throws javax.sound.sampled.UnsupportedAudioFileException , javax.sound.sampled.LineUnavailableException , java.io.IOException;
 	public void audioStart ( String s ) throws javax.sound.sampled.UnsupportedAudioFileException , javax.sound.sampled.LineUnavailableException , java.io.IOException;
 	public void audioStop ( String s );
+	public void audioStart ( String s , int loopTimes ) throws javax.sound.sampled.UnsupportedAudioFileException , javax.sound.sampled.LineUnavailableException , java.io.IOException;
 	//public void audioStop ( File f );
 	
 	

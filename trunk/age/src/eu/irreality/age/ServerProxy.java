@@ -214,8 +214,22 @@ public class ServerProxy extends Thread implements ARSPConstants
 		{
 			try
 			{
-				if ( cliente.isSoundEnabled() );
-					cliente.getSoundClient().audioStart(arguments);
+				if ( cliente.isSoundEnabled() )
+				{
+					StringTokenizer st2 = new StringTokenizer(arguments);
+					try
+					{
+						int loopTimes;
+						if ( (loopTimes=Integer.valueOf(st2.nextToken()).intValue()) > 0 )
+						{
+							cliente.getSoundClient().audioStart(st2.nextToken("").trim(),loopTimes);
+						}
+					}
+					catch ( NumberFormatException nfe )
+					{
+						cliente.getSoundClient().audioStart(arguments);
+					}
+				}
 			}
 			catch ( Exception e )
 			{
