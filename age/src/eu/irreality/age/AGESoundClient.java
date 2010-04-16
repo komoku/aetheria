@@ -118,13 +118,19 @@ public class AGESoundClient implements SoundClient
 		midiOpen ( new File ( f ) );
 	}	
 	
-	//starts looping the current file indefinitely.
-	public void midiLoop ( ) throws javax.sound.midi.InvalidMidiDataException
+
+	public void midiLoop ( int loopCount ) throws javax.sound.midi.InvalidMidiDataException
 	{
 		if ( seqr.isRunning() ) seqr.stop();
 		seqr.setSequence ( curseq );
-		seqr.setLoopCount( javax.sound.midi.Sequencer.LOOP_CONTINUOUSLY );
+		seqr.setLoopCount( loopCount );
 		seqr.start();
+	}
+	
+	//starts looping the current file indefinitely.
+	public void midiLoop ( ) throws javax.sound.midi.InvalidMidiDataException
+	{
+		midiLoop ( javax.sound.midi.Sequencer.LOOP_CONTINUOUSLY );
 	}
 	
 	//starts playing the current file. Only works if we did a midiOpen() on the file.
@@ -307,7 +313,19 @@ public class AGESoundClient implements SoundClient
 			{
 				if ( arg0.getCode() == BasicPlayerEvent.EOM )
 				{
-					if ( loopCount > 0 )
+					if ( loopCount < 0 ) //infinite loop
+					{
+						try
+						{
+							bp.seek(0);
+							bp.play();
+						}
+						catch ( BasicPlayerException bpe )
+						{
+							bpe.printStackTrace();
+						}
+					}
+					else if ( loopCount > 0 )
 					{
 						loopCount--;
 						try

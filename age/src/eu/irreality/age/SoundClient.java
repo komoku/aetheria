@@ -17,6 +17,7 @@ public interface SoundClient
 	public void midiStart ( String f ) throws javax.sound.midi.InvalidMidiDataException , java.io.IOException;	
 	public void midiStart ( ) throws javax.sound.midi.InvalidMidiDataException;
 	public void midiLoop ( ) throws javax.sound.midi.InvalidMidiDataException;
+	public void midiLoop ( int loopCount ) throws javax.sound.midi.InvalidMidiDataException;
 	//public void midiOpen ( java.io.File midfile ) throws javax.sound.midi.InvalidMidiDataException , java.io.IOException;
 	public void midiOpen ( String f ) throws javax.sound.midi.InvalidMidiDataException , java.io.IOException;	
 	public void midiStop ( );
