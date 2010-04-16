@@ -9,6 +9,8 @@ import java.util.*;
 import bsh.*;
 import java.io.*;
 
+import javax.sound.midi.Sequencer;
+
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
 import eu.irreality.age.messages.DefaultMessages;
@@ -6933,7 +6935,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	
 	//multimedia
 	//TODO: version with exceptions (playMidi) and without (playMidiIfAvailable)
-	private boolean playMidiIfAvailable ( String midiFileName , boolean loop )
+	public boolean playMidiIfAvailable ( String midiFileName , int loopCount )
 	{
 		SoundClient sc = getSoundClientIfAvailable();
 		if ( sc == null ) return false;
@@ -6942,8 +6944,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			sc.midiInit();
 			sc.midiPreload(midiFileName);
 			sc.midiOpen(midiFileName);
-			if ( loop )
-				sc.midiLoop();
+			if ( loopCount != 0 )
+				sc.midiLoop( loopCount );
 			else
 				sc.midiStart();
 			return true;
@@ -6954,14 +6956,23 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		}
 	}
 	
+	//old version of this method
+	private boolean playMidiIfAvailable ( String midiFileName , boolean loop )
+	{
+		if ( loop )
+			return playMidiIfAvailable(midiFileName,-1);
+		else
+			return playMidiIfAvailable(midiFileName);
+	}
+	
 	public boolean playMidiIfAvailable ( String midiFileName )
 	{
-		return playMidiIfAvailable(midiFileName,false);
+		return playMidiIfAvailable(midiFileName,0);
 	}
 	
 	public boolean loopMidiIfAvailable ( String midiFileName )
 	{
-		return playMidiIfAvailable(midiFileName,true);
+		return playMidiIfAvailable(midiFileName,Sequencer.LOOP_CONTINUOUSLY);
 	}
 	
 	//multimedia
