@@ -67,6 +67,9 @@ public class PuckConfiguration
 		
 		defaultProperties.setProperty("runInSDI", "false");
 		
+		defaultProperties.setProperty("windowWidth", "800");
+		defaultProperties.setProperty("windowHeight", "600");
+		
 	}
 	
 	private static PuckConfiguration instance;
@@ -101,6 +104,18 @@ public class PuckConfiguration
 			System.out.println("Error reading PUCK configuration file.");
 		}
 		updateRecentFilesListFromProperties();
+	}
+	
+	public int getIntegerProperty ( String key )
+	{
+		try
+		{
+			return Integer.valueOf(properties.getProperty(key)).intValue();
+		}
+		catch ( NumberFormatException nfe )
+		{
+			return 0;
+		}
 	}
 	
 	public String getProperty ( String key )

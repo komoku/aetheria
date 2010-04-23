@@ -366,7 +366,8 @@ public class PuckFrame extends JFrame
 	public PuckFrame ()
 	{
 		super();
-		setSize(600,600);
+		setSize(PuckConfiguration.getInstance().getIntegerProperty("windowWidth"),PuckConfiguration.getInstance().getIntegerProperty("windowHeight"));
+		//setSize(600,600);
 		maximizeIfPossible();
 		//setTitle(Messages.getInstance().getMessage("frame.title"));
 		refreshTitle();
@@ -834,8 +835,12 @@ public class PuckFrame extends JFrame
 	{
 		try
 		{
+			if ( (this.getExtendedState() & JFrame.MAXIMIZED_BOTH) != JFrame.MAXIMIZED_BOTH )
+			{
+				PuckConfiguration.getInstance().setProperty("windowWidth",String.valueOf(this.getWidth()));
+				PuckConfiguration.getInstance().setProperty("windowHeight",String.valueOf(this.getHeight()));
+			}
 			PuckConfiguration.getInstance().storeProperties();
-			System.out.println("Jarrrrrrl.");
 		}
 		catch ( IOException e )
 		{
