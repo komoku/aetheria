@@ -69,6 +69,11 @@ public class PuckConfiguration
 		
 		defaultProperties.setProperty("windowWidth", "800");
 		defaultProperties.setProperty("windowHeight", "600");
+		defaultProperties.setProperty("windowMaximized", "true");
+		defaultProperties.setProperty("windowLocationX","0");
+		defaultProperties.setProperty("windowLocationY","0");
+		
+		defaultProperties.setProperty("dividerLocation","0.60");
 		
 	}
 	
@@ -106,7 +111,7 @@ public class PuckConfiguration
 		updateRecentFilesListFromProperties();
 	}
 	
-	public int getIntegerProperty ( String key )
+	public int getIntegerProperty ( String key , int defaultVal )
 	{
 		try
 		{
@@ -114,9 +119,39 @@ public class PuckConfiguration
 		}
 		catch ( NumberFormatException nfe )
 		{
-			return 0;
+			return defaultVal;
 		}
 	}
+	
+	public int getIntegerProperty ( String key ) { return getIntegerProperty(key,0); }
+	
+	public boolean getBooleanProperty ( String key , boolean defaultVal )
+	{
+		try
+		{
+			return Boolean.valueOf(properties.getProperty(key)).booleanValue();
+		}
+		catch ( NumberFormatException nfe )
+		{
+			return defaultVal;
+		}
+	}
+	
+	public boolean getBooleanProperty ( String key ) { return getBooleanProperty(key,false); }
+	
+	public double getDoubleProperty ( String key , double defaultVal )
+	{
+		try
+		{
+			return Double.valueOf(properties.getProperty(key)).doubleValue();
+		}
+		catch ( NumberFormatException nfe )
+		{
+			return defaultVal;
+		}
+	}
+	
+	public double getDoubleProperty ( String key ) { return getDoubleProperty(key,0.0);} 
 	
 	public String getProperty ( String key )
 	{
