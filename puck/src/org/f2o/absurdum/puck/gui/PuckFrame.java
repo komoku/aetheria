@@ -21,6 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
@@ -367,8 +368,10 @@ public class PuckFrame extends JFrame
 	{
 		super();
 		setSize(PuckConfiguration.getInstance().getIntegerProperty("windowWidth"),PuckConfiguration.getInstance().getIntegerProperty("windowHeight"));
+		setLocation(PuckConfiguration.getInstance().getIntegerProperty("windowLocationX"),PuckConfiguration.getInstance().getIntegerProperty("windowLocationY"));
 		//setSize(600,600);
-		maximizeIfPossible();
+		if ( PuckConfiguration.getInstance().getBooleanProperty("windowMaximized") )
+			maximizeIfPossible();
 		//setTitle(Messages.getInstance().getMessage("frame.title"));
 		refreshTitle();
 		left = new JPanel();
@@ -402,9 +405,20 @@ public class PuckFrame extends JFrame
 			
 		};
 		split.setContinuousLayout(true);
-		split.setDividerLocation(0.60);
-		split.setOneTouchExpandable(true);
 		split.setResizeWeight(0.60);
+		final int dividerLoc = PuckConfiguration.getInstance().getIntegerProperty("dividerLocation",0);
+		
+		/*
+		SwingUtilities.invokeLater(new Runnable(){
+		public void run()
+		{
+		*/
+
+		/*	
+		}
+		});
+		*/
+		split.setOneTouchExpandable(true);
 		getContentPane().add(split);
 
 
@@ -808,8 +822,21 @@ public class PuckFrame extends JFrame
 		
 		
 		propPanel.show(graphPanel.getWorldNode());
+
 		
 		setVisible(true);
+
+		SwingUtilities.invokeLater(new Runnable()
+		{
+			public void run()
+			{
+		if ( dividerLoc > 0 )
+			split.setDividerLocation(dividerLoc);
+		else
+			split.setDividerLocation(0.60);
+			}
+		}
+		);
 		
 		
 	}
@@ -828,6 +855,13 @@ public class PuckFrame extends JFrame
 		}
 	}
 	
+	public double getDividerProportionalLocation()
+	{
+		double max = (double) split.getMaximumDividerLocation();
+		double cur = (double) split.getDividerLocation();
+		return cur/max;
+	}
+	
 	/**
 	 * Exits PUCK, saving the configuration first.
 	 */
@@ -839,7 +873,15 @@ public class PuckFrame extends JFrame
 			{
 				PuckConfiguration.getInstance().setProperty("windowWidth",String.valueOf(this.getWidth()));
 				PuckConfiguration.getInstance().setProperty("windowHeight",String.valueOf(this.getHeight()));
+				PuckConfiguration.getInstance().setProperty("windowMaximized","false");
+				PuckConfiguration.getInstance().setProperty("windowLocationX",String.valueOf(this.getX()));
+				PuckConfiguration.getInstance().setProperty("windowLocationY",String.valueOf(this.getY()));
 			}
+			else
+			{
+				PuckConfiguration.getInstance().setProperty("windowMaximized","true");
+			}
+			PuckConfiguration.getInstance().setProperty("dividerLocation",String.valueOf(split.getDividerLocation()));
 			PuckConfiguration.getInstance().storeProperties();
 		}
 		catch ( IOException e )
