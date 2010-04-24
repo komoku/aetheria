@@ -15,6 +15,7 @@ Object doInclude( InputStream is , String libName )
 {
 
 	StringBuffer sb = new StringBuffer();
+	
 	BufferedReader br = new BufferedReader ( new InputStreamReader ( is , "ISO-8859-1" ) );
 	String linea;
 	while ( (linea=br.readLine()) != null )
@@ -42,7 +43,7 @@ Object doInclude( InputStream is , String libName )
 		this.caller.caller.libsloaded = true;
 		String temp = "source(this.getClass().getClassLoader().getResource(\"libinvoke.bsh\"));";
 		//String temp = "source(\"libinvoke.bsh\");";
-		this.interpreter.eval (	temp , this.caller.caller.namespace );
+		this.interpreter.eval (	temp , this.caller.caller.namespace );		
 	}	
 
 	return this.interpreter.eval ( sb.toString() , this.caller.caller.namespace );
@@ -55,13 +56,31 @@ Object include( String filename )
 	fname = new File(filename).getName();
 	java.util.StringTokenizer st = new java.util.StringTokenizer(fname,".");
 	String lName = st.nextToken();
-	return doInclude ( new FileInputStream ( filename ) , lName );
+	try
+	{
+		return doInclude ( new FileInputStream ( filename ) , lName );
+	}
+	catch ( FileNotFoundException fnfe )
+	{
+		try
+		{
+			URL url = this.getClass().getClassLoader().getResource(filename);
+			String urlString = url.toString();
+			lName = urlString.substring(urlString.lastIndexOf('/')+1, urlString.lastIndexOf('.'));
+			InputStream stream = url.openStream();
+			return doInclude ( stream , lName );
+		}
+		catch ( Exception e )
+		{
+			System.err.println("Couldn't find library");
+			throw fnfe;
+		}
+	}
 }
 
 Object include ( URL url )
 {
-	fname = url.getFile();
-	java.util.StringTokenizer st = new java.util.StringTokenizer(fname,".");
-	String lName = st.nextToken();
+	String urlString = url.toString();
+	lName = urlString.substring(urlString.lastIndexOf('/')+1, urlString.lastIndexOf('.'));
 	return doInclude ( url.openStream() , lName );
 } 
