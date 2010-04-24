@@ -12,10 +12,10 @@ import eu.irreality.age.filemanagement.Paths;
 public class NaturalLanguage
 {
 
-	public static File ficheroVerbos = new File ( Paths.getWorkingDirectory() , Paths.LANG_FILES_PATH + File.separatorChar + "verbos.lan" );
-	public static File ficheroSinonimos = new File ( Paths.getWorkingDirectory() , Paths.LANG_FILES_PATH + File.separatorChar + "sinon.lan" );
-	public static File ficheroAlias = new File ( Paths.getWorkingDirectory() , Paths.LANG_FILES_PATH + File.separatorChar + "alias.lan" );
-	public static File ficheroVerbos32 = new File ( Paths.getWorkingDirectory() , Paths.LANG_FILES_PATH + File.separatorChar + "verbos32.lan" );
+	public static String pathVerbos = Paths.LANG_FILES_PATH + "/verbos.lan";
+	public static String pathSinonimos = Paths.LANG_FILES_PATH + "/sinon.lan";
+	public static String pathAlias = Paths.LANG_FILES_PATH + "/alias.lan";
+	public static String pathVerbos32 = Paths.LANG_FILES_PATH + "/verbos32.lan";
 
 	private Hashtable imperativoAInfinitivo;
 	private Hashtable infinitivoAImperativo;
@@ -23,20 +23,20 @@ public class NaturalLanguage
 	private Hashtable alias;
 	private Hashtable terceraASegunda;
 
-	private Hashtable loadTableFromFile ( File f , char separator ) throws IOException , FileNotFoundException
+	private Hashtable loadTableFromPath ( String f , char separator ) throws IOException , FileNotFoundException
 	{
-		return loadTableFromFile ( f , separator , true );
+		return loadTableFromPath ( f , separator , true );
 	}
 	
-	private Hashtable loadInvertedTableFromFile ( File f , char separator ) throws IOException , FileNotFoundException
+	private Hashtable loadInvertedTableFromPath ( String f , char separator ) throws IOException , FileNotFoundException
 	{
-		return loadInvertedTableFromFile ( f , separator , true );
+		return loadInvertedTableFromPath ( f , separator , true );
 	}
 
-	private Hashtable loadTableFromFile ( File f , char separator , boolean dejarRepeticiones ) throws IOException , FileNotFoundException
+	private Hashtable loadTableFromPath ( String f , char separator , boolean dejarRepeticiones ) throws IOException , FileNotFoundException
 	{
 		//contar entradas que tendremos que meter en Hashtable
-			BufferedReader filein = new BufferedReader ( Utility.getBestInputStreamReader ( new FileInputStream( f ) ) );
+			BufferedReader filein = new BufferedReader ( Utility.getBestInputStreamReader ( this.getClass().getClassLoader().getResourceAsStream(f) ) );
 			int nlineas = 0;
 			while ( filein.readLine() != null ) nlineas++;
 		
@@ -44,7 +44,7 @@ public class NaturalLanguage
 			Hashtable tabla = new Hashtable ( (int)Math.round( nlineas * 1.5 ) );
 		
 		//ahora, meter los verbos en la tabla
-			filein = new BufferedReader ( Utility.getBestInputStreamReader ( new FileInputStream ( f ) ) );
+			filein = new BufferedReader ( Utility.getBestInputStreamReader ( this.getClass().getClassLoader().getResourceAsStream(f) ) );
 			String linea;
 			while ( ( linea = filein.readLine() ) != null )
 			{
@@ -60,10 +60,10 @@ public class NaturalLanguage
 			return tabla;
 	}
 	
-	private Hashtable loadInvertedTableFromFile ( File f , char separator , boolean dejarRepeticiones ) throws IOException , FileNotFoundException
+	private Hashtable loadInvertedTableFromPath ( String f , char separator , boolean dejarRepeticiones ) throws IOException , FileNotFoundException
 	{
 		//contar entradas que tendremos que meter en Hashtable
-			BufferedReader filein = new BufferedReader ( Utility.getBestInputStreamReader ( new FileInputStream( f ) ) );
+			BufferedReader filein = new BufferedReader ( Utility.getBestInputStreamReader ( this.getClass().getClassLoader().getResourceAsStream(f) ) );
 			int nlineas = 0;
 			while ( filein.readLine() != null ) nlineas++;
 		
@@ -71,7 +71,7 @@ public class NaturalLanguage
 			Hashtable tabla = new Hashtable ( (int)Math.round( nlineas * 1.5 ) );
 		
 		//ahora, meter los verbos en la tabla
-			filein = new BufferedReader ( Utility.getBestInputStreamReader ( new FileInputStream ( f ) ) );
+			filein = new BufferedReader ( Utility.getBestInputStreamReader ( this.getClass().getClassLoader().getResourceAsStream(f) ) );
 			String linea;
 			while ( ( linea = filein.readLine() ) != null )
 			{
@@ -92,8 +92,8 @@ public class NaturalLanguage
 		
 		try
 		{
-			imperativoAInfinitivo = loadTableFromFile ( ficheroVerbos , '=' );
-			infinitivoAImperativo = loadInvertedTableFromFile ( ficheroVerbos , '=' , false );
+			imperativoAInfinitivo = loadTableFromPath ( pathVerbos , '=' );
+			infinitivoAImperativo = loadInvertedTableFromPath ( pathVerbos , '=' , false );
 			//false: en este caso solo las primeras, i.e. a imperativo, no a 1ª pers
 		}
 		catch ( Exception exc )
@@ -103,7 +103,7 @@ public class NaturalLanguage
 		}
 		try
 		{
-			sinonimos = loadTableFromFile ( ficheroSinonimos , '=' );
+			sinonimos = loadTableFromPath ( pathSinonimos , '=' );
 		}
 		catch ( Exception exc )
 		{
@@ -112,7 +112,7 @@ public class NaturalLanguage
 		}
 		try
 		{
-			alias = loadTableFromFile ( ficheroAlias , '=' );
+			alias = loadTableFromPath ( pathAlias , '=' );
 		}
 		catch ( Exception exc )
 		{
@@ -121,7 +121,7 @@ public class NaturalLanguage
 		}
 		try
 		{
-			terceraASegunda = loadTableFromFile ( ficheroVerbos32 , ' ' );
+			terceraASegunda = loadTableFromPath ( pathVerbos32 , ' ' );
 		}
 		catch ( Exception exc )
 		{

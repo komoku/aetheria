@@ -66,6 +66,9 @@
 		<copy todir="${build}/images">
 		    <fileset dir="${src}/images"/>
 		</copy>
+		<copy todir="${build}/lang">
+		    <fileset dir="${src}/lang"/>
+		</copy>
 		<!--
 		<copy todir="${build}/help">
 		    <fileset dir="${src}/help"/>
@@ -92,9 +95,10 @@
 			</fileset>
 			<fileset dir="${conf}/scripts"/>
 		</copy>
+		<!--
 		<copy todir="${dist}/lang">
 			<fileset dir="${conf}/lang"/>
-		</copy>
+		</copy>-->
 		<!--<copy todir="${dist}/images">
 			<fileset dir="images"/>
 		</copy>-->
