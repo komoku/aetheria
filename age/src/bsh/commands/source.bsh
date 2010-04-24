@@ -7,7 +7,6 @@ bsh.help.source = "usage: source( filename | URL )";
 
 Object source( String filename ) {
 	//System.setProperty("file.encoding","ISO-8859-1");
-	//System.out.println("O\nO\nO\n");
 	
 	StringBuffer sb = new StringBuffer();
 	BufferedReader br = new BufferedReader ( 
@@ -21,7 +20,7 @@ Object source( String filename ) {
 		sb.append ( "\n" );
 	}
 
-	//return this.interpreter.source( filename, this.caller.namespace );
+	//return this.interpreter.source( filenameToSource, this.caller.namespace );
 
 	return this.interpreter.eval ( sb.toString() , 
 this.caller.namespace );
@@ -30,7 +29,7 @@ this.caller.namespace );
 
 Object source( URL url ) {
 	return this.interpreter.eval( 
-		new InputStreamReader(url.openStream()), this.caller.namespace,  
+		new InputStreamReader(url.openStream() , "UTF-8" ), this.caller.namespace,  
 		"URL: "+url.toString()
 	);
 }

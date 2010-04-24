@@ -10,6 +10,7 @@ package eu.irreality.age;
 * @author Carlos Gómez
 */
 import java.io.*;
+import java.net.URL;
 import java.util.*;
 
 import javax.xml.parsers.*;
@@ -2508,6 +2509,16 @@ public class World implements Informador , SupportingCode
 		sb.append(super.toString());
 		sb.append("]");
 		return sb.toString();
+	}
+	
+	public URL getResource ( String path )
+	{
+		return this.getClass().getClassLoader().getResource(this.getWorldPath()+path);
+	}
+	
+	public InputStream getResourceAsStream ( String path )
+	{
+		return this.getClass().getClassLoader().getResourceAsStream(this.getWorldPath()+path);
 	}
 	
 }

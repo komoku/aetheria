@@ -5,6 +5,7 @@
 package eu.irreality.age;
 import java.util.*;
 
+import eu.irreality.age.bsh.ExtendedBSHInterpreter;
 import eu.irreality.age.debug.Debug;
 import bsh.*;
 public class ObjectCode
@@ -12,7 +13,7 @@ public class ObjectCode
 
 	public static String getInterpreterVersion ( )
 	{
-		return ("EVA 0.2, Beanshell 1.2 beta 6"); 
+		return ("EVA 0.2, Beanshell 2.0 beta 2"); 
 	}
 
 	public String toString()
@@ -42,7 +43,7 @@ public class ObjectCode
 	
 	
 	boolean permanent = true;
-	Interpreter permanentInterpreter = null;
+	ExtendedBSHInterpreter permanentInterpreter = null;
 	
 	
 	/**
@@ -119,7 +120,7 @@ public class ObjectCode
 		try
 		{
 		
-			Interpreter i;
+			ExtendedBSHInterpreter i;
 		
 			if ( permanent && permanentInterpreter != null )
 			{
@@ -131,13 +132,13 @@ public class ObjectCode
 			{
 				//Debug.println("Using nonpermanent for " + aroutine + " at " + theCaller);
 				
-				i = new Interpreter();
+				i = new ExtendedBSHInterpreter();
 				
 				permanentInterpreter = i;
 				
 				try
 				{
-					i.source("stdfunct.bsh");
+					i.source(this.getClass().getClassLoader().getResource("stdfunct.bsh"));
 				}
 				catch ( java.io.FileNotFoundException fnfe )
 				{
@@ -231,7 +232,7 @@ public class ObjectCode
 		{
 		
 		
-			Interpreter i;
+			ExtendedBSHInterpreter i;
 		
 			if ( permanent && permanentInterpreter != null )
 			{
@@ -242,13 +243,13 @@ public class ObjectCode
 			
 				//System.out.println("Using a nonpermanent for " + aroutine + " at " + theCaller);
 			
-				i = new Interpreter();
+				i = new ExtendedBSHInterpreter();
 				
 				permanentInterpreter = i;
 			
 				try
 				{
-					i.source("stdfunct.bsh");
+					i.source(this.getClass().getClassLoader().getResource("stdfunct.bsh"));
 				}
 				catch ( java.io.FileNotFoundException fnfe )
 				{
@@ -362,7 +363,7 @@ public class ObjectCode
 		if ( !codeVersion.equalsIgnoreCase("BeanShell") ) return false;
 		try
 		{
-			Interpreter i;
+			ExtendedBSHInterpreter i;
 		
 			if ( permanent && permanentInterpreter != null )
 			{
@@ -373,7 +374,7 @@ public class ObjectCode
 			
 				//Debug.println("Using nonpermanent for " + aroutine + " at " + theCaller);
 			
-				i = new Interpreter();
+				i = new ExtendedBSHInterpreter();
 				
 				permanentInterpreter = i;
 				
@@ -381,7 +382,7 @@ public class ObjectCode
 				
 				try
 				{
-					i.source("stdfunct.bsh");
+					i.source(this.getClass().getClassLoader().getResource("stdfunct.bsh"));
 				}
 				catch ( java.io.FileNotFoundException fnfe )
 				{

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Properties;
 
 import eu.irreality.age.filemanagement.Paths;
@@ -15,7 +16,7 @@ public class DefaultMessages
 	
 	private Properties properties;
 
-	public static File messageFile = new File ( Paths.getWorkingDirectory() , Paths.LANG_FILES_PATH + File.separatorChar + "messages.lan" );
+	public static String messagePath = Paths.LANG_FILES_PATH + "/messages.lan";
 	
 	private DefaultMessages()
 	{	
@@ -23,8 +24,9 @@ public class DefaultMessages
 		try
 		{
 			//InputStream is = this.getClass().getClassLoader().getResourceAsStream("org/f2o/absurdum/puck/i18n/Messages.properties");
-			InputStream is = new FileInputStream ( messageFile );
-			if ( is == null ) throw new IOException("Could not read default message file " + messageFile);
+			URL u = this.getClass().getClassLoader().getResource(messagePath);
+			InputStream is = u.openStream();
+			if ( is == null ) throw new IOException("Could not read default message file " + u);
 			properties.load( is );
 		}
 		catch ( IOException ioe )
