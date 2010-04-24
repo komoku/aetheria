@@ -37,9 +37,16 @@ public class GameChoosingInternalFrame extends JInternalFrame
 	
 		super("Cargador de juegos",true,true,true,true);
 	
-		Image iconito = getToolkit().getImage("images" + File.separatorChar + "llama.gif");
-		setFrameIcon ( new ImageIcon ( iconito ) );
-	
+		try
+		{
+			Image iconito = this.getToolkit().getImage(this.getClass().getClassLoader().getResource("images/llama.gif"));
+			setFrameIcon ( new ImageIcon ( iconito ) );
+		}
+		catch ( Exception e )
+		{
+			e.printStackTrace();
+		}
+		
 		this.thePanel = thePanel;
 		theTabbedPane = new JTabbedPane();
 		setSize(600,500);

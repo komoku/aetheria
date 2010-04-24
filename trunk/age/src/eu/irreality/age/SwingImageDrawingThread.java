@@ -51,6 +51,7 @@ public class SwingImageDrawingThread extends Thread
 	
 	public synchronized void ejecutar ( )
 	{
+
 		/*//para ganar el control del monitor
 		
 		img = madre.getToolkit().createImage( imfile );
@@ -86,7 +87,10 @@ public class SwingImageDrawingThread extends Thread
 		//BEGIN SPLASH WINDOW RELATED CODE
 		
 		MediaTracker mt = new MediaTracker(madre);
-       	Image splashIm = madre.getToolkit().createImage(imfile);
+       	//Image splashIm = madre.getToolkit().createImage(imfile);
+       	Image splashIm = madre.getToolkit().getImage(this.getClass().getClassLoader().getResource(imfile));
+       	
+       	
        	mt.addImage(splashIm,0);
        	try 
 		{

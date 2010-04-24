@@ -373,8 +373,15 @@ de la ventana hasta acabar de cargar.
 	{
 		super ( title , true , true , true );
 		
-		Image iconito = getToolkit().getImage("images" + File.separatorChar +  "intficon.gif");
-		setFrameIcon ( new ImageIcon ( iconito ) );
+		try
+		{
+			Image iconito = this.getToolkit().getImage(this.getClass().getClassLoader().getResource("images/intficon.gif"));
+			setFrameIcon ( new ImageIcon ( iconito ) );
+		}
+		catch ( Exception e )
+		{
+			e.printStackTrace();
+		}
 		
 		new SwingMenuAetheria(this).addToWindow();
 		
@@ -891,8 +898,15 @@ de la ventana hasta acabar de cargar.
 		//System.err.println("Bogus Stack Trace");
 		//new Exception().printStackTrace();
 		
-		Image iconito = getToolkit().getImage("images" + File.separatorChar + "intficon.gif");
-		setFrameIcon ( new ImageIcon ( iconito ) );
+		try
+		{
+			Image iconito = this.getToolkit().getImage(this.getClass().getClassLoader().getResource("images/intficon.gif"));
+			setFrameIcon ( new ImageIcon ( iconito ) );
+		}
+		catch ( Exception e )
+		{
+			e.printStackTrace();
+		}
 		
 		new SwingMenuAetheria(this).addToWindow();
 		
