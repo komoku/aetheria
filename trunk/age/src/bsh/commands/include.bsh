@@ -4,39 +4,64 @@
 
 bsh.help.source = "usage: source( filename | URL )";
 
-Object include( String filename ) 
+/**
+	Cargar una librería.
+*/
+
+bsh.help.source = "usage: source( filename | URL )";
+
+//do not call this method directly
+Object doInclude( InputStream is , String libName ) 
 {
 
 	StringBuffer sb = new StringBuffer();
-	BufferedReader br = new BufferedReader ( new InputStreamReader ( new FileInputStream ( filename ) , "ISO-8859-1" ) );
+	BufferedReader br = new BufferedReader ( new InputStreamReader ( is , "ISO-8859-1" ) );
 	String linea;
 	while ( (linea=br.readLine()) != null )
 	{
+		//System.err.println("Line: " + linea);
 		sb.append ( linea );
 		sb.append ( "\n" );
 	}
 
-	if ( this.caller.liblist == void )
+	if ( this.caller.caller.liblist == void )
 	{
-		this.caller.liblist = new java.util.Vector();
+		this.caller.caller.liblist = new java.util.Vector();
 	}
 	
-	fname = new File(filename).getName();
+	//fname = new File(filename).getName();
 	
-	java.util.StringTokenizer st = new java.util.StringTokenizer(fname,".");
+	//java.util.StringTokenizer st = new java.util.StringTokenizer(fname,".");
 	
-	this.caller.liblist.add ( st.nextToken() );
+	//this.caller.liblist.add ( st.nextToken() );
 
-	if ( this.caller.libsloaded == void )
+	this.caller.caller.liblist.add ( libName );
+
+	if ( this.caller.caller.libsloaded == void )
 	{
-		this.caller.libsloaded = true;
-		String temp = "source(\"libinvoke.bsh\");";
-		this.interpreter.eval (	temp , this.caller.namespace );
-	}
-	
+		this.caller.caller.libsloaded = true;
+		String temp = "source(this.getClass().getClassLoader().getResource(\"libinvoke.bsh\"));";
+		//String temp = "source(\"libinvoke.bsh\");";
+		this.interpreter.eval (	temp , this.caller.caller.namespace );
+	}	
 
-
-	return this.interpreter.eval ( sb.toString() , this.caller.namespace );
+	return this.interpreter.eval ( sb.toString() , this.caller.caller.namespace );
 
 }
 
+
+Object include( String filename )
+{
+	fname = new File(filename).getName();
+	java.util.StringTokenizer st = new java.util.StringTokenizer(fname,".");
+	String lName = st.nextToken();
+	return doInclude ( new FileInputStream ( filename ) , lName );
+}
+
+Object include ( URL url )
+{
+	fname = url.getFile();
+	java.util.StringTokenizer st = new java.util.StringTokenizer(fname,".");
+	String lName = st.nextToken();
+	return doInclude ( url.openStream() , lName );
+} 

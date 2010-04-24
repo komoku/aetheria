@@ -69,6 +69,12 @@
 		<copy todir="${build}/lang">
 		    <fileset dir="${src}/lang"/>
 		</copy>
+		<copy todir="${build}">
+			<fileset dir=".">
+				<include name="stdfunct.bsh"/>
+				<include name="libinvoke.bsh"/>
+			</fileset>
+		</copy>
 		<!--
 		<copy todir="${build}/help">
 		    <fileset dir="${src}/help"/>
@@ -87,8 +93,8 @@
 			<fileset dir=".">
 				<include name="*.lan"/>
 				<include name="*.cfg"/>
-				<include name="stdfunct.bsh"/>
-				<include name="libinvoke.bsh"/>
+				<!--<include name="stdfunct.bsh"/>-->
+				<!--<include name="libinvoke.bsh"/>-->
 				<include name="*.LAN"/>
 				<include name="*.CFG"/>
 				<include name="*.opt"/>
