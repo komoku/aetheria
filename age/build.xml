@@ -63,9 +63,10 @@
 	
 	<target name="corejar" depends="compile" description="generate core jar file">
 		<echo message="Generando archivo .jar del núcleo..."/>
-		<!--<copy todir="${build}/images">
+		<copy todir="${build}/images">
 		    <fileset dir="${src}/images"/>
 		</copy>
+		<!--
 		<copy todir="${build}/help">
 		    <fileset dir="${src}/help"/>
 		</copy>
@@ -94,9 +95,9 @@
 		<copy todir="${dist}/lang">
 			<fileset dir="${conf}/lang"/>
 		</copy>
-		<copy todir="${dist}/images">
+		<!--<copy todir="${dist}/images">
 			<fileset dir="images"/>
-		</copy>
+		</copy>-->
 		<copy todir="${dist}/worlds">
 					<fileset dir="${worlds}"/>
 		</copy>

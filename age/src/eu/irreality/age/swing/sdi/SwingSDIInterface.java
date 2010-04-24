@@ -555,8 +555,16 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 	{
 		super(title);
 		
-		Image iconito = getToolkit().getImage("images" + File.separatorChar + "intficon.gif");
-		this.setIconImage ( iconito );
+		//Image iconito = getToolkit().getImage("images" + File.separatorChar + "intficon.gif");
+		try
+		{
+			Image iconito = this.getToolkit().getImage(this.getClass().getClassLoader().getResource("images/intficon.gif"));
+			this.setIconImage ( iconito );
+		}
+		catch ( Exception e )
+		{
+			e.printStackTrace();
+		}
 		
 		new SwingMenuAetheria(this).addToWindow();
 

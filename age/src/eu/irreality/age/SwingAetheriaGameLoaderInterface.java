@@ -6,6 +6,8 @@ package eu.irreality.age;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.*;
 import javax.swing.event.*;
@@ -471,8 +473,16 @@ class SwingAetheriaGUI extends JFrame
 		super("Aetheria Game Engine, Beta v0.7");
 		instance = this;
 		this.setDefaultCloseOperation ( JFrame.EXIT_ON_CLOSE );
-		Image iconito = this.getToolkit().getImage("images" + File.separatorChar + "intficon.gif");
-		this.setIconImage ( iconito );
+
+		try
+		{
+			Image iconito = this.getToolkit().getImage(this.getClass().getClassLoader().getResource("images/intficon.gif"));
+			this.setIconImage ( iconito );
+		}
+		catch ( Exception e )
+		{
+			e.printStackTrace();
+		}
 
 
 		Dimension tamanoVentana = this.getToolkit().getScreenSize();
@@ -486,7 +496,7 @@ class SwingAetheriaGUI extends JFrame
 		gd.setFullScreenWindow(mdi);
 		 */
 
-		SwingImageDrawingThread imthread = new SwingImageDrawingThread("images" + File.separatorChar + "agelogo.jpg" , 4000 , this );
+		SwingImageDrawingThread imthread = new SwingImageDrawingThread("images/agelogo.jpg" , 1000 , this );
 		//imthread.setPriority(Thread.MAX_PRIORITY);
 		imthread.start();
 
@@ -532,7 +542,8 @@ class SwingAetheriaGUI extends JFrame
 		ServerConfigurationWindow.setMadre(this);
 
 
-		Image logo = this.getToolkit().createImage("agelogo.jpg");
+		Image logo = this.getToolkit().createImage(this.getClass().getClassLoader().getResource("images/agelogo.jpg"));
+		
 		panel = new JDesktopPane( );
 		panel.setBackground(Color.black);
 
