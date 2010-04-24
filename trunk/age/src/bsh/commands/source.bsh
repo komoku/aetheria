@@ -6,24 +6,44 @@
 bsh.help.source = "usage: source( filename | URL )";
 
 Object source( String filename ) {
-	//System.setProperty("file.encoding","ISO-8859-1");
-	
-	StringBuffer sb = new StringBuffer();
-	BufferedReader br = new BufferedReader ( 
-	//	new InputStreamReader ( new FileInputStream ( filename ) , "ISO-8859-1" ) 
-		new InputStreamReader ( new FileInputStream ( filename ) , "UTF-8" ) 
-	);
-	String linea;
-	while ( (linea=br.readLine()) != null )
+
+	try
 	{
-		sb.append ( linea );
-		sb.append ( "\n" );
+
+		//System.setProperty("file.encoding","ISO-8859-1");
+		
+		StringBuffer sb = new StringBuffer();
+		BufferedReader br = new BufferedReader ( 
+		//	new InputStreamReader ( new FileInputStream ( filename ) , "ISO-8859-1" ) 
+			new InputStreamReader ( new FileInputStream ( filename ) , "UTF-8" ) 
+		);
+		String linea;
+		while ( (linea=br.readLine()) != null )
+		{
+			sb.append ( linea );
+			sb.append ( "\n" );
+		}
+	
+		//return this.interpreter.source( filenameToSource, this.caller.namespace );
+	
+		return this.interpreter.eval ( sb.toString() , this.caller.namespace );
+		
 	}
-
-	//return this.interpreter.source( filenameToSource, this.caller.namespace );
-
-	return this.interpreter.eval ( sb.toString() , 
-this.caller.namespace );
+	catch ( FileNotFoundException fnfe )
+	{
+		try
+		{
+			URL url = this.getClass().getClassLoader().getResource(filename);
+			return this.interpreter.eval( 
+				new InputStreamReader(url.openStream() , "UTF-8" ), this.caller.namespace,  
+				"URL: "+url.toString()
+			);
+		}
+		catch ( Exception e )
+		{
+			throw fnfe;
+		}
+	}
 
 }
 
