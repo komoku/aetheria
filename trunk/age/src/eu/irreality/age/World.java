@@ -10,7 +10,9 @@ package eu.irreality.age;
 * @author Carlos Gómez
 */
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.*;
 
 import javax.xml.parsers.*;
@@ -858,76 +860,19 @@ public class World implements Informador , SupportingCode
 	
 	}
 	
-	
-	
 	/**
-	* Toma la información sobre el mundo del fichero de módulo.
-	*
-	* @param modulefile El fichero del que toma la información para crear el mundo.
-	*/	
-	public World ( String modulefile , InputOutputClient io , boolean noSerCliente ) throws FileNotFoundException,IOException
+	 * @deprecated This used DAT files. Use XML files instead.
+	 * @param modulefile
+	 * @param io
+	 * @param noSerCliente
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	void legacyWorldLoad ( String modulefile , InputOutputClient io , boolean noSerCliente ) throws FileNotFoundException , IOException
 	{
-	
-		//XML
+		//DAT support (ancient!) follows:
 		
-		if ( true ) //.dat compatibility discontinued. Substitute this line by the following to re-enable it.
-		//if ( modulefile.toLowerCase().endsWith(".xml") )
-		{
-			
-			//XML world init	
-			worlddir = new File(new File(modulefile).getParent()).getPath() + File.separatorChar;
-			
-			io.write( io.getColorCode("information") + "Leyendo datos XML...\n" + io.getColorCode("reset") );
-			
-			BufferedReader br;
 		
-			org.w3c.dom.Document d = null;
-		
-			try
-			{
-				//br = new BufferedReader ( new InputStreamReader ( new FileInputStream ( new File ( modulefile ) ) , "ISO-8859-1" ) );			
-				//InputSource is = new InputSource(br);
-				//InputSource is = new InputSource( new FileInputStream( new File ( modulefile ) ) );
-				DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-				io.write(io.getColorCode("information") + "Obteniendo árbol DOM de los datos XML...\n" + io.getColorCode("reset") );
-				d = db.parse( new FileInputStream ( new File ( modulefile ) ) );
-			}
-			catch ( FileNotFoundException fnfe )
-			{
-				throw ( fnfe );
-			}
-			catch ( ParserConfigurationException pce )
-			{
-				pce.printStackTrace();
-			}
-			catch ( SAXException se ) //parse()
-			{
-				se.printStackTrace();
-			}
-			catch ( IOException ioe ) //parse()
-			{
-				throw (ioe);
-			}
-	
-			org.w3c.dom.Element n = d.getDocumentElement();
-			
-			try
-			{
-				loadWorldFromXML ( n , io , noSerCliente );
-			}
-			catch ( XMLtoWorldException x2we )
-			{
-				write("Excepción al leer el mundo de XML: " + x2we.getMessage() );
-				//throw ( new IOException ( "Excepción al leer mundo de XML: " + x2we.getMessage() ) );
-			}
-			
-			return;
-			
-		}
-	
-	
-	
-	
 		this.io = io;
 		//si readLine lee null, se acabó el fichero.
 		FileInputStream fp = new FileInputStream(modulefile);
@@ -1367,10 +1312,116 @@ public class World implements Informador , SupportingCode
 			write("\n" + io.getColorCode("information") + "[Versión engine]   " + parserVersion + io.getColorCode("reset"));
 		write("\n=============================================================\n");
 		
-		
-		
 	}
 	
+	/**
+	 * Toma la información del mundo del stream dado. 
+	 * @param is Stream de donde se leen los datos XML del mundo, que puede ser un stream obtenido de un fichero local de mundo, de una URL, etc.
+	 * @param io
+	 * @param noSerCliente
+	 * @throws ParserConfigurationException 
+	 * @throws IOException 
+	 * @throws SAXException 
+	 * @throws XMLtoWorldException 
+	 */
+	public void loadWorldFromStream ( InputStream is , InputOutputClient io , boolean noSerCliente ) throws ParserConfigurationException, SAXException, IOException, XMLtoWorldException
+	{
+		org.w3c.dom.Document d = null;
+		DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		io.write(io.getColorCode("information") + "Obteniendo árbol DOM de los datos XML...\n" + io.getColorCode("reset") );
+		d = db.parse( is );
+		org.w3c.dom.Element n = d.getDocumentElement();
+		loadWorldFromXML ( n , io , noSerCliente );
+	}
+	
+	public World ( URL url , InputOutputClient io , boolean noSerCliente ) throws IOException
+	{
+		InputStream is = null;
+		if ( url.toString().toLowerCase().endsWith(".xml") )
+		{
+			worlddir = url.toString().substring(0,url.toString().lastIndexOf("/"));
+			is = url.openStream();
+		}
+		else
+		{
+			//we assume jar file url
+			URLClassLoader ucl = new URLClassLoader ( new URL[] { url } , this.getClass().getClassLoader() );
+			is = ucl.getResourceAsStream("world.xml");
+			if ( is == null ) throw new IOException("Resource world.xml could not be found in URL " + url);
+			this.setResourceJarFile(url);
+		}
+		try
+		{
+			loadWorldFromStream ( is , io , noSerCliente );
+		}
+		catch ( ParserConfigurationException pce )
+		{
+			pce.printStackTrace();
+			throw new IOException(pce);
+		}
+		catch ( SAXException se ) //parse()
+		{
+			se.printStackTrace();
+			throw new IOException(se);
+		}
+		catch ( IOException ioe ) //parse()
+		{
+			throw (ioe);
+		}
+		catch ( XMLtoWorldException x2we )
+		{
+			write("Excepción al leer el mundo de XML: " + x2we.getMessage() );
+			//throw ( new IOException ( "Excepción al leer mundo de XML: " + x2we.getMessage() ) );
+		}
+	}
+	
+	/**
+	 * Toma la información sobre el mundo del fichero de módulo.
+	 *
+	 * @param modulefile El fichero del que toma la información para crear el mundo.
+	 */	
+	public World ( String modulefile , InputOutputClient io , boolean noSerCliente ) throws FileNotFoundException,IOException
+	{
+
+		//XML world init	
+		worlddir = new File(new File(modulefile).getParent()).getPath() + File.separatorChar;
+
+		io.write( io.getColorCode("information") + "Leyendo datos XML...\n" + io.getColorCode("reset") );
+
+		try
+		{
+			//br = new BufferedReader ( new InputStreamReader ( new FileInputStream ( new File ( modulefile ) ) , "ISO-8859-1" ) );			
+			//InputSource is = new InputSource(br);
+			//InputSource is = new InputSource( new FileInputStream( new File ( modulefile ) ) );
+			InputStream is = new FileInputStream ( new File ( modulefile ) );
+			loadWorldFromStream ( is , io , noSerCliente );
+		}
+		catch ( FileNotFoundException fnfe )
+		{
+			throw ( fnfe );
+		}
+		catch ( ParserConfigurationException pce )
+		{
+			pce.printStackTrace();
+			throw new IOException(pce);
+		}
+		catch ( SAXException se ) //parse()
+		{
+			se.printStackTrace();
+			throw new IOException(se);
+		}
+		catch ( IOException ioe ) //parse()
+		{
+			throw (ioe);
+		}
+		catch ( XMLtoWorldException x2we )
+		{
+			write("Excepción al leer el mundo de XML: " + x2we.getMessage() );
+			//throw ( new IOException ( "Excepción al leer mundo de XML: " + x2we.getMessage() ) );
+		}
+
+	}
+
 	/* Nay. Multiplayer!
 	public void setPlayer ( Player p )
 	{
@@ -2511,14 +2562,44 @@ public class World implements Informador , SupportingCode
 		return sb.toString();
 	}
 	
+	//**class loader used by getResource and getResourceAsStream methods*/
+	private ClassLoader resourceLoader;
+	
+	/**
+	 * Sets the jar file inside which world resources (multimedia files, etc.) can reside.
+	 * @param jarFileURL
+	 */
+	private void setResourceJarFile ( URL jarFileURL )
+	{
+		URLClassLoader ucl = new URLClassLoader ( new URL[] {jarFileURL} , this.getClass().getClassLoader() );
+		resourceLoader = ucl;
+	}
+	
+	private ClassLoader getDefaultResourceLoader()
+	{
+		try 
+		{
+			return new URLClassLoader ( new URL[] { new File ( this.getWorldPath() ).toURI().toURL() } , this.getClass().getClassLoader() );
+		} 
+		catch (MalformedURLException e) 
+		{
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	public URL getResource ( String path )
 	{
-		return this.getClass().getClassLoader().getResource(this.getWorldPath()+path);
+		if ( resourceLoader == null ) resourceLoader = getDefaultResourceLoader();
+		//return resourceLoader.getResource(this.getWorldPath()+path);
+		return resourceLoader.getResource(path);
 	}
 	
 	public InputStream getResourceAsStream ( String path )
 	{
-		return this.getClass().getClassLoader().getResourceAsStream(this.getWorldPath()+path);
+		if ( resourceLoader == null ) resourceLoader = getDefaultResourceLoader();
+		//return resourceLoader.getResourceAsStream(this.getWorldPath()+path);
+		return resourceLoader.getResourceAsStream(path);
 	}
 	
 }

@@ -12,6 +12,7 @@ import javax.swing.event.*;
 
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.filemanagement.WorldLoader;
 import eu.irreality.age.windowing.AGEClientWindow;
 import eu.irreality.age.windowing.UpdatingRun;
 
@@ -24,10 +25,6 @@ import java.io.*; //savegame
 
 public class SwingAetheriaGameLoader extends JInternalFrame implements Informador, AGEClientWindow
 {
-	/**
-	* El directorio del juego.
-	*/
-	protected static final String maindir = "";
 	/**
 	* El contador de tiempo.
 	*/
@@ -521,6 +518,7 @@ de la ventana hasta acabar de cargar.
 						//*nos han dado un directorio y el mundo es directorio/world.xml
 						//*nos han dado un directorio y el mundo es directorio/world.dat
 						
+						/*
 						File inputAsFile = new File(moduledir);
 						if ( inputAsFile.isFile() )
 						{
@@ -531,7 +529,7 @@ de la ventana hasta acabar de cargar.
 							System.out.println("Attempting world location: " +  inputAsFile );
 							try
 							{
-								theWorld = new World ( maindir + moduledir , io , noSerCliente );
+								theWorld = new World ( moduledir , io , noSerCliente );
 								mundo = theWorld;
 								System.out.println("World generated.\n");
 								synchronized ( mundoSemaphore )
@@ -557,15 +555,15 @@ de la ventana hasta acabar de cargar.
 							//new World tanto si es xml como dat
 							try
 							{
-								System.out.println("Attempting world location: " +  maindir + moduledir + "/world.xml" );
-								theWorld = new World ( maindir + moduledir + "/world.xml" , io , noSerCliente );
+								System.out.println("Attempting world location: " + moduledir + "/world.xml" );
+								theWorld = new World ( moduledir + "/world.xml" , io , noSerCliente );
 								mundo = theWorld;
 								System.out.println("World generated.\n");
 								synchronized ( mundoSemaphore )
 								{
 									mundoSemaphore.notifyAll();
 								}
-								gameLog.addElement(maindir + moduledir + "/world.xml"); //primera línea del log, fichero de mundo
+								gameLog.addElement(moduledir + "/world.xml"); //primera línea del log, fichero de mundo
 							}
 							catch ( java.io.IOException e )
 							{
@@ -575,14 +573,14 @@ de la ventana hasta acabar de cargar.
 								//buscar a ver si el mundo es un world.dat
 								try 
 								{ 
-									System.out.println("Attempting world location: " +  maindir + moduledir + "/world.dat" );
-									theWorld = new World ( maindir + moduledir + "/world.dat" , io , noSerCliente );
+									System.out.println("Attempting world location: " + moduledir + "/world.dat" );
+									theWorld = new World ( moduledir + "/world.dat" , io , noSerCliente );
 								 	mundo = theWorld;
 									synchronized ( mundoSemaphore )
 									{
 										mundoSemaphore.notifyAll();
 									}
-									gameLog.addElement(maindir + moduledir + "/world.dat"); //primera línea del log, fichero de mundo
+									gameLog.addElement(moduledir + "/world.dat"); //primera línea del log, fichero de mundo
 								 }
 								catch ( java.io.FileNotFoundException loadworldfileioerror )
 								{ 
@@ -597,6 +595,11 @@ de la ventana hasta acabar de cargar.
 							}
 						
 						}
+						*/
+						
+						theWorld = WorldLoader.loadWorld( moduledir , gameLog, io, mundoSemaphore);
+						if ( theWorld == null ) return;
+						mundo = theWorld;
 						
 						//{theWorld NOT null}
 									
@@ -955,8 +958,7 @@ de la ventana hasta acabar de cargar.
 		
 		loaderThread.start();
 		
-		
-	  
+
 		
 	}
 	
