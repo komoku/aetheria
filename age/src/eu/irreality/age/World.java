@@ -664,6 +664,7 @@ public class World implements Informador , SupportingCode
 		absent = new AbstractEntity[absentNode.length];
 		for ( int i = 0 ; i < absentNode.length ; i++ )	
 		{
+			//write(io.getColorCode("information")+"."+io.getColorCode("reset"));
 			absent[i] = AbstractEntity.getInstance ( this , absentNode[i] );
 			if ( absent[i].getID() % 10000000 ==  0 )
 			{
@@ -676,6 +677,7 @@ public class World implements Informador , SupportingCode
 		spell = new Spell[spellNode.length];
 		for ( int i = 0 ; i < spellNode.length ; i++ )	
 		{
+			//write(io.getColorCode("information")+"."+io.getColorCode("reset"));
 			spell[i] = Spell.getInstance ( this , spellNode[i] );
 			if ( spell[i].getID() % 10000000 == 0 )
 			{
@@ -688,6 +690,7 @@ public class World implements Informador , SupportingCode
 		item = new Item[itemNode.length];
 		for ( int i = 0 ; i < itemNode.length ; i++ )	
 		{
+			//write(io.getColorCode("information")+"."+io.getColorCode("reset"));
 			item[i] = Item.getInstance ( this , itemNode[i] );
 			if ( item[i].getID() % 10000000 == 0 )
 			{
@@ -1339,7 +1342,7 @@ public class World implements Informador , SupportingCode
 		InputStream is = null;
 		if ( url.toString().toLowerCase().endsWith(".xml") )
 		{
-			worlddir = url.toString().substring(0,url.toString().lastIndexOf("/"));
+			worlddir = url.toString().substring(0,url.toString().lastIndexOf("/")+1);
 			is = url.openStream();
 		}
 		else

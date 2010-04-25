@@ -392,7 +392,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 		public void exitNow()
 		{
 			stopGameSaveAndUnlink();
-			this.destroy();
+			//this.destroy();
 			
 			//if ( !standalone )
 			//	System.exit(0);
