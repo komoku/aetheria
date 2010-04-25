@@ -60,11 +60,20 @@ Object include( String filename )
 	{
 		return doInclude ( new FileInputStream ( filename ) , lName );
 	}
-	catch ( FileNotFoundException fnfe )
+	catch ( Exception fnfe ) //FileNotFoundException (file doesn't exist) or SecurityException (permission denied in applet, etc.)
 	{
 		try
 		{
-			URL url = this.getClass().getClassLoader().getResource(filename);
+			String resLocation;
+			if ( !filename.startsWith("/") )
+				resLocation = "/" + filename;
+			else
+				resLocation = filename;
+			//URL url = self.getClass().getResource(resLocation);
+			//not allowed in applet: 
+			//URL url = self.getClass().getClassLoader().getResource(filename);
+			URL url = world.getResource(filename);
+			if ( url == null ) throw new IOException("Nothing found by getResource at " + filename);
 			String urlString = url.toString();
 			lName = urlString.substring(urlString.lastIndexOf('/')+1, urlString.lastIndexOf('.'));
 			InputStream stream = url.openStream();
@@ -73,6 +82,7 @@ Object include( String filename )
 		catch ( Exception e )
 		{
 			System.err.println("Couldn't find library");
+			e.printStackTrace();
 			throw fnfe;
 		}
 	}
