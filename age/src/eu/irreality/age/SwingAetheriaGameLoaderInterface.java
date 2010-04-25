@@ -107,6 +107,10 @@ public class SwingAetheriaGameLoaderInterface
 		{
 			;
 		}
+		catch ( SecurityException se ) //applet mode
+		{
+			;
+		}
 		Font[] fuentes = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
 		Font fuenteElegida;
 		for ( int f = 0 ; f < fuentes.length ; f++ )
@@ -237,8 +241,13 @@ public class SwingAetheriaGameLoaderInterface
 			Option sdi = new Option( "sdi", "use single-document interface" );
 			Option worldFile = OptionBuilder.withArgName( "file" )
             .hasArg()
-            .withDescription(  "The world file to play" )
-            .create( "worldfile" );	
+            .withDescription(  "The world file or URL to play" )
+            .create( "worldfile" );
+			/*
+			Option worldUrl = OptionBuilder.withArgName( "url" )
+            .hasArg()
+            .withDescription(  "The world URL to play" )
+            .create( "worldurl" );	*/
 			Option logFile   = OptionBuilder.withArgName( "file" )
             .hasArg()
             .withDescription(  "Log file to load the game from (requires a world file)" )
@@ -252,6 +261,7 @@ public class SwingAetheriaGameLoaderInterface
 
 			options.addOption( sdi );
 			options.addOption( worldFile );
+			//options.addOption( worldUrl );
 			options.addOption( logFile );
 			options.addOption( stateFile );
 			
@@ -262,13 +272,15 @@ public class SwingAetheriaGameLoaderInterface
 		        CommandLine line = parser.parse( options, args );
 		        
 		        String desiredWorldFile = null;
+		        //String desiredWorldUrl = null;
 		        String desiredLogFile = null;
 		        String desiredStateFile = null;
 		        
 		        if ( line.hasOption("statefile") ) desiredStateFile = line.getOptionValue("statefile");
 		        if ( line.hasOption("logfile") ) desiredLogFile = line.getOptionValue("logfile");
 		        if ( line.hasOption("worldfile") ) desiredWorldFile = line.getOptionValue("worldfile");
-		        if ( desiredWorldFile == null && line.getArgs().length > 0 ) desiredWorldFile = line.getArgs()[0];
+		        //if ( line.hasOption("worldurl") ) desiredWorldFile = line.getOptionValue("worldurl");
+		        if ( desiredWorldFile == null /*&& desiredWorldUrl == null*/ && line.getArgs().length > 0 ) desiredWorldFile = line.getArgs()[0];
 		        boolean desiredSdi = line.hasOption("sdi");  //Boolean.valueOf( line.getOptionValue("sdi") ).booleanValue();	    
 		        
 		        if ( SwingAetheriaGUI.getInstance() != null && !desiredSdi )

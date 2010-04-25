@@ -41,6 +41,7 @@ import eu.irreality.age.SwingMenuAetheria;
 import eu.irreality.age.World;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.filemanagement.WorldLoader;
 import eu.irreality.age.windowing.AGEClientWindow;
 import eu.irreality.age.windowing.UpdatingRun;
 
@@ -184,6 +185,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 			//*nos han dado un directorio y el mundo es directorio/world.xml
 			//*nos han dado un directorio y el mundo es directorio/world.dat
 
+			/*
 			File inputAsFile = new File(moduledir);
 			if ( inputAsFile.isFile() )
 			{
@@ -244,7 +246,11 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 			{
 				write("No encontrado el fichero del mundo. Tal vez el directorio seleccionado no sea un directorio de mundo AGE válido.\n"); 
 				return; 
-			}
+			}*/
+			
+			theWorld = WorldLoader.loadWorld( moduledir , gameLog, io, mundoSemaphore);
+			if ( theWorld == null ) return;
+			mundo = theWorld;
 
 			//{theWorld NOT null}
 

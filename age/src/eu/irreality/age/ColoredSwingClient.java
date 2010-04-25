@@ -9,7 +9,10 @@ package eu.irreality.age;
 import javax.swing.*;
 
 import java.util.*;
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.*;
 import java.awt.*;
 import javax.swing.text.*;
@@ -796,18 +799,21 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	
 	}
 	
-	public void insertIcon ( String fileName )
+	public void insertIcon ( ImageIcon icon )
 	{
 	
 		elAreaTexto.setSelectionStart(elAreaTexto.getText().length());
 		elAreaTexto.setSelectionEnd(elAreaTexto.getText().length());
 					
 		System.out.println("Icon Insert.\n");
-		elAreaTexto.insertIcon ( new ImageIcon ( fileName ) ); //I think java auto-preloads.
+		elAreaTexto.insertIcon ( icon ); //I think java auto-preloads.
 	
 	}
 	
-	public void insertCenteredIcon ( String fileName )
+	public void insertIcon ( URL location ) { insertIcon ( new ImageIcon(location) ); }
+	public void insertIcon ( String filename ) { insertIcon ( new ImageIcon(filename) ); }
+	
+	public void insertCenteredIcon ( ImageIcon icon )
 	{
 		
 		elAreaTexto.setSelectionStart(elAreaTexto.getText().length());
@@ -817,10 +823,13 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		jp.setBackground ( elAreaTexto.getBackground() );
 		FlowLayout fl = new FlowLayout();
 		fl.setAlignment( FlowLayout.CENTER );
-		jp.add ( new JLabel ( new ImageIcon ( fileName ) ) );
+		jp.add ( new JLabel ( icon ) );
 		elAreaTexto.insertComponent(jp);
 	
 	}
+	
+	public void insertCenteredIcon ( URL location ) { insertCenteredIcon ( new ImageIcon ( location ) ); }
+	public void insertCenteredIcon ( String fileName ) { insertCenteredIcon ( new ImageIcon ( fileName ) ); }
 	
 	public boolean isGraphicsEnabled()
 	{
@@ -1144,17 +1153,30 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	{
 		showImageInFrame ( fileName , position , ImagePanel.NO_SCALING );
 	}
+	public void showImageInFrame ( URL location , int position )
+	{
+		showImageInFrame ( location , position , ImagePanel.NO_SCALING );
+	}
 	
-	public void showImageInFrame ( String fileName , int position , int scalingMode )
+	public void showImageInFrame ( ImageIcon icon , int position , int scalingMode )
 	{
 		ImagePanel theFrame = getFrame ( position );
 		if ( theFrame == null ) addFrame ( position , 200 );
 		theFrame = getFrame ( position ); //{not null}
-		theFrame.setImage(new ImageIcon(fileName));
+		theFrame.setImage(icon);
 		theFrame.setScalingMode(scalingMode);
 		theFrame.repaint();
 	}
-
+	
+	public void showImageInFrame ( String filename , int position , int scalingMode )
+	{
+		showImageInFrame ( new ImageIcon(filename) , position , scalingMode );
+	}
+	public void showImageInFrame ( URL location , int position , int scalingMode )
+	{
+		showImageInFrame ( new ImageIcon(location) , position , scalingMode );
+	}
+	
 	public void showImageInBackground ( String fileName )
 	{
 		if ( fileName == null ) 
@@ -1163,32 +1185,67 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 			elAreaTexto.setBackgroundImage(new ImageIcon(fileName).getImage());
 	}
 	
-	public void useImage ( String fileName , int mode , int location , int scaling )
+	public void showImageInBackground ( URL location )
+	{
+		if ( location == null ) 
+			elAreaTexto.setBackgroundImage(null);
+		else
+			elAreaTexto.setBackgroundImage(new ImageIcon(location).getImage());
+	}
+	
+	
+	
+	public void useImage ( URL url , int mode , int location , int scaling )
 	{
 		if ( mode == ImageConstants.INLINE )
 		{
 			if ( location == ImageConstants.LEFT )
-				insertIcon(fileName);
+				insertIcon(url);
 			else 
-				insertCenteredIcon(fileName);
+				insertCenteredIcon(url);
 		}
 		else if ( mode == ImageConstants.BACKGROUND )
-			showImageInBackground(fileName);
+			showImageInBackground(url);
 		else if ( mode == ImageConstants.FRAME )
-			showImageInFrame(fileName,location,scaling);
+			showImageInFrame(url,location,scaling);
+	}
+	public void useImage ( String fileName , int mode , int location , int scaling )
+	{
+		useImage ( fileToURL(fileName) , mode , location , scaling );
 	}
 	
 	public void useImage ( String fileName , int mode , int location ) 
 	{ 
 		useImage(fileName,mode,location,ImageConstants.NO_SCALING);
 	}
+	public void useImage ( URL url , int mode , int location ) 
+	{ 
+		useImage(url,mode,location,ImageConstants.NO_SCALING);
+	}
 	
 	public void useImage ( String fileName , int mode )
 	{
+		useImage(fileToURL(fileName),mode);
+	}
+	public void useImage ( URL url , int mode )
+	{
 		if ( mode == ImageConstants.FRAME )
-			useImage(fileName,mode,ImageConstants.TOP);
+			useImage(url,mode,ImageConstants.TOP);
 		else
-			useImage(fileName,mode,ImageConstants.CENTER);
+			useImage(url,mode,ImageConstants.CENTER);
+	}
+	
+	public static URL fileToURL ( String filename )
+	{
+		try 
+		{
+			return new File(filename).toURI().toURL();
+		} 
+		catch (MalformedURLException e) 
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public void setPrompts ( final String left , final String right )
