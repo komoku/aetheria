@@ -115,6 +115,7 @@ public class WorldLoader
 				//perhaps a resource in one of our jars?
 				System.err.println("Checking if it's a resource!");
 				url = WorldLoader.class.getClassLoader().getResource(moduledir);
+				System.err.println("URL: " + url);
 				if ( url == null ) throw mue;
 			}
 				//process url
