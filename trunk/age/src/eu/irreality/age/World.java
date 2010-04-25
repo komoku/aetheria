@@ -14,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
+import java.util.jar.JarFile;
 
 import javax.xml.parsers.*;
 //import javax.xml.transform.*;
@@ -1348,6 +1349,8 @@ public class World implements Informador , SupportingCode
 		else
 		{
 			//we assume jar file url
+			//worlddir = "jar:"+url+"!/";
+			worlddir = ""; //getResource will work //TODO doesn't work
 			URLClassLoader ucl = new URLClassLoader ( new URL[] { url } , this.getClass().getClassLoader() );
 			is = ucl.getResourceAsStream("world.xml");
 			if ( is == null ) throw new IOException("Resource world.xml could not be found in URL " + url);

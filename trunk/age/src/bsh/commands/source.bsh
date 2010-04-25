@@ -29,11 +29,23 @@ Object source( String filename ) {
 		return this.interpreter.eval ( sb.toString() , this.caller.namespace );
 		
 	}
-	catch ( FileNotFoundException fnfe )
+	catch ( Exception fnfe ) //FileNotFoundException (file doesn't exist) or SecurityException (in applet, etc.)
 	{
 		try
 		{
-			URL url = this.getClass().getClassLoader().getResource(filename);
+			String resLocation;
+			if ( !filename.startsWith("/") )
+				resLocation = "/" + filename;
+			else
+				resLocation = filename;
+			//URL url = self.getClass().getResource(resLocation);
+			//not allowed in applets: 
+			URL url;
+			if ( world != void ) //world is defined
+				url = world.getResource(filename);
+			else	
+			 	url = this.getClass().getClassLoader().getResource(filename);
+			if ( url == null ) throw new IOException("Nothing found by getResource at " + filename);
 			return this.interpreter.eval( 
 				new InputStreamReader(url.openStream() , "UTF-8" ), this.caller.namespace,  
 				"URL: "+url.toString()
