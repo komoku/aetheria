@@ -1,5 +1,42 @@
-import eu.irreality.age.*;
-import eu.irreality.age.debug.*;
+//causes applet slowness:
+//import eu.irreality.age.*;
+//import eu.irreality.age.debug.*;
+//instead:
+import eu.irreality.age.World;
+import eu.irreality.age.Entity;
+import eu.irreality.age.AbstractEntity;
+import eu.irreality.age.Item;
+import eu.irreality.age.Mobile;
+import eu.irreality.age.Room;
+import eu.irreality.age.Spell;
+import eu.irreality.age.Inventory;
+import eu.irreality.age.InputOutputClient;
+import eu.irreality.age.MultimediaInputOutputClient;
+import eu.irreality.age.ColoredSwingClient;
+import eu.irreality.age.Description;
+import eu.irreality.age.Descriptible;
+import eu.irreality.age.EntityList;
+import eu.irreality.age.MobileList;
+import eu.irreality.age.EffectList;
+import eu.irreality.age.GameEngineThread;
+import eu.irreality.age.ImageConstants;
+import eu.irreality.age.Nameable;
+import eu.irreality.age.NaturalLanguage;
+import eu.irreality.age.ParserMethods;
+import eu.irreality.age.PropertyEntry;
+import eu.irreality.age.SentenceInfo;
+import eu.irreality.age.SoundClient;
+import eu.irreality.age.SpellList;
+import eu.irreality.age.StringMethods;
+import eu.irreality.age.Traits;
+import eu.irreality.age.Utility;
+import eu.irreality.age.Weapon;
+import eu.irreality.age.Wearable;
+import eu.irreality.age.VisualConfiguration;
+import eu.irreality.age.Player;
+import eu.irreality.age.BSHCodeExecutedOKException;
+import eu.irreality.age.Path;
+import eu.irreality.age.debug.Debug;
 
 //Standard function library
 
