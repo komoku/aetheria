@@ -34,6 +34,8 @@ public class World implements Informador , SupportingCode
 	private String modulename;
 	/**Directorio del mundo.*/
 	private String worlddir;
+	/**To locate resources.*/
+	private URL worldurl;
 	/**Máximo número de habitaciones del mundo.*/
 	private int maxroom;
 	/**Máximo número de objetos del mundo.*/
@@ -980,8 +982,6 @@ public class World implements Informador , SupportingCode
 		//if ( zipFile.equalsIgnoreCase("") )
 		//{
 		
-			worlddir = new File(new File(modulefile).getParent()).getPath() + File.separatorChar;
-		
 		
 			write(io.getColorCode("information") + "\nCreando tabla de nombres...\n" + io.getColorCode("reset") );
 			
@@ -1343,14 +1343,27 @@ public class World implements Informador , SupportingCode
 		InputStream is = null;
 		if ( url.toString().toLowerCase().endsWith(".xml") )
 		{
-			worlddir = url.toString().substring(0,url.toString().lastIndexOf("/")+1);
+			if ( !url.toString().startsWith("jar:") && !url.toString().startsWith("zip:") )
+			{
+				worlddir = url.toString().substring(0,url.toString().lastIndexOf("/")+1);
+				worldurl = new URL(worlddir);
+			}
+			else
+			{
+				//worlddir = url.toString().substring(url.toString().indexOf("!")+1);
+				//worlddir = worlddir.toString().substring(0,worlddir.toString().lastIndexOf("/")+1);
+				worlddir = url.toString().substring(0,url.toString().lastIndexOf("/")+1);
+				worldurl = new URL(worlddir);
+			}
 			is = url.openStream();
 		}
 		else
 		{
 			//we assume jar file url
 			//worlddir = "jar:"+url+"!/";
-			worlddir = ""; //getResource will work //TODO doesn't work
+			//worlddir = ""; //getResource will work //TODO doesn't work
+			worlddir = "jar:"+url.toString()+"!/";
+			worldurl = new URL(worlddir);
 			URLClassLoader ucl = new URLClassLoader ( new URL[] { url } , this.getClass().getClassLoader() );
 			is = ucl.getResourceAsStream("world.xml");
 			if ( is == null ) throw new IOException("Resource world.xml could not be found in URL " + url);
@@ -1391,7 +1404,15 @@ public class World implements Informador , SupportingCode
 
 		//XML world init	
 		worlddir = new File(new File(modulefile).getParent()).getPath() + File.separatorChar;
-
+		worldurl = new File(modulefile).getParentFile().toURI().toURL();
+		
+		/*
+		System.err.println("Mod " + new File(modulefile));
+		System.err.println("Par " + new File(modulefile).getParentFile());
+		System.err.println("Uri " + new File(modulefile).getParentFile().toURI());
+		System.err.println("Url " + new File(modulefile).getParentFile().toURI().toURL());
+		*/
+		
 		io.write( io.getColorCode("information") + "Leyendo datos XML...\n" + io.getColorCode("reset") );
 
 		try
@@ -2596,16 +2617,40 @@ public class World implements Informador , SupportingCode
 	
 	public URL getResource ( String path )
 	{
+		try 
+		{
+			return new URL ( worldurl , path );
+		} 
+		catch (MalformedURLException e) 
+		{
+			return null;
+		}
+		/*
 		if ( resourceLoader == null ) resourceLoader = getDefaultResourceLoader();
 		//return resourceLoader.getResource(this.getWorldPath()+path);
 		return resourceLoader.getResource(path);
+		*/
 	}
 	
 	public InputStream getResourceAsStream ( String path )
 	{
+		try 
+		{
+			return new URL ( worldurl , path ).openStream();
+		} 
+		catch (MalformedURLException e) 
+		{
+			return null;
+		}
+		catch (IOException e) 
+		{
+			return null;
+		}
+		/*
 		if ( resourceLoader == null ) resourceLoader = getDefaultResourceLoader();
 		//return resourceLoader.getResourceAsStream(this.getWorldPath()+path);
 		return resourceLoader.getResourceAsStream(path);
+		*/ 
 	}
 	
 }

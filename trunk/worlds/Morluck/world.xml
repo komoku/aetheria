@@ -103,7 +103,7 @@ void intro( Player aPlayer )
         MultimediaInputOutputClient mioc = (MultimediaInputOutputClient) aPlayer.getIO();
         if ( mioc.isGraphicsEnabled() )
         {
-            mioc.insertCenteredIcon(world.getWorldPath()+"logomorluck.png");   
+            mioc.insertCenteredIcon(world.getResource("logomorluck.png"));   
             aPlayer.write("\n");
         }
     }
@@ -3665,7 +3665,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 <PropertyList>
 <PropertyEntry name="state" timeUnitsLeft="1" value="1"/>
 </PropertyList>
-<Code language="BeanShell"><![CDATA[//nay! source("world.getWorldPath()"+"/entrenador.bsh");
+<Code language="BeanShell"><![CDATA[//nay! source("world.getWorldPath()"+"entrenador.bsh");
   			
   				void infoIntentoAtaque ( Mobile objetivo )
   				{
@@ -3783,7 +3783,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 <PropertyList>
 <PropertyEntry name="state" timeUnitsLeft="1" value="1"/>
 </PropertyList>
-<Code language="BeanShell"><![CDATA[//nay! source(world.getWorldPath()+"/entrenador.bsh");
+<Code language="BeanShell"><![CDATA[//nay! source(world.getWorldPath()+"entrenador.bsh");
   			
   				void infoIntentoAtaque ( Mobile objetivo )
   				{
@@ -3897,7 +3897,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 <PropertyEntry name="state" timeUnitsLeft="1" value="1"/>
 </PropertyList>
 <Code language="BeanShell"><![CDATA[include("lib/attacker.bsh");
-include(world.getWorldPath()+"/pursuer.bsh");
+include(world.getWorldPath()+"pursuer.bsh");
 
 void afterDie ( Item corpse )
 {
