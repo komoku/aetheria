@@ -75,6 +75,7 @@ public class WorldLoader
 			{
 
 				System.out.println(e);
+				io.write("No puedo encontrar el mundo en el directorio " + moduledir + "\n");
 
 				//buscar a ver si el mundo es un world.dat? no en este cliente.
 			}
@@ -83,7 +84,7 @@ public class WorldLoader
 
 		if ( theWorld == null )
 		{
-			io.write("No encontrado el fichero del mundo. Tal vez el directorio seleccionado no sea un directorio de mundo AGE válido.\n"); 
+			io.write("No encontrado el fichero del mundo. Tal vez el directorio seleccionado [" + moduledir + "] no sea un directorio de mundo AGE válido.\n"); 
 			return null; 
 		}
 		
@@ -139,7 +140,8 @@ public class WorldLoader
 					mundoSemaphore.notifyAll();
 				}
 			}
-			gameLog.addElement( moduledir + "/world.xml"); //primera línea del log, fichero de mundo
+			//gameLog.addElement( moduledir + "/world.xml"); //primera línea del log, fichero de mundo
+			gameLog.addElement(theWorld.getResource("world.xml").toString()); //URL a fichero de mundo
 			return theWorld;
 		} 
 		catch (MalformedURLException e1) 

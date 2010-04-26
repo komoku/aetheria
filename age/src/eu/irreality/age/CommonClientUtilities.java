@@ -15,7 +15,7 @@ public class CommonClientUtilities
 		
 		for ( int i = 0 ; i < gameLog.size() ; i++ )
 		{
-			System.out.println("Savin': " + (String)gameLog.elementAt(i) );
+			System.out.println("Saving to " + f + ": " + (String)gameLog.elementAt(i) );
 			fwrite.println( (String)gameLog.elementAt(i) );
 		}
 		
@@ -31,7 +31,7 @@ public class CommonClientUtilities
 		try
 		{
 			d = mundo.getXMLRepresentation();
-			System.out.println("D=null?" + (d==null) );
+			System.out.println("On saving state, is D=null?" + (d==null) );
 		}
 		catch ( javax.xml.parsers.ParserConfigurationException exc )
 		{

@@ -20,11 +20,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.filemanagement.URLUtils;
 
 public class GameInfo implements Serializable
 {
 	private String[] theInfo;
-	private File f = null;
+	private String f = null;
 	
 	static Vector allInstances = new Vector();
 	
@@ -37,8 +38,9 @@ public class GameInfo implements Serializable
 		}
 	}
 	
+	
 	//info for that file if loaded, else load if exists or return null if doesn't.
-	public static GameInfo getGameInfoFromFile ( File f )
+	public static GameInfo getGameInfoFromFile ( String f )
 	{
 		for ( int i = 0 ; i < allInstances.size() ; i++ )
 		{
@@ -57,7 +59,7 @@ public class GameInfo implements Serializable
 		}
 	}
 	
-	public GameInfo ( String[] info , File f )
+	public GameInfo ( String[] info , String f )
 	{
 		theInfo = info;
 		this.f = f;
@@ -72,7 +74,7 @@ public class GameInfo implements Serializable
 		allInstances.add(this);	
 	}
 	
-	public File getFile()
+	public String getFile()
 	{
 		return f;
 	}
@@ -113,7 +115,7 @@ public class GameInfo implements Serializable
 	}
 	
 	
-	public static GameInfo getGameInfo ( File modulefile ) throws FileNotFoundException, IOException
+	public static GameInfo getGameInfo ( String modulefile ) throws FileNotFoundException, IOException
 	{
 	
                 System.out.println("getGameInfo called on " + modulefile);
@@ -139,13 +141,15 @@ public class GameInfo implements Serializable
 				//use it
 				//create .dat equivalent for use the next time
 
-		if ( modulefile.getName().toLowerCase().endsWith ( ".xml" ) || modulefile.getName().toLowerCase().endsWith ( ".asf" /*state*/ ) )
+		if ( ( modulefile.toLowerCase().endsWith ( ".xml" ) || modulefile.toLowerCase().endsWith ( ".asf" /*state*/ ) ) )
 		{
 		
-			//create .dat equivalent of .xml file
+			//create .dat equivalent of .xml file [only if file is a real file]
 		
-			File resFile = new File ( modulefile.getAbsolutePath().substring(0,modulefile.getAbsolutePath().length()-4) + ".res" );
-			if ( resFile.exists() )
+			File resFile = null;
+			if ( new File(modulefile).exists() )
+				resFile = new File ( new File(modulefile).getAbsolutePath().substring(0,new File(modulefile).getAbsolutePath().length()-4) + ".res" );
+			if ( resFile!= null && resFile.exists() )
 			{
                             
                                 System.out.println("RES file exists.\n");
@@ -164,7 +168,8 @@ public class GameInfo implements Serializable
 				org.w3c.dom.Document d = null;
 				try
 				{
-					InputStream str = new FileInputStream (  modulefile  ) /*before: iso reader*/;
+					//InputStream str = new FileInputStream (  modulefile  ) /*before: iso reader*/;
+					InputStream str = URLUtils.openFileOrURL( modulefile );
 					//InputSource is = new InputSource(str);
 					DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 					//io.escribir(io.getColorCode("information") + "Obteniendo árbol DOM de los datos XML...\n" + io.getColorCode("reset") );
@@ -205,16 +210,19 @@ public class GameInfo implements Serializable
 				if ( n.hasAttribute("parserVersion") )
 					moduleInfo[4] = n.getAttribute("parserVersion");	
 				//create the file for easy access to this information on other executions
-				PrintWriter pw = new PrintWriter ( new OutputStreamWriter ( new FileOutputStream ( resFile ) , "UTF-8" ) );
-				pw.println("comment Fichero resumen de información de mundo generado por Aetheria Game Engine el " + java.text.DateFormat.getDateTimeInstance().format ( new Date() ) + " a partir de " + modulefile );
-				pw.println("modulename " + moduleInfo[0]);
-				pw.println("author " + moduleInfo[1]);
-				pw.println("version " + moduleInfo[2]);
-				pw.println("date " + moduleInfo[3]);
-				pw.println("parserversion " + moduleInfo[4]);
-				pw.flush();
-				pw.close();
-				System.out.println("Print Writer closed");
+				if ( resFile != null )
+				{
+					PrintWriter pw = new PrintWriter ( new OutputStreamWriter ( new FileOutputStream ( resFile ) , "UTF-8" ) );
+					pw.println("comment Fichero resumen de información de mundo generado por Aetheria Game Engine el " + java.text.DateFormat.getDateTimeInstance().format ( new Date() ) + " a partir de " + modulefile );
+					pw.println("modulename " + moduleInfo[0]);
+					pw.println("author " + moduleInfo[1]);
+					pw.println("version " + moduleInfo[2]);
+					pw.println("date " + moduleInfo[3]);
+					pw.println("parserversion " + moduleInfo[4]);
+					pw.flush();
+					pw.close();
+					System.out.println("Print Writer closed");
+				}
 				return new GameInfo(moduleInfo , modulefile);
 				
 			}
@@ -226,10 +234,10 @@ public class GameInfo implements Serializable
 		FileInputStream fp = null;
 		java.io.BufferedReader filein = null;
 
-		//if the gamefile type is XML but we had a .dat file
+		//if the gamefile type is XML but we had a .res file
 		if ( useAlternativeFile )
 		{
-			File resFile = new File ( modulefile.getAbsolutePath().substring(0,modulefile.getAbsolutePath().length()-4) + ".res" );
+			File resFile = new File ( new File(modulefile).getAbsolutePath().substring(0,new File(modulefile).getAbsolutePath().length()-4) + ".res" );
 			fp = new FileInputStream(resFile);
 			filein = new java.io.BufferedReader ( new java.io.InputStreamReader ( fp , "UTF-8" ) );
 			
@@ -336,7 +344,7 @@ public class GameInfo implements Serializable
 					{
 						try
 						{
-							result.addElement ( getGameInfo( fl2[j] ) );
+							result.addElement ( getGameInfo( fl2[j].getAbsolutePath() ) );
 						}
 						catch ( IOException ioe )
 						{

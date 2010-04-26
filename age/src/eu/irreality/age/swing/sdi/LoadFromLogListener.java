@@ -58,7 +58,7 @@ class LoadFromLogListener implements ActionListener
 			Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 
 			//test:
-			GameInfo gi = GameInfo.getGameInfoFromFile ( new File ( worldFile ) );
+			GameInfo gi = GameInfo.getGameInfoFromFile ( worldFile );
 			final PartidaEntry pe = new PartidaEntry ( gi , "noname" , 200 , null , true , true , true );
 
 			window.startGame( worldFile , true , selector.getSelectedFile().getAbsolutePath() , null );
