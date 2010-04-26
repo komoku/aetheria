@@ -26,4 +26,4 @@ ESTE PROGRAMA ES PROPORCIONADO POR EL TITULAR DEL COPYRIGHT Y LOS COLABORADORES 
 
 
 Additionally, this distribution contains the following third-party software: 
-- BeanShell (binary distribution, bsh-2.0b2.jar) is (c) Pat Niemeyer, licensed under the GNU Lesser General Public License (LGPL). Source code downloadable from www.beanshell.org.
+- BeanShell (binary distribution, bsh-2.0b4.jar) is (c) Pat Niemeyer, licensed under the GNU Lesser General Public License (LGPL). Source code downloadable from www.beanshell.org.
