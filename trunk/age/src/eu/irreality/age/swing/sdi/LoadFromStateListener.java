@@ -45,7 +45,7 @@ public class LoadFromStateListener implements ActionListener
 			String worldFile = selector.getSelectedFile().getAbsolutePath(); //world file = state file
 
 			//test:
-			GameInfo gi = GameInfo.getGameInfoFromFile ( new File ( worldFile ) );
+			GameInfo gi = GameInfo.getGameInfoFromFile ( worldFile );
 			final PartidaEntry pe = new PartidaEntry ( gi , "noname" , 200 , null , true , true , true );
 
 			theWindow.startGame( selector.getSelectedFile().getAbsolutePath() , false , null , selector.getSelectedFile().getAbsolutePath() );

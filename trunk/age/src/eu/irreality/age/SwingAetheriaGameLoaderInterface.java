@@ -800,7 +800,7 @@ class EscuchadorCargarDesdeLog implements ActionListener
 
 
 			//test:
-			GameInfo gi = GameInfo.getGameInfoFromFile ( new File ( worldFile ) );
+			GameInfo gi = GameInfo.getGameInfoFromFile ( worldFile );
 			final PartidaEntry pe = new PartidaEntry ( gi , "noname" , 200 , null , true , true , true );
 
 			Thread thr = new Thread()
@@ -878,7 +878,7 @@ class EscuchadorCargarDesdeEstado implements ActionListener
 			String worldFile = selector.getSelectedFile().getAbsolutePath();
 
 			//test:
-			GameInfo gi = GameInfo.getGameInfoFromFile ( new File ( worldFile ) );
+			GameInfo gi = GameInfo.getGameInfoFromFile ( worldFile );
 			final PartidaEntry pe = new PartidaEntry ( gi , "noname" , 200 , null , true , true , true );
 
 			Thread thr = new Thread() {

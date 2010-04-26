@@ -224,7 +224,26 @@ public class World implements Informador , SupportingCode
 		
 		//si hay un worldDir explícito, estaremos en un fichero de estado, así que fijamos worldDir.
 		if ( e.hasAttribute("worldDir") && !e.getAttribute("worldDir").equals(".") )
+		{
 			worlddir = e.getAttribute("worldDir"); 
+			try 
+			{
+				worldurl = new URL(worlddir);
+			} 
+			catch (MalformedURLException e1) 
+			{
+				try 
+				{
+					worldurl = new File(worlddir).toURI().toURL();
+				} 
+				catch (MalformedURLException e2) 
+				{
+					System.err.println("worldDir attribute seems neither pathname nor URL:");
+					e1.printStackTrace();
+					e2.printStackTrace();
+				}
+			}
+		}
 				 
 		//attribs
 		

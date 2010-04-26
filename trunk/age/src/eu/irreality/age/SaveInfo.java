@@ -22,7 +22,7 @@ public class SaveInfo
 	;
 	}
 
-	public SaveInfo ( File fichSalv , Date fecha , File fichJuego )
+	public SaveInfo ( File fichSalv , Date fecha , String fichJuego )
 	{
 		this.fichSalv = fichSalv;
 		this.fecha = fecha;
@@ -35,7 +35,7 @@ public class SaveInfo
 		return fichSalv;
 	}
 	
-	public File getGameFile()
+	public String getGameFile()
 	{
 		if ( infoJuego == null ) return null;
 		else return infoJuego.getFile();
@@ -82,7 +82,7 @@ public class SaveInfo
 		System.out.println(fichJuego);
 		try
 		{
-			return new SaveInfo ( savefile , fecha , new File(fichJuego) );	
+			return new SaveInfo ( savefile , fecha , fichJuego );	
 		}
 		catch ( Exception fnfe )
 		{

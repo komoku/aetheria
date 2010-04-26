@@ -377,15 +377,15 @@ public class ServerHandler //Singleton!
 
 	private SwingAetheriaGameLoader tempSagl;
 	
-	public void initGameLoader( File ficheroMundo,  JDesktopPane thePanel , String logFile , String stateFile )
+	public void initGameLoader( String ficheroMundo ,  JDesktopPane thePanel , String logFile , String stateFile )
 	{
-		tempSagl = new SwingAetheriaGameLoader( ficheroMundo.toString() , thePanel , (logFile!=null) , logFile , stateFile , (stateFile!=null) /*pues, si usamos estado, no seremos cliente porque el jugador se cargará al cargar el estado*/  );
+		tempSagl = new SwingAetheriaGameLoader( ficheroMundo , thePanel , (logFile!=null) , logFile , stateFile , (stateFile!=null) /*pues, si usamos estado, no seremos cliente porque el jugador se cargará al cargar el estado*/  );
 	}
 	
 	public void initPartidaLocal ( final PartidaEntry pe , ServerLogWindow slw , /*nullable*/ final String stateFile , /*nullable*/ final String logFile , final JDesktopPane thePanel )
 	{
 	
-		final File ficheroMundo = pe.getGameInfo().getFile();
+		final String ficheroMundo = pe.getGameInfo().getFile();
 		Debug.println("The world file: " + ficheroMundo);
 		World theWorld;
 		//InputOutputClient worldIO = slw.addTab();
@@ -486,7 +486,7 @@ public class ServerHandler //Singleton!
 		Debug.println(pe);
 		Debug.println(pe.getGameInfo());
 		Debug.println(pe.getGameInfo().getFile());
-		File ficheroMundo = pe.getGameInfo().getFile();
+		String ficheroMundo = pe.getGameInfo().getFile();
 		
 		World theWorld;
 		
@@ -496,7 +496,7 @@ public class ServerHandler //Singleton!
 		
 		try
 		{
-			theWorld = new World ( ficheroMundo.toString() , worldIO  , true );
+			theWorld = new World ( ficheroMundo , worldIO  , true );
 			gameLog.addElement ( ficheroMundo );
 		}
 		catch ( Exception e )
