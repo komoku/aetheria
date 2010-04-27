@@ -27,5 +27,10 @@ public class ExtendedBSHInterpreter extends Interpreter
 		return eval( new BufferedReader(new InputStreamReader(stream)), this.getNameSpace() , "Stream: " + stream );
 	}
 
+	public ExtendedBSHInterpreter ( )
+	{
+		super();
+		//this.getNameSpace().getClassMa
+	}
 	
 }

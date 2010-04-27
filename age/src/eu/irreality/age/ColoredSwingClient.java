@@ -816,8 +816,6 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	public void insertCenteredIcon ( ImageIcon icon )
 	{
 		
-		System.err.println("Aicon: " + icon);
-		
 		elAreaTexto.setSelectionStart(elAreaTexto.getText().length());
 		elAreaTexto.setSelectionEnd(elAreaTexto.getText().length());
 	
@@ -830,8 +828,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	
 	}
 	
-	public void insertCenteredIcon ( URL location ) { System.err.println("Loc " + location); if ( location == null ) return; insertCenteredIcon ( new ImageIcon ( location ) ); }
-	public void insertCenteredIcon ( String fileName ) { System.err.println("Failneim " + fileName); if ( fileName == null ) return; insertCenteredIcon ( new ImageIcon ( fileName ) ); }
+	public void insertCenteredIcon ( URL location ) { if ( location == null ) return; insertCenteredIcon ( new ImageIcon ( location ) ); }
+	public void insertCenteredIcon ( String fileName ) { if ( fileName == null ) return; insertCenteredIcon ( new ImageIcon ( fileName ) ); }
 	
 	public boolean isGraphicsEnabled()
 	{
