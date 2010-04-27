@@ -2634,6 +2634,29 @@ public class World implements Informador , SupportingCode
 		}
 	}
 	
+	/**
+	 * Fetches an URL for a global resource (a resource that is not particular to a worl but shared by all worlds in AGE, such as
+	 * language files, etc.)
+	 * @param path
+	 * @return
+	 */
+	public URL getGlobalResource ( String path ) throws Exception
+	{
+		try
+		{
+			return this.getClass().getClassLoader().getResource(path);
+		}
+		catch ( Exception e )
+		{
+			throw(e);
+		}
+	}
+	
+	public InputStream getGlobalResourceAsStream ( String path )
+	{
+		return this.getClass().getClassLoader().getResourceAsStream(path);
+	}
+	
 	public URL getResource ( String path )
 	{
 		try 

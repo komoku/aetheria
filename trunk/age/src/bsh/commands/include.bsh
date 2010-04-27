@@ -14,6 +14,8 @@ bsh.help.source = "usage: source( filename | URL )";
 Object doInclude( InputStream is , String libName ) 
 {
 
+	//System.err.println("doInclude called");
+
 	StringBuffer sb = new StringBuffer();
 	
 	BufferedReader br = new BufferedReader ( new InputStreamReader ( is , "ISO-8859-1" ) );
@@ -24,6 +26,8 @@ Object doInclude( InputStream is , String libName )
 		sb.append ( linea );
 		sb.append ( "\n" );
 	}
+	
+	//System.err.println("Going to reference this.caller.caller");
 
 	if ( this.caller.caller.liblist == void )
 	{
@@ -38,12 +42,20 @@ Object doInclude( InputStream is , String libName )
 
 	this.caller.caller.liblist.add ( libName );
 
+	//System.err.println("libName added");
+
 	if ( this.caller.caller.libsloaded == void )
 	{
+	
+		//System.err.println("setting libsLoaded");
+	
 		this.caller.caller.libsloaded = true;
-		String temp = "source(this.getClass().getClassLoader().getResource(\"libinvoke.bsh\"));";
+		String temp = "source(world.getGlobalResource(\"libinvoke.bsh\"));";
 		//String temp = "source(\"libinvoke.bsh\");";
-		this.interpreter.eval (	temp , this.caller.caller.namespace );		
+		this.interpreter.eval (	temp , this.caller.caller.namespace );	
+		
+		//System.err.println("Evalled stuff");
+			
 	}	
 
 	return this.interpreter.eval ( sb.toString() , this.caller.caller.namespace );
@@ -53,6 +65,7 @@ Object doInclude( InputStream is , String libName )
 
 Object include( String filename )
 {
+	//System.err.println("Include request: " + filename);
 	fname = new File(filename).getName();
 	java.util.StringTokenizer st = new java.util.StringTokenizer(fname,".");
 	String lName = st.nextToken();
@@ -72,16 +85,26 @@ Object include( String filename )
 			//URL url = self.getClass().getResource(resLocation);
 			//not allowed in applet: 
 			//URL url = self.getClass().getClassLoader().getResource(filename);
-			URL url = world.getResource(filename);
-			if ( url == null ) throw new IOException("Nothing found by getResource at " + filename);
+			
+			//this doesn't make much sense, libraries more often than not not in the world at all
+			//URL url = world.getResource(filename);
+			
+			//better to do this:
+			URL url = world.getGlobalResource(filename);
+			//System.err.println("getGlobalResource returned URL: " + url);
+			//and if they want a world-based library let them do a getResource and use the include(URL) method.
+			
+			if ( url == null ) throw new IOException("Nothing found by getGlobalResource at " + filename);
 			String urlString = url.toString();
 			lName = urlString.substring(urlString.lastIndexOf('/')+1, urlString.lastIndexOf('.'));
+			//System.err.println("Openan stream to " + url + " for library name " + lName);
 			InputStream stream = url.openStream();
+			//System.err.println("Stream opened");
 			return doInclude ( stream , lName );
 		}
 		catch ( Exception e )
 		{
-			System.err.println("Couldn't find library");
+			//System.err.println("Couldn't find library");
 			e.printStackTrace();
 			throw fnfe;
 		}

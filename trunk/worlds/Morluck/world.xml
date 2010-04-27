@@ -3671,8 +3671,8 @@ void parseCommand( Mobile aCreature , String verb , String args )
   				{
   					Weapon w = self.getCurrentWeapon();
   					String wName = w.constructName2OneItem();
-  					System.out.println("Weapon name: " + wName);
-  					System.out.println("Weapon ID: " + w.getID());
+  					//System.out.println("Weapon name: " + wName);
+  					//System.out.println("Weapon ID: " + w.getID());
   					Random r = self.getRandom();
   					int k = r.nextInt() % 4;
   					if ( ( k % 4 ) == 0 )
@@ -3789,8 +3789,8 @@ void parseCommand( Mobile aCreature , String verb , String args )
   				{
   					Weapon w = self.getCurrentWeapon();
   					String wName = w.constructName2OneItem();
-  					System.out.println("Weapon name: " + wName);
-  					System.out.println("Weapon ID: " + w.getID());
+  					//System.out.println("Weapon name: " + wName);
+  					//System.out.println("Weapon ID: " + w.getID());
   					Random r = self.getRandom();
   					int k = r.nextInt() % 4;
   					if ( ( k % 4 ) == 0 )
@@ -3897,7 +3897,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 <PropertyEntry name="state" timeUnitsLeft="1" value="1"/>
 </PropertyList>
 <Code language="BeanShell"><![CDATA[include("lib/attacker.bsh");
-include(world.getWorldPath()+"pursuer.bsh");
+include(world.getResource("pursuer.bsh"));
 
 void afterDie ( Item corpse )
 {
@@ -4723,7 +4723,7 @@ void onSay ( Mobile m , String text )
 
 		{
 
-			System.out.println("Tokenios: " + tokenios);
+			//System.out.println("Tokenios: " + tokenios);
 
 			String nombre = (String) tokenios.get(1);
 
@@ -4887,7 +4887,7 @@ void onSay ( Mobile m , String text )
 
 void onRoomText ( String text )
 {
-    System.err.println("The text: " + text);
+    //System.err.println("The text: " + text);
     if ( text.indexOf("contrarrestándolo") >= 0 && text.indexOf("dice") < 0 )
     {
         self.say("Muy ingenioso, pequeño... pero mi poder es muy grande. Puedo volver a empezar mi hechizo, y tú ni siquiera podrás tocarme, gusano.");   
@@ -5458,7 +5458,7 @@ void beforeFail ( Entity caster , Entity target )
 				}
 				void beforeCast ( Entity caster , Entity target )
 				{
-					System.out.println("3-DEMON CAST");
+					//System.out.println("3-DEMON CAST");
 					caster.say("¡Inzelda kasothar zanetis mukhr kidamn zah!");
 					if ( world.getMobile("Demonio alado").getRoom() != world.getRoom("Limbo") )
 					{
@@ -5468,7 +5468,7 @@ void beforeFail ( Entity caster , Entity target )
 				}
 				void beforeFail ( Entity caster , Entity target )
 				{
-					System.out.println("3-DEMON FAILURE");
+					//System.out.println("3-DEMON FAILURE");
 					caster.say("¡Inzelda kasothar zanetis mukhr kidamn zah!");
 				}]]></Code>
 <EffectList>
@@ -5880,13 +5880,13 @@ void fail ( Entity caster , Entity target  )
 				}
 				void fade ( Entity target )
 				{
-					System.out.println("Gonna set locked property to " + target.getPropertyValueAsBoolean("waslocked"));
+					//System.out.println("Gonna set locked property to " + target.getPropertyValueAsBoolean("waslocked"));
 					Item targetW = (Item) target;
 					//List propiet = targetW.getMobileReferences();
 					//Mobile prop = (Mobile) propiet.get(0);
 					//prop.getRoom().informActionAuto(targetW,null,null,"$1 parece oscurecerse durante una décima de segundo.\n",false);
 					targetW.informActionAuto(target,null,null,"Se oye un pequeño click en $1.\n",false);
-					System.out.println("Setting locked property to " + target.getPropertyValueAsBoolean("waslocked"));
+					//System.out.println("Setting locked property to " + target.getPropertyValueAsBoolean("waslocked"));
 					target.setProperty("locked",target.getPropertyValueAsBoolean("waslocked"));
 				}]]></Code>
 <RelationshipList/>
@@ -5959,9 +5959,9 @@ void fail ( Entity caster , Entity target  )
 					
 						List effects = target.getRelatedEntitiesByValue("cast",true);
 						
-						System.out.println("Actually, the size of the effects-compendium of the arcon comes to be " + effects.size());
-						System.out.println("Effects: " + effects.size());
-						System.out.println("JArl.");
+						//System.out.println("Actually, the size of the effects-compendium of the arcon comes to be " + effects.size());
+						//System.out.println("Effects: " + effects.size());
+						//System.out.println("JArl.");
 						
 						if ( effects.size() > 0 )
 						{
@@ -6003,7 +6003,7 @@ void onInit()
 
     set(self,"zorgl.oj",1);
     
-    System.err.println("Zorgloj init");
+    //System.err.println("Zorgloj init");
 
 }
 
@@ -6013,7 +6013,7 @@ void update ( PropertyEntry pe , World w )
 
 {
 
-    System.out.println("Zorgloj update");
+    //System.out.println("Zorgloj update");
 
     if ( equals ( pe.getName() , "zorgl.tick") )
 
@@ -6086,7 +6086,7 @@ void update ( PropertyEntry pe , World w )
 					List propiet = target.getMobileReferences();
 					Mobile prop = (Mobile) propiet.get(0);
 					prop.getRoom().informActionAuto(targetW,null,null,"El brillo de $1 se debilita hasta desvanecerse.\n",false);
-					System.out.println("El brillo se apaga.\n");
+					//System.out.println("El brillo se apaga.\n");
 					target.setProperty("light_enabled",false);
 				}]]></Code>
 <RelationshipList/>
@@ -6225,7 +6225,7 @@ void fail ( Entity caster , Entity target )
 					List propiet = target.getMobileReferences();
 					Mobile prop = (Mobile) propiet.get(0);
 					prop.getRoom().informActionAuto(targetW,null,null,"El brillo de $1 se debilita hasta desvanecerse.\n",false);
-					System.out.println("El brillo se apaga.\n");
+					//System.out.println("El brillo se apaga.\n");
 					target.addDamageBonus(-40);
 				}]]></Code>
 <RelationshipList/>
@@ -6267,7 +6267,7 @@ void fail ( Entity caster , Entity target )
 				{
 					//target doesn't do anything.
 					
-					System.out.println("3-DEMON EFFECT");
+					//System.out.println("3-DEMON EFFECT");
 					
 					world.getMobile("Demonio alado").setRoom( ((Mobile)caster).getRoom() );
 					((Mobile)caster).getRoom().informActionAuto(world.getMobile("Demonio alado"),null,null,"¡De repente, un horroroso demonio aparece de la nada!\n",true);	
