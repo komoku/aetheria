@@ -360,7 +360,7 @@ public class World implements Informador , SupportingCode
 		if ( confNodes.getLength() > 0 )
 		{
 			org.w3c.dom.Element confNode = (org.w3c.dom.Element) confNodes.item(0);
-			vc = new VisualConfiguration ( confNode , getWorldPath() );
+			vc = new VisualConfiguration ( confNode , worldurl.toString() );
 			if ( io instanceof ColoredSwingClient )
 			{
 				Debug.println("VISUAL CONFIGURATION SET TO " + vc);

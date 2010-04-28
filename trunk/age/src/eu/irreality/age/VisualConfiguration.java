@@ -7,6 +7,7 @@ import java.util.*;
 import java.awt.*;
 
 import eu.irreality.age.debug.Debug;
+import eu.irreality.age.filemanagement.URLUtils;
 
 public class VisualConfiguration
 {
@@ -383,16 +384,20 @@ public class VisualConfiguration
 					fontFileName = el.getAttribute("filename");
 					Debug.println("Font filename: " + fontFileName);
 					Debug.println("Font directory: " + fontDir);
-					java.io.File f;
+					//java.io.File f;
+					String f;
 					if ( fontDir != null ) 
 					{
-						f = new java.io.File ( fontDir + fontFileName );
+						f = fontDir + fontFileName;
+						//f = new java.io.File ( fontDir + fontFileName );
 					}
 					else
 					{
-						f = new java.io.File ( fontFileName );
+						f = fontFileName;
+						//f = new java.io.File ( fontFileName );
 					}
-					java.io.InputStream is = new java.io.FileInputStream ( f );
+					java.io.InputStream is = //new java.io.FileInputStream ( f );
+						URLUtils.openFileOrURL(f);
 					Font fuente = Font.createFont ( Font.TRUETYPE_FONT , is );
 					laFuente = fuente.deriveFont((float)fontSize);
 					usingDefaultFont = false;

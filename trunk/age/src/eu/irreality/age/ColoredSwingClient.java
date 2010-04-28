@@ -418,7 +418,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		JMenuBar mb = window.getTheJMenuBar();
 		window.setTheJMenuBar(mb); //nótese el "the", es para que la tenga como atributo. Si luego se quita para el modo fullscreen se puede volver a poner.
 		clientConfigurationMenu.add ( colorConfigurationMenu );
-		clientConfigurationMenu.add ( fullScreenOption );
+		if ( window.supportsFullScreen() )
+			clientConfigurationMenu.add ( fullScreenOption );
 		JRadioButtonMenuItem itemDefaultJuego = new JRadioButtonMenuItem("Por defecto (juego)",true);
 		JRadioButtonMenuItem itemDefault = new JRadioButtonMenuItem("Por defecto (AGE)",false);
 		JRadioButtonMenuItem itemPergamino = new JRadioButtonMenuItem("Pergamino",false);
@@ -498,6 +499,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 
 		elScrolling = new JScrollPane ( elAreaTexto );
 		elScrolling.setVerticalScrollBarPolicy( JScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
+		//elScrolling.setHorizontalScrollBarPolicy ( JScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
 		elScrolling.setBorder(BorderFactory.createEmptyBorder());
 		elScrolling.setViewportBorder(BorderFactory.createEmptyBorder());
 		elAreaTexto.setForeground(java.awt.Color.white);
@@ -592,11 +594,18 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		{
 			public void mouseReleased ( MouseEvent evt )
 			{
-				Clipboard clipboard = elAreaTexto.getToolkit().getSystemClipboard();
-
-				String selection = elAreaTexto.getSelectedText();
-
-				clipboard.setContents(new StringSelection(selection),null);	
+				
+				try
+				{
+					Clipboard clipboard = elAreaTexto.getToolkit().getSystemClipboard();
+					String selection = elAreaTexto.getSelectedText();
+					clipboard.setContents(new StringSelection(selection),null);	
+				}
+				catch ( SecurityException se )
+				{
+					//Running on an applet, can't access the clipboard. Not a big deal.
+					;
+				}
 				
 				elCampoTexto.requestFocus();
 			}

@@ -47,6 +47,7 @@ public interface AGEClientWindow extends AGELoggingWindow
     
     public void exitNow();
  
+    public boolean supportsFullScreen();
     
     public void addFocusListener ( FocusListener fl );
     
