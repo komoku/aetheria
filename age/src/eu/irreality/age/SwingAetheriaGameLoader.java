@@ -1303,5 +1303,11 @@ de la ventana hasta acabar de cargar.
 	}
 
 
+	public boolean supportsFullScreen() 
+	{
+		return true;
+	}
+
+
 }
 

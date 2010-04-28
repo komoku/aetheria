@@ -7,6 +7,7 @@ import javax.swing.*;
 
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
+import eu.irreality.age.swing.applet.SwingSDIApplet;
 import eu.irreality.age.swing.sdi.SwingSDIInterface;
 import eu.irreality.age.windowing.AGEClientWindow;
 import eu.irreality.age.windowing.AGELoggingWindow;
@@ -17,7 +18,7 @@ public class GameEngineThread extends Thread
 
 	public static String getVersion() 
 	{ 
-		return "Aetheria Game Engine v 0.7 (Beta altamente inestable)";
+		return "Aetheria Game Engine v 0.8";
 	}
 
 	
@@ -352,6 +353,11 @@ public class GameEngineThread extends Thread
 		{
 			((SwingSDIInterface)ventana).unlinkWorld(); //we are client and server so we can do this
 			((SwingSDIInterface)ventana).saveAndFreeResources();
+		}
+		if ( ventana instanceof SwingSDIApplet )
+		{
+			((SwingSDIApplet)ventana).unlinkWorld(); //we are client and server so we can do this
+			((SwingSDIApplet)ventana).saveAndFreeResources();
 		}
 		exitFlag = true;
 		theWorld = null;

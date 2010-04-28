@@ -780,4 +780,9 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 		}
 	}
 
+	public boolean supportsFullScreen() 
+	{
+		return true;
+	}
+
 }
