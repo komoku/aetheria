@@ -4,6 +4,9 @@
  */
 package eu.irreality.age;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import eu.irreality.age.debug.Debug;
 
 //package AetheriaAWT;
@@ -310,6 +313,11 @@ public class Path extends Entity implements Descriptible
 	{
 		Debug.println("Path: " + destination + " " + isStandard );
 		return exitCommand[0];
+	}
+	
+	public String[] getNonStandardNames ( )
+	{
+		return exitCommand;
 	}
 	
 	
@@ -646,6 +654,6 @@ public class Path extends Entity implements Descriptible
 		//a path has no ID! (at the mom't at least)
 		return -1;
 	}
-
+	
 	
 }

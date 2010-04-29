@@ -692,6 +692,34 @@ public class Room extends Entity implements Descriptible , SupportingCode
 	
 	}
 	
+	public List getExitNames ( Path p )
+	{
+		ArrayList result = new ArrayList();
+		if ( p.isStandard() )
+		{
+			int exitn;
+			for ( exitn = 0 ; exitn < standardExits.length ; exitn++ )
+			{
+				if ( standardExits[exitn] == p ) break;
+			}
+			
+			result.add (getExitName ( true , exitn ));
+		}
+		String[] moreNames = p.getNonStandardNames();
+		if ( moreNames != null )
+		{
+			for ( int i = 0 ; i < moreNames.length ; i++ )
+				result.add(moreNames[i]);
+		}
+		return result;
+	}
+	
+	public Room getPathDestination ( Path p , World w )
+	{
+		return w.getRoom(p.getDestinationID());
+	}
+	
+	
 	public int getID ( )
 	{
 		return idnumber;	

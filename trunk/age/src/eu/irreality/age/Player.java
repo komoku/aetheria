@@ -3450,17 +3450,17 @@ public class Player extends Mobile implements Informador
 		{
 			if ( !ZR_objeto_masculino_plural.equals("") )
 				ZR_objeto_masculino_plural += ", ";
-			ZR_objeto_masculino_plural += obj.getBestReferenceName ( false );
+			ZR_objeto_masculino_plural += obj.getBestReferenceName ( true );
 		}
 		else
 		{
 			if ( !ZR_objeto_femenino_plural.equals("") )
 				ZR_objeto_femenino_plural += ", ";
-			ZR_objeto_femenino_plural += obj.getBestReferenceName ( false );
+			ZR_objeto_femenino_plural += obj.getBestReferenceName ( true );
 		}
 		if ( !ZR_objeto_plural.equals("") )
 			ZR_objeto_plural += ", ";
-		ZR_objeto_plural += obj.getBestReferenceName ( false );	
+		ZR_objeto_plural += obj.getBestReferenceName ( true );	
 	}
 
 	//sustituye los comandos al final del verbo por las ZR's correspondientes
