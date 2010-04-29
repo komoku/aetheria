@@ -253,5 +253,20 @@ public class NaturalLanguage
 		if ( temp.charAt(temp.length()-1) != '\n' && temp.charAt(temp.length()-1) != '.' ) temp += ".";
 		return temp;
 	}
+	
+	public String removeAccents ( String s )
+	{
+		s = s.replaceAll("[èéêë]","e");
+	    s = s.replaceAll("[ûùúü]","u");
+	    s = s.replaceAll("[ïîí]","i");
+	    s = s.replaceAll("[àâá]","a");
+	    s = s.replaceAll("[óòô]","o");
+	    s = s.replaceAll("[ÈÉÊË]","E");
+	    s = s.replaceAll("[ÛÙÚÜ]","U");
+	    s = s.replaceAll("[ÏÎÍ]","I");
+	    s = s.replaceAll("[ÀÂÁ]","A");
+	    s = s.replaceAll("[ÓÒ]","O");
+		return s;
+	}
 
 }

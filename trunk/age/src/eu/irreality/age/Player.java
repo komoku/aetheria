@@ -3468,31 +3468,32 @@ public class Player extends Mobile implements Informador
 	{
 
 		String thestring = command;	
-
+		boolean doneSomething = false;
+		
 		if ( thestring.toLowerCase().endsWith ( "las" ) && thestring.length() > 3 )
 		{
 			//Pronombre femenino plural.
-
+			doneSomething = true;
 			//lo quitamos
 			thestring = thestring.substring(0,thestring.length()-3);
 			//añadimos la ZR femenina plural
 			thestring += " " + ZR_objeto_femenino_plural;
+			doneSomething = true;
 		}
 		if ( thestring.toLowerCase().endsWith ( "los" ) && thestring.length() > 3 )
 		{
 			//Pronombre masculino o neutro plural.
-
+			doneSomething = true;
 			//lo quitamos
 			thestring = thestring.substring(0,thestring.length()-3);
 			//añadimos la ZR plural
 			thestring += " " + ZR_objeto_plural;
-
 		}
 
 		if ( thestring.toLowerCase().endsWith ( "lo" ) && thestring.length() > 2 )
 		{
 			//Pronombre masculino singular
-
+			doneSomething = true;
 			//lo quitamos
 			thestring = thestring.substring(0,thestring.length()-2);
 			//añadimos la ZR masculina singular
@@ -3501,7 +3502,7 @@ public class Player extends Mobile implements Informador
 		if ( thestring.toLowerCase().endsWith ( "la" ) && thestring.length() > 2 )
 		{
 			//Pronombre femenino singular
-
+			doneSomething = true;
 			//lo quitamos
 			thestring = thestring.substring(0,thestring.length()-2);
 			//añadimos la ZR masculina singular
@@ -3509,10 +3510,10 @@ public class Player extends Mobile implements Informador
 		}
 		if ( thestring.toLowerCase().endsWith ( "me" ) || thestring.toLowerCase().endsWith ( "te" ) )
 		{
-			if ( !thestring.toLowerCase().endsWith("este") && !thestring.toLowerCase().endsWith("norte")  && lenguaje.esVerboComando ( thestring.substring(0,thestring.length()-2) ) )
+			if ( !thestring.toLowerCase().endsWith("este") && !thestring.toLowerCase().endsWith("norte")  /*&& lenguaje.esVerboComando ( thestring.substring(0,thestring.length()-2) ) */ )
 			{
 				//Pronombre, se refiere al jugador
-
+				doneSomething = true;
 				//lo quitamos
 				thestring = thestring.substring(0,thestring.length()-2);
 				//añadimos el nombre del jugador
@@ -3522,8 +3523,24 @@ public class Player extends Mobile implements Informador
 
 		//escribir ( "Substituted string " + thestring );
 
-		return thestring;
-
+		//sanity check (added 2010.04.30): did we obtain a recognised verb? if not, the substitution is not valid (cases like habla -> "hab <so and so>"
+		if ( !doneSomething ) return command;
+		
+		//{we have done some substitution}
+		StringTokenizer st = new StringTokenizer(thestring.toLowerCase());
+		String newVerb = st.nextToken().trim();
+		String unaccentedVerb = lenguaje.removeAccents(newVerb); //verbos pierden acentos: cógelo -> cóge <tal> -> coge <tal>
+		if ( !lenguaje.esVerboComando(unaccentedVerb) )
+		{
+			//check failed! return original string.
+			return command;
+		}
+		else
+		{
+			//check passed.
+			return unaccentedVerb + st.nextToken("");
+		}
+		
 	}
 
 
