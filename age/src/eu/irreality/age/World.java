@@ -28,6 +28,9 @@ import eu.irreality.age.debug.ExceptionPrinter;
 
 public class World implements Informador , SupportingCode
 {
+	
+	private boolean debugMode = true;
+	
 	/**Nombre del mundo.*/
 	private String worldname;
 	/**Nombre "bonito" del mundo.*/
@@ -2594,6 +2597,10 @@ public class World implements Informador , SupportingCode
 	public void writeError ( String s )
 	{
 		writeWithTemplate("error",s);
+		if ( debugMode )
+		{
+			System.err.print(s);
+		}
 	}
 	
 	public String toString()
@@ -2694,5 +2701,7 @@ public class World implements Informador , SupportingCode
 		return resourceLoader.getResourceAsStream(path);
 		*/ 
 	}
+	
+	public void setDebugMode ( boolean debugMode ) { this.debugMode = debugMode; }
 	
 }

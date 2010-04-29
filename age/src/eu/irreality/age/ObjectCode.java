@@ -7,6 +7,7 @@ import java.util.*;
 
 import eu.irreality.age.bsh.ExtendedBSHInterpreter;
 import eu.irreality.age.debug.Debug;
+import eu.irreality.age.debug.ExceptionPrinter;
 import bsh.*;
 public class ObjectCode
 {
@@ -464,8 +465,11 @@ public class ObjectCode
 		return false;
 	}
 	
+	
 	void reportEvalError ( EvalError pe , String aroutine , Object theCaller , Object[] theArguments )
 	{
+		ExceptionPrinter.reportEvalError(pe, theWorld, aroutine, theCaller, theArguments);
+		/*
 		theWorld.writeError("Error de sintaxis en el código BeanShell.\n");
 		//theWorld.writeError("En concreto: " + pe + "\n"); 
 		theWorld.writeError("Error: "+pe.getMessage()+"\n"); 
@@ -479,6 +483,7 @@ public class ObjectCode
 		for ( int i = 0 ; i < theArguments.length ; i++ )
 			theWorld.writeError(theArguments[i] + " "); 
 		theWorld.writeError("\n");
+		*/
 	}
 	
 	

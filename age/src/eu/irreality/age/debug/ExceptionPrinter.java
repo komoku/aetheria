@@ -4,6 +4,10 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 
+import eu.irreality.age.World;
+
+import bsh.EvalError;
+
 public class ExceptionPrinter 
 {
 
@@ -44,6 +48,43 @@ public class ExceptionPrinter
 		report.append("Cause report: " + getExceptionReport ( te.getCause() ) );
 		return report.toString();
 	}
+	
+	public static String getExceptionReport ( bsh.EvalError te , String aRoutine , Object theCaller , Object[] theArguments )
+	{
+		StringBuffer report = new StringBuffer();
+		report.append("Syntax error in BeanShell code in object: " + theCaller + "\n");
+		report.append("Loaded to call method " + aRoutine + "\n");
+		report.append(theArguments.length == 0 ? "(with no arguments)" : "With arguments: ");
+		for ( int i = 0 ; i < theArguments.length ; i++ )
+			report.append(theArguments[i] + " ");
+		report.append("\n");
+		report.append(getExceptionReport(te));
+		return report.toString();
+	}
+	
+	public static void reportEvalError ( EvalError ee , World w , String aRoutine , Object theCaller , Object[] theArguments )
+	{
+		w.writeError(getExceptionReport(ee,aRoutine,theCaller,theArguments));
+	}
+	
+	/*
+	void reportEvalError ( EvalError pe , String aroutine , Object theCaller , Object[] theArguments )
+	{
+		theWorld.writeError("Error de sintaxis en el código BeanShell.\n");
+		//theWorld.writeError("En concreto: " + pe + "\n"); 
+		theWorld.writeError("Error: "+pe.getMessage()+"\n"); 
+		//theWorld.writeError("["+pe.getErrorSourceFile()+"]"); 
+		theWorld.writeError("En: código del objeto " + theCaller + "\n"); 
+		//System.err.println(pe.getMessage());
+		//pe.printStackTrace();
+		theWorld.writeError("Cargado para llamar la rutina: " + aroutine + "\n");
+		//theWorld.writeError("Objeto del código: " + theCaller + "\n");
+		theWorld.writeError("Con argumentos: ");
+		for ( int i = 0 ; i < theArguments.length ; i++ )
+			theWorld.writeError(theArguments[i] + " "); 
+		theWorld.writeError("\n");
+	}
+	*/
 	
 	public static String getExceptionReport ( Throwable e )
 	{
