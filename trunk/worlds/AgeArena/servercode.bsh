@@ -2,15 +2,12 @@
 
 //System.setProperty("file.encoding","ISO-8559-1");
 
+
 		void serverintro()
 		{
 			//obj es el mundo
-			obj.escribir("El mundo y la game engine thread están running.\n");
-		}
-		void serverintro()
-		{
-			//obj es el mundo
-			obj.escribir("El mundo y la game engine thread están en marcha (OK).\n");
+			obj.escribir("El mundo y la game engine thread estÃ¡n en marcha (OK).\n");
+			Thread.currentThread().setRealTimeQuantum(300);
 		}
 		void intro( Player jugador )
 		{
@@ -56,11 +53,11 @@
 			
 			*/
 
-			jugador.escribir("Esto es AGE Arena. No se trata de un juego que tenga argumento, simplemente es una prueba o demostración de las capacidades multijugador de Aetheria Game Engine.\n");
+			jugador.escribir("Esto es AGE Arena. No se trata de un juego que tenga argumento, simplemente es una prueba o demostraciÃ³n de las capacidades multijugador de Aetheria Game Engine.\n");
 			
 			jugador.waitKeyPress();
 			
-			jugador.escribir("Elimina a tus oponentes. Aniquílalos. Erradícalos. Oblitéralos. Haz que cesen de ser, eso es todo. Si son ellos los que lo hacen contigo, podrás resucitar, para no tener que crear tu personaje otra vez. Si quieres salir, simplemente desconecta (AGE, telnet) o cierra el DCC (IRC). Puedes salir y volver a entrar para generar otro personaje.\n");
+			jugador.escribir("Elimina a tus oponentes. AniquÃ­lalos. ErradÃ­calos. OblitÃ©ralos. Haz que cesen de ser, eso es todo. Si son ellos los que lo hacen contigo, podrÃ¡s resucitar, para no tener que crear tu personaje otra vez. Si quieres salir, simplemente desconecta (AGE, telnet) o cierra el DCC (IRC). Puedes salir y volver a entrar para generar otro personaje.\n");
 			
 			jugador.waitKeyPress();
 
@@ -103,14 +100,14 @@
 					Player p = pl.get(i);
 					if ( p.getState() == Mobile.DISABLED && p.getTitle() != null && p.getTitle().equalsIgnoreCase(nombre) )
 					{
-						cl.escribir("¡Bienvenido de vuelta!\n");
+						cl.escribir("Â¡Bienvenido de vuelta!\n");
 						p.setNewState ( Mobile.IDLE , 1 );
 						return p;
 					}
 					//not disabled?
 					else if ( p.getTitle() != null && p.getTitle().equalsIgnoreCase(nombre) )
 					{
-						cl.escribir("Escoge otro nombre, ése ya está cogido...\n");
+						cl.escribir("Escoge otro nombre, Ã©se ya estÃ¡ cogido...\n");
 						already_exists_not_disabled = true;
 						break;
 					}
@@ -123,13 +120,13 @@
 			}
 			
 	
-			cl.escribir("¡Bienvenido!\n");
+			cl.escribir("Â¡Bienvenido!\n");
 			Player p = world.createPlayerFromTemplate(cl);
 			p.setPlayerName ( nombre );
 			
 			//adv. player creation
 		
-			p.escribir("Asigna puntos a los diferentes atributos pulsando el número correspondiente.\n");
+			p.escribir("Asigna puntos a los diferentes atributos pulsando el nÃºmero correspondiente.\n");
 			
 			
 			
@@ -184,16 +181,16 @@
 							}
 							else
 							{
-								p.escribir("No puedes quitar puntos a esa característica.\n");
+								p.escribir("No puedes quitar puntos a esa caracterÃ­stica.\n");
 							}
 						}
 					}
 					catch ( NumberFormatException nfe )
 					{
-						p.escribir("Por favor, introduce un número entre 1 y 12.\n");
+						p.escribir("Por favor, introduce un nÃºmero entre 1 y 12.\n");
 					}
 				}
-				p.escribir("Tus características son: \n");
+				p.escribir("Tus caracterÃ­sticas son: \n");
 				p.escribir( "FUE (" + stats[0] + ")\n" );
 				p.escribir( "CON (" + stats[1] + ")\n" );
 				p.escribir( "INT (" + stats[2] + ")\n" );
@@ -206,7 +203,7 @@
 				while ( !subloopdone )
 				{
 				
-					p.escribir("Teclea C para continuar y confirmar esas características o V para volver a fijarlas.\n");
+					p.escribir("Teclea C para continuar y confirmar esas caracterÃ­sticas o V para volver a fijarlas.\n");
 				
 					String entrada = cl.getInput(null);
 					if (entrada==null) end();
@@ -231,7 +228,7 @@
 			//{stats=stat array}
 		
 			
-			p.escribir("Elige las habilidades en las que estarás versado pulsando el número correspondiente.\n");
+			p.escribir("Elige las habilidades en las que estarÃ¡s versado pulsando el nÃºmero correspondiente.\n");
 			
 			boolean [] skills;
 			
@@ -256,7 +253,7 @@
 					p.escribir("[" + ((skills[6])?"*":" ") + "] Escudo " + "[13:Dar, 14:Quitar]\n");
 					p.escribir("[" + ((skills[7])?"*":" ") + "] Magia antimagia " + "[15:Dar, 16:Quitar]\n");
 					p.escribir("[" + ((skills[8])?"*":" ") + "] Magia natural " + "[17:Dar, 18:Quitar]\n");
-					p.escribir("[" + ((skills[9])?"*":" ") + "] Conjuración " + "[19:Dar, 20:Quitar]\n");
+					p.escribir("[" + ((skills[9])?"*":" ") + "] ConjuraciÃ³n " + "[19:Dar, 20:Quitar]\n");
 					p.escribir("[" + ((skills[10])?"*":" ") + "] Magia mental " + "[21:Dar, 22:Quitar]\n");
 					p.escribir("[" + ((skills[11])?"*":" ") + "] Defensa " + "[23:Dar, 24:Quitar]\n");
 				
@@ -285,7 +282,7 @@
 							}
 							else
 							{
-								p.escribir("Esa habilidad ya está seleccionada.");
+								p.escribir("Esa habilidad ya estÃ¡ seleccionada.");
 							}
 						}
 						else
@@ -298,13 +295,13 @@
 							}
 							else
 							{
-								p.escribir("Esa habilidad ya está deseleccionada.\n");
+								p.escribir("Esa habilidad ya estÃ¡ deseleccionada.\n");
 							}
 						}
 					}
 					catch ( NumberFormatException nfe )
 					{
-						p.escribir("Por favor, introduce un número entre 1 y 24.\n");
+						p.escribir("Por favor, introduce un nÃºmero entre 1 y 24.\n");
 					}
 				}
 				
@@ -318,7 +315,7 @@
 				p.escribir("[" + ((skills[6])?"*":" ") + "] Escudo " + "\n");
 				p.escribir("[" + ((skills[7])?"*":" ") + "] Magia antimagia " + "\n");
 				p.escribir("[" + ((skills[8])?"*":" ") + "] Magia natural " + "\n");
-				p.escribir("[" + ((skills[9])?"*":" ") + "] Conjuración " + "\n");
+				p.escribir("[" + ((skills[9])?"*":" ") + "] ConjuraciÃ³n " + "\n");
 				p.escribir("[" + ((skills[10])?"*":" ") + "] Magia mental " + "\n");
 				p.escribir("[" + ((skills[11])?"*":" ") + "] Defensa " + "\n");
 				
@@ -327,7 +324,7 @@
 				while ( !subloopdone )
 				{
 				
-					p.escribir("Teclea C para continuar y confirmar esas características o V para volver a fijarlas.\n");
+					p.escribir("Teclea C para continuar y confirmar esas caracterÃ­sticas o V para volver a fijarlas.\n");
 				
 					String entrada = cl.getInput(null);
 					if (entrada==null) end();
@@ -352,7 +349,7 @@
 			//{skills = skill array}
 			
 			
-			p.escribir("Elige los objetos con los que empezarás pulsando el número correspondiente.\n");
+			p.escribir("Elige los objetos con los que empezarÃ¡s pulsando el nÃºmero correspondiente.\n");
 			
 			boolean [] items;
 			
@@ -370,13 +367,13 @@
 				
 					p.escribir("[" + ((items[0])?"*":" ") + "] Espada corta " + "[1:Dar, 2:Quitar]\n");
 					p.escribir("[" + ((items[1])?"*":" ") + "] Hacha de mano " + "[3:Dar, 4:Quitar]\n");
-					p.escribir("[" + ((items[2])?"*":" ") + "] Bastón golbuniano " + "[5:Dar, 6:Quitar]\n");
+					p.escribir("[" + ((items[2])?"*":" ") + "] BastÃ³n golbuniano " + "[5:Dar, 6:Quitar]\n");
 					p.escribir("[" + ((items[3])?"*":" ") + "] Alabarda pesada " + "[7:Dar, 8:Quitar]\n");
 					p.escribir("[" + ((items[4])?"*":" ")+ "] Daga puntiaguda " + "[9:Dar, 10:Quitar]\n");
 					p.escribir("[" + ((items[5])?"*":" ") + "] Escudo redondo " + "[11:Dar, 12:Quitar]\n");
 					p.escribir("[" + ((items[6])?"*":" ") + "] Cota de malla " + "[13:Dar, 14:Quitar]\n");
 					p.escribir("[" + ((items[7])?"*":" ") + "] Yelmo de hierro " + "[15:Dar, 16:Quitar]\n");
-					//p.escribir("[" + ((items[9])?"*":" ") + "] Amuleto de protección " + "[19:Dar, 20:Quitar]\n");
+					//p.escribir("[" + ((items[9])?"*":" ") + "] Amuleto de protecciÃ³n " + "[19:Dar, 20:Quitar]\n");
 					//p.escribir("[" + ((items[10])?"*":" ") + "] Amuleto acumulador " + "[21:Dar, 22:Quitar]\n");
 				
 					p.escribir("Quedan " + pointsLeft + " objetos por elegir.\n");
@@ -405,7 +402,7 @@
 							}
 							else
 							{
-								p.escribir("Ese objeto ya está seleccionado.");
+								p.escribir("Ese objeto ya estÃ¡ seleccionado.");
 							}
 						}
 						else
@@ -418,26 +415,26 @@
 							}
 							else
 							{
-								p.escribir("Ese objeto ya está deseleccionado.\n");
+								p.escribir("Ese objeto ya estÃ¡ deseleccionado.\n");
 							}
 						}
 					}
 					catch ( NumberFormatException nfe )
 					{
-						p.escribir("Por favor, introduce un número entre 1 y 16.\n");
+						p.escribir("Por favor, introduce un nÃºmero entre 1 y 16.\n");
 					}
 				}
 				
 				p.escribir("Tus objetos son: \n");
 				p.escribir("[" + ((items[0])?"*":" ") + "] Espada corta " + "\n");
 				p.escribir("[" + ((items[1])?"*":" ") + "] Hacha de mano " + "\n");
-				p.escribir("[" + ((items[2])?"*":" ") + "] Bastón golbuniano " + "\n");
+				p.escribir("[" + ((items[2])?"*":" ") + "] BastÃ³n golbuniano " + "\n");
 				p.escribir("[" + ((items[3])?"*":" ") + "] Alabarda pesada " + "\n");
 				p.escribir("[" + ((items[4])?"*":" ") + "] Daga puntiaguda " + "\n");
 				p.escribir("[" + ((items[5])?"*":" ") + "] Escudo redondo " + "\n");
 				p.escribir("[" + ((items[6])?"*":" ") + "] Cota de malla " + "\n");
 				p.escribir("[" + ((items[7])?"*":" ") + "] Yelmo de hierro " + "\n");
-				//p.escribir("[" + ((items[9])?"*":" ") + "] Amuleto de protección " + "\n");
+				//p.escribir("[" + ((items[9])?"*":" ") + "] Amuleto de protecciÃ³n " + "\n");
 				//p.escribir("[" + ((items[10])?"*":" ") + "] Amuleto acumulador " + "\n");
 				
 				boolean subloopdone = false;
@@ -445,7 +442,7 @@
 				while ( !subloopdone )
 				{
 				
-					p.escribir("Teclea C para continuar y confirmar esas características o V para volver a fijarlas.\n");
+					p.escribir("Teclea C para continuar y confirmar esas caracterÃ­sticas o V para volver a fijarlas.\n");
 				
 					String entrada = cl.getInput(null);
 					if (entrada==null) end();
@@ -492,7 +489,7 @@
 			p.setSkill( "escudo"                , ((skills[6])? SAB*15 : 1 ) );
 			p.setSkill( "magia antimagia"                , ((skills[7])? SAB*15 : 1 ) );
 			p.setSkill( "magia natural"                , ((skills[8])? SAB*15 : 1 ) );
-			p.setSkill( "conjuración"                , ((skills[9])? SAB*15 : 1 ) );
+			p.setSkill( "conjuraciÃ³n"                , ((skills[9])? SAB*15 : 1 ) );
 			p.setSkill( "magia mental"                , ((skills[10])? SAB*15 : 1 ) );
 			p.setSkill( "defensa"                , ((skills[11])? SAB*15 : 1 ) );
 			
@@ -526,7 +523,7 @@
 				}
 					
 				if ( items[2] )
-					p.addItem(world.addCloneOfItem(world.getItem("Bastón golbuniano")));
+					p.addItem(world.addCloneOfItem(world.getItem("BastÃ³n golbuniano")));
 			
 				if ( items[3] )
 					p.addItem(world.addCloneOfItem(world.getItem("Alabarda pesada")));

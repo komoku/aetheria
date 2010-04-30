@@ -47,6 +47,7 @@ public class ServerProxy extends Thread implements ARSPConstants
 				{
 				    print(linea);
 				    print("\r\n");
+				    //System.err.println("ServerProxy says: " + linea);
 				}
 
 			    };         
@@ -382,6 +383,8 @@ public class ServerProxy extends Thread implements ARSPConstants
 					break;
 				}
 				StringTokenizer sto = new StringTokenizer ( linea );
+				//System.err.println("String: " + linea + " (len " + linea.length() + ")");
+				if ( linea.length() == 0 ) continue;
 				String token = sto.nextToken();
 				if ( token.equalsIgnoreCase ( VISUALCONF_INIT_LINE ) )
 				{

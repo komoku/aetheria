@@ -1056,7 +1056,7 @@ class MDIMenuBar extends JMenuBar
 					{
 						SwingRemoteClientWindow srcw = new SwingRemoteClientWindow( thePanel );
 						p.add(srcw);
-
+						srcw.toFront();
 					}
 				}
 		);

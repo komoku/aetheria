@@ -16,7 +16,7 @@ public class SwingRemoteClientWindow extends JInternalFrame
 
 
 	private JTextField tfIp = new JTextField("127.0.0.1");
-	private JTextField tfPuerto = new JTextField("8010");
+	private JTextField tfPuerto = new JTextField("8009");
 	private JButton botonConectar = new JButton("Conectar");
 	private JTextPane logPane;
 	private JList partidasList;
@@ -27,6 +27,8 @@ public class SwingRemoteClientWindow extends JInternalFrame
 	
 	private JDesktopPane escritorio;
 	
+	private JTabbedPane panelFichas;
+	
 	public JDesktopPane getEscritorio()
 	{
 		return escritorio;
@@ -35,7 +37,7 @@ public class SwingRemoteClientWindow extends JInternalFrame
 	public void initPartidasTab ( Vector partidas , Vector servicios )
 	{
 		partidasList.setListData(partidas);
-		((JTabbedPane)getContentPane()).addTab ( "Partidas" , curGamesTab );
+		panelFichas.addTab ( "Partidas" , curGamesTab );
 		if ( servicios.contains ( "gamejoin" ) )
 		{
 			botonJoinear.setEnabled(true);
@@ -44,7 +46,7 @@ public class SwingRemoteClientWindow extends JInternalFrame
 		{
 			botonJoinear.setEnabled(false);
 		}
-		((JTabbedPane)getContentPane()).setSelectedComponent(curGamesTab);
+		panelFichas.setSelectedComponent(curGamesTab);
 	}
 
 	public SwingRemoteClientWindow ( JDesktopPane escritorio )
@@ -56,8 +58,11 @@ public class SwingRemoteClientWindow extends JInternalFrame
 		
 		setSize(400,400);
 	
-		JTabbedPane panelFichas = new JTabbedPane();
-		setContentPane ( panelFichas );
+		panelFichas = new JTabbedPane();
+		JPanel contentPane = new JPanel();
+		setContentPane ( contentPane );
+		contentPane.setLayout(new BorderLayout());
+		contentPane.add(panelFichas,BorderLayout.CENTER);
 		
 		JPanel statusTab = new JPanel( new GridLayout ( 2 , 1 ) );
 		

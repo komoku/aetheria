@@ -7,35 +7,37 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
+import eu.irreality.age.util.xml.DOMUtils;
+
 import eu.irreality.age.debug.Debug;
 
 public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstants
 {
 
 
-	
+
 	private Hashtable colorCodesTable = new Hashtable();
-	
+
 	//options by default
 	boolean opt_sound = false;
 	boolean opt_images = false;
 	boolean opt_color = false;
 	boolean opt_title = false;
-	
+
 	private World mundo;
-	
+
 	private Thread asyncModeThread;
-	
-        private SoundClient sh;
-        
-    	public String getColorCode ( String colorType )
-    	{
-    		String code = (String) colorCodesTable.get(colorType);
-    		Debug.println("CLPROXY CODEGET" + code);
-    		if ( code == null ) return "";
-    		else return code;
-    	}
-        
+
+	private SoundClient sh;
+
+	public String getColorCode ( String colorType )
+	{
+		String code = (String) colorCodesTable.get(colorType);
+		Debug.println("CLPROXY CODEGET" + code);
+		if ( code == null ) return "";
+		else return code;
+	}
+
 	public boolean isColorEnabled()
 	{ return opt_color; 
 	}
@@ -48,7 +50,7 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 	public boolean isTitleEnabled()
 	{ return opt_title; 
 	}
-	
+
 	/**
 	 * @deprecated Use {@link #clearScreen()} instead
 	 */
@@ -115,13 +117,13 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 		pw.println(FORCE_INPUT+" "+output_enabled+s);
 		pw.flush();
 	}
-	
+
 	boolean clientHasDisconnected=false;
 	public boolean isDisconnected()
 	{
 		return clientHasDisconnected;
 	}
-	
+
 	//blocking:
 	public String getInput(Player p)
 	{
@@ -141,13 +143,13 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 					str = br.readLine();
 				}
 				Debug.println("Line read is " + str);
-				
+
 				if ( str == null )
 				{
 					clientHasDisconnected=true;
 					return null;
 				}				
-				
+
 				StringTokenizer st = new StringTokenizer ( str );
 				String cmd;
 				if ( st.hasMoreTokens() )
@@ -218,14 +220,14 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 			Debug.println(ioe);ioe.printStackTrace();
 		}
 	}
-	
+
 	//multim
 	public SoundClient getSoundClient()
 	{
 		return sh; //el sound client proxy.
 	}
-	
-	
+
+
 	public void insertCenteredIcon(String fname)
 	{
 		pw.println(INSERT_ICON + " " + "centered" + " " + fname);
@@ -257,7 +259,7 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 	public boolean isSoundEnabled()
 	{ return opt_sound; 
 	}
-	
+
 	private Socket sock;
 	private InputStream is;
 	private OutputStream os;	
@@ -265,72 +267,73 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 	private BufferedReader br;
 	private boolean asynchronous;
 	private LinkedList inputQueue;
-	
+
 	public AGEClientProxy ( java.net.Socket s )
 	{
-		
-                    try
-        {
-            sh = new AGESoundClientProxy(s);
-        }
-        catch ( Throwable e )
-        {
-            e.printStackTrace();
-        }
-            
+
+		try
+		{
+			sh = new AGESoundClientProxy(s);
+		}
+		catch ( Throwable e )
+		{
+			e.printStackTrace();
+		}
+
 		this.sock = s;
-		
+
 		try 
 		{
-      		if (s != null) 
+			if (s != null) 
 			{
-        		br = new BufferedReader(new InputStreamReader((is=new BufferedInputStream(sock.getInputStream(),100000))));         
-        		pw = new PrintWriter(new OutputStreamWriter((os=new BufferedOutputStream(sock.getOutputStream(),100000))))
-			    {
-				public void println(String linea)
+				br = new BufferedReader(new InputStreamReader((is=new BufferedInputStream(sock.getInputStream(),100000))));         
+				pw = new PrintWriter(new OutputStreamWriter((os=new BufferedOutputStream(sock.getOutputStream(),100000))))
 				{
-				    print(linea);
-				    print("\r\n");
-				}
-			    }       ;  
+					public void println(String linea)
+					{
+						print(linea);
+						print("\r\n");
+						//System.err.println("ClientProxy says: " + linea);
+					}
+				}       ;  
 			}
-		
+
 			//init
 			Debug.println("Calling getClientType()");
 			try
-			    {
-			Thread.currentThread().sleep(1000);
-			    }
+			{
+				Thread.currentThread().sleep(1000);
+			}
 			catch ( InterruptedException ie )
-			    {
+			{
 				;
-			    }
+			}
 			Debug.println("Now really calling it");
 
 			getClientType();
 			Debug.println("Returning from proxy constructor.");
-    	
+
 		} 
 		catch (Exception e) 
 		{
-      		Debug.println("Error: " + e);
+			Debug.println("Error: " + e);
 			e.printStackTrace();
-    	}
+		}
 
-		
+
 	}
-	
+
 	public void getClientType() throws IOException
 	{
 		Debug.println("Sending client type request.\n");
 		pw.println( CLIENT_TYPE_REQUEST );
-		pw.println( "" );
+		//pw.println( "" );
 		pw.flush();
 		String linea = br.readLine();
 		StringTokenizer st = new StringTokenizer ( linea );
 		String tok1;
 		if ( st.hasMoreTokens() ) tok1 = st.nextToken();
-			else tok1="";
+		else tok1="";
 		if ( tok1.equalsIgnoreCase ( CLIENT_TYPE_REPLY ) )
 		{
 			StringTokenizer st2 = new StringTokenizer ( st.nextToken("").trim() , ":" );
@@ -374,21 +377,21 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 				}
 			}
 		}
-	
+
 	}
-	
+
 	public void getColorCodesFromClient() throws IOException
 	{
-	
+
 		pw.println( COLORCODE_REQUEST );
 		pw.flush();
 		String tok1="";
 		while ( !tok1.equalsIgnoreCase(COLORCODE_INFO_BEGIN) )
 		{
-		String linea = br.readLine();
-		StringTokenizer st = new StringTokenizer ( linea );
-		if ( st.hasMoreTokens() ) tok1 = st.nextToken();
-		else tok1="";
+			String linea = br.readLine();
+			StringTokenizer st = new StringTokenizer ( linea );
+			if ( st.hasMoreTokens() ) tok1 = st.nextToken();
+			else tok1="";
 
 			if ( tok1.equalsIgnoreCase ( COLORCODE_INFO_BEGIN ) )
 			{
@@ -436,7 +439,7 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 								{
 									inputColorCode=tok3;
 								}			
-								*/
+								 */
 								//agregar código de color
 								colorCodesTable.put(tok2.toLowerCase(),tok3);
 								Debug.println("To hashtable: "+tok2.toLowerCase());
@@ -466,7 +469,7 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 				Debug.println("Colorcode info end marker received.");	
 				return;
 				//end received
-					
+
 			} //end if is begin
 			else if ( tok1.equalsIgnoreCase(UNRECOGNIZED_MESSAGE))
 			{
@@ -480,38 +483,39 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 			}
 		} //end while is not begin
 	}
-	
+
 	public void bindToWorld ( World mundo )
 	{
-		
+
 		this.mundo = mundo;
-		
+
 		try
 		{
-		
-			//send world's visual configuration
-			
-			Debug.println("Sending visconf.");
-							
 
-			
+			//send world's visual configuration
+
+			Debug.println("Sending visconf.");
+
+
+
 			try
 			{
-			
+
 				//informar de direct. de mundo
 				pw.println ( WORLD_DIR + " " + mundo.getWorldDir() );
-			
+
 				//crear un Document de pacotilla sólo para poder hacer un getXMLRepresentation()
 				org.w3c.dom.Document d = null;
 				javax.xml.parsers.DocumentBuilder db = javax.xml.parsers.DocumentBuilderFactory.newInstance().newDocumentBuilder();
 				d = db.newDocument();
-			
+
 				Debug.println("Mundo: " + mundo);
 				Debug.println("VisCo: " + mundo.getVisualConfiguration());
-			
-				String elXML = mundo.getVisualConfiguration().getXMLRepresentation(d).toString();
+
+				//String elXML = mundo.getVisualConfiguration().getXMLRepresentation(d).toString();
+				String elXML = DOMUtils.nodeToString(mundo.getVisualConfiguration().getXMLRepresentation(d));
 				StringTokenizer st = new StringTokenizer ( elXML , "\n" );
-				
+
 				pw.println ( VISUALCONF_INIT_BEGIN );
 				while ( st.hasMoreTokens() )
 				{
@@ -521,36 +525,36 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 				}
 				pw.println ( VISUALCONF_INIT_END );
 				pw.flush();
-				
-				
+
+
 				try
 				{
-				
+
 					Debug.println("Gonna get color codes...\n");
-				
+
 					getColorCodesFromClient();
-					
+
 					Debug.println("Color codes succ'flly gotten.\n");
-					
+
 				}
 				catch ( IOException ioe )
 				{
 					Debug.println(ioe); ioe.printStackTrace();
 				}
-				
+
 			}
 			catch ( javax.xml.parsers.ParserConfigurationException pce )
 			{
 				Debug.println(pce);
 			}
-			
-			
+
+
 			//now, send world's multimedia file list to propose a download.
-			
+
 			List l = mundo.getFileList();
 			if ( l != null && l.size() > 0 )
 			{
-			
+
 				pw.println(FILE_LIST_BEGIN);
 				for ( int k = 0 ; k < l.size() ; k++ )
 				{
@@ -558,26 +562,26 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 				}
 				pw.println(FILE_LIST_END);
 				pw.flush();
-			
+
 			}
-			
+
 			//filegets will be parsed on normal input-request loops
-			
-			
-			
-		
+
+
+
+
 			write("Welcome to denebola [port " + sock.getLocalPort() + "] running the Aetheria Game Engine.\n");
 			mundo.addNewPlayerASAP ( this );
 			Debug.println("Welcoming and adding player.\n");
-			
+
 		}
 		catch ( XMLtoWorldException e )
 		{
 			Debug.println("Couldn't: XMLtoWorldException " + e );
 		}
-		
+
 	}
-	
+
 	private synchronized void setSynchronousMode()
 	{
 		if ( asyncModeThread != null )
@@ -625,7 +629,7 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 								clientHasDisconnected=true;
 								break;
 							}
-							
+
 							StringTokenizer st = new StringTokenizer ( str );
 							String cmd = st.nextToken();
 							String args;
@@ -673,9 +677,9 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 				{
 					FileInputStream fis = new FileInputStream ( f );
 					byte[] barr = new byte[(int)f.length()];
-					
+
 					//fis.read(barr);
-				
+
 					Debug.println("Reading file from file input stream.");
 					Debug.println("To read " + barr.length + " bytes from input stream.");
 					int lei = 0;
@@ -684,16 +688,16 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 						lei += fis.read ( barr , lei , barr.length-lei );
 						Debug.println("Currently read " + lei + " bytes.");
 					}
-					
+
 					synchronized(this) //que no se cuelen escrituras entre header y fichero
 					{
 						pw.println(FILE_HEADER_LINE + " " + l.get(k) + " " + f.length() );
 						Debug.println("WROTE: "+ FILE_HEADER_LINE + " " + l.get(k) + " " + f.length());
-						
+
 						/*
 						for(;;)
 						{
-							
+
 							String linea = br.readLine();
 							Debug.println("Expecting file acc/rej. Read: " + linea);
 							StringTokenizer lt = new StringTokenizer ( linea );
@@ -713,23 +717,23 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 								Debug.println("File ignored...");
 								parseRequest(linea);
 							}
-							
+
 						}
-						*/
-						
+						 */
+
 						//File accepted. Binary mode set by client.
-									
+
 						pw.flush();
 						Debug.println("Writing length " + barr.length + " data to socket stream.");
 						Debug.println("Socket buffer sizes are " + sock.getSendBufferSize() + " and " + sock.getReceiveBufferSize() );
-						
+
 						//os.write(barr);
 						//pw.print(new String(barr));
 						//os.write(barr);
 						os.write(barr);
 						//for ( int i = 0 ; i < barr.length ; i++ )
 						//	pw.print ( (char) barr[i] );
-						
+
 						os.flush();
 						Debug.println("WROTE: "+new String(barr));
 						//pw.flush();

@@ -4972,7 +4972,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						}
 						else
 						{
-							write( io.getColorCode("information") + "Tienes libre " + current.constructName2OneItem(this) );
+							write( io.getColorCode("information") + "Tienes libre " + current.constructName2OneItem(this) + "." + io.getColorCode("reset")  + "\n" );
 						}
 						
 					}
@@ -5136,7 +5136,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						}
 						else
 						{
-							write( io.getColorCode("information") + "Tienes libre " + current.constructName2OneItem(this) );
+							write( io.getColorCode("information") + "Tienes libre " + current.constructName2OneItem(this) + "." + io.getColorCode("reset")  + "\n" );
 						}
 						
 					}
