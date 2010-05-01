@@ -1453,12 +1453,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			 habitacionActual.removeMob(this);
 			habitacionActual = nuevaHabitacion;
-			habitacionActual.addMob(this);
+			if ( habitacionActual != null )
+				habitacionActual.addMob(this);
 		}
 		else
 		{
 			habitacionActual = nuevaHabitacion;
-			if ( !habitacionActual.hasMobile(this) )
+			if ( habitacionActual != null && !habitacionActual.hasMobile(this)  )
 				habitacionActual.addMob(this);
 		}
 	}
