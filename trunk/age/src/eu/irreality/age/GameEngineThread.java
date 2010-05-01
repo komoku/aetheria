@@ -41,7 +41,7 @@ public class GameEngineThread extends Thread
 	
 	/*¿Tiempo real?*/
 	boolean realTimeEnabled;
-	long realTimeQuantum;
+	long realTimeQuantum = DEFAULT_REAL_TIME_QUANTUM;
 
 	public GameEngineThread ( World theWorld , AGELoggingWindow ventana , boolean realTimeEnabled )
 	{
@@ -172,6 +172,7 @@ public class GameEngineThread extends Thread
 		ButtonGroup bg = new ButtonGroup();
 		bg.add ( itemTurns );
 		bg.add ( itemRealTime );
+		if ( realTimeEnabled ) itemRealTime.setSelected(true);
 		itemTurns.addActionListener ( new ActionListener()
 		{
 			public void actionPerformed ( ActionEvent evt )
@@ -184,7 +185,7 @@ public class GameEngineThread extends Thread
 			public void actionPerformed ( ActionEvent evt )
 			{
 				setRealTimeEnabled(true);
-				setRealTimeQuantum(DEFAULT_REAL_TIME_QUANTUM);
+				//setRealTimeQuantum(DEFAULT_REAL_TIME_QUANTUM);
 			}
 		} );
 		timeConfigurationMenu.add ( itemTurns );
@@ -213,6 +214,7 @@ public class GameEngineThread extends Thread
 		//exec general server intro
 		try
 		{
+			System.err.println("Execcan serverintro for world " + theWorld);
 			//System.err.println("I'm singing in the rain...");
 			theWorld.execCode("serverintro",""); //EVA
 			//System.err.println("Just singing in the rain...");
@@ -284,7 +286,7 @@ public class GameEngineThread extends Thread
 			
 			try
 			{
-				Debug.println("Going to update.");
+				System.err.println("Going to update.");
 				theWorld.update();
 			}
 			catch ( Exception e )
@@ -333,7 +335,9 @@ public class GameEngineThread extends Thread
 	{
 				try
 				{
+					System.err.println("Waitan " + realTimeQuantum);
 					wait ( realTimeQuantum );
+					System.err.println("Waited");
 				}
 				catch ( InterruptedException intex )
 				{

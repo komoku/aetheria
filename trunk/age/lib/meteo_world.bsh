@@ -63,8 +63,9 @@ void meteo_serverintro()
 
 void serverintro() 
 {
-	System.out.println("Server Intro");
-	meteo_serverintro();
+	//System.out.println("Server Intro");
+	//meteo_serverintro();
+	libinvoke ( "serverintro" , new Object[] { } );
 }
 
 

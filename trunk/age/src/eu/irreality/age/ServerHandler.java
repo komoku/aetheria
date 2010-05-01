@@ -558,7 +558,7 @@ public class ServerHandler //Singleton!
 					GameEngineThread maquinaEstados =
 						new GameEngineThread ( 
 							theWorld,
-							slw , false );
+							slw , true ); //dedicated games are now real time by default
 					
 					maquinaEstados.start();	
 		
