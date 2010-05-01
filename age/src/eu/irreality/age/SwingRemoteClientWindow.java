@@ -37,10 +37,13 @@ public class SwingRemoteClientWindow extends JInternalFrame
 	public void initPartidasTab ( Vector partidas , Vector servicios )
 	{
 		partidasList.setListData(partidas);
+		if ( partidas.size() > 0 )
+			partidasList.setSelectedIndex(0);
 		panelFichas.addTab ( "Partidas" , curGamesTab );
 		if ( servicios.contains ( "gamejoin" ) )
 		{
 			botonJoinear.setEnabled(true);
+			this.getRootPane().setDefaultButton(botonJoinear);
 		}
 		else
 		{
@@ -56,7 +59,7 @@ public class SwingRemoteClientWindow extends JInternalFrame
 		
 		this.escritorio = escritorio;
 		
-		setSize(400,400);
+		setSize(550,550);
 	
 		panelFichas = new JTabbedPane();
 		JPanel contentPane = new JPanel();
@@ -111,9 +114,11 @@ public class SwingRemoteClientWindow extends JInternalFrame
 				{
 					if ( arsps != null )
 					{
-
+						if ( partidasList.getSelectedIndex() != -1 )
+						{
 							arsps.joinGame ( partidasList.getSelectedIndex() + 1 );
-
+							SwingRemoteClientWindow.this.dispose();
+						}
 					}
 				}
 			}
@@ -196,6 +201,7 @@ public class SwingRemoteClientWindow extends JInternalFrame
 	
 	
 		setVisible(true);
+		this.getRootPane().setDefaultButton(botonConectar);
 	
 	
 	}

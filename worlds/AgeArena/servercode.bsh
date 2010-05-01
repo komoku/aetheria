@@ -5,6 +5,7 @@
 
 		void serverintro()
 		{
+			libinvoke("serverintro",new Object[]{}); //weather serverintro
 			//obj es el mundo
 			obj.escribir("El mundo y la game engine thread están en marcha (OK).\n");
 			Thread.currentThread().setRealTimeQuantum(300);

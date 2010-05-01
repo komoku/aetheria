@@ -21,8 +21,8 @@
 	<Font filename="bookos.ttf" name="Times New Roman Bold" size="15"/>
 	</VisualConfiguration>
 	<Code language="BeanShell">
+		include("lib/meteo.bsh");	
 		source ( world.getWorldPath() + "servercode.bsh" );
-		source("lib/meteo.bsh");	
 	</Code>
 	<PlayerGeneration>
 		<Template id="20000000" name="Nuestro Héroe" extends="0" clones="0" type="null" properName="true" hp="100" mp="100" maxhp="100" maxmp="100" gender="true">
