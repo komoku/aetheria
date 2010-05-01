@@ -1328,7 +1328,7 @@ public class Player extends Mobile implements Informador
 					{
 						Item ourItem = ((Item)patternMatchVectorSing.elementAt(0));
 						write( io.getColorCode("action") + ((Item)patternMatchVectorSing.elementAt(0)).abrir() + io.getColorCode("reset") + "\n" );
-						habitacionActual.informAction(this,ourItem,null,"$1 intenta abrir $2.\n","$1 intenta abrirte.\n","Intentas abrir $2.\n",false);
+						habitacionActual.reportAction(this,ourItem,null,"$1 intenta abrir $2.\n","$1 intenta abrirte.\n","Intentas abrir $2.\n",false);
 						mirado=true;
 					}	
 					else if ( patternMatchVectorPlur.size() > 0 )
@@ -1344,7 +1344,7 @@ public class Player extends Mobile implements Informador
 
 							write( "Intentas abrir " + ourItem.constructName2True ( 1 , this ) + ": " );
 
-							habitacionActual.informAction(this,ourItem,null,"$1 intenta abrir $2.\n","$1 intenta abrirte.\n","Intentas abrir $2.\n",false);
+							habitacionActual.reportAction(this,ourItem,null,"$1 intenta abrir $2.\n","$1 intenta abrirte.\n","Intentas abrir $2.\n",false);
 
 
 							write( io.getColorCode("action") + ((Item)ourItem).abrir() + io.getColorCode("reset") + "\n"  );
@@ -1366,7 +1366,7 @@ public class Player extends Mobile implements Informador
 					{
 						Item ourItem = ((Item)patternMatchVectorSing.elementAt(0));
 						mirado=true;
-						habitacionActual.informAction(this,ourItem,null,"$1 intenta abrir $2.\n","$1 intenta abrirte.\n","Intentas abrir $2.\n",false);
+						habitacionActual.reportAction(this,ourItem,null,"$1 intenta abrir $2.\n","$1 intenta abrirte.\n","Intentas abrir $2.\n",false);
 						write( io.getColorCode("action") +  ((Item)patternMatchVectorSing.elementAt(0)).abrir() + io.getColorCode("reset") + "\n" );
 					}	
 					else if ( patternMatchVectorPlur.size() > 0 )
@@ -1381,7 +1381,7 @@ public class Player extends Mobile implements Informador
 
 
 							write( "Tratas de abrir " + ourItem.constructName2True ( 1 , this ) + " que llevas: " );
-							habitacionActual.informAction(this,ourItem,null,"$1 intenta abrir $2 que lleva.\n","$1 intenta abrirte.\n","Intentas abrir $2 que llevas.\n",false);
+							habitacionActual.reportAction(this,ourItem,null,"$1 intenta abrir $2 que lleva.\n","$1 intenta abrirte.\n","Intentas abrir $2 que llevas.\n",false);
 							write( io.getColorCode("action") + ((Item)ourItem).abrir() + io.getColorCode("reset") + "\n" );
 
 						}	
@@ -1441,7 +1441,7 @@ public class Player extends Mobile implements Informador
 					{
 						Item ourItem = ((Item)patternMatchVectorSing.elementAt(0));
 						write( io.getColorCode("action") + ((Item)patternMatchVectorSing.elementAt(0)).cerrar() + io.getColorCode("reset") + "\n" );
-						habitacionActual.informAction(this,ourItem,null,"$1 intenta cerrar $2.\n","$1 intenta cerrarte.\n","Intentas cerrar $2.\n",false);
+						habitacionActual.reportAction(this,ourItem,null,"$1 intenta cerrar $2.\n","$1 intenta cerrarte.\n","Intentas cerrar $2.\n",false);
 						mirado=true;
 					}	
 					else if ( patternMatchVectorPlur.size() > 0 )
@@ -1456,7 +1456,7 @@ public class Player extends Mobile implements Informador
 							if ( !((Item)ourItem).getDescription(this).equals("")  )
 							{
 								write( "Intentas cerrar " + ourItem.constructName2True ( 1 , this ) + ": "  );
-								habitacionActual.informAction(this,ourItem,null,"$1 intenta cerrar $2.\n","$1 intenta cerrarte.\n","Intentas cerrar $2.\n",false);
+								habitacionActual.reportAction(this,ourItem,null,"$1 intenta cerrar $2.\n","$1 intenta cerrarte.\n","Intentas cerrar $2.\n",false);
 								write( io.getColorCode("action") + ((Item)ourItem).cerrar() + io.getColorCode("reset") +"\n" );
 							}
 						}	
@@ -1489,7 +1489,7 @@ public class Player extends Mobile implements Informador
 							if ( !ourItem.constructName2( 1 , this ).equals("") )
 							{
 								write( "Tratas de cerrar " + ourItem.constructName2True ( 1 , this ) + " que llevas: " );
-								habitacionActual.informAction(this,ourItem,null,"$1 intenta cerrar $2 que lleva.\n","$1 intenta cerrarte.\n","Intentas cerrar $2 que llevas.\n",false);
+								habitacionActual.reportAction(this,ourItem,null,"$1 intenta cerrar $2 que lleva.\n","$1 intenta cerrarte.\n","Intentas cerrar $2 que llevas.\n",false);
 								write( io.getColorCode("action") + ((Item)ourItem).cerrar() + io.getColorCode("reset") + "\n" );
 							}
 						}	
@@ -2220,11 +2220,11 @@ public class Player extends Mobile implements Informador
 				writeError(ExceptionPrinter.getExceptionReport(bshte));
 			}
 
-			habitacionActual.informAction(this,null,"$1 se va hacia " + exitname + ".\n" , null , null , false );	
+			habitacionActual.reportAction(this,null,"$1 se va hacia " + exitname + ".\n" , null , null , false );	
 
 			setRoom ( mundo.getRoom(getTarget()) );
 
-			habitacionActual.informAction(this,null,"$1 llega desde " + Path.invert(exitname) + ".\n" , null , null , false );
+			habitacionActual.reportAction(this,null,"$1 llega desde " + Path.invert(exitname) + ".\n" , null , null , false );
 
 			//has entrado en nueva habitacion (habitacionActual)
 			//-> ejecutar eventos onEnterRoom	
@@ -3247,7 +3247,7 @@ public class Player extends Mobile implements Informador
 							toInform = "No crees que puedas bloquear a tiempo el golpe de $2 con " + w.constructName2OneItem(this) + ".";
 						}
 
-						habitacionActual.informAction ( this , enemigo , null , null , toInform + "\n" , true );						
+						habitacionActual.reportAction ( this , enemigo , null , null , toInform + "\n" , true );						
 
 					} //end if weapon not null
 				} //end for each weapon
@@ -3288,7 +3288,7 @@ public class Player extends Mobile implements Informador
 					toInform = enemigo.getCurrentWeapon().constructName2OneItem(this) + " de $2 está encima, no crees que puedas esquivar el ataque.";
 				}
 
-				habitacionActual.informAction ( this , enemigo , null , null , toInform + "\n" , true );	
+				habitacionActual.reportAction ( this , enemigo , null , null , toInform + "\n" , true );	
 
 
 			} //end if enemy attacking		
@@ -3659,7 +3659,7 @@ public class Player extends Mobile implements Informador
 		{
 			Item ourDoor = (Item)puertas.get(i);
 			Item ourKey = (Item)llaves.get(i);
-			habitacionActual.informAction(this,ourDoor,new Entity[]{ourKey},"$1 intenta abrir $2 con $3.\n","$1 intenta abrirte con $3.\n","Intentas abrir $2 con $3.\n",false);
+			habitacionActual.reportAction(this,ourDoor,new Entity[]{ourKey},"$1 intenta abrir $2 con $3.\n","$1 intenta abrirte con $3.\n","Intentas abrir $2 con $3.\n",false);
 			write( io.getColorCode("action") + ((Item)ourDoor).unlock(ourKey) + io.getColorCode("reset") + "\n"   );
 		}
 		return true;
@@ -4115,7 +4115,7 @@ public class Player extends Mobile implements Informador
 		{
 			Item ourDoor = (Item)puertas.get(i);
 			Item ourKey = (Item)llaves.get(i);
-			habitacionActual.informAction(this,ourDoor,new Entity[]{ourKey},"$1 intenta cerrar $2 con $3.\n","$1 intenta cerrarte con $3.\n","Intentas cerrar $2 con $3.\n",false);
+			habitacionActual.reportAction(this,ourDoor,new Entity[]{ourKey},"$1 intenta cerrar $2 con $3.\n","$1 intenta cerrarte con $3.\n","Intentas cerrar $2 con $3.\n",false);
 			write( io.getColorCode("action") + ((Item)ourDoor).lock(ourKey) + io.getColorCode("reset") + "\n"   );
 		}
 		return true;
@@ -4294,7 +4294,7 @@ public class Player extends Mobile implements Informador
 		habitacionActual.removeMob(this);	
 
 		//inform that the player's leaving. Auto, for only 3rd person will be shown.
-		habitacionActual.informActionAuto ( this , null , "$1 desaparece en un mar de irrealidad.\n" , true );
+		habitacionActual.reportActionAuto ( this , null , "$1 desaparece en un mar de irrealidad.\n" , true );
 
 
 	}
@@ -4319,7 +4319,7 @@ public class Player extends Mobile implements Informador
 
 		getIO().write("Has sido añadido al mundo.\n");
 
-		getRoom().informActionAuto(this,null,"De repente, $1 aparece de la nada.\n",false); 
+		getRoom().reportActionAuto(this,null,"De repente, $1 aparece de la nada.\n",false); 
 
 		write("Old player rejoined the game.\n");
 

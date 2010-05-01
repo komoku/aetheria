@@ -1952,7 +1952,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 					for ( int i = 0 ; i < habitaciones.size() ; i++ )
 					{
 						Room thisHabitacion = (Room) habitaciones.get(i);
-						thisHabitacion.informAction(this,null,null,"$1 se abre con llave.\n","Te abres con llave.\n","Abres con llave.\n",false);
+						thisHabitacion.reportAction(this,null,null,"$1 se abre con llave.\n","Te abres con llave.\n","Abres con llave.\n",false);
 					}
 				}
 			
@@ -2079,7 +2079,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 					for ( int i = 0 ; i < habitaciones.size() ; i++ )
 					{
 						Room thisHabitacion = (Room) habitaciones.get(i);
-						thisHabitacion.informAction(this,null,null,"$1 se cierra con llave.\n","Te cierras con llave.\n","Cierras con llave.\n",false);
+						thisHabitacion.reportAction(this,null,null,"$1 se cierra con llave.\n","Te cierras con llave.\n","Cierras con llave.\n",false);
 					}	
 						
 				}
@@ -2582,7 +2582,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		for ( int i = 0 ; i < habitaciones.size() ; i++ )
 		{
 			Room hab = (Room)habitaciones.get(i);
-			hab.informActionAuto ( source , target , objects , thirdPersonDes , self_included );
+			hab.reportActionAuto ( source , target , objects , thirdPersonDes , self_included );
 		}
 	}
 	
@@ -2592,7 +2592,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		for ( int i = 0 ; i < habitaciones.size() ; i++ )
 		{
 			Room hab = (Room)habitaciones.get(i);
-			hab.informAction ( source , target , objects , thirdPersonDes , sufferDes , execDes , self_included );
+			hab.reportAction ( source , target , objects , thirdPersonDes , sufferDes , execDes , self_included );
 		}
 	}
 	

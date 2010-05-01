@@ -214,8 +214,7 @@ public class GameEngineThread extends Thread
 		//exec general server intro
 		try
 		{
-			System.err.println("Execcan serverintro for world " + theWorld);
-			//System.err.println("I'm singing in the rain...");
+			//System.err.println("Execcan serverintro for world " + theWorld);
 			theWorld.execCode("serverintro",""); //EVA
 			//System.err.println("Just singing in the rain...");
 			theWorld.execCode("serverintro",new Object[0]); //bsh
@@ -286,7 +285,7 @@ public class GameEngineThread extends Thread
 			
 			try
 			{
-				System.err.println("Going to update.");
+				//System.err.println("Going to update.");
 				theWorld.update();
 			}
 			catch ( Exception e )
@@ -335,9 +334,7 @@ public class GameEngineThread extends Thread
 	{
 				try
 				{
-					System.err.println("Waitan " + realTimeQuantum);
 					wait ( realTimeQuantum );
-					System.err.println("Waited");
 				}
 				catch ( InterruptedException intex )
 				{
