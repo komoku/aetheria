@@ -752,17 +752,41 @@ public class World implements Informador , SupportingCode
 					) )
 			{
 				
-			
 				//that Mobile is actually a Player
-				mob[i] = new Player ( this , io , mobNode[i] ); //here is where we're setting the IO!!
-				jugadorAsignadoACliente = true;
-				addPlayer ( (Player) mob[i] );
 				
 				//if there are no player-template-nodes defined, the first player node
 				//acts as a player-template.
+				//and we call the assignPlayer method if it exists to assign a player to the client.
 				if ( playerTemplateNodes.size() == 0 )
+				{
 					playerTemplateNodes.add ( getDetachedCopy(mobNode[i]) );
+				}
 				
+				if ( !noSerCliente && !jugadorAsignadoACliente )
+				{
+					ReturnValue retval = new ReturnValue(null);
+					boolean endfound = runAssignPlayerCode(retval,io);
+					if ( retval.getRetVal() != null && !endfound )
+					{
+						jugadorAsignadoACliente = true;
+						addPlayer ( (Player)retval.getRetVal() );
+						mob[i] = ( (Player)retval.getRetVal() ); //if assignPlayer is defined, it doesn't make much sense to define several Players.
+					}
+					//player is only assigned directly if assignPlayer() method not defined or returns null.
+					else
+					{
+						mob[i] = new Player ( this , io , mobNode[i] );
+						jugadorAsignadoACliente = true;
+						addPlayer ( (Player) mob[i] );
+					}
+				}	
+				else
+				{
+					//no somos cliente, servidor dedicado.
+					mob[i] = new Player ( this , io , mobNode[i] );
+					((Player)mob[i]).setPlayerName("Player Template");
+					//we create the mob so it's not null, but we don't do addPlayer.
+				}
 				
 			}
 			else
@@ -2334,12 +2358,13 @@ public class World implements Informador , SupportingCode
 		else return new Player ( this , io , (org.w3c.dom.Element) playerTemplateNodes.get(0) );	
 	}
 	
-	public void addNewPlayerASAP ( InputOutputClient io ) throws XMLtoWorldException 
+	/**
+	 * Runs the world's BSH routine to assign a player to a client.
+	 * Return value of the routine is stored in the retval argument.
+	 * @return True if beanshell code hit end(), false if not.
+	 */
+	public boolean runAssignPlayerCode ( ReturnValue retval , InputOutputClient io )
 	{
-	
-		//if there is beanshell code to assign players, exec it
-		
-		ReturnValue retval = new ReturnValue(null);
 		boolean ejecutado = false;
 		try
 		{
@@ -2355,6 +2380,52 @@ public class World implements Informador , SupportingCode
 			writeError( bshte.printTargetError(bshte) );
 			bshte.printStackTrace();
 		}
+		return ejecutado;
+	}
+	
+	public void addNewPlayerASAP ( InputOutputClient io ) throws XMLtoWorldException 
+	{
+	
+		//if there is beanshell code to assign players, exec it
+		
+		System.err.println("addNewPlayerASAP for " + io);
+		for ( int i = 0 ; i < playerList.size() ; i++ )
+		{
+			Player pl = (Player) playerList.get(i);
+			System.err.println(pl);
+		}
+		if ( this.getMobile("Elsincara") != null )
+		{
+			System.err.println("Elsincara is on " + this.getMobile("Elsincara").getRoom());
+		}
+		if ( this.getRoom("Sala oeste") != null )
+		{
+			System.err.println(this.getRoom("Sala oeste").getMobiles());
+		}
+		if ( this.getRoom("Sala este") != null )
+		{
+			System.err.println(this.getRoom("Sala este").getMobiles());
+		}
+		
+		ReturnValue retval = new ReturnValue(null);
+		/*
+		boolean ejecutado = false;
+		try
+		{
+			Debug.println("Before exec code");
+			ejecutado = execCode( "assignPlayer" , new Object[] { io } , retval );
+			Debug.println("After exec code");
+		}
+		catch (bsh.TargetError bshte)
+		{
+			writeError("bsh.TargetError found at assignPlayer routine\n" );
+			writeError(ExceptionPrinter.getExceptionReport(bshte));
+			Debug.println ( bshte.printTargetError(bshte) );
+			writeError( bshte.printTargetError(bshte) );
+			bshte.printStackTrace();
+		}
+		*/
+		boolean ejecutado = runAssignPlayerCode(retval,io);
 		
 		if ( retval.getRetVal() != null ) //devolvió un jugador
 		{
@@ -2389,7 +2460,8 @@ public class World implements Informador , SupportingCode
 		{
 			Player pl = createPlayerFromTemplate ( io );
 			if ( pl != null )
-				playersToAdd.add ( createPlayerFromTemplate ( io ) );
+				//playersToAdd.add ( createPlayerFromTemplate ( io ) ); //TODO: why two times?
+				playersToAdd.add(pl);
 			else
 			{
 				io.write("Player template generated a null player. No player creation code [assignPlayer], player list or player templates defined?");
@@ -2468,8 +2540,9 @@ public class World implements Informador , SupportingCode
 				//Room startingRoom = p.getRoom();
 				//startingRoom.addMob ( p );	
 				Room startingRoom = getRoom(1);
-				startingRoom.addMob ( p );	
-					
+				//startingRoom.addMob ( p );	
+				p.setRoom(startingRoom);	
+				
 				addPlayer ( p );
 					
 				p.getIO().write("Has sido añadido al mundo.\n");
