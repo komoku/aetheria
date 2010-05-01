@@ -769,8 +769,14 @@ public class World implements Informador , SupportingCode
 					if ( retval.getRetVal() != null && !endfound )
 					{
 						jugadorAsignadoACliente = true;
-						addPlayer ( (Player)retval.getRetVal() );
+						//addPlayer ( (Player)retval.getRetVal() );
 						mob[i] = ( (Player)retval.getRetVal() ); //if assignPlayer is defined, it doesn't make much sense to define several Players.
+						//mob[i].setRoom(this.getRoom(1)); //TODO change this
+						playersToAdd.add(mob[i]);
+						
+						//We disable the mobile so that it doesn't get an update before it has really been added to the world (room assigned, etc.)
+						//State will be set to IDLE on adding.
+						mob[i].setNewState(Mobile.DISABLED,1);
 					}
 					//player is only assigned directly if assignPlayer() method not defined or returns null.
 					else
@@ -2388,6 +2394,7 @@ public class World implements Informador , SupportingCode
 	
 		//if there is beanshell code to assign players, exec it
 		
+		/*
 		System.err.println("addNewPlayerASAP for " + io);
 		for ( int i = 0 ; i < playerList.size() ; i++ )
 		{
@@ -2406,6 +2413,7 @@ public class World implements Informador , SupportingCode
 		{
 			System.err.println(this.getRoom("Sala este").getMobiles());
 		}
+		*/
 		
 		ReturnValue retval = new ReturnValue(null);
 		/*
@@ -2539,15 +2547,20 @@ public class World implements Informador , SupportingCode
 					
 				//Room startingRoom = p.getRoom();
 				//startingRoom.addMob ( p );	
-				Room startingRoom = getRoom(1);
+				Room startingRoom;
+				if ( p.getPropertyValueAsString("room") != null )
+					startingRoom = getRoom(p.getPropertyValueAsString("room"));
+				else
+					startingRoom = getRoom(1);
 				//startingRoom.addMob ( p );	
-				p.setRoom(startingRoom);	
+				p.setRoom(startingRoom);
+				if ( p.getState() == Mobile.DISABLED ) p.setNewState(Mobile.IDLE,1);
 				
 				addPlayer ( p );
 					
 				p.getIO().write("Has sido añadido al mundo.\n");
 			
-				p.getRoom().informActionAuto(p,null,"De repente, $1 aparece de la nada.\n",false); 
+				p.getRoom().reportActionAuto(p,null,"De repente, $1 aparece de la nada.\n",false); 
 			
 			
 				write("New player joined the game.\n");

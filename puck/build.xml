@@ -11,6 +11,7 @@
   <property name="dist" location="dist"/>
   <property name="fulldist" location="fulldist"/> <!--Distribution including AGE and PUCK-->
   <property name="worlds" location="../worlds"/>
+  <property name="moreworlds" location="../develworlds"/>
   <property name="corejar" value="PuckCore2.jar"/>
   <property name="onejar" value="PuckFull2.jar"/>
   <property name="age" value="../age/"/>
@@ -149,9 +150,10 @@
 				<exclude name="**/AgeCore.jar"/> <!--not needed in lib directory-->
 			</fileset>
 		</copy>
-		<!--<copy todir="${dist}/worlds">
-			<fileset dir="${worlds}"/>
-		</copy>-->
+		<copy todir="${dist}/worlds">
+			<fileset dir="${moreworlds}"/>
+			<!--These are specific development worlds. AGE std. worlds are added by distwithage.-->
+		</copy>
 		<!--
 		<copy todir="${dist}/help">
 			<fileset dir="${src}/help"/>

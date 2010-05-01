@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<World author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2010-04-30" moduleName="Collejaland: Prueba Multijugador" type="" version="0.1" worldDir="." worldName="Collejaland">
+<IdeMetaInf>
+<View xoffset="32.39543027062969" yoffset="12.395430270629689" zoom="3.0314331330207978"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Sala oeste" x="180" y="160"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Sala este" x="300" y="160"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.CharacterNode" name="Plantilla de jugador" x="180" y="80"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Pisapapeles" x="300" y="80"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Posavasos" x="180" y="240"/>
+</IdeMetaInf>
+<Code language="BeanShell"><![CDATA[//Este método asigna a un cliente (de alguien que se conecta a nuestra partida) un objeto de la clase Player (personaje jugador).
+Player assignPlayer ( InputOutputClient client )
+{
+    
+    //System.err.println("Fiesta " + client);
+    
+    client.clearScreen();
+    
+    //Preguntamos al jugador su nombre.
+	boolean nameDone = false;
+	String name;
+	while ( ! nameDone )
+	{	
+		client.write("Introduce tu nombre: ");
+		//cl.waitKeyPress();
+		nombre = client.getInput(null);
+				
+		if ( nombre == null ) 
+		{
+			System.out.println("Null input received.");
+			end();
+		}
+		
+		boolean already_exists_not_disabled = false;
+		
+		//mirar si es un jugador ya presente "disabled".
+		List pl = world.getPlayerList();
+		for ( int i = 0 ; i < pl.size() ; i++ )
+		{
+			Player p = pl.get(i);
+			if ( p.getState() == Mobile.DISABLED && p.getTitle() != null && p.getTitle().equalsIgnoreCase(nombre) )
+			{
+				client.write("¡Bienvenido de vuelta!\n");
+				p.setNewState ( Mobile.IDLE , 1 );
+				return p;
+			}
+			//not disabled?
+			else if ( p.getTitle() != null && p.getTitle().equalsIgnoreCase(nombre) )
+			{
+				client.write("Escoge otro nombre, ése ya está cogido...\n");
+				already_exists_not_disabled = true;
+				break;
+			}
+		}
+	
+        //si eligió un nombre que no estaba cogido, damos el proceso de nombrado por concluido			
+		if ( !already_exists_not_disabled )
+			nameDone = true;
+				
+	}
+			
+    //le damos la bienvenida
+	client.write("¡Bienvenido!\n");
+	
+    //le creamos un objeto personaje jugador desde la plantilla
+    Player p = world.createPlayerFromTemplate(client);
+    
+    //le ponemos el nombre que ha escogido
+	p.setPlayerName ( nombre );
+	
+	//habitación inicial
+	set ( p , "room" , "Sala este");
+
+    //y lo devolvemos
+    return p;
+
+}]]></Code>
+<PlayerList>
+<Player id="Plantilla de jugador"/>
+</PlayerList>
+<VisualConfiguration>
+<Colors>
+<Story color="#ccffff"/>
+<Information color="#33ffcc"/>
+<Default color="#ffffff"/>
+<Input color="#cccccc"/>
+<Description color="#ccffcc"/>
+<Foreground color="#ffffcc"/>
+<Important color="#ccffcc"/>
+<Denial color="#ff9999"/>
+<Action color="#ffccff"/>
+<Background color="#000000"/>
+<Error color="#ff0000"/>
+</Colors>
+<Font filename="" name="Courier New" size="15.0"/>
+</VisualConfiguration>
+<Rooms>
+<Room name="Sala oeste">
+<DescriptionList>
+<Description>La sala oeste que, como es natural, se halla al oeste de la sala este. Al este puedes ver un pasillo.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<PathList>
+<Path destination="Sala este" direction="este" exitTime="0" standard="true">
+<PropertyList/>
+<DescriptionList>
+<Description>Te diriges hacia el este.</Description>
+</DescriptionList>
+<CommandList/>
+</Path>
+</PathList>
+<Inventory>
+<ItemRef id="Posavasos"/>
+</Inventory>
+<MobileList/>
+<RelationshipList>
+<Relationship id="Sala este">
+<PropertyList/>
+</Relationship>
+<Relationship id="Posavasos">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+<Room name="Sala este">
+<DescriptionList>
+<Description>La sala este que, como se puede adivinar fácilmente, está al este de la sala oeste. Hay un pasillo que se dirige al oeste.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<PathList>
+<Path destination="Sala oeste" direction="oeste" exitTime="0" standard="true">
+<PropertyList/>
+<DescriptionList>
+<Description>Vas hacia el oeste.</Description>
+</DescriptionList>
+<CommandList/>
+</Path>
+</PathList>
+<Inventory>
+<ItemRef id="Pisapapeles"/>
+</Inventory>
+<MobileList/>
+<RelationshipList>
+<Relationship id="Sala oeste">
+<PropertyList/>
+</Relationship>
+<Relationship id="Pisapapeles">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+</Rooms>
+<Items>
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Pisapapeles" openable="false" unlockable="false" volume="0" weight="0">
+<SingularNames>
+<Description>pisapapeles</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>pisapapeles</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>Un pisapapeles cúbico de metal. Muy bonito.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Posavasos" openable="false" unlockable="false" volume="0" weight="0">
+<SingularNames>
+<Description>posavasos</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>posavasos</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>Un bello posavasos redondo con el Big Ben dibujado.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<RelationshipList/>
+</Item>
+</Items>
+<Mobiles>
+<Mobile gender="true" hp="10" maxhp="10" maxmp="10" mp="10" name="Plantilla de jugador">
+<SingularNames/>
+<PluralNames/>
+<SingularReferenceNames/>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">self.equals(viewer)</Condition>Eres tú. Genio y figura.</Description>
+<Description>
+<Condition language="BeanShell">!self.equals(viewer)</Condition>Su carnoso cuello te da grandes ganas de propinarle una colleja.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "comer"
+	//args: resto de la orden que introduce, por ejemplo "la seta"
+
+    if ( equals(verb,"dar") && args.toLowerCase().contains("colleja") )
+    {
+        if ( aCreature != self )
+        {
+            self.getRoom().reportAction(aCreature,self,null,"$1 le propina una impresionante colleja a $2.\n","$1 te propina una impresionante colleja.\n","Propinas una impresionante colleja a $2.\n",true);       
+        }
+        else
+        {
+            self.getRoom().reportAction(aCreature,self,null,"$1 se propina a sí mismo una impresionante auto-colleja.\n","Te propinas a ti mismo una impresionante auto-colleja.\n","Te propinas a ti mismo una impresionante auto-colleja.\n",true);       
+        }
+        end();
+    }
+
+	
+	//terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
+	//por defecto ante ella
+	//terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
+	//comando y ejecución de la acción correspondiente
+	
+}]]></Code>
+<Traits>
+<SkillList/>
+</Traits>
+<Inventory/>
+<RelationshipList/>
+</Mobile>
+</Mobiles>
+<Spells/>
+<AbstractEntities/>
+</World>

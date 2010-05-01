@@ -1993,7 +1993,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	{
 		//escribir("\n");
 		if ( text.trim().equals("") ) return;
-		habitacionActual.informActionAuto ( this , null , null , "$1 dice \"" + text + "\".\n" , true );
+		habitacionActual.reportActionAuto ( this , null , null , "$1 dice \"" + text + "\".\n" , true );
 		//setNewState( 1 , 1 );
 		//ZR_verbo = command;
 		//return true;
@@ -2003,7 +2003,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	public void sayTo ( Mobile m , String text )
 	{
 	
-		habitacionActual.informAction ( this , m , null , "$1 dice \"" + text + "\" a $2.\n" , "$1 te dice \"" + text + "\".\n" , "dices \"" + text + "\" a $2.\n" , true );
+		habitacionActual.reportAction ( this , m , null , "$1 dice \"" + text + "\" a $2.\n" , "$1 te dice \"" + text + "\".\n" , "dices \"" + text + "\" a $2.\n" , true );
 	
 	}
 	
@@ -2611,7 +2611,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					writeError(ExceptionPrinter.getExceptionReport(bshte));
 				}
 					
-				habitacionActual.informAction(this,null,"$1 se va hacia " + exitname + ".\n" , null , null , false );	
+				habitacionActual.reportAction(this,null,"$1 se va hacia " + exitname + ".\n" , null , null , false );	
 								
 				Debug.println("Trying room set.");	
 					
@@ -2619,7 +2619,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				
 				Debug.println("Trying invert inform.");
 				
-				habitacionActual.informAction(this,null,"$1 llega desde " + Path.invert(exitname) + ".\n" , null , null , false );
+				habitacionActual.reportAction(this,null,"$1 llega desde " + Path.invert(exitname) + ".\n" , null , null , false );
 				
 				//Chequeo de cruces con enemigos.
 				//Si hay un enemigo haciendo el camino opuesto al nuestro,
@@ -2780,7 +2780,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			Debug.println("Oops... El bicho atacado no está.");
 			
-			habitacionActual.informAction(this, null, "$1 interrumpe su ataque ante la ausencia de su contrincante.\n", "$1 vacila ante tu ausencia.\n", "Te disponías a atacar; pero vacilas ante la ausencia de tu enemigo.\n", true);
+			habitacionActual.reportAction(this, null, "$1 interrumpe su ataque ante la ausencia de su contrincante.\n", "$1 vacila ante tu ausencia.\n", "Te disponías a atacar; pero vacilas ante la ausencia de tu enemigo.\n", true);
 			
 			setNewState ( IDLE , 0 );
 			
@@ -2821,7 +2821,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						writeError(ExceptionPrinter.getExceptionReport(te));
 					}
 					if ( !ejec )
-						habitacionActual.informAction ( this , objetivo , "Las armas de $1 y $2 chocan en el aire...\n" , "Tu arma y la de $1 chocan en el aire...\n" , "Tu arma y la de $2 chocan en el aire...\n" , true );
+						habitacionActual.reportAction ( this , objetivo , "Las armas de $1 y $2 chocan en el aire...\n" , "Tu arma y la de $1 chocan en el aire...\n" , "Tu arma y la de $2 chocan en el aire...\n" , true );
 					
 					setNewState ( ATTACK_RECOVER , generateAttackRecoverTime(getCurrentWeapon()) );
 					objetivo.setNewState ( ATTACK_RECOVER , objetivo.generateAttackRecoverTime(objetivo.getCurrentWeapon()) );
@@ -2854,7 +2854,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 						if ( !ejec )
-							habitacionActual.informAction ( this , objetivo , null , "No te da tiempo a bloquear el ataque de $1...\n" , "A $2 no le da tiempo a bloquear tu ataque...\n" , true );
+							habitacionActual.reportAction ( this , objetivo , null , "No te da tiempo a bloquear el ataque de $1...\n" , "A $2 no le da tiempo a bloquear tu ataque...\n" , true );
 	
 					}
 					
@@ -2875,7 +2875,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 						if ( !ejec )
-							habitacionActual.informAction ( this , objetivo , null , "No te da tiempo a esquivar el ataque de $1...\n" , "A $2 no le da tiempo a esquivar tu ataque...\n" , true );
+							habitacionActual.reportAction ( this , objetivo , null , "No te da tiempo a esquivar el ataque de $1...\n" , "A $2 no le da tiempo a esquivar tu ataque...\n" , true );
 						
 					}
 	
@@ -2902,7 +2902,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						{
 							if ( numeric_damage )
 							{
-								habitacionActual.informAction ( this , objetivo ,
+								habitacionActual.reportAction ( this , objetivo ,
 									"$1 acierta a $2 con " + getCurrentWeapon().constructName2OneItem() + " infligiéndole " + danyo + " puntos de daño...\n" ,
 									"$1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligiéndote " + danyo + " puntos de daño...\n" ,
 									"Aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + " infligiéndole " + danyo + " puntos de daño...\n" ,
@@ -2910,13 +2910,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							}
 							else
 							{
-								habitacionActual.informAction ( this , objetivo ,
+								habitacionActual.reportAction ( this , objetivo ,
 									"$1 acierta a $2 con " + getCurrentWeapon().constructName2OneItem() + " infligiéndole " + objetivo.estimateDamage(danyo) + "...\n" ,
 									"$1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligiéndote " + objetivo.estimateDamage(danyo) + "...\n" ,
 									"Aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + " infligiéndole " + objetivo.estimateDamage(danyo) + "...\n" ,
 									true );
 							
-								habitacionActual.informActionAuto ( objetivo , null , null , "$1 " + objetivo.estimateStatus() + ".\n" , true );
+								habitacionActual.reportActionAuto ( objetivo , null , null , "$1 " + objetivo.estimateStatus() + ".\n" , true );
 									
 							}
 						}
@@ -2942,7 +2942,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 						if ( !ejec )
-							habitacionActual.informAction ( this , objetivo ,
+							habitacionActual.reportAction ( this , objetivo ,
 							"$1 acierta a $2 con " + getCurrentWeapon().constructName2OneItem() + " pero no le hace daño...\n" ,
 							"$1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " pero no te hace daño...\n" ,
 							"Aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + " pero no le haces daño...\n" ,
@@ -2981,7 +2981,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				}
 				if ( !ejec )
 				{
-					habitacionActual.informAction ( this , objetivo , "El ataque de $1 falla a $2.\n" , "El ataque de $1 te falla.\n" , "Tu ataque falla a $2.\n" , true );
+					habitacionActual.reportAction ( this , objetivo , "El ataque de $1 falla a $2.\n" , "El ataque de $1 te falla.\n" , "Tu ataque falla a $2.\n" , true );
 				}
 
 				setNewState ( ATTACK_RECOVER , generateAttackRecoverTime(getCurrentWeapon()) );
@@ -3011,7 +3011,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					}
 					if ( !ejec )
 					{
-						habitacionActual.informAction ( this , objetivo , null , "Tienes la iniciativa...\n" , "$2 interrumpe su intento de bloquear...\n" , true );
+						habitacionActual.reportAction ( this , objetivo , null , "Tienes la iniciativa...\n" , "$2 interrumpe su intento de bloquear...\n" , true );
 					}
 
 				}
@@ -3038,7 +3038,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					}
 					if ( !ejec )
 					{
-						habitacionActual.informAction ( this , objetivo , null , "Tienes la iniciativa...\n" , "$2 interrumpe su intento de esquivar...\n" , true );
+						habitacionActual.reportAction ( this , objetivo , null , "Tienes la iniciativa...\n" , "$2 interrumpe su intento de esquivar...\n" , true );
 					}
 					
 				}
@@ -3085,7 +3085,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						{
 							if ( numeric_damage )
 							{
-							habitacionActual.informAction ( this , objetivo ,
+							habitacionActual.reportAction ( this , objetivo ,
 								"$2 se defiende de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem() + " recibiendo " + danyo + " puntos de daño...\n" ,
 								"Te defiendes de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem(objetivo) + " recibiendo " + danyo + " puntos de daño...\n" ,
 								"$2 se defiende con " + objetivo.getCurrentWeapon().constructName2OneItem(this) + " recibiendo " + danyo + " puntos de daño...\n" ,
@@ -3093,19 +3093,19 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							}
 							else
 							{
-								habitacionActual.informAction ( this , objetivo ,
+								habitacionActual.reportAction ( this , objetivo ,
 									"$2 se defiende de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem() + " recibiendo " + objetivo.estimateDamage(danyo) + "...\n" ,
 									"Te defiendes de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem(objetivo) + " recibiendo " + objetivo.estimateDamage(danyo) + "...\n" ,
 									"$2 se defiende con " + objetivo.getCurrentWeapon().constructName2OneItem(this) + " recibiendo " + objetivo.estimateDamage(danyo) + "...\n" ,
 									true );
 							
-								habitacionActual.informActionAuto ( objetivo , null , null , "$1 " + objetivo.estimateStatus() + ".\n" , true );
+								habitacionActual.reportActionAuto ( objetivo , null , null , "$1 " + objetivo.estimateStatus() + ".\n" , true );
 									
 							}
 						}
 						else
 						{
-							habitacionActual.informAction ( this , objetivo ,
+							habitacionActual.reportAction ( this , objetivo ,
 								"$2 se defiende de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem() + ", desviando el ataque...\n" ,
 								"Te defiendes de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem(objetivo) + ", desviando el ataque...\n" ,
 								"$2 se defiende con " + objetivo.getCurrentWeapon().constructName2OneItem(this) + ", desviando el ataque...\n" ,
@@ -3148,7 +3148,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						{
 							if ( numeric_damage )
 							{
-								habitacionActual.informAction ( this , objetivo ,
+								habitacionActual.reportAction ( this , objetivo ,
 									"$2 no consigue parar el ataque de $1, que le acierta con " + getCurrentWeapon().constructName2OneItem() + " infligiéndole " + danyo + " puntos de daño...\n" ,
 									"No consigues parar el ataque de $1, que te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligiéndote " + danyo + " puntos de daño...\n" ,
 									"$2 no consigue parar tu ataque, le aciertas con " + getCurrentWeapon().constructName2OneItem(this) + " infligiéndole " + danyo + " puntos de daño...\n" ,
@@ -3156,13 +3156,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							}
 							else
 							{
-								habitacionActual.informAction ( this , objetivo ,
+								habitacionActual.reportAction ( this , objetivo ,
 									"$2 no consigue parar el ataque de $1, que le acierta con " + getCurrentWeapon().constructName2OneItem() + " infligiéndole " + objetivo.estimateDamage(danyo) + "...\n" ,
 									"No consigues parar el ataque de $1, que te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligiéndote " + objetivo.estimateDamage(danyo) + "...\n" ,
 									"$2 no consigue parar tu ataque, le aciertas con " + getCurrentWeapon().constructName2OneItem(this) + " infligiéndole " + objetivo.estimateDamage(danyo) + "...\n" ,
 									true );
 							
-								habitacionActual.informActionAuto ( objetivo , null , null , "$1 " + objetivo.estimateStatus() + ".\n" , true );
+								habitacionActual.reportActionAuto ( objetivo , null , null , "$1 " + objetivo.estimateStatus() + ".\n" , true );
 									
 							}		
 						}		
@@ -3186,7 +3186,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						}
 						if ( !ejec )
 						{
-							habitacionActual.informAction ( this , objetivo ,
+							habitacionActual.reportAction ( this , objetivo ,
 							"$2 no consigue parar el ataque de $1, que le acierta con " + getCurrentWeapon().constructName2OneItem() + " pero no le hace daño...\n" ,
 							"No consigues parar el ataque de $1, que te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " pero no te hace daño...\n" ,
 							"$2 no consigue parar tu ataque, le aciertas con " + getCurrentWeapon().constructName2OneItem(this) + " pero no le haces daño...\n" ,
@@ -3226,7 +3226,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				}
 				if ( !ejec )
 				{
-					habitacionActual.informAction ( this , objetivo , "El ataque de $1 falla a $2.\n" , "El ataque de $1 te falla.\n" , "Tu ataque falla a $2.\n" , true );
+					habitacionActual.reportAction ( this , objetivo , "El ataque de $1 falla a $2.\n" , "El ataque de $1 te falla.\n" , "Tu ataque falla a $2.\n" , true );
 				}
 
 				setNewState ( ATTACK_RECOVER , generateAttackRecoverTime(getCurrentWeapon()) );
@@ -3274,7 +3274,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					}
 					if ( !ejec )
 					{
-						habitacionActual.informAction ( this , objetivo ,
+						habitacionActual.reportAction ( this , objetivo ,
 							"$2 esquiva hábilmente el ataque de $1.\n",
 							"Esquivas el ataque de $1.\n" ,
 							"$2 esquiva tu ataque.\n" ,
@@ -3317,7 +3317,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						{
 							if ( numeric_damage )
 							{
-								habitacionActual.informAction ( this , objetivo ,
+								habitacionActual.reportAction ( this , objetivo ,
 									"$2 intenta esquivar el golpe de $1; pero no lo consigue, $1 le acierta con " + getCurrentWeapon().constructName2OneItem() + " infligiéndole " + danyo + " puntos de daño...\n" ,
 									"Tu intento de esquivar falla, y $1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligiéndote " + danyo + " puntos de daño...\n" ,
 									"A pesar de su intento de esquivar el ataque, aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + ", infligiéndole " + danyo + " puntos de daño...\n" ,
@@ -3325,13 +3325,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							}		
 							else
 							{
-								habitacionActual.informAction ( this , objetivo ,
+								habitacionActual.reportAction ( this , objetivo ,
 									"$2 intenta esquivar el golpe de $1; pero no lo consigue, $1 le acierta con " + getCurrentWeapon().constructName2OneItem() + " infligiéndole " + objetivo.estimateDamage(danyo) + ".\n" ,
 									"Tu intento de esquivar falla, y $1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligiéndote " + objetivo.estimateDamage(danyo) + ".\n"  ,
 									"A pesar de su intento de esquivar el ataque, aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + ", infligiéndole " + objetivo.estimateDamage(danyo) + ".\n"  ,
 									true );
 							
-								habitacionActual.informActionAuto ( objetivo , null , null , "$1 " + objetivo.estimateStatus() + ".\n" , true );
+								habitacionActual.reportActionAuto ( objetivo , null , null , "$1 " + objetivo.estimateStatus() + ".\n" , true );
 									
 							}	
 						}
@@ -3355,7 +3355,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						}
 						if ( !ejec )
 						{
-							habitacionActual.informAction ( this , objetivo ,
+							habitacionActual.reportAction ( this , objetivo ,
 								"$2 intenta esquivar el golpe de $1; pero no lo consigue, $1 le acierta con " + getCurrentWeapon().constructName2OneItem() + " pero no le hace daño.\n" ,
 								"Tu intento de esquivar falla, y $1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " pero no te hace daño.\n" ,
 								"A pesar de su intento de esquivar el ataque, aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + "; pero no le haces daño.\n" ,
@@ -3384,7 +3384,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 				//attack unsuccessful
 
-				habitacionActual.informAction ( this , objetivo , "El ataque de $1 falla a $2.\n" , "El ataque de $1 te falla. Tienes la iniciativa...\n" , "Tu ataque falla a $2. Te desequilibras...\n" , true );
+				habitacionActual.reportAction ( this , objetivo , "El ataque de $1 falla a $2.\n" , "El ataque de $1 te falla. Tienes la iniciativa...\n" , "Tu ataque falla a $2. Te desequilibras...\n" , true );
 
 				setNewState ( ATTACK_RECOVER , generateAttackRecoverTime(getCurrentWeapon()) );
 
@@ -3633,7 +3633,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				
 				//informar de que armadura absorbió impacto
 				
-				habitacionActual.informAction ( this , null , armadura.constructName2OneItem() + " de $1 absorbe totalmente el impacto.\n" , null, "Tu armadura absorbe totalmente el impacto.\n"  , true );
+				habitacionActual.reportAction ( this , null , armadura.constructName2OneItem() + " de $1 absorbe totalmente el impacto.\n" , null, "Tu armadura absorbe totalmente el impacto.\n"  , true );
 				
 				
 			}
@@ -3692,7 +3692,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		if ( ejecutado ) return;		
 		
 		
-		habitacionActual.informAction ( this , null , "$1 muere.\n" , null , "Mueres.\n" , true );
+		habitacionActual.reportAction ( this , null , "$1 muere.\n" , null , "Mueres.\n" , true );
 
 		Item cadaver = Item.initCorpse ( this );
 		mundo.addItemAssigningID ( cadaver );
@@ -3979,7 +3979,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		}
 		if ( !ejec )
 		{
-			habitacionActual.informAction ( this , target , 
+			habitacionActual.reportAction ( this , target , 
 			"$1 ataca a $2 con " + w.constructName2OneItem() + ".\n" ,
 			"$1 te ataca con " + w.constructName2OneItem(target) + ".\n",
 			"Atacas a $2 con " + w.constructName2OneItem(this) + ".\n",
@@ -4011,7 +4011,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		if ( !ejec )
 		{		
 
-			habitacionActual.informAction ( this , target ,
+			habitacionActual.reportAction ( this , target ,
 				"$1 intenta defenderse de $2 con " + w.constructName2OneItem()  + ".\n",
 				"$1 intenta defenderse con " + w.constructName2OneItem(target) + ".\n" ,
 				"Intentas defenderte de $2 con " + w.constructName2OneItem(this) + ".\n" ,
@@ -4055,7 +4055,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		if ( !ejec )
 		{	
 	
-		habitacionActual.informAction ( this , target ,
+		habitacionActual.reportAction ( this , target ,
 				"$1 intenta esquivar el ataque de $2" + ".\n" ,
 				"$1 intenta esquivarte" + ".\n" ,
 				"Intentas esquivar el ataque de $2" + ".\n" ,
@@ -5007,7 +5007,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		
 		write( io.getColorCode("action") + "Te pones " + it.constructName2OneItem(this) + " en " + toOutput + ".\n" + io.getColorCode("reset") );
 			
-		habitacionActual.informActionAuto ( this , null , "$1 se pone " + it.constructName2OneItem() + ".\n" , false );	
+		habitacionActual.reportActionAuto ( this , null , "$1 se pone " + it.constructName2OneItem() + ".\n" , false );	
 			
 		if ( wornItems == null ) wornItems = new Inventory(10000,10000);
 		try
@@ -5171,7 +5171,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		
 		write( io.getColorCode("action") + "Blandes " + it.constructName2OneItem(this) + " en " + toOutput + ".\n" + io.getColorCode("reset") );
 			
-		habitacionActual.informActionAuto ( this , null , "$1 blande " + it.constructName2OneItem() + ".\n" , false );	
+		habitacionActual.reportActionAuto ( this , null , "$1 blande " + it.constructName2OneItem() + ".\n" , false );	
 			
 		if ( wieldedWeapons == null ) wieldedWeapons = new Inventory(10000,10000);
 		try
@@ -5237,7 +5237,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		
 			write ( io.getColorCode("action") + "Te quitas " + it.constructName2OneItem() + ".\n" + io.getColorCode("reset") );
 		
-			habitacionActual.informActionAuto ( this , null , "$1 se quita " + it.constructName2OneItem() + ".\n" , false );
+			habitacionActual.reportActionAuto ( this , null , "$1 se quita " + it.constructName2OneItem() + ".\n" , false );
 		
 			return true;
 		
@@ -5271,7 +5271,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		
 			write ( io.getColorCode("action") + "Dejas de blandir " + it.constructName2OneItem() + ".\n" + io.getColorCode("reset") );
 		
-			habitacionActual.informActionAuto ( this , null , "$1 deja de blandir " + it.constructName2OneItem() + ".\n" , false );
+			habitacionActual.reportActionAuto ( this , null , "$1 deja de blandir " + it.constructName2OneItem() + ".\n" , false );
 		
 			return true;
 		
@@ -5810,7 +5810,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				write( io.getColorCode("action")  + lenguaje.gramaticalizar ( DefaultMessages.getInstance().getMessage("you.get.item","$item",ourItem.constructName2True(1,this))) + "\n" + io.getColorCode("reset") );
 				
 				//habitacionActual.informActionAuto ( this , null , "$1 coge " + ourItem.constructName2OneItem() + toAppend + ".\n" , false );
-				habitacionActual.informActionAuto ( this , null , DefaultMessages.getInstance().getMessage("someone.gets.item","$item", ourItem.constructName2OneItem() + toAppend) + "\n" , false );
+				habitacionActual.reportActionAuto ( this , null , DefaultMessages.getInstance().getMessage("someone.gets.item","$item", ourItem.constructName2OneItem() + toAppend) + "\n" , false );
 				
 				//ejecutar eventos onGet
 				try
@@ -6277,7 +6277,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			habitacionActual.addItem ( ourItem );
 			removeItem ( ourItem );
 			
-			habitacionActual.informActionAuto ( this , null , "$1 deja " + ourItem.constructName2OneItem() + ".\n" , false );
+			habitacionActual.reportActionAuto ( this , null , "$1 deja " + ourItem.constructName2OneItem() + ".\n" , false );
 			
 			//si es un arma que blandimos, dejar tambien de blandirla
 			if ( wieldedWeapons != null && wieldedWeapons.contains(ourItem) )
@@ -6808,7 +6808,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	
 	public void suicideWith ( Weapon w )
 	{
-		habitacionActual.informAction ( this,null,new Entity[]{w} , "$1 se suicida con $3.\n", "Te suicidas con $3.\n", "Te suicidas con $3.\n", true );
+		habitacionActual.reportAction ( this,null,new Entity[]{w} , "$1 se suicida con $3.\n", "Te suicidas con $3.\n", "Te suicidas con $3.\n", true );
 		decreaseHP ( getHP() );
 	}
 	

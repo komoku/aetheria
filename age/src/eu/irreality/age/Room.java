@@ -1209,7 +1209,18 @@ public class Room extends Entity implements Descriptible , SupportingCode
 	
 	//the new, subjective inform action
 	//warning: may throw ClassCastException if non-nameable entities are passed!
+	/**
+	 * @deprecated Use {@link #reportAction(Entity,Entity,Entity[],String,String,String,boolean)} instead
+	 */
 	public void informAction ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , String sufferDes , String execDes , boolean self_included )
+	{
+		reportAction(source, target, objects, thirdPersonDes, sufferDes,
+				execDes, self_included);
+	}
+
+	//the new, subjective inform action
+	//warning: may throw ClassCastException if non-nameable entities are passed!
+	public void reportAction ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , String sufferDes , String execDes , boolean self_included )
 	{
 	
 		//Debug.println("INFORMACTION BEGIN");
@@ -1300,7 +1311,17 @@ public class Room extends Entity implements Descriptible , SupportingCode
 	
 	//the new inform action auto: automatically obtain suffer and exec descriptions, then call
 	//the new inform action.
+	/**
+	 * @deprecated Use {@link #reportActionAuto(Entity,Entity,Entity[],String,boolean)} instead
+	 */
 	public void informActionAuto ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , boolean self_included )
+	{
+		reportActionAuto(source, target, objects, thirdPersonDes, self_included);
+	}
+
+	//the new inform action auto: automatically obtain suffer and exec descriptions, then call
+	//the new inform action.
+	public void reportActionAuto ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , boolean self_included )
 	{
 	
 		
@@ -1351,21 +1372,40 @@ public class Room extends Entity implements Descriptible , SupportingCode
 		Debug.println("Gonna deft'ly call informAction");
 	
 		//llamar a informAction
-		informAction ( source , target , objects , thirdPersonDes , sufferDes , execDes , self_included );
+		reportAction ( source , target , objects , thirdPersonDes , sufferDes , execDes , self_included );
 	
 	}
 
 	
 	//old method's redirect
+	/**
+	 * @deprecated Use {@link #reportAction(Mobile,Mobile,String,String,String,boolean)} instead
+	 */
 	public void informAction ( Mobile source , Mobile target , String thirdPersonDes , String sufferDes , String execDes , boolean self_included )
 	{
-		informAction ( source , target , null , thirdPersonDes , sufferDes , execDes, self_included );
+		reportAction(source, target, thirdPersonDes, sufferDes, execDes,
+				self_included);
+	}
+
+	//old method's redirect
+	public void reportAction ( Mobile source , Mobile target , String thirdPersonDes , String sufferDes , String execDes , boolean self_included )
+	{
+		reportAction ( source , target , null , thirdPersonDes , sufferDes , execDes, self_included );
 	}
 	
 	//old method's redirect
+	/**
+	 * @deprecated Use {@link #reportActionAuto(Mobile,Mobile,String,boolean)} instead
+	 */
 	public void informActionAuto ( Mobile source , Mobile target , String thirdPersonDes  , boolean self_included )
 	{
-		informActionAuto ( source , target , null , thirdPersonDes , self_included );
+		reportActionAuto(source, target, thirdPersonDes, self_included);
+	}
+
+	//old method's redirect
+	public void reportActionAuto ( Mobile source , Mobile target , String thirdPersonDes  , boolean self_included )
+	{
+		reportActionAuto ( source , target , null , thirdPersonDes , self_included );
 	}
 
 	
