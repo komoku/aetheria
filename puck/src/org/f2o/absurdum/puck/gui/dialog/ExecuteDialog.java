@@ -34,9 +34,9 @@ import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
 import org.f2o.absurdum.puck.i18n.Messages;
 
 import eu.irreality.age.FiltroFicheroLog;
-import eu.irreality.age.ServerHandler;
 import eu.irreality.age.Utility;
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.server.ServerHandler;
 
 public class ExecuteDialog extends JDialog 
 {

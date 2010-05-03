@@ -27,6 +27,7 @@ import org.apache.commons.cli.ParseException;
 import org.w3c.dom.*;
 
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.server.ServerHandler;
 import eu.irreality.age.swing.sdi.SwingSDIInterface;
 
 import javax.xml.parsers.*;

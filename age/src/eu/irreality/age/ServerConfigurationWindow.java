@@ -7,69 +7,17 @@ package eu.irreality.age;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.border.*;
+
+import eu.irreality.age.server.IrcServerEntry;
+import eu.irreality.age.server.ServerConfigurationOptions;
+import eu.irreality.age.server.ServerHandler;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.io.*;
 
-class ServerConfigurationOptions implements java.io.Serializable
-{
-	private boolean telnet;
-	private boolean age;
-	private boolean irc;
-	private boolean initOnStartup;
-	private int tPort;
-	private int aPort;
-	
-	private java.util.List ircServerList; //list of IrcServerEntry
-	
-	private java.util.List dedicatedGameList; //list of GameEntry
 
-	public ServerConfigurationOptions ( boolean age , boolean telnet , boolean irc ,
-			boolean initOnStartup , int tPort , int aPort , java.util.List ircServerList ,
-			java.util.List dedicatedGameList )
-			{
-				this.telnet=telnet;
-				this.age=age;
-				this.irc=irc;
-				this.initOnStartup=initOnStartup;
-				this.tPort=tPort;
-				this.aPort=aPort;
-				//copy lists -> no lateral effects
-				this.ircServerList = new ArrayList();
-				for ( int i = 0 ; i < ircServerList.size() ; i++ )
-					this.ircServerList.add ( ircServerList.get(i) );
-				this.dedicatedGameList = new ArrayList();
-				for ( int i = 0 ; i < dedicatedGameList.size() ; i++ )
-					this.dedicatedGameList.add ( dedicatedGameList.get(i) );	
-			}
-			
-	public boolean sirveTelnet()
-	{return telnet;
-	}
-	public boolean sirveAge()
-	{return age;
-	}
-	public boolean sirveIrc()
-	{return irc;
-	}
-	public boolean initOnStartup()
-	{return initOnStartup;
-	}	
-	public int getPuertoTelnet()
-	{return tPort;
-	}
-	public int getPuertoAge()
-	{return aPort;
-	}
-	public java.util.List getListaServidoresIrc()
-	{return ircServerList;
-	}
-	public java.util.List getListaPartidasDedicadas()
-	{return dedicatedGameList;
-	}
-
-}
 
 //Singleton
 public class ServerConfigurationWindow extends JDialog
@@ -431,74 +379,7 @@ public class ServerConfigurationWindow extends JDialog
 
 }
 
-class IrcServerEntry implements java.io.Serializable
-{
-	
-	private String servidor;
-	private int port;
-	private String nick;
-	
-	private boolean privado;
-	private boolean canal;
-	private boolean dcc;
-	
-	private Vector canales;
-	
-	public String toString()
-	{
-		return nick + "@" + servidor + ":" + port;
-	}
-	
-	public IrcServerEntry ( String server , int port , String nick , boolean privado , boolean canal , boolean dcc , Vector canales )
-	{
-		this.servidor = server;
-		this.port = port;
-		this.nick = nick;
-		this.privado = privado;
-		this.canal = canal;
-		this.dcc = dcc;
-		this.canales = (Vector) canales.clone();
-	}
-	
-	public IrcServerEntry ( String server , String port , String nick , boolean privado , boolean canal , boolean dcc , Vector canales ) throws NumberFormatException
-	{
-		this.servidor = server;
-		this.port = Integer.valueOf ( port ).intValue();
-		this.nick = nick;
-		this.privado = privado;
-		this.canal = canal;
-		this.dcc = dcc;
-		this.canales = (Vector) canales.clone();
-	}
-	
-	public IrcServerEntry ()
-	{
-		//constructor called by serialization
-	}
-	
-	public String getServer()
-	{return servidor;
-	}
-	public String getNick()
-	{return nick;
-	}
-	public int getPort()
-	{return port;
-	}
-	public boolean respondeAPrivados()
-	{return privado;
-	}
-	public boolean respondeACanales()
-	{return canal;
-	}
-	public boolean respondeADCC()
-	{return dcc;
-	}
-	public Vector getChannels()
-	{return canales;
-	}
-	
-}
+
 
 
 
