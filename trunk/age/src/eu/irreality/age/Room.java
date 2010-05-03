@@ -8,8 +8,12 @@ import java.util.*;
 import java.io.*;
 
 import eu.irreality.age.debug.Debug;
+import eu.irreality.age.debug.ExceptionPrinter;
 public class Room extends Entity implements Descriptible , SupportingCode
 {
+
+	//al final claudicamos
+	private World mundo;
 	
 	//////////////////////
 	//INSTANCE VARIABLES//
@@ -83,6 +87,9 @@ public class Room extends Entity implements Descriptible , SupportingCode
 	*/
 	public void constructRoom ( World mundo , String roomfile ) throws IOException, FileNotFoundException
 	{
+		
+		this.mundo = mundo;
+		
 		/*este metodo nos dice cuando ya hemos realizado una llamada recursiva al constructor para la herencia (la herencia ha terminado)*/
 		boolean inheritance_done = false;
 		String linea;
@@ -281,6 +288,7 @@ public class Room extends Entity implements Descriptible , SupportingCode
 	public void constructRoom ( World mundo , org.w3c.dom.Node n , boolean allowInheritance ) throws XMLtoWorldException
 	{
 	
+		this.mundo = mundo;
 		lenguaje = mundo.getLang();
 	
 		if ( ! ( n instanceof org.w3c.dom.Element ) )
@@ -542,6 +550,7 @@ public class Room extends Entity implements Descriptible , SupportingCode
 		}
 		catch ( bsh.TargetError te )
 		{
+			mundo.writeError(ExceptionPrinter.getExceptionReport(te));
 			te.printStackTrace();
 		}
 		
@@ -819,6 +828,7 @@ public class Room extends Entity implements Descriptible , SupportingCode
 			}
 			catch ( bsh.TargetError te )
 			{
+				mundo.writeError(ExceptionPrinter.getExceptionReport(te));
 				te.printStackTrace();
 			}
 			finally
@@ -1004,6 +1014,7 @@ public class Room extends Entity implements Descriptible , SupportingCode
 	
 	public String getExtraDescription ( String thingieName , Entity viewer )
 	{
+		if ( thingieName == null || thingieName.length() == 0 ) return null;
 		for ( int i = 0 ; i < extraDescriptionNameArrays.size() ; i++ )
 		{
 			String[] curNameArray = (String[]) extraDescriptionNameArrays.get(i);
@@ -1301,6 +1312,7 @@ public class Room extends Entity implements Descriptible , SupportingCode
 		catch ( bsh.TargetError te )
 		{
 			System.err.println(te);
+			mundo.writeError(ExceptionPrinter.getExceptionReport(te));
 			te.printStackTrace();
 		}
 		//does nothing with the BshCodeExecutedOKException: irrelevant here.
@@ -1781,6 +1793,8 @@ public class Room extends Entity implements Descriptible , SupportingCode
 	
 		//Debug.println("Random from SOURCE item: " + getRandom());
 	
+		r.mundo = mundo;
+		
 		r.aleat = getRandom();
 		r.extraDescriptions = extraDescriptions;
 		r.idnumber = idnumber; //will have to change the ID later!

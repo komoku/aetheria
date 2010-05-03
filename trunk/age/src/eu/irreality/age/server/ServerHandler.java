@@ -67,6 +67,7 @@ public class ServerHandler //Singleton!
 	
 	public ServerLogWindow getLogWindow()
 	{
+		if ( logWin == null ) logWin = new ServerLogWindow();
 		return logWin;
 	}
 	
