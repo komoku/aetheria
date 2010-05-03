@@ -32,6 +32,8 @@ public class ServerLogWindow extends JInternalFrame implements AGELoggingWindow
 	{
 	
 		super("Logs del servidor",true,true,true,true);
+		
+		this.setDefaultCloseOperation(HIDE_ON_CLOSE);
 	
 		tabbed = new JTabbedPane();
 		JPanel tabGeneral = new JPanel();

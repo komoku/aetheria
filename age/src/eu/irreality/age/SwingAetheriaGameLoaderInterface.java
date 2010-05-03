@@ -6,6 +6,7 @@ package eu.irreality.age;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyVetoException;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -28,6 +29,7 @@ import org.w3c.dom.*;
 
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.server.ServerHandler;
+import eu.irreality.age.server.ServerLogWindow;
 import eu.irreality.age.swing.sdi.SwingSDIInterface;
 
 import javax.xml.parsers.*;
@@ -948,6 +950,7 @@ class MDIMenuBar extends JMenuBar
 		JMenuItem itemIconificar = new JMenuItem("Iconificar todo");
 		JMenu menuServidor = new JMenu("Servidor");
 		JMenuItem itemConfigServidor = new JMenuItem("Configuración...");
+		JMenuItem itemShowLogs = new JMenuItem("Mostrar logs");
 		JMenu menuAyuda = new JMenu("Ayuda");
 		JMenuItem itemAbout = new JMenuItem("Acerca de AGE...");
 		EscuchadorMinimizarTodo escmin = new EscuchadorMinimizarTodo ( thePanel );
@@ -1049,6 +1052,26 @@ class MDIMenuBar extends JMenuBar
 					}
 				}
 		);
+		
+		itemShowLogs.addActionListener(
+				new ActionListener()
+				{
+					public void actionPerformed ( ActionEvent evt )
+					{
+						ServerLogWindow slw = ServerHandler.getInstance(p).getLogWindow();
+						if ( slw.getParent() == null )
+							p.add(slw);
+						slw.setVisible(true);
+						slw.toFront();
+						//slw.requestFocusInWindow();
+						try {
+							slw.setSelected(true);
+						} catch (PropertyVetoException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+				);
 
 		itemRemota.addActionListener (
 				new ActionListener()
@@ -1074,6 +1097,7 @@ class MDIMenuBar extends JMenuBar
 		menuArchivo.add ( itemSalir );
 		menuPresentacion.add ( itemIconificar );
 		menuServidor.add ( itemConfigServidor );
+		menuServidor.add ( itemShowLogs );
 		menuAyuda.add ( itemAbout );
 		this.add ( menuArchivo );	
 		this.add ( menuPresentacion );

@@ -42,8 +42,8 @@ public class ExceptionPrinter
 	{
 		StringBuffer report = new StringBuffer();
 		report.append("File: " + te.getErrorSourceFile() + "\n" );
-		report.append("Line: " + te.getErrorLineNumber() + "\n" );
-		report.append("Error: " + te.getErrorText() + "\n" );
+		//report.append("Line: " + te.getErrorLineNumber() + "\n" );
+		//report.append("Error: " + te.getErrorText() + "\n" );
 		report.append("Stack trace: " + getStackTrace(te) + "\n" );
 		report.append("Cause report: " + getExceptionReport ( te.getCause() ) );
 		return report.toString();
