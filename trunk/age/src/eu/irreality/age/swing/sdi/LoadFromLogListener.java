@@ -18,9 +18,9 @@ import eu.irreality.age.FiltroFicheroEstado;
 import eu.irreality.age.FiltroFicheroLog;
 import eu.irreality.age.GameInfo;
 import eu.irreality.age.PartidaEntry;
-import eu.irreality.age.ServerHandler;
 import eu.irreality.age.Utility;
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.server.ServerHandler;
 
 class LoadFromLogListener implements ActionListener
 {

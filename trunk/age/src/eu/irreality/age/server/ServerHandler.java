@@ -2,158 +2,30 @@
  * (c) 2000-2009 Carlos Gómez Rodríguez, todos los derechos reservados / all rights reserved.
  * Licencia en license/bsd.txt / License in license/bsd.txt
  */
-package eu.irreality.age;
+package eu.irreality.age.server;
 import java.io.*;
 import javax.swing.*;
 import javax.swing.text.*;
 
+import eu.irreality.age.AGEClientHandler;
+import eu.irreality.age.GameEngineThread;
+import eu.irreality.age.InputOutputClient;
+import eu.irreality.age.IrcAgeBot;
+import eu.irreality.age.server.IrcServerEntry;
+import eu.irreality.age.NullInputOutputClient;
+import eu.irreality.age.PartidaEntry;
+import eu.irreality.age.server.ServerConfigurationOptions;
+import eu.irreality.age.ServerConfigurationWindow;
+import eu.irreality.age.SimpleTelnetClientHandler;
+import eu.irreality.age.SwingAetheriaGameLoader;
+import eu.irreality.age.World;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.windowing.AGELoggingWindow;
 
 import java.awt.*;
 import java.util.*;
 
-class ServerLogWindow extends JInternalFrame implements AGELoggingWindow
-{
 
-	java.util.List panesPartidas = new ArrayList();
-
-	JTabbedPane tabbed;
-	
-	JTextPane tpGeneral;
-
-	public ServerLogWindow()
-	{
-	
-		super("Logs del servidor",true,true,true,true);
-	
-		tabbed = new JTabbedPane();
-		JPanel tabGeneral = new JPanel();
-		tabGeneral.setLayout ( new java.awt.GridLayout(1,1) );
-		tpGeneral = new JTextPane();
-		tpGeneral.setBackground(java.awt.Color.black);
-		tpGeneral.setForeground(java.awt.Color.white);
-		tabGeneral.add(new JScrollPane(tpGeneral));
-		tpGeneral.setText("Log Global:");
-	
-		tabbed.addTab ( "General" , tabGeneral );
-	
-		getContentPane().add(tabbed);
-		
-		
-		setSize(400,400);
-		setVisible(true);
-	
-	}
-	
-	//(los logs de partida escriben mediante InputOutputClients)
-	public void writeGeneral ( String s ) //escribe sólo en el general
-	{
-		//prefijar líneas con "general" y colorearlas de amarillo
-		MutableAttributeSet atributos = new SimpleAttributeSet();
-		try
-		{
-			StyleConstants.setForeground( atributos , new Color ( Integer.parseInt("FFFF00",16 ) ) );
-		}
-		catch ( NumberFormatException nfe )
-		{
-						//unrecognized
-					
-		}
-
-		
-		/*
-		String newText = tpGeneral.getText();
-		if ( newText.length() > 0 && ( newText.charAt ( newText.length() - 1 ) != '\n' ) )
-			newText += "\n";
-		*/
-		String toAppend = "[General] " + s.trim();
-		//newText = newText + toAppend;		
-		//tpGeneral.setText( newText ); 		
-	
-		try
-		{
-			String curText = tpGeneral.getText();
-			if ( curText.length() > 0 && ( curText.charAt( curText.length()-1 ) != '\n' ) )
-				tpGeneral.getDocument().insertString(tpGeneral.getText().length(),"\n",null);
-			tpGeneral.getDocument().insertString(tpGeneral.getText().length(),toAppend,atributos);
-			Debug.println("BY ORBITAL\n");
-		}
-		catch ( BadLocationException ble )
-		{
-			System.err.println(ble);
-		}
-		
-	}
-	
-	public InputOutputClient addTab (  ) //devuelve una E/S para esa partida
-	{
-		final JTextPane panePartida = new JTextPane();
-		panePartida.setBackground(java.awt.Color.black);
-		panePartida.setForeground(java.awt.Color.white);
-		panesPartidas.add ( panePartida );
-		JPanel tabPartida = new JPanel();
-		tabPartida.setLayout ( new java.awt.GridLayout(1,1) );
-		tabPartida.add ( new JScrollPane(panePartida) );
-		tabbed.add ( "Partida " + panesPartidas.size() , tabPartida );
-		
-		return ( new NullInputOutputClient()
-		{
-			int id = panesPartidas.size();
-			/**
-			 * @deprecated Use {@link #write(String)} instead
-			 */
-			public void escribir ( String s )
-			{
-				write(s);
-			}
-			public void write ( String s )
-			{
-				panePartida.setText( panePartida.getText() + s );
-				
-				//text pane general: prefijar líneas con la partida
-			
-				/*
-				String newText = tpGeneral.getText();
-				if ( newText.charAt ( newText.length() - 1 ) != '\n' )
-					newText += "\n";
-				
-				String toAppend = "[Partida " + id + "] " + s.trim();
-				
-				newText = newText + toAppend;
-				
-				tpGeneral.setText( newText ); 
-				*/
-				
-				String toAppend = "[Partida " + id + "] " + s.trim();
-				try
-				{
-					String curText = tpGeneral.getText();
-					if ( curText.length() > 0 && ( curText.charAt( curText.length()-1 ) != '\n' ) )
-						tpGeneral.getDocument().insertString(tpGeneral.getText().length(),"\n",null);
-					tpGeneral.getDocument().insertString(tpGeneral.getText().length(),toAppend,null);
-				}
-				catch ( BadLocationException ble )
-				{
-					System.err.println(ble);
-				}
-			}
-		} );
-		
-	}
-
-	public JMenuBar getTheJMenuBar()
-	{
-	    return this.getJMenuBar();
-	}
-
-	public void setTheJMenuBar(JMenuBar jmb)
-	{
-	    this.setJMenuBar(jmb);
-	}
-
-
-}
 
 public class ServerHandler //Singleton!
 {
@@ -572,42 +444,3 @@ public class ServerHandler //Singleton!
 
 }
 
-//se crea a partir de una PartidaEntry
-class PartidaEnCurso
-{
-	
-	private World mundo;
-	private int maxPlayers;
-	private String nombrePartida;
-	private String passwordPartida;
-	
-	public PartidaEnCurso ( World mundo , int maxPlayers , String nombrePartida , String passwordPartida )
-	{
-		this.mundo = mundo;
-		this.maxPlayers = maxPlayers;
-		this.nombrePartida = nombrePartida;
-		this.passwordPartida = passwordPartida;
-	}
-	
-	public int getMaxPlayers()
-	{
-		return maxPlayers;
-	}
-	public int getPlayers()
-	{
-			return mundo.getNumberOfConnectedPlayers();
-	}
-	public World getMundo()
-	{
-		return mundo;
-	}
-	public String getNombre()
-	{
-		return nombrePartida;
-	}
-	public String getPass()
-	{
-		return passwordPartida;
-	}
-	
-}

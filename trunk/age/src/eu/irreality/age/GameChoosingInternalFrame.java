@@ -17,6 +17,7 @@ import javax.xml.transform.stream.*;
 import org.xml.sax.*;
 
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.server.ServerHandler;
 
 public class GameChoosingInternalFrame extends JInternalFrame
 {

@@ -10,6 +10,7 @@ import java.net.*;
 import java.io.*;
 
 import eu.irreality.age.debug.Debug;
+import eu.irreality.age.server.PartidaEnCurso;
 
 //<extends ClientHandler extends Thread?>
 public class AGEClientHandler extends Thread {

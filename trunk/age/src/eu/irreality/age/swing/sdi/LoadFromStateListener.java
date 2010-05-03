@@ -17,8 +17,8 @@ import org.xml.sax.InputSource;
 import eu.irreality.age.FiltroFicheroEstado;
 import eu.irreality.age.GameInfo;
 import eu.irreality.age.PartidaEntry;
-import eu.irreality.age.ServerHandler;
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.server.ServerHandler;
 
 public class LoadFromStateListener implements ActionListener
 {

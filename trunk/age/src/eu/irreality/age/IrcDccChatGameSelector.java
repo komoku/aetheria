@@ -5,6 +5,8 @@
 package eu.irreality.age;
 import java.util.*;
 
+import eu.irreality.age.server.PartidaEnCurso;
+
 //analogous to SimpleTelnetClientSelector. AgeIrcBot would be the SimpleTelnetClientHandler.
 public class IrcDccChatGameSelector extends IrcDccChatSynchronousHandler
 {

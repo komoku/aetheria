@@ -5,6 +5,7 @@
 package eu.irreality.age;
 
 import eu.irreality.age.debug.Debug;
+import eu.irreality.age.server.ServerHandler;
 
 public class IrcAgeBot extends IrcBot
 {

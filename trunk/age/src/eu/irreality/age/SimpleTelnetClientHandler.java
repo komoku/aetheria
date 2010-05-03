@@ -7,6 +7,8 @@ import java.util.*;
 import java.net.*;
 import java.io.*;
 
+import eu.irreality.age.server.PartidaEnCurso;
+
 public class SimpleTelnetClientHandler extends Thread {
 
  

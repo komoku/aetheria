@@ -118,6 +118,7 @@ public class World implements Informador , SupportingCode
 	
 	//templates para crear Players como DAIO's. (Dynamically Assigned ID Objects)
 	private List playerTemplateNodes = new ArrayList(); //list of org.w3c.dom.Element
+	private HashMap playerTemplateNodesByName = new HashMap(); //map of names to org.w3c.dom.Element
 	
 	//Players que están esperando a ser añadidos al mundo.
 	private List playersToAdd = new Vector();
@@ -467,6 +468,8 @@ public class World implements Informador , SupportingCode
 				//end: memory optimisation
 				
 				playerTemplateNodes.add ( templateElement );
+				if ( templateElement.hasAttribute("name") )
+					playerTemplateNodesByName.put(templateElement.getAttribute("name"),templateElement);
 			}
 			
 			//i planned to put a Code node here (player generation code).
@@ -757,9 +760,13 @@ public class World implements Informador , SupportingCode
 				//if there are no player-template-nodes defined, the first player node
 				//acts as a player-template.
 				//and we call the assignPlayer method if it exists to assign a player to the client.
-				if ( playerTemplateNodes.size() == 0 )
+				
+				//if ( playerTemplateNodes.size() == 0 )
 				{
-					playerTemplateNodes.add ( getDetachedCopy(mobNode[i]) );
+					Element templateElement = (Element) getDetachedCopy(mobNode[i]);
+					playerTemplateNodes.add ( templateElement );
+					if ( templateElement.hasAttribute("name") )
+						playerTemplateNodesByName.put(templateElement.getAttribute("name"),templateElement);
 				}
 				
 				if ( !noSerCliente && !jugadorAsignadoACliente )
@@ -2362,6 +2369,13 @@ public class World implements Informador , SupportingCode
 	{
 		if ( playerTemplateNodes == null || playerTemplateNodes.size() < 1 ) return null;
 		else return new Player ( this , io , (org.w3c.dom.Element) playerTemplateNodes.get(0) );	
+	}
+	
+	public Player createPlayerFromTemplate ( InputOutputClient io , String templateName ) throws XMLtoWorldException
+	{
+		Element playerTemplateNode = (Element) playerTemplateNodesByName.get(templateName);
+		if ( playerTemplateNode == null ) return null;
+		else return new Player ( this , io , (org.w3c.dom.Element) playerTemplateNode );
 	}
 	
 	/**
