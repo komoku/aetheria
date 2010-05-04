@@ -215,7 +215,7 @@ public class ServerHandler //Singleton!
 			for ( int i = 0 ; i < nmenus ; i++ )
 			{
 				JMenu cur = jmb.getMenu(i);
-				if ( cur.getText().equalsIgnoreCase("Servidor") )
+				if ( cur.getText().equalsIgnoreCase("Opciones de juego") )
 				{
 					cur.setText("Partida " + npartida);
 					npartida++;
