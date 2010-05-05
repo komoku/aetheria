@@ -1437,7 +1437,7 @@ public class Player extends Mobile implements Informador
 						patternMatchVectorSing = habitacionActual.itemsInRoom.patternMatch ( arguments , false ); //en singular
 						patternMatchVectorPlur = habitacionActual.itemsInRoom.patternMatch ( arguments , true ); //en plural
 					}
-					if ( patternMatchVectorSing.size() > 0 && !(((Item)patternMatchVectorSing.elementAt(0)).getDescription(this).equals("")) ) //miramos un objeto
+					if ( patternMatchVectorSing.size() > 0 /* && !(((Item)patternMatchVectorSing.elementAt(0)).getDescription(this).equals("")) */ ) //miramos un objeto
 					{
 						Item ourItem = ((Item)patternMatchVectorSing.elementAt(0));
 						write( io.getColorCode("action") + ((Item)patternMatchVectorSing.elementAt(0)).cerrar() + io.getColorCode("reset") + "\n" );
@@ -1453,12 +1453,13 @@ public class Player extends Mobile implements Informador
 						for ( int i = 0 ; i < patternMatchVectorPlur.size() ; i++ )
 						{
 							ourItem = (Item)patternMatchVectorPlur.elementAt(i);
-							if ( !((Item)ourItem).getDescription(this).equals("")  )
-							{
+							//this is plain nonsense.
+							//if ( !((Item)ourItem).getDescription(this).equals("")  )
+							//{
 								write( "Intentas cerrar " + ourItem.constructName2True ( 1 , this ) + ": "  );
 								habitacionActual.reportAction(this,ourItem,null,"$1 intenta cerrar $2.\n","$1 intenta cerrarte.\n","Intentas cerrar $2.\n",false);
 								write( io.getColorCode("action") + ((Item)ourItem).cerrar() + io.getColorCode("reset") +"\n" );
-							}
+							//}
 						}	
 					}
 				} //fin (si hay items)	
@@ -1472,7 +1473,7 @@ public class Player extends Mobile implements Informador
 						patternMatchVectorSing = inventory.patternMatch ( arguments , false ); //en singular
 						patternMatchVectorPlur = inventory.patternMatch ( arguments , true ); //en plural
 					}
-					if ( patternMatchVectorSing.size() > 0 && !(((Item)patternMatchVectorSing.elementAt(0)).getDescription(this).equals("") ) ) //miramos un objeto
+					if ( patternMatchVectorSing.size() > 0 /* && !(((Item)patternMatchVectorSing.elementAt(0)).getDescription(this).equals("") ) */ ) //miramos un objeto
 					{
 						mirado=true;
 						write( io.getColorCode("action") + ((Item)patternMatchVectorSing.elementAt(0)).cerrar() + io.getColorCode("reset") + "\n" );
