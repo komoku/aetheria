@@ -2508,7 +2508,29 @@ public class World implements Informador , SupportingCode
 	
 	
 	
-	
+	public void executePlayerIntro( Player p )
+	{
+		//exec player intro routine
+		try
+		{
+			execCode("intro",""); //EVA (obsolete)
+			
+			//without state info
+			execCode("intro", new Object[] {p});
+			
+			//with state info
+			execCode("intro", new Object[] {p,new Boolean(this.comesFromLoadedState())});
+		}
+		catch (EVASemanticException esm) //EVA
+		{
+			write("EVASemanticException found at intro routine" );
+		}
+		catch (bsh.TargetError bshte)
+		{
+			write("bsh.TargetError found at intro routine\n" );
+			writeError(ExceptionPrinter.getExceptionReport(bshte));
+		}
+	}
 	
 	
 	
@@ -2580,20 +2602,7 @@ public class World implements Informador , SupportingCode
 				write("New player joined the game.\n");
 			
 				//exec player intro routine
-				try
-				{
-					execCode("intro",""); //EVA (obsolete)
-					execCode("intro", new Object[] {p});
-				}
-				catch (EVASemanticException esm) //EVA
-				{
-					write("EVASemanticException found at intro routine" );
-				}
-				catch (bsh.TargetError bshte)
-				{
-					write("bsh.TargetError found at intro routine\n" );
-					writeError(ExceptionPrinter.getExceptionReport(bshte));
-				}
+				executePlayerIntro(p);
 			
 			}
 			playersToAdd = new Vector();
@@ -2602,8 +2611,13 @@ public class World implements Informador , SupportingCode
 	}
 	
 	
+	/**Indicates whether we have loaded a state in this World.*/
+	private boolean loadedState = false;
 	
-	
+	public boolean comesFromLoadedState()
+	{
+		return loadedState;
+	}
 	
 	public void loadState ( String statefname ) throws FileNotFoundException,ParserConfigurationException,SAXException,IOException,XMLtoWorldException
 	{
@@ -2641,7 +2655,7 @@ public class World implements Informador , SupportingCode
 			
 		loadWorldFromXML ( n , io , false ); //be a client! (provisional)
 
-		
+		loadedState = true;
 		
 	}
 	

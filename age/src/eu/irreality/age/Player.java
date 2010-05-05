@@ -2091,7 +2091,7 @@ public class Player extends Mobile implements Informador
 			if ( originalTrimmedCommandString != null )
 				origCommand = StringMethods.getTok(originalTrimmedCommandString,1,' ').trim();
 			//Debug.println("origCommand: " + origCommand +"ceremonia del te");
-			if ( !origCommand.endsWith("me") && !origCommand.endsWith("te") )
+			if ( !origCommand.endsWith("me") && !origCommand.endsWith("te") && !origCommand.endsWith("se") )
 				escribirDenegacionComando ( io.getColorCode("denial") + "¿Cómo? ¿" + commandstring + "?\n" + io.getColorCode("reset") );
 			else
 				//si el comando se refería al propio jugador, poner el string sin pronombres sustituidos, porque queda un poco feo que diga "¿cómo? ¿matar a jugador?"
@@ -3509,7 +3509,7 @@ public class Player extends Mobile implements Informador
 			//añadimos la ZR masculina singular
 			thestring += " " + ZR_objeto_femenino_singular;
 		}
-		if ( thestring.toLowerCase().endsWith ( "me" ) || thestring.toLowerCase().endsWith ( "te" ) )
+		if ( thestring.toLowerCase().endsWith ( "me" ) || thestring.toLowerCase().endsWith ( "te" ) || thestring.toLowerCase().endsWith ( "se" ) )
 		{
 			if ( !thestring.toLowerCase().endsWith("este") && !thestring.toLowerCase().endsWith("norte")  /*&& lenguaje.esVerboComando ( thestring.substring(0,thestring.length()-2) ) */ )
 			{

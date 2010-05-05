@@ -92,7 +92,7 @@
 </IdeMetaInf>
 <Code language="BeanShell"><![CDATA[/*Introducción del juego para un jugador*/
 
-void intro( Player aPlayer )
+void intro( Player aPlayer , boolean fromState )
 
 {
 
@@ -110,52 +110,61 @@ void intro( Player aPlayer )
     
     aPlayer.write("\nWizard's Quest: Morluck's Lair - © 2009 Carlos Gómez Rodríguez (Al-Khwarizmi) - versión de 2009-12-25\n\n");
 
+	if ( !fromState )
+	{
 
-
-    aPlayer.write("Tras un largo día de viaje, has llegado a tu destino: la guarida del malvado Morluck. Al ver la oscura e imponente entrada de la cueva, " +
-
-    "en cuyo interior acechan peligros inimaginables, lamentas una vez más no haber prestado atención en tus clases de magia. Con un buen conjuro de bola de " +
-
-    "fuego podrías reducir a cenizas a todos los sicarios orcos de Morluck. Pena que sólo aprendieras ese estúpido conjuro para crear flores, creyendo que " +
-
-    "con eso impresionarías a las chicas...\n");
-
-    
-
-    aPlayer.waitKeyPress();
-
-    
-
-    aPlayer.write("Pero ahora no hay vuelta atrás. La bella Tamar, la mujer de tus sueños, ha sido secuestrada por Morluck, y quién mejor para rescatarla " +
-
-    "que tú, el bocazas que le contó a todo el pueblo que era capaz de desintegrar a un gigante chasqueando los dedos. Si quieres conservar algo de honor " +
-
-    "y volver a mirar a la gente a la cara alguna vez, no te queda otra opción que entrar en los dominios del malvado brujo, y salir con la chica... aunque " +
-
-    "parece más probable que no salgas nunca.\n");
-
+	    aPlayer.write("Tras un largo día de viaje, has llegado a tu destino: la guarida del malvado Morluck. Al ver la oscura e imponente entrada de la cueva, " +
 	
-
-    aPlayer.waitKeyPress();
-
-
-
-	aPlayer.write("Maldiciendo una vez más tu propia mendacidad y holgazanería, y con las piernas temblando por el miedo, entras en la oscura cueva. " +
-
-    "Es el momento de convertirte en un héroe... o en un cadáver.\n");
-
+	    "en cuyo interior acechan peligros inimaginables, lamentas una vez más no haber prestado atención en tus clases de magia. Con un buen conjuro de bola de " +
 	
-
-    aPlayer.waitKeyPress();
+	    "fuego podrías reducir a cenizas a todos los sicarios orcos de Morluck. Pena que sólo aprendieras ese estúpido conjuro para crear flores, creyendo que " +
+	
+	    "con eso impresionarías a las chicas...\n");
+	
+	    
+	
+	    aPlayer.waitKeyPress();
+	
+	    
+	
+	    aPlayer.write("Pero ahora no hay vuelta atrás. La bella Tamar, la mujer de tus sueños, ha sido secuestrada por Morluck, y quién mejor para rescatarla " +
+	
+	    "que tú, el bocazas que le contó a todo el pueblo que era capaz de desintegrar a un gigante chasqueando los dedos. Si quieres conservar algo de honor " +
+	
+	    "y volver a mirar a la gente a la cara alguna vez, no te queda otra opción que entrar en los dominios del malvado brujo, y salir con la chica... aunque " +
+	
+	    "parece más probable que no salgas nunca.\n");
+	
+		
+	
+	    aPlayer.waitKeyPress();
+	
+	
+	
+		aPlayer.write("Maldiciendo una vez más tu propia mendacidad y holgazanería, y con las piernas temblando por el miedo, entras en la oscura cueva. " +
+	
+	    "Es el momento de convertirte en un héroe... o en un cadáver.\n");
+	
+		
+	
+	    aPlayer.waitKeyPress();
+	    
+	    
+	    aPlayer.writeDescription("Entras en la guarida de Morluck. Te hallas en la entrada, una caverna natural. Hacia el norte puedes ver la luz que proviene de la " +
+	    "salida al exterior, por donde has venido. Hacia el sur, un estrecho y sombrío túnel.\n\n");
     
     
-    aPlayer.writeDescription("Entras en la guarida de Morluck. Te hallas en la entrada, una caverna natural. Hacia el norte puedes ver la luz que proviene de la " +
-    "salida al exterior, por donde has venido. Hacia el sur, un estrecho y sombrío túnel.\n\n");
-    
+    }
+    else
+    {
+    	aPlayer.writeInformation("Estado restaurado.\n\n");
+    }
 
     aPlayer.writeImportant( "(Nota: En esta aventura, puedes teclear \"hechizos\" o \"conjuros \" en cualquier momento para ver los conjuros que puedes lanzar, "+
     "y \"conjurar (conjuro)\" o \"conjurar (conjuro) sobre (objetivo)\" para utilizarlos. También puedes teclear \"estado\" para ver un informe completo de tu estado" +
     " de salud, habilidades y conjuros conocidos).\n\n");
+    
+    
 
 
 

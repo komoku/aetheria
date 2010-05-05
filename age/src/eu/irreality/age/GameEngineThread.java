@@ -251,8 +251,8 @@ public class GameEngineThread extends Thread
 		}
 		
 		//exec player intro foreach player
-		try
-		{
+		//try
+		//{
 			Debug.println("Gonna exec player intros.");
 			java.util.List l = theWorld.getPlayerList();
 			Debug.println("List gotten: " + l);
@@ -262,12 +262,16 @@ public class GameEngineThread extends Thread
 				{
 					Debug.println("Intro " + i);
 					Player p = (Player)l.get(i);
+					/*
 					theWorld.execCode("intro",""); //EVA (obsolete)
 					theWorld.execCode("intro", new Object[] {p});
+					*/
+					theWorld.executePlayerIntro(p);
 				}
 			}
 			Debug.println("Player intros execced.");
-		}
+		//}
+		/*
 		catch (EVASemanticException esm) //EVA
 		{
 			theWorld.write("EVASemanticException found at intro routine" );
@@ -277,6 +281,7 @@ public class GameEngineThread extends Thread
 			theWorld.write("bsh.TargetError found at intro routine" );
 			bshte.printStackTrace();
 		}
+		*/
 		
 		while ( !exitFlag )
 		{

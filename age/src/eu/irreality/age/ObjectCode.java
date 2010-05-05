@@ -197,7 +197,7 @@ public class ObjectCode
 		}
 		catch ( TargetError te ) //excepción tirada a propósito por el script
 		{
-			System.err.println("TRES");
+			//System.err.println("TRES");
 			Throwable lastExcNode = te;
 			while ( lastExcNode instanceof TargetError )
 				lastExcNode = ((TargetError)lastExcNode).getTarget();
@@ -206,12 +206,12 @@ public class ObjectCode
 		}
 		catch ( EvalError pe )
 		{
-			System.err.println("DOS");
+			//System.err.println("DOS");
 			reportEvalError(pe,aroutine,theCaller,theArguments);
 		}
 		catch ( Exception e )
 		{
-			System.err.println("UNO");
+			//System.err.println("UNO");
 		    theWorld.writeError("Catched the followan: " + e);
 		    e.printStackTrace();
 		}
