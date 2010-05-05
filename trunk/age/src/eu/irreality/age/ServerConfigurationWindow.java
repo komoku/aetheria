@@ -66,6 +66,7 @@ public class ServerConfigurationWindow extends JDialog
 	private JCheckBox cbTel = new JCheckBox("Servir por Telnet, puerto:");
 	private JCheckBox cbAge = new JCheckBox("Servir por AGE, puerto:");
 	private JCheckBox cbIrc = new JCheckBox("Servir por IRC");
+	private JCheckBox cbInitOnOK = new JCheckBox("Arrancar las partidas dedicadas al pulsar Aceptar");
 	private JCheckBox cbInitOnStartup = new JCheckBox("Arrancar las partidas dedicadas al iniciar AGE");
 	private JTextField tfTPort = new JTextField("8010") , tfAPort = new JTextField("8009") ;
 	
@@ -118,6 +119,7 @@ public class ServerConfigurationWindow extends JDialog
 		cbTel.setSelected ( sco.sirveTelnet() );
 		cbIrc.setSelected ( sco.sirveIrc() );
 		cbInitOnStartup.setSelected ( sco.initOnStartup() );
+		cbInitOnOK.setSelected ( false ); //this is not an option, we don't init on OK unless explicitly told to do so. 
 		tfTPort.setText( String.valueOf(sco.getPuertoTelnet()) );
 		tfAPort.setText( String.valueOf(sco.getPuertoAge()) );
 		java.util.List lIrc = sco.getListaServidoresIrc();
@@ -126,6 +128,12 @@ public class ServerConfigurationWindow extends JDialog
 			ircServerVector.addElement ( lIrc.get(i) );
 		for ( int i = 0 ; i < lDed.size() ; i++ )
 			gameVector.addElement ( lDed.get(i) );	
+	}
+	
+	public void setVisible(boolean visible)
+	{
+		if(visible) cbInitOnOK.setSelected(false);
+		super.setVisible(visible);
 	}
 	
 	private ServerConfigurationWindow ( )
@@ -138,7 +146,7 @@ public class ServerConfigurationWindow extends JDialog
 		getContentPane().setLayout ( new BorderLayout() );
 		JPanel panelPrincipal = new JPanel ( new GridLayout ( 3 , 1 ) );
 			JPanel subPan1 = new JPanel();
-				subPan1.setLayout ( new GridLayout ( 5 , 1 ) );
+				subPan1.setLayout ( new GridLayout ( 6 , 1 ) );
 				JPanel subPan11 = new JPanel();
 					subPan11.add ( cbTel );
 					//subPan11.add ( new JLabel("Servir por Telnet, puerto:") );
@@ -152,11 +160,14 @@ public class ServerConfigurationWindow extends JDialog
 					//subPan13.add ( new JLabel("Servir por IRC") );
 				JPanel subPan15 = new JPanel();
 					subPan15.add ( cbInitOnStartup );
+				JPanel subPan16 = new JPanel();
+					subPan16.add ( cbInitOnOK );
 				subPan1.add(subPan12);
 				subPan1.add(subPan11);
 				subPan1.add(subPan13);
 				subPan1.add(new JPanel());
 				subPan1.add(subPan15);
+				subPan1.add(subPan16);
 				subPan1.setBorder ( BorderFactory.createTitledBorder("Activar/Desactivar Servidores") );
 			final JPanel subPan2 = new JPanel();
 				subPan2.setBorder ( BorderFactory.createTitledBorder("Servidor IRC") );
@@ -289,6 +300,8 @@ public class ServerConfigurationWindow extends JDialog
 					try
 					{
 						saveConfiguration();
+						if ( cbInitOnOK.isSelected() )
+							ServerHandler.getInstance().initPartidasDedicadas(SwingAetheriaGUI.getInstance().panel);
 					}
 					catch ( Exception e )
 					{
