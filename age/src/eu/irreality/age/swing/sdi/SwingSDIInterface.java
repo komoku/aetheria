@@ -602,7 +602,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 		
 		menuArchivo.add(new JSeparator(),3);
 		
-		setSize(500,400);
+		setSize(600,440);
 	}
 
 
