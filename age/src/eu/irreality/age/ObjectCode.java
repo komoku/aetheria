@@ -304,9 +304,21 @@ public class ObjectCode
 						i.eval ( theCode );
 						Debug.println("try end");
 					}
-					catch ( Throwable e )
+					catch ( TargetError te ) //excepción tirada a propósito por el script
 					{
-						e.printStackTrace();
+						Throwable lastExcNode = te;
+						while ( lastExcNode instanceof TargetError )
+							lastExcNode = ((TargetError)lastExcNode).getTarget();
+						if ( lastExcNode instanceof BSHCodeExecutedOKException ) return true; //llegó al end
+						else throw te;
+					}
+					catch ( EvalError pe )
+					{
+						reportEvalError(pe,aroutine,theCaller,theArguments);
+					}
+					catch ( Exception e )
+					{
+					    e.printStackTrace();
 					}
 					Debug.println("done");
 				}
