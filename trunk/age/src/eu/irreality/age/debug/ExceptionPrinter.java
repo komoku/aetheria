@@ -46,6 +46,7 @@ public class ExceptionPrinter
 		//report.append("Error: " + te.getErrorText() + "\n" );
 		report.append("Stack trace: " + getStackTrace(te) + "\n" );
 		report.append("Cause report: " + getExceptionReport ( te.getCause() ) );
+		report.append("\n");
 		return report.toString();
 	}
 	
@@ -54,7 +55,7 @@ public class ExceptionPrinter
 		StringBuffer report = new StringBuffer();
 		report.append("Syntax error in BeanShell code in object: " + theCaller + "\n");
 		report.append("Loaded to call method " + aRoutine + "\n");
-		report.append(theArguments.length == 0 ? "(with no arguments)" : "With arguments: ");
+		report.append((theArguments == null || theArguments.length == 0) ? "(with no arguments)" : "With arguments: ");
 		for ( int i = 0 ; i < theArguments.length ; i++ )
 			report.append(theArguments[i] + " ");
 		report.append("\n");

@@ -2398,6 +2398,8 @@ public class World implements Informador , SupportingCode
 			writeError(ExceptionPrinter.getExceptionReport(bshte));
 			Debug.println ( bshte.printTargetError(bshte) );
 			writeError( bshte.printTargetError(bshte) );
+			io.write(ExceptionPrinter.getExceptionReport(bshte));
+			System.err.println("ARGH");
 			bshte.printStackTrace();
 		}
 		return ejecutado;
