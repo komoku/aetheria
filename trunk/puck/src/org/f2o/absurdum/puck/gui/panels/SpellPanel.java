@@ -278,7 +278,7 @@ public class SpellPanel extends EntityPanel
 		
 		secondTab.setLayout(new BoxLayout(secondTab, BoxLayout.PAGE_AXIS));
 		
-		bcp = new BSHCodePanel("spell");
+		bcp = new BSHCodePanel("spell",this);
 		secondTab.add(bcp);
 		
 		pp = new PropertiesPanel();

@@ -221,7 +221,7 @@ public class AbstractEntityPanel extends EntityPanel
 		
 		secondTab.setLayout(new BoxLayout(secondTab, BoxLayout.PAGE_AXIS));
 		
-		bcp = new BSHCodePanel("abstract entity");
+		bcp = new BSHCodePanel("abstract entity",this);
 		secondTab.add(bcp);
 		
 		pp = new PropertiesPanel();

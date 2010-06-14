@@ -230,7 +230,7 @@ public class ItemPanel extends EntityPanel
 		
 		secondTab.setLayout(new BoxLayout(secondTab, BoxLayout.PAGE_AXIS));
 		
-		bcp = new BSHCodePanel("item");
+		bcp = new BSHCodePanel("item",this);
 		secondTab.add(bcp);
 		
 		pp = new PropertiesPanel();
