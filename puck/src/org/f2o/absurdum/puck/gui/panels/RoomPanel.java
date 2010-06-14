@@ -116,7 +116,7 @@ public class RoomPanel extends EntityPanel
 		
 		secondTab.setLayout(new BoxLayout(secondTab, BoxLayout.PAGE_AXIS));
 		
-		bcp = new BSHCodePanel("room");
+		bcp = new BSHCodePanel("room",this);
 		//System.out.println("Setting " + this.hashCode() + "'s panel to " + bcp.hashCode());
 		secondTab.add(bcp);
 		

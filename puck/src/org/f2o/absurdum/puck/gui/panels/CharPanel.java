@@ -195,7 +195,7 @@ public class CharPanel extends EntityPanel
 		
 		secondTab.setLayout(new BoxLayout(secondTab, BoxLayout.PAGE_AXIS));
 		
-		bcp = new BSHCodePanel("mobile");
+		bcp = new BSHCodePanel("mobile",this);
 		secondTab.add(bcp);
 		
 		pp = new PropertiesPanel();

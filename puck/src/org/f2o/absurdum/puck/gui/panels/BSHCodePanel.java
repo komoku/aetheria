@@ -77,6 +77,8 @@ class BSHCodeFrame extends JFrame
 	//context attribute: specifies which type of panel it is, used to know which code templates are available on menus
 	private String context;
 	
+	private BSHCodePanel codePanel = null;
+	
 	public String getContext()
 	{
 		return context;
@@ -88,6 +90,7 @@ class BSHCodeFrame extends JFrame
 		updateFontSize();
 		jep.setDocument(externalJep.getDocument());
 		restoreSearchDialogs();
+		if ( codePanel != null ) this.setTitle(codePanel.getPanelName());
 		//jep.setText(externalJep.getText());
 	}
 	
@@ -138,9 +141,10 @@ class BSHCodeFrame extends JFrame
 	}
 	
 	//public BSHCodeFrame( String title , JEditorPane toWriteTo )
-	public BSHCodeFrame( String title , JEditorPane toWriteTo , String context , final BSHCodePanel codePanel )
+	public BSHCodeFrame( String title , JEditorPane toWriteTo , String context , BSHCodePanel codePanel )
 	{
 		//DefaultSyntaxKit.initKit();
+		this.codePanel = codePanel;
 		this.context = context;
 		setTitle(title);
 		setSize(600,600);
@@ -169,7 +173,7 @@ class BSHCodeFrame extends JFrame
 						externalJep.setDocument(jep.getDocument());
 						//jep.getDocument().putProperty("SearchData",null); //with this we discard the find/replace dialog instances associated with the document.
 						saveSearchDialogs();
-						codePanel.restoreSearchDialogs();
+						BSHCodeFrame.this.codePanel.restoreSearchDialogs();
 						//TODO: remove the previous line when JSyntaxPane is updated so that dialogs are associated to (document,editor) pairs rather than to documents.
 						setVisible(false);
 					}
@@ -304,6 +308,9 @@ public class BSHCodePanel extends JPanel
 	//context attribute: specifies which type of panel it is, used to know which code templates are available on menus
 	private String context;
 	
+	//entity panel corresponding to this code panel, if any.
+	private EntityPanel entityPanel;
+	
 	final JLabel lineNumLabel = new JLabel("line: ");
 	
 	/*
@@ -348,8 +355,22 @@ public class BSHCodePanel extends JPanel
 	
 	public BSHCodePanel ( String context )
 	{
+		this ( context, null );
+	}
+	
+	public String getPanelName()
+	{
+		if ( entityPanel == null )
+			return "Code editing";
+		else
+			return entityPanel.getName() + " - " + "Code editing";
+	}
+	
+	public BSHCodePanel ( String context , EntityPanel ep )
+	{
 		
 		this.context = context;
+		this.entityPanel = ep;
 		
 		setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("bsh.code")));
 		//jep = new JEditorPane();
@@ -367,7 +388,7 @@ public class BSHCodePanel extends JPanel
 		//jep.setTokenMarker(new JavaTokenMarker()); 
 		setLayout(new BorderLayout());
 		//JScrollPane jsp = new JScrollPane(jep);
-		auxFrame = new BSHCodeFrame("BSH Code Frame",jep,context,this);
+		auxFrame = new BSHCodeFrame(getPanelName(),jep,context,this);
 		//jsp.setPreferredSize(new Dimension(120,70));
 		//add(jsp,BorderLayout.CENTER);
 		
