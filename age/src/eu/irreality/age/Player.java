@@ -1191,7 +1191,9 @@ public class Player extends Mobile implements Informador
 					MobileList yo = new MobileList();
 					yo.addElement(this);
 
-					if ( !mirado ) mirado = mirarExtrasBichos ( arguments , yo );
+					if ( !mirado ) mirado = mirarExtrasBichos ( arguments , this.getRoom().getMobiles() );
+					
+					//if ( !mirado ) mirado = mirarExtrasBichos ( arguments , yo );
 
 					if(!mirado) //no miramos nada.
 					{
