@@ -2728,6 +2728,19 @@ public class Player extends Mobile implements Informador
 				    	write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContents() executed from world, command was " + command + fullArguments + ", entity " + currentObject + ", error was " + te + io.getColorCode("reset") );
 				    	writeError(ExceptionPrinter.getExceptionReport(te));
 				    }
+				    if ( !ejecutado )
+					{
+						try
+						{
+
+							ejecutado = ejecutado || mundo.execCode ( "parseCommandOnContentsGeneric" , new Object[] { this , command , fullArguments , "" , objetivoVector , null , currentObject , null } );
+						}
+						catch ( bsh.TargetError te )
+						{
+							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric() executed from world, command was " + command + fullArguments + ", entity number " + currentObject + ", second object was " + null + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
+						}
+					}
 				}
 
 			}
