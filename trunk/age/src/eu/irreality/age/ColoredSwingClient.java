@@ -907,6 +907,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	{
 	
 		if ( deactivated ) return null;
+		showAfterLogLoad();
 		
 		setTextFieldForeground(textFieldForeground);
 	
@@ -954,6 +955,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	public synchronized String getRealTimeInput ( Player pl)  
 	{
 		if ( deactivated ) return null;
+		showAfterLogLoad();
 		
 		String temp = currentInput;
 		setTextFieldForeground(Color.black);
@@ -1390,4 +1392,55 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	public void setOutputAreaBackground ( String s ) { setOutputAreaBackground(parseColor(s)); }
 	//public void setOutputAreaForeground ( String s ) { setOutputAreaForeground(parseColor(s)); }
 
+	
+	
+	private boolean processingLog = false;
+	
+	
+	
+
+	
+	public void hideForLogLoad()
+	{
+		processingLog = true;
+		if ( laVentana instanceof JFrame )
+		{
+			//JPanel glass = (JPanel)((JFrame)laVentana).getGlassPane();
+			JPanel glass = new JPanel();
+			glass.setBackground(Color.WHITE);
+			glass.setOpaque(true);
+			((JFrame)laVentana).setGlassPane(glass);
+			
+			glass.removeAll();
+			glass.setLayout(new GridLayout(1,1));
+			glass.setBackground(Color.WHITE);
+			JLabel loadingLabel = new JLabel("Cargando log, un momento...",JLabel.CENTER);
+			loadingLabel.setBorder(BorderFactory.createLineBorder(Color.black,4));
+			loadingLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			loadingLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
+			loadingLabel.setHorizontalTextPosition(JLabel.CENTER);
+			loadingLabel.setVerticalTextPosition(JLabel.CENTER);
+			//loadingLabel.setForeground(this.getVisualConfiguration().getForegroundColor());
+			//loadingLabel.setBackground(this.getVisualConfiguration().getBackgroundColor());
+			loadingLabel.setFont(loadingLabel.getFont().deriveFont(25.0f));
+			glass.add(loadingLabel);
+			glass.setVisible(true);
+			//laVentana.getMainPanel().setVisible(false);
+		}
+	}
+	
+	public void showAfterLogLoad()
+	{
+		if ( processingLog )
+		{
+			processingLog = false;
+			if ( laVentana instanceof JFrame )
+			{
+				//laVentana.getMainPanel().setVisible(true);
+				JPanel glass = (JPanel)((JFrame)laVentana).getGlassPane();
+				glass.setVisible(false);
+			}
+		}
+	}
+	
 }

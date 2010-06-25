@@ -1,5 +1,6 @@
 package eu.irreality.age.swing.sdi;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.DisplayMode;
 import java.awt.Graphics;
@@ -109,11 +110,16 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 							{
 
 								//setVisible(false);
+								//cover();
 								getContentPane().removeAll();
 								mainPanel = new JPanel(); //panel que contiene al cliente
 								setMainPanel( mainPanel );
 								io = new ColoredSwingClient(SwingSDIInterface.this,gameLog); //components are added 'ere.
 								//setVisible(true);
+								//uncover();
+								
+								if ( logFile != null )
+									((ColoredSwingClient)io).hideForLogLoad();
 								
 								write("Aetheria Game Engine v 0.5 Beta Distribution\n");
 
@@ -369,8 +375,8 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 							{
 								repaint();
 								updateNow();
-								setVisible(false);
-								setVisible(true);
+								//setVisible(false);
+								//setVisible(true);
 
 							}
 						}
@@ -783,6 +789,23 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 	public boolean supportsFullScreen() 
 	{
 		return true;
+	}
+	
+	
+	
+	public void cover()
+	{
+		JPanel glass = new JPanel();
+		glass.setBackground(Color.WHITE);
+		glass.setOpaque(true);
+		setGlassPane(glass);
+		glass.setVisible(true);
+	}
+	
+	public void uncover()
+	{
+		JPanel glass = (JPanel) getGlassPane();
+		glass.setVisible(false);
 	}
 
 }

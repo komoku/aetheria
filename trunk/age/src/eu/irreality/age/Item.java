@@ -1524,6 +1524,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 					return j;
 				}
 			}
+			//TODO: here, add reverse analysis. gettoks from 1 to moving i.
 		}
 		return 0;
 	}
@@ -2682,7 +2683,8 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	}
 	
 	
-	
+	public boolean isWearable() { return ( this instanceof Wearable ); }
+	public boolean isWeapon() { return ( this instanceof Weapon ); }
 	
 	
 
