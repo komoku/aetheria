@@ -16,6 +16,13 @@ public class EntityList
 	/**Vector que contiene las entidades.*/
 	protected java.util.Vector laLista;
 
+	public Object clone()
+	{
+		EntityList el = new EntityList();
+		el.laLista = (java.util.Vector) this.laLista.clone();
+		return el;
+	}
+	
 	/**
 	* La función addElement de java.util.Vector.
 	*

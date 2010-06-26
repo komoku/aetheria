@@ -861,7 +861,12 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 
 	public void forceInput ( String s , boolean output_enabled )
 	{
-		gameLog.addElement ( s );
+		//2010-06-25: We add this if, behind-the-scenes forced commands should not be added to logs.
+		//(e.g. if "leer cartel" forces "mirar cartel", we only need to log "leer cartel",
+		//not both - "mirar cartel" will be executed behind the scenes anyway):
+		if ( output_enabled )
+			gameLog.addElement ( s );
+		
 		elEscuchador.countCommand();
 		if ( output_enabled )
 		{	

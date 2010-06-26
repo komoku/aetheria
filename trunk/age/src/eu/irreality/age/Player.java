@@ -692,6 +692,7 @@ public class Player extends Mobile implements Informador
 
 		ejecutado = false;
 
+		boolean matchedOneEntity = false;
 		boolean matchedTwoEntities = false;
 
 		EntityList posiblesObjetivos = getReachableEntities();
@@ -718,110 +719,11 @@ public class Player extends Mobile implements Informador
 
 		if ( allMatches.size() > 0 ) matchedTwoEntities = true;
 
-		//TODO: this commented code changed to resolveParseCommandForTwoEntities, let's see if it works or not.
-		/*
-
-	for ( int i = 0 ; i < allMatches.size() ; i++ )
-	{
-	    SentenceInfo si = (SentenceInfo) allMatches.get(i);
-	    String args1 = si.getArgs1();
-	    String args2 = si.getArgs2();
-	    Entity obj1 = si.getObj1();
-	    Entity obj2 = si.getObj2();
-
-	    //two-way parsecommands!!!1!one
-
-//	    ejecutar parseCommand() de objeto 1
-	    if ( obj1 instanceof SupportingCode )
-	    {
-		try
-		{
-		    ejecutado = ejecutado || ((SupportingCode)obj1).execCode ( "parseCommandObj1" , new Object[] { this , command , args1 , args2 , obj2 } );
-		}
-		catch ( bsh.TargetError te )
-		{
-		    write(io.getColorCode("error") + "bsh.TargetError found at parseCommandObj1(), command was " + command + args1 + args2 + ", entity number " + obj1.getID() + ", second object was " + obj2.getID() + ", error was " + te + io.getColorCode("reset") );
-		}
-		if ( !ejecutado )
-		{
-		    try
-		    {
-			ejecutado = ejecutado || ((SupportingCode)obj1).execCode ( "parseCommandTwoObjects" , new Object[] { this , command , args1 , args2 , obj2 } );
-		    }
-		    catch ( bsh.TargetError te )
-		    {
-			write(io.getColorCode("error") + "bsh.TargetError found at parseCommandTwoObjects(), command was " + command + args1 + args2 + ", entity number " + obj1.getID() + ", second object was " + obj2.getID() + ", error was " + te + io.getColorCode("reset") );
-		    }
-		}
-		if ( !ejecutado )
-		{
-		    try
-		    {
-			//parseCommandGeneric ( Player aCreature , String verb , Sring args1 , Sring args2 , Entity obj1 , Entity obj2 , boolean isFirst )
-			ejecutado = ejecutado || ((SupportingCode)obj1).execCode ( "parseCommandGeneric" , new Object[] { this , command , args1 , args2 , obj1 , obj2 , new Boolean(true) } );
-		    }
-		    catch ( bsh.TargetError te )
-		    {
-			write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric(), command was " + command + args1 + args2 + ", entity number " + obj1 + ", second object was " + obj2 + ", error was " + te + io.getColorCode("reset") );
-		    }
-		}
-	    }
-	    if ( ejecutado ) //código hizo end()
-	    {
-		//luego esto lo hara el codigo
-		setNewState( 1 , 1 );
-		ZR_verbo = command;
-		return true;
-	    }
-
-//	    ejecutar parseCommand() de objeto 2
-	    if ( obj2 instanceof SupportingCode )
-	    {
-		try
-		{
-		    ejecutado = ejecutado || ((SupportingCode)obj2).execCode ( "parseCommandObj2" , new Object[] { this , command , args1 , args2 , obj1 } );
-		}
-		catch ( bsh.TargetError te )
-		{
-		    write(io.getColorCode("error") + "bsh.TargetError found at parseCommandObj2(), command was " + command + args1 + args2 + ", entity number " + obj2.getID() + ", first object was " + obj1.getID() + ", error was " + te + io.getColorCode("reset") );
-		}
-		if ( !ejecutado )
-		{
-		    try
-		    {
-			ejecutado = ejecutado || ((SupportingCode)obj2).execCode ( "parseCommandTwoObjects" , new Object[] { this , command , args1 , args2 , obj1 } );
-		    }
-		    catch ( bsh.TargetError te )
-		    {
-			write(io.getColorCode("error") + "bsh.TargetError found at parseCommandTwoObjects(), command was " + command + args1 + args2 + ", entity number " + obj2.getID() + ", first object was " + obj1.getID() + ", error was " + te + io.getColorCode("reset") );
-		    }
-		}
-		if ( !ejecutado )
-		{
-		    try
-		    {
-			//parseCommandGeneric ( Player aCreature , String verb , Sring args1 , Sring args2 , Entity obj1 , Entity obj2 , boolean isFirst )
-			ejecutado = ejecutado || ((SupportingCode)obj2).execCode ( "parseCommandGeneric" , new Object[] { this , command , args1 , args2 , obj1 , obj2 , new Boolean(false) } );
-		    }
-		    catch ( bsh.TargetError te )
-		    {
-			write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric(), command was " + command + args1 + args2 + ", entity number " + obj1 + ", second object was " + obj2 + ", error was " + te + io.getColorCode("reset") );
-		    }
-		}
-	    }
-	    if ( ejecutado ) //código hizo end()
-	    {
-		//luego esto lo hara el codigo
-		setNewState( 1 , 1 );
-		ZR_verbo = command;
-		return true;
-	    }
-
-
-	}
-
-		 */
-
+		Vector matches_s = ParserMethods.refersToEntityInRecursive ( arguments,posiblesObjetivos,false );
+		Vector matches_p = ParserMethods.refersToEntityInRecursive ( arguments,posiblesObjetivos,true );
+		
+		if ( matches_s.size() > 0 || matches_p.size() > 0 ) matchedOneEntity = true;
+		
 		//let's see if this works.
 		ejecutado = resolveParseCommandForTwoEntities ( posiblesObjetivos , arguments , arguments , false );
 		if ( ejecutado ) //código hizo end()
@@ -831,8 +733,6 @@ public class Player extends Mobile implements Informador
 			return true;
 		}
 
-
-
 		//ejecutar parseCommand sobre una entidad, if possible
 		ejecutado = resolveParseCommandForOneEntity ( posiblesObjetivos , arguments , arguments , false );
 		if ( ejecutado ) //código hizo end()
@@ -841,9 +741,26 @@ public class Player extends Mobile implements Informador
 			ZR_verbo = command;
 			return true;
 		}
-
-
-		//ahora vemos los posibles prefijos para el parseCommand.
+		
+		//A.
+		//comandos sobre un componente: sólo se ejecutan si no matchearon comandos con objetos
+		//("coger bastón del suelo" debe ejecutarse antes como comando sobre objeto bastón que sobre componente suelo)
+		//(also, comandos sobre componentes no se ejecutan si el verbo no es reconocido, para que funcione bien "coger espada y bastón del suelo")
+		//(si no, haríamos: coger espada (OK), bastón del suelo (comando sobre "suelo", pifia)
+		if ( !matchedOneEntity && !matchedTwoEntities && lenguaje.esVerboComando(command) )
+		{
+			EntityList posiblesObjetivosForComponents = (EntityList) posiblesObjetivos.clone();
+			posiblesObjetivosForComponents.addEntity(this.getRoom()); //componentes pueden ser de habitación
+			ejecutado = resolveParseCommandForOneComponent ( posiblesObjetivosForComponents , arguments );
+			if ( ejecutado ) //código hizo end()
+			{
+				setNewState( 1 , 1 );
+				ZR_verbo = command;
+				return true;
+			}
+		}
+		
+		//ahora vemos los posibles prefijos para el parseCommand. //TODO: I think this is no longer needed but I may be wrong.
 		if ( !matchedTwoEntities )
 		{
 			int nArgToks = StringMethods.numToks(arguments,' ');
@@ -1062,7 +979,9 @@ public class Player extends Mobile implements Informador
 				//si no había ninguna salida
 				if ( actionArgs[0] == null )
 				{
-					escribirDenegacionComando(io.getColorCode("denial") + "¿Cómo? ¿Hacia dónde quieres ir?\n" + io.getColorCode("reset") );
+					escribirDenegacionComando(io.getColorCode("denial") + 
+							mundo.getMessages().getMessage("go.where",new Object[]{this,arguments})  //"¿Cómo? ¿Hacia dónde quieres ir?\n" 
+							+ io.getColorCode("reset") );
 					ZR_verbo = command;	
 					commandQueue.removeAllElements();
 					return false;
@@ -1197,7 +1116,9 @@ public class Player extends Mobile implements Informador
 
 					if(!mirado) //no miramos nada.
 					{
-						escribirDenegacionComando(io.getColorCode("denial") + "¿Qué pretendes mirar?\n" + io.getColorCode("reset"));
+						escribirDenegacionComando(io.getColorCode("denial") + 
+								mundo.getMessages().getMessage("look.what",new Object[]{this,arguments})  //"¿Qué pretendes mirar?\n" 
+								+ io.getColorCode("reset"));
 						ZR_verbo = command;
 						commandQueue.removeAllElements();
 						return false;
@@ -1234,7 +1155,9 @@ public class Player extends Mobile implements Informador
 				}
 
 
-				escribirDenegacionComando(io.getColorCode("denial")+"¿Cómo? ¿Atacar a quién?\n"+io.getColorCode("reset")  );
+				escribirDenegacionComando(io.getColorCode("denial")+
+						mundo.getMessages().getMessage("attack.what",new Object[]{this,arguments})  //"¿Cómo? ¿Atacar a quién?\n" 
+						+io.getColorCode("reset")  );
 				ZR_verbo = command;
 				commandQueue.removeAllElements();
 				return false;
@@ -1258,7 +1181,9 @@ public class Player extends Mobile implements Informador
 
 			if(!mirado) //no atacamos nada, no nos entiende.
 			{
-				escribirDenegacionComando(io.getColorCode("denial")+"¿Cómo? ¿Defenderse de quién?\n"+io.getColorCode("reset")  );
+				escribirDenegacionComando(io.getColorCode("denial")+
+						mundo.getMessages().getMessage("block.what",new Object[]{this,arguments})  //"¿Cómo? ¿Defenderse de quién?\n" 
+						+io.getColorCode("reset")  );
 				ZR_verbo = command;
 				commandQueue.removeAllElements();
 				return false;
@@ -1277,7 +1202,9 @@ public class Player extends Mobile implements Informador
 			mirado = esquivar();
 			if ( !mirado ) //ein?
 			{
-				escribirDenegacionComando("\nNo te atacan. ¿Esquivar qué?\n");
+				escribirDenegacionComando(io.getColorCode("denial") + 
+						mundo.getMessages().getMessage("dodge.what",new Object[]{this,arguments})  //"No te atacan. ¿Esquivar qué?\n" 
+						+io.getColorCode("reset") );
 				ZR_verbo = command;
 				commandQueue.removeAllElements();
 				return false;
@@ -1397,7 +1324,9 @@ public class Player extends Mobile implements Informador
 
 			if(!mirado) //no abrimos nada.
 			{
-				escribirDenegacionComando(io.getColorCode("denial")+"¿Qué pretendes abrir?\n"+io.getColorCode("reset")  );
+				escribirDenegacionComando(io.getColorCode("denial")+
+						mundo.getMessages().getMessage("open.what",new Object[]{this,arguments})  //"¿Qué pretendes abrir?\n" 
+						+io.getColorCode("reset")  );
 				ZR_verbo = command;
 				commandQueue.removeAllElements();
 				return false;
@@ -1505,7 +1434,9 @@ public class Player extends Mobile implements Informador
 
 			if(!mirado) //no cerramos nada.
 			{
-				escribirDenegacionComando ( io.getColorCode("denial") + "¿Qué pretendes cerrar?\n" + io.getColorCode("reset") );
+				escribirDenegacionComando ( io.getColorCode("denial") + 
+						mundo.getMessages().getMessage("close.what",new Object[]{this,arguments})  //"¿Qué pretendes cerrar?\n"  
+						+ io.getColorCode("reset") );
 				ZR_verbo = command;
 				commandQueue.removeAllElements();
 				return false;
@@ -1638,7 +1569,9 @@ public class Player extends Mobile implements Informador
 
 			if(!mirado) //no ponemos nada
 			{
-				escribirDenegacionComando( io.getColorCode("denial") + "¿Cómo? ¿Poner qué dónde?\n" + io.getColorCode("reset") );
+				escribirDenegacionComando( io.getColorCode("denial") + 
+						mundo.getMessages().getMessage("put.what.where",new Object[]{this,arguments})  //"¿Cómo? ¿Poner qué dónde?\n" 
+						+ io.getColorCode("reset") );
 				ZR_verbo = command;
 				commandQueue.removeAllElements();
 				return false;
@@ -1682,7 +1615,9 @@ public class Player extends Mobile implements Informador
 			}
 			else
 			{
-				escribirDenegacionComando( io.getColorCode("denial") + "¿Qué pretendes coger?\n" + io.getColorCode("reset") );
+				escribirDenegacionComando( io.getColorCode("denial") + 
+						mundo.getMessages().getMessage("get.what",new Object[]{this,arguments})  //"¿Qué pretendes coger?\n"
+						+ io.getColorCode("reset") );
 				ZR_verbo = command;
 				commandQueue.removeAllElements();
 				return false;
@@ -1696,7 +1631,9 @@ public class Player extends Mobile implements Informador
 
 			if ( !oneTargetAction("drop",arguments,inventory) )
 			{
-				escribirDenegacionComando( io.getColorCode("denial") + "¿Qué pretendes dejar?\n" + io.getColorCode("reset") );
+				escribirDenegacionComando( io.getColorCode("denial") + 
+						mundo.getMessages().getMessage("drop.what",new Object[]{this,arguments})  //"¿Qué pretendes dejar?\n"
+						+ io.getColorCode("reset") );
 				ZR_verbo = command;
 				commandQueue.removeAllElements();
 				return false;		
@@ -1925,7 +1862,9 @@ public class Player extends Mobile implements Informador
 		{
 			if ( !oneTargetAction("unwear",arguments,getWornItems()) )
 			{
-				escribirDenegacionComando( io.getColorCode("denial") + "¿Qué pretendes quitarte?\n" + io.getColorCode("reset") );
+				escribirDenegacionComando( io.getColorCode("denial") + 
+						mundo.getMessages().getMessage("unwear.what",new Object[]{this,arguments})  //"¿Qué pretendes quitarte?\n"
+						+ io.getColorCode("reset") );
 				ZR_verbo = command;
 				commandQueue.removeAllElements();
 				return false;		
@@ -1936,7 +1875,9 @@ public class Player extends Mobile implements Informador
 		{
 			if ( !oneTargetAction("wear",arguments,inventory) )
 			{
-				escribirDenegacionComando( io.getColorCode("denial") + "¿Qué pretendes vestir?\n" + io.getColorCode("reset") );
+				escribirDenegacionComando( io.getColorCode("denial") + 
+						mundo.getMessages().getMessage("wear.what",new Object[]{this,arguments})  //"¿Qué pretendes vestir?\n"
+						+ io.getColorCode("reset") );
 				ZR_verbo = command;
 				commandQueue.removeAllElements();
 				return false;		
@@ -1947,7 +1888,9 @@ public class Player extends Mobile implements Informador
 		{
 			if ( !oneTargetAction("wield",arguments,inventory) )
 			{
-				escribirDenegacionComando( io.getColorCode("denial") + "¿Qué arma pretendes blandir?\n" + io.getColorCode("reset") );
+				escribirDenegacionComando( io.getColorCode("denial") + 
+						mundo.getMessages().getMessage("wield.what",new Object[]{this,arguments})  //"¿Qué arma pretendes blandir?\n"
+						+ io.getColorCode("reset") );
 				ZR_verbo = command;
 				commandQueue.removeAllElements();
 				return false;		
@@ -1958,7 +1901,9 @@ public class Player extends Mobile implements Informador
 		{
 			if ( !oneTargetAction("unwield",arguments,wieldedWeapons) )			
 			{
-				escribirDenegacionComando( io.getColorCode("denial") + "¿Qué arma pretendes enfundar?\n" + io.getColorCode("reset") );
+				escribirDenegacionComando( io.getColorCode("denial") + 
+						mundo.getMessages().getMessage("unwield.what",new Object[]{this,arguments})  //"¿Qué arma enfundar?\n"
+						+ io.getColorCode("reset") );
 				ZR_verbo = command;
 				commandQueue.removeAllElements();
 				return false;		
@@ -2083,12 +2028,14 @@ public class Player extends Mobile implements Informador
 
 
 		}
+		
+
 
 
 		//reconocemos el verbo; pero no tenemos npi de qué hacer con él...
 		//TODO remmed "else" from here.
 		else if ( lenguaje.esVerboComando ( command ) )
-		{
+		{			
 			String origCommand = "";
 			if ( originalTrimmedCommandString != null )
 				origCommand = StringMethods.getTok(originalTrimmedCommandString,1,' ').trim();
@@ -2651,6 +2598,48 @@ public class Player extends Mobile implements Informador
 	}
 
 
+	public boolean resolveParseCommandForOneComponent ( EntityList posiblesObjetivos , String arguments )
+	{
+		
+		boolean ejecutado = false;
+		
+		for ( int i = 0 ; i < posiblesObjetivos.size() && !ejecutado ; i++ )
+		{
+			Entity currentEntity = posiblesObjetivos.get(i);
+			if 
+			( 
+				! ejecutado && (
+					( currentEntity instanceof Room && ((Room)currentEntity).getExtraDescription(arguments,this) != null ) ||
+					( currentEntity instanceof Item && ((Item)currentEntity).getExtraDescription(arguments,this) != null ) ||
+					( currentEntity instanceof Mobile && ((Mobile)currentEntity).getExtraDescription(arguments,this) != null ) 
+				)
+			)
+			{
+				try
+				{
+					//parseCommandOnComponent(Mobile,command,args,chain)
+					ejecutado = ejecutado || ((SupportingCode)currentEntity).execCode ( "parseCommandOnComponent" , new Object[] { this , command , arguments } );
+				}
+				catch ( bsh.TargetError te )
+				{
+					write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnComponent(), command was " + command + arguments + ", entity " + currentEntity + ", error was " + te + io.getColorCode("reset") );
+					writeError(ExceptionPrinter.getExceptionReport(te));
+				}
+			}
+		}
+		
+		if ( ejecutado ) //código hizo end()
+		{
+			//luego esto lo hara el codigo
+			setNewState( 1 , 1 );
+			ZR_verbo = command;
+		}
+		return ejecutado;
+		
+	}
+		
+
+	
 	/**
 	 * @param objetivos_s
 	 * @param objetivos_p

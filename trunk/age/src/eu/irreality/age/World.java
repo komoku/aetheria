@@ -25,6 +25,7 @@ import org.w3c.dom.*;
 
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
+import eu.irreality.age.messages.Messages;
 
 public class World implements Informador , SupportingCode
 {
@@ -127,7 +128,25 @@ public class World implements Informador , SupportingCode
 	
 	boolean from_log; //input gotten from log	
 
+	//default messages
+	private Messages messages = Messages.getDefaultInstance();
 
+	public Messages getMessages()
+	{
+		return messages;
+	}
+	
+	/**
+	 * Loads a set of messages for this world from an URL.
+	 * @param u Location that contains the messages.
+	 * @throws IOException If the message file is not found.
+	 */
+	public void loadMessages ( URL u ) throws IOException
+	{
+		Messages m = new Messages(u);
+		m.setWorld(this);
+		messages = m;
+	}
 
 	public void endOfLog()
 	{

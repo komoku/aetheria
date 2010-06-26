@@ -117,7 +117,8 @@ public class CommandLineClient implements InputOutputClient
 
 	public void forceInput(String s, boolean outputEnabled) 
 	{
-		gameLog.addElement ( s );
+		if ( outputEnabled )
+			gameLog.addElement ( s );
 		if ( outputEnabled )
 		{	
 			write("\n");

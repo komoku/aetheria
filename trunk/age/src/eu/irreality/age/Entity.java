@@ -579,7 +579,71 @@ public abstract class Entity
 		return 0; //sólo algunas clases de Entity, las que se puedan agrupar en listas, necesitarán overridear este método.
 	}
 	
+	/**
+	 * This implements one of the modes of matchesCommand ( String , String )
+	 * @param commandArgs arguments of a command that might refer to this object
+	 * @param referenceList ordered list of reference names
+	 * @return 0 si no se da por aludido, 1 si sí, y con qué prioridad. (+ nº = - prioridad). La prioridad es el orden que ocupa el nombre que se corresponde con el comando dado en la lista de nombres.
+	 */
+	protected int legacyMatchesCommand ( String commandArgs , String referenceNameList )
+	{
+		int nToksArg = StringMethods.numToks( commandArgs , ' ');
+		int nToksList = StringMethods.numToks( referenceNameList , '$');
+		for ( int i = 1 ; i <= nToksArg ; i++ )
+		{
+			String currentToAnalyze = StringMethods.getToks( commandArgs , i , nToksArg , ' ' );
+			//"mirar la piedra pequeña" -> commandArgs="la piedra pequeña" -> vamos analizando "la piedra pequeña", "piedra pequeña", ...
+			for ( int j = 1 ; j <= nToksList ; j++ )
+			{
+				if ( StringMethods.getTok( referenceNameList , j , '$' ) .equalsIgnoreCase(currentToAnalyze) ) 
+				{
+					return j;
+				}
+			}
+			//TODO: here, add reverse analysis. gettoks from 1 to moving i.
+		}
+		return 0;
+	}
 	
+	/**
+	 * New matchesCommand mode implemented 2010-06-25, more robust than the "legacy" mode that wouldn't accept anything
+	 * to the right of entities.
+	 * @param commandArgs
+	 * @param referenceNameList
+	 * @return
+	 */
+	protected int lenientMatchesCommand ( String commandArgs , String referenceNameList )
+	{
+		int nToksList = StringMethods.numToks( referenceNameList , '$');
+		for ( int j = 1 ; j <= nToksList ; j++ )
+		{
+			String currentReferenceName = StringMethods.getTok( referenceNameList , j , '$' );
+			if ( commandArgs.toLowerCase().contains(currentReferenceName.toLowerCase()) )
+				return j;
+		}
+		return 0;
+	}
+	
+	/**
+	 * Note: takes a legacy, $-separated list of reference names
+	 * This method may be called by subclass-specific implementations of the matchesCommand ( String , boolean ) method.
+	 * @param commandArgs arguments of a command that might refer to this object
+	 * @param referenceList ordered list of reference names
+	 * @return 0 si no se da por aludido, 1 si sí, y con qué prioridad. (+ nº = - prioridad). La prioridad es el orden que ocupa el nombre que se corresponde con el comando dado en la lista de nombres.
+	 */
+	protected int matchesCommand ( String commandArgs , String referenceNameList )
+	{
+		if ( commandMatchingMode == LEGACY )
+			return legacyMatchesCommand ( commandArgs , referenceNameList );
+		else
+			return lenientMatchesCommand ( commandArgs , referenceNameList );
+	}
+	
+	public static int LEGACY = 0;
+	public static int LENIENT = 1;
+	
+	//go back to legacy if things fail
+	public static int commandMatchingMode = LENIENT;
 	
 	
 	

@@ -1374,11 +1374,9 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	
 	public String getExtraDescription ( String thingieName , Entity viewer )
 	{
-	
+		if ( thingieName == null || thingieName.length() == 0 ) return null; 
 		for ( int i = 0 ; i < extraDescriptionNameArrays.size() ; i++ )
 		{
-		
-		
 			String[] curNameArray = (String[]) extraDescriptionNameArrays.get(i);
 			Description[] curDesArray = (Description[]) extraDescriptionArrays.get(i);
 			
@@ -1504,12 +1502,12 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	*/
 	public int matchesCommand ( String commandArgs , boolean pluralOrSingular )
 	{
-		//Debug.println(">>interest list: " + respondToSing);
 		String listaDeInteres;
 		if ( pluralOrSingular ) // plural
 			listaDeInteres = respondToPlur;
 		else
 			listaDeInteres = respondToSing;
+		/*
 		int nToksArg = StringMethods.numToks( commandArgs , ' ');
 		int nToksList = StringMethods.numToks( listaDeInteres , '$');
 		for ( int i = 1 ; i <= nToksArg ; i++ )
@@ -1520,13 +1518,14 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			{
 				if ( StringMethods.getTok( listaDeInteres , j , '$' ) .equalsIgnoreCase(currentToAnalyze) ) 
 				{
-//					Debug.println( "***" + getTitle() + " matches with priority " + j);
 					return j;
 				}
 			}
 			//TODO: here, add reverse analysis. gettoks from 1 to moving i.
 		}
 		return 0;
+		*/
+		return matchesCommand ( commandArgs , listaDeInteres );
 	}
 	
 	public int getInstanceOf ( )
