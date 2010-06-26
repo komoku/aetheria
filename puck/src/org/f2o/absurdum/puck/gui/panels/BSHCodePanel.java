@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
 import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
@@ -94,7 +95,7 @@ class BSHCodeFrame extends JFrame
 		//jep.setText(externalJep.getText());
 	}
 	
-	final JLabel lineNumLabel = new JLabel("line: ");
+	final JLabel lineNumLabel = new JLabel(" : ");
 	
 	
 	private DocumentSearchData searchData = null;
@@ -124,9 +125,14 @@ class BSHCodeFrame extends JFrame
 	public static int getCaretColumnPosition(JTextComponent comp) {
 		int offset = comp.getCaretPosition();
 		int column;
-		try {
-			column = offset - Utilities.getRowStart(comp, offset);
-		} catch (BadLocationException e) {
+		try 
+		{
+			int rowStart = Utilities.getRowStart(comp, offset);
+			if ( rowStart < 0 ) return 0;
+			column = offset - rowStart;
+		} 
+		catch (BadLocationException e) 
+		{
 			column = -1;
 		}
 		return column;
@@ -155,15 +161,25 @@ class BSHCodeFrame extends JFrame
 		refresh();
 		getContentPane().setLayout( new BorderLayout() );
 		getContentPane().add ( scrPane , BorderLayout.CENTER );
-		JPanel southPanel = new JPanel( new GridLayout(1,5) );
-		southPanel.add(new JPanel());
-		southPanel.add(new JPanel());
+		JPanel southPanel = new JPanel(); //( new GridLayout(1,5) );
+		//southPanel.add(new JPanel());
+		//southPanel.add(new JPanel());
 		updateLineNumberLabel();
-		southPanel.add(lineNumLabel);
-		southPanel.add(savButton);
-		southPanel.add(canButton);
-		//restore this for save, cancel buttons
-		//getContentPane().add ( southPanel , BorderLayout.SOUTH );
+		southPanel.setLayout(new BorderLayout());
+		
+		JPanel lineNumPanel = new JPanel( );
+		lineNumPanel.add(lineNumLabel);
+		//lineNumPanel.setMinimumSize(new Dimension(200,100));
+		//lineNumPanel.setPreferredSize(new Dimension(40,1));
+		southPanel.add(lineNumLabel,BorderLayout.EAST);
+		
+		//restore this for save, cancel buttons:
+		//southPanel.add(savButton);
+		//southPanel.add(canButton);
+		//southPanel.add(new JPanel());
+		//southPanel.add(new JPanel());
+		
+		getContentPane().add ( southPanel , BorderLayout.SOUTH );
 		savButton.addActionListener ( new ActionListener() 
 				{
 					public void actionPerformed ( ActionEvent evt )
@@ -311,7 +327,7 @@ public class BSHCodePanel extends JPanel
 	//entity panel corresponding to this code panel, if any.
 	private EntityPanel entityPanel;
 	
-	final JLabel lineNumLabel = new JLabel("line: ");
+	final JLabel lineNumLabel = new JLabel(" : ");
 	
 	/*
 	private void updateLineNumberLabel()

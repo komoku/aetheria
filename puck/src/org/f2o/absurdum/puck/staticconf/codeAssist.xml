@@ -32,6 +32,7 @@
 		<menu context="room" name="Redefinir métodos de habitación" description="Redefinir métodos de habitación">
 				<item name="parseCommand(Player,String,String)" description="Método de análisis de la entrada" template-ref="room-parsecommand.tpl"/>
 				<item name="update(Entity,World)" description="Método de actualización de la habitación" template-ref="entity-update.tpl"/>
+				<item name="parseCommandOnComponent(Mobile,String,String)" description="Método de análisis para entradas sobre componentes de la habitación" template-ref="entity-parsecommandoncomponent.tpl"/>
 		</menu>
 		<menu context="mobile" name="Definir eventos de personaje" description="Definir eventos de personaje">
 				<item name="onInit()" description="Al inicializarse el personaje" template-ref="mobile-oninit.tpl"/>
@@ -54,6 +55,7 @@
 					<item name="parseCommandOnContentsGeneric(Mobile,String,String,String,Vector,Vector,Entity,Entity,boolean)" description="Referente a ésta y, opcionalmente, otra entidad" template-ref="item-parsecommandoncontentsgeneric.tpl"/>
 				</menu>
 				<item name="update(Entity,World)" description="Método de actualización del personaje" template-ref="entity-update.tpl"/>
+				<item name="parseCommandOnComponent(Mobile,String,String)" description="Método de análisis para entradas sobre componentes del personaje" template-ref="entity-parsecommandoncomponent.tpl"/>
 		</menu>
 		<menu context="abstract entity" name="Definir eventos de entidad abstracta" description="Definir eventos de entidad abstracta">
 				<item name="onInit()" description="Al inicializarse la entidad abstracta" template-ref="absent-oninit.tpl"/>
@@ -77,6 +79,7 @@
 					<item name="parseCommandOnContentsGeneric(Mobile,String,String,String,Vector,Vector,Entity,Entity,boolean)" description="Referente a ésta y, opcionalmente, otra cosa" template-ref="item-parsecommandoncontentsgeneric.tpl"/>
 				</menu>
 				<item name="update(Entity,World)" description="Método de actualización de la cosa" template-ref="entity-update.tpl"/>
+				<item name="parseCommandOnComponent(Mobile,String,String)" description="Método de análisis para entradas sobre componentes de la cosa" template-ref="entity-parsecommandoncomponent.tpl"/>
 		</menu>
 		<menu name="Obtener entidades" description="Obtener entidades">
 				<item name="Cosa" description="Cosa" template-ref="general-getitem.tpl"/>
