@@ -3485,7 +3485,7 @@ public class Player extends Mobile implements Informador
 			thestring += " " + ZR_objeto_femenino_plural;
 			doneSomething = true;
 		}
-		if ( thestring.toLowerCase().endsWith ( "los" ) && thestring.length() > 3 )
+		else if ( thestring.toLowerCase().endsWith ( "los" ) && thestring.length() > 3 )
 		{
 			//Pronombre masculino o neutro plural.
 			doneSomething = true;
@@ -3495,7 +3495,7 @@ public class Player extends Mobile implements Informador
 			thestring += " " + ZR_objeto_plural;
 		}
 
-		if ( thestring.toLowerCase().endsWith ( "lo" ) && thestring.length() > 2 )
+		else if ( thestring.toLowerCase().endsWith ( "lo" ) && thestring.length() > 2 )
 		{
 			//Pronombre masculino singular
 			doneSomething = true;
@@ -3504,7 +3504,7 @@ public class Player extends Mobile implements Informador
 			//añadimos la ZR masculina singular
 			thestring += " " + ZR_objeto_masculino_singular;
 		}
-		if ( thestring.toLowerCase().endsWith ( "la" ) && thestring.length() > 2 )
+		else if ( thestring.toLowerCase().endsWith ( "la" ) && thestring.length() > 2 )
 		{
 			//Pronombre femenino singular
 			doneSomething = true;
@@ -3513,7 +3513,7 @@ public class Player extends Mobile implements Informador
 			//añadimos la ZR masculina singular
 			thestring += " " + ZR_objeto_femenino_singular;
 		}
-		if ( thestring.toLowerCase().endsWith ( "me" ) || thestring.toLowerCase().endsWith ( "te" ) || thestring.toLowerCase().endsWith ( "se" ) )
+		else if ( thestring.toLowerCase().endsWith ( "me" ) || thestring.toLowerCase().endsWith ( "te" ) || thestring.toLowerCase().endsWith ( "se" ) )
 		{
 			if ( !thestring.toLowerCase().endsWith("este") && !thestring.toLowerCase().endsWith("norte")  /*&& lenguaje.esVerboComando ( thestring.substring(0,thestring.length()-2) ) */ )
 			{
