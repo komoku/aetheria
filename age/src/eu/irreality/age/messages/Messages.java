@@ -55,9 +55,10 @@ public class Messages
 	
 	public Messages(URL u) throws IOException
 	{
-		InputStream is = u.openStream();
-		if ( is == null ) throw new IOException("Could not read message file " + u);
-		properties.load( new InputStreamReader ( is , "UTF-8" ) );
+	    properties = new Properties();
+	    InputStream is = u.openStream();
+	    if ( is == null ) throw new IOException("Could not read message file " + u);
+	    properties.load( new InputStreamReader ( is , "UTF-8" ) );
 	}
 	
 	public String getMessage ( String key )
@@ -79,7 +80,7 @@ public class Messages
 			{
 				ReturnValue retval = new ReturnValue(null);
 				world.execCode( "getMessage" , new Object[] { key , argumentsForScriptCode } , retval );
-				if ( retval != null ) return (String)retval.getRetVal();
+				if ( retval.getRetVal() != null ) return (String)retval.getRetVal();
 			}
 			catch (bsh.TargetError bshte)
 			{
@@ -118,7 +119,7 @@ public class Messages
 	
 	public String getMessage ( String key , String placeholder , String substitution , Object[] argumentsForScriptCode )
 	{
-		return buildMessage ( getMessage(key,argumentsForScriptCode) , placeholder , substitution );
+	    return buildMessage ( getMessage(key,argumentsForScriptCode) , placeholder , substitution );
 	}
 	
 	public String getMessage ( String key , String p1 , String s1 , String p2 , String s2 , Object[] argumentsForScriptCode  )

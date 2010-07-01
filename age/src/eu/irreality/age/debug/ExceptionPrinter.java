@@ -34,6 +34,8 @@ public class ExceptionPrinter
 		report.append("Detailed trace: " + getStackTrace(te) + "\n" );
 		if ( te.getCause() != null )
 			report.append("Cause report: " + getExceptionReport ( te.getCause() ) );
+		if ( te.getTarget() != null && te.getTarget() != te )
+		    	report.append("Target report: " + getExceptionReport ( te.getTarget() ) );
 		report.append("**\n");
 		return report.toString();
 	}
