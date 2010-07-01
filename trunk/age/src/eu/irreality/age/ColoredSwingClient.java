@@ -19,6 +19,7 @@ import javax.swing.text.*;
 
 import eu.irreality.age.swing.FancyJTextField;
 import eu.irreality.age.swing.FancyJTextPane;
+import eu.irreality.age.swing.IconLoader;
 import eu.irreality.age.swing.ImagePanel;
 import eu.irreality.age.windowing.AGEClientWindow;
 
@@ -1174,7 +1175,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		showImageInFrame ( location , position , ImagePanel.NO_SCALING );
 	}
 	
-	public void showImageInFrame ( ImageIcon icon , int position , int scalingMode )
+	public void showImageInFrame ( Icon icon , int position , int scalingMode )
 	{
 		ImagePanel theFrame = getFrame ( position );
 		if ( theFrame == null ) addFrame ( position , 200 );
@@ -1186,11 +1187,12 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	
 	public void showImageInFrame ( String filename , int position , int scalingMode )
 	{
+	    //TODO: support svg here (IconLoader.loadIcon).
 		showImageInFrame ( new ImageIcon(filename) , position , scalingMode );
 	}
 	public void showImageInFrame ( URL location , int position , int scalingMode )
 	{
-		showImageInFrame ( new ImageIcon(location) , position , scalingMode );
+		showImageInFrame ( IconLoader.loadIcon(location) , position , scalingMode );
 	}
 	
 	public void showImageInBackground ( String fileName )

@@ -3,17 +3,19 @@ package eu.irreality.age.swing;
 import java.awt.Graphics;
 
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+
+import com.kitfox.svg.app.beans.SVGIcon;
 
 import eu.irreality.age.ImageConstants;
 
 public class ImagePanel extends JPanel implements ImageConstants
 {
 	
-	private ImageIcon theImage;
-	
-
+	private ImageIcon theRasterImage;
+	private SVGIcon theVectorImage;
 	
 	private int scalingMode = NO_SCALING;
 		
@@ -33,23 +35,53 @@ public class ImagePanel extends JPanel implements ImageConstants
 		this.scalingMode = scalingMode;
 	}
 	
-	public ImageIcon getImage ()
+	public ImageIcon getRasterImage ()
 	{
-		return theImage;
+		return theRasterImage;
 	}
 	
-	public void setImage ( ImageIcon ii )
+	public SVGIcon getVectorImage ()
 	{
-		theImage = ii;
+		return theVectorImage;
 	}
 	
-	public void paintComponent ( Graphics g )
+	public Icon getImage()
 	{
-		super.paintComponent(g);
-		if ( theImage == null ) return;
-		
-		int imageHeight = theImage.getIconHeight();
-		int imageWidth = theImage.getIconWidth();
+	    if ( theRasterImage != null ) return theRasterImage;
+	    else return theVectorImage;
+	}
+	
+	public void setRasterImage ( ImageIcon ii )
+	{
+	    theRasterImage = ii;
+	}
+	
+	public void setVectorImage ( SVGIcon si )
+	{
+	    theVectorImage = si;
+	}
+	
+	public void setImage ( Icon ic ) throws UnsupportedOperationException
+	{
+	    if ( !(ic instanceof ImageIcon) && !(ic instanceof SVGIcon) )
+		throw new UnsupportedOperationException("setImage only supports ImageIcon or SVGIcon");
+	    else if ( ic instanceof ImageIcon )
+		setRasterImage((ImageIcon)ic);
+	    else if ( ic instanceof SVGIcon )
+		setVectorImage((SVGIcon)ic);
+	}
+	
+	
+	private void paintVectorImage ( Graphics g )
+	{	    
+	    theVectorImage.paintIcon(this, g, 0, 0);    
+	}
+	
+	private void paintRasterImage( Graphics g )
+	{
+	    	
+	    	int imageHeight = theRasterImage.getIconHeight();
+	    	int imageWidth = theRasterImage.getIconWidth();
 		int panelHeight = this.getHeight();
 		int panelWidth = this.getWidth();
 		
@@ -80,7 +112,15 @@ public class ImagePanel extends JPanel implements ImageConstants
 			drawX = panelWidth/2 - drawW/2;
 		}
 		//if scalingMode is FIT_BOTH, default.
-		g.drawImage(theImage.getImage(),drawX,drawY,drawW,drawH,this);
+		g.drawImage(theRasterImage.getImage(),drawX,drawY,drawW,drawH,this);
+	}
+	
+	public void paintComponent ( Graphics g )
+	{
+		super.paintComponent(g);
+		if ( theRasterImage != null ) paintRasterImage(g);
+		if ( theVectorImage != null ) paintVectorImage(g);
+		
 	}
 	
 
