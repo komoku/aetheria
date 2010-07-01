@@ -1,5 +1,6 @@
 package eu.irreality.age.swing;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 
 import javax.swing.BorderFactory;
@@ -74,6 +75,8 @@ public class ImagePanel extends JPanel implements ImageConstants
 	
 	private void paintVectorImage ( Graphics g )
 	{	    
+	    theVectorImage.setScaleToFit(true);
+	    //theVectorImage.setPreferredSize(new Dimension(200,200));
 	    theVectorImage.paintIcon(this, g, 0, 0);    
 	}
 	
