@@ -65,6 +65,7 @@ public class ImagePanel extends JPanel implements ImageConstants
 	    theVectorImage = si;
 	    vectorImageBaseWidth = si.getPreferredSize().getWidth();
 	    vectorImageBaseHeight = si.getPreferredSize().getHeight();
+		theVectorImage.setAntiAlias(true);
 	}
 	
 	public void setImage ( Icon ic ) throws UnsupportedOperationException
@@ -116,7 +117,6 @@ public class ImagePanel extends JPanel implements ImageConstants
 		}
 		
 		theVectorImage.setPreferredSize(new Dimension(drawW,drawH));
-		
 		
 	    //theVectorImage.setScaleToFit(false);
 	    //theVectorImage.setPreferredSize(new Dimension(200,200));
