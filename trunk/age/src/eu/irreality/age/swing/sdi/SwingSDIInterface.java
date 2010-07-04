@@ -28,6 +28,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import eu.irreality.age.AGESoundClient;
 import eu.irreality.age.ColoredSwingClient;
 import eu.irreality.age.CommonClientUtilities;
 import eu.irreality.age.FiltroFicheroEstado;
@@ -119,8 +120,15 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 								//uncover();
 								
 								if ( logFile != null )
+								{
 									((ColoredSwingClient)io).hideForLogLoad();
-								
+									if ( ((ColoredSwingClient)io).getSoundClient() instanceof AGESoundClient )
+									{
+										AGESoundClient asc = (AGESoundClient) ((ColoredSwingClient)io).getSoundClient();
+										asc.deactivate(); //will be activated on log end (player:endOfLog()
+									}
+								}
+									
 								write("Aetheria Game Engine v 0.5 Beta Distribution\n");
 
 								//areaTexto.setText("Aetheria Game Engine v 0.4.7b Beta Distribution\n");

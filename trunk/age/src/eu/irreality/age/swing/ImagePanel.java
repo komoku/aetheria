@@ -18,6 +18,9 @@ public class ImagePanel extends JPanel implements ImageConstants
 	private ImageIcon theRasterImage;
 	private SVGIcon theVectorImage;
 	
+	private double vectorImageBaseWidth;
+	private double vectorImageBaseHeight;
+	
 	private int scalingMode = NO_SCALING;
 		
 	public ImagePanel()
@@ -60,6 +63,8 @@ public class ImagePanel extends JPanel implements ImageConstants
 	public void setVectorImage ( SVGIcon si )
 	{
 	    theVectorImage = si;
+	    vectorImageBaseWidth = si.getPreferredSize().getWidth();
+	    vectorImageBaseHeight = si.getPreferredSize().getHeight();
 	}
 	
 	public void setImage ( Icon ic ) throws UnsupportedOperationException
@@ -75,16 +80,56 @@ public class ImagePanel extends JPanel implements ImageConstants
 	
 	private void paintVectorImage ( Graphics g )
 	{	    
-	    theVectorImage.setScaleToFit(true);
+		
+	    int imageHeight = (int) vectorImageBaseHeight;
+	    int imageWidth = (int) vectorImageBaseWidth;
+		int panelHeight = this.getHeight();
+		int panelWidth = this.getWidth();
+		
+		int drawX = 0;
+		int drawY = 0;
+		int drawW = panelWidth;
+		int drawH = panelHeight;
+		theVectorImage.setScaleToFit(true);
+		
+		if ( scalingMode == NO_SCALING )
+		{
+			drawX = panelWidth/2 - imageWidth/2;
+			drawY = panelHeight/2 - imageHeight/2;
+			drawW = imageWidth;
+			drawH = imageHeight;
+			theVectorImage.setScaleToFit(false);
+		}
+		if ( scalingMode == FIT_WIDTH )
+		{
+			drawX = 0;
+			drawW = panelWidth;
+			drawH = (int) ( panelWidth * ( (double) imageHeight / (double) imageWidth ) );
+			drawY = panelHeight/2 - drawH/2;
+		}
+		if ( scalingMode == FIT_HEIGHT )
+		{
+			drawY = 0;
+			drawH = panelHeight;
+			drawW = (int) ( panelHeight * ( (double) imageWidth / (double) imageHeight ) );
+			drawX = panelWidth/2 - drawW/2;
+		}
+		
+		theVectorImage.setPreferredSize(new Dimension(drawW,drawH));
+		
+		
+	    //theVectorImage.setScaleToFit(false);
 	    //theVectorImage.setPreferredSize(new Dimension(200,200));
-	    theVectorImage.paintIcon(this, g, 0, 0);    
+		//System.err.println(theVectorImage.getPreferredSize()); //yeah, gets the nominal size
+		//theVectorImage.setScaleToFit(true); //we can set another pref. size to scale
+	    theVectorImage.paintIcon(this, g, drawX, drawY);    
 	}
 	
 	private void paintRasterImage( Graphics g )
 	{
 	    	
-	    	int imageHeight = theRasterImage.getIconHeight();
-	    	int imageWidth = theRasterImage.getIconWidth();
+	    int imageHeight = theRasterImage.getIconHeight();
+	    int imageWidth = theRasterImage.getIconWidth();
 		int panelHeight = this.getHeight();
 		int panelWidth = this.getWidth();
 		

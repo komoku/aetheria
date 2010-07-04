@@ -448,7 +448,17 @@ de la ventana hasta acabar de cargar.
 											mainPanel = new JPanel(); //panel que contiene al cliente
 											setMainPanel( mainPanel );
 											io = new ColoredSwingClient(esto,gameLog); //components are added 'ere.
-											write("Aetheria Game Engine v 0.4.7c Beta Distribution\n");
+											
+											if ( logFile != null )
+											{
+												if ( ((ColoredSwingClient)io).getSoundClient() instanceof AGESoundClient )
+												{
+													AGESoundClient asc = (AGESoundClient) ((ColoredSwingClient)io).getSoundClient();
+													asc.deactivate(); //will be activated on log end (player:endOfLog()
+												}
+											}
+											
+											write("Aetheria Game Engine v 0.5 Beta Distribution\n");
 											
 											//areaTexto.setText("Aetheria Game Engine v 0.4.7b Beta Distribution\n");
 											write("© 1999-2010 Carlos Gómez (solrac888@yahoo.com)\n");

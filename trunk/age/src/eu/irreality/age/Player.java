@@ -175,6 +175,16 @@ public class Player extends Mobile implements Informador
 	public void endOfLog()
 	{
 		from_log = false;
+		if ( this.getIO() instanceof MultimediaInputOutputClient )
+		{
+			MultimediaInputOutputClient mioc = (MultimediaInputOutputClient) this.getIO();
+			SoundClient sc = mioc.getSoundClient();
+			if ( sc instanceof AGESoundClient )
+			{
+				AGESoundClient asc = (AGESoundClient) sc;
+				asc.activate();
+			}
+		}
 	}
 
 	//fuerza un comando
