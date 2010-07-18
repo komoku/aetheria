@@ -274,6 +274,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	 */
 	public void constructMob ( World mundo , String mobfile , boolean allowInheritance , String mobtype ) throws IOException, FileNotFoundException
 	{
+	    
+	    this.setProperty("describeRoomsOnArrival" , true); //defaults to true
+	    
 		String linea;
 		String id_linea;
 		FileInputStream fp = new FileInputStream ( mobfile );
@@ -637,6 +640,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	public void constructMob ( World mundo , org.w3c.dom.Node n , boolean allowInheritance , String mobtype ) throws XMLtoWorldException
 	{
 
+	    this.setProperty("describeRoomsOnArrival" , true); //defaults to true
+	    
 		if ( ! ( n instanceof org.w3c.dom.Element ) )
 		{
 			throw ( new XMLtoWorldException ( "Mobile node not Element" ) );
