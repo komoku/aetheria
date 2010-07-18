@@ -2228,8 +2228,12 @@ public class Player extends Mobile implements Informador
 				}
 			}	
 
-
-			show_room ( mundo );
+			//mostrar sala si esto no está desactivado
+			if ( getPropertyValueAsBoolean("describeRoomsOnArrival") )
+			{
+			    show_room ( mundo );
+			}
+			
 			setNewState ( 1 /*IDLE*/, 0 );
 			break;
 
