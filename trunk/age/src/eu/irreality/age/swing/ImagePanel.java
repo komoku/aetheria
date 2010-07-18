@@ -73,9 +73,15 @@ public class ImagePanel extends JPanel implements ImageConstants
 	    if ( !(ic instanceof ImageIcon) && !(ic instanceof SVGIcon) )
 		throw new UnsupportedOperationException("setImage only supports ImageIcon or SVGIcon");
 	    else if ( ic instanceof ImageIcon )
+	    {
 		setRasterImage((ImageIcon)ic);
+		theVectorImage = null;
+	    }
 	    else if ( ic instanceof SVGIcon )
+	    {
 		setVectorImage((SVGIcon)ic);
+		theRasterImage = null;
+	    }
 	}
 	
 	
@@ -167,7 +173,7 @@ public class ImagePanel extends JPanel implements ImageConstants
 	{
 		super.paintComponent(g);
 		if ( theRasterImage != null ) paintRasterImage(g);
-		if ( theVectorImage != null ) paintVectorImage(g);
+		else if ( theVectorImage != null ) paintVectorImage(g);
 		
 	}
 	

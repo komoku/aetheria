@@ -190,4 +190,24 @@ public class EntityPanel extends GraphElementPanel
 	}
 	
 	
+	
+	/**
+	 * Convenience method to get an integer value from a text field.
+	 * @param tf
+	 * @param defaultValue
+	 * @return
+	 */
+	public static int getIntegerFromField ( JTextField tf , int defaultValue )
+	{
+	    int result;
+	    try
+	    {
+		return Integer.parseInt(tf.getText());
+	    }
+	    catch ( NumberFormatException nfe )
+	    {
+		return defaultValue;
+	    }
+	}
+	
 }

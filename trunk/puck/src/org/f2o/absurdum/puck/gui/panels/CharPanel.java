@@ -224,10 +224,17 @@ public class CharPanel extends EntityPanel
 		
 		result.setAttribute("name",this.getName());
 		
-		result.setAttribute("hp",tfHP.getText());
-		result.setAttribute("mp",tfMP.getText());
-		result.setAttribute("maxhp",tfMaxHP.getText());
-		result.setAttribute("maxmp",tfMaxMP.getText());
+		//result.setAttribute("hp",tfHP.getText());
+		result.setAttribute("hp",String.valueOf(getIntegerFromField(tfHP,20)));
+		
+		//result.setAttribute("mp",tfMP.getText());
+		result.setAttribute("mp",String.valueOf(getIntegerFromField(tfMP,20)));
+		
+		//result.setAttribute("maxhp",tfMaxHP.getText());
+		result.setAttribute("maxhp",String.valueOf(getIntegerFromField(tfMaxHP,20)));
+		
+		//result.setAttribute("maxmp",tfMaxMP.getText());
+		result.setAttribute("maxmp",String.valueOf(getIntegerFromField(tfMaxMP,20)));
 		
 		String genderString = (String) genderComboBox.getSelectedItem();
 		if (genderString.equals(Messages.getInstance().getMessage("gender.m")))

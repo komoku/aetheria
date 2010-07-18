@@ -511,9 +511,12 @@ public class ItemPanel extends EntityPanel
 			return result;
 		}
 			
-		result.setAttribute("weight",tfWeight.getText());
+
+		//result.setAttribute("weight",tfWeight.getText());
+		result.setAttribute("weight",String.valueOf(getIntegerFromField(tfWeight,0)));
 		
-		result.setAttribute("volume",tfVolume.getText());
+		//result.setAttribute("volume",tfVolume.getText());
+		result.setAttribute("volume",String.valueOf(getIntegerFromField(tfVolume,0)));
 		
 		result.setAttribute("canGet",String.valueOf(!ungettableBox.isSelected()));
 		
