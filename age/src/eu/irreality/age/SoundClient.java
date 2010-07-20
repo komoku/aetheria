@@ -5,6 +5,7 @@
 package eu.irreality.age;
 
 import java.io.File;
+import java.net.URL;
 
 
 public interface SoundClient
@@ -35,6 +36,11 @@ public interface SoundClient
 	public void audioStop ( String s );
 	public void audioStart ( String s , int loopTimes ) throws javax.sound.sampled.UnsupportedAudioFileException , javax.sound.sampled.LineUnavailableException , java.io.IOException;
 	//public void audioStop ( File f );
+	
+	
+	public void playMOD ( String s , int times ) throws Exception;
+	//public void playMOD ( URL u , int times ) throws Exception;
+	public void stopMOD ( ) throws Exception;
 	
 	
 	public void stopAllSound();

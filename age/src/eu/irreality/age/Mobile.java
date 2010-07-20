@@ -8,6 +8,7 @@ import java.util.*;
 
 import bsh.*;
 import java.io.*;
+import java.net.URL;
 
 import javax.sound.midi.Sequencer;
 
@@ -6949,7 +6950,22 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		}
 	}
 
-
+	/*
+	public boolean playMODIfAvailable ( URL modURL )
+	{
+	    	SoundClient sc = getSoundClientIfAvailable();
+		if ( sc == null ) return false;
+		try
+		{
+			sc.playMOD(modURL,1);
+			return true;
+		}
+		catch ( Exception e )
+		{
+			return false;
+		}
+	}
+	 */
 
 
 

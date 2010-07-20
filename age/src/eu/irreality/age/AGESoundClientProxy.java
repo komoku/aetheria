@@ -102,6 +102,16 @@ public class AGESoundClientProxy implements ARSPConstants , SoundClient
 		pw.println(AUDIO_STOP + " " + f );
 		pw.flush();
 	}
+	public void playMOD ( String f , int loopTimes )
+	{
+		pw.println(AUDIO_START + loopTimes + " " + f );
+		pw.flush();
+	}
+	public void stopMOD (  )
+	{
+		pw.println(AUDIO_STOP + " mod" );
+		pw.flush();
+	}
 	public void midiLoop() throws InvalidMidiDataException 
 	{
 		pw.println(MIDI_START);
