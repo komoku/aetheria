@@ -177,7 +177,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	{
 		this.mundo = mundo;
 		io = new NullInputOutputClient();
-		lenguaje = mundo.getLang();
+		lenguaje = mundo.getLanguage();
 		constructMob ( mundo , mobfile , true , "none" );
 		//el constructor de cada subclase de Mobile llamará con esa subclase en vez de none:
 		//public Daedra hará
@@ -188,7 +188,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	{
 		this.mundo = mundo;
 		io = new NullInputOutputClient();
-		lenguaje = mundo.getLang();
+		lenguaje = mundo.getLanguage();
 		constructMob ( mundo , n , true , "none" );
 		//el constructor de cada subclase de Mobile llamará con esa subclase en vez de none:
 		//public Daedra hará

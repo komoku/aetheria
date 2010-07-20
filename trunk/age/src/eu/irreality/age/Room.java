@@ -94,7 +94,7 @@ public class Room extends Entity implements Descriptible , SupportingCode
 		boolean inheritance_done = false;
 		String linea;
 		String id_linea;
-		lenguaje = mundo.getLang();
+		lenguaje = mundo.getLanguage();
 //		aleat = mundo.getRandom();
 //		Debug.println("Random number generator set to " + aleat );
 		FileInputStream fp = new FileInputStream ( roomfile );
@@ -289,7 +289,7 @@ public class Room extends Entity implements Descriptible , SupportingCode
 	{
 	
 		this.mundo = mundo;
-		lenguaje = mundo.getLang();
+		lenguaje = mundo.getLanguage();
 	
 		if ( ! ( n instanceof org.w3c.dom.Element ) )
 		{
