@@ -4,6 +4,7 @@
  */
 package eu.irreality.age;
 import java.io.*;
+import java.net.URL;
 import java.nio.ByteOrder;
 import java.util.*;
 import java.util.logging.Level;
@@ -429,26 +430,37 @@ public class AGESoundClient implements SoundClient
     PlayerThread pt;
 
     //iRepeat: number of times to repeat (or -1 for infinite)
-    void playMOD( File f, int iRepeat ) 
+    public void playMOD( File f, int iRepeat ) 
     throws Exception
+    {
+	if ( !isOn() ) return;
+	playMOD(new DataInputStream(new FileInputStream(f)),iRepeat);
+    }
+    
+    public void playMOD ( URL u , int iRepeat ) throws Exception
+    {
+	if ( !isOn() ) return;
+	playMOD(new DataInputStream(u.openStream()),iRepeat);
+    }
+    
+    private void playMOD ( DataInput theInput , int iRepeat  ) throws Exception
     {
 	if ( !isOn() ) return;
 	MODThread mt;
 	JavaSoundOutputDevice out =  
 	    new JavaSoundOutputDevice(new SS16LEAudioFormatConverter(), 44100, 1000);
-	Module module = ModuleLoader.read(new DataInputStream(new FileInputStream(f)));
+	Module module = ModuleLoader.read(theInput);
 	MicroMod microMod = new MicroMod(module, out, new LinearResampler());
 
 	mt = new MODThread(microMod, out, iRepeat);
 	pt = mt;
 	pt.setVolume(0x10000);
 
-
 	mt.start();
 	return;
     }
 
-    void playMOD ( String s , int iRepeat ) throws Exception
+    public void playMOD ( String s , int iRepeat ) throws Exception
     {
 	if ( !isOn() ) return;
 	playMOD ( new File(s) , iRepeat );
