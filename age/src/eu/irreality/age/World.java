@@ -2051,7 +2051,15 @@ public class World implements Informador , SupportingCode
 		else return false;
 	}
 	
+	/**
+	 * @deprecated Use {@link #getLanguage()} instead
+	 */
 	public NaturalLanguage getLang()
+	{
+	    return getLanguage();
+	}
+
+	public NaturalLanguage getLanguage()
 	{
 		return lenguaje;
 	}

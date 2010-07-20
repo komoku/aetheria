@@ -132,7 +132,15 @@ public class NaturalLanguage
 	}
 	
 
+	/**
+	 * @deprecated Use {@link #toInfinitive(String)} instead
+	 */
 	public String imperativoAInfinitivo ( String presente )
+	{
+	    return toInfinitive(presente);
+	}
+
+	public String toInfinitive ( String presente )
 	{
 		return (String) imperativoAInfinitivo.get ( presente.toLowerCase() );
 	}
@@ -174,7 +182,7 @@ public class NaturalLanguage
 		while ( st.hasMoreTokens() )
 		{
 			String tok = st.nextToken();
-			String sin = imperativoAInfinitivo(tok);
+			String sin = toInfinitive(tok);
 			if ( sin == null )
 			{
 				nueva += tok;
@@ -196,7 +204,7 @@ public class NaturalLanguage
 		while ( st.hasMoreTokens() )
 		{
 			String tok = st.nextToken();
-			String sin = imperativoAInfinitivo(tok);
+			String sin = toInfinitive(tok);
 			if ( sin == null || tokcnt > 0 )
 			{
 				nueva += tok;
@@ -211,7 +219,16 @@ public class NaturalLanguage
 	}
 	
 	//devuelve true si la palabra dada es un posible comando. (ir, salir...) false si no. (mesa...)
+	/**
+	 * @deprecated Use {@link #isVerb(String)} instead
+	 */
 	public boolean esVerboComando ( String s )
+	{
+	    return isVerb(s);
+	}
+
+	//devuelve true si la palabra dada es un posible comando. (ir, salir...) false si no. (mesa...)
+	public boolean isVerb ( String s )
 	{
 		if ( infinitivoAImperativo.get(s.toLowerCase().trim()) != null ||
 			imperativoAInfinitivo.get(s.toLowerCase().trim()) != null )

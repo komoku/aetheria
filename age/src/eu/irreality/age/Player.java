@@ -757,7 +757,7 @@ public class Player extends Mobile implements Informador
 		//("coger bastón del suelo" debe ejecutarse antes como comando sobre objeto bastón que sobre componente suelo)
 		//(also, comandos sobre componentes no se ejecutan si el verbo no es reconocido, para que funcione bien "coger espada y bastón del suelo")
 		//(si no, haríamos: coger espada (OK), bastón del suelo (comando sobre "suelo", pifia)
-		if ( !matchedOneEntity && !matchedTwoEntities && lenguaje.esVerboComando(command) )
+		if ( !matchedOneEntity && !matchedTwoEntities && lenguaje.isVerb(command) )
 		{
 			EntityList posiblesObjetivosForComponents = (EntityList) posiblesObjetivos.clone();
 			posiblesObjetivosForComponents.addEntity(this.getRoom()); //componentes pueden ser de habitación
@@ -2044,7 +2044,7 @@ public class Player extends Mobile implements Informador
 
 		//reconocemos el verbo; pero no tenemos npi de qué hacer con él...
 		//TODO remmed "else" from here.
-		else if ( lenguaje.esVerboComando ( command ) )
+		else if ( lenguaje.isVerb ( command ) )
 		{			
 			String origCommand = "";
 			if ( originalTrimmedCommandString != null )
@@ -3549,7 +3549,7 @@ public class Player extends Mobile implements Informador
 		StringTokenizer st = new StringTokenizer(thestring.toLowerCase());
 		String newVerb = st.nextToken().trim();
 		String unaccentedVerb = lenguaje.removeAccents(newVerb); //verbos pierden acentos: cógelo -> cóge <tal> -> coge <tal>
-		if ( !lenguaje.esVerboComando(unaccentedVerb) )
+		if ( !lenguaje.isVerb(unaccentedVerb) )
 		{
 			//check failed! return original string.
 			return command;
