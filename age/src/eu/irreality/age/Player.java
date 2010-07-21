@@ -3482,6 +3482,26 @@ public class Player extends Mobile implements Informador
 		ZR_objeto_plural += obj.getBestReferenceName ( true );	
 	}
 
+	
+	private static String firstWord ( String s )
+	{
+	    StringTokenizer st = new StringTokenizer(s);
+	    if ( st.hasMoreTokens() ) return st.nextToken();
+	    else return "";
+	}
+	
+	private static String restWords ( String s )
+	{
+	    StringTokenizer st = new StringTokenizer(s);
+	    if ( !st.hasMoreTokens() ) return "";
+	    else
+	    {
+		st.nextToken();
+		if ( !st.hasMoreTokens() ) return "";
+		else return st.nextToken("");
+	    }
+	}
+	
 	//sustituye los comandos al final del verbo por las ZR's correspondientes
 	public String substitutePronouns ( String command )
 	{
@@ -3489,54 +3509,55 @@ public class Player extends Mobile implements Informador
 		String thestring = command;	
 		boolean doneSomething = false;
 		
-		if ( thestring.toLowerCase().endsWith ( "las" ) && thestring.length() > 3 )
+		if ( firstWord(thestring).toLowerCase().endsWith ( "las" ) && firstWord(thestring).length() > 3 )
 		{
 			//Pronombre femenino plural.
 			doneSomething = true;
 			//lo quitamos
-			thestring = thestring.substring(0,thestring.length()-3);
+			String cut = firstWord(thestring).substring(0,firstWord(thestring).length()-3);
 			//añadimos la ZR femenina plural
-			thestring += " " + ZR_objeto_femenino_plural;
+			thestring = cut + " " + ZR_objeto_femenino_plural + " " + restWords(thestring);
 			doneSomething = true;
 		}
-		else if ( thestring.toLowerCase().endsWith ( "los" ) && thestring.length() > 3 )
+		else if ( firstWord(thestring).toLowerCase().endsWith ( "los" ) && firstWord(thestring).length() > 3 )
 		{
 			//Pronombre masculino o neutro plural.
 			doneSomething = true;
 			//lo quitamos
-			thestring = thestring.substring(0,thestring.length()-3);
+			String cut = firstWord(thestring).substring(0,firstWord(thestring).length()-3);
 			//añadimos la ZR plural
-			thestring += " " + ZR_objeto_plural;
+			thestring = cut + " " + ZR_objeto_plural + " " +  restWords(thestring);
 		}
-
-		else if ( thestring.toLowerCase().endsWith ( "lo" ) && thestring.length() > 2 )
+		else if ( firstWord(thestring).toLowerCase().endsWith ( "lo" ) && firstWord(thestring).length() > 2 )
 		{
 			//Pronombre masculino singular
 			doneSomething = true;
 			//lo quitamos
-			thestring = thestring.substring(0,thestring.length()-2);
+			String cut  = firstWord(thestring).substring(0,firstWord(thestring).length()-2);
 			//añadimos la ZR masculina singular
-			thestring += " " + ZR_objeto_masculino_singular;
+			thestring = cut + " " + ZR_objeto_masculino_singular + " " +  restWords(thestring);
 		}
-		else if ( thestring.toLowerCase().endsWith ( "la" ) && thestring.length() > 2 )
+		else if ( firstWord(thestring).toLowerCase().endsWith ( "la" ) && firstWord(thestring).length() > 2 )
 		{
 			//Pronombre femenino singular
 			doneSomething = true;
 			//lo quitamos
-			thestring = thestring.substring(0,thestring.length()-2);
+			String cut  = firstWord(thestring).substring(0,firstWord(thestring).length()-2);
 			//añadimos la ZR masculina singular
-			thestring += " " + ZR_objeto_femenino_singular;
+			thestring = cut + " " + ZR_objeto_femenino_singular + " " +  restWords(thestring);
 		}
-		else if ( thestring.toLowerCase().endsWith ( "me" ) || thestring.toLowerCase().endsWith ( "te" ) || thestring.toLowerCase().endsWith ( "se" ) )
+		
+		//these can appears with the others
+		if ( firstWord(thestring).toLowerCase().endsWith ( "me" ) || firstWord(thestring).toLowerCase().endsWith ( "te" ) || firstWord(thestring).toLowerCase().endsWith ( "se" ) )
 		{
-			if ( !thestring.toLowerCase().endsWith("este") && !thestring.toLowerCase().endsWith("norte")  /*&& lenguaje.esVerboComando ( thestring.substring(0,thestring.length()-2) ) */ )
+			if ( !firstWord(thestring).toLowerCase().endsWith("este") && !firstWord(thestring).toLowerCase().endsWith("norte")  /*&& lenguaje.esVerboComando ( thestring.substring(0,thestring.length()-2) ) */ )
 			{
 				//Pronombre, se refiere al jugador
 				doneSomething = true;
 				//lo quitamos
-				thestring = thestring.substring(0,thestring.length()-2);
+				String cut  = firstWord(thestring).substring(0,firstWord(thestring).length()-2);
 				//añadimos el nombre del jugador
-				thestring += " " + getBestReferenceName(false);
+				thestring = cut + " " + getBestReferenceName(false) + " " +  restWords(thestring);
 			}
 		}
 
