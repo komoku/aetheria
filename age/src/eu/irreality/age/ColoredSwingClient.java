@@ -90,7 +90,13 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	{
 		deactivated = true;
 		if ( this.getSoundClient() != null )
+		{
 			this.getSoundClient().stopAllSound();
+			if ( this.getSoundClient() instanceof AGESoundClient )
+			{
+			    ((AGESoundClient)this.getSoundClient()).deactivate();			
+			}
+		}
 		notifyAll(); //if we are waiting for input, we just exit
 	}
 	
