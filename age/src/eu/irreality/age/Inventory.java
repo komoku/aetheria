@@ -50,14 +50,14 @@ public class Inventory extends EntityList
 	
 	public void addItem ( Item o ) throws WeightLimitExceededException, VolumeLimitExceededException
 	{
-		if ( weight+o.getWeight() > weightLimit )
+		if ( weight+o.getTotalWeight() > weightLimit )
 			throw new WeightLimitExceededException ( );
 		else if ( volume+o.getVolume() > volumeLimit )
 			throw new VolumeLimitExceededException ( );	
 		else
 		{
 			addElement(o);
-			weight += o.getWeight();
+			weight += o.getTotalWeight();
 			volume += o.getVolume();
 		}		
 	}
@@ -67,7 +67,7 @@ public class Inventory extends EntityList
 		boolean valor = removeElement(o);
 		if ( valor == true )
 		{
-			weight -= o.getWeight();
+			weight -= o.getTotalWeight();
 			volume -= o.getVolume();
 		}
 		return valor;
@@ -281,10 +281,10 @@ public class Inventory extends EntityList
 		if ( i < size() && elementAt(i) != null )
 		{
 			volume -= elementAt(i).getVolume();
-			weight -= elementAt(i).getWeight();
+			weight -= elementAt(i).getTotalWeight();
 		}
 		volume += nuevo.getVolume();
-		weight += nuevo.getWeight();
+		weight += nuevo.getTotalWeight();
 		laLista.setElementAt ( nuevo , i );
 		if ( volume > volumeLimit )
 			throw new VolumeLimitExceededException ( );

@@ -987,9 +987,17 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		return title;	
 	}
 	
-	public int getWeight ( )
+	public int getWeight()
 	{
-		return weight;
+	    return weight;
+	}
+	
+	public int getTotalWeight ( )
+	{
+	    int totalWeight = weight;
+	    if ( inventory != null )
+		totalWeight += inventory.getWeight();
+	    return totalWeight;
 	}
 	
 	public int getVolume ( )
