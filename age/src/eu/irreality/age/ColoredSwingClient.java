@@ -1185,6 +1185,11 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	{
 		ImagePanel theFrame = getFrame ( position );
 		if ( theFrame == null ) addFrame ( position , 200 );
+		if ( icon == null )
+		{
+			System.err.println("Called showImageInFrame on a null image. Tried to open nonexistent image file?");
+			return;
+		}
 		theFrame = getFrame ( position ); //{not null}
 		theFrame.setImage(icon);
 		theFrame.setScalingMode(scalingMode);

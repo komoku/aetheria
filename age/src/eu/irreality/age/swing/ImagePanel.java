@@ -74,13 +74,13 @@ public class ImagePanel extends JPanel implements ImageConstants
 		throw new UnsupportedOperationException("setImage only supports ImageIcon or SVGIcon");
 	    else if ( ic instanceof ImageIcon )
 	    {
-		setRasterImage((ImageIcon)ic);
-		theVectorImage = null;
+	    	setRasterImage((ImageIcon)ic);
+	    	theVectorImage = null;
 	    }
 	    else if ( ic instanceof SVGIcon )
 	    {
-		setVectorImage((SVGIcon)ic);
-		theRasterImage = null;
+	    	setVectorImage((SVGIcon)ic);
+	    	theRasterImage = null;
 	    }
 	}
 	
