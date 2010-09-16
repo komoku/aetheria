@@ -193,6 +193,7 @@ public class ObjectCode
 				i.set("arg" + k , theArguments[k]);
 				argString += ( (k>0?", arg":"arg") + k );	
 			}
+			debugInfo ( aroutine , theCaller , theArguments );
 			i.eval(aroutine + "(" + argString + ")"); //TODO: Why doesn't this throw EvalError properly in Zendyr's serverintro?
 		}
 		catch ( TargetError te ) //excepción tirada a propósito por el script
@@ -343,6 +344,7 @@ public class ObjectCode
 				argString += ( (k>0?", arg":"arg") + k );	
 			}
 
+			debugInfo ( aroutine , theCaller , theArguments );
 			retval.setRetVal (
 					i.eval(aroutine + "(" + argString + ")") );
 				
@@ -460,6 +462,7 @@ public class ObjectCode
 				argString += ( (k>0?", arg":"arg") + k );	
 			}
 
+			debugInfo ( aroutine , theCaller , theArguments );
 			retval.setRetVal (
 					i.eval(aroutine + "(" + argString + ")") );
 				
@@ -478,6 +481,28 @@ public class ObjectCode
 			reportEvalError(pe,aroutine,theCaller,theArguments);
 		}
 		return false;
+	}
+	
+	private void debugInfo ( String aroutine , Object theCaller , Object[] theArguments )
+	{
+	    Debug.printlnCodeDebugging("Calling BSH method: " + aroutine);
+	    Debug.printlnCodeDebugging("On object: " + theCaller);
+	    Debug.printlnCodeDebugging("With arguments:");
+	    if ( theArguments.length == 0 ) Debug.printlnCodeDebugging("(no arguments");
+	    else
+	    {
+		for ( int i = 0 ; i < theArguments.length ; i++ )
+		{
+		    Debug.printlnCodeDebugging("#" + (i+1) + ": " + prettyPrint(theArguments[i]));
+		}
+	    }
+	}
+	
+	private String prettyPrint(Object o)
+	{
+	    if ( o == null ) return "null";
+	    String theClass = o.getClass().getSimpleName();
+	    return theClass + ": " + o;
 	}
 	
 	
