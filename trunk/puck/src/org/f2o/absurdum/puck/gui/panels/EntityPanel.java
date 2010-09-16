@@ -168,7 +168,9 @@ public class EntityPanel extends GraphElementPanel
 	
 	public String getName()
 	{
-		return nameTextField.getText();
+		String name = nameTextField.getText();
+		if ( name != null ) return name;
+		else return "Unnamed entity";
 	}	
 	
 	protected org.w3c.dom.Node getCustomRelationshipListXML ( Document d , org.f2o.absurdum.puck.gui.graph.Node entityNode )

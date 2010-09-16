@@ -198,6 +198,9 @@ public class SwingAetheriaGameLoaderInterface
 
 			boolean setLAF = true;
 
+			
+			setLAF = false; //pasamos del native look and feel.
+			
 			//check java version and native look and feel: seems that GTK look and feel is broken for versions < 1.6
 
 			if ( UIManager.getSystemLookAndFeelClassName().indexOf("gtk") >= 0 )
@@ -210,8 +213,13 @@ public class SwingAetheriaGameLoaderInterface
 				{
 					firstNum = Integer.valueOf(st.nextToken()).intValue();
 					secondNum = Integer.valueOf(st.nextToken()).intValue();
+					
+					/*
 					if ( firstNum <= 1 && secondNum <= 5 )
 						setLAF = false;
+					*/
+					//don't use GTK l&f at all
+					setLAF = false;
 				}
 				catch ( Exception exc )
 				{
