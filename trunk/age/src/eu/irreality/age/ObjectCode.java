@@ -483,6 +483,7 @@ public class ObjectCode
 		return false;
 	}
 	
+	//todo: maybe check World getDebugMode() and then println
 	private void debugInfo ( String aroutine , Object theCaller , Object[] theArguments )
 	{
 	    Debug.printlnCodeDebugging("Calling BSH method: " + aroutine);
