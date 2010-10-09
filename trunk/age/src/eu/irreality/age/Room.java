@@ -859,23 +859,61 @@ public class Room extends Entity implements Descriptible , SupportingCode
 		if ( itemsInRoom != null && !itemsInRoom.isEmpty() && !itemsInRoom.toString( viewer ).equals("nada.") ) //lo del "nada" es porque puede haber items; pero que sean invisibles.
 		{
 			/*luego aquí poner en hab. parámetro "laying objs": "Sobre el duro suelo, sobre el blando suelo, sobre el puente..."*/
+			
+			//old. remove.
+			/*
 			desString+="\nAquí hay ";
 			desString+=itemsInRoom.toString( viewer );
+			*/
+			desString+="\n"+getLayingObjectString(viewer);
 		}
 		if ( mobsInRoom != null && viewer instanceof Mobile ) quitado = mobsInRoom.removeElement((Mobile)viewer);
 		if ( mobsInRoom != null && !mobsInRoom.isEmpty() && !mobsInRoom.toString( viewer ).equals("nada.") )
 		{
+			/*
 			if ( mobsInRoom.size() > 1 )
 				desString += "\nAquí están ";
 			else	
 				desString += "\nAquí está ";
 			desString+=mobsInRoom.toString( viewer );
+			*/
+			if ( mobsInRoom.size() > 1 )
+				desString += "\n" + getPresentMobilesPluralString ( viewer );
+			else
+				desString += "\n" + getPresentMobilesSingularString ( viewer );
 		}
 		if ( quitado ) mobsInRoom.addElement((Mobile)viewer);
 		
 		return desString;	
 	}
 	
+	//returns string to prepend to things laying on floor of this room (like "Aquí hay ")
+	private String getLayingObjectString ( Entity viewer )
+	{
+		String customMessage = this.getPropertyValueAsString("itemsHereMessage");
+		if ( customMessage != null )
+			return mundo.getMessages().buildMessage(customMessage, "$inventory", itemsInRoom.toString( viewer ));
+		else
+			return mundo.getMessages().getMessage("items.here","$inventory",itemsInRoom.toString( viewer ),new Object[]{this});
+	}
+	
+	private String getPresentMobilesSingularString ( Entity viewer )
+	{
+		String customMessage = this.getPropertyValueAsString("mobileHereMessage");
+		if ( customMessage != null )
+			return mundo.getMessages().buildMessage(customMessage, "$list", mobsInRoom.toString( viewer ));
+		else
+			return mundo.getMessages().getMessage("mobile.here","$list",mobsInRoom.toString( viewer ),new Object[]{this});
+	}
+	
+	private String getPresentMobilesPluralString ( Entity viewer )
+	{
+		String customMessage = this.getPropertyValueAsString("mobilesHereMessage");
+		if ( customMessage != null )
+			return mundo.getMessages().buildMessage(customMessage, "$list", mobsInRoom.toString( viewer ));
+		else
+			return mundo.getMessages().getMessage("mobiles.here","$list",mobsInRoom.toString( viewer ),new Object[]{this});
+	}
 	 
 	public String getDescription ( long comparand , Mobile toExclude )
 	{
