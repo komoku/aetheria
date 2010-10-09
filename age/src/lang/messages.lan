@@ -126,3 +126,12 @@ dodge.what=No te atacan. ¿Esquivar qué?\n
 
 #Cuando intentas poner algo en algo y los objetos no se reconocen
 put.what.where=¿Cómo? ¿Poner qué dónde?\n
+
+#Lista de objetos en una habitación
+items.here=Aquí hay $inventory
+
+#Si hay un personaje en una habitación
+mobile.here=Aquí está $list
+
+#Si hay varios personajes en una habitación
+mobiles.here=Aquí están $list
