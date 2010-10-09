@@ -135,3 +135,15 @@ mobile.here=Aquí está $list
 
 #Si hay varios personajes en una habitación
 mobiles.here=Aquí están $list
+
+#Mostrar inventario (con cosas)
+you.have.items=Tienes $inventory\n
+
+#Mostrar inventario (vacío)
+you.have.nothing=No tienes nada.\n
+
+#Mostrar prenda que llevas puesta
+you.are.wearing.item=Llevas $item en $limbs.\n
+
+#Mostrar arma que llevas blandida
+you.are.wielding.item=Estás blandiendo $item en $limbs.\n
