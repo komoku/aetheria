@@ -2096,16 +2096,18 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 	}
 
-
 	private void defaultShowInventory( )
 	{
 		if ( inventory != null )
 		{
 			String str = inventory.toString(this);
-			if ( str.equalsIgnoreCase("nada.") ) write( io.getColorCode("information") + "No tienes nada.\n" + io.getColorCode("reset") );
+			if ( str.equalsIgnoreCase("nada.") ) write( io.getColorCode("information") + mundo.getMessages().getMessage("you.have.nothing",new Object[]{this}) + io.getColorCode("reset") );
 			else
 			{
-				write( io.getColorCode("information") + "Tienes " + str + "\n" + io.getColorCode("reset") );
+				write( io.getColorCode("information") + 
+						/*"Tienes "*/  mundo.getMessages().getMessage("you.have.items","$inventory",str,new Object[]{this})
+						//+ str 
+						+ io.getColorCode("reset") );
 
 				Inventory limbs = getFlattenedPartsInventory();
 				//cosas que blandes
@@ -2125,7 +2127,10 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 								Item miembro = limbs.elementAt(j);
 								if ( miembro.getRelationshipPropertyValueAsBoolean(arma,"wields") )
 								{
-									write( io.getColorCode("information") + "Blandes " + arma.constructName2OneItem(this)  + " en " + miembro.constructName2OneItem(this) + ".\n" + io.getColorCode("reset") );
+									write( io.getColorCode("information") + 
+									//"Blandes " + arma.constructName2OneItem(this)  + " en " + miembro.constructName2OneItem(this) + ".\n" 
+									mundo.getMessages().getMessage("you.are.wielding.item","$item",arma.constructName2OneItem(this),"$limbs",miembro.constructName2OneItem(this),new Object[]{this,arma,miembro})
+									+ io.getColorCode("reset") );
 									//break;
 								}
 							}
@@ -2164,12 +2169,15 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 								else
 									toOutput += ", " + limb.constructName2OneItem(this);
 							}
-							write( io.getColorCode("information") + "Llevas " + vestido.constructName2OneItem(this)  + " en " + toOutput + ".\n" + io.getColorCode("reset") );
+							write( io.getColorCode("information") + 
+							//"Llevas " + vestido.constructName2OneItem(this)  + " en " + toOutput + ".\n"
+							mundo.getMessages().getMessage("you.are.wearing.item","$item",vestido.constructName2OneItem(this),"$limbs",toOutput,new Object[]{this,vestido,toOutput})
+							+ io.getColorCode("reset") );
 						}
 					}
 			}
 		}
-		else write( io.getColorCode("information") + "No tienes nada.\n" + io.getColorCode("reset") );
+		else write( io.getColorCode("information") + mundo.getMessages().getMessage("you.have.nothing",new Object[]{this}) + io.getColorCode("reset") );
 	}
 
 

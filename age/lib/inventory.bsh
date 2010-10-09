@@ -19,10 +19,10 @@ void inventory_showInventory()
 		{
 		
 			String str = inventory.toString(self);
-			if ( str.equalsIgnoreCase("nada.") ) self.writeInformation ( "No tienes nada.\n" );
+			if ( str.equalsIgnoreCase("nada.") ) self.writeInformation ( world.getMessages().getMessage("you.have.nothing",new Object[]{self}) );
 			else
 			{
-				self.writeInformation ( "Tienes " + str + "\n" );
+				self.writeInformation ( world.getMessages().getMessage("you.have.items","$inventory",str,new Object[]{self}) );
 				
 				Inventory limbs = self.getFlattenedPartsInventory();
 				//cosas que blandes
@@ -40,7 +40,7 @@ void inventory_showInventory()
 								if ( miembro.getRelationshipPropertyValueAsBoolean(arma,"wields") )
 								{
 									if ( SHOW_LIMB_FOR_WEAPON )
-										self.writeInformation( "Blandes " + arma.constructName2OneItem(self)  + " en " + miembro.constructName2OneItem(self) + ".\n" );
+										self.writeInformation( world.getMessages().getMessage("you.are.wielding.item","$item",arma.constructName2OneItem(self),"$limbs",miembro.constructName2OneItem(self),new Object[]{self,arma,miembro}) );
 									else
 										self.writeInformation("Estás blandiendo " + arma.constructName2OneItem(self) + ".\n" );
 								}
@@ -79,14 +79,14 @@ void inventory_showInventory()
 									toOutput += ", " + limb.constructName2OneItem(self);
 							}
 							if ( SHOW_LIMB_FOR_WEARABLE )
-								self.writeInformation( "Llevas " + vestido.constructName2OneItem(self)  + " en " + toOutput + ".\n");
+								self.writeInformation( world.getMessages().getMessage("you.are.wearing.item","$item",vestido.constructName2OneItem(self),"$limbs",toOutput,new Object[]{self,vestido,toOutput}) );
 							else
 								self.writeInformation( "Llevas puesto " + vestido.constructName2OneItem(self) + ".\n" );
 						}
 					}
 			}
 		}
-		else self.writeInformation( "No tienes nada.\n" + io.getColorCode("reset") );
+		else self.writeInformation( world.getMessages().getMessage("you.have.nothing",new Object[]{self}) + io.getColorCode("reset") );
 		end();
 		
 }
