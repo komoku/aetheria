@@ -3715,7 +3715,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		if ( ejecutado ) return;		
 
 
-		habitacionActual.reportAction ( this , null , "$1 muere.\n" , null , "Mueres.\n" , true );
+
+		habitacionActual.reportAction ( this , null , mundo.getMessages().getMessage("someone.dies",new Object[]{this}) , null , mundo.getMessages().getMessage("you.die",new Object[]{this}) , true );
 
 		Item cadaver = Item.initCorpse ( this );
 		mundo.addItemAssigningID ( cadaver );

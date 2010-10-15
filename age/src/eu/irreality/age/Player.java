@@ -887,7 +887,7 @@ public class Player extends Mobile implements Informador
 			if ( StringMethods.numToks(commandstring,' ') < 2 )
 			{
 
-				write ( io.getColorCode("denial") + "¿Ir a dónde?\n" + io.getColorCode("reset") );
+				write ( io.getColorCode("denial") + mundo.getMessages().getMessage("go.nowhere",new Object[]{this}) + io.getColorCode("reset") );
 				ZR_verbo = command;
 				commandQueue.removeAllElements();
 				return false;
@@ -1281,7 +1281,8 @@ public class Player extends Mobile implements Informador
 							ourItem = (Item)patternMatchVectorPlur.elementAt(i);
 
 
-							write( "Intentas abrir " + ourItem.constructName2True ( 1 , this ) + ": " );
+							write ( mundo.getMessages().getMessage("you.try.open.from.floor","$item",ourItem.constructName2True ( 1 , this ),new Object[]{this,arguments} ));
+							//write( "Intentas abrir " + ourItem.constructName2True ( 1 , this ) + ": " );
 
 							habitacionActual.reportAction(this,ourItem,null,"$1 intenta abrir $2.\n","$1 intenta abrirte.\n","Intentas abrir $2.\n",false);
 
@@ -1318,8 +1319,9 @@ public class Player extends Mobile implements Informador
 						{
 							ourItem = (Item)patternMatchVectorPlur.elementAt(i);
 
-
-							write( "Tratas de abrir " + ourItem.constructName2True ( 1 , this ) + " que llevas: " );
+							//write( "Tratas de abrir " + ourItem.constructName2True ( 1 , this ) + " que llevas: " );
+							write ( mundo.getMessages().getMessage("you.try.open.from.inventory","$item",ourItem.constructName2True ( 1 , this ),new Object[]{this,arguments} ));							
+							
 							habitacionActual.reportAction(this,ourItem,null,"$1 intenta abrir $2 que lleva.\n","$1 intenta abrirte.\n","Intentas abrir $2 que llevas.\n",false);
 							write( io.getColorCode("action") + ((Item)ourItem).abrir() + io.getColorCode("reset") + "\n" );
 
@@ -1397,7 +1399,11 @@ public class Player extends Mobile implements Informador
 							//this is plain nonsense.
 							//if ( !((Item)ourItem).getDescription(this).equals("")  )
 							//{
-								write( "Intentas cerrar " + ourItem.constructName2True ( 1 , this ) + ": "  );
+								
+								//write( "Intentas cerrar " + ourItem.constructName2True ( 1 , this ) + ": "  );
+								write ( mundo.getMessages().getMessage("you.try.close.from.floor","$item",ourItem.constructName2True ( 1 , this ),new Object[]{this,arguments} ));
+							
+							
 								habitacionActual.reportAction(this,ourItem,null,"$1 intenta cerrar $2.\n","$1 intenta cerrarte.\n","Intentas cerrar $2.\n",false);
 								write( io.getColorCode("action") + ((Item)ourItem).cerrar() + io.getColorCode("reset") +"\n" );
 							//}
@@ -1430,7 +1436,10 @@ public class Player extends Mobile implements Informador
 							ourItem = (Item)patternMatchVectorPlur.elementAt(i);
 							if ( !ourItem.constructName2( 1 , this ).equals("") )
 							{
-								write( "Tratas de cerrar " + ourItem.constructName2True ( 1 , this ) + " que llevas: " );
+								//write( "Tratas de cerrar " + ourItem.constructName2True ( 1 , this ) + " que llevas: " );
+								
+								write ( mundo.getMessages().getMessage("you.try.close.from.inventory","$item",ourItem.constructName2True ( 1 , this ),new Object[]{this,arguments} ));															
+								
 								habitacionActual.reportAction(this,ourItem,null,"$1 intenta cerrar $2 que lleva.\n","$1 intenta cerrarte.\n","Intentas cerrar $2 que llevas.\n",false);
 								write( io.getColorCode("action") + ((Item)ourItem).cerrar() + io.getColorCode("reset") + "\n" );
 							}
@@ -2023,7 +2032,7 @@ public class Player extends Mobile implements Informador
 
 			if(!mirado) //no atacamos nada, no nos entiende.
 			{
-				escribirDenegacionComando(io.getColorCode("denial")+"No conoces tal hechizo.\n"+io.getColorCode("reset")  );
+				escribirDenegacionComando(io.getColorCode("denial")+mundo.getMessages().getMessage("cast.no.spell",new Object[]{this,arguments})+io.getColorCode("reset")  );
 				ZR_verbo = command;
 				commandQueue.removeAllElements();
 				return false;
