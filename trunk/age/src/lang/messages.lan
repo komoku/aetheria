@@ -112,6 +112,9 @@ unwield.what=¿Qué arma pretendes enfundar?\n
 #Cuando intentas ir hacia un sitio que no se reconoce
 go.where=¿Cómo? ¿Hacia dónde quieres ir?\n
 
+#Cuando el verbo ir aparece sin argumentos
+go.nowhere=¿Ir a dónde?\n
+
 #Cuando intentas ir hacia una dirección estándar (norte, etc.) pero no hay salida
 go.noexit=No parece haber salida en esa dirección.\n
 
@@ -147,3 +150,24 @@ you.are.wearing.item=Llevas $item en $limbs.\n
 
 #Mostrar arma que llevas blandida
 you.are.wielding.item=Estás blandiendo $item en $limbs.\n
+
+#Intentar conjurar conjuro que no existe o conoces
+cast.no.spell=No conoces tal hechizo.\n
+
+#Cuando mueres
+you.die=Mueres.\n
+
+#Cuando alguien muere
+someone.dies=$1 muere.\n
+
+#Intentando abrir algo del suelo en un comando con varios objetivos (abrir las cajas, etc.)
+you.try.open.from.floor=Intentas abrir $item:
+
+#Intentando abrir algo del inventario en un comando con varios objetivos (abrir las cajas, etc.)
+you.try.open.from.floor=Tratas de abrir $item que llevas:
+
+#Intentando cerrar algo del suelo en un comando con varios objetivos (cerrar las cajas, etc.)
+you.try.close.from.floor=Intentas cerrar $item:
+
+#Intentando cerrar algo del inventario en un comando con varios objetivos (cerrar las cajas, etc.)
+you.try.close.from.inventory=Tratas de cerrar $item que llevas:
