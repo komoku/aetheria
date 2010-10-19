@@ -1024,6 +1024,18 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		this.echoText = echoText;
 	}
 	
+	//key press text
+	private String keyRequestText = "Pulsa cualquier tecla...";
+	
+	public String getKeyRequestText()
+	{
+		return keyRequestText;
+	}
+	
+	public void setKeyRequestText ( String newText )
+	{
+		keyRequestText = newText;
+	}
 	
 	//frame management
 	private ImagePanel topFrame = null;
