@@ -186,7 +186,7 @@ class SwingEditBoxListener implements ActionListener , KeyListener
 			elCampoJTexto.setForeground(Color.black);
 			System.out.println("Setting PAK 1");
 			elCampoJTexto.setPromptsEnabled(false);
-			elCampoJTexto.setText("Pulsa cualquier tecla...");
+			elCampoJTexto.setText(cl.getKeyRequestText());
 			System.out.println("Setting PAK 2");
 			elCampoJTexto.setEditable(false);
 			System.out.println("Setting PAK 3");
