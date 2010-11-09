@@ -3,6 +3,7 @@ package eu.irreality.age.swing.sdi;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.DisplayMode;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -10,9 +11,11 @@ import java.awt.Image;
 import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -44,6 +47,8 @@ import eu.irreality.age.World;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.filemanagement.WorldLoader;
+import eu.irreality.age.swing.config.AGEConfiguration;
+import eu.irreality.age.swing.mdi.SwingAetheriaGUI;
 import eu.irreality.age.windowing.AGEClientWindow;
 import eu.irreality.age.windowing.UpdatingRun;
 
@@ -413,8 +418,37 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 			saveAndFreeResources();
 	}
 
+	/**
+	 * Saves this window's coordinates to the adequate properties file so next time a window from this class
+	 * is constructed (i.e. next execution) it will have the same location and size.
+	 */
+	public void saveWindowCoordinates()
+	{
+		try
+		{
+			if ( (this.getExtendedState() & JFrame.MAXIMIZED_BOTH) != JFrame.MAXIMIZED_BOTH )
+			{
+				AGEConfiguration.getInstance().setProperty("sdiWindowWidth",String.valueOf(this.getWidth()));
+				AGEConfiguration.getInstance().setProperty("sdiWindowHeight",String.valueOf(this.getHeight()));
+				AGEConfiguration.getInstance().setProperty("sdiWindowMaximized","false");
+				AGEConfiguration.getInstance().setProperty("sdiWindowLocationX",String.valueOf(this.getX()));
+				AGEConfiguration.getInstance().setProperty("sdiWindowLocationY",String.valueOf(this.getY()));
+			}
+			else
+			{
+				AGEConfiguration.getInstance().setProperty("sdiWindowMaximized","true");
+			};
+			AGEConfiguration.getInstance().storeProperties();
+		}
+		catch ( IOException ioe )
+		{
+			ioe.printStackTrace();
+		}
+	}
+	
 	public void exitNow()
 	{
+		saveWindowCoordinates();
 		stopGameSaveAndUnlink();
 		this.dispose();
 		//if ( !standalone )
@@ -569,11 +603,27 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 
 	}
 
+	/**
+	 * Maximizes this frame if supported by the platform.
+	 */
+	private void maximizeIfPossible()
+	{
+		int state = getExtendedState();	    
+	    state |= Frame.MAXIMIZED_BOTH;    
+	    setExtendedState(state);
+	}
 
-
+	
 	public SwingSDIInterface(String title)
 	{
 		super(title);
+		
+		setSize(AGEConfiguration.getInstance().getIntegerProperty("sdiWindowWidth"),AGEConfiguration.getInstance().getIntegerProperty("sdiWindowHeight"));
+		setLocation(AGEConfiguration.getInstance().getIntegerProperty("sdiWindowLocationX"),AGEConfiguration.getInstance().getIntegerProperty("sdiWindowLocationY"));
+		//setSize(600,600);
+		if ( AGEConfiguration.getInstance().getBooleanProperty("sdiWindowMaximized") )
+			maximizeIfPossible();
+		//setTitle(Messages.getInstance().getMessage("frame.title"));
 		
 		//Image iconito = getToolkit().getImage("images" + File.separatorChar + "intficon.gif");
 		try
@@ -616,7 +666,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 		
 		menuArchivo.add(new JSeparator(),3);
 		
-		setSize(600,440);
+		//setSize(600,440);
 	}
 
 
