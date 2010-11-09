@@ -13,6 +13,7 @@ import javax.swing.event.*;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.filemanagement.WorldLoader;
+import eu.irreality.age.swing.config.AGEConfiguration;
 import eu.irreality.age.windowing.AGEClientWindow;
 import eu.irreality.age.windowing.UpdatingRun;
 
@@ -389,13 +390,20 @@ de la ventana hasta acabar de cargar.
 			{
 				System.out.println("Frame closed.");
 
+					saveWindowCoordinates();
 					exitNow(); //includes call to this.exitNow();
 				//kldispose();
 			}
 		});
 		
 		gui.add(this);
-		this.getDesktopPane().getDesktopManager().maximizeFrame(this);
+		//this.getDesktopPane().getDesktopManager().maximizeFrame(this);
+		
+		setSize(AGEConfiguration.getInstance().getIntegerProperty("mdiSubwindowWidth"),AGEConfiguration.getInstance().getIntegerProperty("mdiSubwindowHeight"));
+		//setLocation(AGEConfiguration.getInstance().getIntegerProperty("mdiWindowLocationX"),AGEConfiguration.getInstance().getIntegerProperty("mdiSubwindowLocationY"));
+		if ( AGEConfiguration.getInstance().getBooleanProperty("mdiSubwindowMaximized") )
+			this.getDesktopPane().getDesktopManager().maximizeFrame(this);
+		
 		setVisible(true);
 		
 		mainPanel = new JPanel(); //panel que contiene al cliente
@@ -403,7 +411,7 @@ de la ventana hasta acabar de cargar.
 		
 		io = new ColoredSwingClient(this,new Vector()); //components are added 'ere.
 		
-		setSize(500,400);
+		//setSize(500,400);
 		
 	}
 	
@@ -890,6 +898,37 @@ de la ventana hasta acabar de cargar.
 		return fullScreenMode;
 	}
 	
+	
+	/**
+	 * Saves this window's coordinates to the adequate properties file so next time a window from this class
+	 * is constructed (i.e. next execution) it will have the same location and size.
+	 */
+	public void saveWindowCoordinates()
+	{
+		try
+		{
+			if ( !this.isMaximum() )
+			{
+				AGEConfiguration.getInstance().setProperty("mdiSubwindowWidth",String.valueOf(this.getWidth()));
+				AGEConfiguration.getInstance().setProperty("mdiSubwindowHeight",String.valueOf(this.getHeight()));
+				AGEConfiguration.getInstance().setProperty("mdiSubwindowMaximized","false");
+				AGEConfiguration.getInstance().setProperty("mdiSubwindowLocationX",String.valueOf(this.getX()));
+				AGEConfiguration.getInstance().setProperty("mdiSubwindowLocationY",String.valueOf(this.getY()));
+			}
+			else
+			{
+				AGEConfiguration.getInstance().setProperty("mdiSubwindowMaximized","true");
+			};
+			AGEConfiguration.getInstance().storeProperties();
+		}
+		catch ( IOException ioe )
+		{
+			ioe.printStackTrace();
+		}
+	}
+	
+	
+	
 	//local init
 	public SwingAetheriaGameLoader ( final String moduledir , final JDesktopPane gui , final boolean usarLog , final String logFile , final String stateFile , final boolean noSerCliente )
 	{
@@ -929,6 +968,7 @@ de la ventana hasta acabar de cargar.
 			{
 				System.out.println("Frame closed.");
 
+				saveWindowCoordinates();
 				exitNow(); //includes call to this.exitNow();
 				//kldispose();
 			}
@@ -958,7 +998,14 @@ de la ventana hasta acabar de cargar.
 		System.out.println("C");
 		
 		gui.add(this);
-		this.getDesktopPane().getDesktopManager().maximizeFrame(this);
+		//this.getDesktopPane().getDesktopManager().maximizeFrame(this);
+		
+		setSize(AGEConfiguration.getInstance().getIntegerProperty("mdiSubwindowWidth"),AGEConfiguration.getInstance().getIntegerProperty("mdiSubwindowHeight"));
+		//setLocation(AGEConfiguration.getInstance().getIntegerProperty("mdiWindowLocationX"),AGEConfiguration.getInstance().getIntegerProperty("mdiSubwindowLocationY"));
+		if ( AGEConfiguration.getInstance().getBooleanProperty("mdiSubwindowMaximized") )
+			this.getDesktopPane().getDesktopManager().maximizeFrame(this);
+		
+		
 		setVisible(true);
 		final SwingAetheriaGameLoader esto = this;
 		
