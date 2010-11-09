@@ -411,6 +411,11 @@ public class Player extends Mobile implements Informador
 		return mobilesCache;
 	}
 
+	//cancel commands in the queue pending to be executed
+	public void cancelPending()
+	{
+		commandQueue.removeAllElements();
+	}
 
 	/**Ejecutar un comando del jugador.*/
 	//Este es el parser de comandos!
@@ -889,7 +894,7 @@ public class Player extends Mobile implements Informador
 
 				write ( io.getColorCode("denial") + mundo.getMessages().getMessage("go.nowhere",new Object[]{this}) + io.getColorCode("reset") );
 				ZR_verbo = command;
-				commandQueue.removeAllElements();
+				cancelPending();
 				return false;
 			}	
 
@@ -993,7 +998,7 @@ public class Player extends Mobile implements Informador
 							mundo.getMessages().getMessage("go.where",new Object[]{this,arguments})  //"¿Cómo? ¿Hacia dónde quieres ir?\n" 
 							+ io.getColorCode("reset") );
 					ZR_verbo = command;	
-					commandQueue.removeAllElements();
+					cancelPending();
 					return false;
 				}
 			} 
@@ -1035,7 +1040,7 @@ public class Player extends Mobile implements Informador
 			{
 				escribirDenegacionComando(io.getColorCode("denial") + "No ves el modo de volver...\n" + io.getColorCode("reset"));
 				ZR_verbo = command;
-				commandQueue.removeAllElements();
+				cancelPending();
 				return false;
 			}
 		} //FIN CMD VOLVER
@@ -1130,7 +1135,7 @@ public class Player extends Mobile implements Informador
 								mundo.getMessages().getMessage("look.what",new Object[]{this,arguments})  //"¿Qué pretendes mirar?\n" 
 								+ io.getColorCode("reset"));
 						ZR_verbo = command;
-						commandQueue.removeAllElements();
+						cancelPending();
 						return false;
 					}
 					else
@@ -1169,7 +1174,7 @@ public class Player extends Mobile implements Informador
 						mundo.getMessages().getMessage("attack.what",new Object[]{this,arguments})  //"¿Cómo? ¿Atacar a quién?\n" 
 						+io.getColorCode("reset")  );
 				ZR_verbo = command;
-				commandQueue.removeAllElements();
+				cancelPending();
 				return false;
 			}
 			else
@@ -1195,7 +1200,7 @@ public class Player extends Mobile implements Informador
 						mundo.getMessages().getMessage("block.what",new Object[]{this,arguments})  //"¿Cómo? ¿Defenderse de quién?\n" 
 						+io.getColorCode("reset")  );
 				ZR_verbo = command;
-				commandQueue.removeAllElements();
+				cancelPending();
 				return false;
 			}
 			else
@@ -1216,7 +1221,7 @@ public class Player extends Mobile implements Informador
 						mundo.getMessages().getMessage("dodge.what",new Object[]{this,arguments})  //"No te atacan. ¿Esquivar qué?\n" 
 						+io.getColorCode("reset") );
 				ZR_verbo = command;
-				commandQueue.removeAllElements();
+				cancelPending();
 				return false;
 			}
 			else
@@ -1340,7 +1345,7 @@ public class Player extends Mobile implements Informador
 						mundo.getMessages().getMessage("open.what",new Object[]{this,arguments})  //"¿Qué pretendes abrir?\n" 
 						+io.getColorCode("reset")  );
 				ZR_verbo = command;
-				commandQueue.removeAllElements();
+				cancelPending();
 				return false;
 			}
 			else
@@ -1457,7 +1462,7 @@ public class Player extends Mobile implements Informador
 						mundo.getMessages().getMessage("close.what",new Object[]{this,arguments})  //"¿Qué pretendes cerrar?\n"  
 						+ io.getColorCode("reset") );
 				ZR_verbo = command;
-				commandQueue.removeAllElements();
+				cancelPending();
 				return false;
 			}
 			else
@@ -1592,7 +1597,7 @@ public class Player extends Mobile implements Informador
 						mundo.getMessages().getMessage("put.what.where",new Object[]{this,arguments})  //"¿Cómo? ¿Poner qué dónde?\n" 
 						+ io.getColorCode("reset") );
 				ZR_verbo = command;
-				commandQueue.removeAllElements();
+				cancelPending();
 				return false;
 			}
 			else
@@ -1638,7 +1643,7 @@ public class Player extends Mobile implements Informador
 						mundo.getMessages().getMessage("get.what",new Object[]{this,arguments})  //"¿Qué pretendes coger?\n"
 						+ io.getColorCode("reset") );
 				ZR_verbo = command;
-				commandQueue.removeAllElements();
+				cancelPending();
 				return false;
 			}		
 		} //FIN CMD COGER
@@ -1654,7 +1659,7 @@ public class Player extends Mobile implements Informador
 						mundo.getMessages().getMessage("drop.what",new Object[]{this,arguments})  //"¿Qué pretendes dejar?\n"
 						+ io.getColorCode("reset") );
 				ZR_verbo = command;
-				commandQueue.removeAllElements();
+				cancelPending();
 				return false;		
 			}
 
@@ -1770,7 +1775,7 @@ public class Player extends Mobile implements Informador
 			//	    {
 			//	    escribirDenegacionComando( io.getColorCode("denial") + "¿Qué pretendes dejar?\n" + io.getColorCode("reset") );
 			//	    ZR_verbo = command;
-			//	    commandQueue.removeAllElements();
+			//	    cancelPending();
 			//	    return false;
 			//	    }
 
@@ -1885,7 +1890,7 @@ public class Player extends Mobile implements Informador
 						mundo.getMessages().getMessage("unwear.what",new Object[]{this,arguments})  //"¿Qué pretendes quitarte?\n"
 						+ io.getColorCode("reset") );
 				ZR_verbo = command;
-				commandQueue.removeAllElements();
+				cancelPending();
 				return false;		
 			}
 		}
@@ -1898,7 +1903,7 @@ public class Player extends Mobile implements Informador
 						mundo.getMessages().getMessage("wear.what",new Object[]{this,arguments})  //"¿Qué pretendes vestir?\n"
 						+ io.getColorCode("reset") );
 				ZR_verbo = command;
-				commandQueue.removeAllElements();
+				cancelPending();
 				return false;		
 			}
 		}
@@ -1911,7 +1916,7 @@ public class Player extends Mobile implements Informador
 						mundo.getMessages().getMessage("wield.what",new Object[]{this,arguments})  //"¿Qué arma pretendes blandir?\n"
 						+ io.getColorCode("reset") );
 				ZR_verbo = command;
-				commandQueue.removeAllElements();
+				cancelPending();
 				return false;		
 			}
 		}
@@ -1924,7 +1929,7 @@ public class Player extends Mobile implements Informador
 						mundo.getMessages().getMessage("unwield.what",new Object[]{this,arguments})  //"¿Qué arma enfundar?\n"
 						+ io.getColorCode("reset") );
 				ZR_verbo = command;
-				commandQueue.removeAllElements();
+				cancelPending();
 				return false;		
 			}
 		}
@@ -1991,7 +1996,7 @@ public class Player extends Mobile implements Informador
 		{
 			escribirDenegacionComando( io.getColorCode("denial") + "La mejor forma de hablar es decir algo.\n" + io.getColorCode("reset") );
 			ZR_verbo = command;
-			commandQueue.removeAllElements();
+			cancelPending();
 			return false;
 		}
 		else if ( command.equalsIgnoreCase( "salvar" ) || command.equalsIgnoreCase("save")
@@ -1999,7 +2004,7 @@ public class Player extends Mobile implements Informador
 				|| command.equalsIgnoreCase( "grabar" ) || command.equalsIgnoreCase("restaurar") )
 		{
 			escribirDenegacionComando( io.getColorCode("error") + "De momento, las opciones de salvar y cargar no están disponibles por texto en este interfaz. Puedes usar los menús para ello.\n" + io.getColorCode("reset") );
-			commandQueue.removeAllElements();
+			cancelPending();
 			return false;
 		}
 
@@ -2034,7 +2039,7 @@ public class Player extends Mobile implements Informador
 			{
 				escribirDenegacionComando(io.getColorCode("denial")+mundo.getMessages().getMessage("cast.no.spell",new Object[]{this,arguments})+io.getColorCode("reset")  );
 				ZR_verbo = command;
-				commandQueue.removeAllElements();
+				cancelPending();
 				return false;
 			}
 			else
@@ -2065,7 +2070,7 @@ public class Player extends Mobile implements Informador
 				//si el comando se refería al propio jugador, poner el string sin pronombres sustituidos, porque queda un poco feo que diga "¿cómo? ¿matar a jugador?"
 				escribirDenegacionComando ( io.getColorCode("denial") + "¿Cómo? ¿" + originalTrimmedCommandString + "?\n" + io.getColorCode("reset") );
 			ZR_verbo = command;	
-			commandQueue.removeAllElements();
+			cancelPending();
 			return false;
 		}
 
@@ -4464,7 +4469,7 @@ public class Player extends Mobile implements Informador
 			if ( ! hecho )
 			{
 				ZR_verbo = command;
-				commandQueue.removeAllElements();
+				cancelPending();
 				return true;
 			}
 			else
@@ -4488,7 +4493,7 @@ public class Player extends Mobile implements Informador
 				if ( ! hecho )
 				{
 					ZR_verbo = command;
-					commandQueue.removeAllElements();
+					cancelPending();
 					return true;
 				}
 			}
@@ -4501,7 +4506,7 @@ public class Player extends Mobile implements Informador
 		{
 			//jugador.escribirDenegacionComando( io.getColorCode("denial") + "¿Qué pretendes quitarte?\n" + io.getColorCode("reset") );
 			ZR_verbo = command;
-			commandQueue.removeAllElements();
+			cancelPending();
 			return false;		
 		}
 
