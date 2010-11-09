@@ -9,6 +9,7 @@ import java.io.*;
 
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
+import eu.irreality.age.messages.Messages;
 public class Room extends Entity implements Descriptible , SupportingCode
 {
 
@@ -887,32 +888,45 @@ public class Room extends Entity implements Descriptible , SupportingCode
 		return desString;	
 	}
 	
-	//returns string to prepend to things laying on floor of this room (like "Aquí hay ")
+	//returns string to describe things laying on floor of this room (like "Aquí hay una espada y un escudo.")
 	private String getLayingObjectString ( Entity viewer )
 	{
 		String customMessage = this.getPropertyValueAsString("itemsHereMessage");
+		String itemsString = itemsInRoom.toString( viewer );
+		String rawString = itemsString.substring(0,itemsString.length()-1);
 		if ( customMessage != null )
-			return mundo.getMessages().buildMessage(customMessage, "$inventory", itemsInRoom.toString( viewer ));
+			return Messages.buildMessage(customMessage, 
+					"$dotinventory", itemsString,
+					"$inventory", rawString);
 		else
-			return mundo.getMessages().getMessage("items.here","$inventory",itemsInRoom.toString( viewer ),new Object[]{this});
+			return mundo.getMessages().getMessage("items.here",
+					"$dotinventory",itemsString,
+					"$inventory", rawString,
+					new Object[]{this});
 	}
 	
+	//returns string to describe a mobile on a room (like "Aquí está Juan.")
 	private String getPresentMobilesSingularString ( Entity viewer )
 	{
 		String customMessage = this.getPropertyValueAsString("mobileHereMessage");
+		String mobsString = mobsInRoom.toString( viewer );
+		String rawString = mobsString.substring(0,mobsString.length()-1);
 		if ( customMessage != null )
-			return mundo.getMessages().buildMessage(customMessage, "$list", mobsInRoom.toString( viewer ));
+			return Messages.buildMessage(customMessage, "$dotlist", mobsString , "$list" , rawString );
 		else
-			return mundo.getMessages().getMessage("mobile.here","$list",mobsInRoom.toString( viewer ),new Object[]{this});
+			return mundo.getMessages().getMessage("mobile.here", "$dotlist", mobsString , "$list" , rawString , new Object[]{this});
 	}
 	
+	//returns string to describe several mobiles on a room (like "Aquí están Pedro y Juan.")
 	private String getPresentMobilesPluralString ( Entity viewer )
 	{
 		String customMessage = this.getPropertyValueAsString("mobilesHereMessage");
+		String mobsString = mobsInRoom.toString( viewer );
+		String rawString = mobsString.substring(0,mobsString.length()-1);
 		if ( customMessage != null )
-			return mundo.getMessages().buildMessage(customMessage, "$list", mobsInRoom.toString( viewer ));
+			return Messages.buildMessage(customMessage, "$dotlist", mobsString , "$list" , rawString );
 		else
-			return mundo.getMessages().getMessage("mobiles.here","$list",mobsInRoom.toString( viewer ),new Object[]{this});
+			return mundo.getMessages().getMessage("mobiles.here", "$dotlist", mobsString, "$list", rawString, new Object[]{this});
 	}
 	 
 	public String getDescription ( long comparand , Mobile toExclude )

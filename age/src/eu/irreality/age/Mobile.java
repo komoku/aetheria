@@ -1,5 +1,5 @@
 /*
- * (c) 2000-2009 Carlos Gómez Rodríguez, todos los derechos reservados / all rights reserved.
+ * (c) 2000-2009 Carlos Gï¿½mez Rodrï¿½guez, todos los derechos reservados / all rights reserved.
  * Licencia en license/bsd.txt / License in license/bsd.txt
  */
 package eu.irreality.age;
@@ -72,26 +72,26 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 
 
-	/**Habitación actual*/
+	/**Habitaciï¿½n actual*/
 	protected Room habitacionActual;
-	/**Habitación anterior*/
+	/**Habitaciï¿½n anterior*/
 	protected Room habitacionAnterior;
 
 
 
-	/**Nombre sintético del bicho.*/
+	/**Nombre sintï¿½tico del bicho.*/
 	/*04*/ protected String title;
 
 	/**Es instancia de.*/
 	/*05*/ private int isInstanceOf;
 
-	/**Lista dinámica de descripciones.*/
+	/**Lista dinï¿½mica de descripciones.*/
 	/*10*/ protected Description[] descriptionList;
-	/**Lista dinámica de nombres en singular. (goblin, goblin herido... mismo goblin, varios estados)*/
+	/**Lista dinï¿½mica de nombres en singular. (goblin, goblin herido... mismo goblin, varios estados)*/
 	/*11*/ protected Description[] singNames;
-	/**Lista dinámica de nombres en plural.*/
+	/**Lista dinï¿½mica de nombres en plural.*/
 	/*12*/ protected Description[] plurNames;
-	/**Género.*/
+	/**Gï¿½nero.*/
 	/*13*/ protected boolean gender; //true=masculino
 	/**Responder a... (comandos): listas de pattern-matching.*/
 	/*14*/ protected String respondToSing;
@@ -118,7 +118,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	protected List extraDescriptionArrays; /*List of Description Arrays*/
 	protected List extraDescriptionNameArrays; /*List of String Arrays*/
 
-	/**bit vector (o bits, a secas, más bien)*/
+	/**bit vector (o bits, a secas, mï¿½s bien)*/
 	/*40*/ protected boolean properName = false; //no se le trata de "un" ni de "el".
 	//por defecto, false.
 
@@ -133,7 +133,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	//	/*70*/ protected Vector relationships = new Vector(); //vector of Entity
 	//		protected Vector relationship_properties = new Vector(); //vector of List of Property
 
-	/**Código en Ensamblador Virtual Aetheria (EVA)*/
+	/**Cï¿½digo en Ensamblador Virtual Aetheria (EVA)*/
 	/*80*/ protected ObjectCode itsCode;
 
 	/**Especificaciones de habla PSI*/
@@ -146,7 +146,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	protected InputOutputClient io /*= new InputOutputClientNula()*/; //no hace nada para los bichos que no sean Informadores
 
 
-	String exitname; //nombre de la salida hacia la que está yendo, si está en estado "go"
+	String exitname; //nombre de la salida hacia la que estï¿½ yendo, si estï¿½ en estado "go"
 
 	//for combat
 	//private Weapon usingWeapon; //weapon used for a given attack
@@ -180,8 +180,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		io = new NullInputOutputClient();
 		lenguaje = mundo.getLanguage();
 		constructMob ( mundo , mobfile , true , "none" );
-		//el constructor de cada subclase de Mobile llamará con esa subclase en vez de none:
-		//public Daedra hará
+		//el constructor de cada subclase de Mobile llamarï¿½ con esa subclase en vez de none:
+		//public Daedra harï¿½
 		//constructMob ( mundo , mobfile , true , "daedra" );
 	}
 
@@ -191,13 +191,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		io = new NullInputOutputClient();
 		lenguaje = mundo.getLanguage();
 		constructMob ( mundo , n , true , "none" );
-		//el constructor de cada subclase de Mobile llamará con esa subclase en vez de none:
-		//public Daedra hará
+		//el constructor de cada subclase de Mobile llamarï¿½ con esa subclase en vez de none:
+		//public Daedra harï¿½
 		//constructMob ( mundo , mobfile , true , "daedra" );
 	}
 
 	/**
-	 * Constructor para ser llamado desde fuera, construye todas las subclases de Mobile según el fichero
+	 * Constructor para ser llamado desde fuera, construye todas las subclases de Mobile segï¿½n el fichero
 	 *
 	 */
 
@@ -311,7 +311,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			case 4:
 				title = linea; break;	
 			case 5:
-				/*la herencia fuerte se hace exactamente igual que la débil, no pueden aparecer las dos (se ignoraría la 2a)*/
+				/*la herencia fuerte se hace exactamente igual que la dï¿½bil, no pueden aparecer las dos (se ignorarï¿½a la 2a)*/
 				isInstanceOf = Integer.valueOf(linea).intValue(); 
 				if ( isInstanceOf < idnumber && allowInheritance ) /*el item del que heredamos debe tener ID menor*/
 				{
@@ -660,7 +660,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			//item must extend from existing item.
 			//clonamos ese item y overrideamos lo overrideable
-			//(nótese que la ID del item extendido ha de ser menor).
+			//(nï¿½tese que la ID del item extendido ha de ser menor).
 
 			//por eso los associated nodes de los items quedan guardados [por ref] en el World hasta que
 			//haya concluido la construccion del mundo
@@ -767,7 +767,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 
 		//PARA LOS BICHOS NO DAIOS,
-		//NO SE NECESITA PONER UN ROOM. SE INICIALIZA AL METER AL BICHO EN LA HABITACIÓN (AL CARGAR HABITACIÓN)
+		//NO SE NECESITA PONER UN ROOM. SE INICIALIZA AL METER AL BICHO EN LA HABITACIï¿½N (AL CARGAR HABITACIï¿½N)
 		//(ROOMS SE CARGAN MAS TARDE QUE MOBILES)
 
 		//A LOS BICHOS DAIO'S (DYNAMICALLY-ASSIGNED-ID OBJECTS) LOS PONEMOS EN LA HABITACION
@@ -779,7 +779,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 
 			mundo.getRoom(0); //si esto da NullPointerException es que las habitaciones 
-			//no están inicializadas.
+			//no estï¿½n inicializadas.
 		}
 		catch ( NullPointerException npe )
 		{
@@ -1042,7 +1042,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		if ( getID() < 10000000 )
 			idnumber += 20000000; //prefijo de bicho	
 
-		//corrección inventarios paralelos (copiada del otro, ¿dobla innecesariamente?)
+		//correcciï¿½n inventarios paralelos (copiada del otro, ï¿½dobla innecesariamente?)
 		if ( wieldingLimbs != null && wieldedWeapons == null )
 		{
 			wieldedWeapons = new Inventory(10000,10000,wieldingLimbs.size());
@@ -1308,8 +1308,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		return null;
 	}	
 
-	//nos devuelve el nombre más específico con el que nos podemos referir al objeto en
-	//un comando. Útil para zonas de referencia.
+	//nos devuelve el nombre mï¿½s especï¿½fico con el que nos podemos referir al objeto en
+	//un comando. ï¿½til para zonas de referencia.
 	public String getBestReferenceName ( boolean pluralOrSingular )
 	{
 		String theList;
@@ -1327,7 +1327,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	 *
 	 * @param commandArgs Los argumentos del comando.
 	 * @param pluralOrSingular 1 si plural.
-	 * @return 0 si no se da por aludido, 1 si sí, y con qué prioridad. (+ nº = - prioridad). La prioridad es el orden que ocupa el nombre que se corresponde con el comando dado en la lista de nombres.
+	 * @return 0 si no se da por aludido, 1 si sï¿½, y con quï¿½ prioridad. (+ nï¿½ = - prioridad). La prioridad es el orden que ocupa el nombre que se corresponde con el comando dado en la lista de nombres.
 	 */
 	public int matchesCommand ( String commandArgs , boolean pluralOrSingular )
 	{
@@ -1342,7 +1342,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		for ( int i = 1 ; i <= nToksArg ; i++ )
 		{
 			String currentToAnalyze = StringMethods.getToks( commandArgs , i , nToksArg , ' ' );
-			//"mirar la piedra pequeña" -> commandArgs="la piedra pequeña" -> vamos analizando "la piedra pequeña", "piedra pequeña", ...
+			//"mirar la piedra pequeï¿½a" -> commandArgs="la piedra pequeï¿½a" -> vamos analizando "la piedra pequeï¿½a", "piedra pequeï¿½a", ...
 			for ( int j = 1 ; j <= nToksList ; j++ )
 			{
 				if ( StringMethods.getTok( listaDeInteres , j , '$' ) .equalsIgnoreCase(currentToAnalyze) ) 
@@ -1496,14 +1496,14 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	//relationship-related functions
 
 	/*
-		Las relaciones con estado entre móviles y otros objetos (o tal vez, en el
-		futuro, entre entidades en general, si hiciera falta?) resultan útiles.
-		Gracias a ellas, un jugador puede, por ejemplo, "recordar" lo que había
-		en una habitación: al mirarla se establece un estado 1 (por ejemplo) en su
-		relación con esa entidad habitación, de tal modo que cuando vuelve a ella
+		Las relaciones con estado entre mï¿½viles y otros objetos (o tal vez, en el
+		futuro, entre entidades en general, si hiciera falta?) resultan ï¿½tiles.
+		Gracias a ellas, un jugador puede, por ejemplo, "recordar" lo que habï¿½a
+		en una habitaciï¿½n: al mirarla se establece un estado 1 (por ejemplo) en su
+		relaciï¿½n con esa entidad habitaciï¿½n, de tal modo que cuando vuelve a ella
 		ya no tiene que "buscar" algo sino que lo ve directamente, por ejemplo.
 
-		No para cambios objetivos en la habitación que vería cualquiera (como el
+		No para cambios objetivos en la habitaciï¿½n que verï¿½a cualquiera (como el
 		que se abra una puerta)
 	 */
 
@@ -1543,7 +1543,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	}
 
 	//pasar directamente como parametro el nodo del Mobile.
-	//esto es para carga DIFERIDA!! Son entitys, no sabemos si de las que se cargan antes o después.
+	//esto es para carga DIFERIDA!! Son entitys, no sabemos si de las que se cargan antes o despuï¿½s.
 	public void readRelationshipListFromXML ( World mundo , org.w3c.dom.Node n ) throws XMLtoWorldException
 	{
 
@@ -1602,7 +1602,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			if ( relationships.elementAt(k).equals(e) )
 			{
-				//lista de propiedades de la relación
+				//lista de propiedades de la relaciï¿½n
 				List propertiesList = (List) relationship_properties.elementAt(k);
 				for ( int i = 0 ; i < propertiesList.size() ; i++ )
 				{
@@ -1622,7 +1622,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			if ( relationships.elementAt(k).equals(e) )
 			{
-				//lista de propiedades de la relación
+				//lista de propiedades de la relaciï¿½n
 				List propertiesList = (List) relationship_properties.elementAt(k);
 				for ( int i = 0 ; i < propertiesList.size() ; i++ )
 				{
@@ -1790,7 +1790,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		for ( int i = 0 ; i < PSIanswers.size() ; i++ )
 		{
 
-			//Aquí es donde hay que añadir el soporte de Regular Expressions.
+			//Aquï¿½ es donde hay que aï¿½adir el soporte de Regular Expressions.
 			//En vez de isSubstringOf, matchesRegEx.
 
 			//keywords separadas con "$"
@@ -1823,9 +1823,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	}
 
 	/*
-	Una posible cosa a hacer con respecto a esta función es usar el "escribir" como caso particular
+	Una posible cosa a hacer con respecto a esta funciï¿½n es usar el "escribir" como caso particular
 	de ella en los Informadores, (if instanceof informador then escribir, p.ej.) y de este modo
-	cambiar las funciones informAction para que en realidad sólo hagan a los Mobiles ejecutar
+	cambiar las funciones informAction para que en realidad sï¿½lo hagan a los Mobiles ejecutar
 	reactToRoomText, y que cada uno lo interprete como pueda.
 	 */
 	public void reactToRoomText ( String text )
@@ -1860,7 +1860,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			Debug.println("Full-string: " + text);
 
 			Vector sepvector = new Vector();
-			sepvector.addElement(" te dice "); //nótese que este token se mira antes.
+			sepvector.addElement(" te dice "); //nï¿½tese que este token se mira antes.
 			sepvector.addElement(" dice ");
 			Vector analisis = StringMethods.tokenizeWithComplexSeparators ( text , sepvector , true );
 			String elSujeto = ((String)analisis.elementAt(0)).trim();
@@ -1908,7 +1908,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			{
 				resto = st.nextToken(); //esto puede ser el objeto.
 				//por ejemplo, en "juan dice "hola" a pedro"
-				//primera tokenización: elSujeto juan, resto "hola" a pedro
+				//primera tokenizaciï¿½n: elSujeto juan, resto "hola" a pedro
 				//segunda: loQueDice hola, resto a pedro
 
 				Debug.println("Resto's string: " + resto);
@@ -1954,7 +1954,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						+ "\n" + "speaker_name: " + elSujeto
 						+ "\n" + "sentence: " + loQueDice );
 
-				//onSay con parámetro objeto
+				//onSay con parï¿½metro objeto
 
 				ejecutado=false;
 				ejecutado = execCode ( "onSayTo" ,
@@ -1966,7 +1966,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 				if ( ! ejecutado )
 				{
-					//onSay sin parámetro objeto
+					//onSay sin parï¿½metro objeto
 
 					execCode ( "onSay" ,
 							new Object[]
@@ -2027,7 +2027,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		//si hay comillas, distinguimos lo de dentro de lo de fuera
 
 		StringTokenizer st = new StringTokenizer ( " " + args , "\"" );
-		//el espacio añadido a args en la línea enterior es para que el primer token esté siempre fuera
+		//el espacio aï¿½adido a args en la lï¿½nea enterior es para que el primer token estï¿½ siempre fuera
 		boolean tamosDentro = false;
 		String dentro="";
 		String fuera="";
@@ -2046,9 +2046,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		Debug.println("DENTRO:"+dentro);
 		Debug.println("FUERA:"+fuera);
 
-		if ( dentro.equalsIgnoreCase("") ) //no había comillas
+		if ( dentro.equalsIgnoreCase("") ) //no habï¿½a comillas
 		{
-			//interpretación en este caso:
+			//interpretaciï¿½n en este caso:
 			//decir hola a jorge -> hablas a todos
 			//decir hola -> hablas a todos
 			//ergo, no tenemos que buscar bichos (de momento)
@@ -2057,9 +2057,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 		}
 
-		else //había comillas
+		else //habï¿½a comillas
 		{
-			//interpretación:
+			//interpretaciï¿½n:
 			//decir "hola" -> a todos
 			//decir "hola" a jorge, decir a jorge "hola" -> solo a jorge
 			//ergo, tenemos que buscar en fuera a ver si hay un bicho y decirle dentro.
@@ -2105,7 +2105,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			else
 			{
 				write( io.getColorCode("information") + 
-						/*"Tienes "*/  mundo.getMessages().getMessage("you.have.items","$inventory",str,new Object[]{this})
+						/*"Tienes "*/  mundo.getMessages().getMessage("you.have.items","$inventory",str.substring(0,str.length()-1),new Object[]{this})
 						//+ str 
 						+ io.getColorCode("reset") );
 
@@ -2184,7 +2184,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	public void showInventory()
 	{
 
-		//ejecutar descripción (pesa poquito, etc. etc.)
+		//ejecutar descripciï¿½n (pesa poquito, etc. etc.)
 		boolean execced = false;
 		try
 		{
@@ -2217,9 +2217,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	public void write ( String s )
 	{
 		//Escribir no hace nada para los bichos que no sean Informadores.
-		//Los que sí lo sean ya lo overrridearán.
-		//Lo ponemos como método de conveniencia, para poder llamarlo, por ejemplo,
-		//cuando se mueva cualquier bicho; pero que sólo el jugador informe de ello.
+		//Los que sï¿½ lo sean ya lo overrridearï¿½n.
+		//Lo ponemos como mï¿½todo de conveniencia, para poder llamarlo, por ejemplo,
+		//cuando se mueva cualquier bicho; pero que sï¿½lo el jugador informe de ello.
 		;
 	}
 
@@ -2312,7 +2312,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	public boolean makeRandomValidMove ( )
 	{
 		int nsal = habitacionActual.getRandomValidExitAsNumber();
-		if ( nsal < 0 ) return false; //no hay salida válida.
+		if ( nsal < 0 ) return false; //no hay salida vï¿½lida.
 		if ( nsal < 10 )
 		{
 			//Debug.println ( "The movement eez true " + nsal );
@@ -2326,7 +2326,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	}
 
 
-	//ir a la habitación dada contigua a la actual
+	//ir a la habitaciï¿½n dada contigua a la actual
 	public boolean goTo ( int roomid )
 	{
 
@@ -2380,9 +2380,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 			//si no es un Informador, esto no hace nada.
 			if ( p.isStandard() ) write( io.getColorCode("denial") + 
-					mundo.getMessages().getMessage("go.noexit",new Object[]{this,p})  //"No parece haber salida en esa dirección.\n" 
+					mundo.getMessages().getMessage("go.noexit",new Object[]{this,p})  //"No parece haber salida en esa direcciï¿½n.\n" 
 					+ io.getColorCode("reset") );
-			else write( io.getColorCode("denial") + "¿Cómo? ¿Ir a dónde?\n" + io.getColorCode("reset") );
+			else write( io.getColorCode("denial") + "ï¿½Cï¿½mo? ï¿½Ir a dï¿½nde?\n" + io.getColorCode("reset") );
 
 			return false;	
 		}	
@@ -2407,7 +2407,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			if ( !endfound )
 			{
 
-				//sinónimo del anterior
+				//sinï¿½nimo del anterior
 				try
 				{	
 					endfound = habitacionActual.execCode("beforeExit" , new Object[] {this,p} );
@@ -2467,13 +2467,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 					Debug.println("Closed path");
 
-					return false; //se devuelve fracaso (el jugador no sale); la descripción la dará la salida en función del estado cerrado.
+					return false; //se devuelve fracaso (el jugador no sale); la descripciï¿½n la darï¿½ la salida en funciï¿½n del estado cerrado.
 				}
 
 			}
 			else
 			{
-				return true; //el código se encargó de todo.
+				return true; //el cï¿½digo se encargï¿½ de todo.
 			}
 
 
@@ -2522,7 +2522,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					for ( int i = 0 ; i < getEnemies().size() ; i++ )
 					{
 						Mobile m = getEnemies().elementAt(i);	
-						if ( habitacionActual.hasMobile ( m ) && m.getState() == MOVING ) //si el enemigo esta alcanzable y se está yendo
+						if ( habitacionActual.hasMobile ( m ) && m.getState() == MOVING ) //si el enemigo esta alcanzable y se estï¿½ yendo
 						{
 							int destRoomID = m.getTarget();
 
@@ -2658,8 +2658,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					{
 						//this stuns current.
 						current.setNewState(Mobile.SURPRISE_RECOVER,10);
-						current.write("Ibas a dirigirte hacia " + current.exitname + "; pero te ves sorprendido por la aparición de " + this.constructName2OneItem(current) + ", que te bloquea el paso.\n");
-						this.write("Has sorprendido a " + current.constructName2OneItem(this) + ", que parecía querer dirigirse hacia " + current.exitname + ".\n");
+						current.write("Ibas a dirigirte hacia " + current.exitname + "; pero te ves sorprendido por la apariciï¿½n de " + this.constructName2OneItem(current) + ", que te bloquea el paso.\n");
+						this.write("Has sorprendido a " + current.constructName2OneItem(this) + ", que parecï¿½a querer dirigirse hacia " + current.exitname + ".\n");
 					}
 				}
 			}
@@ -2682,7 +2682,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				writeError(ExceptionPrinter.getExceptionReport(bshte));
 			}
 
-			//-> si hay Mobiles, pueden reaccionar también a que entres (onEnterRoom de Mobile)
+			//-> si hay Mobiles, pueden reaccionar tambiï¿½n a que entres (onEnterRoom de Mobile)
 			MobileList mlist = habitacionActual.getMobiles(); //note that this includes itself!
 			if ( mlist != null )
 			{
@@ -2801,9 +2801,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 		if ( objetivo == null )
 		{
-			Debug.println("Oops... El bicho atacado no está.");
+			Debug.println("Oops... El bicho atacado no estï¿½.");
 
-			habitacionActual.reportAction(this, null, "$1 interrumpe su ataque ante la ausencia de su contrincante.\n", "$1 vacila ante tu ausencia.\n", "Te disponías a atacar; pero vacilas ante la ausencia de tu enemigo.\n", true);
+			habitacionActual.reportAction(this, null, "$1 interrumpe su ataque ante la ausencia de su contrincante.\n", "$1 vacila ante tu ausencia.\n", "Te disponï¿½as a atacar; pero vacilas ante la ausencia de tu enemigo.\n", true);
 
 			setNewState ( IDLE , 0 );
 
@@ -2823,7 +2823,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				//attack successful
 
 
-				//solo hay un caso especial en que no se hace daño: choque de armas en el aire
+				//solo hay un caso especial en que no se hace daï¿½o: choque de armas en el aire
 				if ( objetivo.getState() == ATTACKING && objetivo.getPropertyTimeLeft("state") < 3 )
 				{
 
@@ -2854,7 +2854,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 				else
 				{
-					//se hace daño
+					//se hace daï¿½o
 
 					Item limbToHit = objetivo.getRandomLimbToHit(); //nullable
 
@@ -2926,17 +2926,17 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							if ( numeric_damage )
 							{
 								habitacionActual.reportAction ( this , objetivo ,
-										"$1 acierta a $2 con " + getCurrentWeapon().constructName2OneItem() + " infligiéndole " + danyo + " puntos de daño...\n" ,
-										"$1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligiéndote " + danyo + " puntos de daño...\n" ,
-										"Aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + " infligiéndole " + danyo + " puntos de daño...\n" ,
+										"$1 acierta a $2 con " + getCurrentWeapon().constructName2OneItem() + " infligiï¿½ndole " + danyo + " puntos de daï¿½o...\n" ,
+										"$1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligiï¿½ndote " + danyo + " puntos de daï¿½o...\n" ,
+										"Aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + " infligiï¿½ndole " + danyo + " puntos de daï¿½o...\n" ,
 										true );
 							}
 							else
 							{
 								habitacionActual.reportAction ( this , objetivo ,
-										"$1 acierta a $2 con " + getCurrentWeapon().constructName2OneItem() + " infligiéndole " + objetivo.estimateDamage(danyo) + "...\n" ,
-										"$1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligiéndote " + objetivo.estimateDamage(danyo) + "...\n" ,
-										"Aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + " infligiéndole " + objetivo.estimateDamage(danyo) + "...\n" ,
+										"$1 acierta a $2 con " + getCurrentWeapon().constructName2OneItem() + " infligiï¿½ndole " + objetivo.estimateDamage(danyo) + "...\n" ,
+										"$1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligiï¿½ndote " + objetivo.estimateDamage(danyo) + "...\n" ,
+										"Aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + " infligiï¿½ndole " + objetivo.estimateDamage(danyo) + "...\n" ,
 										true );
 
 								habitacionActual.reportActionAuto ( objetivo , null , null , "$1 " + objetivo.estimateStatus() + ".\n" , true );
@@ -2966,9 +2966,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						}
 						if ( !ejec )
 							habitacionActual.reportAction ( this , objetivo ,
-									"$1 acierta a $2 con " + getCurrentWeapon().constructName2OneItem() + " pero no le hace daño...\n" ,
-									"$1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " pero no te hace daño...\n" ,
-									"Aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + " pero no le haces daño...\n" ,
+									"$1 acierta a $2 con " + getCurrentWeapon().constructName2OneItem() + " pero no le hace daï¿½o...\n" ,
+									"$1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " pero no te hace daï¿½o...\n" ,
+									"Aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + " pero no le haces daï¿½o...\n" ,
 									true );
 
 					}
@@ -3014,8 +3014,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					//darle la iniciativa
 
 					//o bien cambiar esto por, en cambio de estado de blocking
-					//a ready to block de los mobiles, si ya no les está atacando
-					//el objetivo, pasar a idle (más realista)
+					//a ready to block de los mobiles, si ya no les estï¿½ atacando
+					//el objetivo, pasar a idle (mï¿½s realista)
 
 					objetivo.setNewState ( IDLE , 1 ); //objetivo has a chance to attack right now
 
@@ -3089,7 +3089,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 					int danyo = getCurrentWeapon().dealDamageDefended ( this , objetivo , false , limbHit );
 
-					//informar de que bloqueas con éxito
+					//informar de que bloqueas con ï¿½xito
 					boolean ejec = false;
 					try
 					{
@@ -3109,9 +3109,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							if ( numeric_damage )
 							{
 								habitacionActual.reportAction ( this , objetivo ,
-										"$2 se defiende de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem() + " recibiendo " + danyo + " puntos de daño...\n" ,
-										"Te defiendes de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem(objetivo) + " recibiendo " + danyo + " puntos de daño...\n" ,
-										"$2 se defiende con " + objetivo.getCurrentWeapon().constructName2OneItem(this) + " recibiendo " + danyo + " puntos de daño...\n" ,
+										"$2 se defiende de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem() + " recibiendo " + danyo + " puntos de daï¿½o...\n" ,
+										"Te defiendes de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem(objetivo) + " recibiendo " + danyo + " puntos de daï¿½o...\n" ,
+										"$2 se defiende con " + objetivo.getCurrentWeapon().constructName2OneItem(this) + " recibiendo " + danyo + " puntos de daï¿½o...\n" ,
 										true );
 							}
 							else
@@ -3154,7 +3154,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					if ( danyo > 0 )
 					{
 
-						//informar de que bloqueas sin éxito recibiendo daño
+						//informar de que bloqueas sin ï¿½xito recibiendo daï¿½o
 						boolean ejec = false;
 						try
 						{
@@ -3172,17 +3172,17 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							if ( numeric_damage )
 							{
 								habitacionActual.reportAction ( this , objetivo ,
-										"$2 no consigue parar el ataque de $1, que le acierta con " + getCurrentWeapon().constructName2OneItem() + " infligiéndole " + danyo + " puntos de daño...\n" ,
-										"No consigues parar el ataque de $1, que te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligiéndote " + danyo + " puntos de daño...\n" ,
-										"$2 no consigue parar tu ataque, le aciertas con " + getCurrentWeapon().constructName2OneItem(this) + " infligiéndole " + danyo + " puntos de daño...\n" ,
+										"$2 no consigue parar el ataque de $1, que le acierta con " + getCurrentWeapon().constructName2OneItem() + " infligiï¿½ndole " + danyo + " puntos de daï¿½o...\n" ,
+										"No consigues parar el ataque de $1, que te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligiï¿½ndote " + danyo + " puntos de daï¿½o...\n" ,
+										"$2 no consigue parar tu ataque, le aciertas con " + getCurrentWeapon().constructName2OneItem(this) + " infligiï¿½ndole " + danyo + " puntos de daï¿½o...\n" ,
 										true );
 							}
 							else
 							{
 								habitacionActual.reportAction ( this , objetivo ,
-										"$2 no consigue parar el ataque de $1, que le acierta con " + getCurrentWeapon().constructName2OneItem() + " infligiéndole " + objetivo.estimateDamage(danyo) + "...\n" ,
-										"No consigues parar el ataque de $1, que te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligiéndote " + objetivo.estimateDamage(danyo) + "...\n" ,
-										"$2 no consigue parar tu ataque, le aciertas con " + getCurrentWeapon().constructName2OneItem(this) + " infligiéndole " + objetivo.estimateDamage(danyo) + "...\n" ,
+										"$2 no consigue parar el ataque de $1, que le acierta con " + getCurrentWeapon().constructName2OneItem() + " infligiï¿½ndole " + objetivo.estimateDamage(danyo) + "...\n" ,
+										"No consigues parar el ataque de $1, que te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligiï¿½ndote " + objetivo.estimateDamage(danyo) + "...\n" ,
+										"$2 no consigue parar tu ataque, le aciertas con " + getCurrentWeapon().constructName2OneItem(this) + " infligiï¿½ndole " + objetivo.estimateDamage(danyo) + "...\n" ,
 										true );
 
 								habitacionActual.reportActionAuto ( objetivo , null , null , "$1 " + objetivo.estimateStatus() + ".\n" , true );
@@ -3194,7 +3194,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					else
 					{
 
-						//informar de que bloqueas sin éxito pero no recibes daño
+						//informar de que bloqueas sin ï¿½xito pero no recibes daï¿½o
 						boolean ejec = false;
 						try
 						{
@@ -3210,9 +3210,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						if ( !ejec )
 						{
 							habitacionActual.reportAction ( this , objetivo ,
-									"$2 no consigue parar el ataque de $1, que le acierta con " + getCurrentWeapon().constructName2OneItem() + " pero no le hace daño...\n" ,
-									"No consigues parar el ataque de $1, que te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " pero no te hace daño...\n" ,
-									"$2 no consigue parar tu ataque, le aciertas con " + getCurrentWeapon().constructName2OneItem(this) + " pero no le haces daño...\n" ,
+									"$2 no consigue parar el ataque de $1, que le acierta con " + getCurrentWeapon().constructName2OneItem() + " pero no le hace daï¿½o...\n" ,
+									"No consigues parar el ataque de $1, que te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " pero no te hace daï¿½o...\n" ,
+									"$2 no consigue parar tu ataque, le aciertas con " + getCurrentWeapon().constructName2OneItem(this) + " pero no le haces daï¿½o...\n" ,
 									true );
 						}
 
@@ -3257,8 +3257,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				//darle la iniciativa
 
 				//o bien cambiar esto por, en cambio de estado de
-				//ready to block de los mobiles, si ya no les está atacando
-				//el objetivo, pasar a idle (más realista)
+				//ready to block de los mobiles, si ya no les estï¿½ atacando
+				//el objetivo, pasar a idle (mï¿½s realista)
 
 				objetivo.setNewState ( IDLE , 1 ); //objetivo has a chance to attack right now
 
@@ -3298,7 +3298,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					if ( !ejec )
 					{
 						habitacionActual.reportAction ( this , objetivo ,
-								"$2 esquiva hábilmente el ataque de $1.\n",
+								"$2 esquiva hï¿½bilmente el ataque de $1.\n",
 								"Esquivas el ataque de $1.\n" ,
 								"$2 esquiva tu ataque.\n" ,
 								true );
@@ -3341,17 +3341,17 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							if ( numeric_damage )
 							{
 								habitacionActual.reportAction ( this , objetivo ,
-										"$2 intenta esquivar el golpe de $1; pero no lo consigue, $1 le acierta con " + getCurrentWeapon().constructName2OneItem() + " infligiéndole " + danyo + " puntos de daño...\n" ,
-										"Tu intento de esquivar falla, y $1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligiéndote " + danyo + " puntos de daño...\n" ,
-										"A pesar de su intento de esquivar el ataque, aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + ", infligiéndole " + danyo + " puntos de daño...\n" ,
+										"$2 intenta esquivar el golpe de $1; pero no lo consigue, $1 le acierta con " + getCurrentWeapon().constructName2OneItem() + " infligiï¿½ndole " + danyo + " puntos de daï¿½o...\n" ,
+										"Tu intento de esquivar falla, y $1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligiï¿½ndote " + danyo + " puntos de daï¿½o...\n" ,
+										"A pesar de su intento de esquivar el ataque, aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + ", infligiï¿½ndole " + danyo + " puntos de daï¿½o...\n" ,
 										true );
 							}		
 							else
 							{
 								habitacionActual.reportAction ( this , objetivo ,
-										"$2 intenta esquivar el golpe de $1; pero no lo consigue, $1 le acierta con " + getCurrentWeapon().constructName2OneItem() + " infligiéndole " + objetivo.estimateDamage(danyo) + ".\n" ,
-										"Tu intento de esquivar falla, y $1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligiéndote " + objetivo.estimateDamage(danyo) + ".\n"  ,
-										"A pesar de su intento de esquivar el ataque, aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + ", infligiéndole " + objetivo.estimateDamage(danyo) + ".\n"  ,
+										"$2 intenta esquivar el golpe de $1; pero no lo consigue, $1 le acierta con " + getCurrentWeapon().constructName2OneItem() + " infligiï¿½ndole " + objetivo.estimateDamage(danyo) + ".\n" ,
+										"Tu intento de esquivar falla, y $1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligiï¿½ndote " + objetivo.estimateDamage(danyo) + ".\n"  ,
+										"A pesar de su intento de esquivar el ataque, aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + ", infligiï¿½ndole " + objetivo.estimateDamage(danyo) + ".\n"  ,
 										true );
 
 								habitacionActual.reportActionAuto ( objetivo , null , null , "$1 " + objetivo.estimateStatus() + ".\n" , true );
@@ -3379,9 +3379,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						if ( !ejec )
 						{
 							habitacionActual.reportAction ( this , objetivo ,
-									"$2 intenta esquivar el golpe de $1; pero no lo consigue, $1 le acierta con " + getCurrentWeapon().constructName2OneItem() + " pero no le hace daño.\n" ,
-									"Tu intento de esquivar falla, y $1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " pero no te hace daño.\n" ,
-									"A pesar de su intento de esquivar el ataque, aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + "; pero no le haces daño.\n" ,
+									"$2 intenta esquivar el golpe de $1; pero no lo consigue, $1 le acierta con " + getCurrentWeapon().constructName2OneItem() + " pero no le hace daï¿½o.\n" ,
+									"Tu intento de esquivar falla, y $1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " pero no te hace daï¿½o.\n" ,
+									"A pesar de su intento de esquivar el ataque, aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + "; pero no le haces daï¿½o.\n" ,
 									true );
 						}		
 					}
@@ -3426,7 +3426,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		combatRefs.addMobile(nuevo);
 		this.setRelationshipProperty(nuevo,"enemy",true);
 
-		//ser enemigo es relación simétrica
+		//ser enemigo es relaciï¿½n simï¿½trica
 		if ( !nuevo.hasEnemy ( this ) )
 			nuevo.addEnemy(this);
 	}
@@ -3580,8 +3580,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	}
 
 	/*
-	Intenta hacer a este bicho damage daños del tipo damtype: la cantidad de daño que haga
-	en realidad se verá reducida por las resistencias, armaduras, etc. y es la cantidad que
+	Intenta hacer a este bicho damage daï¿½os del tipo damtype: la cantidad de daï¿½o que haga
+	en realidad se verï¿½ reducida por las resistencias, armaduras, etc. y es la cantidad que
 	se devuelve. [el bloqueo, sin embargo, se resuelve antes]
 	 */
 	public int tryToDealDamage ( int damtype , int damage , boolean simulated /* , Item limb */ )
@@ -3605,7 +3605,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		return tryToDealDamage ( damList , simulated , limbToHit );
 	}
 
-	//después de bloquear; pero antes de armaduras (éstas se resuelven aquí)
+	//despuï¿½s de bloquear; pero antes de armaduras (ï¿½stas se resuelven aquï¿½)
 	public int tryToDealDamage ( List damList , boolean simulated , Item limb )
 	{
 
@@ -3654,7 +3654,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			if ( damDealt == 0 )
 			{
 
-				//informar de que armadura absorbió impacto
+				//informar de que armadura absorbiï¿½ impacto
 
 				habitacionActual.reportAction ( this , null , armadura.constructName2OneItem() + " de $1 absorbe totalmente el impacto.\n" , null, "Tu armadura absorbe totalmente el impacto.\n"  , true );
 
@@ -3699,7 +3699,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	public void die()
 	{
 
-		Debug.println( this + " está más que muerto." );
+		Debug.println( this + " estï¿½ mï¿½s que muerto." );
 
 
 		boolean ejecutado = false;
@@ -3764,7 +3764,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	{
 		if ( inventory == null ) return null;
 
-		int max = -1; //maximo daño encontrado
+		int max = -1; //maximo daï¿½o encontrado
 
 		Weapon resultado = null;
 
@@ -3890,7 +3890,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	//o bien devuelve null si no hay nada que atacar.
 	public Object[] bestAttackTargetAndWeapon ( int numberOfSimulations )
 	{
-		//hace las archiconocidas y famosísimas simulaciones que caracterizan la IA del AGE.
+		//hace las archiconocidas y famosï¿½simas simulaciones que caracterizan la IA del AGE.
 
 		Inventory usableWeapons = getUsableWeapons();
 
@@ -3898,7 +3898,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 		if ( getEnemies() == null || usableWeapons == null ) return null;
 
-		int max = -1; //maximo daño encontrado hasta el momento
+		int max = -1; //maximo daï¿½o encontrado hasta el momento
 		Object[] resultado = new Object[2];
 
 		for ( int i = 0 ; i < getEnemies().size() ; i++ )
@@ -3917,7 +3917,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 						//tenemos una combinacion: arma w , enemigo m.
 
-						//calcular media del daño producido en n simulaciones
+						//calcular media del daï¿½o producido en n simulaciones
 						int acum = 0;
 						for ( int k = 0 ; k < numberOfSimulations ; k++ )
 						{
@@ -4111,7 +4111,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		}
 	}
 
-	//devuelve la lista de todos los enemigos que nos estén atacando.
+	//devuelve la lista de todos los enemigos que nos estï¿½n atacando.
 	//(si no hay ninguno, la lista vacia)
 	public List getAttackingEnemies ( )
 	{
@@ -4131,9 +4131,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		}
 	}
 
-	//freeLimbsNeeded == true -> sólo blandir en miembro libre
-	//freeLimbsNeeded == false -> si los miembros están ocupados, desblandir las armas
-	//blandidas en ellos para poder blandir ésta
+	//freeLimbsNeeded == true -> sï¿½lo blandir en miembro libre
+	//freeLimbsNeeded == false -> si los miembros estï¿½n ocupados, desblandir las armas
+	//blandidas en ellos para poder blandir ï¿½sta
 	//return: true if successfully welded
 
 	//OBSOLETE
@@ -4329,7 +4329,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		return 0.2; //stub
 	}
 
-	//Be careful with negatives. Not treated. Candidato a explicación de posteriores fallos chungos?
+	//Be careful with negatives. Not treated. Candidato a explicaciï¿½n de posteriores fallos chungos?
 	//(la gaussiana suma negativos)
 
 	public int generateAttackTime( Weapon w )
@@ -4384,7 +4384,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	}
 	public int generateRecoverFromUnblockedHitTime()
 	{
-		//varía mucho
+		//varï¿½a mucho
 		//later, recover usage?
 		double basicTime = 30.0;
 		double variedTime = Utility.applyGaussianVariation ( basicTime , getRandom() , 2.0/3.0 );
@@ -4577,7 +4577,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			suElemento.appendChild(extraDes);
 		}
 
-		//características (traits): not at the moment
+		//caracterï¿½sticas (traits): not at the moment
 		//yeW! let's doo-eet!
 
 		if ( caracteristicas != null )
@@ -4743,7 +4743,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 
 
-	//armas blandidas y armas naturales que no estén blandiendo nada.
+	//armas blandidas y armas naturales que no estï¿½n blandiendo nada.
 	public Inventory getUsableWeapons()
 	{
 
@@ -4806,7 +4806,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	}
 
 
-	//devuelve las armas naturales (puños, etc... i.e. miembros que atacan) del bicho.
+	//devuelve las armas naturales (puï¿½os, etc... i.e. miembros que atacan) del bicho.
 	public Inventory getNaturalWeapons()
 	{
 		Inventory miembros = getFlattenedPartsInventory();
@@ -4888,7 +4888,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 
 	/*
-	 * freeLimbsNeeded = true: si no hay miembros libres, fracasa la función (dev. false)
+	 * freeLimbsNeeded = true: si no hay miembros libres, fracasa la funciï¿½n (dev. false)
 	 * freeLimbsNeeded = false: si no hay miembros libres, nos quitamos lo que llevemos en ellos para vestirnos
 	 */
 
@@ -4899,7 +4899,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			if ( it instanceof Weapon )
 			{
-				write( io.getColorCode("denial") + "¿Vestir " + it.constructName2OneItem(this) + "? Parece más adecuado blandir" + ((it.getGender())?"lo":"la") + ".\n" );
+				write( io.getColorCode("denial") + "ï¿½Vestir " + it.constructName2OneItem(this) + "? Parece mï¿½s adecuado blandir" + ((it.getGender())?"lo":"la") + ".\n" );
 			}
 			else
 			{
@@ -4910,7 +4910,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 		Inventory ourLimbs = getFlattenedPartsInventory();
 
-		if ( ourLimbs.size() < 1 ) write ( io.getColorCode("error") + "No puedes ponerte ropa si no tienes ningún miembro." );
+		if ( ourLimbs.size() < 1 ) write ( io.getColorCode("error") + "No puedes ponerte ropa si no tienes ningï¿½n miembro." );
 
 		//ver si ya estamos blandiendo el item
 		for ( int i = 0 ; i < ourLimbs.size() ; i++ )
@@ -4985,7 +4985,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 				}
 
-				else //Usual for Players. Fracasa la función.
+				else //Usual for Players. Fracasa la funciï¿½n.
 				{
 
 					for ( int n = 0 ; n < matchingLimbs.size() ; n++ )
@@ -5013,8 +5013,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 		}
 
-		//{si llegamos hasta aquí, se dan todas las condiciones para vestir el item.}
-		//{sólo tenemos que marcar el item como vestido y poner la relación "wears" con el item en todos los miembros de usedLimbs.}
+		//{si llegamos hasta aquï¿½, se dan todas las condiciones para vestir el item.}
+		//{sï¿½lo tenemos que marcar el item como vestido y poner la relaciï¿½n "wears" con el item en todos los miembros de usedLimbs.}
 
 		String toOutput = "";
 
@@ -5059,7 +5059,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 
 	/*
-	 * freeLimbsNeeded = true: si no hay miembros libres, fracasa la función (dev. false)
+	 * freeLimbsNeeded = true: si no hay miembros libres, fracasa la funciï¿½n (dev. false)
 	 * freeLimbsNeeded = false: si no hay miembros libres, nos quitamos lo que llevemos en ellos para vestirnos
 	 */
 
@@ -5070,7 +5070,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			if ( it instanceof Wearable )
 			{
-				write( io.getColorCode("denial") + "¿Blandir " + it.constructName2OneItem(this) + "? Parece más adecuado vestir" + ((it.getGender())?"lo":"la") + ".\n" );
+				write( io.getColorCode("denial") + "ï¿½Blandir " + it.constructName2OneItem(this) + "? Parece mï¿½s adecuado vestir" + ((it.getGender())?"lo":"la") + ".\n" );
 			}
 			else
 			{
@@ -5088,7 +5088,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			Item limb = ourLimbs.elementAt(i);
 			if ( limb.getRelationshipPropertyValueAsBoolean ( it , "wields" ) )
 			{
-				//write ( io.getColorCode("denial") + "Ya estás blandiendo " + it.constructName2OneItem(this) + ".\n" );
+				//write ( io.getColorCode("denial") + "Ya estï¿½s blandiendo " + it.constructName2OneItem(this) + ".\n" );
 				writeDenial(mundo.getMessages().getMessage("wield.already.wielded","$item",it.constructName2OneItem(this),new Object[]{this,it}));
 				return false;
 			}		
@@ -5155,7 +5155,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 				}
 
-				else //Usual for Players. Fracasa la función.
+				else //Usual for Players. Fracasa la funciï¿½n.
 				{
 
 					for ( int n = 0 ; n < matchingLimbs.size() ; n++ )
@@ -5165,7 +5165,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						if ( vestidos.size() > 0 )
 						{
 							Item vestido = ( Item ) vestidos.get(0);
-							write( io.getColorCode("information") + "Estás blandiendo " + vestido.constructName2OneItem(this)  + " en " + current.constructName2OneItem(this) + "." + io.getColorCode("reset")  + "\n"  );			
+							write( io.getColorCode("information") + "Estï¿½s blandiendo " + vestido.constructName2OneItem(this)  + " en " + current.constructName2OneItem(this) + "." + io.getColorCode("reset")  + "\n"  );			
 						}
 						else
 						{
@@ -5173,7 +5173,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						}
 
 					}
-					write( io.getColorCode("denial") + "Tienes que guardar algún arma para poder blandir " + it.constructName2OneItem(this) + "." + io.getColorCode("reset")  + "\n"  );
+					write( io.getColorCode("denial") + "Tienes que guardar algï¿½n arma para poder blandir " + it.constructName2OneItem(this) + "." + io.getColorCode("reset")  + "\n"  );
 					return false;
 
 				}
@@ -5182,8 +5182,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 		}
 
-		//{si llegamos hasta aquí, se dan todas las condiciones para blandir el item.}
-		//{sólo tenemos que marcar el item como blandido y poner la relación "wields" con el item en todos los miembros de usedLimbs.}
+		//{si llegamos hasta aquï¿½, se dan todas las condiciones para blandir el item.}
+		//{sï¿½lo tenemos que marcar el item como blandido y poner la relaciï¿½n "wields" con el item en todos los miembros de usedLimbs.}
 
 		String toOutput = "";
 
@@ -5514,7 +5514,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	}
 
 
-	//devuelve lo grave que es el daño
+	//devuelve lo grave que es el daï¿½o
 	public String estimateDamage ( int damAmt )
 	{
 
@@ -5523,29 +5523,29 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		String result;
 
 		if ( percent < 5 )
-			result = "muy ligeros daños";
+			result = "muy ligeros daï¿½os";
 		else if ( percent < 10 )
-			result = "ligeros daños";	
+			result = "ligeros daï¿½os";	
 		else if ( percent < 18 )
-			result = "algún daño";	
+			result = "algï¿½n daï¿½o";	
 		else if ( percent < 25 )
-			result = "un daño significativo";
+			result = "un daï¿½o significativo";
 		else if ( percent < 33 )
-			result = "daños moderados";
+			result = "daï¿½os moderados";
 		else if ( percent < 40 )
-			result = "bastante daño";
+			result = "bastante daï¿½o";
 		else if ( percent < 50 )
-			result = "severos daños";
+			result = "severos daï¿½os";
 		else if ( percent < 60 )
-			result = "mucho daño";
+			result = "mucho daï¿½o";
 		else if ( percent < 70 )
-			result = "gran daño";
+			result = "gran daï¿½o";
 		else if ( percent < 80 )
-			result = "enorme daño";
+			result = "enorme daï¿½o";
 		else if ( percent < 90 )
 			result = "terribles heridas";	
 		else
-			result = "daño mortal";	
+			result = "daï¿½o mortal";	
 
 		return result;
 
@@ -5554,21 +5554,21 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	public String estimateStatus (  )
 	{
 
-		//percent = % de daño recibido
+		//percent = % de daï¿½o recibido
 		double percent = (double)(maxhp-hp) / (double)maxhp * 100.0;
 
 		String result;
 
 		if ( percent <= 0.1 )
-			result = "está intacto";
+			result = "estï¿½ intacto";
 		else if ( percent < 5 )
-			result = "tiene algún rasguño";
+			result = "tiene algï¿½n rasguï¿½o";
 		else if ( percent < 10 )
 			result = "tiene ligeras heridas";	
 		else if ( percent < 18 )
 			result = "tiene heridas poco graves";	
 		else if ( percent < 25 )
-			result = "tiene heridas de cierta consideración";
+			result = "tiene heridas de cierta consideraciï¿½n";
 		else if ( percent < 33 )
 			result = "tiene heridas importantes";
 		else if ( percent < 40 )
@@ -5576,17 +5576,17 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		else if ( percent < 50 )
 			result = "tiene heridas preocupantes";
 		else if ( percent < 60 )
-			result = "está gravemente herido";
+			result = "estï¿½ gravemente herido";
 		else if ( percent < 70 )
-			result = "está muy gravemente herido";
+			result = "estï¿½ muy gravemente herido";
 		else if ( percent < 80 )
-			result = "está críticamente herido";
+			result = "estï¿½ crï¿½ticamente herido";
 		else if ( percent < 90 )
-			result = "está en las últimas";	
+			result = "estï¿½ en las ï¿½ltimas";	
 		else if ( percent < 100 )
-			result = "está a un paso de la tumba";	
+			result = "estï¿½ a un paso de la tumba";	
 		else
-			result = "está mortalmente herido";
+			result = "estï¿½ mortalmente herido";
 
 		return result;
 
@@ -5633,7 +5633,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		if ( manaCost > mp )
 		{
 			Debug.println("Mana Cost Flubbed!");
-			write("No tienes suficiente maná para ejecutar ese hechizo.\n");
+			write("No tienes suficiente manï¿½ para ejecutar ese hechizo.\n");
 			return;
 		}  
 		else
@@ -5773,12 +5773,12 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	{
 		if ( !ourContainer.isContainer() )
 		{
-			write ( io.getColorCode("denial") + "No parece muy útil poner cosas en " + ourContainer.constructName2True(1,this) + "." + io.getColorCode("reset") + "\n" );
+			write ( io.getColorCode("denial") + "No parece muy ï¿½til poner cosas en " + ourContainer.constructName2True(1,this) + "." + io.getColorCode("reset") + "\n" );
 			return false;
 		}
 		else if ( ourContainer.isCloseable() && !ourContainer.isOpen() )
 		{
-			write ( io.getColorCode("denial")  + ourContainer.constructName2True(1,this) + " está cerrad" + ((ourContainer.getGender())?"o.":"a.") + io.getColorCode("reset") + "\n"  );
+			write ( io.getColorCode("denial")  + ourContainer.constructName2True(1,this) + " estï¿½ cerrad" + ((ourContainer.getGender())?"o.":"a.") + io.getColorCode("reset") + "\n"  );
 			return false;
 		}
 		return true;
@@ -5881,7 +5881,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			inv.removeItem ( ourItem );
 			if ( inv == habitacionActual.getInventory() ) ourItem.removeRoomReference(habitacionActual);
 
-			//ejecutar descripción (pesa poquito, etc. etc.)
+			//ejecutar descripciï¿½n (pesa poquito, etc. etc.)
 			boolean execced = false;
 			try
 			{
@@ -5895,7 +5895,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 			if ( !execced )
 			{
-				//afterGet por defecto: descripción del ítem.
+				//afterGet por defecto: descripciï¿½n del ï¿½tem.
 				writeDescription(ourItem.getDescription(this) + "\n");
 			}
 
@@ -5924,26 +5924,26 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					}
 					else if ( pesoApr_cuartos == 2 )
 					{
-						pesoDescription = "Pesará medio kilo.";
+						pesoDescription = "Pesarï¿½ medio kilo.";
 					}
 					else if ( pesoApr_cuartos == 1 )
 					{
-						pesoDescription = "Pesará un cuarto kilo, más o menos.";
+						pesoDescription = "Pesarï¿½ un cuarto kilo, mï¿½s o menos.";
 					}
 					else if ( pesoApr_cuartos == 3 )
 					{
-						pesoDescription = "Pesará cerca de un kilo.";
+						pesoDescription = "Pesarï¿½ cerca de un kilo.";
 					}
 				}
 				else
 				{
 					if ( pesoApr_cuartos == 0 || pesoApr_cuartos == 1 )
 					{
-						pesoDescription = "Pesará aproximadamente " + pesoApr_kilos + " kilo" + (pesoApr_kilos>1?"s":"") + ".";
+						pesoDescription = "Pesarï¿½ aproximadamente " + pesoApr_kilos + " kilo" + (pesoApr_kilos>1?"s":"") + ".";
 					}
 					else if ( pesoApr_cuartos == 2 || pesoApr_cuartos == 3 )
 					{
-						pesoDescription = "Debe de pesar algo más de " + pesoApr_kilos + " kilo" + (pesoApr_kilos>1?"s":"") + ".";
+						pesoDescription = "Debe de pesar algo mï¿½s de " + pesoApr_kilos + " kilo" + (pesoApr_kilos>1?"s":"") + ".";
 					}
 				}
 
@@ -5955,12 +5955,12 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		}
 		catch ( WeightLimitExceededException we )
 		{
-			//write( io.getColorCode("denial")  + "¡Llevas demasiado peso para coger "+ ourItem.constructName2True(1,this) + "!\n" + io.getColorCode("reset") );
+			//write( io.getColorCode("denial")  + "ï¿½Llevas demasiado peso para coger "+ ourItem.constructName2True(1,this) + "!\n" + io.getColorCode("reset") );
 			write( io.getColorCode("denial") + mundo.getMessages().getMessage("cant.get.item.weight","$item",ourItem.constructName2True(1,this),new Object[]{this,ourItem} ) /*+ "\n"*/ + io.getColorCode("reset"));
 		}
 		catch ( VolumeLimitExceededException ve )
 		{
-			//write( io.getColorCode("denial")  + "¡Llevas objetos demasiado voluminosos para coger "+ ourItem.constructName2True(1,this) + "!\n" + io.getColorCode("reset") );
+			//write( io.getColorCode("denial")  + "ï¿½Llevas objetos demasiado voluminosos para coger "+ ourItem.constructName2True(1,this) + "!\n" + io.getColorCode("reset") );
 			writeDenial( mundo.getMessages().getMessage("cant.get.item.volume","$item",ourItem.constructName2True(1,this),new Object[]{this,ourItem}) /*+ "\n"*/ );
 		}
 
@@ -6035,7 +6035,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 		boolean ejecutado_algo = false;
 
-		//Preparar argumentos para método de acción general
+		//Preparar argumentos para mï¿½todo de acciï¿½n general
 
 		//Object[] generalArgs = new Object[actionArgs.length+2];
 		Object[] generalArgs = new Object[3];
@@ -6058,7 +6058,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 		if ( ejecutado_algo ) return true;
 
-		//Argumentos para método del sujeto: actionArgs
+		//Argumentos para mï¿½todo del sujeto: actionArgs
 
 		try
 		{
@@ -6100,7 +6100,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 		if ( actionArgs.length > 1 && actionArgs[1] instanceof SupportingCode )
 		{
-			//hay objeto indirecto, su método sólo sustituye el argumento 1.
+			//hay objeto indirecto, su mï¿½todo sï¿½lo sustituye el argumento 1.
 			do_args[1] = actionArgs[0];
 			SupportingCode indirectObject = (SupportingCode) actionArgs[1];
 			try
@@ -6186,7 +6186,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	{
 		try
 		{
-			//Aquí irá toda la parafernalia de mirar si está maldito, etecepunto, etecepunto.
+			//Aquï¿½ irï¿½ toda la parafernalia de mirar si estï¿½ maldito, etecepunto, etecepunto.
 			habitacionActual.addItem ( ourItem );
 			removeItem ( ourItem );
 
@@ -6216,14 +6216,14 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		}
 		catch ( WeightLimitExceededException wle )
 		{
-			/*esta excepción es absurda en este caso, nunca saldrá (límite de peso de habitación, enorme)*/
-			//write( io.getColorCode("denial") + "No puedes dejar aquí " + ourItem.constructName2True(1,this) + ", hay demasiado peso.\n" + io.getColorCode("reset") );
+			/*esta excepciï¿½n es absurda en este caso, nunca saldrï¿½ (lï¿½mite de peso de habitaciï¿½n, enorme)*/
+			//write( io.getColorCode("denial") + "No puedes dejar aquï¿½ " + ourItem.constructName2True(1,this) + ", hay demasiado peso.\n" + io.getColorCode("reset") );
 			write( io.getColorCode("denial") + mundo.getMessages().getMessage("cant.drop.item.weight","$item",ourItem.constructName2True(1,this),new Object[]{this,ourItem} ) /*+ "\n"*/ + io.getColorCode("reset"));
 			return false;
 		}
 		catch ( VolumeLimitExceededException vle )
 		{
-			//write( io.getColorCode("denial") + "No puedes dejar aquí " + ourItem.constructName2True(1,this) + ", no hay espacio suficiente.\n" + io.getColorCode("reset") );
+			//write( io.getColorCode("denial") + "No puedes dejar aquï¿½ " + ourItem.constructName2True(1,this) + ", no hay espacio suficiente.\n" + io.getColorCode("reset") );
 			write( io.getColorCode("denial") + mundo.getMessages().getMessage("cant.drop.item.volume","$item",ourItem.constructName2True(1,this),new Object[]{this,ourItem} ) /*+ "\n"*/ + io.getColorCode("reset"));
 			return false;
 		}
@@ -6314,7 +6314,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	}
 
 	protected boolean mirarBicho ( String arguments , MobileList ml ) //en realidad, lo mismo que el anterior.
-	//¿Interfaz Referenciable para estas cosas [constructname...], y ReferenciableList en vez de EntityList?
+	//ï¿½Interfaz Referenciable para estas cosas [constructname...], y ReferenciableList en vez de EntityList?
 	{
 
 		boolean mirado = false;
@@ -6450,7 +6450,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 
 
-	//notación un poco inconsistente con la de Entity::copyEntityFields; pero bueno
+	//notaciï¿½n un poco inconsistente con la de Entity::copyEntityFields; pero bueno
 	public void copyMobileFieldsTo ( Mobile m )
 	{
 
@@ -6547,7 +6547,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 
 
-	//crea un nuevo Mobile que hereda de éste y lo añade al mundo
+	//crea un nuevo Mobile que hereda de ï¿½ste y lo aï¿½ade al mundo
 	public Mobile createNewInstance( World mundo , boolean cloneInventory , boolean cloneParts , boolean cloneVirtual  ) 
 	{
 		Mobile it = (Mobile) this.clone();
@@ -6722,7 +6722,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			}
 		}
 
-		write("No estás blandiendo ningún arma útil para suicidarte.\n");
+		write("No estï¿½s blandiendo ningï¿½n arma ï¿½til para suicidarte.\n");
 
 	}
 
