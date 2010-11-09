@@ -131,16 +131,16 @@ dodge.what=No te atacan. ¿Esquivar qué?\n
 put.what.where=¿Cómo? ¿Poner qué dónde?\n
 
 #Lista de objetos en una habitación
-items.here=Aquí hay $inventory
+items.here=Aquí hay $inventory.
 
 #Si hay un personaje en una habitación
-mobile.here=Aquí está $list
+mobile.here=Aquí está $list.
 
 #Si hay varios personajes en una habitación
-mobiles.here=Aquí están $list
+mobiles.here=Aquí están $list.
 
 #Mostrar inventario (con cosas)
-you.have.items=Tienes $inventory\n
+you.have.items=Tienes $inventory.\n
 
 #Mostrar inventario (vacío)
 you.have.nothing=No tienes nada.\n
