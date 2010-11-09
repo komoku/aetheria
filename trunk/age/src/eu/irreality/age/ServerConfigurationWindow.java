@@ -11,6 +11,7 @@ import javax.swing.border.*;
 import eu.irreality.age.server.IrcServerEntry;
 import eu.irreality.age.server.ServerConfigurationOptions;
 import eu.irreality.age.server.ServerHandler;
+import eu.irreality.age.swing.mdi.SwingAetheriaGUI;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -301,7 +302,7 @@ public class ServerConfigurationWindow extends JDialog
 					{
 						saveConfiguration();
 						if ( cbInitOnOK.isSelected() )
-							ServerHandler.getInstance().initPartidasDedicadas(SwingAetheriaGUI.getInstance().panel);
+							ServerHandler.getInstance().initPartidasDedicadas(SwingAetheriaGUI.getInstance().getPanel());
 					}
 					catch ( Exception e )
 					{
