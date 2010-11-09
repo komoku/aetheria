@@ -32,6 +32,7 @@ public class FancyJTextPane extends JTextPane
 			super();
 			//setMargin(new Insets(80,80,80,80));
 			//setOpaque(false);
+			setDocument ( new FancyStyledDocument() );
 			setBackground(new Color(0,0,0,0));
 		}
 	

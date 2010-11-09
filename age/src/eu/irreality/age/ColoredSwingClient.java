@@ -20,11 +20,14 @@ import java.awt.*;
 
 import javax.swing.text.*;
 
+import eu.irreality.age.swing.FancyAttributeSet;
 import eu.irreality.age.swing.FancyJTextField;
 import eu.irreality.age.swing.FancyJTextPane;
 import eu.irreality.age.swing.IconLoader;
 import eu.irreality.age.swing.ImagePanel;
 import eu.irreality.age.windowing.AGEClientWindow;
+
+import eu.irreality.age.swing.FancyStyledDocument;
 
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -43,7 +46,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 
 	//for colored output
 	private Document doc;
-	private MutableAttributeSet atributos = new SimpleAttributeSet();
+	private MutableAttributeSet atributos = new FancyAttributeSet();
 	
 	private Color textFieldForeground = Color.black; //this color will turn to red sometimes in real time
 	
@@ -1384,6 +1387,19 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	}
 	
 	/**
+	 * Changes the font to use for new text outputted to the output area.
+	 *  @param f New font to use for new text outputted to the output area.
+	 */
+	public void setCurrentOutputFont ( final Font f )
+	{
+		execInDispatchThread ( new Runnable() { public void run() { 
+			((FancyAttributeSet)atributos).setFont(f);
+			StyleConstants.setFontFamily((MutableAttributeSet)atributos,f.getFamily());
+			StyleConstants.setFontSize((MutableAttributeSet)atributos,f.getSize());
+			} } );
+	}
+	
+	/**
 	 * Sets the output area's font to the font read from the specified input stream, with the specified size.
 	 * @param is Stream in which we read the font to use for the output area.
 	 * @param fontSize Size of the font to use.
@@ -1394,6 +1410,24 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		{
 			Font fuente = Font.createFont ( Font.TRUETYPE_FONT , is );
 			setOutputAreaFont ( fuente.deriveFont((float)fontSize) );
+		}
+		catch ( Exception e )
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Sets the font for new output to the font read from the specified input stream, with the specified size.
+	 * @param is Stream in which we read the font to use for the new output to the output area.
+	 * @param fontSize Size of the font to use.
+	 */
+	public void setCurrentOutputFont ( InputStream is , int fontSize )
+	{
+		try
+		{
+			Font fuente = Font.createFont ( Font.TRUETYPE_FONT , is );
+			setCurrentOutputFont ( fuente.deriveFont((float)fontSize) );
 		}
 		catch ( Exception e )
 		{
@@ -1455,6 +1489,23 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		try
 		{
 			setOutputAreaFont ( u.openStream() , fontSize );
+		}
+		catch ( IOException ioe )
+		{
+			ioe.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Sets the output area's new output font to the font read from the specified URL, with the specified size.
+	 * @param u URL in which we read the font to use for the text that we output to the output area from now.
+	 * @param fontSize Size of the font to use.
+	 */
+	public void setCurrentOutputFont ( URL u , int fontSize )
+	{
+		try
+		{
+			setCurrentOutputFont ( u.openStream() , fontSize );
 		}
 		catch ( IOException ioe )
 		{
