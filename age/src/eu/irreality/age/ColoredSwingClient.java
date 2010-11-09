@@ -10,11 +10,14 @@ import javax.swing.*;
 
 import java.util.*;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.*;
 import java.awt.*;
+
 import javax.swing.text.*;
 
 import eu.irreality.age.swing.FancyJTextField;
@@ -1368,6 +1371,94 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 			{
 				ie.printStackTrace();
 			}
+		}
+	}
+	
+	/**
+	 * Changes the font to use for the output area.
+	 * @param f New font to use for the output area.
+	 */
+	public void setOutputAreaFont ( final Font f )
+	{
+		execInDispatchThread ( new Runnable() { public void run() { elAreaTexto.setFont(f); } } );
+	}
+	
+	/**
+	 * Sets the output area's font to the font read from the specified input stream, with the specified size.
+	 * @param is Stream in which we read the font to use for the output area.
+	 * @param fontSize Size of the font to use.
+	 */
+	public void setOutputAreaFont ( InputStream is , int fontSize )
+	{
+		try
+		{
+			Font fuente = Font.createFont ( Font.TRUETYPE_FONT , is );
+			setOutputAreaFont ( fuente.deriveFont((float)fontSize) );
+		}
+		catch ( Exception e )
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Changes the font to use for the text input field.
+	 * @param f New font to use for the text input field.
+	 */
+	public void setInputFieldFont ( final Font f )
+	{
+		execInDispatchThread ( new Runnable() { public void run() { elCampoTexto.setFont(f); } } );
+	}
+	
+	/**
+	 * Sets the input field's font to the font read from the specified input stream, with the specified size.
+	 * @param is Stream in which we read the font to use for the input field.
+	 * @param fontSize Size of the font to use.
+	 */
+	public void setInputFieldFont ( InputStream is , int fontSize )
+	{
+		try
+		{
+			Font fuente = Font.createFont ( Font.TRUETYPE_FONT , is );
+			setInputFieldFont ( fuente.deriveFont((float)fontSize) );
+		}
+		catch ( Exception e )
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Sets the input field's font to the font read from the specified URL, with the specified size.
+	 * @param u URL in which we read the font to use for the input field.
+	 * @param fontSize Size of the font to use.
+	 */
+	public void setInputFieldFont ( URL u , int fontSize )
+	{
+		try
+		{
+			setInputFieldFont ( u.openStream() , fontSize );
+		}
+		catch ( IOException ioe )
+		{
+			ioe.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Sets the output area's font to the font read from the specified URL, with the specified size.
+	 * @param u URL in which we read the font to use for the output area.
+	 * @param fontSize Size of the font to use.
+	 */
+	public void setOutputAreaFont ( URL u , int fontSize )
+	{
+		try
+		{
+			setOutputAreaFont ( u.openStream() , fontSize );
+		}
+		catch ( IOException ioe )
+		{
+			ioe.printStackTrace();
 		}
 	}
 	
