@@ -123,7 +123,7 @@
 				<include name="jspeex0.9.7.jar"/>
 				<include name="mp3spi1.9.4.jar"/>
 				<include name="tritonus_share.jar"/>
-				<include name="vorbisspi.jar"/>
+				<include name="vorbisspi1.0.2.jar"/>
 				<include name="basicplayer3.0.jar"/>
 				<include name="commons-cli-1.2.jar"/>
 				<include name="svgSalamander.jar"/>
