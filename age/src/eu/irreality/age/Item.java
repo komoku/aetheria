@@ -2584,23 +2584,52 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	
 	
 	//call Room::informActionAuto on all item's rooms
+	/**
+	 * @deprecated Use {@link #reportActionAuto(Entity,Entity,Entity[],String,boolean)} instead
+	 */
 	public void informActionAuto ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , boolean self_included )
+	{
+		reportActionAuto(source, target, objects, thirdPersonDes, self_included);
+	}
+	
+	/**
+	 * @deprecated Use {@link #reportAction(Entity,Entity,Entity[],String,String,String,boolean)} instead
+	 */
+	public void informAction ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , String sufferDes , String execDes , boolean self_included )
+	{
+		reportAction(source, target, objects, thirdPersonDes, sufferDes,
+				execDes, self_included);
+	}
+	
+	public void reportActionAuto ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes ,  boolean self_included )
+	{
+		reportActionAuto ( source , target , objects , thirdPersonDes , null , self_included );
+	}
+	
+	public void reportAction ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , String sufferDes , String execDes  , boolean self_included )
+	{
+		reportAction ( source , target , objects , thirdPersonDes , sufferDes , execDes , null , self_included );
+	}
+	
+	
+	//call Room::informActionAuto on all item's rooms
+	public void reportActionAuto ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , String style , boolean self_included )
 	{
 		List habitaciones = getRoomReferences();
 		for ( int i = 0 ; i < habitaciones.size() ; i++ )
 		{
 			Room hab = (Room)habitaciones.get(i);
-			hab.reportActionAuto ( source , target , objects , thirdPersonDes , self_included );
+			hab.reportActionAuto ( source , target , objects , thirdPersonDes , style , self_included );
 		}
 	}
 	
-	public void informAction ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , String sufferDes , String execDes , boolean self_included )
+	public void reportAction ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , String sufferDes , String execDes , String style , boolean self_included )
 	{
 		List habitaciones = getRoomReferences();
 		for ( int i = 0 ; i < habitaciones.size() ; i++ )
 		{
 			Room hab = (Room)habitaciones.get(i);
-			hab.reportAction ( source , target , objects , thirdPersonDes , sufferDes , execDes , self_included );
+			hab.reportAction ( source , target , objects , thirdPersonDes , sufferDes , execDes , style , self_included );
 		}
 	}
 	

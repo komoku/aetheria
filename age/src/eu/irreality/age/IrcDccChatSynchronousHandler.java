@@ -130,6 +130,7 @@ class IrcDccChatClientProxy extends IrcDccChatSynchronousHandler implements Inpu
 	
 	public String getColorCode ( String colorKey )
 	{
+		if ( colorKey == null ) return "";
 		String lowerKey = colorKey.toLowerCase();
 		if ( lowerKey.equals("action") )
 			return "12";

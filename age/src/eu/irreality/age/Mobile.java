@@ -2012,12 +2012,21 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		//return true;
 		//for ( int i = 0 ; i < habitacionActual.mobsInRoom.size() ; i++ ) ;
 	}
+	
+	public void say ( String text , String style )
+	{
+		if ( text.trim().equals("") ) return;
+		habitacionActual.reportActionAuto ( this , null , null , "$1 dice \"" + text + "\".\n" , style , true );	
+	}
 
 	public void sayTo ( Mobile m , String text )
 	{
-
 		habitacionActual.reportAction ( this , m , null , "$1 dice \"" + text + "\" a $2.\n" , "$1 te dice \"" + text + "\".\n" , "dices \"" + text + "\" a $2.\n" , true );
-
+	}
+	
+	public void sayTo ( Mobile m , String text , String style )
+	{
+		habitacionActual.reportAction ( this , m , null , "$1 dice \"" + text + "\" a $2.\n" , "$1 te dice \"" + text + "\".\n" , "dices \"" + text + "\" a $2.\n" , style , true );
 	}
 
 	//	procesa el comando decir
