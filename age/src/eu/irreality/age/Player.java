@@ -2058,7 +2058,7 @@ public class Player extends Mobile implements Informador
 
 		//reconocemos el verbo; pero no tenemos npi de qué hacer con él...
 		//TODO remmed "else" from here.
-		else if ( lenguaje.isVerb ( command ) )
+		else if ( lenguaje.isVerb ( command , true ) )
 		{			
 			String origCommand = "";
 			if ( originalTrimmedCommandString != null )

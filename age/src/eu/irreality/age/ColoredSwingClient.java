@@ -87,6 +87,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	}
 	public String getColorCode ( String colorType )
 	{
+		if ( colorType == null ) return "";
 		String code = (String) colorCodesTable.get(colorType);
 		if ( code == null ) return "";
 		else return code;
