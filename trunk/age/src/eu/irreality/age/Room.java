@@ -1281,9 +1281,24 @@ public class Room extends Entity implements Descriptible , SupportingCode
 				execDes, self_included);
 	}
 
-	//the new, subjective inform action
-	//warning: may throw ClassCastException if non-nameable entities are passed!
+	/**
+	 * calls version with style parameter.
+	 * @param source
+	 * @param target
+	 * @param objects
+	 * @param thirdPersonDes
+	 * @param sufferDes
+	 * @param execDes
+	 * @param self_included
+	 */
 	public void reportAction ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , String sufferDes , String execDes , boolean self_included )
+	{
+		reportAction ( source , target , objects , thirdPersonDes , sufferDes , execDes , null , self_included );
+	}
+	
+	//the new, subjective report action
+	//warning: may throw ClassCastException if non-nameable entities are passed!
+	public void reportAction ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , String sufferDes , String execDes , String style , boolean self_included )
 	{
 	
 		//Debug.println("INFORMACTION BEGIN");
@@ -1317,17 +1332,17 @@ public class Room extends Entity implements Descriptible , SupportingCode
 			if ( ( actual == source ) && ( execDes != null ) && ( self_included ) )
 			{
 				if ( actual instanceof Informador )
-					actual.write ( personalizeDescription(execDes,actual,dollarEntities) );
+					actual.writeWithTemplate ( style , personalizeDescription(execDes,actual,dollarEntities) );
 			}
 			else if ( actual == target && sufferDes != null )
 			{
 				if ( actual instanceof Informador )
-					actual.write ( personalizeDescription(sufferDes,actual,dollarEntities) );
+					actual.writeWithTemplate ( style , personalizeDescription(sufferDes,actual,dollarEntities) );
 			}
 			else if ( thirdPersonDes != null && actual != source && actual != target )
 			{
 				if ( actual instanceof Informador )
-					actual.write ( personalizeDescription(thirdPersonDes,actual,dollarEntities) );
+					actual.writeWithTemplate ( style , personalizeDescription(thirdPersonDes,actual,dollarEntities) );
 			}
 		}
 		//hacer que los bichos reaccionen.
@@ -1383,9 +1398,22 @@ public class Room extends Entity implements Descriptible , SupportingCode
 		reportActionAuto(source, target, objects, thirdPersonDes, self_included);
 	}
 
-	//the new inform action auto: automatically obtain suffer and exec descriptions, then call
-	//the new inform action.
+	/**
+	 * The new reportActionAuto, without colour code parameter.
+	 * @param source
+	 * @param target
+	 * @param objects
+	 * @param thirdPersonDes
+	 * @param self_included
+	 */
 	public void reportActionAuto ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , boolean self_included )
+	{
+		reportActionAuto ( source , target , objects , thirdPersonDes , null , self_included );
+	}
+	
+	//the new report action auto: automatically obtain suffer and exec descriptions, then call
+	//the new report action.
+	public void reportActionAuto ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , String style , boolean self_included )
 	{
 	
 		
@@ -1436,7 +1464,7 @@ public class Room extends Entity implements Descriptible , SupportingCode
 		Debug.println("Gonna deft'ly call informAction");
 	
 		//llamar a informAction
-		reportAction ( source , target , objects , thirdPersonDes , sufferDes , execDes , self_included );
+		reportAction ( source , target , objects , thirdPersonDes , sufferDes , execDes , style , self_included );
 	
 	}
 
@@ -1452,6 +1480,9 @@ public class Room extends Entity implements Descriptible , SupportingCode
 	}
 
 	//old method's redirect
+	/**
+	 * @deprecated Use {@link #reportAction(Entity,Entity,Entity[],String,String,String,boolean)} instead
+	 */
 	public void reportAction ( Mobile source , Mobile target , String thirdPersonDes , String sufferDes , String execDes , boolean self_included )
 	{
 		reportAction ( source , target , null , thirdPersonDes , sufferDes , execDes, self_included );
@@ -1467,6 +1498,9 @@ public class Room extends Entity implements Descriptible , SupportingCode
 	}
 
 	//old method's redirect
+	/**
+	 * @deprecated Use {@link #reportActionAuto(Entity,Entity,Entity[],String,boolean)} instead
+	 */
 	public void reportActionAuto ( Mobile source , Mobile target , String thirdPersonDes  , boolean self_included )
 	{
 		reportActionAuto ( source , target , null , thirdPersonDes , self_included );
