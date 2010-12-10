@@ -238,6 +238,38 @@ public class NaturalLanguage
 		else return false;
 	}
 	
+	/**
+	 * Devuelve Comprueba si una palabra dada es un verbo, incluyendo soporte de "le".
+	 * @param s Palabra a comprobar.
+	 * @param includeLe true si se quiere que se admitan como verbo formas con el sufijo le.
+	 * @return true si la palabra dada es un verbo reconocido (en imperativo, infinitivo o 1ª persona).
+	 * Si el parámetro includeLe es true, entonces también devuelve true si es un verbo al que se ha
+	 * añadido "le" (escupirle, dale, beberle)
+	 */
+	public boolean isVerb ( String s , boolean includeLe )
+	{
+		if ( !includeLe ) return isVerb(s);
+		else
+		{
+			if ( isVerb(s) ) return true;
+			else
+			{
+				if ( s.endsWith("le") )
+				{
+					String verbForm = s.substring(0,s.length()-2);
+					return isVerb(verbForm);
+				}
+				else if ( s.endsWith("les") )
+				{
+					String verbForm = s.substring(0,s.length()-3);
+					return isVerb(verbForm);
+				}
+				else
+					return false;
+			}
+		}
+	}
+	
 	
 	public String sustituirAlias ( String s )
 	{

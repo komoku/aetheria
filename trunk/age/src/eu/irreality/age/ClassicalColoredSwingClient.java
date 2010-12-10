@@ -45,6 +45,7 @@ public class ClassicalColoredSwingClient implements InputOutputClient
 
 	public String getColorCode ( String colorType )
 	{
+		if ( colorType == null ) return "";
 		String code = (String) colorCodesTable.get(colorType.toLowerCase());
 		if ( code == null ) return "";
 		else return "%"+code+"%";
