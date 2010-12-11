@@ -66,8 +66,8 @@ public class AGESoundClient implements SoundClient
 	//call midiInit before using midiXXX functions. Initializes the sequencer.
 	public void midiInit ( ) throws javax.sound.midi.MidiUnavailableException
 	{
-		//pulseaudio-friendly mode
-		//midiClose(); //didn't seem to solve much
+		//pulseaudio-friendly mode:
+		midiClose();
 		
 		if ( seqr == null )
 		{
