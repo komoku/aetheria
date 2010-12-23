@@ -181,6 +181,9 @@ you.try.close.from.inventory=Tratas de cerrar $item que llevas:
 #Cuando se teclea un verbo que está en las listas de verbos pero para el que no hemos definido comportamiento
 undefined.action=¿Cómo? ¿$command?\n
 
+#Cuando la propiedad noPronounDisambiguation de un jugador está puesto a true y se usa un pronombre "lo/la/los/las" donde la acción anterior se refería a dos entidades
+ambiguous.pronoun=No entiendo muy bien una orden pronominal cuando la orden anterior se refería a dos objetos.\n
+
 #Combate: acierto con arma, daño numérico ($1 ataca a $2 con $weapon, acierta, le inflige $damage daño)
 someone.hits.someone.numeric=$1 acierta a $2 con $weapon infligiéndole $damage puntos de daño...\n
 enemy.hits.you.numeric=$1 te acierta con $weapon infligiéndole $damage puntos de daño...\n
