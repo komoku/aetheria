@@ -52,6 +52,8 @@ public class NaturalLanguage
 				String laClave = StringMethods.getTok( linea , 1 , separator );
 				String elValor = StringMethods.getTok( linea , 2 , separator );
 				
+				//System.err.println(laClave + " , " + elValor);
+				
 				if ( dejarRepeticiones == false || tabla.get(laClave) == null )
 					tabla.put ( laClave,elValor );	
 				//tabla.put ( laClave,elValor );	
@@ -99,8 +101,10 @@ public class NaturalLanguage
 		catch ( Exception exc )
 		{
 			System.err.println("Aviso: no se ha encontrado fichero de verbos, la tabla de verbos estará vacía.");
+			exc.printStackTrace();
 			imperativoAInfinitivo = new Hashtable(1);
 		}
+		
 		try
 		{
 			sinonimos = loadTableFromPath ( pathSinonimos , '=' );
@@ -239,6 +243,17 @@ public class NaturalLanguage
 	}
 	
 	/**
+	 * Adds an entry to the verb table.
+	 * @param imperative Imperative or 1st person form of the verb.
+	 * @param infinitive Infinitive form of the verb.
+	 */
+	public void addVerbEntry ( String imperative , String infinitive )
+	{
+		imperativoAInfinitivo.put(imperative,infinitive);
+		infinitivoAImperativo.put(infinitive,imperative);
+	}
+	
+	/**
 	 * Devuelve Comprueba si una palabra dada es un verbo, incluyendo soporte de "le".
 	 * @param s Palabra a comprobar.
 	 * @param includeLe true si se quiere que se admitan como verbo formas con el sufijo le.
@@ -273,9 +288,27 @@ public class NaturalLanguage
 	
 	public String sustituirAlias ( String s )
 	{
+		/*
 		String al = obtenerAlias(s);
 		if ( al == null ) return s;
 		else return al;
+		*/
+		StringTokenizer st = new StringTokenizer ( s , " " , true );
+		String nueva = "";
+		while ( st.hasMoreTokens() )
+		{
+			String tok = st.nextToken();
+			String sin = obtenerAlias(tok);
+			if ( sin == null )
+			{
+				nueva += tok;
+			}
+			else
+			{
+				nueva += sin;
+			}
+		}
+		return nueva;
 	}
 	
 	public String terceraASegunda ( String verbo )
