@@ -2935,17 +2935,23 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							if ( numeric_damage )
 							{
 								habitacionActual.reportAction ( this , objetivo ,
-										"$1 acierta a $2 con " + getCurrentWeapon().constructName2OneItem() + " infligiï¿½ndole " + danyo + " puntos de daï¿½o...\n" ,
-										"$1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligiï¿½ndote " + danyo + " puntos de daï¿½o...\n" ,
-										"Aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + " infligiï¿½ndole " + danyo + " puntos de daï¿½o...\n" ,
+										mundo.getMessages().getMessage("someone.hits.someone.numeric","$weapon",getCurrentWeapon().constructName2OneItem(),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("enemy.hits.you.numeric","$weapon",getCurrentWeapon().constructName2OneItem(),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("you.hit.enemy.numeric","$weapon",getCurrentWeapon().constructName2OneItem(),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										//"$1 acierta a $2 con " + getCurrentWeapon().constructName2OneItem() + " infligiï¿½ndole " + danyo + " puntos de daï¿½o...\n" ,
+										//"$1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligiï¿½ndote " + danyo + " puntos de daï¿½o...\n" ,
+										//"Aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + " infligiï¿½ndole " + danyo + " puntos de daï¿½o...\n" ,
 										true );
 							}
 							else
 							{
 								habitacionActual.reportAction ( this , objetivo ,
-										"$1 acierta a $2 con " + getCurrentWeapon().constructName2OneItem() + " infligiï¿½ndole " + objetivo.estimateDamage(danyo) + "...\n" ,
-										"$1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligiï¿½ndote " + objetivo.estimateDamage(danyo) + "...\n" ,
-										"Aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + " infligiï¿½ndole " + objetivo.estimateDamage(danyo) + "...\n" ,
+										mundo.getMessages().getMessage("someone.hits.someone","$weapon",getCurrentWeapon().constructName2OneItem(),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("enemy.hits.you","$weapon",getCurrentWeapon().constructName2OneItem(),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("you.hit.enemy","$weapon",getCurrentWeapon().constructName2OneItem(),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										//"$1 acierta a $2 con " + getCurrentWeapon().constructName2OneItem() + " infligiï¿½ndole " + objetivo.estimateDamage(danyo) + "...\n" ,
+										//"$1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligiï¿½ndote " + objetivo.estimateDamage(danyo) + "...\n" ,
+										//"Aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + " infligiï¿½ndole " + objetivo.estimateDamage(danyo) + "...\n" ,
 										true );
 
 								habitacionActual.reportActionAuto ( objetivo , null , null , "$1 " + objetivo.estimateStatus() + ".\n" , true );
@@ -2975,9 +2981,12 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						}
 						if ( !ejec )
 							habitacionActual.reportAction ( this , objetivo ,
-									"$1 acierta a $2 con " + getCurrentWeapon().constructName2OneItem() + " pero no le hace daï¿½o...\n" ,
-									"$1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " pero no te hace daï¿½o...\n" ,
-									"Aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + " pero no le haces daï¿½o...\n" ,
+									mundo.getMessages().getMessage("someone.hits.someone.nodamage","$weapon",getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+									mundo.getMessages().getMessage("enemy.hits.you.nodamage","$weapon",getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+									mundo.getMessages().getMessage("you.hit.enemy.nodamage","$weapon",getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+									//"$1 acierta a $2 con " + getCurrentWeapon().constructName2OneItem() + " pero no le hace daï¿½o...\n" ,
+									//"$1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " pero no te hace daï¿½o...\n" ,
+									//"Aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + " pero no le haces daï¿½o...\n" ,
 									true );
 
 					}
@@ -3013,7 +3022,14 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				}
 				if ( !ejec )
 				{
-					habitacionActual.reportAction ( this , objetivo , "El ataque de $1 falla a $2.\n" , "El ataque de $1 te falla.\n" , "Tu ataque falla a $2.\n" , true );
+					habitacionActual.reportAction ( this , objetivo , 
+							mundo.getMessages().getMessage("someone.misses.someone","$weapon",getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+							mundo.getMessages().getMessage("enemy.misses.you","$weapon",getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+							mundo.getMessages().getMessage("you.miss.enemy","$weapon",getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+							//"El ataque de $1 falla a $2.\n" , 
+							//"El ataque de $1 te falla.\n" , 
+							//"Tu ataque falla a $2.\n" , 
+							true );
 				}
 
 				setNewState ( ATTACK_RECOVER , generateAttackRecoverTime(getCurrentWeapon()) );
@@ -5532,29 +5548,29 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		String result;
 
 		if ( percent < 5 )
-			result = "muy ligeros daï¿½os";
+			result = "muy ligeros daños";
 		else if ( percent < 10 )
-			result = "ligeros daï¿½os";	
+			result = "ligeros daños";	
 		else if ( percent < 18 )
-			result = "algï¿½n daï¿½o";	
+			result = "algún daño";	
 		else if ( percent < 25 )
-			result = "un daï¿½o significativo";
+			result = "un daño significativo";
 		else if ( percent < 33 )
-			result = "daï¿½os moderados";
+			result = "daños moderados";
 		else if ( percent < 40 )
-			result = "bastante daï¿½o";
+			result = "bastante daño";
 		else if ( percent < 50 )
-			result = "severos daï¿½os";
+			result = "severos daños";
 		else if ( percent < 60 )
-			result = "mucho daï¿½o";
+			result = "mucho daño";
 		else if ( percent < 70 )
-			result = "gran daï¿½o";
+			result = "gran daño";
 		else if ( percent < 80 )
-			result = "enorme daï¿½o";
+			result = "enorme daño";
 		else if ( percent < 90 )
 			result = "terribles heridas";	
 		else
-			result = "daï¿½o mortal";	
+			result = "daño mortal";	
 
 		return result;
 
@@ -5569,15 +5585,15 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		String result;
 
 		if ( percent <= 0.1 )
-			result = "estï¿½ intacto";
+			result = "está intacto";
 		else if ( percent < 5 )
-			result = "tiene algï¿½n rasguï¿½o";
+			result = "tiene algún rasguño";
 		else if ( percent < 10 )
 			result = "tiene ligeras heridas";	
 		else if ( percent < 18 )
 			result = "tiene heridas poco graves";	
 		else if ( percent < 25 )
-			result = "tiene heridas de cierta consideraciï¿½n";
+			result = "tiene heridas de cierta consideración";
 		else if ( percent < 33 )
 			result = "tiene heridas importantes";
 		else if ( percent < 40 )
@@ -5585,17 +5601,17 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		else if ( percent < 50 )
 			result = "tiene heridas preocupantes";
 		else if ( percent < 60 )
-			result = "estï¿½ gravemente herido";
+			result = "está gravemente herido";
 		else if ( percent < 70 )
-			result = "estï¿½ muy gravemente herido";
+			result = "está muy gravemente herido";
 		else if ( percent < 80 )
-			result = "estï¿½ crï¿½ticamente herido";
+			result = "está críticamente herido";
 		else if ( percent < 90 )
-			result = "estï¿½ en las ï¿½ltimas";	
+			result = "está en las últimas";	
 		else if ( percent < 100 )
-			result = "estï¿½ a un paso de la tumba";	
+			result = "está a un paso de la tumba";	
 		else
-			result = "estï¿½ mortalmente herido";
+			result = "está mortalmente herido";
 
 		return result;
 
@@ -5865,11 +5881,17 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 
 			//write( io.getColorCode("action")  + lenguaje.gramaticalizar (  "Coges " + ourItem.constructName2True(1,this) + toAppend + "." ) + "\n" + io.getColorCode("reset") );
-			write( io.getColorCode("action")  + lenguaje.gramaticalizar ( mundo.getMessages().getMessage("you.get.item","$item",ourItem.constructName2True(1,this)+toAppend,new Object[]{this,ourItem})) + "\n" + io.getColorCode("reset") );
-
+			if ( toAppend == null || toAppend.length() < 1 )
+				write( io.getColorCode("action")  + lenguaje.gramaticalizar ( mundo.getMessages().getMessage("you.get.item","$item",ourItem.constructName2True(1,this)+toAppend,new Object[]{this,ourItem})) + "\n" + io.getColorCode("reset") );
+			else
+				write( io.getColorCode("action")  + lenguaje.gramaticalizar ( mundo.getMessages().getMessage("you.get.item.from.location","$item",ourItem.constructName2True(1,this),"$location",toAppend.trim(),new Object[]{this,ourItem,toAppend})) + "\n" + io.getColorCode("reset") );
+			
 			//habitacionActual.informActionAuto ( this , null , "$1 coge " + ourItem.constructName2OneItem() + toAppend + ".\n" , false );
-			habitacionActual.reportActionAuto ( this , null , mundo.getMessages().getMessage("someone.gets.item","$item", ourItem.constructName2OneItem() + toAppend,new Object[]{this,ourItem} ) /*+ "\n"*/ , false );
-
+			if ( toAppend == null || toAppend.length() < 1 )
+				habitacionActual.reportActionAuto ( this , null , mundo.getMessages().getMessage("someone.gets.item","$item", ourItem.constructName2OneItem(),new Object[]{this,ourItem} ) /*+ "\n"*/ , false );
+			else
+				habitacionActual.reportActionAuto ( this , null , mundo.getMessages().getMessage("someone.gets.item.from.location","$item", ourItem.constructName2OneItem(),"$location",toAppend.trim(),new Object[]{this,ourItem} ) /*+ "\n"*/ , false );
+			
 			//ejecutar eventos onGet
 			try
 			{
