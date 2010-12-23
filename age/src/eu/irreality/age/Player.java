@@ -20,15 +20,6 @@ public class Player extends Mobile implements Informador
 
 	//INSTANCE VARIABLES
 
-	/**Entrada/salida*/
-	//protected EntradaSalida io; (de Mobile)
-
-	/**Nombre del personaje*/
-	//protected String name; -> title, heredado de Mobile
-	/**Habitación actual*/
-	//protected Room habitacionActual; -> heredado de Mobile
-	/**Habitación anterior*/
-	//protected Room habitacionAnterior; -> heredado de Mobile
 	/**Comando actual*/
 	protected String commandstring , command , arguments;
 
@@ -43,13 +34,9 @@ public class Player extends Mobile implements Informador
 	protected String ZR_objeto_masculino_plural="";
 	protected String ZR_objeto_femenino_plural="";
 	protected String ZR_objeto_plural="";
-	protected String ZR_persona_masculino;
-	protected String ZR_persona_femenino;
-	protected String ZR_persona;
-
-	/**Lenguaje*/
-	//private NaturalLanguage lenguaje; up to Mobile
-
+	//unused: protected String ZR_persona_masculino;
+	//unused: protected String ZR_persona_femenino;
+	//unused: protected String ZR_persona;
 
 	/**¿Estamos cargando de un log?*/
 	protected boolean from_log;
@@ -75,6 +62,12 @@ public class Player extends Mobile implements Informador
 	Mobile lastAttackedEnemy = null;
 	Weapon lastBlockWeapon = null;
 	Mobile lastBlockedEnemy = null;
+	
+	//a cuántas entidades se refirió el comando anterior
+	private boolean matchedOneEntity = false;
+	private boolean matchedTwoEntities = false;
+	private boolean matchedOneEntityPermissive = false;
+	private boolean matchedTwoEntitiesPermissive = false;
 
 
 
@@ -95,7 +88,6 @@ public class Player extends Mobile implements Informador
 
 		plurNames = new Description[1];
 		plurNames[0] = new Description(nombre,0,0);
-
 	}
 
 
@@ -221,7 +213,6 @@ public class Player extends Mobile implements Informador
 		}
 		else write(s);
 	}
-
 
 
 
@@ -394,7 +385,6 @@ public class Player extends Mobile implements Informador
 		//getObject(getTarget())
 
 
-
 	}
 
 
@@ -536,7 +526,6 @@ public class Player extends Mobile implements Informador
 			if ( commandstring != null ) commandstring = commandstring.trim();
 
 
-
 			/*Llamada a preprocessCommand() configurable*/
 			boolean executed = false;
 			try
@@ -592,7 +581,24 @@ public class Player extends Mobile implements Informador
 
 	public boolean execCommand ( String commandstring  )
 	{
+		
+		//conservative mode check
+		if ( getPropertyValueAsBoolean("noPronounDisambiguation") && matchedTwoEntitiesPermissive )
+		{
+			if ( firstWord(commandstring).toLowerCase().endsWith ( "las" ) && firstWord(commandstring).length() > 3 
+					|| firstWord(commandstring).toLowerCase().endsWith ( "los" ) && firstWord(commandstring).length() > 3
+					|| firstWord(commandstring).toLowerCase().endsWith ( "la" ) && firstWord(commandstring).length() > 2
+					|| firstWord(commandstring).toLowerCase().endsWith ( "lo" ) && firstWord(commandstring).length() > 2 )
+			{
+				write ( io.getColorCode("denial") + mundo.getMessages().getMessage("ambiguous.pronoun",new Object[]{this,commandstring}) + io.getColorCode("reset") );
+				ZR_verbo = firstWord(substitutePronounsInSentence(commandstring));
+				cancelPending();
+				return false;	
+			}
+		}
+			
 
+			
 		//Debug.println("CommandString: " + commandstring );
 
 		//commandstring es aqui ya el comando a ejecutar
@@ -628,8 +634,6 @@ public class Player extends Mobile implements Informador
 			commandstring = originalTrimmedCommandString;
 		}	
 		arguments = StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ').trim();
-
-
 
 
 		//Debug.println("Definite command to exec: " + commandstring );
@@ -707,8 +711,10 @@ public class Player extends Mobile implements Informador
 
 		ejecutado = false;
 
-		boolean matchedOneEntity = false;
-		boolean matchedTwoEntities = false;
+		matchedOneEntity = false;
+		matchedTwoEntities = false;
+		matchedOneEntityPermissive = false;
+		matchedTwoEntitiesPermissive = false;
 
 		EntityList posiblesObjetivos = getReachableEntities();
 
@@ -732,12 +738,12 @@ public class Player extends Mobile implements Informador
 		allMatches.addAll(matches_ps);
 		allMatches.addAll(matches_pp);
 
-		if ( allMatches.size() > 0 ) matchedTwoEntities = true;
+		matchedTwoEntities = ( allMatches.size() > 0 );
 
 		Vector matches_s = ParserMethods.refersToEntityInRecursive ( arguments,posiblesObjetivos,false );
 		Vector matches_p = ParserMethods.refersToEntityInRecursive ( arguments,posiblesObjetivos,true );
 		
-		if ( matches_s.size() > 0 || matches_p.size() > 0 ) matchedOneEntity = true;
+		matchedOneEntity = ( matches_s.size() > 0 || matches_p.size() > 0 );
 		
 		//let's see if this works.
 		ejecutado = resolveParseCommandForTwoEntities ( posiblesObjetivos , arguments , arguments , false );
@@ -2349,9 +2355,7 @@ public class Player extends Mobile implements Informador
 		allMatches.addAll(matches_ps);
 		allMatches.addAll(matches_pp);
 
-		boolean matchedTwoEntities = false;
-
-		if ( allMatches.size() > 0 ) matchedTwoEntities = true;
+		matchedTwoEntitiesPermissive = ( allMatches.size() > 0 );
 
 		for ( int i = 0 ; i < allMatches.size() ; i++ )
 		{
@@ -2689,6 +2693,10 @@ public class Player extends Mobile implements Informador
 
 		Vector objetivos_s = ParserMethods.refersToEntityInRecursive ( arguments,posiblesObjetivos,false );
 		Vector objetivos_p = ParserMethods.refersToEntityInRecursive ( arguments,posiblesObjetivos,true );
+		
+		//objetivos_s has the form: [ [pearl,chest,box] , [pearl,bottle] ]
+		//(each component is a path to a matched object, only the 1st (top priority) is really used).
+		//in the plural case, all components are used.
 
 		//TODO
 		//we can now migrate this to refersToEntityInRecursive. This returns a Vector of Vectors with paths to stuff.
@@ -2696,6 +2704,8 @@ public class Player extends Mobile implements Informador
 		//(if the previous parseCommandOnContents have let us, of course).
 		//LET'S TRY TO F...ING DO THIS
 		//[pearl,box,chest] vector
+		
+		matchedOneEntityPermissive = ( objetivos_s.size() + objetivos_p.size() > 0 );
 
 		if ( objetivos_s.size() > 0 )
 		{
@@ -3221,8 +3231,6 @@ public class Player extends Mobile implements Informador
 
 
 
-
-
 	//nos dice "tal está a punto de atacarte, podrías bloquearlo... la espada de tal
 	//ya casi te ha pillado..."
 	public void showCombatReport ( )
@@ -3339,15 +3347,10 @@ public class Player extends Mobile implements Informador
 
 	public void show_room ( World mundo )
 	{
-		//try 
-		//{
 
 		long comparand;
 		//escribir("\n");
 
-		//titulo e id
-		//escribir(Utility.completeWithZeroes(habitacionActual.getID(),8));
-		//escribir(" ");
 		//escribir(habitacionActual.getTitle()+"\n");
 
 		comparand = (long)this.getRelationshipState( habitacionActual )*((long)Math.pow(2,32)) + habitacionActual.getState();
@@ -3371,11 +3374,6 @@ public class Player extends Mobile implements Informador
 			writeError(ExceptionPrinter.getExceptionReport(bshte));
 		}
 
-		//}
-		//catch ( java.io.IOException unaexc )
-		//{
-		//	Debug.print("Excepción E/S en show_room()");	
-		//}
 	}
 
 
@@ -4319,20 +4317,15 @@ public class Player extends Mobile implements Informador
 	} //end method
 
 
-
-
 	public InputOutputClient getIO ( )
 	{
 		return io;
 	}
 
-
-
 	public Vector getFinalCommandLog() //para estadísticas
 	{
 		return finalExecutedCommandLog;
 	}
-
 
 
 	//Función que es llamada si el jugador es remoto (está asociado a un cliente remoto)
@@ -4389,8 +4382,6 @@ public class Player extends Mobile implements Informador
 
 
 
-
-
 	private boolean hacerHechizo ( EntityList possibleTargets , SpellList possibleSpells ) //uses "arguments" attr
 	{
 
@@ -4441,11 +4432,6 @@ public class Player extends Mobile implements Informador
 		return mirado;
 
 	} //end method hacer hechizo
-
-
-
-
-
 
 
 
@@ -4515,7 +4501,6 @@ public class Player extends Mobile implements Informador
 			cancelPending();
 			return false;		
 		}
-
 
 
 	}
