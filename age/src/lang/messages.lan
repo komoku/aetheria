@@ -4,8 +4,14 @@
 #Cuando coges el objeto $item
 you.get.item=Coges $item.\n
 
+#Cuando coges el objeto $item que está en contenedores ($location)
+you.get.item.from.location=Coges $item $location.\n
+
 #Cuando $1 coge el objeto $item
 someone.gets.item=$1 coge $item.\n
+
+#Cuando $1 coge el objeto $item que está en contenedores ($location)
+someone.gets.item.from.location=$1 coge $item $location.\n
 
 #Cuando dejas el objeto $item
 you.drop.item=Dejas $item.\n
@@ -171,3 +177,27 @@ you.try.close.from.floor=Intentas cerrar $item:
 
 #Intentando cerrar algo del inventario en un comando con varios objetivos (cerrar las cajas, etc.)
 you.try.close.from.inventory=Tratas de cerrar $item que llevas:
+
+#Cuando se teclea un verbo que está en las listas de verbos pero para el que no hemos definido comportamiento
+undefined.action=¿Cómo? ¿$command?\n
+
+#Combate: acierto con arma, daño numérico ($1 ataca a $2 con $weapon, acierta, le inflige $damage daño)
+someone.hits.someone.numeric=$1 acierta a $2 con $weapon infligiéndole $damage puntos de daño...\n
+enemy.hits.you.numeric=$1 te acierta con $weapon infligiéndole $damage puntos de daño...\n
+you.hit.enemy.numeric=Aciertas a $2 con $weapon infligiéndole $damage puntos de daño...\n
+
+#Combate: acierto con arma, daño subjetivo
+someone.hits.someone=$1 acierta a $2 con $weapon infligiéndole $damage...\n
+enemy.hits.you=$1 te acierta con $weapon infligiéndole $damage...\n
+you.hit.enemy=Aciertas a $2 con $weapon infligiéndole $damage...\n
+
+#Combate: acierto con arma, pero sin daños
+someone.hits.someone.nodamage=$1 acierta a $2 con $weapon pero no le hace daño...\n
+enemy.hits.you.nodamage=$1 te acierta con $weapon pero no te hace daño...\n
+you.hit.enemy.nodamage=Aciertas a $2 con $weapon pero no le haces daño...\n
+
+#Combate: fallo con arma
+someone.misses.someone=El ataque de $1 falla a $2.\n
+enemy.misses.you=El ataque de $1 te falla.\n
+you.miss.enemy=Tu ataque falla a $2.\n
+

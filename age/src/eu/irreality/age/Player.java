@@ -2065,10 +2065,16 @@ public class Player extends Mobile implements Informador
 				origCommand = StringMethods.getTok(originalTrimmedCommandString,1,' ').trim();
 			//Debug.println("origCommand: " + origCommand +"ceremonia del te");
 			if ( !origCommand.endsWith("me") && !origCommand.endsWith("te") && !origCommand.endsWith("se") )
-				escribirDenegacionComando ( io.getColorCode("denial") + "¿Cómo? ¿" + commandstring + "?\n" + io.getColorCode("reset") );
+			{
+				//escribirDenegacionComando ( io.getColorCode("denial") + "¿Cómo? ¿" + commandstring + "?\n" + io.getColorCode("reset") );
+				escribirDenegacionComando ( io.getColorCode("denial") + mundo.getMessages().getMessage("undefined.action","$command",commandstring,new Object[]{this,commandstring}) + io.getColorCode("reset") );
+			}
 			else
+			{
 				//si el comando se refería al propio jugador, poner el string sin pronombres sustituidos, porque queda un poco feo que diga "¿cómo? ¿matar a jugador?"
-				escribirDenegacionComando ( io.getColorCode("denial") + "¿Cómo? ¿" + originalTrimmedCommandString + "?\n" + io.getColorCode("reset") );
+				//escribirDenegacionComando ( io.getColorCode("denial") + "¿Cómo? ¿" + originalTrimmedCommandString + "?\n" + io.getColorCode("reset") );
+				escribirDenegacionComando ( io.getColorCode("denial") + mundo.getMessages().getMessage("undefined.action","$command",originalTrimmedCommandString,new Object[]{this,originalTrimmedCommandString}) + io.getColorCode("reset") );
+			}
 			ZR_verbo = command;	
 			cancelPending();
 			return false;
