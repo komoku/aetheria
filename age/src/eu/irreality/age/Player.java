@@ -622,7 +622,9 @@ public class Player extends Mobile implements Informador
 		//commandstring = lenguaje.sustituirVerbos ( commandstring );
 		commandstring = lenguaje.sustituirVerbo ( commandstring );
 
-		commandstring = lenguaje.sustituirSinonimos ( commandstring );
+		//legacy:
+		//commandstring = lenguaje.sustituirSinonimos ( commandstring );
+		
 		commandstring = lenguaje.sustituirAlias ( commandstring );
 
 		commandstring = commandstring.trim();
