@@ -2104,7 +2104,7 @@ public class Player extends Mobile implements Informador
 		//Ahora, si no lo hemos hecho ya, probamos
 		//a ver si es que ha habido una elipsis de verbo, añadiendo el verbo de la zona
 		//de referencia.
-		else if ( !ZR_verbo.equalsIgnoreCase( command ) )
+		else if ( !ZR_verbo.equalsIgnoreCase( command ) && lenguaje.isGuessable(ZR_verbo) )
 		{
 
 			/*DON'T USE QUEUE, JUST EXEC'IT*/

@@ -22,6 +22,62 @@ public class NaturalLanguage
 	private Hashtable sinonimos;
 	private Hashtable alias;
 	private Hashtable terceraASegunda;
+	
+	/**Verbs that are considered guessable by second-chance mode 
+	 * even if the guess policy is set to false
+	 * */
+	private Set guessable = new LinkedHashSet();
+	
+	/**
+	 * Verbs that are considered not guessable in second-chance mode
+	 * even if the guess policy is set to true
+	 */
+	private Set unguessable = new LinkedHashSet();
+	
+	/**
+	 * If true, all verbs are guessable unless in the unguessable set.
+	 * (default).
+	 * If false, all verbs are unguessable unless in the guessable set.
+	 */
+	private boolean defaultGuessPolicy = true;
+	
+	public void setUnguessable ( String verb )
+	{
+		unguessable.add(verb);
+		guessable.remove(verb);
+	}
+	
+	public void setGuessable ( String verb )
+	{
+		unguessable.remove(verb);
+		guessable.add(verb);
+	}
+	
+	public void setAllGuessable ( )
+	{
+		unguessable.clear();
+		guessable.clear();
+		defaultGuessPolicy = true;
+	}
+	
+	public void setAllUnguessable ( )
+	{
+		unguessable.clear();
+		guessable.clear();
+		defaultGuessPolicy = false;
+	}
+	
+	public boolean isGuessable ( String verb )
+	{
+		if ( defaultGuessPolicy )
+		{
+			return !unguessable.contains(verb);
+		}
+		else
+		{
+			return guessable.contains(verb);
+		}
+	}
 
 	private Hashtable loadTableFromPath ( String f , char separator ) throws IOException , FileNotFoundException
 	{
