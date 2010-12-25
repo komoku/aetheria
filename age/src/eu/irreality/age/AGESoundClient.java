@@ -179,6 +179,86 @@ public class AGESoundClient implements SoundClient
 	}
 
 
+	/*
+	 * Did not work:
+	 * public boolean setVolume(double value) {
+                try {
+                        Receiver receiver = MidiSystem.getReceiver();
+                        ShortMessage volumeMessage= new ShortMessage();
+
+                        for (int i = 0; i < 16; i++) {
+                                volumeMessage.setMessage(ShortMessage.CONTROL_CHANGE, i, 7, (int)(value * 127.0));
+                                receiver.send(volumeMessage, -1);
+                        }
+                        return true;
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        return false;
+                }
+        }
+	 */
+	
+	/*
+	 * Did not work:
+	 *   public void fadeOut() {
+                double volume = 0.6;
+
+                for (;;) {
+                        if (((volume - 0.05) < 0) || !setVolume(volume)) {
+                                break;
+                        }
+                        try {
+                                Thread.sleep(150);
+                        } catch (Exception exception) {
+                        }
+                        volume -= 0.025;
+                }
+                if (synthesizer != null) {
+                        synthesizer.close();
+                        synthesizer = null;
+                }
+                if (sequencer != null) {
+                        if (sequencer.isOpen()) {
+                                sequencer.stop();
+                        }
+                        sequencer.close();
+                }
+        }
+	 */
+	
+	/* Associated with prev. two:
+	 * public void startMidi() {
+                String midiDir = getMidiFileName() + getMidiSaveDir();
+
+                try {
+                        if (sequencer != null) {
+                                fadeOut();
+                        }
+                        sequencer = null;
+                        sequence = null;
+                        File file = new File(midiDir);
+
+                        if (file.exists()) {
+                                sequence = MidiSystem.getSequence(file);
+                        }
+                        sequencer = MidiSystem.getSequencer();
+                        sequencer.setSequence(sequence);
+                        synthesizer = MidiSystem.getSynthesizer();
+                        synthesizer.open();
+
+                        if (synthesizer.getDefaultSoundbank() == null) {
+                                sequencer.getTransmitter().setReceiver(MidiSystem.getReceiver());
+                        } else {
+                                sequencer.getTransmitter().setReceiver(synthesizer.getReceiver());
+                        }
+                        sequencer.open();
+                        sequencer.start();
+                } catch (Exception exception) {
+                        exception.printStackTrace();
+                }
+        }
+	 */
+	
 	/*end MIDI*/
 
 

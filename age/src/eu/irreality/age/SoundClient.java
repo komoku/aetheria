@@ -7,6 +7,8 @@ package eu.irreality.age;
 import java.io.File;
 import java.net.URL;
 
+import javax.sound.midi.MidiUnavailableException;
+
 
 public interface SoundClient
 {
@@ -15,8 +17,8 @@ public interface SoundClient
 	//public void midiPreload ( java.io.File midfile ) throws javax.sound.midi.InvalidMidiDataException , java.io.IOException;	
 	public void midiPreload ( String f ) throws javax.sound.midi.InvalidMidiDataException , java.io.IOException;
 	//public void midiStart ( java.io.File midfile ) throws javax.sound.midi.InvalidMidiDataException , java.io.IOException;
-	public void midiStart ( String f ) throws javax.sound.midi.InvalidMidiDataException , java.io.IOException;	
-	public void midiStart ( ) throws javax.sound.midi.InvalidMidiDataException;
+	public void midiStart ( String f ) throws javax.sound.midi.InvalidMidiDataException , java.io.IOException, MidiUnavailableException;	
+	public void midiStart ( ) throws javax.sound.midi.InvalidMidiDataException, MidiUnavailableException;
 	public void midiLoop ( ) throws javax.sound.midi.InvalidMidiDataException;
 	public void midiLoop ( int loopCount ) throws javax.sound.midi.InvalidMidiDataException;
 	//public void midiOpen ( java.io.File midfile ) throws javax.sound.midi.InvalidMidiDataException , java.io.IOException;
