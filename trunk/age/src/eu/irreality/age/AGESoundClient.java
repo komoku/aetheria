@@ -15,6 +15,11 @@ import micromod.*;
 import micromod.resamplers.*;
 import micromod.output.*;
 import micromod.output.converters.*; 
+
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Receiver;
+import javax.sound.midi.ShortMessage;
 import javax.sound.sampled.*;
 
 
@@ -95,7 +100,7 @@ public class AGESoundClient implements SoundClient
 	}
 
 	//loads a MIDI file (or not if preloaded) and starts playing it. If the manager was playing another file, playback stops.
-	public void midiStart ( java.io.File midfile ) throws javax.sound.midi.InvalidMidiDataException , java.io.IOException
+	public void midiStart ( java.io.File midfile ) throws javax.sound.midi.InvalidMidiDataException , java.io.IOException, MidiUnavailableException
 	{
 		if ( !isOn() ) return;
 		//if ( seqr == null ) midiInit();
@@ -103,13 +108,27 @@ public class AGESoundClient implements SoundClient
 		if ( curseq == null ) curseq = javax.sound.midi.MidiSystem.getSequence ( midfile );
 		//if ( !seqr.isOpen() ) seqr.open();
 		if ( seqr.isRunning() ) seqr.stop();
+		
 		seqr.setLoopCount ( 0 );
 		seqr.setSequence ( curseq );
+		
+		//for fade-out, did not work
+		/*
+        synthesizer = MidiSystem.getSynthesizer();
+        synthesizer.open();
+
+        if (synthesizer.getDefaultSoundbank() == null) {
+                seqr.getTransmitter().setReceiver(MidiSystem.getReceiver());
+        } else {
+                seqr.getTransmitter().setReceiver(synthesizer.getReceiver());
+        }
+        */
+		
 		seqr.start();
 	}
 
 	//loads a MIDI file (or not if preloaded) and starts playing it. If the manager was playing another file, playback stops.
-	public void midiStart ( String f ) throws javax.sound.midi.InvalidMidiDataException , java.io.IOException
+	public void midiStart ( String f ) throws javax.sound.midi.InvalidMidiDataException , java.io.IOException, MidiUnavailableException
 	{
 		if ( !isOn() ) return;
 		midiStart ( new File ( f ) );
@@ -178,6 +197,85 @@ public class AGESoundClient implements SoundClient
 		seqr = null;
 	}
 
+	
+	//DOES NOT WORK
+	javax.sound.midi.Synthesizer synthesizer;
+	javax.sound.midi.Synthesizer synthDevice;
+	private static final int CHANGE_VOLUME = 7;
+	
+	//DOES NOT WORK
+    public void midiResetGain( double gain )
+    {
+        // make sure the value for gain is valid (between 0 and 1)
+        if( gain < 0.0d )
+            gain = 0.0d;
+        if( gain > 1.0d )
+            gain = 1.0d;
+        
+        int midiVolume = (int) ( gain /* * SoundSystemConfig.getMasterGain() */
+                                 /** (float) Math.abs( fadeOutGain ) * fadeInGain */
+                        * 127.0d );
+        
+        System.err.println("Vol " + midiVolume);
+        
+        if( synthesizer != null )
+        {
+            javax.sound.midi.MidiChannel[] channels = synthesizer.getChannels();
+            System.err.println("Channels: " + channels.length);
+            for( int c = 0; channels != null && c < channels.length; c++ )
+            {
+            	System.err.println("cc " + midiVolume);
+                channels[c].controlChange( CHANGE_VOLUME, midiVolume );
+            }
+        }
+        else if( synthDevice != null )
+        {
+            try
+            {
+                ShortMessage volumeMessage = new ShortMessage();
+                for( int i = 0; i < 16; i++ )
+                {
+                    volumeMessage.setMessage( ShortMessage.CONTROL_CHANGE, i,
+                                              CHANGE_VOLUME, midiVolume );
+                    synthDevice.getReceiver().send( volumeMessage, -1 );
+                }
+            }
+            catch( Exception e )
+            {
+                System.err.println( "Error resetting gain on MIDI device" );
+                e.printStackTrace();
+            }
+        }
+        else if( seqr != null && seqr instanceof Synthesizer )
+        {
+            synthesizer = (javax.sound.midi.Synthesizer) seqr;
+            javax.sound.midi.MidiChannel[] channels = synthesizer.getChannels();
+            for( int c = 0; channels != null && c < channels.length; c++ )
+            {
+                channels[c].controlChange( CHANGE_VOLUME, midiVolume );
+            }
+        }
+        else
+        {
+            try
+            {
+                Receiver receiver = MidiSystem.getReceiver();
+                ShortMessage volumeMessage= new ShortMessage();
+                for( int c = 0; c < 16; c++ )
+                {
+                    volumeMessage.setMessage( ShortMessage.CONTROL_CHANGE, c,
+                                              CHANGE_VOLUME, midiVolume );
+                    receiver.send( volumeMessage, -1 );
+                }
+            }
+            catch( Exception e )
+            {
+                System.err.println( "Error resetting gain on MIDI device" );
+                e.printStackTrace();
+            }
+        }
+    }
+	
 
 	/*
 	 * Did not work:
@@ -198,15 +296,17 @@ public class AGESoundClient implements SoundClient
         }
 	 */
 	
-	/*
-	 * Did not work:
-	 *   public void fadeOut() {
+    //DOES NOT WORK
+    public void midiFadeOut() {
                 double volume = 0.6;
 
                 for (;;) {
-                        if (((volume - 0.05) < 0) || !setVolume(volume)) {
+                		
+                        if (((volume - 0.05) < 0)) {
                                 break;
                         }
+                        midiResetGain(volume);
+                        System.err.println("Gain = " + volume);
                         try {
                                 Thread.sleep(150);
                         } catch (Exception exception) {
@@ -217,14 +317,13 @@ public class AGESoundClient implements SoundClient
                         synthesizer.close();
                         synthesizer = null;
                 }
-                if (sequencer != null) {
-                        if (sequencer.isOpen()) {
-                                sequencer.stop();
+                if (seqr != null) {
+                        if (seqr.isOpen()) {
+                                seqr.stop();
                         }
-                        sequencer.close();
+                        seqr.close();
                 }
         }
-	 */
 	
 	/* Associated with prev. two:
 	 * public void startMidi() {
