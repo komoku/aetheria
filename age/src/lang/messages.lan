@@ -89,10 +89,10 @@ cant.put.into.weight=$container no puede soportar tanto peso.\n
 cant.put.into.volume=$item no cabe en $container.\n
 
 #Cuando intentas poner algo en un $container que realmente no es contenedor.
-put.into.noncontainer=No parece muy útil poner cosas en $container.\n
+cant.put.into.noncontainer=No parece muy útil poner cosas en $container.\n
 
 #Cuando intentas poner algo en un $container que está cerrado.
-put.into.closed=$container está cerrad$oa.\n
+cant.put.into.closed=$container está cerrad$oa.\n
 
 #Cuando intentas mirar algo que no existe
 look.what=¿Qué pretendes mirar?\n

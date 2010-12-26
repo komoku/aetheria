@@ -5800,14 +5800,14 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			write ( io.getColorCode("denial") + 
 					//"No parece muy �til poner cosas en " + ourContainer.constructName2True(1,this) + "." + io.getColorCode("reset") 
-					mundo.getMessages().getMessage("put.into.noncontainer","$container",ourContainer.constructName2True(1,this),new Object[]{this,ourContainer})
+					mundo.getMessages().getMessage("cant.put.into.noncontainer","$container",ourContainer.constructName2True(1,this),new Object[]{this,ourContainer})
 					+ io.getColorCode("reset") );
 			return false;
 		}
 		else if ( ourContainer.isCloseable() && !ourContainer.isOpen() )
 		{
 			writeDenial (
-			mundo.getMessages().getMessage("put.into.closed","$container",ourContainer.constructName2True(1,this),"$oa",((ourContainer.getGender())?"o":"a"),new Object[]{this,ourContainer})
+			mundo.getMessages().getMessage("cant.put.into.closed","$container",ourContainer.constructName2True(1,this),"$oa",((ourContainer.getGender())?"o":"a"),new Object[]{this,ourContainer})
 			);
 			//write ( io.getColorCode("denial")  + ourContainer.constructName2True(1,this) + " est� cerrad" + ((ourContainer.getGender())?"o.":"a.") + io.getColorCode("reset") + "\n"  );
 			return false;
