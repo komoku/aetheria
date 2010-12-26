@@ -2391,7 +2391,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			if ( p.isStandard() ) write( io.getColorCode("denial") + 
 					mundo.getMessages().getMessage("go.noexit",new Object[]{this,p})  //"No parece haber salida en esa direcciï¿½n.\n" 
 					+ io.getColorCode("reset") );
-			else write( io.getColorCode("denial") + "ï¿½Cï¿½mo? ï¿½Ir a dï¿½nde?\n" + io.getColorCode("reset") );
+			else write( io.getColorCode("denial") + mundo.getMessages().getMessage("go.invalid",new Object[]{this,p}) + io.getColorCode("reset") );
 
 			return false;	
 		}	
@@ -2416,7 +2416,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			if ( !endfound )
 			{
 
-				//sinï¿½nimo del anterior
+				//sinonimo del anterior
 				try
 				{	
 					endfound = habitacionActual.execCode("beforeExit" , new Object[] {this,p} );
@@ -5798,12 +5798,18 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	{
 		if ( !ourContainer.isContainer() )
 		{
-			write ( io.getColorCode("denial") + "No parece muy ï¿½til poner cosas en " + ourContainer.constructName2True(1,this) + "." + io.getColorCode("reset") + "\n" );
+			write ( io.getColorCode("denial") + 
+					//"No parece muy ï¿½til poner cosas en " + ourContainer.constructName2True(1,this) + "." + io.getColorCode("reset") 
+					mundo.getMessages().getMessage("put.into.noncontainer","$container",ourContainer.constructName2True(1,this),new Object[]{this,ourContainer})
+					+ io.getColorCode("reset") );
 			return false;
 		}
 		else if ( ourContainer.isCloseable() && !ourContainer.isOpen() )
 		{
-			write ( io.getColorCode("denial")  + ourContainer.constructName2True(1,this) + " estï¿½ cerrad" + ((ourContainer.getGender())?"o.":"a.") + io.getColorCode("reset") + "\n"  );
+			writeDenial (
+			mundo.getMessages().getMessage("put.into.closed","$container",ourContainer.constructName2True(1,this),"$oa",((ourContainer.getGender())?"o":"a"),new Object[]{this,ourContainer})
+			);
+			//write ( io.getColorCode("denial")  + ourContainer.constructName2True(1,this) + " estï¿½ cerrad" + ((ourContainer.getGender())?"o.":"a.") + io.getColorCode("reset") + "\n"  );
 			return false;
 		}
 		return true;
@@ -6752,8 +6758,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				return;
 			}
 		}
-
-		write("No estï¿½s blandiendo ningï¿½n arma ï¿½til para suicidarte.\n");
+		
+		write("No estás blandiendo ningún arma útil para suicidarte.\n");
 
 	}
 

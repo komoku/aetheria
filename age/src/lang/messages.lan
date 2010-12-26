@@ -88,6 +88,12 @@ cant.put.into.weight=$container no puede soportar tanto peso.\n
 #Cuando no puedes poner $item en $container porque no cabe (por volumen)
 cant.put.into.volume=$item no cabe en $container.\n
 
+#Cuando intentas poner algo en un $container que realmente no es contenedor.
+put.into.noncontainer=No parece muy útil poner cosas en $container.\n
+
+#Cuando intentas poner algo en un $container que está cerrado.
+put.into.closed=$container está cerrad$oa.\n
+
 #Cuando intentas mirar algo que no existe
 look.what=¿Qué pretendes mirar?\n
 
@@ -117,6 +123,9 @@ unwield.what=¿Qué arma pretendes enfundar?\n
 
 #Cuando intentas ir hacia un sitio que no se reconoce
 go.where=¿Cómo? ¿Hacia dónde quieres ir?\n
+
+#Cuando intentas ir hacia una salida marcada como no válida (no usado actualmente)
+go.where=¿Cómo? ¿Ir a dónde?\n
 
 #Cuando el verbo ir aparece sin argumentos
 go.nowhere=¿Ir a dónde?\n
