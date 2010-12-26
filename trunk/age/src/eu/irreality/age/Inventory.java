@@ -81,6 +81,11 @@ public class Inventory extends EntityList
 		}
 	}
 	
+	public void clear()
+	{
+		empty();
+	}
+	
 	public int size ( )
 	{
 		return laLista.size ( );
