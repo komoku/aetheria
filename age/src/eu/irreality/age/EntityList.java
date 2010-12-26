@@ -23,6 +23,11 @@ public class EntityList
 		return el;
 	}
 	
+	public void clear()
+	{
+		laLista.clear();
+	}
+	
 	/**
 	* La función addElement de java.util.Vector.
 	*
@@ -91,6 +96,17 @@ public class EntityList
 	public boolean isEmpty ( )
 	{
 		return laLista.isEmpty();
+	}
+	
+	public boolean contains ( Object e )
+	{
+		for ( int i = 0 ; i < size() ; i++ )
+		{
+			Debug.println(laLista);
+			Debug.println("i=" + i);
+			if ( entityAt(i) != null && entityAt(i).equals( e ) ) return true;
+		}
+		return false;
 	}
 	
 	/*general pattern matching: generates vector of matches*/
