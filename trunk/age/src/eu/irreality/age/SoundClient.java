@@ -5,9 +5,12 @@
 package eu.irreality.age;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
 import javax.sound.midi.MidiUnavailableException;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 
 public interface SoundClient
@@ -46,5 +49,8 @@ public interface SoundClient
 	
 	
 	public void stopAllSound();
+	public void audioFadeOut(String audioFileName, double seconds);
+	public void audioFadeIn ( String s , int loopTimes , double seconds , double delay ) throws UnsupportedAudioFileException, LineUnavailableException, java.io.IOException;
+	
 	
 }

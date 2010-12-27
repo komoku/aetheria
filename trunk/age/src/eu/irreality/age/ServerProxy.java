@@ -209,7 +209,17 @@ public class ServerProxy extends Thread implements ARSPConstants
 		else if ( command.equalsIgnoreCase( AUDIO_STOP ) )
 		{
 				if ( cliente.isSoundEnabled() );
-					cliente.getSoundClient().audioStop(arguments);
+				{
+					StringTokenizer st2 = new StringTokenizer(arguments);
+					String file = st2.nextToken();
+					if ( st2.hasMoreTokens() )
+					{
+						double fadeTime = Double.parseDouble(st2.nextToken());
+						cliente.getSoundClient().audioFadeOut(file,fadeTime);
+					}
+					else
+						cliente.getSoundClient().audioStop(file);
+				}
 		}
 		else if ( command.equalsIgnoreCase( AUDIO_START ) )
 		{
@@ -223,7 +233,14 @@ public class ServerProxy extends Thread implements ARSPConstants
 						int loopTimes;
 						if ( (loopTimes=Integer.valueOf(st2.nextToken()).intValue()) > 0 )
 						{
-							cliente.getSoundClient().audioStart(st2.nextToken("").trim(),loopTimes);
+							if ( st.hasMoreTokens() )
+							{
+								double seconds = Double.parseDouble(st.nextToken());
+								double delay = Double.parseDouble(st.nextToken());
+								cliente.getSoundClient().audioFadeIn(st2.nextToken("").trim(),loopTimes,seconds,delay);
+							}
+							else
+								cliente.getSoundClient().audioStart(st2.nextToken("").trim(),loopTimes);
 						}
 					}
 					catch ( NumberFormatException nfe )
