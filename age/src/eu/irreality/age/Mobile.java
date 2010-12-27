@@ -6995,6 +6995,44 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			return false;
 		}
 	}
+	
+	public boolean stopAudioIfAvailable ( String audioFileName , boolean fade )
+	{
+		if ( ! fade ) return stopAudioIfAvailable ( audioFileName );
+		else
+		{
+			SoundClient sc = getSoundClientIfAvailable();
+			if ( sc == null ) return false;
+			try
+			{
+				sc.audioFadeOut(audioFileName,1.0);
+				return true;
+			}
+			catch ( Exception e )
+			{
+				return false;
+			}
+		}
+	}
+	
+	public boolean playAudioIfAvailable ( String audioFileName , int loopTimes , boolean fade )
+	{
+		if ( !fade ) return playAudioIfAvailable ( audioFileName , loopTimes );
+		else
+		{
+			SoundClient sc = getSoundClientIfAvailable();
+			if ( sc == null ) return false;
+			try
+			{
+				sc.audioFadeIn(audioFileName,loopTimes,1.0,1.2);
+				return true;
+			}
+			catch ( Exception e )
+			{
+				return false;
+			}
+		}
+	}
 
 	/*
 	public boolean playMODIfAvailable ( URL modURL )

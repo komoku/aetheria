@@ -604,6 +604,154 @@ public class AGESoundClient implements SoundClient
 	{
 		audioStopUnpreloaded ( new File ( s ) );
 	}
+	
+	public void audioFadeIn ( String s , int loopTimes , double seconds , double delay ) throws UnsupportedAudioFileException, LineUnavailableException, IOException
+	{
+		audioFadeIn ( new File ( s ) , loopTimes , seconds , delay );
+	}
+	
+	public void audioFadeOut ( String s , double seconds )
+	{
+		audioFadeOut ( new File ( s ) , seconds );
+	}
+	
+	/**
+	 * input: time (from 0.0 to 1.0)
+	 * output: gain (from 1.0 to 0.0)
+	 * contract: should output 0.0 or less for 1.0 or more
+	 * @param time
+	 */
+	private double fadeOutFunction ( double time )
+	{
+		return expFade(time);
+	}
+	
+	private double fadeInFunction ( double time )
+	{
+		return 1-expFade(time);
+	}
+	
+	private double cosineFade ( double time )
+	{
+		double angle = time * Math.PI/2;
+		if ( time >= 1.0 ) return 0.0;
+		else
+			return Math.cos(angle);
+	}
+	
+	private double expFade ( double time )
+	{
+		if ( time >= 1.0 ) return 0.0;
+		else
+			return 1.0 / ((6*time+1.0)*(6*time+1.0));
+	}
+	
+	public void audioFadeOut ( final File f , final double seconds )
+	{
+		final BasicPlayer bp = (BasicPlayer) basicPlayers.get(f.getAbsolutePath());
+		if ( bp != null )
+		{
+			Thread thr = new Thread()
+			{
+				public void run()
+				{
+					double gain = 1.0;
+					double iters = 100.0; //number of iters of fade-out
+					double itersDone = 0.0; //iterations done
+					int sleepTime = (int)(seconds * 1000.0 / iters);
+					while ( gain > 0.0 )
+					{
+						itersDone += 1.0;
+						gain = fadeOutFunction ( itersDone / (iters-1) );
+						try 
+						{
+							bp.setGain(gain);
+							//System.err.println("Gain now " + gain);
+							//System.err.println("Gain min " + bp.getMinimumGain());
+						} 
+						catch (BasicPlayerException e1) 
+						{
+							e1.printStackTrace();
+						}
+						try 
+						{
+							sleep(sleepTime);
+						} 
+						catch (InterruptedException e) 
+						{
+							e.printStackTrace();
+						}
+					}
+					audioStopUnpreloaded(f);
+				}
+			};
+			thr.start();
+		}
+	}
+	
+	public void audioFadeIn ( final File f , final int loopTimes , final double seconds , final double delay ) throws UnsupportedAudioFileException, LineUnavailableException, IOException
+	{
+
+			Thread thr = new Thread()
+			{
+				public void run()
+				{
+					try 
+					{
+						sleep ( (int) delay * 1000 );
+					} 
+					catch (InterruptedException e2) 
+					{
+						e2.printStackTrace();
+					}
+					try 
+					{
+						audioStart ( f , loopTimes );
+					} 
+					catch (UnsupportedAudioFileException e2) 
+					{
+						e2.printStackTrace();
+					} 
+					catch (LineUnavailableException e2) 
+					{
+						e2.printStackTrace();
+					} 
+					catch (IOException e2) 
+					{
+						e2.printStackTrace();
+					}
+					final BasicPlayer bp = (BasicPlayer) basicPlayers.get(f.getAbsolutePath());
+					double gain = 0.0;
+					double iters = 100.0; //number of iters of fade-in
+					double itersDone = 0.0; //iterations done
+					int sleepTime = (int)(seconds * 1000.0 / iters);
+					while ( gain < 1.0 )
+					{
+						itersDone += 1.0;
+						gain = fadeInFunction ( itersDone / (iters-1) );
+						try 
+						{
+							bp.setGain(gain);
+							//System.err.println("Gain now " + gain);
+							//System.err.println("Gain min " + bp.getMinimumGain());
+						} 
+						catch (BasicPlayerException e1) 
+						{
+							e1.printStackTrace();
+						}
+						try 
+						{
+							sleep(sleepTime);
+						} 
+						catch (InterruptedException e) 
+						{
+							e.printStackTrace();
+						}
+					}
+				}
+			};
+			thr.start();
+	}
 
 
 

@@ -8,6 +8,8 @@ import java.io.*;
 import java.util.*;
 
 import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class AGESoundClientProxy implements ARSPConstants , SoundClient
 {
@@ -97,9 +99,18 @@ public class AGESoundClientProxy implements ARSPConstants , SoundClient
 		pw.println(AUDIO_START + loopTimes + " " + f );
 		pw.flush();
 	}
+	public void audioFadeIn ( String s , int loopTimes , double seconds , double delay )
+	{
+		pw.println(AUDIO_START + " " + loopTimes + " " + s + " " + seconds + " " + delay);
+	}
 	public void audioStop ( String f )
 	{
 		pw.println(AUDIO_STOP + " " + f );
+		pw.flush();
+	}
+	public void audioFadeOut ( String f , double seconds )
+	{
+		pw.println(AUDIO_STOP + " " + f + " " + seconds);
 		pw.flush();
 	}
 	public void playMOD ( String f , int loopTimes )
