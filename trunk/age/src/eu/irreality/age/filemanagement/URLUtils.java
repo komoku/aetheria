@@ -1,5 +1,6 @@
 package eu.irreality.age.filemanagement;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,6 +22,19 @@ public class URLUtils
 			InputStream str = new FileInputStream ( fileNameOrUrl );
 			return str;
 		} 	
+	}
+	
+	public static URL fileToURL ( String filename )
+	{
+		try 
+		{
+			return new File(filename).toURI().toURL();
+		} 
+		catch (MalformedURLException e) 
+		{
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 }
