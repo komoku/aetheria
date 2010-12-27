@@ -6913,6 +6913,11 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			return false;
 		}
 	}
+	
+	public boolean playMidiIfAvailable ( URL u , int loopCount )
+	{
+		return playMidiIfAvailable ( u.toString() , loopCount );
+	}
 
 	//old version of this method
 	private boolean playMidiIfAvailable ( String midiFileName , boolean loop )
@@ -6926,6 +6931,11 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	public boolean playMidiIfAvailable ( String midiFileName )
 	{
 		return playMidiIfAvailable(midiFileName,0);
+	}
+	
+	public boolean playMidiIfAvailable ( URL u  )
+	{
+		return playMidiIfAvailable ( u.toString() );
 	}
 
 	public boolean loopMidiIfAvailable ( String midiFileName )
@@ -6951,6 +6961,11 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	}
 
 
+	public boolean playAudioIfAvailable ( URL u )
+	{
+		return playAudioIfAvailable(u.toString());
+	}
+	
 	public boolean playAudioIfAvailable ( String audioFileName )
 	{
 		SoundClient sc = getSoundClientIfAvailable();
@@ -6966,6 +6981,11 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		}
 	}
 
+	public boolean playAudioIfAvailable ( URL u , int loopTimes )
+	{
+		return playAudioIfAvailable(u.toString() , loopTimes );
+	}
+	
 	public boolean playAudioIfAvailable ( String audioFileName , int loopTimes )
 	{
 		SoundClient sc = getSoundClientIfAvailable();
@@ -6979,6 +6999,11 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			return false;
 		}
+	}
+	
+	public boolean stopAudioIfAvailable ( URL u  )
+	{
+		return stopAudioIfAvailable ( u.toString() );
 	}
 
 	public boolean stopAudioIfAvailable ( String audioFileName )
@@ -6994,6 +7019,11 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			return false;
 		}
+	}
+	
+	public boolean stopAudioIfAvailable ( URL u , boolean fade  )
+	{
+		return stopAudioIfAvailable ( u.toString() , fade );
 	}
 	
 	public boolean stopAudioIfAvailable ( String audioFileName , boolean fade )
@@ -7013,6 +7043,11 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				return false;
 			}
 		}
+	}
+	
+	public boolean playAudioIfAvailable ( URL u , int loopTimes , boolean fade )
+	{
+		return playAudioIfAvailable(u.toString() , loopTimes , fade );
 	}
 	
 	public boolean playAudioIfAvailable ( String audioFileName , int loopTimes , boolean fade )

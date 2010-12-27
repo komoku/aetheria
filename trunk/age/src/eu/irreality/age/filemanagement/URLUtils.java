@@ -37,4 +37,16 @@ public class URLUtils
 		}
 	}
 	
+	public static URL stringToURL ( String s )
+	{
+		try
+		{
+			return new URL(s);
+		}
+		catch ( MalformedURLException e )
+		{
+			return fileToURL(s);
+		}
+	}
+	
 }
