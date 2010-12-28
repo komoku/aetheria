@@ -991,7 +991,7 @@ public class Player extends Mobile implements Informador
 				//Mirar las salidas personalizadas
 				for ( int i=0 ; i<habitacionActual.otherExits.length ; i++ )
 				{
-					if ( habitacionActual.isValidExit(false,i) && habitacionActual.getExit(false,i).matchExitCommand( StringMethods.getTok( arguments,StringMethods.numToks(arguments,' '), ' ' ) ) )
+					if ( habitacionActual.isValidExit(false,i) && habitacionActual.getExit(false,i).matchExitCommand( arguments /*StringMethods.getTok( arguments,StringMethods.numToks(arguments,' '), ' ' ) */ ) )
 					{
 						ZR_verbo = command;
 						actionArgs[0] = habitacionActual.getExit ( false , i );	
