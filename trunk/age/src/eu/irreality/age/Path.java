@@ -304,7 +304,8 @@ public class Path extends Entity implements Descriptible
 	public boolean matchExitCommand ( String toParse )
 	{
 		for ( int i = 0 ; i < exitCommand.length ; i++ )
-			if ( exitCommand[i].equalsIgnoreCase(toParse) ) return true;
+			//if ( exitCommand[i].equalsIgnoreCase(toParse) ) return true;
+			if ( toParse.toLowerCase().endsWith(exitCommand[i].toLowerCase()) ) return true;
 		return false;
 	}
 	
