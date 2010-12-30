@@ -521,12 +521,24 @@ public class AGESoundClient implements SoundClient
 					{
 						try
 						{
+							/*
+							System.err.println("Seek:");
 							bp.seek(0);
+							System.err.println("Play:");
+							bp.play();
+							*/
+							if ( !isOn() ) return;
+							bp.stop();
+							bp.open(u.openStream());
 							bp.play();
 						}
 						catch ( BasicPlayerException bpe )
 						{
 							bpe.printStackTrace();
+						}
+						catch ( IOException ioe )
+						{
+							ioe.printStackTrace();
 						}
 					}
 					else if ( loopCount > 0 )
@@ -534,12 +546,24 @@ public class AGESoundClient implements SoundClient
 						loopCount--;
 						try
 						{
+							/*
+							System.err.println("Seek:");
 							bp.seek(0);
+							System.err.println("Play:");
+							bp.play();
+							*/
+							if ( !isOn() ) return;
+							bp.stop();
+							bp.open(u.openStream());
 							bp.play();
 						}
 						catch ( BasicPlayerException bpe )
 						{
 							bpe.printStackTrace();
+						}
+						catch ( IOException ioe )
+						{
+							ioe.printStackTrace();
 						}
 					}
 					else
