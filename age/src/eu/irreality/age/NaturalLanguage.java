@@ -105,8 +105,8 @@ public class NaturalLanguage
 			while ( ( linea = filein.readLine() ) != null )
 			{
 				//usamos hashtable.put(key,value)
-				String laClave = StringMethods.getTok( linea , 1 , separator );
-				String elValor = StringMethods.getTok( linea , 2 , separator );
+				String laClave = StringMethods.getTok( linea , 1 , separator ).trim();
+				String elValor = StringMethods.getTok( linea , 2 , separator ).trim();
 				
 				//System.err.println(laClave + " , " + elValor);
 				
@@ -134,8 +134,8 @@ public class NaturalLanguage
 			while ( ( linea = filein.readLine() ) != null )
 			{
 				//usamos hashtable.put(key,value)
-				String laClave = StringMethods.getTok( linea , 2 , separator );
-				String elValor = StringMethods.getTok( linea , 1 , separator );
+				String laClave = StringMethods.getTok( linea , 2 , separator ).trim();
+				String elValor = StringMethods.getTok( linea , 1 , separator ).trim();
 				
 				if ( dejarRepeticiones == false || tabla.get(laClave) == null )
 					tabla.put ( laClave,elValor );	
