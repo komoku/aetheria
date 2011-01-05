@@ -61,6 +61,18 @@ cant.drop.item.weight=No puedes dejar aquí $item, hay demasiado peso.\n
 #Cuando no se puede dejar un objeto por su volumen
 cant.drop.item.volume=No puedes dejar aquí $item, no hay espacio suficiente.\n
 
+#Cuando intentas abrir una cosa no abrible ($item)
+item.not.openable=Es absurdo abrir eso.
+
+#Cuando intentas cerrar una cosa no cerrable ($item)
+item.not.closeable=Es absurdo cerrar eso.
+
+#Cuando intentas abrir con llave una cosa no abrible con llave ($item)
+item.not.unlockable=No parece que se pueda abrir eso de ese modo.
+
+#Cuando intentas cerrar con llave una cosa no cerrable con llave ($item)
+item.not.lockable=No parece que se pueda cerrar eso de ese modo.
+
 #Cuando intentas blandir algo que no es un arma
 wield.non.weapon=No parece que $item sea un arma.\n
 

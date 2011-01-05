@@ -93,6 +93,9 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	//emulador de numeros aleatorios
 	private Random aleat;
 	
+	//mundo
+	private World mundo;
+	
 	
 	protected boolean properName = false; //marks names by proper as default
 	
@@ -142,6 +145,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	public Item createNewInstance( World mundo , boolean cloneContents , boolean cloneParts ) 
 	{
 		Item it = (Item) this.clone();
+		this.mundo=mundo;
 		it.inheritsFrom = 0;
 		
 		if ( this.isInstanceOf == 0 )
@@ -403,6 +407,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	*/
 	public void constructItem ( World mundo , String itemfile , boolean allowInheritance , String itemtype ) throws IOException, FileNotFoundException
 	{
+		this.mundo=mundo;
 		String linea;
 		String id_linea;
 		FileInputStream fp = new FileInputStream ( itemfile );
@@ -649,6 +654,9 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	
 		//type	
 		itemType = itemtype;
+		
+		//world
+		this.mundo=mundo;
 	
 		//default values
 		canGet=true; isVirtual=false; enabled=true;
@@ -1700,7 +1708,8 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		String descriptionText = "";
 		if ( !isOpenable() )
 		{
-			return "Es absurdo abrir eso.";
+			return //"Es absurdo abrir eso.";
+				mundo.getMessages().getMessage("item.not.openable",new Object[]{this});
 		}
 		//else if ( !isUnlocked() ) 
 		//{
@@ -1776,7 +1785,8 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	{
 		if ( !isCloseable() )
 		{
-			return "Es absurdo cerrar eso.";
+			return //"Es absurdo cerrar eso.";
+				mundo.getMessages().getMessage("item.not.closeable",new Object[]{this});
 		}
 		else
 		{
@@ -1843,7 +1853,8 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	{
 		if ( !isUnlockable() )
 		{
-			return "No parece que se pueda abrir eso de ese modo.";
+			return //"No parece que se pueda abrir eso de ese modo.";
+				mundo.getMessages().getMessage("item.not.unlockable",new Object[]{this});
 		}
 		else
 		{
@@ -1979,7 +1990,8 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	{
 		if ( !isLockable() )
 		{
-			return "No parece que se pueda cerrar eso de ese modo.";
+			return //"No parece que se pueda cerrar eso de ese modo.";
+			mundo.getMessages().getMessage("item.not.lockable",new Object[]{this});
 		}
 		else
 		{
