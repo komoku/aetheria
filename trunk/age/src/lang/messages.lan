@@ -205,6 +205,9 @@ undefined.action=¿Cómo? ¿$command?\n
 #Cuando la propiedad noPronounDisambiguation de un jugador está puesto a true y se usa un pronombre "lo/la/los/las" donde la acción anterior se refería a dos entidades
 ambiguous.pronoun=No entiendo muy bien una orden pronominal cuando la orden anterior se refería a dos objetos.\n
 
+#Cuando intentas volver pero no hay ninguna salida que conduzca a la habitación anterior
+cant.go.back=No ves el modo de volver...
+
 #Combate: acierto con arma, daño numérico ($1 ataca a $2 con $weapon, acierta, le inflige $damage daño)
 someone.hits.someone.numeric=$1 acierta a $2 con $weapon infligiéndole $damage puntos de daño...\n
 enemy.hits.you.numeric=$1 te acierta con $weapon infligiéndole $damage puntos de daño...\n
