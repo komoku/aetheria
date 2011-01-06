@@ -1046,7 +1046,7 @@ public class Player extends Mobile implements Informador
 			//si no hemos hecho return al llegar aquí, es que no hay salida que nos lleve a la habitación anterior
 			if ( actionArgs[0] == null )
 			{
-				escribirDenegacionComando(io.getColorCode("denial") + "No ves el modo de volver...\n" + io.getColorCode("reset"));
+				escribirDenegacionComando(io.getColorCode("denial") + mundo.getMessages().getMessage("cant.go.back",new Object[]{this,arguments}) + io.getColorCode("reset"));
 				ZR_verbo = command;
 				cancelPending();
 				return false;
