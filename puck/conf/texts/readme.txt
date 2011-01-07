@@ -21,7 +21,7 @@ Mail del autor, solrac888 arroba yahoo punto com
 
 INFORMACIÓN DE COPYRIGHT Y LICENCIAS
 
-Aetheria Game Engine es (c) 2000-2010 Carlos Gómez Rodríguez (Al-Khwarizmi).
+Aetheria Game Engine es (c) 2000-2011 Carlos Gómez Rodríguez (Al-Khwarizmi).
 
 El código propio de Aetheria Game Engine se distribuye libremente con licencia BSD (véase license.txt), y se puede obtener en http://code.google.com/p/aetheria
 
