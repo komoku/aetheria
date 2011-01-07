@@ -130,6 +130,7 @@
 			<fileset dir="${age}/dist">
 				<exclude name="worlds/Morluck/**"/>
 				<exclude name="worlds/Morluck"/>
+				<exclude name="readme.txt"/> <!--devel kit has its own different readme-->
 			</fileset>
 		</copy>
 		<copydir src="${dist}" dest="${fulldist}"/>

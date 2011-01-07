@@ -4,6 +4,12 @@ Aetheria Game Engine permite jugar a todo tipo de juegos basados en texto, mono 
 
 Para ello, tienes que tener instalado Java versión 1.6 o superior. Ejecuta el fichero simpleage.bat en Windows (simpleage.sh en Linux, simpleage.command en Mac) y escoge el mundo que quieres jugar.
 
+Más información: 
+
+Foro de AGE, http://foro.caad.es/viewforum.php?f=31 
+Web del proyecto en Google Code, http://code.google.com/p/aetheria
+Mail del autor, solrac888 arroba yahoo punto com
+
 
 INFORMACIÓN DE COPYRIGHT Y LICENCIAS
 

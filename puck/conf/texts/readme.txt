@@ -10,6 +10,12 @@ Para ejecutarlo, con Java instalado, usa el fichero puck.bat en Windows (puck.sh
 
 Puedes encontrar documentación para aprender a crear juegos con PUCK en http://www.caad.es/aetheria/doc/
 
+Más información: 
+
+Foro de AGE, http://foro.caad.es/viewforum.php?f=31 
+Web del proyecto en Google Code, http://code.google.com/p/aetheria
+Mail del autor, solrac888 arroba yahoo punto com
+
 
 INFORMACIÓN DE COPYRIGHT Y LICENCIAS
 
