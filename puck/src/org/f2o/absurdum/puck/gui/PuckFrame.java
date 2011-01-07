@@ -38,6 +38,7 @@ import org.f2o.absurdum.puck.gui.clipboard.CopyAction;
 import org.f2o.absurdum.puck.gui.clipboard.CutAction;
 import org.f2o.absurdum.puck.gui.clipboard.PasteAction;
 import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
+import org.f2o.absurdum.puck.gui.dialog.DocumentationLinkDialog;
 import org.f2o.absurdum.puck.gui.dialog.ExecuteDialog;
 import org.f2o.absurdum.puck.gui.dialog.FindEntityDialog;
 import org.f2o.absurdum.puck.gui.dialog.IconSizesDialog;
@@ -794,13 +795,26 @@ public class PuckFrame extends JFrame
 		
 		
 		JMenu helpMenu = new JMenu(Messages.getInstance().getMessage("menu.help"));
-		JHelpAction.startHelpWorker("help/PUCKHelp.hs");
-		JHelpAction helpTocAction = JHelpAction.getShowHelpInstance(Messages.getInstance().getMessage("menu.help.toc"));
-		JHelpAction helpContextSensitiveAction = JHelpAction.getTrackInstance(Messages.getInstance().getMessage("menu.help.context"));
-		final JMenuItem helpTocMenuItem = new JMenuItem(helpTocAction);
-		final JMenuItem helpContextSensitiveMenuItem = new JMenuItem(helpContextSensitiveAction);
-		helpMenu.add(helpTocMenuItem);
-		helpMenu.add(helpContextSensitiveMenuItem);
+		//JHelpAction.startHelpWorker("help/PUCKHelp.hs");
+		//JHelpAction helpTocAction = JHelpAction.getShowHelpInstance(Messages.getInstance().getMessage("menu.help.toc"));
+		//JHelpAction helpContextSensitiveAction = JHelpAction.getTrackInstance(Messages.getInstance().getMessage("menu.help.context"));
+		//final JMenuItem helpTocMenuItem = new JMenuItem(helpTocAction);
+		//final JMenuItem helpContextSensitiveMenuItem = new JMenuItem(helpContextSensitiveAction);
+		//helpMenu.add(helpTocMenuItem);
+		//helpMenu.add(helpContextSensitiveMenuItem);
+		
+		final JMenuItem helpMenuItem = new JMenuItem(Messages.getInstance().getMessage("menu.help.toc"));
+		helpMenuItem.addActionListener(new ActionListener()
+		{
+			public void actionPerformed ( ActionEvent e )
+			{
+				DocumentationLinkDialog dial = new DocumentationLinkDialog ( PuckFrame.this , true );
+				dial.setVisible(true);
+			}
+		}
+		);
+		helpMenu.add(helpMenuItem);
+		
 		
 		mainMenuBar.add(helpMenu);
 		
