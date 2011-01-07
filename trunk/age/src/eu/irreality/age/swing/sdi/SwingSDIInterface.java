@@ -90,7 +90,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 
 	public static String getVersion ( )
 	{
-		return "Swing-based simplified SDI client, v0.1";
+		return "Swing-based simplified SDI client, v1.0";
 	}
 
 

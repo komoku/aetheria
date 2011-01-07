@@ -100,6 +100,7 @@
 				<include name="*.opt"/>
 			</fileset>
 			<fileset dir="${conf}/scripts"/>
+			<fileset dir="${conf}/texts"/>
 		</copy>
 		<!--
 		<copy todir="${dist}/lang">
