@@ -2,7 +2,9 @@ AETHERIA GAME ENGINE: DEVELOPER'S KIT
 
 Aetheria Game Engine permite jugar a todo tipo de juegos basados en texto, mono y multijugador; en sistemas Windows, Linux y Mac.
 
-Para ello, tienes que tener instalado Java versión 1.6 o superior. Ejecuta el fichero simpleage.bat en Windows (simpleage.sh en Linux, simpleage.command en Mac) y escoge el mundo que quieres jugar.
+Para ello, tienes que tener instalado Java versión 1.6 o superior. Si no lo tienes, puedes obtenerlo gratis en www.java.com
+
+Ejecuta el fichero simpleage.bat en Windows (simpleage.sh en Linux, simpleage.command en Mac) y escoge el mundo que quieres jugar.
 
 Además, este kit del desarrollador contiene el entorno de desarrollo PUCK que permite crear fácilmente juegos para Aetheria Game Engine.
 
