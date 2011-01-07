@@ -139,9 +139,10 @@
 		<echo message="Generando distribución de PUCK..."/>
 		<echo message="Copiando jar..."/>
 		<copy file="${build}/${corejar}" todir="${dist}"/>
-		<echo message="Copiando scripts..."/>
+		<echo message="Copiando scripts y textos..."/>
 		<copy todir="${dist}">
 			<fileset dir="${conf}/scripts"/>
+			<fileset dir="${conf}/texts"/>
 		</copy>
 		<echo message="Copiando bibliotecas..."/>
 		<copy todir="${dist}/lib">

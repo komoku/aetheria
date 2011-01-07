@@ -71,7 +71,7 @@ public class SwingAetheriaGameLoader extends JInternalFrame implements Informado
 
 	public static String getVersion ( )
 	{
-		return "Swing-based MDI interface with colored text output, 0.2.1";
+		return "Swing-based MDI interface with colored text output, version 1.0";
 	}
 
 
