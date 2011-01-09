@@ -26,6 +26,11 @@ public class MobileList extends EntityList
 			addElement(m);	
 	}
 	
+	public void add ( Mobile m )
+	{
+		addElement(m);
+	}
+	
 	
 	/**
 	* La función removeElement de java.util.Vector.
