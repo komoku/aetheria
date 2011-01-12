@@ -377,8 +377,10 @@ public class NaturalLanguage
 		if ( s == null ) return null;
 		String temp = StringMethods.textualSubstitution ( StringMethods.textualSubstitution ( s , " a el" , " al" ) , " de el" , " del" );
 		temp = temp.trim();
-		temp = Character.toUpperCase(temp.charAt(0)) + temp.substring(1);
-		if ( temp.charAt(temp.length()-1) != '.' ) temp += ".";
+		if ( temp.length() > 0 )
+			temp = Character.toUpperCase(temp.charAt(0)) + temp.substring(1);
+		if ( temp.length() > 0 )
+			if ( temp.charAt(temp.length()-1) != '.' ) temp += ".";
 		return temp;
 	}
 	
@@ -387,8 +389,10 @@ public class NaturalLanguage
 		if ( s == null ) return null;
 		String temp = StringMethods.textualSubstitution ( StringMethods.textualSubstitution ( s , " a el" , " al" ) , " de el" , " del" );
 		//temp = temp.trim();
-		temp = Character.toUpperCase(temp.charAt(0)) + temp.substring(1);
-		if ( temp.charAt(temp.length()-1) != '\n' && temp.charAt(temp.length()-1) != '.' ) temp += ".";
+		if ( temp.length() > 0 )
+			temp = Character.toUpperCase(temp.charAt(0)) + temp.substring(1);
+		if ( temp.length() > 0 )
+			if ( temp.charAt(temp.length()-1) != '\n' && temp.charAt(temp.length()-1) != '.' ) temp += ".";
 		return temp;
 	}
 	
