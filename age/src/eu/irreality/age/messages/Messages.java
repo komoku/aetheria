@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import bsh.This;
@@ -22,6 +24,9 @@ public class Messages
 	private static Messages defaultInstance;
 	
 	private Properties properties;
+	
+	//this map stores messages that are modified temporarily (for one use only).
+	private Map tempChanged = new HashMap();
 
 	public static String defaultMessagePath = Paths.LANG_FILES_PATH + "/messages.lan";
 	
@@ -61,9 +66,20 @@ public class Messages
 	    properties.load( new InputStreamReader ( is , "UTF-8" ) );
 	}
 	
+	private String getEntryForKey ( String key )
+	{
+		String tempChangedEntry = (String) tempChanged.get(key);
+		if ( tempChangedEntry != null )
+		{
+			tempChanged.remove(key); //remove temporary mapping
+			return tempChangedEntry;
+		}
+		return properties.getProperty(key);
+	}
+	
 	public String getMessage ( String key )
 	{
-		String mess = properties.getProperty(key);
+		String mess = getEntryForKey ( key );
 		if ( mess == null && !(this == getDefaultInstance()) ) mess = getDefaultInstance().getMessage(key); //fallback to default instance
 		return ( mess != null ? mess : "??" + key + "??" );
 	}
@@ -90,7 +106,7 @@ public class Messages
 			}
 		}
 		
-		String mess = properties.getProperty(key);
+		String mess = getEntryForKey ( key );
 		if ( mess == null && !(this == getDefaultInstance()) ) mess = getDefaultInstance().getMessage(key,argumentsForScriptCode); //fallback
 		return ( mess != null ? mess : "??" + key + "??" );
 	}
@@ -105,6 +121,11 @@ public class Messages
 	public void setMessage ( String key , String message )
 	{
 		properties.setProperty( key , message );
+	}
+	
+	public void setNextMessage ( String key , String message )
+	{
+		tempChanged.put(key,message);
 	}
 	
 	public String getMessage ( String key , String placeholder , String substitution )
