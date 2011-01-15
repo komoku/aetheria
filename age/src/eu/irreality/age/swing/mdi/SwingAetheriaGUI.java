@@ -142,7 +142,7 @@ public class SwingAetheriaGUI extends JFrame
 		}
 		 */
 
-		super("Aetheria Game Engine, Beta v0.7");
+		super("Aetheria Game Engine, v 1.0");
 		instance = this;
 		
 		//obsolete

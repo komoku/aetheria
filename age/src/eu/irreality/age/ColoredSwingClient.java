@@ -429,11 +429,13 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	{
 		JMenu colorConfigurationMenu = new JMenu("Temas de color");
 		final JCheckBoxMenuItem fullScreenOption = new JCheckBoxMenuItem("Pantalla completa",window.isFullScreenMode());
+		final JCheckBoxMenuItem soundOption = new JCheckBoxMenuItem("Sonido",true);
 		JMenuBar mb = window.getTheJMenuBar();
 		window.setTheJMenuBar(mb); //nótese el "the", es para que la tenga como atributo. Si luego se quita para el modo fullscreen se puede volver a poner.
 		clientConfigurationMenu.add ( colorConfigurationMenu );
 		if ( window.supportsFullScreen() )
 			clientConfigurationMenu.add ( fullScreenOption );
+		clientConfigurationMenu.add(soundOption);
 		JRadioButtonMenuItem itemDefaultJuego = new JRadioButtonMenuItem("Por defecto (juego)",true);
 		JRadioButtonMenuItem itemDefault = new JRadioButtonMenuItem("Por defecto (AGE)",false);
 		JRadioButtonMenuItem itemPergamino = new JRadioButtonMenuItem("Pergamino",false);
@@ -481,6 +483,22 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 				else
 				{
 					window.setFullScreenMode(false);
+				}
+			}
+		} );
+		soundOption.addActionListener ( new ActionListener()
+		{
+			public void actionPerformed ( ActionEvent evt )
+			{
+				if ( soundOption.isSelected() )
+				{
+					AGESoundClient asc = (AGESoundClient)getSoundClient();
+					asc.activate();
+				}
+				else
+				{
+					AGESoundClient asc = (AGESoundClient)getSoundClient();
+					asc.deactivate();
 				}
 			}
 		} );

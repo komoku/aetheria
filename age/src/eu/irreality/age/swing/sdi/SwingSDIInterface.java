@@ -134,12 +134,11 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 									}
 								}
 									
-								write("Aetheria Game Engine v 0.5 Beta Distribution\n");
+								write("Aetheria Game Engine v 1.0\n");
 
 								//areaTexto.setText("Aetheria Game Engine v 0.4.7b Beta Distribution\n");
-								write("© 1999-2010 Carlos Gómez (solrac888@yahoo.com)\n");
-								write("Biblioteca BeanShell creada por Pat Niemeyer (pat@pat.net) y bajo licencia LGPL (ver docs/LGPL.txt, código fuente en www.beanshell.org)\n");
-
+								write("© 1999-2011 Carlos Gómez (solrac888@yahoo.com)\n");
+								write("Véase license.txt para consultar la licencia de AGE y del software de terceros incluido.\n");
 
 								write("\n=============================================================");
 								write("\n" + io.getColorCode("information") + "Engine-related Version Info:");
