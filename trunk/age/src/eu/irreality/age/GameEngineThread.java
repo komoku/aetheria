@@ -203,6 +203,7 @@ public class GameEngineThread extends Thread
 			serverConfigurationMenu.add(reinitItem);
 		}
 		mb.add ( serverConfigurationMenu );
+		mb.revalidate();
 		window.repaint();
 	}
 	
