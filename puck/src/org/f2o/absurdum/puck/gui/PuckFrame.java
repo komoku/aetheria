@@ -45,6 +45,7 @@ import org.f2o.absurdum.puck.gui.dialog.IconSizesDialog;
 import org.f2o.absurdum.puck.gui.dialog.ShowHideDialog;
 import org.f2o.absurdum.puck.gui.graph.GraphEditingPanel;
 import org.f2o.absurdum.puck.gui.graph.WorldNode;
+import org.f2o.absurdum.puck.gui.panels.BSHCodeFrame;
 import org.f2o.absurdum.puck.gui.panels.GraphElementPanel;
 import org.f2o.absurdum.puck.gui.panels.WorldPanel;
 import org.f2o.absurdum.puck.i18n.Messages;
@@ -914,6 +915,7 @@ public class PuckFrame extends JFrame
 		GraphElementPanel.emptyQueue();
 		graphPanel.clear();
 		propPanel.clear();
+		BSHCodeFrame.closeAllInstances();
 		WorldPanel wp = new WorldPanel(graphPanel);
 		WorldNode wn = new WorldNode(wp);
 		graphPanel.setWorldNode(wn);
