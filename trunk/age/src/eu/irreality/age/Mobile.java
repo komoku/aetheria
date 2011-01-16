@@ -5071,10 +5071,23 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		catch ( WeightLimitExceededException wlee )
 		{
 			write( io.getColorCode("denial") + "No puedes vestir eso, pesa demasiado." + ".\n" + io.getColorCode("reset") );	
+			return false;
 		}
 		catch ( VolumeLimitExceededException vlee )
 		{
 			write( io.getColorCode("denial") + "No puedes blandir eso, pesa demasiado." + ".\n" + io.getColorCode("reset") );
+			return false;
+		}
+		
+		//ejecutar eventos onWear
+		try
+		{	
+			it.execCode("onWear",new Object[] {this,usedLimbs} );
+		}
+		catch ( bsh.TargetError te )
+		{
+			write( io.getColorCode("error") + "bsh.TargetError found at event onWear , item " + it + io.getColorCode("reset") + "\n"  );
+			writeError(ExceptionPrinter.getExceptionReport(te));
 		}
 
 		return true;
@@ -5286,9 +5299,11 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		if ( wornItems == null ) return false;
 
 		boolean success = wornItems.removeItem(it);
-
+		
 		if ( success )
 		{
+			
+			List usedLimbs = new Vector();
 
 			Inventory ourLimbs = getFlattenedPartsInventory();
 			for ( int i = 0 ; i < ourLimbs.size() ; i++ )
@@ -5297,6 +5312,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				if ( curLimb.getRelationshipPropertyValueAsBoolean(it,"wears") )
 				{
 					curLimb.setRelationshipProperty(it,"wears",false);
+					usedLimbs.add(curLimb);
 				}
 			}
 
@@ -5306,6 +5322,17 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			//habitacionActual.reportActionAuto ( this , null , "$1 se quita " + it.constructName2OneItem() + ".\n" , false );
 			habitacionActual.reportActionAuto ( this , null , mundo.getMessages().getMessage("someone.unwears.item","$item",it.constructName2OneItem(),new Object[]{this,it}) , false );
 
+			//ejecutar eventos onUnwear
+			try
+			{	
+				it.execCode("onUnwear",new Object[] {this,usedLimbs} );
+			}
+			catch ( bsh.TargetError te )
+			{
+				write( io.getColorCode("error") + "bsh.TargetError found at event onUnwear , item " + it + io.getColorCode("reset") + "\n"  );
+				writeError(ExceptionPrinter.getExceptionReport(te));
+			}
+			
 			return true;
 
 		}
@@ -5839,7 +5866,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			}
 			catch ( bsh.TargetError te )
 			{
-				write( io.getColorCode("error") + "bsh.TargetError found at event onGet , item number " + ourItem.getID() + io.getColorCode("reset") + "\n"  );
+				write( io.getColorCode("error") + "bsh.TargetError found at event onPutInside , item number " + ourItem.getID() + io.getColorCode("reset") + "\n"  );
 				writeError(ExceptionPrinter.getExceptionReport(te));
 			}
 
@@ -6264,6 +6291,18 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			write( io.getColorCode("denial") + mundo.getMessages().getMessage("cant.drop.item.volume","$item",ourItem.constructName2True(1,this),new Object[]{this,ourItem} ) /*+ "\n"*/ + io.getColorCode("reset"));
 			return false;
 		}
+		
+		//ejecutar eventos onDrop
+		try
+		{	
+			ourItem.execCode("onDrop",new Object[] {this} );
+		}
+		catch ( bsh.TargetError te )
+		{
+			write( io.getColorCode("error") + "bsh.TargetError found at event onDrop , item " + ourItem + io.getColorCode("reset") + "\n"  );
+			writeError(ExceptionPrinter.getExceptionReport(te));
+		}
+		
 		//setNewState( 1 /*IDLE*/, 1 );
 		//ZR_verbo = command;
 		return true;
