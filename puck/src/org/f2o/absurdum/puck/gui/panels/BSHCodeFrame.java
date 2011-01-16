@@ -129,6 +129,7 @@ public class BSHCodeFrame extends JFrame
 			bcf.codePanel.unsetCodeFrame();
 			bcf.dispose();
 		}
+		instances.clear();
 	}
 	
 	//public BSHCodeFrame( String title , JEditorPane toWriteTo )
