@@ -36,7 +36,7 @@ public class PuckConfiguration
 	{
 		defaultProperties = new Properties();
 		defaultProperties.setProperty("nRecentFiles", "5");
-		defaultProperties.setProperty("skin", "naive");
+		defaultProperties.setProperty("skin", "jenverde");
 		
 		defaultProperties.setProperty("roomDisplaySize", "20");
 		defaultProperties.setProperty("itemDisplaySize", "15");
@@ -74,6 +74,8 @@ public class PuckConfiguration
 		defaultProperties.setProperty("windowLocationY","0");
 		
 		defaultProperties.setProperty("dividerLocation","0.60");
+		
+		defaultProperties.setProperty("availableSkins","naive,urba1,orco,jenverde");
 		
 	}
 	

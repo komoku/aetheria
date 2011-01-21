@@ -43,11 +43,17 @@ import org.f2o.absurdum.puck.gui.dialog.ExecuteDialog;
 import org.f2o.absurdum.puck.gui.dialog.FindEntityDialog;
 import org.f2o.absurdum.puck.gui.dialog.IconSizesDialog;
 import org.f2o.absurdum.puck.gui.dialog.ShowHideDialog;
+import org.f2o.absurdum.puck.gui.graph.AbstractEntityNode;
+import org.f2o.absurdum.puck.gui.graph.CharacterNode;
 import org.f2o.absurdum.puck.gui.graph.GraphEditingPanel;
+import org.f2o.absurdum.puck.gui.graph.ItemNode;
+import org.f2o.absurdum.puck.gui.graph.RoomNode;
+import org.f2o.absurdum.puck.gui.graph.SpellNode;
 import org.f2o.absurdum.puck.gui.graph.WorldNode;
 import org.f2o.absurdum.puck.gui.panels.BSHCodeFrame;
 import org.f2o.absurdum.puck.gui.panels.GraphElementPanel;
 import org.f2o.absurdum.puck.gui.panels.WorldPanel;
+import org.f2o.absurdum.puck.gui.skin.ImageManager;
 import org.f2o.absurdum.puck.i18n.Messages;
 import org.w3c.dom.Document;
 
@@ -71,6 +77,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * @author carlos
@@ -113,7 +120,28 @@ public class PuckFrame extends JFrame
 			setTitle(Messages.getInstance().getMessage("frame.title") + " [untitled file]");
 	}
 	
+	/**
+	 * Call if skin has been changed, to refresh the icons.
+	 */
+	private void refreshToolBar()
+	{
+		if ( tools != null )
+			left.remove(tools);
+		tools = new PuckToolBar(graphPanel , propPanel , this);
+		left.add(tools,BorderLayout.NORTH);
+	}
 	
+	public void setSkin ( String skinName )
+	{
+		ImageManager.getInstance().setSkin(skinName);
+		refreshToolBar();
+		CharacterNode.refreshIcon();
+		AbstractEntityNode.refreshIcon();
+		ItemNode.refreshIcon();
+		RoomNode.refreshIcon();
+		SpellNode.refreshIcon();
+		repaint();
+	}
 	
 	public void runCurrentFileInAge ( )
 	{
@@ -790,6 +818,32 @@ public class PuckFrame extends JFrame
 				}
 		);
 		optionsMenu.add(showHideMenuItem);
+		
+		String skinList = PuckConfiguration.getInstance().getProperty("availableSkins");
+		if ( skinList != null && skinList.trim().length() > 0 )
+		{
+			JMenu skinsMenu = new JMenu(Messages.getInstance().getMessage("menu.skins"));
+			StringTokenizer st = new StringTokenizer(skinList,", ");
+			ButtonGroup skinButtons = new ButtonGroup();
+			while ( st.hasMoreTokens() )
+			{
+				final String nextSkin = st.nextToken();
+				final JRadioButtonMenuItem skinMenuItem = new JRadioButtonMenuItem(nextSkin);
+				skinMenuItem.addActionListener( new ActionListener()
+				{
+					public void actionPerformed ( ActionEvent e )
+					{
+						setSkin(nextSkin);
+						skinMenuItem.setSelected(true);
+					}
+				}
+				);
+				if ( nextSkin.equals(PuckConfiguration.getInstance().getProperty("skin")) ) skinMenuItem.setSelected(true);
+				skinsMenu.add(skinMenuItem);
+				skinButtons.add(skinMenuItem);
+			}
+			optionsMenu.add(skinsMenu);
+		}
 		
 		mainMenuBar.add(optionsMenu);
 		

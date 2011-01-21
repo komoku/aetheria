@@ -49,6 +49,12 @@ public class ImageManager
 		System.out.println("Skin " + skin + " created.");
 	}
 	
+	public void setSkin ( String skinName )
+	{
+		skin = new Skin(skinName); //getImage, loadImage, etc. will go to the new image locations
+		codesToImages.clear(); //clears the image cache
+	}
+	
 	private Image loadImageFromFile ( String pathToFile ) throws IOException
 	{
 		System.out.println("Loading image " + pathToFile);
