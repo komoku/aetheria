@@ -141,6 +141,7 @@ public class PuckFrame extends JFrame
 		RoomNode.refreshIcon();
 		SpellNode.refreshIcon();
 		repaint();
+		PuckConfiguration.getInstance().setProperty("skin", skinName);
 	}
 	
 	public void runCurrentFileInAge ( )
