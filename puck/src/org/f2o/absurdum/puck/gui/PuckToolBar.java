@@ -38,15 +38,7 @@ public class PuckToolBar extends JToolBar
 	
 	private PropertiesPanel associatedPropertiesPanel;
 	
-	private final String ADD_ROOM_IMAGE="images/addRoom.gif";
-	private final String ADD_ITEM_IMAGE="images/addItem.gif";
-	private final String ADD_CHAR_IMAGE="images/addChar.gif";
-	private final String ADD_SPELL_IMAGE="images/addSpell.gif";
-	private final String ADD_ABSTRACT_IMAGE="images/addAbstract.gif";
-	private final String ADD_STRUCT_ARROW_IMAGE="images/addStruct.gif";
-	private final String ZOOM_IMAGE="images/zoom.gif";
-	private final String MOVE_IMAGE="images/move.gif";
-	private final String GO_IMAGE="images/goButton.gif";
+
 	
 	public PuckToolBar ( GraphEditingPanel gep , PropertiesPanel right , PuckFrame frame )
 	{

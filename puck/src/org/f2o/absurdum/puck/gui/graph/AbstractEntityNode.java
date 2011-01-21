@@ -115,6 +115,11 @@ public class AbstractEntityNode extends Node
 	
 	private static Image icon = ImageManager.getInstance().getImage("abstract");
 	
+	public static void refreshIcon()
+	{
+		icon = ImageManager.getInstance().getImage("abstract");
+	}
+	
 	/*
 	private static Image icon = null;
 	private static final String IMAGE_FILE = "images/abstract.gif";

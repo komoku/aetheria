@@ -126,6 +126,11 @@ public class RoomNode extends Node
 		}
 	}
 	
+	public static void refreshIcon()
+	{
+		icon = ImageManager.getInstance().getImage("room");
+	}
+	
 	public void paint ( Graphics g  )
 	{
 		

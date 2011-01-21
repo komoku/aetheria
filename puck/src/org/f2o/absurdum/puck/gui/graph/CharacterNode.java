@@ -114,6 +114,11 @@ public class CharacterNode extends Node
 	
 	private static Image icon = ImageManager.getInstance().getImage("char");
 	
+	public static void refreshIcon()
+	{
+		icon = ImageManager.getInstance().getImage("char");
+	}
+	
 	//private static final String IMAGE_FILE = "images/guy.gif";
 	
 	/*

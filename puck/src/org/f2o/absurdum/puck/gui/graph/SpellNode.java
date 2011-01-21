@@ -114,6 +114,11 @@ public class SpellNode extends Node
 	
 	private static Image icon = ImageManager.getInstance().getImage("spell");
 	
+	public static void refreshIcon()
+	{
+		icon = ImageManager.getInstance().getImage("spell");
+	}
+	
 	/*
 	private static Image icon = null;
 	private static final String IMAGE_FILE = "images/spell.gif";

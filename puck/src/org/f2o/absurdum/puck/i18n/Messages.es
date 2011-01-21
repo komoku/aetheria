@@ -137,6 +137,7 @@ menu.help.context=Ayuda contextual
 menu.font.size=Tamaño de fuente
 menu.font.more=Aumentar
 menu.font.less=Disminuir
+menu.skins=Cambiar skin
 tab.names=Nombres
 tab.codeprop=Código y propiedades
 tab.openclose=Abrir/Cerrar

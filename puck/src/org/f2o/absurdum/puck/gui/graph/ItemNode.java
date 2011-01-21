@@ -113,6 +113,11 @@ public class ItemNode extends Node
 	
 	private static Image icon = ImageManager.getInstance().getImage("item");
 	
+	public static void refreshIcon()
+	{
+		icon = ImageManager.getInstance().getImage("item");
+	}
+	
 	/*
 	private static Image icon = null;
 	private static final String IMAGE_FILE = "images/key.gif";
