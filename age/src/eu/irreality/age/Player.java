@@ -185,6 +185,11 @@ public class Player extends Mobile implements Informador
 		forced = true;
 		force_string = s;
 	}
+	
+	public void enqueueCommand(String s)
+	{
+		commandQueue.add(s);
+	}
 
 	public void setCommandString(String s)
 	{
@@ -424,7 +429,8 @@ public class Player extends Mobile implements Informador
 		String originalTrimmedCommandString = null; //sin sustituir pronombres.
 
 		//mirar si cola de comandos vacia
-		if ( !commandQueue.isEmpty() )
+		//el !forced es porque si hemos forzado un comando, pasa por delante de la cola
+		if ( !commandQueue.isEmpty() && !forced )
 		{
 
 			if ( nextCommandSecondChance )
