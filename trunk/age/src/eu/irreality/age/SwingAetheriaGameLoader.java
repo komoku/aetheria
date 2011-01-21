@@ -466,7 +466,7 @@ de la ventana hasta acabar de cargar.
 												}
 											}
 											
-											write("Aetheria Game Engine v 1.0\n");
+											write("Aetheria Game Engine v 1.0.1\n");
 
 											//areaTexto.setText("Aetheria Game Engine v 0.4.7b Beta Distribution\n");
 											write("© 1999-2011 Carlos Gómez (solrac888@yahoo.com)\n");
@@ -493,7 +493,6 @@ de la ventana hasta acabar de cargar.
 						
 						System.out.println("2");
 					
-						//areaTexto.setText(areaTexto.getText() + "Running on Aetheria Multiple Game Interface v 1.0 / swing-based MDI interface" );
 						
 						
 						String worldName;
