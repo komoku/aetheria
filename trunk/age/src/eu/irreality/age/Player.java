@@ -596,7 +596,16 @@ public class Player extends Mobile implements Informador
 					|| firstWord(commandstring).toLowerCase().endsWith ( "la" ) && firstWord(commandstring).length() > 2
 					|| firstWord(commandstring).toLowerCase().endsWith ( "lo" ) && firstWord(commandstring).length() > 2 )
 			{
-				write ( io.getColorCode("denial") + mundo.getMessages().getMessage("ambiguous.pronoun",new Object[]{this,commandstring}) + io.getColorCode("reset") );
+				
+				//the following is just to get $command:
+				commandstring = substitutePronounsInSentence(commandstring);
+				commandstring = commandstring.trim();
+				commandstring = lenguaje.sustituirVerbo ( commandstring );
+				commandstring = lenguaje.sustituirAlias ( commandstring );
+				commandstring = commandstring.trim();
+				command = StringMethods.getTok(commandstring,1,' ').trim();	
+				
+				write ( io.getColorCode("denial") + mundo.getMessages().getMessage("ambiguous.pronoun","$command",command,new Object[]{this,commandstring}) + io.getColorCode("reset") );
 				ZR_verbo = firstWord(substitutePronounsInSentence(commandstring));
 				cancelPending();
 				return false;	
@@ -611,26 +620,15 @@ public class Player extends Mobile implements Informador
 
 		//{comando no nulo}
 
-		/*[Aquí sustituir los sinónimos comunes]*/
-
 		String originalTrimmedCommandString = commandstring;
 
-
+		//substitution of pronouns and synonyms
 		//Debug.println("BEFORE SUBSTITUTION: " + commandstring);
-
 		commandstring = substitutePronounsInSentence(commandstring);
-
 		//Debug.println("AFTER SUBSTITUTION: " + commandstring);
-
 		commandstring = commandstring.trim();
-		//Debug.println("Synonim substitution for " + commandstring );
-
 		//commandstring = lenguaje.sustituirVerbos ( commandstring );
-		commandstring = lenguaje.sustituirVerbo ( commandstring );
-
-		//legacy:
-		//commandstring = lenguaje.sustituirSinonimos ( commandstring );
-		
+		commandstring = lenguaje.sustituirVerbo ( commandstring );		
 		commandstring = lenguaje.sustituirAlias ( commandstring );
 
 		commandstring = commandstring.trim();
@@ -646,7 +644,7 @@ public class Player extends Mobile implements Informador
 
 		//Debug.println("Definite command to exec: " + commandstring );
 
-		//sólo para estadísticas.
+		//for statistics only:
 		finalExecutedCommandLog.addElement(commandstring);
 
 
