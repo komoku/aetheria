@@ -202,7 +202,7 @@ you.try.close.from.inventory=Tratas de cerrar $item que llevas:
 #Cuando se teclea un verbo que está en las listas de verbos pero para el que no hemos definido comportamiento
 undefined.action=¿Cómo? ¿$command?\n
 
-#Cuando la propiedad noPronounDisambiguation de un jugador está puesto a true y se usa un pronombre "lo/la/los/las" donde la acción anterior se refería a dos entidades
+#Cuando la propiedad noPronounDisambiguation de un jugador está puesto a true y se usa un pronombre "lo/la/los/las" donde la acción anterior se refería a dos entidades. Se puede usar $command para referirse al verbo.
 ambiguous.pronoun=No entiendo muy bien una orden pronominal cuando la orden anterior se refería a dos objetos.\n
 
 #Cuando intentas volver pero no hay ninguna salida que conduzca a la habitación anterior
