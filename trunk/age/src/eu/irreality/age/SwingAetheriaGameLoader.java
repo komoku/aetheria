@@ -335,9 +335,12 @@ de la ventana hasta acabar de cargar.
 	
 	public void setMainPanel ( JPanel p )
 	{
-		if ( mainPanel != null ) getContentPane().remove(mainPanel);
+		Container relevantContentPane;
+		if ( fullScreenMode ) relevantContentPane = fullScreenFrame.getContentPane();
+		else relevantContentPane = getContentPane();
+		if ( mainPanel != null ) relevantContentPane.remove(mainPanel);
 		mainPanel = p;
-		getContentPane().add ( p );
+		relevantContentPane.add ( p );
 	}
 	
 	public JMenuBar getTheJMenuBar()
