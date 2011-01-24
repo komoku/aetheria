@@ -202,6 +202,7 @@ class SwingEditBoxListener implements ActionListener , KeyListener
 			System.out.println("Setting UNPAK 2");
 			elCampoJTexto.setEditable(true);
 			System.out.println("Setting UNPAK 3");
+			elCampoJTexto.setForeground(Color.red); //until getInput() is called.
 		}
 	}
 	
