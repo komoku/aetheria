@@ -157,7 +157,7 @@ class SwingEditBoxListener implements ActionListener , KeyListener
 		{
 			try
 			{
-				SwingUtilities.invokeAndWait 
+				SwingUtilities.invokeLater
 				( 
 						new Runnable()
 						{
