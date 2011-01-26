@@ -113,8 +113,18 @@ class SwingEditBoxListener implements ActionListener , KeyListener
 	{
 		;
 	}
+	
+	public boolean isModifierKey ( KeyEvent e )
+	{
+		return ( e.getKeyCode() == KeyEvent.VK_ALT || e.getKeyCode() == KeyEvent.VK_CONTROL || e.getKeyCode() == KeyEvent.VK_SHIFT || e.getKeyCode() == KeyEvent.VK_META || e.getKeyCode() == KeyEvent.VK_ALT_GRAPH 
+		 || e.getKeyCode() == KeyEvent.VK_PAUSE || e.getKeyCode() == KeyEvent.VK_PRINTSCREEN );		
+	}
+	
 	public void keyPressed(KeyEvent e)
 	{
+		
+		if ( isModifierKey(e) ) return; 
+		
 		if ( press_any_key )
 		{
 			if ( e.getKeyCode() != KeyEvent.VK_ENTER )
