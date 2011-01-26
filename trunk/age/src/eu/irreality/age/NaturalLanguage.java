@@ -309,6 +309,12 @@ public class NaturalLanguage
 		infinitivoAImperativo.put(infinitive,imperative);
 	}
 	
+	public void removeVerbEntry ( String imperative , String infinitive )
+	{
+		imperativoAInfinitivo.remove(imperative);
+		infinitivoAImperativo.remove(infinitive);
+	}
+	
 	/**
 	 * Devuelve Comprueba si una palabra dada es un verbo, incluyendo soporte de "le".
 	 * @param s Palabra a comprobar.
