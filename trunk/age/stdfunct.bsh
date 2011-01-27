@@ -125,6 +125,11 @@ void setTime ( Entity e , String propName , long timeLeft )
 	e.setPropertyTimeLeft ( propName , timeLeft );
 }
 
+long getTime ( Entity e , String propName )
+{
+	return e.getPropertyTimeLeft ( propName );
+}
+
 void setProperty ( Entity e , String propName , Object value , long timeLeft )
 {
 	e.setProperty ( propName , value , timeLeft );
