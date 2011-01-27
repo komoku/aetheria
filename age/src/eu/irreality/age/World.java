@@ -236,7 +236,7 @@ public class World implements Informador , SupportingCode
 		//default values
 		worldname = "Mundo Sin Nombre";
 		version = "Desconocida";
-		parserVersion = "Sabe Dios";
+		parserVersion = "No especificada";
 		modulename = "Sin Nombre";
 		maxroom = 0 ; maxitem = 0 ; maxmob = 0;
 		
