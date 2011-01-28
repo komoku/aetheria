@@ -600,6 +600,8 @@ public class Player extends Mobile implements Informador
 				//the following is just to get $command:
 				commandstring = substitutePronounsInSentence(commandstring);
 				commandstring = commandstring.trim();
+				if ( !getPropertyValueAsBoolean("noVerbSpellChecking") )
+					commandstring = lenguaje.correctVerb(commandstring);
 				commandstring = lenguaje.sustituirVerbo ( commandstring );
 				commandstring = lenguaje.sustituirAlias ( commandstring );
 				commandstring = commandstring.trim();
@@ -628,6 +630,8 @@ public class Player extends Mobile implements Informador
 		//Debug.println("AFTER SUBSTITUTION: " + commandstring);
 		commandstring = commandstring.trim();
 		//commandstring = lenguaje.sustituirVerbos ( commandstring );
+		if ( !getPropertyValueAsBoolean("noVerbSpellChecking") )
+			commandstring = lenguaje.correctVerb(commandstring);
 		commandstring = lenguaje.sustituirVerbo ( commandstring );		
 		commandstring = lenguaje.sustituirAlias ( commandstring );
 
