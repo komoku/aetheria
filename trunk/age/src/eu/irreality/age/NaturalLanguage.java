@@ -8,6 +8,9 @@ import java.io.*;
 import java.util.*;
 
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.spell.Correction;
+import eu.irreality.age.spell.SimpleReverseCorrector;
+import eu.irreality.age.spell.SpellingCorrector;
 
 public class NaturalLanguage
 {
@@ -22,6 +25,8 @@ public class NaturalLanguage
 	private Hashtable sinonimos;
 	private Hashtable alias;
 	private Hashtable terceraASegunda;
+	
+	private SpellingCorrector corrector;
 	
 	/**Verbs that are considered guessable by second-chance mode 
 	 * even if the guess policy is set to false
@@ -415,6 +420,52 @@ public class NaturalLanguage
 	    s = s.replaceAll("[юба]","A");
 	    s = s.replaceAll("[ср]","O");
 		return s;
+	}
+	
+	public void initSpellingCorrector ( )
+	{
+		corrector = new SimpleReverseCorrector();
+		for ( Iterator iter = infinitivoAImperativo.keySet().iterator() ; iter.hasNext() ; )
+		{
+			String nextWord = (String) iter.next();
+			corrector.addDictionaryWord(nextWord);
+		}
+		for ( Iterator iter = imperativoAInfinitivo.keySet().iterator() ; iter.hasNext() ; )
+		{
+			String nextWord = (String) iter.next();
+			corrector.addDictionaryWord(nextWord);
+		}
+		System.err.println(corrector);
+	}
+	
+	private Correction getBestCorrection ( String tentativeVerb )
+	{
+		if ( corrector == null )
+		{
+			if ( isVerb(tentativeVerb) ) return new Correction(tentativeVerb,0);
+			else return null;
+		}
+		return corrector.getBestCorrection(tentativeVerb);
+	}
+	
+	/**
+	 * Changes a mistyped verb (1st word) in the given command string to a correct one.
+	 * @param commandString
+	 * @return
+	 */
+	public String correctVerb ( String commandString )
+	{
+		if ( corrector == null ) initSpellingCorrector();
+		StringTokenizer st = new StringTokenizer ( commandString );
+		if ( !st.hasMoreTokens() ) return commandString;
+		String verb = st.nextToken();
+		Correction c = getBestCorrection(verb);
+		if ( verb.length() > 2 && c != null && c.getWord() != null ) //solo corregimos para length > 2 para evitar por ejemplo i->di
+		{
+			verb = c.getWord();
+		}
+		if ( !st.hasMoreTokens() ) return verb;
+		else return verb + " " + st.nextToken("");
 	}
 
 }

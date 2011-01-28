@@ -112,5 +112,10 @@ public class SimpleReverseCorrector implements SpellingCorrector
 		System.out.println(c.getBestCorrection("czsa"));
 		System.out.println(c.getBestCorrection("czss"));
 	}
+	
+	public String toString()
+	{
+		return "[simple reverse corrector with " + distance0.size() + " words , " + distance1.size() + " extended forms]";
+	}
 
 }
