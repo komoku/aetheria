@@ -9,6 +9,7 @@ package org.f2o.absurdum.puck.gui.panels;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -30,6 +32,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.JTextComponent;
 
+import org.f2o.absurdum.puck.gui.SpacingPanel;
 import org.f2o.absurdum.puck.i18n.Messages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextArea;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
@@ -62,6 +65,8 @@ public class ExtraDescriptionsPanel extends JPanel
 	//privatize it
 	private DefaultListModel listContent = new DefaultListModel();
 	
+	private static int MED_SKIP = 10;
+	private static int SMALL_SKIP = 5;
 	
 	public ExtraDescriptionsPanel ( )
 	{
@@ -104,25 +109,49 @@ public class ExtraDescriptionsPanel extends JPanel
 		
 		this.setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("label.extrades")));
 		
+		this.add(Box.createVerticalStrut(MED_SKIP));
+		
+		JPanel p01and2 = new JPanel();
+		p01and2.setLayout(new BorderLayout());
+		
+		JPanel p0and1 = new JPanel();
+		p0and1.setLayout(new BoxLayout(p0and1,BoxLayout.PAGE_AXIS));
+		
 		JPanel p0 = new JPanel();
-		p0.add ( new JLabel(Messages.getInstance().getMessage("label.refnames")) );
+		p0.setLayout(new BoxLayout(p0,BoxLayout.LINE_AXIS));
+		JLabel refNamesLabel = new JLabel(Messages.getInstance().getMessage("label.refnames"));
+		
+		//fix html setting maximum size to maxint
+		refNamesLabel.setMaximumSize(refNamesLabel.getPreferredSize());
+		
+		p0.add ( refNamesLabel );
+		p0.add(Box.createHorizontalStrut(MED_SKIP));
 		p0.add ( nameTextField );
-		add(p0);
+		p0and1.add(new SpacingPanel(p0,true,true,true,true));
 		
 		JPanel p1 = new JPanel();
+		p1.setLayout(new BoxLayout(p1,BoxLayout.LINE_AXIS));
 		p1.add ( new JLabel(Messages.getInstance().getMessage("label.condition")) );
+		p1.add(Box.createHorizontalStrut(MED_SKIP));
 		p1.add ( condTextField );
-		add(p1);
+		p0and1.add(new SpacingPanel(p1,true,true,true,true));
+		
+		p01and2.add(p0and1,BorderLayout.NORTH);
 		
 		JPanel p2 = new JPanel();
+		p2.setLayout(new BoxLayout(p2,BoxLayout.LINE_AXIS));
 		p2.add ( new JLabel(Messages.getInstance().getMessage("label.description")) );
+		
+		p2.add(Box.createHorizontalStrut(MED_SKIP));
 		
 		if ( rows > 1 )
 		    p2.add(scroller);
 		else
 		    p2.add ( descTextField );
 		    
-		add(p2);
+		
+		p01and2.add(new SpacingPanel(p2),BorderLayout.CENTER);
+		add(p01and2);
 		
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.add(addButton);

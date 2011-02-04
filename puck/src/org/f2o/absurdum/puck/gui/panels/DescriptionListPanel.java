@@ -96,7 +96,8 @@ public class DescriptionListPanel extends JPanel
 	private JCheckBox propCheckBox = new JCheckBox(Messages.getInstance().getMessage("checkbox.propername"));
 	private Vector /*of Boolean*/ propList = new Vector();
 	
-	private static int STRUT_SIZE = 10;
+	private static int MED_SKIP = 10;
+	private static int SMALL_SKIP = 5;
 	
 	//debugging
 	private DefaultListModel devVector = new DefaultListModel();
@@ -212,7 +213,7 @@ public class DescriptionListPanel extends JPanel
 		
 		this.setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("label.des")));
 		
-		this.add(Box.createVerticalStrut(STRUT_SIZE));
+		this.add(Box.createVerticalStrut(MED_SKIP));
 		
 		
 		JPanel p1and2 = new JPanel();
@@ -224,19 +225,40 @@ public class DescriptionListPanel extends JPanel
 		JPanel p1 = new JPanel();
 		p1.setLayout (new BoxLayout(p1,BoxLayout.LINE_AXIS));
 		p1.add ( condLabel  );
-		p1.add ( Box.createHorizontalStrut((int)(descLabel.getPreferredSize().getWidth()-condLabel.getPreferredSize().getWidth())) );
-		p1.add(Box.createHorizontalStrut(STRUT_SIZE));
+		/*
+		int difference = (int)(descLabel.getPreferredSize().getWidth()-condLabel.getPreferredSize().getWidth());
+		if ( difference > 0 ) p1.add ( Box.createHorizontalStrut(difference) );
+		*/
+		p1.add(Box.createHorizontalStrut(MED_SKIP));
 		p1.add ( condTextField );
-		p1and2.add(new SpacingPanel(p1),BorderLayout.NORTH);
+		p1.add(Box.createVerticalStrut(MED_SKIP));
+		SpacingPanel sp1 = new SpacingPanel(p1,true,true,true,true);
+		p1and2.add(sp1,BorderLayout.NORTH);
 
+		
 		JPanel p2 = new JPanel();
 		p2.setLayout(new BoxLayout(p2,BoxLayout.LINE_AXIS));
 		p2.add ( descLabel );
 		//p2.add ( descTextField );
-		p2.add(Box.createHorizontalStrut(STRUT_SIZE));
-		p2.add(scroller);
-		p1and2.add(new SpacingPanel(p2),BorderLayout.CENTER);
+		//if ( difference < 0 ) p1.add ( Box.createHorizontalStrut(-difference) );
+		p2.add(Box.createHorizontalStrut(MED_SKIP));
 		
+		if ( rows > 1 )
+			p2.add(scroller);
+		else
+			p2.add(descTextField);
+		
+		if ( rows > 1 )
+			p1and2.add(new SpacingPanel(p2,true,true,true,true),BorderLayout.CENTER);
+		else
+		{
+			SpacingPanel sp2 = new SpacingPanel(p2,true,true,true,true);
+			p1and2.add(sp2,BorderLayout.SOUTH);
+			int w = (int)p1and2.getPreferredSize().getWidth();
+			int h = (int)(sp1.getPreferredSize().getHeight()+sp2.getPreferredSize().getHeight());
+			p1and2.setPreferredSize(new Dimension(w,h));
+		}
+			
 		add(p1and2);
 		
 		if ( succFail )
