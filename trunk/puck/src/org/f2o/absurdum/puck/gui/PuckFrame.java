@@ -466,7 +466,10 @@ public class PuckFrame extends JFrame
 		left.setLayout(new BorderLayout());
 		
 		//right.setLayout(new BoxLayout(right,BoxLayout.LINE_AXIS));
-		right.setLayout(new FlowLayout());
+		if ( PuckConfiguration.getInstance().getBooleanProperty("dynamicFormResizing") )
+			right.setLayout(new BorderLayout());
+		else
+			right.setLayout(new FlowLayout());
 		
 		propPanel = new PropertiesPanel();
 		right.add(propPanel);
