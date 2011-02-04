@@ -11,12 +11,14 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -94,6 +96,7 @@ public class DescriptionListPanel extends JPanel
 	private JCheckBox propCheckBox = new JCheckBox(Messages.getInstance().getMessage("checkbox.propername"));
 	private Vector /*of Boolean*/ propList = new Vector();
 	
+	private static int STRUT_SIZE = 10;
 	
 	//debugging
 	private DefaultListModel devVector = new DefaultListModel();
@@ -209,25 +212,32 @@ public class DescriptionListPanel extends JPanel
 		
 		this.setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("label.des")));
 		
-		JPanel p1 = new JPanel();
-		//p1.setBackground(Color.red);
-		//p1.setLayout(new BoxLayout(p1,BoxLayout.LINE_AXIS));
-		p1.add ( condLabel = new JLabel(Messages.getInstance().getMessage("label.condition")) );
-		p1.add ( condTextField );
-		add(p1);
-		/*
-		JPanel wrapper = new JPanel();
-		wrapper.setLayout(new BoxLayout(wrapper,BoxLayout.PAGE_AXIS));
-		wrapper.add(p1);
-		add(wrapper);
-		*/
+		this.add(Box.createVerticalStrut(STRUT_SIZE));
 		
+		
+		JPanel p1and2 = new JPanel();
+		p1and2.setLayout(new BorderLayout());
+		
+		condLabel = new JLabel(Messages.getInstance().getMessage("label.condition"));
+		descLabel = new JLabel(Messages.getInstance().getMessage("label.description")); 
+		
+		JPanel p1 = new JPanel();
+		p1.setLayout (new BoxLayout(p1,BoxLayout.LINE_AXIS));
+		p1.add ( condLabel  );
+		p1.add ( Box.createHorizontalStrut((int)(descLabel.getPreferredSize().getWidth()-condLabel.getPreferredSize().getWidth())) );
+		p1.add(Box.createHorizontalStrut(STRUT_SIZE));
+		p1.add ( condTextField );
+		p1and2.add(new SpacingPanel(p1),BorderLayout.NORTH);
+
 		JPanel p2 = new JPanel();
 		p2.setLayout(new BoxLayout(p2,BoxLayout.LINE_AXIS));
-		p2.add ( descLabel = new JLabel(Messages.getInstance().getMessage("label.description")) );
+		p2.add ( descLabel );
 		//p2.add ( descTextField );
+		p2.add(Box.createHorizontalStrut(STRUT_SIZE));
 		p2.add(scroller);
-		add(new SpacingPanel(p2));
+		p1and2.add(new SpacingPanel(p2),BorderLayout.CENTER);
+		
+		add(p1and2);
 		
 		if ( succFail )
 		{
