@@ -8,6 +8,7 @@
 package org.f2o.absurdum.puck.gui.panels;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -33,6 +34,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.JTextComponent;
 
+import org.f2o.absurdum.puck.gui.SpacingPanel;
 import org.f2o.absurdum.puck.i18n.Messages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextArea;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
@@ -194,24 +196,38 @@ public class DescriptionListPanel extends JPanel
 		final JScrollPane jsp = new JScrollPane(theList);
 		jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		jsp.setPreferredSize(new Dimension(80,45));
+		/*
 		final JPanel jp = new JPanel();
 		jp.setLayout(new BorderLayout());
 		jp.add(jsp,BorderLayout.CENTER);
+		//jp.add(new JPanel(),BorderLayout.WEST);
+		//jp.add(new JPanel(),BorderLayout.EAST);
 		this.add(jp);
+		*/
+		this.add(new SpacingPanel(jsp));
 		//this.add(theList);
 		
 		this.setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("label.des")));
 		
 		JPanel p1 = new JPanel();
+		//p1.setBackground(Color.red);
+		//p1.setLayout(new BoxLayout(p1,BoxLayout.LINE_AXIS));
 		p1.add ( condLabel = new JLabel(Messages.getInstance().getMessage("label.condition")) );
 		p1.add ( condTextField );
 		add(p1);
+		/*
+		JPanel wrapper = new JPanel();
+		wrapper.setLayout(new BoxLayout(wrapper,BoxLayout.PAGE_AXIS));
+		wrapper.add(p1);
+		add(wrapper);
+		*/
 		
 		JPanel p2 = new JPanel();
+		p2.setLayout(new BoxLayout(p2,BoxLayout.LINE_AXIS));
 		p2.add ( descLabel = new JLabel(Messages.getInstance().getMessage("label.description")) );
 		//p2.add ( descTextField );
 		p2.add(scroller);
-		add(p2);
+		add(new SpacingPanel(p2));
 		
 		if ( succFail )
 		{

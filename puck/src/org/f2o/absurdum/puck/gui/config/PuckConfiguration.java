@@ -73,6 +73,8 @@ public class PuckConfiguration
 		defaultProperties.setProperty("windowLocationX","0");
 		defaultProperties.setProperty("windowLocationY","0");
 		
+		defaultProperties.setProperty("dynamicFormResizing","true");
+		
 		defaultProperties.setProperty("dividerLocation","0.60");
 		
 		defaultProperties.setProperty("availableSkins","naive,urba1,orco,jenverde");
