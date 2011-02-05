@@ -38,6 +38,7 @@ import jsyntaxpane.DefaultSyntaxKit;
 import jsyntaxpane.actions.DocumentSearchData;
 import jsyntaxpane.components.Markers;
 
+import org.f2o.absurdum.puck.gui.SpacingPanel;
 import org.f2o.absurdum.puck.gui.codeassist.CodeAssistMenuHandler;
 import org.f2o.absurdum.puck.gui.codeassist.CodeInsertActionBuilder;
 import org.f2o.absurdum.puck.i18n.Messages;
@@ -164,7 +165,7 @@ public class BSHCodePanel extends JPanel
 		JScrollPane jsp = new JScrollPane(jep);
 		jsp.setPreferredSize(new Dimension(120,70));
 		
-		add(jsp,BorderLayout.CENTER);
+		add(new SpacingPanel(jsp),BorderLayout.CENTER);
 		
 		JPanel southPanel = new JPanel();
 		southPanel.setLayout(new BorderLayout());
@@ -177,7 +178,7 @@ public class BSHCodePanel extends JPanel
 		
 		southPanel.add(lineNumPanel,BorderLayout.EAST);
 		
-		add(southPanel,BorderLayout.SOUTH);
+		add(new SpacingPanel(southPanel),BorderLayout.SOUTH);
 		
 		//add(enlButton,BorderLayout.SOUTH);
 		

@@ -33,6 +33,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.text.JTextComponent;
 
 import org.f2o.absurdum.puck.gui.SpacingPanel;
+import org.f2o.absurdum.puck.gui.util.GUIUtils;
 import org.f2o.absurdum.puck.i18n.Messages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextArea;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
@@ -111,11 +112,11 @@ public class ExtraDescriptionsPanel extends JPanel
 		
 		this.add(Box.createVerticalStrut(MED_SKIP));
 		
-		JPanel p01and2 = new JPanel();
-		p01and2.setLayout(new BorderLayout());
+		//JPanel p01and2 = new JPanel();
+		//p01and2.setLayout(new BorderLayout());
 		
-		JPanel p0and1 = new JPanel();
-		p0and1.setLayout(new BoxLayout(p0and1,BoxLayout.PAGE_AXIS));
+		//JPanel p0and1 = new JPanel();
+		//p0and1.setLayout(new BoxLayout(p0and1,BoxLayout.PAGE_AXIS));
 		
 		JPanel p0 = new JPanel();
 		p0.setLayout(new BoxLayout(p0,BoxLayout.LINE_AXIS));
@@ -127,16 +128,16 @@ public class ExtraDescriptionsPanel extends JPanel
 		p0.add ( refNamesLabel );
 		p0.add(Box.createHorizontalStrut(MED_SKIP));
 		p0.add ( nameTextField );
-		p0and1.add(new SpacingPanel(p0,true,true,true,true));
+		add(GUIUtils.limitVertically(new SpacingPanel(p0,true,true,true,true)));
 		
 		JPanel p1 = new JPanel();
 		p1.setLayout(new BoxLayout(p1,BoxLayout.LINE_AXIS));
 		p1.add ( new JLabel(Messages.getInstance().getMessage("label.condition")) );
 		p1.add(Box.createHorizontalStrut(MED_SKIP));
 		p1.add ( condTextField );
-		p0and1.add(new SpacingPanel(p1,true,true,true,true));
+		add(GUIUtils.limitVertically(new SpacingPanel(p1,true,true,true,true)));
 		
-		p01and2.add(p0and1,BorderLayout.NORTH);
+		//p01and2.add(p0and1,BorderLayout.NORTH);
 		
 		JPanel p2 = new JPanel();
 		p2.setLayout(new BoxLayout(p2,BoxLayout.LINE_AXIS));
@@ -145,13 +146,18 @@ public class ExtraDescriptionsPanel extends JPanel
 		p2.add(Box.createHorizontalStrut(MED_SKIP));
 		
 		if ( rows > 1 )
+		{
 		    p2.add(scroller);
+		    add(new SpacingPanel(p2,true,true,true,true));
+		}
 		else
+		{
 		    p2.add ( descTextField );
-		    
+		    add(GUIUtils.limitVertically(new SpacingPanel(p2,true,true,true,true)));
+		}   
 		
-		p01and2.add(new SpacingPanel(p2),BorderLayout.CENTER);
-		add(p01and2);
+		//p01and2.add(new SpacingPanel(p2),BorderLayout.CENTER);
+		//add(p01and2);
 		
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.add(addButton);
