@@ -37,6 +37,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.text.JTextComponent;
 
 import org.f2o.absurdum.puck.gui.SpacingPanel;
+import org.f2o.absurdum.puck.gui.util.GUIUtils;
 import org.f2o.absurdum.puck.i18n.Messages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextArea;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
@@ -216,8 +217,8 @@ public class DescriptionListPanel extends JPanel
 		this.add(Box.createVerticalStrut(MED_SKIP));
 		
 		
-		JPanel p1and2 = new JPanel();
-		p1and2.setLayout(new BorderLayout());
+		//JPanel p1and2 = new JPanel();
+		//p1and2.setLayout(new BorderLayout());
 		
 		condLabel = new JLabel(Messages.getInstance().getMessage("label.condition"));
 		descLabel = new JLabel(Messages.getInstance().getMessage("label.description")); 
@@ -232,8 +233,13 @@ public class DescriptionListPanel extends JPanel
 		p1.add(Box.createHorizontalStrut(MED_SKIP));
 		p1.add ( condTextField );
 		p1.add(Box.createVerticalStrut(MED_SKIP));
+		
+		GUIUtils.limitVertically(p1);
 		SpacingPanel sp1 = new SpacingPanel(p1,true,true,true,true);
-		p1and2.add(sp1,BorderLayout.NORTH);
+		GUIUtils.limitVertically(sp1);
+		//p1and2.add(sp1,BorderLayout.NORTH);
+		
+		add(sp1);
 
 		
 		JPanel p2 = new JPanel();
@@ -247,7 +253,20 @@ public class DescriptionListPanel extends JPanel
 			p2.add(scroller);
 		else
 			p2.add(descTextField);
+				
+		SpacingPanel sp2 = new SpacingPanel(p2,true,true,true,true);
+
+		if ( rows < 2 )
+		{
+			GUIUtils.limitVertically(p2);
+			GUIUtils.limitVertically(sp2);
+		}
 		
+		add(sp2);
+		
+
+		
+		/*
 		if ( rows > 1 )
 			p1and2.add(new SpacingPanel(p2,true,true,true,true),BorderLayout.CENTER);
 		else
@@ -256,10 +275,12 @@ public class DescriptionListPanel extends JPanel
 			p1and2.add(sp2,BorderLayout.SOUTH);
 			int w = (int)p1and2.getPreferredSize().getWidth();
 			int h = (int)(sp1.getPreferredSize().getHeight()+sp2.getPreferredSize().getHeight());
-			p1and2.setPreferredSize(new Dimension(w,h));
+			//p1and2.setPreferredSize(new Dimension(w,h));
+			p1and2.setMaximumSize(p1and2.getPreferredSize());
 		}
+		*/
 			
-		add(p1and2);
+		//add(p1and2);
 		
 		if ( succFail )
 		{
