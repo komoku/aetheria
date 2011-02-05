@@ -24,6 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.f2o.absurdum.puck.gui.SpacingPanel;
 import org.f2o.absurdum.puck.i18n.Messages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
 import org.w3c.dom.Document;
@@ -102,7 +103,7 @@ public class PropertiesPanel extends JPanel
 		final JPanel jp = new JPanel();
 		jp.setLayout(new BorderLayout());
 		jp.add(jsp,BorderLayout.CENTER);
-		this.add(jp);
+		this.add(new SpacingPanel(jp));
 		//this.add(theList);
 		
 		this.setBorder(BorderFactory.createTitledBorder(title));

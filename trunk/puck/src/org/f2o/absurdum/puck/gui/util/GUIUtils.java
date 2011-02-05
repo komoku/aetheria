@@ -16,18 +16,20 @@ import javax.swing.JComponent;
 public class GUIUtils 
 {
 
-	public static void limitVertically ( JComponent comp )
+	public static JComponent limitVertically ( JComponent comp )
 	{
 		int prefH = (int) comp.getPreferredSize().getHeight();
 		int maxW = (int) comp.getMaximumSize().getWidth();
 		comp.setMaximumSize(new Dimension(maxW,prefH));
+		return comp;
 	}
 	
-	public static void limitHorizontally ( JComponent comp )
+	public static JComponent limitHorizontally ( JComponent comp )
 	{
 		int prefW = (int) comp.getPreferredSize().getWidth();
 		int maxH = (int) comp.getMaximumSize().getHeight();
 		comp.setMaximumSize(new Dimension(prefW,maxH));
+		return comp;
 	}
 	
 }

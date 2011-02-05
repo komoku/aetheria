@@ -260,6 +260,8 @@ public class DescriptionListPanel extends JPanel
 		{
 			GUIUtils.limitVertically(p2);
 			GUIUtils.limitVertically(sp2);
+			GUIUtils.limitHorizontally(p2);
+			GUIUtils.limitHorizontally(sp2);
 		}
 		
 		add(sp2);
