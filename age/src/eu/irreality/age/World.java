@@ -376,6 +376,8 @@ public class World implements Informador , SupportingCode
 			parserVersion = e.getAttribute("parserVersion");
 		if ( e.hasAttribute("date") )
 			date = e.getAttribute("date");
+		if ( e.hasAttribute("type") )
+			type = e.getAttribute("type");
 
 		
 		//visual client configuration
