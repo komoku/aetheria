@@ -258,6 +258,10 @@ public class SwingAetheriaGameLoaderInterface
             .hasArg()
             .withDescription(  "State file to load the game from (requires a world file)" )
             .create( "statefile" );
+			Option errorLog = OptionBuilder.withArgName( "errorlog" )
+            .hasArg()
+            .withDescription(  "A file to append the error output to" )
+            .create( "errorlog" );
 			
 			Options options = new Options();
 
@@ -266,6 +270,7 @@ public class SwingAetheriaGameLoaderInterface
 			//options.addOption( worldUrl );
 			options.addOption( logFile );
 			options.addOption( stateFile );
+			options.addOption( errorLog );
 			
 			CommandLineParser parser = new GnuParser();
 		    try 
@@ -278,9 +283,17 @@ public class SwingAetheriaGameLoaderInterface
 		        String desiredLogFile = null;
 		        String desiredStateFile = null;
 		        
+		        String errorLogFile = null;
+		        
+		        if ( line.hasOption("errorlog") ) errorLogFile = line.getOptionValue("errorlog");
+		        
 		        if ( line.hasOption("statefile") ) desiredStateFile = line.getOptionValue("statefile");
 		        if ( line.hasOption("logfile") ) desiredLogFile = line.getOptionValue("logfile");
 		        if ( line.hasOption("worldfile") ) desiredWorldFile = line.getOptionValue("worldfile");
+		        
+		        //first, redirect std. error if necessary
+		        redirectStandardError(errorLogFile);
+		        
 		        //if ( line.hasOption("worldurl") ) desiredWorldFile = line.getOptionValue("worldurl");
 		        if ( desiredWorldFile == null /*&& desiredWorldUrl == null*/ && line.getArgs().length > 0 ) desiredWorldFile = line.getArgs()[0];
 		        boolean desiredSdi = line.hasOption("sdi");  //Boolean.valueOf( line.getOptionValue("sdi") ).booleanValue();	    
@@ -329,47 +342,6 @@ public class SwingAetheriaGameLoaderInterface
 			return;
 		}
 		*/
-
-
-
-
-		//System.out.println("Arguments to main(): " + args.length );
-		
-
-
-		//prueba MIDI
-		/*
-		try
-		{
-			javax.sound.midi.Sequencer seqr = javax.sound.midi.MidiSystem.getSequencer();
-			javax.sound.midi.Sequence seq = javax.sound.midi.MidiSystem.getSequence ( new java.io.File ( "prueba.mid" ) );
-			seqr.open();
-			seqr.setSequence(seq);
-			//seqr.setTempoFactor((float)20.0);
-			//seqr.start();
-		}
-		catch ( Exception exc )
-		{	
-			System.out.println(exc);
-		}
-
-		//prueba WAV
-
-		try
-		{
-			javax.sound.sampled.AudioInputStream aii = javax.sound.sampled.AudioSystem.getAudioInputStream ( new java.io.File("prueba.wav") );
-			javax.sound.sampled.AudioFormat af = aii.getFormat();
-			javax.sound.sampled.Clip cl = (javax.sound.sampled.Clip) javax.sound.sampled.AudioSystem.getLine ( new javax.sound.sampled.DataLine.Info ( javax.sound.sampled.Clip.class , af ) ); 
-			cl.open ( aii );
-		}
-		catch ( Exception exc )
-		{
-			System.out.println(exc);
-		}
-		 */
-
-
-
 		
 
 		/*
@@ -383,6 +355,32 @@ public class SwingAetheriaGameLoaderInterface
 
 	}
 	
+	public static void redirectStandardError ( String file )
+	{
+		File f = new File(file);
+		if ( !f.exists() )
+		{
+			if ( !f.getParentFile().exists() )
+			{
+				if ( !f.getParentFile().mkdirs() )
+				{
+					System.err.println("Could not redirect standard error to " + file + ": unable to create directories.");
+					return;
+				}
+			}
+			//{f.getParentFile().exists()
+			try 
+			{
+				System.setErr ( new PrintStream ( new FileOutputStream(f) ) );
+			} 
+			catch (FileNotFoundException e) 
+			{
+				System.err.println("Could not redirect standard error to " + file + ":");
+				e.printStackTrace();
+			}
+			
+		}
+	}
 	
 	/**
 	 * This is a simple game creation function prepared to call from the outside without needing any data except for the game file.
