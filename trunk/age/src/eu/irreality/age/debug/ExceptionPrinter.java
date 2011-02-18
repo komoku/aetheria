@@ -56,10 +56,13 @@ public class ExceptionPrinter
 	{
 		StringBuffer report = new StringBuffer();
 		report.append("Syntax error in BeanShell code in object: " + theCaller + "\n");
-		report.append("Loaded to call method " + aRoutine + "\n");
+		report.append("Loaded to call method " + (aRoutine==null? "(no method)" : aRoutine) + "\n");
 		report.append((theArguments == null || theArguments.length == 0) ? "(with no arguments)" : "With arguments: ");
-		for ( int i = 0 ; i < theArguments.length ; i++ )
-			report.append(theArguments[i] + " ");
+		if ( theArguments != null )
+		{
+			for ( int i = 0 ; i < theArguments.length ; i++ )
+				report.append(theArguments[i] + " ");
+		}
 		report.append("\n");
 		report.append(getExceptionReport(te));
 		return report.toString();
