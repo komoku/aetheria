@@ -648,6 +648,14 @@ public abstract class Entity
 	
 	
 	
+	public static void setCommandMatchingMode ( int matchingMode )
+	{
+		commandMatchingMode = matchingMode;
+	}
+	
+	
+	
+	
 	/**Funciones que manejan esa propiedad tan especial que es el estado, que antes era la única que había.**/
 	
 

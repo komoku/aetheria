@@ -34,6 +34,8 @@
 
 void intro( Player aPlayer )
 {
+	
+	Entity.setCommandMatchingMode ( Entity.LEGACY );
 
 	if ( aPlayer.getPropertyValueAsBoolean("sawIntro") )
 		return;
