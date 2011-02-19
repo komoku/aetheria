@@ -283,7 +283,7 @@ public class PuckFrame extends JFrame
 		}
 		catch ( Exception e )
 		{
-			JOptionPane.showMessageDialog(PuckFrame.this,e,"Whoops!",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(PuckFrame.this,e.getLocalizedMessage(),"Whoops!",JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 			return false;
 		}
@@ -342,7 +342,7 @@ public class PuckFrame extends JFrame
 			}
 			catch ( Exception e )
 			{
-				JOptionPane.showMessageDialog(PuckFrame.this,e,"Whoops!",JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(PuckFrame.this,e.getLocalizedMessage(),"Whoops!",JOptionPane.ERROR_MESSAGE);
 				e.printStackTrace();
 			}
 		}
@@ -372,7 +372,7 @@ public class PuckFrame extends JFrame
 					}
 					catch ( Exception e )
 					{
-						JOptionPane.showMessageDialog(PuckFrame.this,e,"Whoops!",JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(PuckFrame.this,e.getLocalizedMessage(),"Whoops!",JOptionPane.ERROR_MESSAGE);
 						e.printStackTrace();
 					}
 					
@@ -580,7 +580,7 @@ public class PuckFrame extends JFrame
 						}
 						catch ( Exception e )
 						{
-							JOptionPane.showMessageDialog(PuckFrame.this,e,"Whoops!",JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(PuckFrame.this,e.getLocalizedMessage(),"Whoops!",JOptionPane.ERROR_MESSAGE);
 							e.printStackTrace();
 						}
 					}
@@ -638,7 +638,7 @@ public class PuckFrame extends JFrame
 						}
 						catch ( Exception e )
 						{
-							JOptionPane.showMessageDialog(PuckFrame.this,e,"Whoops!",JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(PuckFrame.this,e.getLocalizedMessage(),"Whoops!",JOptionPane.ERROR_MESSAGE);
 							e.printStackTrace();
 						}
 						//saveAs(saveMenuItem);
@@ -665,7 +665,7 @@ public class PuckFrame extends JFrame
 							}
 							catch ( Exception e )
 							{
-								JOptionPane.showMessageDialog(PuckFrame.this,e,"Whoops!",JOptionPane.ERROR_MESSAGE);
+								JOptionPane.showMessageDialog(PuckFrame.this,e.getLocalizedMessage(),"Whoops!",JOptionPane.ERROR_MESSAGE);
 								e.printStackTrace();
 							}
 						}
