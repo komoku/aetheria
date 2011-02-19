@@ -292,7 +292,7 @@ public class SwingAetheriaGameLoaderInterface
 		        if ( line.hasOption("worldfile") ) desiredWorldFile = line.getOptionValue("worldfile");
 		        
 		        //first, redirect std. error if necessary
-		        redirectStandardError(errorLogFile);
+		        if ( errorLogFile != null ) redirectStandardError(errorLogFile);
 		        
 		        //if ( line.hasOption("worldurl") ) desiredWorldFile = line.getOptionValue("worldurl");
 		        if ( desiredWorldFile == null /*&& desiredWorldUrl == null*/ && line.getArgs().length > 0 ) desiredWorldFile = line.getArgs()[0];
