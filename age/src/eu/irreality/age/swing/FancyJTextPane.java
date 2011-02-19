@@ -38,7 +38,7 @@ public class FancyJTextPane extends JTextPane
 	
 		
 		
-		
+		//change to paintComponent to avoid exceptions?
 		public void paint(Graphics g)
 		{
 			//super.paint(g);
