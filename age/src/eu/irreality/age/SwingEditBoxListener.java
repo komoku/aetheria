@@ -115,15 +115,24 @@ class SwingEditBoxListener implements ActionListener , KeyListener
 		cl.getTextArea().dispatchEvent(e);
 	}
 	
+	private boolean consumeKeyEvents = false;
+	
 	public void keyTyped(KeyEvent e)
 	{
 		if ( isPageUpDownEvent(e) )
 			redirectToTextArea(e);
+		if ( press_any_key || consumeKeyEvents ) //don't show the character that they have typed in this case:
+			e.consume();
 	}
 	public void keyReleased(KeyEvent e)
 	{
 		if ( isPageUpDownEvent(e) )
 			redirectToTextArea(e);
+		if ( press_any_key || consumeKeyEvents ) //don't show the character that they have typed in this case:
+		{
+			e.consume();
+			consumeKeyEvents = false; //keyReleased is last event to be consumed for this key
+		}
 	}
 	
 	public boolean isModifierKey ( KeyEvent e )
@@ -150,6 +159,8 @@ class SwingEditBoxListener implements ActionListener , KeyListener
 				//ya pulsaron la tecla, continúa la ejecución normal.
 				setPressAnyKeyState(false);
 				cl.setInputString(null);
+				e.consume();
+				consumeKeyEvents = true; //consume also the typed and released events
 				//cl.notify();
 			}
 			else
