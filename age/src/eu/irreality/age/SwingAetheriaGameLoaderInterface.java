@@ -312,10 +312,18 @@ public class SwingAetheriaGameLoaderInterface
 		    		setLookAndFeel();
 		    		
 		    		if ( !desiredSdi )
+		    		{
 		    			new SwingAetheriaGUI();
-		        	
-		        	createLocalGameFromFile(desiredWorldFile,!desiredSdi,desiredLogFile!=null,desiredLogFile,desiredStateFile);
-
+		    			if ( desiredWorldFile != null )
+		    				createLocalGameFromFile(desiredWorldFile,!desiredSdi,desiredLogFile!=null,desiredLogFile,desiredStateFile);
+		    		}
+		    		else
+		    		{
+		    			if ( desiredWorldFile != null )
+		    				createLocalGameFromFile(desiredWorldFile,!desiredSdi,desiredLogFile!=null,desiredLogFile,desiredStateFile);
+		    			else
+		    				SwingSDIInterface.main(args); //args does nothing in this case, really
+		    		}
 		        }
 		        
 		    }

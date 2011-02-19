@@ -34,6 +34,13 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.f2o.absurdum.puck.gui.clipboard.CopyAction;
 import org.f2o.absurdum.puck.gui.clipboard.CutAction;
 import org.f2o.absurdum.puck.gui.clipboard.PasteAction;
@@ -59,6 +66,8 @@ import org.w3c.dom.Document;
 
 import com.jstatcom.component.JHelpAction;
 
+import eu.irreality.age.filemanagement.Paths;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -73,7 +82,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -990,8 +1002,75 @@ public class PuckFrame extends JFrame
 	}
 	
 	
+	public static void redirectStandardError ( String file )
+	{
+		File f = new File(file);
+		if ( !f.exists() )
+		{
+			if ( !f.getParentFile().exists() )
+			{
+				if ( !f.getParentFile().mkdirs() )
+				{
+					System.err.println("Could not redirect standard error to " + file + ": unable to create directories.");
+					return;
+				}
+			}
+			//{f.getParentFile().exists()
+			try 
+			{
+				System.setErr ( new PrintStream ( new FileOutputStream(f) ) );
+			} 
+			catch (FileNotFoundException e) 
+			{
+				System.err.println("Could not redirect standard error to " + file + ":");
+				e.printStackTrace();
+			}
+			
+		}
+	}
+	
+	
+	public static void processCommandLineArguments ( String[] args )
+	{
+		//parse command line
+		
+		Option errorLog = OptionBuilder.withArgName( "errorlog" )
+        .hasArg()
+        .withDescription(  "A file to append the error output to" )
+        .create( "errorlog" );
+		
+		Options options = new Options();
+		options.addOption( errorLog );
+		
+		CommandLineParser parser = new GnuParser();
+
+		try
+		{
+	        // parse the command line arguments
+	        CommandLine line = parser.parse( options, args );
+	        
+	        String errorLogFile = null;
+	        
+	        if ( line.hasOption("errorlog") ) errorLogFile = line.getOptionValue("errorlog");
+	        
+	        //redirect std. error if necessary
+	        if ( errorLogFile != null ) redirectStandardError(errorLogFile);
+		}
+		catch( ParseException exp ) 
+		{
+	        // oops, something went wrong
+	        System.err.println( "Option parsing failed.  Reason: " + exp.getMessage() );
+	    }
+		
+	}
+	
+	
 	public static void main(String[] args) 
 	{
+		if ( args.length > 0 )
+		{
+			processCommandLineArguments(args);
+		}
 		new PuckFrame();
 	}
 }
