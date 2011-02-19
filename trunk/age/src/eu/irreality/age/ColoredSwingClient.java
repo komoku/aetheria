@@ -81,6 +81,11 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		return sonido;	
 	}
 	
+	public FancyJTextPane getTextArea()
+	{
+		return elAreaTexto;
+	}
+	
 	public boolean isDisconnected()
 	{
 		return false;

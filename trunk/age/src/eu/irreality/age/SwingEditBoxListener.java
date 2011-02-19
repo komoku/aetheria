@@ -105,13 +105,25 @@ class SwingEditBoxListener implements ActionListener , KeyListener
 		}
 	}
 	
+	private static boolean isPageUpDownEvent ( KeyEvent e )
+	{
+		return ( e.getKeyCode() == KeyEvent.VK_PAGE_UP || e.getKeyCode() == KeyEvent.VK_PAGE_DOWN );
+	}
+	
+	private void redirectToTextArea ( KeyEvent e )
+	{
+		cl.getTextArea().dispatchEvent(e);
+	}
+	
 	public void keyTyped(KeyEvent e)
 	{
-		;
+		if ( isPageUpDownEvent(e) )
+			redirectToTextArea(e);
 	}
 	public void keyReleased(KeyEvent e)
 	{
-		;
+		if ( isPageUpDownEvent(e) )
+			redirectToTextArea(e);
 	}
 	
 	public boolean isModifierKey ( KeyEvent e )
@@ -122,6 +134,12 @@ class SwingEditBoxListener implements ActionListener , KeyListener
 	
 	public void keyPressed(KeyEvent e)
 	{
+		
+		if ( isPageUpDownEvent(e) )
+		{
+			redirectToTextArea(e);
+			return;
+		}
 		
 		if ( isModifierKey(e) ) return; 
 		
