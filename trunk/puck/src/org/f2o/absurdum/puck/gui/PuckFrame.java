@@ -87,6 +87,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -1015,17 +1016,17 @@ public class PuckFrame extends JFrame
 					return;
 				}
 			}
-			//{f.getParentFile().exists()
-			try 
-			{
-				System.setErr ( new PrintStream ( new FileOutputStream(f) ) );
-			} 
-			catch (FileNotFoundException e) 
-			{
-				System.err.println("Could not redirect standard error to " + file + ":");
-				e.printStackTrace();
-			}
-			
+		}
+		//{f.getParentFile().exists()
+		try 
+		{
+			System.setErr ( new PrintStream ( new FileOutputStream(f,true) ) );
+			System.err.println("[" + new Date() + "]");
+		} 
+		catch (FileNotFoundException e) 
+		{
+			System.err.println("Could not redirect standard error to " + file + ":");
+			e.printStackTrace();
 		}
 	}
 	

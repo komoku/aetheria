@@ -376,17 +376,17 @@ public class SwingAetheriaGameLoaderInterface
 					return;
 				}
 			}
-			//{f.getParentFile().exists()
-			try 
-			{
-				System.setErr ( new PrintStream ( new FileOutputStream(f) ) );
-			} 
-			catch (FileNotFoundException e) 
-			{
-				System.err.println("Could not redirect standard error to " + file + ":");
-				e.printStackTrace();
-			}
-			
+		}
+		//{f.getParentFile().exists()
+		try 
+		{
+			System.setErr ( new PrintStream ( new FileOutputStream(f,true) ) );
+			System.err.println("[" + new Date() + "]");
+		} 
+		catch (FileNotFoundException e) 
+		{
+			System.err.println("Could not redirect standard error to " + file + ":");
+			e.printStackTrace();
 		}
 	}
 	
