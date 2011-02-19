@@ -118,6 +118,7 @@ public class WorldPanel extends GraphElementPanel
 		
 		super();
 		this.gep = gep;
+		tfAgeVersion.setText("1.0.1");
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 	}
 	
@@ -146,6 +147,7 @@ public class WorldPanel extends GraphElementPanel
 	private JTextField tfLongName = new EnhancedJTextField(20);
 	private JTextField tfAuthor = new EnhancedJTextField(20);
 	private JTextField tfVersion = new EnhancedJTextField(20);
+	private JTextField tfAgeVersion = new EnhancedJTextField(20);
 	private JTextField tfDate = new EnhancedJTextField(20);
 	private JTextField tfType = new EnhancedJTextField(20);
 	
@@ -197,6 +199,11 @@ public class WorldPanel extends GraphElementPanel
 		versionPanel.add(new JLabel(Messages.getInstance().getMessage("world.version")));
 		versionPanel.add(tfVersion);
 		firstTab.add(versionPanel);
+		
+		JPanel ageVersionPanel = new JPanel();
+		ageVersionPanel.add(new JLabel(Messages.getInstance().getMessage("world.ageversion")));
+		ageVersionPanel.add(tfAgeVersion);
+		firstTab.add(ageVersionPanel);
 		
 		JPanel datePanel = new JPanel();
 		datePanel.add(new JLabel(Messages.getInstance().getMessage("world.date")));
@@ -314,6 +321,7 @@ public class WorldPanel extends GraphElementPanel
 		result.setAttribute("worldDir",".");
 		result.setAttribute("author",tfAuthor.getText());
 		result.setAttribute("version",tfVersion.getText());
+		result.setAttribute("parserVersion",tfAgeVersion.getText());
 		result.setAttribute("date",tfDate.getText());
 		result.setAttribute("type",tfType.getText());
 		
@@ -781,6 +789,7 @@ public class WorldPanel extends GraphElementPanel
 		tfLongName.setText(e.getAttribute("moduleName"));
 		tfAuthor.setText(e.getAttribute("author"));
 		tfVersion.setText(e.getAttribute("version"));
+		tfAgeVersion.setText(e.getAttribute("parserVersion"));
 		tfDate.setText(e.getAttribute("date"));
 		tfType.setText(e.getAttribute("type"));
 		
