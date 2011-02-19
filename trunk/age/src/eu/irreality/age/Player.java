@@ -599,9 +599,9 @@ public class Player extends Mobile implements Informador
 				
 				//the following is just to get $command:
 				commandstring = substitutePronounsInSentence(commandstring);
-				commandstring = commandstring.trim();
-				if ( !getPropertyValueAsBoolean("noVerbSpellChecking") )
-					commandstring = lenguaje.correctVerb(commandstring);
+				//commandstring = commandstring.trim();
+				//if ( !getPropertyValueAsBoolean("noVerbSpellChecking") )
+				//	commandstring = lenguaje.correctVerb(commandstring); //ddone above
 				commandstring = lenguaje.sustituirVerbo ( commandstring );
 				commandstring = lenguaje.sustituirAlias ( commandstring );
 				commandstring = commandstring.trim();
@@ -628,10 +628,10 @@ public class Player extends Mobile implements Informador
 		//Debug.println("BEFORE SUBSTITUTION: " + commandstring);
 		commandstring = substitutePronounsInSentence(commandstring);
 		//Debug.println("AFTER SUBSTITUTION: " + commandstring);
-		commandstring = commandstring.trim();
+		//commandstring = commandstring.trim();
 		//commandstring = lenguaje.sustituirVerbos ( commandstring );
-		if ( !getPropertyValueAsBoolean("noVerbSpellChecking") )
-			commandstring = lenguaje.correctVerb(commandstring);
+		//if ( !getPropertyValueAsBoolean("noVerbSpellChecking") )
+			//commandstring = lenguaje.correctVerb(commandstring); //done above
 		commandstring = lenguaje.sustituirVerbo ( commandstring );		
 		commandstring = lenguaje.sustituirAlias ( commandstring );
 
@@ -3533,7 +3533,6 @@ public class Player extends Mobile implements Informador
 	//sustituye los comandos al final del verbo por las ZR's correspondientes
 	public String substitutePronouns ( String command )
 	{
-
 		String thestring = command;	
 		boolean doneSomething = false;
 		
@@ -3598,15 +3597,44 @@ public class Player extends Mobile implements Informador
 		StringTokenizer st = new StringTokenizer(thestring.toLowerCase());
 		String newVerb = st.nextToken().trim();
 		String unaccentedVerb = lenguaje.removeAccents(newVerb); //verbos pierden acentos: cógelo -> cóge <tal> -> coge <tal>
-		if ( !lenguaje.isVerb(unaccentedVerb) )
+		return unaccentedVerb + st.nextToken("");
+	}
+	
+	//sustituye los comandos al final del verbo por las ZR's correspondientes
+	//tambien corrige el verbo
+	public String substitutePronounsIfVerb ( String command )
+	{
+
+		StringTokenizer st = new StringTokenizer(command);
+		String origVerb = st.nextToken();
+		
+		String newCommand = substitutePronouns(command);
+		newCommand = newCommand.trim();
+		
+		st = new StringTokenizer(newCommand);
+		String uncorrectedVerbWithoutPronouns = st.nextToken();
+		
+		if ( !getPropertyValueAsBoolean("noVerbSpellChecking") )
+			newCommand = lenguaje.correctVerb(newCommand);
+		
+		st = new StringTokenizer(newCommand);
+		String correctedVerbWithoutPronouns = st.nextToken();
+
+		if ( !lenguaje.isVerb(correctedVerbWithoutPronouns) ) //maybe change to corrected verb to correct things like "mriate"?
 		{
-			//check failed! return original string.
+			//check failed! no way to find a verb here, return original string.
+			return command;
+		}
+		else if ( lenguaje.isVerb(correctedVerbWithoutPronouns) && //verb is recognised only if it is corrected, and pronoun substitution has taken place
+				!lenguaje.isVerb(uncorrectedVerbWithoutPronouns) && 
+				!uncorrectedVerbWithoutPronouns.equals(origVerb) )
+		{
 			return command;
 		}
 		else
 		{
 			//check passed.
-			return unaccentedVerb + st.nextToken("");
+			return newCommand;
 		}
 		
 	}
@@ -3708,7 +3736,7 @@ public class Player extends Mobile implements Informador
 
 	public String substitutePronounsInSentence ( String commandstring )
 	{
-		String subs_command = substitutePronouns ( StringMethods.getTok(commandstring,1,' ') );		
+		String subs_command = substitutePronounsIfVerb ( StringMethods.getTok(commandstring,1,' ') );		
 		commandstring = subs_command + " " + StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ');
 		return commandstring;
 	}
