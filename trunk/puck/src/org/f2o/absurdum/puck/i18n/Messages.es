@@ -102,6 +102,7 @@ world.author=Autor:
 world.date=Fecha:
 world.type=Tipo:
 world.version=Versión:
+world.ageversion=Versión AGE requerida:
 worldpanel.header=Propiedades del Mundo
 menu.file=Archivo
 menu.file.saveas=Guardar como...
