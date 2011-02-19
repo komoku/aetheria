@@ -18,7 +18,7 @@ public class GameEngineThread extends Thread
 
 	public static String getVersion() 
 	{ 
-		return "Aetheria Game Engine v 1.0.1";
+		return "Aetheria Game Engine v 1.0.2";
 	}
 
 	
