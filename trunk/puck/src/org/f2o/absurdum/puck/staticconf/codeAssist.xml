@@ -2,6 +2,7 @@
 <puck-code-assist>
 		<menu context="world" name="Redefinir métodos" description="Redefinir métodos de mundo">
 				<item name="intro(Player)" description="Introducción del juego" template-ref="world-intro.tpl"/>
+				<item name="preprocessCommand(Mobile,String)" description="Método de preprocesado de la entrada" template-ref="world-preprocesscommand.tpl"/>
 				<menu name="Método de análisis de la entrada (estándar)" description="Método de análisis de la entrada (estándar)">
 					<item name="parseCommand(Player,String,String)" description="Para cualquier entrada" template-ref="world-parsecommand.tpl"/>
 					<item name="parseCommand(Mobile,String,String,Entity)" description="Referente a una cosa" template-ref="world-item-parsecommand.tpl"/>
@@ -14,7 +15,7 @@
 					<item name="parseCommandOnContentsGeneric(Mobile,String,String,String,Vector,Vector,Entity,Entity)" description="Referente a una o dos cosas" template-ref="world-item-parsecommandoncontentsgeneric.tpl"/>
 				</menu>
 				<item name="update(Entity,World)" description="Método de actualización genérico" template-ref="world-update.tpl"/>
-				<item name="before(String,Mobile,Object[])" description="Evento de acción genérico" template-ref="world-genericbefore.tpl"/>
+				<!--<item name="before(String,Mobile,Object[])" description="Evento de acción genérico" template-ref="world-genericbefore.tpl"/>-->
 			</menu>
 		<menu context="room" name="Definir eventos de habitación" description="Definir eventos de habitación">
 				<item name="beforeExit(Mobile,Path)" description="Al salir de la habitación" template-ref="room-beforeexit.tpl"/>
