@@ -435,7 +435,7 @@ public class NaturalLanguage
 			String nextWord = (String) iter.next();
 			corrector.addDictionaryWord(nextWord);
 		}
-		System.err.println(corrector);
+		//System.err.println(corrector);
 	}
 	
 	private Correction getBestCorrection ( String tentativeVerb )
