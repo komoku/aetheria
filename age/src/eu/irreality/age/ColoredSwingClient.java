@@ -917,6 +917,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	public synchronized void waitKeyPress ()
 	{
 		if ( deactivated ) return;
+		//System.err.println("[DN] waitKeyPress() called");
 		
 		//System.out.println("Keywait");
 		elEscuchador.setPressAnyKeyState ( true );
@@ -926,6 +927,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		//Color c2 = c1.brighter();
 		
 		//elAreaTexto.setBackground( c2  );
+
+		//System.err.println("[DN] PAK state set: " + elEscuchador.press_any_key + ", going to wait");
 		
 		try
 		{
@@ -939,6 +942,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		}
 		//notified
 		
+		//System.err.println("[DN] waitKeyPress() returning");
 		//elAreaTexto.setBackground( c1 );
 		
 	}
@@ -948,6 +952,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	public synchronized String getInput(Player pl)
 	{
 	
+		//System.err.println("[DN] getInput called");
 		if ( deactivated ) return null;
 		showAfterLogLoad();
 		
@@ -955,6 +960,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	
 		try
 		{
+			//System.err.println("[DN] getInput going to wait");
 			wait();
 		}
 		catch ( InterruptedException intex )
@@ -963,12 +969,15 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		}
 		//notified, y cambiado currentInput
 		
+		//System.err.println("[DN] getInput no longer waiting");
+		
 		String temp = currentInput ;
 		
 		currentInput = null;
 		
 		setTextFieldForeground(Color.red);
 		
+		//System.err.println("[DN] getInput returning " + temp);
 		return temp;
 		
 		
