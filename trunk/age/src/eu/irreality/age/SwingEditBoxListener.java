@@ -52,8 +52,11 @@ class SwingEditBoxListener implements ActionListener , KeyListener
 	
 	public void actionPerformed( ActionEvent e )
 	{
+		if ( inTransitoryState ) return; //we are changing between normal mode and "press any key" mode, discard all events until change is completed
+		
 		if ( !press_any_key )
 		{
+			//System.err.println("[DN] editbox action performed, not in PAK state");
 			if ( cl.isMemoryEnabled() )
 			{
 				
@@ -89,6 +92,8 @@ class SwingEditBoxListener implements ActionListener , KeyListener
 			cl.setInputString(elCampoJTexto.getText());
 			//cl.notify();
 			
+			//System.err.println("[DN] Input string set to " + elCampoJTexto.getText());
+			
 			//add new command to game log
 			gameLog.addElement(elCampoJTexto.getText());
 			elCampoJTexto.setText("");
@@ -96,7 +101,9 @@ class SwingEditBoxListener implements ActionListener , KeyListener
 		}
 		else
 		{
+			//System.err.println("[DN] editbox action performed, in PAK state");
 			setPressAnyKeyState(false);
+			//System.err.println("[DN] PAK state unset: " + press_any_key + " - setting input string to null");
 			
 			//notificar
 			cl.setInputString(null);
@@ -185,6 +192,8 @@ class SwingEditBoxListener implements ActionListener , KeyListener
 		}
 	}
 	
+	private boolean inTransitoryState = false;
+	
 	public void setPressAnyKeyState ( final boolean value )
 	{
 		//System.out.println("In PAK, Thread is " + Thread.currentThread());
@@ -196,7 +205,19 @@ class SwingEditBoxListener implements ActionListener , KeyListener
 		{
 			try
 			{
-				SwingUtilities.invokeLater
+				/*
+				 * The inTransitoryState flag marks that a waitKeyPress() has been called but we have not yet established the
+				 * wait key press state in the edit box and edit box listener.
+				 * If this flag is not used, we are at risk of the following when holding the ENTER key for a while:
+				 * 1. waitKeyPress() is called, but
+				 * 2. a pending ActionEvent (ENTER keypress) is processed before the change of "press any key" state is realised
+				 * 3. this ActionEvent notifies the waiting waitKeyPress() method, so it returns and the game engine thread continues its run
+				 * 4. then, the change of "press any key" state happens, so we are at an inconsistent state: the edit box thinks we are
+				 * waiting for a key, but the game engine has moved on and issues a getInput() call
+				 * 5. the edit box's next ENTER key press notifies the getInput() call and it returns null
+				 */
+				inTransitoryState = true;				
+				SwingUtilities.invokeLater //to process all prev. events
 				( 
 						new Runnable()
 						{
@@ -243,6 +264,7 @@ class SwingEditBoxListener implements ActionListener , KeyListener
 			System.out.println("Setting UNPAK 3");
 			elCampoJTexto.setForeground(Color.red); //until getInput() is called.
 		}
+		inTransitoryState = false;
 	}
 	
 }
