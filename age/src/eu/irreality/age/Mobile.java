@@ -3561,6 +3561,16 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		wornItems = result; //kinda cache
 		return result;
 	}
+	
+	public boolean wieldsItem ( Item item )
+	{
+		return getWieldedWeapons().contains(item);
+	}
+	
+	public boolean wearsItem ( Item item )
+	{
+		return getWornItems().contains(item);
+	}
 
 	public Weapon getWieldedItem ( Item limb )
 	{
