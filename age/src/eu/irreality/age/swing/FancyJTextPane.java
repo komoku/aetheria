@@ -38,8 +38,8 @@ public class FancyJTextPane extends JTextPane
 	
 		
 		
-		//change to paintComponent to avoid exceptions?
-		public void paint(Graphics g)
+		//change to paintComponent to avoid exceptions? done (was paint, also in super call)
+		public void paintComponent(Graphics g)
 		{
 			//super.paint(g);
 			//g.setXORMode(Color.white);
@@ -52,7 +52,7 @@ public class FancyJTextPane extends JTextPane
 			//g.drawImage(backgroundImage,0, 0, this);
 			//g.setColor(Color.RED);
 			//g.drawOval(5, 5, 100, 100);
-				super.paint(g);
+				super.paintComponent(g);
 			//esto si queremos que el margen superior sea "non-scrolling":
 			if ( backgroundImage != null )
 			{
