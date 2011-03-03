@@ -493,12 +493,30 @@ public class AGESoundClient implements SoundClient
 	    	    logToDisable.
 	    	}
 		 */
-		java.util.logging.Logger log = java.util.logging.Logger.getLogger("javazoom.jlgui.basicplayer.BasicPlayer");
-		log.setLevel(Level.SEVERE);
+		
+		try
+		{
+			java.util.logging.Logger log = java.util.logging.Logger.getLogger("javazoom.jlgui.basicplayer.BasicPlayer");
+			log.setLevel(Level.SEVERE);
+		}
+		catch ( SecurityException se )
+		{
+			System.err.println("Restricted security environment, will not take logs of audio issues.");
+		}
+		
 		final BasicPlayer bp = new BasicPlayer();
 		try
 		{
-			bp.open(u.openStream());
+			InputStream theStream = u.openStream();
+			if ( theStream.markSupported() )
+			{
+				bp.open(theStream);
+			}
+			else //in applets that read remote URLs, mark is not supported so we need to add an extra layer.
+			{
+				BufferedInputStream bib = new BufferedInputStream(theStream);
+				bp.open(bib);
+			}
 		}
 		catch ( BasicPlayerException bpe )
 		{
