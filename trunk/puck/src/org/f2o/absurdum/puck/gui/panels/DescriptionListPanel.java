@@ -30,6 +30,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -39,6 +40,7 @@ import javax.swing.text.JTextComponent;
 import org.f2o.absurdum.puck.gui.SpacingPanel;
 import org.f2o.absurdum.puck.gui.util.GUIUtils;
 import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.util.swing.EnhancedJList;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextArea;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
 import org.w3c.dom.Document;
@@ -170,7 +172,7 @@ public class DescriptionListPanel extends JPanel
 		this.propNamesEnabled = propNamesEnabled;
 		
 		//listContent.setSize(100);
-		theList = new JList( listContent );
+		theList = new EnhancedJList( listContent );
 		//listContent.setSize(2);
 		theList.setCellRenderer ( new TwoStringCellRenderer()
 		{

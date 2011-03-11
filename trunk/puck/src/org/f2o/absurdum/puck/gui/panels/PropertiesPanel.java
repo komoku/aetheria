@@ -26,6 +26,7 @@ import javax.swing.event.ListSelectionListener;
 
 import org.f2o.absurdum.puck.gui.SpacingPanel;
 import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.util.swing.EnhancedJList;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -92,7 +93,7 @@ public class PropertiesPanel extends JPanel
 	
 	public PropertiesPanel ( String title )
 	{
-		theList = new JList( listContent );
+		theList = new EnhancedJList( listContent );
 		theList.setCellRenderer ( new PropertiesCellRenderer() );
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		
