@@ -105,6 +105,12 @@ public class GraphElementPanel extends JPanel
 						{
 							if ( cachedNode != null ) //might be made null by another thread during the previous wait
 							{
+								if ( GraphElementPanel.this instanceof ArrowPanel
+										&& !((ArrowPanel)GraphElementPanel.this).hasSourceAndDestination()
+								) //happens if we remove (for example via del key) the source or destination of the arrow while
+									//deferred loads are being executed.
+									return;
+									
 								doInitFromXML(cachedNode);
 								initted = true;
 								cachedNode = null;
