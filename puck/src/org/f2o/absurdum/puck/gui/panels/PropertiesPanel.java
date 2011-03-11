@@ -180,8 +180,13 @@ public class PropertiesPanel extends JPanel
 						else
 						{
 							listContent.set(foundIndex,nu);
-							Component c = theList.getCellRenderer().getListCellRendererComponent(theList, nu, foundIndex, theList.isSelectedIndex(foundIndex), theList.hasFocus() );
-							SwingComponentHighlighter.temporalBlueForeground(c);
+							
+							//unfortunately this does not work:
+							//it seems that the JList does not have these components, it just uses their paint method to draw to
+							//coordinates of the JList.
+							//Component c = theList.getCellRenderer().getListCellRendererComponent(theList, nu, foundIndex, theList.isSelectedIndex(foundIndex), theList.hasFocus() );
+							//SwingComponentHighlighter.temporalBlueBackground(c);
+							
 						}
 						
 						
