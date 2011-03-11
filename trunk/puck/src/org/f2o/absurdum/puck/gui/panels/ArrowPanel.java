@@ -133,7 +133,14 @@ public class ArrowPanel extends GraphElementPanel
 		{
 			public void actionPerformed ( ActionEvent evt )
 			{
-				Node n = (Node) srcNodes.get(srcComboBox.getSelectedIndex());
+				int index = srcComboBox.getSelectedIndex();
+				if ( index < 0 )
+				{
+					System.err.println("Warning: trying to set source of arrow panel " + ArrowPanel.this + " to index " + index + ". Stack trace:");
+					Thread.dumpStack();
+					return;
+				}
+				Node n = (Node) srcNodes.get(index);
 				theArrow.setSource(n);
 			}
 		}
@@ -145,7 +152,14 @@ public class ArrowPanel extends GraphElementPanel
 			{
 				if ( dstComboBox.getSelectedIndex() >= 0 )
 				{
-					Node n = (Node) dstNodes.get(dstComboBox.getSelectedIndex());
+					int index = dstComboBox.getSelectedIndex();
+					if ( index < 0 )
+					{
+						System.err.println("Warning: trying to set source of arrow panel " + ArrowPanel.this + " to index " + index + ". Stack trace:");
+						Thread.dumpStack();
+						return;
+					}
+					Node n = (Node) dstNodes.get(index);
 					theArrow.setDestination(n);
 				}
 			}
@@ -259,6 +273,11 @@ public class ArrowPanel extends GraphElementPanel
 			customRelationshipsPanel.initFromXML(plElt);
 		}
 		 
+	}
+	
+	public String describeArrow()
+	{
+		return "[ src=" + srcComboBox.getSelectedItem() + " dst=" + dstComboBox.getSelectedItem() + "]";
 	}
 	
 }

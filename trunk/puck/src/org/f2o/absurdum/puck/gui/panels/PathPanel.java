@@ -136,7 +136,7 @@ public class PathPanel extends ArrowPanel
 	
 	public String toString()
 	{
-		return "Yet Another Path Panel";
+		return "Yet Another Path Panel " + describeArrow();
 	}
 	
 	public String getName()

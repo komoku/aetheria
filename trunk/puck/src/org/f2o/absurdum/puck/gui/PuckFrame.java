@@ -593,6 +593,7 @@ public class PuckFrame extends JFrame
 				{
 					public void actionPerformed ( ActionEvent evt )
 					{
+						GraphElementPanel.emptyQueue(); //stop deferred loads
 						graphPanel.clear();
 						propPanel.clear();
 						propPanel.show(graphPanel.getWorldNode());
