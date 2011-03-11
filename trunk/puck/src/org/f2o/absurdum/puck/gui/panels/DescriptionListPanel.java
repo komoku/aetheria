@@ -43,6 +43,7 @@ import org.f2o.absurdum.puck.i18n.Messages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJList;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextArea;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
+import org.f2o.absurdum.puck.util.swing.SwingComponentHighlighter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -315,7 +316,11 @@ public class DescriptionListPanel extends JPanel
 					public void actionPerformed(ActionEvent evt) 
 					{
 					    
-					        if ( descTextField.getText() == null  || descTextField.getText().length() == 0 ) return;
+					        if ( descTextField.getText() == null  || descTextField.getText().length() == 0 )
+					        {
+					        	SwingComponentHighlighter.temporalRedBackground(descTextField);
+					        	return;
+					        }
 					    
 						String[] nu;
 						if ( !succFail )
