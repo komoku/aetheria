@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <World author="Al-Khwarizmi" date="2008-09-15" moduleName="Fuego" type="Aventura de velocidad" version="1.2" worldDir="." worldName="Fuego">
 <IdeMetaInf>
+<View xoffset="-22.0" yoffset="-21.0" zoom="2.0"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Habitación de hotel" x="120" y="260"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Pasillo (oeste)" x="120" y="180"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Pasillo (este)" x="240" y="180"/>

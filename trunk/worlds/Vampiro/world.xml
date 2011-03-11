@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <World author="Jaume Alcazo Castellarnau (Versión de Carlos Gómez Rodríguez)" date="2008-04-27" moduleName="Vampiro: Crónicas de reXXe" type="Clásica" version="0.1" worldDir="." worldName="Vampiro">
 <IdeMetaInf>
+<View xoffset="-61.0" yoffset="-63.0" zoom="2.0"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Vestíbulo" x="220" y="240"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Pasillo" x="220" y="180"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Biblioteca" x="280" y="180"/>
