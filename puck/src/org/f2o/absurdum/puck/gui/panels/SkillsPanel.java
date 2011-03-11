@@ -25,6 +25,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.util.swing.EnhancedJList;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -64,7 +65,7 @@ public class SkillsPanel extends JPanel
 	public SkillsPanel ( String valueAttrName )
 	{
 		this.valueAttrName = valueAttrName;
-		theList = new JList( listContent );
+		theList = new EnhancedJList( listContent );
 		
 		//theList.setCellRenderer ( new PropertiesCellRenderer() );
 		theList.setCellRenderer ( new TwoStringCellRenderer(Messages.getInstance().getMessage("onlist.traitname"),Messages.getInstance().getMessage("onlist.traitval")) );

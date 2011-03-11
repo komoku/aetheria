@@ -35,6 +35,7 @@ import javax.swing.text.JTextComponent;
 import org.f2o.absurdum.puck.gui.SpacingPanel;
 import org.f2o.absurdum.puck.gui.util.GUIUtils;
 import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.util.swing.EnhancedJList;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextArea;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
 import org.w3c.dom.Document;
@@ -94,7 +95,7 @@ public class ExtraDescriptionsPanel extends JPanel
 	    	    scroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 	    	}
 		
-		theList = new JList( listContent );
+		theList = new EnhancedJList( listContent );
 		theList.setCellRenderer ( new ThreeStringCellRenderer() );
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		

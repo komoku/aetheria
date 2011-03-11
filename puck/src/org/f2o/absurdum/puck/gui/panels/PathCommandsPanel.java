@@ -34,6 +34,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.util.swing.EnhancedJList;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -111,7 +112,7 @@ public class PathCommandsPanel extends JPanel
 	public PathCommandsPanel ( )
 	{
 		//listContent.setSize(100);
-		theList = new JList( listContent );
+		theList = new EnhancedJList( listContent );
 		//listContent.setSize(2);
 		theList.setCellRenderer ( new SingleStringCellRenderer() );
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
