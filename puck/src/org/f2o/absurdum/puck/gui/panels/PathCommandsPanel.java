@@ -36,6 +36,7 @@ import javax.swing.event.ListSelectionListener;
 import org.f2o.absurdum.puck.i18n.Messages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJList;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
+import org.f2o.absurdum.puck.util.swing.SwingComponentHighlighter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -153,6 +154,10 @@ public class PathCommandsPanel extends JPanel
 							listContent.addElement(nu);
 							jsp.repaint();
 							commandTextField.setText("");
+						}
+						else
+						{
+							SwingComponentHighlighter.temporalRedBackground(commandTextField);
 						}
 					}
 			

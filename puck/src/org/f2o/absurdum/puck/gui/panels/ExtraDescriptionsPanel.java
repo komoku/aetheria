@@ -38,6 +38,7 @@ import org.f2o.absurdum.puck.i18n.Messages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJList;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextArea;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
+import org.f2o.absurdum.puck.util.swing.SwingComponentHighlighter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -175,8 +176,16 @@ public class ExtraDescriptionsPanel extends JPanel
 						
 						if ( nameTextField.getText() == null || descTextField.getText() == null 
 								 || nameTextField.getText().length() == 0 || descTextField.getText().length() == 0		
-								) return;
-						
+								) 
+						{
+							if ( nameTextField.getText() == null || nameTextField.getText().length() == 0 )
+								SwingComponentHighlighter.temporalRedBackground(nameTextField);
+							if ( descTextField.getText() == null || descTextField.getText().length() == 0 )
+								SwingComponentHighlighter.temporalRedBackground(descTextField);
+							return;
+						}
+							
+							
 						String[] nu = new String[]
 												 {
 								nameTextField.getText(),condTextField.getText(), descTextField.getText()

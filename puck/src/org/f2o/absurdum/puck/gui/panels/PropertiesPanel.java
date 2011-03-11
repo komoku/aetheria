@@ -28,6 +28,7 @@ import org.f2o.absurdum.puck.gui.SpacingPanel;
 import org.f2o.absurdum.puck.i18n.Messages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJList;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
+import org.f2o.absurdum.puck.util.swing.SwingComponentHighlighter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -139,10 +140,21 @@ public class PropertiesPanel extends JPanel
 						
 						if ( nameTextField.getText() == null || valTextField.getText() == null 
 								 || nameTextField.getText().length() == 0 || valTextField.getText().length() == 0		
-								) return;
-						
+								) 
+						{
+							if ( nameTextField.getText() == null || nameTextField.getText().length() == 0 )
+								SwingComponentHighlighter.temporalRedBackground(nameTextField);
+							if ( valTextField.getText() == null || valTextField.getText().length() == 0 )
+								SwingComponentHighlighter.temporalRedBackground(valTextField);
+							return;
+						}
+							
 						try{Integer.parseInt(tuTextField.getText());}
-						catch(NumberFormatException nfe){return;}
+						catch(NumberFormatException nfe)
+						{
+							SwingComponentHighlighter.temporalRedBackground(tuTextField,1000);
+							return;
+						}
 						
 						String[] nu = new String[]
 												 {
