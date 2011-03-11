@@ -152,6 +152,7 @@ public class PathCommandsPanel extends JPanel
 						{
 							listContent.addElement(nu);
 							jsp.repaint();
+							commandTextField.setText("");
 						}
 					}
 			

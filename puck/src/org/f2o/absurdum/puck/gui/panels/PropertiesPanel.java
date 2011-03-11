@@ -150,6 +150,9 @@ public class PropertiesPanel extends JPanel
 												 };
 						listContent.addElement(nu);
 						jsp.repaint();
+						nameTextField.setText("");
+						valTextField.setText("");
+						tuTextField.setText("");
 					}
 			
 				}
