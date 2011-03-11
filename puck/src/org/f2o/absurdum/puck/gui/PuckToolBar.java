@@ -7,6 +7,7 @@
  */
 package org.f2o.absurdum.puck.gui;
 
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.Action;

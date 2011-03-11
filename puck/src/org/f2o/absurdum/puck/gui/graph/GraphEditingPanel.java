@@ -15,6 +15,8 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -25,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JMenuItem;
@@ -58,7 +61,7 @@ import org.w3c.dom.Document;
  *
  * Created at regulus, 19-jul-2005 19:31:22
  */
-public class GraphEditingPanel extends JPanel implements MouseListener, MouseMotionListener
+public class GraphEditingPanel extends JPanel implements MouseListener, MouseMotionListener, KeyListener
 {
 	
 	private MouseListener toolListener = null;
@@ -708,12 +711,14 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 	{
 		selectedNode = n;
 		n.setSelected(true);
+		requestFocus();
 	}
 	
 	public void selectArrow ( Arrow a )
 	{
 		selectedArrow = a;
 		a.setSelected(true);
+		requestFocus();
 	}
 	
 	public void mouseClicked(MouseEvent arg0) 
@@ -1074,11 +1079,48 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 		*/
 	}
 	
+	public void keyPressed ( KeyEvent evt ) {}
+	public void keyReleased ( KeyEvent evt ) 
+	{
+		//System.err.println("Released " + evt.getKeyCode() + " vs " + KeyEvent.VK_DELETE );
+		if ( evt.getKeyCode() == KeyEvent.VK_DELETE )
+		{
+			if ( selectedNode != null )
+			{
+				totallyRemoveNode(selectedNode);
+			}
+			else if ( selectedArrow != null )
+			{
+				selectedArrow.getSource().removeArrow(selectedArrow);
+			}
+			repaint();
+		}	
+	}
+	public void keyTyped ( KeyEvent evt ) 
+	{
+		/*
+		System.err.println("Typed " + evt.getKeyCode() + " vs " + KeyEvent.VK_DELETE );
+		if ( evt.getKeyCode() == KeyEvent.VK_DELETE )
+		{
+			if ( selectedNode != null )
+			{
+				totallyRemoveNode(selectedNode);
+			}
+			else if ( selectedArrow != null )
+			{
+				selectedArrow.getSource().removeArrow(selectedArrow);
+			}
+		}
+		*/
+	}
+	
 	public GraphEditingPanel( PropertiesPanel propP )
 	{
 		setBackground(Color.WHITE);
 		addMouseListener(this);
 		addMouseMotionListener(this);
+		setFocusable(true); //will generate key evts.
+		addKeyListener(this);
 		setVisible(true);
 		this.propP = propP;
 		roomNodes.add(Messages.getInstance().getMessage("none"));
