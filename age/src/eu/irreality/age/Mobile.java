@@ -6447,7 +6447,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 		for ( int i = 0 ; i < inv.size() ; i++ )
 		{
-			if ( inv.elementAt(i).isContainer() )
+			//open condition added 2011-03-11
+			if ( inv.elementAt(i).isContainer() && inv.elementAt(i).isOpen() )
 			{
 				mirado = mirarItem ( arguments , inv.elementAt(i).getContents() ); //mirar el contenido
 				if ( mirado ) break;
@@ -6457,7 +6458,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			for ( int i = 0 ; i < inv.size() ; i++ )
 			{
-				if ( inv.elementAt(i).isContainer() )
+				//open condition added 2011-03-11
+				if ( inv.elementAt(i).isContainer() && inv.elementAt(i).isOpen() )
 				{
 					mirado = mirarContenido ( arguments , inv.elementAt(i).getContents() ); //llamada recursiva
 					if ( mirado ) break;
