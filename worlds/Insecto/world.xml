@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <World author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2008-11-06" moduleName="Insecto mortal" type="Aventura rápida" version="1.1" worldDir="." worldName="Insecto mortal">
 <IdeMetaInf>
+<View xoffset="35.0" yoffset="69.0" zoom="2.0"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Habitación de Kovacic" x="220" y="260"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Limbo" x="380" y="120"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.CharacterNode" name="Ekaterina" x="220" y="340"/>
