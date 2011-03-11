@@ -277,7 +277,25 @@ public class ArrowPanel extends GraphElementPanel
 	
 	public String describeArrow()
 	{
-		return "[ src=" + srcComboBox.getSelectedItem() + " dst=" + dstComboBox.getSelectedItem() + "]";
+		return "[ src=" + srcComboBox.getSelectedItem() + "(" + theArrow.getSource() + ")" + " dst=" + dstComboBox.getSelectedItem() + "(" + theArrow.getDestination() + ")" + " ]";
+	}
+	
+	/*
+	 * It may be the case that an arrow has no source or destination if we are executing the deferred loading,
+	 * and in the meanwhile its source or destination is removed (by pressing Del, for example).
+	 * We need this method to be able to realise that and refrain from initialising the arrow.
+	 */
+	protected boolean hasSourceAndDestination ( )
+	{
+		//not only the source and dest must not be null (in fact that's unimportant, i think)
+		//but the source and dest must be registered with the graph element panel (and this is checked by seeing if they are in the
+		//possible source and possible destination lists).
+		//if the source or destination node has been removed before the deferred load takes place, the node's object will be in memory
+		//but not in these lists, hence this check.
+		return theArrow.getSource() != null
+		&& this.getPossibleSourceNodes().contains(theArrow.getSource())
+		&& theArrow.getDestination() != null
+		&& this.getPossibleDestinationNodes().contains(theArrow.getDestination());
 	}
 	
 }
