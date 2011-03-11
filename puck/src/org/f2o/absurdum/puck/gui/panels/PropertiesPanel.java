@@ -8,6 +8,7 @@
 package org.f2o.absurdum.puck.gui.panels;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -152,15 +153,39 @@ public class PropertiesPanel extends JPanel
 						try{Integer.parseInt(tuTextField.getText());}
 						catch(NumberFormatException nfe)
 						{
-							SwingComponentHighlighter.temporalRedBackground(tuTextField,1000);
+							SwingComponentHighlighter.temporalRedBackground(tuTextField);
 							return;
+						}
+						
+						//check if property is already present
+						int foundIndex = -1;
+						for ( int i = 0 ; i < listContent.size() ; i++ )
+						{
+							String[] s = (String[])listContent.get(i);
+							if ( nameTextField.getText().equals(s[0]) )
+							{
+								//property present at this position
+								foundIndex = i;
+								break;
+							}
 						}
 						
 						String[] nu = new String[]
 												 {
 								nameTextField.getText(),valTextField.getText(),tuTextField.getText()
 												 };
-						listContent.addElement(nu);
+						
+						if ( foundIndex < 0 )
+							listContent.addElement(nu);
+						else
+						{
+							listContent.set(foundIndex,nu);
+							Component c = theList.getCellRenderer().getListCellRendererComponent(theList, nu, foundIndex, theList.isSelectedIndex(foundIndex), theList.hasFocus() );
+							SwingComponentHighlighter.temporalBlueForeground(c);
+						}
+						
+						
+						
 						jsp.repaint();
 						nameTextField.setText("");
 						valTextField.setText("");

@@ -29,14 +29,17 @@ public class SwingComponentHighlighter
 		else return Color.WHITE;
 	}
 
-	private static void doColorChange ( final Component c , final Color color )
+	private static void doColorChange ( final Component c , final Color color , final boolean background )
 	{
 		SwingUtilities.invokeLater(
 				new Runnable()
 				{
 					public void run()
 					{
-						c.setBackground(color);
+						if ( background )
+							c.setBackground(color);
+						else
+							c.setForeground(color);
 						c.repaint();
 					}
 				});
@@ -52,17 +55,19 @@ public class SwingComponentHighlighter
 	}
 	
 	/**
-	 * Sets the background of a text component to a reddish colour and then fades gradually to the default background.
+	 * Sets the background or foreground of a text component to a given colour and then fades gradually to the default background.
 	 * @param c The component for the colour change.
 	 * @param milliseconds The time in milliseconds for the fade.
+	 * @param color The colour to change to.
+	 * @param background Change the background color (true) or the foreground color (false)?
 	 */
-	public static void temporalRedBackground ( final Component c , final long milliseconds )
+	public static void gradualBackgroundChange ( final Component c , final long milliseconds , final Color color , final boolean background )
 	{
 		Thread thr = new Thread()
 		{
 			public void run()
 			{
-				doTemporalRedBackground ( c , milliseconds );
+				doGradualColorChange ( c , milliseconds , color , background );
 			}
 		};
 		thr.start();
@@ -74,17 +79,19 @@ public class SwingComponentHighlighter
 	 */
 	public static void temporalRedBackground ( Component c )
 	{
-		temporalRedBackground ( c , 400 );
+		gradualBackgroundChange ( c , 400 , new Color(255,150,150) , true );
 	}
 	
-	/**
-	 * Must be invoked *outside* event dispatching thread.
-	 */
-	private static void doTemporalRedBackground ( final Component c , long milliseconds )
+	public static void temporalBlueForeground ( Component c )
+	{
+		gradualBackgroundChange ( c , 400 , new Color(150,150,255) , false );
+	}
+	
+	private static void doGradualColorChange ( final Component c , long milliseconds , Color color , boolean background )
 	{
 		final Color defaultColor = getDefaultTextFieldBackgroundColor();
-		final Color redColor = new Color(255,150,150);
-		doColorChange ( c , redColor );
+		final Color redColor = color;
+		doColorChange ( c , redColor , background );
 		//Timer t = new Timer();
 		for ( int i = 1 ; i <= FADE_ITERATIONS ; i++ )
 		{
@@ -101,7 +108,7 @@ public class SwingComponentHighlighter
 			};
 			t.schedule ( task , time );
 			*/
-			doColorChange(c,getWeightedAverage(defaultColor,redColor,defaultWeight,redWeight));
+			doColorChange(c,getWeightedAverage(defaultColor,redColor,defaultWeight,redWeight),background);
 			try 
 			{
 				Thread.sleep(milliseconds/FADE_ITERATIONS);
@@ -122,5 +129,6 @@ public class SwingComponentHighlighter
 		);
 		*/
 	}
+	
 	
 }
