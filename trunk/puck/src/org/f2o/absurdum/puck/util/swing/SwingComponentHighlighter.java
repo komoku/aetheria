@@ -87,6 +87,11 @@ public class SwingComponentHighlighter
 		gradualBackgroundChange ( c , 400 , new Color(150,150,255) , false );
 	}
 	
+	public static void temporalBlueBackground ( Component c )
+	{
+		gradualBackgroundChange ( c , 400 , new Color(150,150,255) , true );
+	}
+	
 	private static void doGradualColorChange ( final Component c , long milliseconds , Color color , boolean background )
 	{
 		final Color defaultColor = getDefaultTextFieldBackgroundColor();
