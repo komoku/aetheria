@@ -22,6 +22,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -262,8 +264,46 @@ public class PropertiesPanel extends JPanel
 					
 				}
 				);
+		
+		updateButtonEnabledness();
+		theList.getModel().addListDataListener(new ListDataListener()
+		{
+			public void intervalAdded(ListDataEvent e) 
+			{
+				updateButtonEnabledness();
+			}
+
+			public void intervalRemoved(ListDataEvent e) 
+			{
+				updateButtonEnabledness();
+			}
+
+			public void contentsChanged(ListDataEvent e) 
+			{	
+			}
+			
+		}
+		);
 
 		
+	}
+	
+	
+	/**
+	 * Disables all buttons but "add" if the list is empty, and enables them otherwise
+	 */
+	public void updateButtonEnabledness()
+	{
+		if ( theList.getModel().getSize() > 0 )
+		{
+			delButton.setEnabled(true);
+			modButton.setEnabled(true);
+		}
+		else
+		{
+			delButton.setEnabled(false);
+			modButton.setEnabled(false);
+		}
 	}
 
 	

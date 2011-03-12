@@ -33,6 +33,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.JTextComponent;
@@ -105,6 +107,8 @@ public class DescriptionListPanel extends JPanel
 	
 	//debugging
 	private DefaultListModel devVector = new DefaultListModel();
+	
+
 	
 	//se le pasa el texto del borde y el que dice "Description:" o similar.
 	public DescriptionListPanel ( String borderTitle , String descLabelText , int rows )
@@ -487,6 +491,7 @@ public class DescriptionListPanel extends JPanel
 						}
 						condTextField.setText(ar[0]);
 						descTextField.setText(desc);
+						
 					}
 					
 				}
@@ -508,9 +513,51 @@ public class DescriptionListPanel extends JPanel
 			}
 		);
 		*/
+		
+		updateButtonEnabledness();
+		theList.getModel().addListDataListener(new ListDataListener()
+		{
+			public void intervalAdded(ListDataEvent e) 
+			{
+				updateButtonEnabledness();
+			}
+
+			public void intervalRemoved(ListDataEvent e) 
+			{
+				updateButtonEnabledness();
+			}
+
+			public void contentsChanged(ListDataEvent e) 
+			{	
+			}
+			
+		}
+		);
 
 		
 	}
+	
+	
+	
+	/**
+	 * Disables all buttons but "add" if the list is empty, and enables them otherwise
+	 */
+	public void updateButtonEnabledness()
+	{
+		if ( theList.getModel().getSize() > 0 )
+		{
+			delButton.setEnabled(true);
+			modButton.setEnabled(true);
+			topButton.setEnabled(true);
+		}
+		else
+		{
+			delButton.setEnabled(false);
+			modButton.setEnabled(false);
+			topButton.setEnabled(false);
+		}
+	}
+	
 	
 	public Node getXML ( Document d )
 	{
