@@ -1354,7 +1354,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		}
 		return 0;
 		*/
-		return matchesCommand ( commandArgs , listaDeInteres );
+		return matchesCommand ( commandArgs , listaDeInteres , mundo.getCommandMatchingMode() );
 	}
 
 	public int getInstanceOf ( )

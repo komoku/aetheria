@@ -894,6 +894,10 @@ public class World implements Informador , SupportingCode
 		write("\n=============================================================\n");
 		
 		//warnVersionIfNeeded(null);
+
+		//set legacy command matching mode if needed (versions strictly < 1.0)
+		if ( new VersionComparator().compare(parserVersion,"1.0") < 0 )
+			this.setCommandMatchingMode(Entity.LEGACY_COMMAND_MATCHING);
 		
 		if ( !jugadorAsignadoACliente && !noSerCliente )
 		{
@@ -2878,6 +2882,27 @@ public class World implements Informador , SupportingCode
 	public String getRequiredAGEVersion()
 	{
 		return parserVersion;
+	}
+	
+	
+	
+
+	
+	//go back to legacy if things fail
+	public int commandMatchingMode = Entity.LENIENT_COMMAND_MATCHING;
+	
+	/**
+	 * values should be static constants from class Entity.
+	 * @param matchingMode
+	 */
+	public void setCommandMatchingMode ( int matchingMode )
+	{
+		commandMatchingMode = matchingMode;
+	}
+	
+	public int getCommandMatchingMode()
+	{
+		return commandMatchingMode;
 	}
 	
 }

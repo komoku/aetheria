@@ -631,27 +631,17 @@ public abstract class Entity
 	 * @param referenceList ordered list of reference names
 	 * @return 0 si no se da por aludido, 1 si sí, y con qué prioridad. (+ nº = - prioridad). La prioridad es el orden que ocupa el nombre que se corresponde con el comando dado en la lista de nombres.
 	 */
-	protected int matchesCommand ( String commandArgs , String referenceNameList )
+	protected int matchesCommand ( String commandArgs , String referenceNameList , int commandMatchingMode )
 	{
-		if ( commandMatchingMode == LEGACY )
+		if ( commandMatchingMode == LEGACY_COMMAND_MATCHING )
 			return legacyMatchesCommand ( commandArgs , referenceNameList );
 		else
 			return lenientMatchesCommand ( commandArgs , referenceNameList );
 	}
 	
-	public static int LEGACY = 0;
-	public static int LENIENT = 1;
-	
-	//go back to legacy if things fail
-	public static int commandMatchingMode = LENIENT;
-	
-	
-	
-	
-	public static void setCommandMatchingMode ( int matchingMode )
-	{
-		commandMatchingMode = matchingMode;
-	}
+	//command matching modes
+	public static int LEGACY_COMMAND_MATCHING = 0;
+	public static int LENIENT_COMMAND_MATCHING = 1;
 	
 	
 	
