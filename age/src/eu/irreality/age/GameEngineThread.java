@@ -20,6 +20,11 @@ public class GameEngineThread extends Thread
 	{ 
 		return "Aetheria Game Engine v 1.0.2";
 	}
+	
+	public static String getVersionNumber()
+	{
+		return "1.0.2";
+	}
 
 	
 	public static long DEFAULT_REAL_TIME_QUANTUM = 1500;
