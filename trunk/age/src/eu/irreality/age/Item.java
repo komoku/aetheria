@@ -1541,7 +1541,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		}
 		return 0;
 		*/
-		return matchesCommand ( commandArgs , listaDeInteres );
+		return matchesCommand ( commandArgs , listaDeInteres , mundo.getCommandMatchingMode() );
 	}
 	
 	public int getInstanceOf ( )
