@@ -26,6 +26,7 @@ import org.w3c.dom.*;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
 import eu.irreality.age.messages.Messages;
+import eu.irreality.age.util.VersionComparator;
 
 public class World implements Informador , SupportingCode
 {
@@ -892,7 +893,7 @@ public class World implements Informador , SupportingCode
 			write("\n" + io.getColorCode("information") + "[Versión engine]   " + parserVersion + io.getColorCode("reset"));
 		write("\n=============================================================\n");
 		
-		
+		//warnVersionIfNeeded(null);
 		
 		if ( !jugadorAsignadoACliente && !noSerCliente )
 		{
@@ -2541,6 +2542,7 @@ public class World implements Informador , SupportingCode
 	
 	public void executePlayerIntro( Player p )
 	{
+		warnVersionIfNeeded(p);
 		//exec player intro routine
 		try
 		{
@@ -2848,5 +2850,34 @@ public class World implements Informador , SupportingCode
 	}
 	
 	public void setDebugMode ( boolean debugMode ) { this.debugMode = debugMode; }
+	
+	/**
+	 * Give an explicit warning if the version required by the world is more recent than the AGE version being used.
+	 * Pass a player to warn the player, else the server is warned.
+	 */
+	public void warnVersionIfNeeded(Player p)
+	{
+		if ( new VersionComparator().compare(GameEngineThread.getVersionNumber(),parserVersion) < 0 )
+		{
+			if ( p == null )
+			{
+				writeError("\n\nAVISO IMPORTANTE:\n");
+				writeError("Estás usando la versión " + GameEngineThread.getVersionNumber() + " de AGE, y este mundo ha sido pensado para la versión " + parserVersion + " y superiores.\n");
+				writeError("El mundo puede no funcionar, descárgate la última versión de AGE en http://code.google/com/p/aetheria para jugarlo.\n\n");
+			}
+			else
+			{
+				p.writeError("\n\nAVISO IMPORTANTE:\n");
+				p.writeError("Estás usando la versión " + GameEngineThread.getVersionNumber() + " de AGE, y este mundo ha sido pensado para la versión " + parserVersion + " y superiores.\n");
+				p.writeError("El mundo puede no funcionar, descárgate la última versión de AGE en http://code.google/com/p/aetheria para jugarlo.\n\n");
+				p.waitKeyPress();
+			}
+		}
+	}
+	
+	public String getRequiredAGEVersion()
+	{
+		return parserVersion;
+	}
 	
 }

@@ -24,6 +24,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 import javax.swing.JSeparator;
@@ -49,6 +50,7 @@ import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.filemanagement.WorldLoader;
 import eu.irreality.age.swing.config.AGEConfiguration;
 import eu.irreality.age.swing.mdi.SwingAetheriaGUI;
+import eu.irreality.age.util.VersionComparator;
 import eu.irreality.age.windowing.AGEClientWindow;
 import eu.irreality.age.windowing.UpdatingRun;
 
@@ -301,8 +303,17 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 			{
 				e.printStackTrace();
 			}
+			
+			if ( new VersionComparator().compare(GameEngineThread.getVersionNumber(),theWorld.getRequiredAGEVersion()) < 0 )
+			{
+				String mess = "Estás usando la versión " +
+					GameEngineThread.getVersionNumber() + " de AGE; pero el mundo " + theWorld.getModuleName() +
+					" requiere la versión " + theWorld.getRequiredAGEVersion() + " como mínimo. Podría no funcionar " +
+					" si no te bajas una nueva versión de AGE en http://code.google.com/p/aetheria";
+				JOptionPane.showMessageDialog(SwingSDIInterface.this, mess, "Aviso", JOptionPane.WARNING_MESSAGE);
+			}
 
-
+			/*
 			org.w3c.dom.Document d = null;
 			try
 			{
@@ -313,6 +324,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 			{
 				System.out.println(exc);
 			}
+			*/
 
 			//usar estado si lo hay
 			if ( stateFile != null )

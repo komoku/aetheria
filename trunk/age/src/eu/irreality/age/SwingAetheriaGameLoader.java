@@ -14,6 +14,7 @@ import eu.irreality.age.debug.Debug;
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.filemanagement.WorldLoader;
 import eu.irreality.age.swing.config.AGEConfiguration;
+import eu.irreality.age.util.VersionComparator;
 import eu.irreality.age.windowing.AGEClientWindow;
 import eu.irreality.age.windowing.UpdatingRun;
 
@@ -684,7 +685,16 @@ de la ventana hasta acabar de cargar.
 						*/
 						
 						
+						if ( new VersionComparator().compare(GameEngineThread.getVersionNumber(),theWorld.getRequiredAGEVersion()) < 0 )
+						{
+							String mess = "Estás usando la versión " +
+								GameEngineThread.getVersionNumber() + " de AGE; pero el mundo " + theWorld.getModuleName() +
+								" requiere la versión " + theWorld.getRequiredAGEVersion() + " como mínimo. Podría no funcionar " +
+								" si no te bajas una nueva versión de AGE en http://code.google.com/p/aetheria";
+							JOptionPane.showMessageDialog(SwingAetheriaGameLoader.this, mess, "Aviso", JOptionPane.WARNING_MESSAGE);
+						}
 						
+						/*
 						org.w3c.dom.Document d = null;
 						try
 						{
@@ -695,6 +705,7 @@ de la ventana hasta acabar de cargar.
 						{
 							System.out.println(exc);
 						}
+						*/
 						
 						/*
 						try
@@ -712,6 +723,16 @@ de la ventana hasta acabar de cargar.
 						
 						if ( Debug.DEBUG_OUTPUT )
 						{
+							
+							org.w3c.dom.Document d = null;
+							try
+							{
+								d = theWorld.getXMLRepresentation();
+							}
+							catch ( javax.xml.parsers.ParserConfigurationException exc )
+							{
+								System.out.println(exc);
+							}
 						
 							javax.xml.transform.stream.StreamResult sr = null;
 						
