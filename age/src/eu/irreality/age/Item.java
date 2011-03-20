@@ -9,6 +9,7 @@ import java.io.*;
 
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
+import eu.irreality.age.util.Conversions;
 public class Item extends Entity implements Descriptible , SupportingCode , Nameable
 {
 	
@@ -2735,5 +2736,20 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	public boolean isWeapon() { return ( this instanceof Weapon ); }
 	
 	
+	/**
+	 * Obtain a list with the singular reference names of the item, in order.
+	 */
+	public List getSingularReferenceNames()
+	{
+		return Conversions.getReferenceNameList(respondToSing);
+	}
+	
+	/**
+	 * Obtain a list with the plural reference names of the item, in order.
+	 */
+	public List getPluralReferenceNames()
+	{
+		return Conversions.getReferenceNameList(respondToPlur);
+	}
 
 } //end class item
