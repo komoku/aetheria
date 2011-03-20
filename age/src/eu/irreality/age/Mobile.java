@@ -1309,8 +1309,10 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		return null;
 	}	
 
-	//nos devuelve el nombre m�s espec�fico con el que nos podemos referir al objeto en
-	//un comando. �til para zonas de referencia.
+	/*
+	 * Returns the most specific name with which we can refer to an object in a command.
+	 * Useful for pronoun substitution.
+	 */
 	public String getBestReferenceName ( boolean pluralOrSingular )
 	{
 		String theList;
@@ -1318,6 +1320,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			theList = respondToPlur;
 		else
 			theList = respondToSing;
+		if ( theList.length() == 0 ) return null;
 		String tmp = StringMethods.getTok(theList,1,'$');	
 		return ( Character.toLowerCase( tmp.charAt(0) ) ) + tmp.substring(1);	
 	}
