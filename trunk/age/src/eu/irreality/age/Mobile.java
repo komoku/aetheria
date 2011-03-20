@@ -15,6 +15,7 @@ import javax.sound.midi.Sequencer;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
 import eu.irreality.age.messages.Messages;
+import eu.irreality.age.util.Conversions;
 public class Mobile extends Entity implements Descriptible , SupportingCode , Nameable
 {
 
@@ -7138,7 +7139,21 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	 */
 
 
-
+	/**
+	 * Obtain a list with the singular reference names of the mobile, in order.
+	 */
+	public List getSingularReferenceNames()
+	{
+		return Conversions.getReferenceNameList(respondToSing);
+	}
+	
+	/**
+	 * Obtain a list with the plural reference names of the mobile, in order.
+	 */
+	public List getPluralReferenceNames()
+	{
+		return Conversions.getReferenceNameList(respondToPlur);
+	}
 
 
 }

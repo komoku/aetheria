@@ -3531,6 +3531,7 @@ public class Player extends Mobile implements Informador
 	}
 	
 	//sustituye los comandos al final del verbo por las ZR's correspondientes
+	//this method NO LONGER checks if the input is actually a verb, that should be checked outside.
 	public String substitutePronouns ( String command )
 	{
 		String thestring = command;	
@@ -3602,6 +3603,7 @@ public class Player extends Mobile implements Informador
 	
 	//sustituye los comandos al final del verbo por las ZR's correspondientes
 	//tambien corrige el verbo
+	//UNUSED
 	public String substitutePronounsIfVerb ( String command )
 	{
 
@@ -3734,11 +3736,36 @@ public class Player extends Mobile implements Informador
 	}
 	 */
 
+	/**
+	 * Substitutes pronouns AND aplies spell checking if enabled
+	 */
 	public String substitutePronounsInSentence ( String commandstring )
 	{
+		StringTokenizer st = new StringTokenizer(commandstring);
+		String originalVerb = st.nextToken(); //matalo
+		String expandedVerb = substitutePronouns ( originalVerb ); //mata Juanito 
+		String expandedVerbWithoutPronoun = firstWord ( expandedVerb ); //mata
+		String expandedString = expandedVerb + " " + restWords(commandstring); //mata Juanito con el cuchillo
+		String workingString;
+		if ( !lenguaje.isVerb(originalVerb) && lenguaje.isVerb(firstWord(expandedVerbWithoutPronoun)) ) 
+			workingString = expandedString; //pronoun substitution was useful
+		else
+			workingString = commandstring; //first word could be something like "habla" or "bote", better not to expand it if not sure.
+		if ( !getPropertyValueAsBoolean("noVerbSpellChecking") )
+		{
+			System.err.println("Before: " + workingString);
+			System.err.println("After: " + mundo.getSpellChecker().correctCommandString(workingString));
+			return mundo.getSpellChecker().correctCommandString(workingString);
+		}
+		else
+		{
+			return workingString;
+		}
+		/*
 		String subs_command = substitutePronounsIfVerb ( StringMethods.getTok(commandstring,1,' ') );		
 		commandstring = subs_command + " " + StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ');
 		return commandstring;
+		*/
 	}
 
 

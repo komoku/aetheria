@@ -26,6 +26,7 @@ import org.w3c.dom.*;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
 import eu.irreality.age.messages.Messages;
+import eu.irreality.age.spell.AGESpellChecker;
 import eu.irreality.age.util.VersionComparator;
 
 public class World implements Informador , SupportingCode
@@ -1764,7 +1765,21 @@ public class World implements Informador , SupportingCode
 	{
 		EntityList el = new EntityList();
 		for ( int i = 0 ; i < maxmob ; i++ )
-			el.addEntity(mob[i]);
+		{
+			if ( mob[i] != null ) //purely defensive check
+				el.addEntity(mob[i]);
+		}
+		return el;
+	}
+	
+	public EntityList getAllItems ( )
+	{
+		EntityList el = new EntityList();
+		for ( int i = 0 ; i < maxitem ; i++ )
+		{
+			if ( item[i] != null ) //purely defensive check
+				el.addEntity(item[i]);
+		}
 		return el;
 	}
 	
@@ -2903,6 +2918,15 @@ public class World implements Informador , SupportingCode
 	public int getCommandMatchingMode()
 	{
 		return commandMatchingMode;
+	}
+	
+	private AGESpellChecker spellChecker;
+	
+	public AGESpellChecker getSpellChecker()
+	{
+		if ( spellChecker == null )
+			spellChecker = new AGESpellChecker(this,getLanguage());
+		return spellChecker;
 	}
 	
 }

@@ -422,7 +422,7 @@ public class NaturalLanguage
 		return s;
 	}
 	
-	public void initSpellingCorrector ( )
+	public void initVerbSpellingCorrector ( )
 	{
 		corrector = new SimpleReverseCorrector();
 		for ( Iterator iter = infinitivoAImperativo.keySet().iterator() ; iter.hasNext() ; )
@@ -455,7 +455,7 @@ public class NaturalLanguage
 	 */
 	public String correctVerb ( String commandString )
 	{
-		if ( corrector == null ) initSpellingCorrector();
+		if ( corrector == null ) initVerbSpellingCorrector();
 		StringTokenizer st = new StringTokenizer ( commandString );
 		if ( !st.hasMoreTokens() ) return commandString;
 		String verb = st.nextToken();
@@ -468,4 +468,14 @@ public class NaturalLanguage
 		else return verb + " " + st.nextToken("");
 	}
 
+	/**
+	 * Returns the language's verb spelling corrector (initialising it first if it was not
+	 * already initialised).
+	 */
+	public SpellingCorrector getVerbSpellingCorrector()
+	{
+		if ( corrector == null ) initVerbSpellingCorrector();
+		return corrector;
+	}
+	
 }
