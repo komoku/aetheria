@@ -40,16 +40,20 @@ public class AGESpellChecker
 	 * @param word The word that is to be corrected.
 	 * @param useVerbs use the verb dictionary if true.
 	 * @param useNames use the name dictionary if true.
+	 * @param caseInsensitive make the correction case-insensitive.
 	 * @return
 	 */
-	public String correctVerbOrName ( String word , boolean useVerbs , boolean useNames )
+	public String correctVerbOrName ( String w , boolean useVerbs , boolean useNames , boolean caseInsensitive )
 	{
 		/*
 		StringTokenizer st = new StringTokenizer ( commandString );
 		if ( !st.hasMoreTokens() ) return commandString;
 		String firstWord = st.nextToken();
 		*/
-		String corrected = word;
+		String word = w;
+		if ( caseInsensitive )
+			word = w.toLowerCase();
+		String corrected = w;
 		if ( word.length() >= MINLENGTH )
 		{
 			Correction verbCorrection = verbCorrector.getBestCorrection(word);
@@ -83,12 +87,12 @@ public class AGESpellChecker
 		StringBuffer result = new StringBuffer();
 		if ( !st.hasMoreTokens() ) return s;
 		String firstWord = st.nextToken();
-		String correctedFirstWord = correctVerbOrName(firstWord,true,true);
+		String correctedFirstWord = correctVerbOrName(firstWord,true,true,true);
 		result.append(correctedFirstWord);
 		while ( st.hasMoreTokens() )
 		{
 				String nextWord = st.nextToken();
-				String correctedNextWord = correctVerbOrName(nextWord,false,true);
+				String correctedNextWord = correctVerbOrName(nextWord,false,true,true);
 				result.append(" ");
 				result.append(correctedNextWord);
 		}
