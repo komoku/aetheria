@@ -3585,7 +3585,13 @@ public class Player extends Mobile implements Informador
 				//lo quitamos
 				String cut  = firstWord(thestring).substring(0,firstWord(thestring).length()-2);
 				//añadimos el nombre del jugador
-				thestring = cut + " " + getBestReferenceName(false) + " " +  restWords(thestring);
+				String playerRefName = getBestReferenceName(false);
+				if ( playerRefName == null )
+				{
+					this.writeError("Error in player " + this + ": cannot apply pronoun substitution to \"" + firstWord(thestring) + "\" because player has no reference name. Add a singular reference name to fix this.\n" ); 
+					return command;
+				}
+				thestring = cut + " " + playerRefName + " " +  restWords(thestring);
 			}
 		}
 
@@ -3753,8 +3759,6 @@ public class Player extends Mobile implements Informador
 			workingString = commandstring; //first word could be something like "habla" or "bote", better not to expand it if not sure.
 		if ( !getPropertyValueAsBoolean("noVerbSpellChecking") )
 		{
-			System.err.println("Before: " + workingString);
-			System.err.println("After: " + mundo.getSpellChecker().correctCommandString(workingString));
 			return mundo.getSpellChecker().correctCommandString(workingString);
 		}
 		else
