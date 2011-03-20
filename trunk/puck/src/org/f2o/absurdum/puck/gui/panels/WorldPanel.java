@@ -118,7 +118,7 @@ public class WorldPanel extends GraphElementPanel
 		
 		super();
 		this.gep = gep;
-		tfAgeVersion.setText("1.0.2");
+		tfAgeVersion.setText("1.0.3");
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 	}
 	
