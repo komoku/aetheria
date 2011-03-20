@@ -1502,62 +1502,36 @@ public class Player extends Mobile implements Informador
 		{
 
 			boolean mirado = false;
-
-			Vector[] patternMatchVectorSingSing = null;
-			//Vector[] patternMatchVectorSingPlur = null; //no podemos poner una cosa en varios sitios
-			Vector[] patternMatchVectorPlurSing = null;
-			//Vector[] patternMatchVectorPlurPlur = null;
-
-			//Paso 1: poner [algo de mi inventario] en [contenedor de la habitación]
-
 			
-			if ( habitacionActual.itemsInRoom != null && !habitacionActual.itemsInRoom.isEmpty()
+			//Paso 0: ponerme [algo de mi inventario]
+			if ( command.equalsIgnoreCase( "poner" ) && ParserMethods.refersToEntity(arguments, this, false) ) //the player appears as an argument
+			{
+				if ( !oneTargetAction("wear",arguments,inventory) )
+				{
+					escribirDenegacionComando( io.getColorCode("denial") + 
+							mundo.getMessages().getMessage("wear.what",new Object[]{this,arguments})  //"¿Qué pretendes vestir?\n"
+							+ io.getColorCode("reset") );
+					ZR_verbo = command;
+					cancelPending();
+					return false;		
+				}
+				else
+				{
+					ZR_verbo = command;
+					return true;
+				}
+			}
+			
+			//Paso 1: poner [algo de mi inventario] en [contenedor de la habitación]
+			
+			if ( !mirado && habitacionActual.itemsInRoom != null && !habitacionActual.itemsInRoom.isEmpty()
 					&& inventory != null && !inventory.isEmpty()
 			)
 			{
-
-				/*
-				
-				patternMatchVectorSingSing = inventory.patternMatchTwo ( habitacionActual.itemsInRoom , arguments , false , false ); //en singular y singular
-				patternMatchVectorPlurSing = inventory.patternMatchTwo ( habitacionActual.itemsInRoom , arguments , true , false ); //en plural y singular
-
-
-
-				if ( patternMatchVectorSingSing != null && patternMatchVectorSingSing[0].size() > 0 ) //ponemos una cosa en un sitio
-				{
-					mirado = true;
-					Vector[] theVectors = patternMatchVectorSingSing;
-					Item ourContainer = (Item)(theVectors[1].elementAt(0));
-					Item ourItem = (Item)(theVectors[0].elementAt(0));
-
-					if ( checkPutInside(ourContainer) )
-						putInside(ourItem,ourContainer);
-				}
-				else if ( patternMatchVectorPlurSing != null && patternMatchVectorPlurSing[0].size() > 0 )
-				{
-					mirado = true;
-					Vector[] theVectors = patternMatchVectorPlurSing;
-					Item ourContainer = (Item)theVectors[1].elementAt(0);
-					if ( checkPutInside(ourContainer) )
-					{
-						for ( int i=0 ; i < theVectors[0].size() ; i++ )
-						{
-							Item ourItem = (Item)theVectors[0].elementAt(i);		
-
-							putInside(ourItem,ourContainer);
-						} //end for
-					}
-				}
-
-				*/
-				
+		
 				mirado = putInside ( inventory , habitacionActual.itemsInRoom , arguments );
 
 			} //end if (par inventario-habitación)
-
-		
-			
-
 
 			//Paso 2: poner [algo de mi inventario] en [contenedor también del inventario]
 
@@ -1565,43 +1539,6 @@ public class Player extends Mobile implements Informador
 					&& inventory != null && !inventory.isEmpty()
 			)
 			{
-
-				/*
-				
-				patternMatchVectorSingSing = inventory.patternMatchTwo ( arguments , false , false ); //en singular y singular
-				patternMatchVectorPlurSing = inventory.patternMatchTwo ( arguments , true , false ); //en plural y singular
-
-
-
-				if ( patternMatchVectorSingSing != null && patternMatchVectorSingSing[0].size() > 0 ) //ponemos una cosa en un sitio
-				{
-					mirado = true;
-					Vector[] theVectors = patternMatchVectorSingSing;
-					Item ourContainer = (Item)(theVectors[1].elementAt(0));
-					Item ourItem = (Item)(theVectors[0].elementAt(0));
-
-					if ( checkPutInside(ourContainer) )
-						putInside(ourItem,ourContainer);
-					
-				}
-				else if ( patternMatchVectorPlurSing != null && patternMatchVectorPlurSing[0].size() > 0 )
-				{
-					mirado = true;
-					Vector[] theVectors = patternMatchVectorPlurSing;
-					Item ourContainer = (Item)theVectors[1].elementAt(0);
-					if ( checkPutInside(ourContainer) ) 
-					{
-						for ( int i=0 ; i < theVectors[0].size() ; i++ )
-						{
-							Item ourItem = (Item)theVectors[0].elementAt(i);		
-
-							//más o menos lo mismo que hacíamos en dejar:
-							putInside(ourItem,ourContainer);
-						} //end for
-					} //end if
-				} //end else if (patmatchvecplursing...)
-
-				*/
 				
 				mirado = putInside ( inventory , inventory , arguments );
 
@@ -1637,6 +1574,26 @@ public class Player extends Mobile implements Informador
 
 			boolean mirado = false;
 
+			
+			//Paso 0: cogerme (o sea, quitarme) [algo de mi inventario]
+			if ( ParserMethods.refersToEntity(arguments, this, false) ) //the player appears as an argument
+			{
+				if ( !oneTargetAction("unwear",arguments,getWornItems()) )
+				{
+					escribirDenegacionComando( io.getColorCode("denial") + 
+							mundo.getMessages().getMessage("unwear.what",new Object[]{this,arguments})  //"¿Qué pretendes quitarte?\n"
+							+ io.getColorCode("reset") );
+					ZR_verbo = command;
+					cancelPending();
+					return false;		
+				}
+				else
+				{
+					ZR_verbo = command;
+					return true;
+				}
+			}
+			
 			if ( !mirado ) mirado = cogerContenidoEspecificandoContenedor ( arguments , habitacionActual.itemsInRoom , "" );
 
 			if ( !mirado ) mirado = cogerItem ( habitacionActual.itemsInRoom , null );
@@ -1668,7 +1625,6 @@ public class Player extends Mobile implements Informador
 		else if ( command.equalsIgnoreCase( "dejar" ) )
 		{
 
-
 			if ( !oneTargetAction("drop",arguments,inventory) )
 			{
 				escribirDenegacionComando( io.getColorCode("denial") + 
@@ -1678,122 +1634,6 @@ public class Player extends Mobile implements Informador
 				cancelPending();
 				return false;		
 			}
-
-			//	    patternMatchVectorSing = new Vector();
-			//	    patternMatchVectorPlur = new Vector();
-			//	    if ( inventory != null  )
-			//	    {
-			//	    patternMatchVectorSing = inventory.patternMatch ( arguments , false ); //en singular
-			//	    patternMatchVectorPlur = inventory.patternMatch ( arguments , true ); //en plural
-			//	    }
-			//	    if ( patternMatchVectorSing.size() > 0 ) //dejamos un objeto
-			//	    {
-
-			//	    Item ourItem = (Item)patternMatchVectorSing.elementAt(0); //el de mas prioridad		
-
-			//	    try
-			//	    {
-			//	    //Aquí irá toda la parafernalia de mirar si está maldito, etecepunto, etecepunto.
-			//	    habitacionActual.addItem ( ourItem );
-			//	    removeItem ( ourItem );
-
-			//	    habitacionActual.informActionAuto ( this , null , "$1 deja " + ourItem.constructName2OneItem() + ".\n" , false );
-
-			//	    //si es un arma que blandimos, dejar tambien de blandirla
-			//	    if ( wieldedWeapons != null && wieldedWeapons.contains(ourItem) )
-			//	    {
-			//	    /*
-			//	    wieldedWeapons.removeItem(ourItem);
-			//	    escribir( io.getColorCode("action")  + "Dejas de blandir " + ourItem.constructName2True(1,ourItem.getState()) + ".\n" + io.getColorCode("reset") );
-			//	    */
-			//	    guardarArma(ourItem);
-			//	    }
-			//	    //si es un wearable que llevamos, dejar tambien de llevarlo
-			//	    if ( wornItems != null && wornItems.contains(ourItem) )
-			//	    {
-			//	    desvestir(ourItem);
-			//	    }
-
-			//	    write( io.getColorCode("action")  + "Dejas " + ourItem.constructName2True(1,this) + ".\n" + io.getColorCode("reset") );
-			//	    }
-			//	    catch ( WeightLimitExceededException wle )
-			//	    {
-			//	    /*esta excepción es absurda en este caso, nunca saldrá (límite de peso de habitación, enorme)*/
-			//	    write( io.getColorCode("denial") + "No puedes dejar aquí " + ourItem.constructName2True(1,this) + ", hay demasiado peso.\n" + io.getColorCode("reset") );
-			//	    }
-			//	    catch ( VolumeLimitExceededException vle )
-			//	    {
-			//	    write( io.getColorCode("denial") + "No puedes dejar aquí " + ourItem.constructName2True(1,this) + ", no hay espacio suficiente.\n" + io.getColorCode("reset") );
-			//	    }
-			//	    setNewState( 1 /*IDLE*/, 1 );
-			//	    ZR_verbo = command;
-			//	    return true;
-			//	    }
-			//	    else if ( patternMatchVectorPlur.size() > 0 )
-			//	    {
-			//	    //en plural, dejar varios items que cumplan el patron
-			//	    Item ourItem;
-
-			//	    for ( int i = 0 ; i < patternMatchVectorPlur.size() ; i++ )
-			//	    {
-
-			//	    ourItem = (Item)patternMatchVectorPlur.elementAt(i);
-
-			//	    try
-			//	    {
-			//	    //Aquí irá toda la parafernalia de mirar si está maldito, etecepunto, etecepunto.
-			//	    habitacionActual.addItem ( ourItem );
-			//	    removeItem ( ourItem );
-
-			//	    habitacionActual.informActionAuto ( this , null , "$1 deja " + ourItem.constructName2OneItem() + ".\n" , false );
-
-			//	    //si es un arma que blandimos, dejar tambien de blandirla
-			//	    if ( wieldedWeapons != null && wieldedWeapons.contains(ourItem) )
-			//	    {
-			//	    /*
-			//	    wieldedWeapons.removeItem(ourItem);
-			//	    escribir( io.getColorCode("action")  + "Dejas de blandir " + ourItem.constructName2True(1,ourItem.getState()) + ".\n" + io.getColorCode("reset") );
-			//	    */
-			//	    guardarArma(ourItem);
-			//	    }
-			//	    //si es un wearable que llevamos, dejar tambien de llevarlo
-			//	    if ( wornItems != null && wornItems.contains(ourItem) )
-			//	    {
-			//	    desvestir(ourItem);
-			//	    }
-
-			//	    write( io.getColorCode("action")  + "Dejas " + ourItem.constructName2True(1,this) + ".\n" + io.getColorCode("reset") );
-			//	    }
-			//	    catch ( WeightLimitExceededException wle )
-			//	    {
-			//	    /*esta excepción es absurda en este caso, nunca saldrá (límite de peso de habitación, enorme)*/
-			//	    if ( i == 0 )
-			//	    write( io.getColorCode("denial") + "No puedes dejar aquí " + ourItem.constructName2True(1,this) + ", hay demasiado peso.\n" + io.getColorCode("reset") );
-			//	    else
-			//	    write( io.getColorCode("denial") + "No puedes dejar aquí más cosas, hay demasiado peso.\n" + io.getColorCode("reset") );
-			//	    }
-			//	    catch ( VolumeLimitExceededException vle )
-			//	    {
-			//	    if ( i == 0 )
-			//	    write( io.getColorCode("denial") + "No puedes dejar aquí " + ourItem.constructName2True(1,this) + ", no hay espacio suficiente.\n" + io.getColorCode("reset") );
-			//	    else
-			//	    write( io.getColorCode("denial") + "No puedes dejar aquí más cosas, no hay espacio suficiente.\n" + io.getColorCode("reset") );
-			//	    }
-
-			//	    } //end for
-
-			//	    setNewState( 1 /*IDLE*/, 1 );
-			//	    ZR_verbo = command;
-			//	    return true;
-
-			//	    }
-			//	    else
-			//	    {
-			//	    escribirDenegacionComando( io.getColorCode("denial") + "¿Qué pretendes dejar?\n" + io.getColorCode("reset") );
-			//	    ZR_verbo = command;
-			//	    cancelPending();
-			//	    return false;
-			//	    }
 
 		} //FIN CMD DEJAR
 		else if ( command.equalsIgnoreCase( "inventario" ) && arguments.trim().length() < 1 ) //deja de valer poner inventario algo.
