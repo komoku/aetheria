@@ -286,7 +286,7 @@ public class ObjectCode
 		catch ( Exception e )
 		{
 			//System.err.println("UNO");
-		    theWorld.writeError("Catched the followan: " + e);
+		    theWorld.writeError("Catched the following exception: " + e);
 		    e.printStackTrace();
 		}
 		return false;
@@ -326,7 +326,7 @@ public class ObjectCode
 				
 				if ( aroutine == null )
 				{
-					retval.setRetVal ( returned );
+					if (retval != null ) retval.setRetVal ( returned );
 					return false; //OK, no se nos pidió ejecutar una rutina, se ejecutó el código, se guardó el valor de retorno y no se encontró end.
 				}
 		
@@ -340,8 +340,8 @@ public class ObjectCode
 			String argString = prepareArguments(i,theArguments);
 
 			debugInfo ( aroutine , theCaller , theArguments );
-			retval.setRetVal (
-					i.eval(aroutine + "(" + argString + ")") );
+			Object returned = i.eval(aroutine + "(" + argString + ")");
+			if ( retval != null ) retval.setRetVal ( returned );
 				
 			//Debug.println("Returnin':" + retval.getRetVal());
 		}
@@ -410,8 +410,8 @@ public class ObjectCode
 			String argString = prepareArguments(i,theArguments);
 
 			debugInfo ( aroutine , theCaller , theArguments );
-			retval.setRetVal (
-					i.eval(aroutine + "(" + argString + ")") );
+			returned = i.eval(aroutine + "(" + argString + ")");
+			retval.setRetVal ( returned );
 				
 			//Debug.println("Returnin':" + retval.getRetVal());
 		}
