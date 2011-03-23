@@ -65,6 +65,7 @@ public class ObjectCode
 	}	
 	
 	//true si existe la rutina y llegamos al end
+	//for EVA code execution only
 	public boolean run ( String aroutine ) throws EVASemanticException
 	{
 		if ( !codeVersion.equalsIgnoreCase("EVA") ) return false;
@@ -103,8 +104,68 @@ public class ObjectCode
 		return false;
 	}
 	
+	/**
+	 * Makes the given interpreter load the stdfunct.bsh file.
+	 * @param i
+	 * @throws EvalError
+	 */
+	private void sourceStandardLibrary ( ExtendedBSHInterpreter i ) throws EvalError
+	{
+		try
+		{
+			i.source(this.getClass().getClassLoader().getResource("stdfunct.bsh"));
+		}
+		catch ( java.io.FileNotFoundException fnfe )
+		{
+			System.err.println("Warning: BeanShell standard function library stdfunct.bsh not found!");
+		}
+		catch ( java.io.IOException fnfe )
+		{
+			System.err.println("Warning: BeanShell standard function library stdfunct.bsh couldn't be read!");
+		}
+	}
 	
+	/**
+	 * Sets a variable for each property in the given Entity.
+	 * @param i The interpreter in which to set the variables.
+	 * @param theCaller The entity whose properties we set the variables with.
+	 * @throws EvalError
+	 */
+	private void setPropertyVariables ( ExtendedBSHInterpreter i , Object theCaller ) throws EvalError
+	{
+		//set entity properties for convenience IF entity passed
+		//further sets in the code will override these if present
+		Entity context = null;
+		if ( theCaller instanceof Entity ) context = (Entity)theCaller;
+		if ( context != null )
+		{
+			List pList = context.getProperties();
+			for ( int k = 0 ; k < pList.size() ; k++ )
+			{
+				PropertyEntry pe = (PropertyEntry) pList.get(k);
+				i.set ( pe.getName() , pe.getValueAsBoolean() );
+			}
+		}
+	}
 	
+	/**
+	 * Makes the interpreter set variables named arg0, arg1, ... , argk and returns the string "arg0, arg1, ..., argk" that is used to call the method via source()
+	 * @param i
+	 * @param theArguments
+	 * @return
+	 * @throws EvalError
+	 */
+	private String prepareArguments ( ExtendedBSHInterpreter i , Object[] theArguments ) throws EvalError
+	{
+		//set the arguments!
+		String argString = " ";
+		for ( int k = 0 ; k < theArguments.length ; k++ )
+		{
+			i.set("arg" + k , theArguments[k]);
+			argString += ( (k>0?", arg":"arg") + k );	
+		}
+		return argString;
+	}
 	
 	/**
 	This method is for BeanShell code execution only.
@@ -137,32 +198,9 @@ public class ObjectCode
 				
 				permanentInterpreter = i;
 				
-				try
-				{
-					i.source(this.getClass().getClassLoader().getResource("stdfunct.bsh"));
-				}
-				catch ( java.io.FileNotFoundException fnfe )
-				{
-					System.err.println("Warning: BeanShell standard function library stdfunct.bsh not found!");
-				}
-				catch ( java.io.IOException fnfe )
-				{
-					System.err.println("Warning: BeanShell standard function library stdfunct.bsh couldn't be read!");
-				}
+				sourceStandardLibrary(i);
 				
-				//set entity properties for convenience IF entity passed
-				//further sets in the code will override these if present
-				Entity context = null;
-				if ( theCaller instanceof Entity ) context = (Entity)theCaller;
-				if ( context != null )
-				{
-					List pList = context.getProperties();
-					for ( int k = 0 ; k < pList.size() ; k++ )
-					{
-						PropertyEntry pe = (PropertyEntry) pList.get(k);
-						i.set ( pe.getName() , pe.getValueAsBoolean() );
-					}
-				}
+				setPropertyVariables(i,theCaller);
 				
 				i.set("obj",theCaller);
 				i.set("self",theCaller);
@@ -187,12 +225,7 @@ public class ObjectCode
 			}
 			
 			//set the arguments!
-			String argString = " ";
-			for ( int k = 0 ; k < theArguments.length ; k++ )
-			{
-				i.set("arg" + k , theArguments[k]);
-				argString += ( (k>0?", arg":"arg") + k );	
-			}
+			String argString = prepareArguments(i,theArguments);
 			debugInfo ( aroutine , theCaller , theArguments );
 			i.eval(aroutine + "(" + argString + ")"); //TODO: Why doesn't this throw EvalError properly in Zendyr's serverintro?
 		}
@@ -252,43 +285,17 @@ public class ObjectCode
 				
 				permanentInterpreter = i;
 			
-				try
-				{
-					i.source(this.getClass().getClassLoader().getResource("stdfunct.bsh"));
-				}
-				catch ( java.io.FileNotFoundException fnfe )
-				{
-					System.err.println("Warning: BeanShell standard function library stdfunct.bsh not found!");
-				}
-				catch ( java.io.IOException fnfe )
-				{
-					System.err.println("Warning: BeanShell standard function library stdfunct.bsh couldn't be read!");
-				}
+				sourceStandardLibrary(i);
 				
 				Debug.println("stdfunct sourced");
 							
-				//set entity properties for convenience IF entity passed
-				//further sets in the code will override these if present
-				Entity context = null;
-				if ( theCaller instanceof Entity ) context = (Entity)theCaller;
-				if ( context != null )
-				{
-					List pList = context.getProperties();
-					for ( int k = 0 ; k < pList.size() ; k++ )
-					{
-						PropertyEntry pe = (PropertyEntry) pList.get(k);
-						i.set ( pe.getName() , pe.getValueAsBoolean() );
-					}
-				}
+				setPropertyVariables(i,theCaller);
 				
 				Debug.println("context set");
 				
 				i.set("obj",theCaller);
 				i.set("self",theCaller);
-				i.set("world",theWorld);
-			
-				
-			
+				i.set("world",theWorld);	
 			
 				if ( aroutine == null )
 				{
@@ -337,12 +344,7 @@ public class ObjectCode
 			if ( !existsMethod ( i , aroutine , theArguments ) ) return false;
 			
 			//set the arguments!
-			String argString = " ";
-			for ( int k = 0 ; k < theArguments.length ; k++ )
-			{
-				i.set("arg" + k , theArguments[k]);
-				argString += ( (k>0?", arg":"arg") + k );	
-			}
+			String argString = prepareArguments(i,theArguments);
 
 			debugInfo ( aroutine , theCaller , theArguments );
 			retval.setRetVal (
@@ -396,34 +398,9 @@ public class ObjectCode
 				
 				permanentInterpreter = i;
 				
-				
-				
-				try
-				{
-					i.source(this.getClass().getClassLoader().getResource("stdfunct.bsh"));
-				}
-				catch ( java.io.FileNotFoundException fnfe )
-				{
-					System.err.println("Warning: BeanShell standard function library stdfunct.bsh not found!");
-				}
-				catch ( java.io.IOException fnfe )
-				{
-					System.err.println("Warning: BeanShell standard function library stdfunct.bsh couldn't be read!");
-				}
+				sourceStandardLibrary(i);
 							
-				//set entity properties for convenience IF entity passed
-				//further sets in the code will override these if present
-				Entity context = null;
-				if ( theCaller instanceof Entity ) context = (Entity)theCaller;
-				if ( context != null )
-				{
-					List pList = context.getProperties();
-					for ( int k = 0 ; k < pList.size() ; k++ )
-					{
-						PropertyEntry pe = (PropertyEntry) pList.get(k);
-						i.set ( pe.getName() , pe.getValueAsBoolean() );
-					}
-				}
+				setPropertyVariables(i,theCaller);
 				
 				i.set("obj",theCaller);
 				i.set("self",theCaller);
@@ -455,12 +432,7 @@ public class ObjectCode
 
 			
 			//set the arguments!
-			String argString = " ";
-			for ( int k = 0 ; k < theArguments.length ; k++ )
-			{
-				i.set("arg" + k , theArguments[k]);
-				argString += ( (k>0?", arg":"arg") + k );	
-			}
+			String argString = prepareArguments(i,theArguments);
 
 			debugInfo ( aroutine , theCaller , theArguments );
 			retval.setRetVal (
