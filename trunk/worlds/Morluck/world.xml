@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<World author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2009-12-30" moduleName="Wizard's Quest: Morluck's Lair" type="Rolero" version="0.2.1" worldDir="." worldName="Wizard's Quest">
+<World author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2009-12-30" moduleName="Wizard's Quest: Morluck's Lair" type="Rolero" version="0.2.1b" worldDir="." worldName="Wizard's Quest">
 <IdeMetaInf>
 <View xoffset="-58.902321590172164" yoffset="-92.90232159017205" zoom="1.6471820345351496"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Limbo" x="240" y="40"/>
@@ -97,6 +97,9 @@ void intro( Player aPlayer , boolean fromState )
 {
 
 	aPlayer.clearScreen();
+	
+	world.getLanguage().addVerbEntry("hechizos","hechizos");
+	world.getLanguage().addVerbEntry("conjuros","conjuros");
 
 	if ( aPlayer.getIO() instanceof MultimediaInputOutputClient )
     {
