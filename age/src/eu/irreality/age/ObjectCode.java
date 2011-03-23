@@ -168,6 +168,55 @@ public class ObjectCode
 	}
 	
 	/**
+	 * Processes an Object[][] which is an array of pairs (String,Objects); and sets in the interpreter
+	 * the variables named by the Strings to the values in the Objects. 
+	 * @param i
+	 * @param initializations
+	 * @throws EvalError
+	 */
+	private void doInitializations ( ExtendedBSHInterpreter i , Object[][] initializations ) throws EvalError
+	{
+		for ( int w = 0 ; w < initializations.length ; w++ )
+		{
+			Object[] curInit = initializations[w];
+			if ( curInit.length < 2 ) continue;
+			i.set ( (String)curInit[0] , curInit[1] );
+		}
+	}
+	
+	/**
+	 * Sets the standard variables obj, self and world in bsh code.
+	 * @param i Interpreter to set the variables in.
+	 * @param theCaller Entity that called the bsh code.
+	 * @throws EvalError
+	 */
+	private void setStandardVariables ( ExtendedBSHInterpreter i  , Object theCaller ) throws EvalError
+	{
+		i.set("obj",theCaller);
+		i.set("self",theCaller);
+		i.set("world",theWorld);
+	}
+	
+	/**
+	 * Initializes a beanshell interpreter for a given entity.
+	 * This includes loading the standard library, setting the standard variables (world, self)
+	 * and setting the property variables.
+	 * @param theCaller
+	 * @return
+	 * @throws EvalError
+	 */
+	private ExtendedBSHInterpreter initInterpreter ( Object theCaller ) throws EvalError
+	{
+		ExtendedBSHInterpreter i;
+		i = new ExtendedBSHInterpreter();
+		permanentInterpreter = i;
+		sourceStandardLibrary(i);
+		setStandardVariables(i,theCaller);
+		setPropertyVariables(i,theCaller);
+		return i;
+	}
+	
+	/**
 	This method is for BeanShell code execution only.
 	With aroutine != null, evaluates the code and executes the given routine with no parameters:
 		*Throwing any non-end exception found as a TargetError,
@@ -194,26 +243,18 @@ public class ObjectCode
 			{
 				//Debug.println("Using nonpermanent for " + aroutine + " at " + theCaller);
 				
-				i = new ExtendedBSHInterpreter();
-				
-				permanentInterpreter = i;
-				
-				sourceStandardLibrary(i);
-				
-				setPropertyVariables(i,theCaller);
-				
-				i.set("obj",theCaller);
-				i.set("self",theCaller);
-				i.set("world",theWorld);
+				i = initInterpreter(theCaller);
+
 				i.eval(theCode);
-				if ( aroutine == null ) return false; //no se nos pide ejecutar una rutina. No se encontró end.
-				i.set("obj",theCaller);
-				i.set("self",theCaller);
-				i.set("world",theWorld);
+				
+				if ( aroutine == null )
+				{
+					return false; //no se nos pide ejecutar una rutina. No se encontró end.
+				}
+					
+				setStandardVariables(i,theCaller);
 			
 			}
-			
-			
 			
 			//see if routine actually exists!
 			
@@ -221,7 +262,6 @@ public class ObjectCode
 			{
 				//Debug.println("Nonexistent routine " + aroutine + theArguments);
 				return false;
-			
 			}
 			
 			//set the arguments!
@@ -269,7 +309,6 @@ public class ObjectCode
 		try
 		{
 		
-		
 			ExtendedBSHInterpreter i;
 		
 			if ( permanent && permanentInterpreter != null )
@@ -281,65 +320,19 @@ public class ObjectCode
 			
 				//System.out.println("Using a nonpermanent for " + aroutine + " at " + theCaller);
 			
-				i = new ExtendedBSHInterpreter();
+				i = initInterpreter(theCaller);
 				
-				permanentInterpreter = i;
-			
-				sourceStandardLibrary(i);
+				Object returned = i.eval ( theCode );
 				
-				Debug.println("stdfunct sourced");
-							
-				setPropertyVariables(i,theCaller);
-				
-				Debug.println("context set");
-				
-				i.set("obj",theCaller);
-				i.set("self",theCaller);
-				i.set("world",theWorld);	
-			
 				if ( aroutine == null )
 				{
-					retval.setRetVal ( i.eval(theCode) );
+					retval.setRetVal ( returned );
 					return false; //OK, no se nos pidió ejecutar una rutina, se ejecutó el código, se guardó el valor de retorno y no se encontró end.
 				}
-				else
-				{
-					Debug.println("evaluating code");
-					try
-					{
-						Debug.println("Thread: " + Thread.currentThread());
-						Debug.println("try begin");
-						i.eval ( theCode );
-						Debug.println("try end");
-					}
-					catch ( TargetError te ) //excepción tirada a propósito por el script
-					{
-						Throwable lastExcNode = te;
-						while ( lastExcNode instanceof TargetError )
-							lastExcNode = ((TargetError)lastExcNode).getTarget();
-						if ( lastExcNode instanceof BSHCodeExecutedOKException ) return true; //llegó al end
-						else throw te;
-					}
-					catch ( EvalError pe )
-					{
-						reportEvalError(pe,aroutine,theCaller,theArguments);
-					}
-					catch ( Exception e )
-					{
-					    e.printStackTrace();
-					}
-					Debug.println("done");
-				}
-					
-				Debug.println("code evaluated");
-			
-				i.set("obj",theCaller);
-				i.set("self",theCaller);
-				i.set("world",theWorld);
+		
+				setStandardVariables(i,theCaller);
 				
 			}
-			
-			Debug.println("exploring methods");
 
 			if ( !existsMethod ( i , aroutine , theArguments ) ) return false;
 			
@@ -367,6 +360,8 @@ public class ObjectCode
 		return false;
 	}
 	
+
+	
 	/**
 	This method is for BeanShell code execution only.
 	With aroutine != null, evaluates the code and executes the given routine with no parameters:
@@ -377,6 +372,8 @@ public class ObjectCode
 	With aroutine == null, just evaluates the code.
 	ReturnValue holds the routine or code (usually predicate) return value, if any.
 	initalizations is an Object[] consistent of {String,Object} pairs to set at init (Object[]'s too)
+	IMPORTANT: This method always runs the full code again (in case it uses the initializations). This is a difference
+	with the other methods which apply permanent interpreter optimization so as not to evaluate the full code.
 	*/
 	public boolean run ( String aroutine , Object theCaller , Object[] theArguments , ReturnValue retval , Object[][] initializations  ) throws TargetError
 	{
@@ -391,45 +388,23 @@ public class ObjectCode
 			}
 			else
 			{
-			
 				//Debug.println("Using nonpermanent for " + aroutine + " at " + theCaller);
-			
-				i = new ExtendedBSHInterpreter();
-				
-				permanentInterpreter = i;
-				
-				sourceStandardLibrary(i);
-							
-				setPropertyVariables(i,theCaller);
-				
-				i.set("obj",theCaller);
-				i.set("self",theCaller);
-				i.set("world",theWorld);
-				
+				i = initInterpreter(theCaller);	
 			}
 			
-			for ( int w = 0 ; w < initializations.length ; w++ )
-			{
-				Object[] curInit = initializations[w];
-				if ( curInit.length < 2 ) continue;
-				i.set ( (String)curInit[0] , curInit[1] );
-			}
+			doInitializations ( i , initializations );
+			
+			Object returned = i.eval(theCode);
 			
 			if ( aroutine == null )
 			{
-				retval.setRetVal ( i.eval(theCode) );
+				retval.setRetVal ( returned );
 				return false; //OK, no se nos pidió ejecutar una rutina, se ejecutó el código, se guardó el valor de retorno y no se encontró end.
 			}
-			else
-				i.eval ( theCode );	
 			
-			i.set("obj",theCaller);
-			i.set("self",theCaller);
-			i.set("world",theWorld);			
+			setStandardVariables(i,theCaller);			
 			
 			if ( !existsMethod ( i , aroutine , theArguments ) ) return false;
-
-
 			
 			//set the arguments!
 			String argString = prepareArguments(i,theArguments);
