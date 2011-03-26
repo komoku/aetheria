@@ -55,6 +55,10 @@ import eu.irreality.age.SupportingCode;
 */
 class Reflect 
 {
+	
+	//added by carlos:
+	private static boolean CALL_BSH_ENTITY_METHODS = true;
+	
     /**
 		Invoke method on arbitrary object instance.
 		invocation may be static (through the object instance) or dynamic.
@@ -88,9 +92,7 @@ class Reflect
 			catch ( ReflectError re )
 			{
 				//Modified by carlos (this catch added): execute BSH methods if available!
-				//TODO: Add a flag AGE_RESOLUTION or something to enable
-				//or disable this functionality easily.
-				if ( object instanceof SupportingCode ) 
+				if ( CALL_BSH_ENTITY_METHODS && object instanceof SupportingCode ) 
 				{
 					ObjectCode code = ((SupportingCode)object).getAssociatedCode();
 					if ( code.existsMethod(methodName,object,args ) )
