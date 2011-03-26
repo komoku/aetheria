@@ -7158,5 +7158,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		return Conversions.getReferenceNameList(respondToPlur);
 	}
 
+	public ObjectCode getAssociatedCode() 
+	{
+		return itsCode;
+	}
 
 }

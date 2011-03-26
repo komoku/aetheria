@@ -2930,4 +2930,10 @@ public class World implements Informador , SupportingCode
 		return spellChecker;
 	}
 	
+	
+	public ObjectCode getAssociatedCode() 
+	{
+		return itsCode;
+	}
+	
 }

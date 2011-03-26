@@ -2756,5 +2756,10 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	{
 		return Conversions.getReferenceNameList(respondToPlur);
 	}
+	
+	public ObjectCode getAssociatedCode() 
+	{
+		return itsCode;
+	}
 
 } //end class item
