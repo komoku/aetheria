@@ -227,6 +227,9 @@ public class ObjectCode
 	*/
 	public boolean run ( String aroutine , Object theCaller , Object[] theArguments ) throws TargetError
 	{
+		return run ( aroutine , theCaller , theArguments , null );
+		//unified with method below as of 2011-03-26, delete the following if it works
+		/*
 		if ( !codeVersion.equalsIgnoreCase("BeanShell") ) return false;
 		try
 		{
@@ -258,11 +261,7 @@ public class ObjectCode
 			
 			//see if routine actually exists!
 			
-			if ( !existsMethod ( i , aroutine , theArguments ) ) 
-			{
-				//Debug.println("Nonexistent routine " + aroutine + theArguments);
-				return false;
-			}
+			if ( !existsMethod ( i , aroutine , theArguments ) ) return false;
 			
 			//set the arguments!
 			String argString = prepareArguments(i,theArguments);
@@ -271,7 +270,6 @@ public class ObjectCode
 		}
 		catch ( TargetError te ) //excepción tirada a propósito por el script
 		{
-			//System.err.println("TRES");
 			Throwable lastExcNode = te;
 			while ( lastExcNode instanceof TargetError )
 				lastExcNode = ((TargetError)lastExcNode).getTarget();
@@ -280,16 +278,15 @@ public class ObjectCode
 		}
 		catch ( EvalError pe )
 		{
-			//System.err.println("DOS");
 			reportEvalError(pe,aroutine,theCaller,theArguments);
 		}
 		catch ( Exception e )
 		{
-			//System.err.println("UNO");
 		    theWorld.writeError("Catched the following exception: " + e);
 		    e.printStackTrace();
 		}
 		return false;
+		*/
 	}
 	
 	
@@ -343,7 +340,6 @@ public class ObjectCode
 			Object returned = i.eval(aroutine + "(" + argString + ")");
 			if ( retval != null ) retval.setRetVal ( returned );
 				
-			//Debug.println("Returnin':" + retval.getRetVal());
 		}
 		catch ( TargetError te ) //excepción tirada a propósito por el script
 		{
@@ -356,6 +352,11 @@ public class ObjectCode
 		catch ( EvalError pe )
 		{
 			reportEvalError(pe,aroutine,theCaller,theArguments);
+		}
+		catch ( Exception e )
+		{
+		    theWorld.writeError("Catched the following exception: " + e);
+		    e.printStackTrace();
 		}
 		return false;
 	}
