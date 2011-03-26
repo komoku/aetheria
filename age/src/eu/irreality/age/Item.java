@@ -1550,6 +1550,11 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		return isInstanceOf;
 	}
 	
+	public void setWorld ( World mundo )
+	{
+		this.mundo = mundo;
+	}
+	
 	public void setInstanceOf ( int newid )
 	{
 		isInstanceOf = newid;

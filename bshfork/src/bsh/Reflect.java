@@ -74,6 +74,12 @@ class Reflect
 				interpreter == null ? null : interpreter.getClassManager();
 			Class clas = object.getClass();
 
+			//TODO (carlos)
+			//have to catch ReflectError issued by the following call, and then
+			//try to invoke a BSH entity method. If that method is not found,
+			//then throw that same ReflectError. Else, invoke it with the
+			//ObjectCode class. Add a flag AGE_RESOLUTION or something to enable
+			//or disable this functionality easily.
 			Method method = resolveExpectedJavaMethod(
 				bcm, clas, object, methodName, args, false );
 

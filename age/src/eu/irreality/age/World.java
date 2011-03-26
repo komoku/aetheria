@@ -2323,6 +2323,7 @@ public class World implements Informador , SupportingCode
 		//{length of item is > maxitem}
 		item [ maxitem ] = newItem;
 		newItem.setID ( maxitem );
+		newItem.setWorld( this );
 		maxitem++;
 		
 	//	Debug.println("Maxitem is now " + maxitem);
