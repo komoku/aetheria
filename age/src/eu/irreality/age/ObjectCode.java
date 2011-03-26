@@ -522,7 +522,36 @@ public class ObjectCode
 		
 	}
 	
-	
+	/**
+	 * Checks for existence of a specified method in the beanshell code.
+	 * @param methodName Name of the required method.
+	 * @param theCaller Entity that owns the bsh method.
+	 * @param arguments Arguments to be passed to the method.
+	 * @return
+	 */
+	public boolean existsMethod ( String methodName , Object theCaller , Object[] arguments )
+	{
+		ExtendedBSHInterpreter i;
+		if ( permanent && permanentInterpreter != null )
+		{
+			i = permanentInterpreter;
+		}
+		else
+		{
+			try
+			{
+				i = initInterpreter(theCaller);	
+				i.eval ( theCode );
+				setStandardVariables(i,theCaller);
+			}
+			catch ( EvalError ee )
+			{
+				reportEvalError(ee,methodName,theCaller,arguments);
+				return false;
+			}
+		}
+		return existsMethod ( i , methodName , arguments );
+	}
 
 	
 	private boolean existsMethod ( Interpreter i , String methodName , Object[] arguments )

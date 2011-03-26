@@ -1984,5 +1984,10 @@ public class Room extends Entity implements Descriptible , SupportingCode
 		;
 	}
 	
+	public ObjectCode getAssociatedCode()
+	{
+		return itsCode;
+	}
+	
 	
 }

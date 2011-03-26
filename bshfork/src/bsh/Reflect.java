@@ -36,6 +36,11 @@ package bsh;
 import java.lang.reflect.*;
 import java.util.Vector;
 
+import eu.irreality.age.Entity;
+import eu.irreality.age.ObjectCode;
+import eu.irreality.age.ReturnValue;
+import eu.irreality.age.SupportingCode;
+
 /**
 	All of the reflection API code lies here.  It is in the form of static
 	utilities.  Maybe this belongs in LHS.java or a generic object
@@ -74,16 +79,33 @@ class Reflect
 				interpreter == null ? null : interpreter.getClassManager();
 			Class clas = object.getClass();
 
-			//TODO (carlos)
-			//have to catch ReflectError issued by the following call, and then
-			//try to invoke a BSH entity method. If that method is not found,
-			//then throw that same ReflectError. Else, invoke it with the
-			//ObjectCode class. Add a flag AGE_RESOLUTION or something to enable
-			//or disable this functionality easily.
-			Method method = resolveExpectedJavaMethod(
-				bcm, clas, object, methodName, args, false );
-
-			return invokeMethod( method, object, args );
+			try
+			{
+				Method method = resolveExpectedJavaMethod(
+						bcm, clas, object, methodName, args, false );
+				return invokeMethod( method, object, args );
+			}
+			catch ( ReflectError re )
+			{
+				//Modified by carlos (this catch added): execute BSH methods if available!
+				//TODO: Add a flag AGE_RESOLUTION or something to enable
+				//or disable this functionality easily.
+				if ( object instanceof SupportingCode ) 
+				{
+					ObjectCode code = ((SupportingCode)object).getAssociatedCode();
+					if ( code.existsMethod(methodName,object,args ) )
+					{
+						ReturnValue retVal = new ReturnValue(null);
+						code.run(methodName,object,args,retVal);
+						return retVal.getRetVal();
+					}
+					else
+						throw re;
+				}
+				else //object not Entity. Normal behaviour.
+					throw re;
+			}
+			
 		} catch ( UtilEvalError e ) {
 			throw e.toEvalError( callerInfo, callstack );
 		}

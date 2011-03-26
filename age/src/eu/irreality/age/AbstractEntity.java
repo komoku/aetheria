@@ -360,6 +360,10 @@ public class AbstractEntity extends Entity implements SupportingCode
 		return it;
 	}
 	
+	public ObjectCode getAssociatedCode() 
+	{
+		return itsCode;
+	}
 	
 	
 	public String toString()
@@ -374,7 +378,6 @@ public class AbstractEntity extends Entity implements SupportingCode
 		s+=" ]";
 		return s;
 	}
-	
 	
 
 }

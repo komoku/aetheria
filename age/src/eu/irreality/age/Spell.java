@@ -841,5 +841,11 @@ public class Spell extends Entity implements SupportingCode
 		
 	}
 
+	
+	
+	public ObjectCode getAssociatedCode() 
+	{
+		return itsCode;
+	}
 
 }

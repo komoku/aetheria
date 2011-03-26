@@ -163,6 +163,9 @@
 		>
 			<classpath>
 				<fileset refid="lib-fileset"/>
+				<fileset dir="../lib">
+				    <include name="AgeCore.jar" />
+				</fileset>
 			</classpath>
 		</javac>
 
