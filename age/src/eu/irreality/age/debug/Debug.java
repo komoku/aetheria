@@ -7,6 +7,8 @@ public class Debug
 	
 	public static boolean codeDebugging = false;
 	
+	public static boolean evalEnabled = false;
+	
 	public static void setCodeDebugging ( boolean d )
 	{
 	    codeDebugging = d;
@@ -15,6 +17,17 @@ public class Debug
 	public static boolean getCodeDebugging ( )
 	{
 	    return codeDebugging;
+	}
+	
+	
+	public static void setEvalEnabled ( boolean d )
+	{
+	    evalEnabled = d;
+	}
+	
+	public static boolean isEvalEnabled ( )
+	{
+	    return evalEnabled;
 	}
 	
 	
