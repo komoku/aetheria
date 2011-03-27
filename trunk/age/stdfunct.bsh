@@ -39,6 +39,7 @@ import eu.irreality.age.Path;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.PropertyEntry;
 import eu.irreality.age.ImageConstants;
+import eu.irreality.age.ReturnValue;
 
 import java.lang.String;
 import java.io.InputStream;

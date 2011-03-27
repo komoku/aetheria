@@ -72,7 +72,8 @@ libinvoke ( name , args )
 							catch ( EvalError ee )
 							{
 								//Debug.println("EvalError." + ee);
-								break; //method signature not compatible
+								ee.printStackTrace();
+								break; //method signature not compatible //no longer this (2011-03-27)
 							}
 							//Debug.println("Finally.");
 							if ( jarl == null )
@@ -99,7 +100,9 @@ libinvoke ( name , args )
 							catch ( EvalError ee )
 							{
 								//Debug.println("EvalError.");
+								ee.printStackTrace();
 								break; //method signature not compatible <- TODO: could be something else!!! Important, distinguish errors! Else we don't catch EvalErrors for other methods.
+								//no longer this (2011-03-27)
 							}
 							//Debug.println("Finally.");
 							//método void, seguimos con siguiente librería

@@ -9,6 +9,8 @@ import java.io.*; //logs
 
 import javax.swing.SwingUtilities;
 
+import bsh.TargetError;
+
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
 /**
@@ -452,7 +454,8 @@ public class Player extends Mobile implements Informador
 
 			//Debug.println("(1) Command string set to " + (String)commandQueue.elementAt(0) );
 			commandQueue.removeElementAt(0);
-
+			
+			
 			//substitutePronouns();
 			//pasado a más tarde
 
@@ -532,6 +535,8 @@ public class Player extends Mobile implements Informador
 			if ( commandstring != null ) commandstring = commandstring.trim();
 
 
+
+			
 			/*Llamada a preprocessCommand() configurable*/
 			boolean executed = false;
 			try
@@ -561,11 +566,26 @@ public class Player extends Mobile implements Informador
 			/*Fin de preprocessCommand()*/
 
 
-
-
 			//comando nulo
 			if ( commandstring == null || commandstring.equals("") ) return false;
 
+			
+			/*Comandos eval*/
+			if ( commandstring.startsWith( "eval " ) && Debug.isEvalEnabled() )
+			{
+				ReturnValue retVal = new ReturnValue(null);
+				arguments = StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ').trim();
+				try {
+					mundo.getAssociatedCode().evaluate(arguments,this,retVal);
+				} catch (TargetError e) {
+					writeError(ExceptionPrinter.getExceptionReport(e));
+				}
+				this.write(""+retVal.getRetVal()+"\n");
+				return false;
+			}
+			
+			
+			
 			originalTrimmedCommandString = commandstring;
 
 			/*Aquí sustituimos los pronombres por las zonas de referencia.*/
@@ -587,6 +607,7 @@ public class Player extends Mobile implements Informador
 
 	public boolean execCommand ( String commandstring  )
 	{
+		
 		
 		//conservative mode check
 		if ( getPropertyValueAsBoolean("noPronounDisambiguation") && matchedTwoEntitiesPermissive )
@@ -1808,6 +1829,7 @@ public class Player extends Mobile implements Informador
 		{
 			System.exit(0);
 		}
+		/*
 		else if ( command.equalsIgnoreCase( "debug" ) )
 		{
 			write("\nDebug Output:");
@@ -1823,6 +1845,7 @@ public class Player extends Mobile implements Informador
 			//Debug.println(habitacionActual.getContents());
 			return true;
 		}
+		*/
 		else if ( command.equalsIgnoreCase( "esperar" ) )
 		{
 			if ( StringMethods.numToks(commandstring,' ') < 2 )
