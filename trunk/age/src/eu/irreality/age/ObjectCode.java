@@ -291,6 +291,63 @@ public class ObjectCode
 	
 	
 	/**
+	 * Evaluates some expression in the context of this code, not necessarily a function call.
+	 * @param code Code to evaluate.
+	 * @param theCaller Entity in which the code is evaluated.
+	 * @param retval Parameter that will hold the return value.
+	 * @return
+	 * @throws TargetError
+	 */
+	public boolean evaluate ( String code , Object theCaller , ReturnValue retval ) throws TargetError
+	{
+		if ( !codeVersion.equalsIgnoreCase("BeanShell") ) return false;
+		try
+		{
+		
+			ExtendedBSHInterpreter i;
+		
+			if ( permanent && permanentInterpreter != null )
+			{
+				i = permanentInterpreter;
+			}
+			else
+			{
+			
+				//System.out.println("Using a nonpermanent for " + aroutine + " at " + theCaller);
+			
+				i = initInterpreter(theCaller);
+				
+				i.eval ( theCode );
+				
+				setStandardVariables(i,theCaller);
+				
+			}
+			
+			Object returned = i.eval(code);
+			retval.setRetVal(returned);
+			return false;
+		}
+		catch ( TargetError te ) //excepción tirada a propósito por el script
+		{
+			Throwable lastExcNode = te;
+			while ( lastExcNode instanceof TargetError )
+				lastExcNode = ((TargetError)lastExcNode).getTarget();
+			if ( lastExcNode instanceof BSHCodeExecutedOKException ) return true; //llegó al end
+			else throw te;
+		}
+		catch ( EvalError pe )
+		{
+			reportEvalError(pe,null,theCaller,null);
+		}
+		catch ( Exception e )
+		{
+		    theWorld.writeError("Catched the following exception: " + e);
+		    e.printStackTrace();
+		}
+		return false;
+	}
+	
+	/**
 	This method is for BeanShell code execution only.
 	With aroutine != null, evaluates the code and executes the given routine with no parameters:
 		*Throwing any non-end exception found as a TargetError,
