@@ -7,8 +7,10 @@
  */
 package org.f2o.absurdum.puck.gui.panels;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Point;
@@ -34,8 +36,12 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import org.f2o.absurdum.puck.gui.graph.AbstractEntityNode;
 import org.f2o.absurdum.puck.gui.graph.Arrow;
@@ -115,13 +121,24 @@ public class WorldPanel extends GraphElementPanel
 	private HashMap buttonsMap = new HashMap();
 	
 	
-	public WorldPanel ( GraphEditingPanel gep )
+	public WorldPanel ( final GraphEditingPanel gep )
 	{
 		
 		super();
 		this.gep = gep;
 		tfAgeVersion.setText("1.0.3");
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		
+		listEntities.addListSelectionListener ( new ListSelectionListener()
+		{
+			public void valueChanged(ListSelectionEvent e) 
+			{
+				Node theNode = (Node) listEntities.getSelectedValue();
+				gep.focusOnNode(theNode,false);
+			}
+			
+		}
+		);
 	}
 	
 	public String toString()
@@ -298,8 +315,12 @@ public class WorldPanel extends GraphElementPanel
 		thirdTab.setLayout(new BoxLayout(thirdTab, BoxLayout.PAGE_AXIS));
 		
 		JPanel entitiesPanel = new JPanel();
+		entitiesPanel.setLayout(new BoxLayout(entitiesPanel,BoxLayout.PAGE_AXIS));
 		//listEntities.setListData(gep.getNodes());
-		entitiesPanel.add(listEntities);
+		JScrollPane listScroll = new JScrollPane(listEntities);
+		listScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		listScroll.setPreferredSize(new Dimension(80,45));
+		entitiesPanel.add(listScroll);
 		thirdTab.add(entitiesPanel);
 		
 		jtp.add(Messages.getInstance().getMessage("tab.entities"),thirdTab);

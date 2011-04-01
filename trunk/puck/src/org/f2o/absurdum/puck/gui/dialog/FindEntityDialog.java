@@ -74,11 +74,14 @@ public class FindEntityDialog extends JDialog
 					else
 					{
 						resultLabel.setText(Messages.getInstance().getMessage("label.entity.found"));
+						/*
 						parent.getGraphEditingPanel().resetSelections();
 						parent.getGraphEditingPanel().selectNode(n);
 						parent.getGraphEditingPanel().getPropertiesPanel().show(n);
 						parent.getGraphEditingPanel().centerViewOn(n);
 						parent.getGraphEditingPanel().repaint();
+						*/
+						parent.getGraphEditingPanel().focusOnNode(n,true);
 					}
 				}
 			}
