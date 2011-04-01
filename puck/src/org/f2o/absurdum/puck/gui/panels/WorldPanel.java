@@ -309,7 +309,8 @@ public class WorldPanel extends GraphElementPanel
 	
 	public void refresh()
 	{
-		//create a *sorted* copy of the getNodes() list here?
+		//TODO: create a *sorted* copy of the getNodes() list here?
+		//TODO: sortable JTable rather than JList?
 		listEntities.setListData(gep.getNodes());
 	}
 
