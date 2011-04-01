@@ -67,7 +67,7 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 	private MouseListener toolListener = null;
 	private MouseMotionListener toolMotionListener = null;
 	
-	private List nodes = new ArrayList(); //of Node
+	private Vector nodes = new Vector(); //of Node
 	private Node specialNode;
 	private Arrow specialArrow;
 	
@@ -111,7 +111,7 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 	
 	public void clear()
 	{
-		nodes = new ArrayList();
+		nodes = new Vector();
 		specialNode = null;
 		specialArrow = null;
 		worldN = new WorldNode(new WorldPanel(this));
@@ -161,7 +161,7 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 		
 	}
 	
-	public List getNodes()
+	public Vector getNodes()
 	{
 		return nodes;
 	}

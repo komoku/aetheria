@@ -26,10 +26,12 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -156,6 +158,8 @@ public class WorldPanel extends GraphElementPanel
 	private JTextField tfFontName = new EnhancedJTextField(20);
 	private JTextField tfFontFile = new EnhancedJTextField(20);
 	private JTextField tfFontSize = new EnhancedJTextField(5);
+	
+	private JList listEntities = new JList();
 	
 	public void linkWithGraph()
 	{
@@ -289,11 +293,24 @@ public class WorldPanel extends GraphElementPanel
 		
 		
 		
+		JPanel thirdTab = new JPanel();
+		
+		thirdTab.setLayout(new BoxLayout(thirdTab, BoxLayout.PAGE_AXIS));
+		
+		JPanel entitiesPanel = new JPanel();
+		//listEntities.setListData(gep.getNodes());
+		entitiesPanel.add(listEntities);
+		thirdTab.add(entitiesPanel);
+		
+		jtp.add(Messages.getInstance().getMessage("tab.entities"),thirdTab);
+		
+		
 	}
 	
 	public void refresh()
 	{
-		
+		//create a *sorted* copy of the getNodes() list here?
+		listEntities.setListData(gep.getNodes());
 	}
 
 	public static String colorToString ( Color color )

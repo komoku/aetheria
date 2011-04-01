@@ -21,7 +21,7 @@ import org.f2o.absurdum.puck.gui.panels.GraphElementPanel;
  *
  * Created at regulus, 19-jul-2005 19:53:02
  */
-public abstract class Node implements GraphElement
+public abstract class Node implements GraphElement, Comparable
 {
 
 	public abstract Object clone();
@@ -100,6 +100,14 @@ public abstract class Node implements GraphElement
 	}
 	
 
+	public int compareTo(Object o) 
+	{
+		Node n = (Node)o;
+		String n1 = this.getName();
+		String n2 = n.getName();
+		if ( n1 == null || n2 == null ) return 0;
+		return n1.compareTo(n2);
+	}
 	
 	
 }
