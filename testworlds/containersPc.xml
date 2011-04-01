@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<World author="" date="" moduleName="" parserVersion="1.0.3" type="" version="" worldDir="." worldName="">
+<IdeMetaInf>
+<View xoffset="0.0" yoffset="0.0" zoom="2.0"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Room #1" x="240" y="240"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.CharacterNode" name="Character #2" x="240" y="160"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="caja" x="320" y="220"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="joyero" x="400" y="220"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="perla" x="480" y="220"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="peroné" x="140" y="280"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Item #12" x="140" y="220"/>
+</IdeMetaInf>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a dos cosas, que no están dentro de otras*/
+/*Este método se ejecuta en el mundo cuando el jugador invoca una orden sobre dos objetos no contenidos en otros.
+*/
+void parseCommandTwoObjects ( Mobile aCreature , String verb , String args1 , String args2 ,  Entity obj1 , Entity obj2  )
+{
+	
+	aCreature.write("Std. Two objs: " + args1 + " and " + args2 + "\n");
+	
+}
+
+
+/*Método de análisis sintáctico de la entrada referida a dos cosas, que pueden o no estar dentro de otras*/
+/*Este método se ejecuta en el mundo:
+  - Cuando el jugador invoca una orden sobre tales objetos (estén o no estos objetos dentro de un contenedor).
+  - Cuando el jugador invoca una orden sobre objetos que los contienen (o sobre uno de esos objetos y uno que contiene el otro).
+*/
+void parseCommandOnContentsTwoObjects ( Mobile aCreature , String verb , String args1 , String args2 , Vector path1 , Vector path2 ,  Entity obj1 , Entity obj2  )
+{
+	
+    aCreature.write("OC Two objs: " + args1 + " and " + args2 + ", paths " + path1 + " and " + path2 + ", objs " + obj1 + " and " + obj2 + "\n");
+    	
+
+}
+]]></Code>
+<PlayerList>
+<Player id="Character #2"/>
+</PlayerList>
+<VisualConfiguration>
+<Colors>
+<Story color="#ffffff"/>
+<Information color="#ffffff"/>
+<Default color="#ffffff"/>
+<Input color="#ffffff"/>
+<Description color="#ffffff"/>
+<Foreground color="#ffffff"/>
+<Important color="#ffffff"/>
+<Denial color="#ffffff"/>
+<Action color="#ffffff"/>
+<Background color="#000000"/>
+<Error color="#ff0000"/>
+</Colors>
+<Font filename="" name="Courier New" size="15.0"/>
+</VisualConfiguration>
+<Rooms>
+<Room name="Room #1">
+<DescriptionList>
+<Description>Una bonita habitación. Mola.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<PathList/>
+<Inventory>
+<ItemRef id="caja"/>
+<ItemRef id="Item #12"/>
+<ItemRef id="peroné"/>
+</Inventory>
+<MobileList>
+<MobRef id="Character #2"/>
+</MobileList>
+<RelationshipList>
+<Relationship id="caja">
+<PropertyList/>
+</Relationship>
+<Relationship id="Character #2">
+<PropertyList/>
+</Relationship>
+<Relationship id="Item #12">
+<PropertyList/>
+</Relationship>
+<Relationship id="peroné">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+</Rooms>
+<Items>
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="caja" openable="false" unlockable="false" volume="0" weight="0">
+<SingularNames>
+<Description>caja</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>caja</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>Una caja que contiene %INVENTORY</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	aCreature.write("Called parseCommand on caja.\n");
+	
+}
+
+void parseCommandOnContents ( Mobile aCreature , String verb , String args , Vector path )
+{
+	
+	aCreature.write("Called parseCommandOnContents on caja " + path + ".\n");
+aCreature.write("args: " + args + "\n");
+new Throwable().printStackTrace();
+
+}]]></Code>
+<Inventory>
+<ItemRef id="joyero"/>
+</Inventory>
+<RelationshipList>
+<Relationship id="joyero">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Item>
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="joyero" openable="false" unlockable="false" volume="0" weight="0">
+<SingularNames>
+<Description>joyero</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>joyero</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>Un joyero que contiene %INVENTORY</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	aCreature.write("Called parseCommand on joyero.\n");
+	
+}
+
+void parseCommandOnContents ( Mobile aCreature , String verb , String args , Vector path )
+{
+	
+	aCreature.write("Called parseCommandOnContents on joyero " + path + ".\n");
+aCreature.write("args: " + args + "\n");
+new Throwable().printStackTrace();
+
+}]]></Code>
+<Inventory>
+<ItemRef id="perla"/>
+</Inventory>
+<RelationshipList>
+<Relationship id="perla">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Item>
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="perla" openable="false" unlockable="false" volume="0" weight="0">
+<SingularNames>
+<Description>perla</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>perla</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>Una bella perla.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	aCreature.write("Called parseCommand on perla.\n");
+	
+}
+
+/*Método de análisis sintáctico de la entrada referida a una cosa, que puede estar contenida dentro de otra*/
+/*Este método se ejecuta:
+  - Cuando el jugador invoca una orden sobre este objeto (esté o no dentro de un contenedor).
+  - Cuando este objeto es un contenedor, y el jugador invoca una orden sobre un objeto contenido en él.
+      [en este caso, el objeto sobre el que invocó la orden se obtiene como ((Item)path.get(0))].
+*/
+void parseCommandOnContents ( Mobile aCreature , String verb , String args , Vector path )
+{
+	
+	aCreature.write("Called parseCommandOnContents on perla " + path + ".\n");
+aCreature.write("args: " + args + "\n");
+new Throwable().printStackTrace();
+
+}]]></Code>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="peroné" openable="false" unlockable="false" volume="0" weight="0">
+<SingularNames>
+<Description>peroné</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>peroné</Name>
+<Name>perone</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>Un peroné.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	aCreature.write("Called parseCommand on perone.\n");
+	
+}
+
+void parseCommandOnContents ( Mobile aCreature , String verb , String args , Vector path )
+{
+	
+	aCreature.write("Called parseCommandOnContents on perone " + path + ".\n");
+aCreature.write("args: " + args + "\n");
+new Throwable().printStackTrace();
+
+}]]></Code>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Item #12" openable="false" unlockable="false" volume="0" weight="0">
+<SingularNames>
+<Description>tibia</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>tibia</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>Una tibia.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	aCreature.write("Called parseCommand on tibia.\n");
+	
+}
+
+void parseCommandOnContents ( Mobile aCreature , String verb , String args , Vector path )
+{
+	
+	aCreature.write("Called parseCommandOnContents on tibia " + path + ".\n");
+aCreature.write("args: " + args + "\n");
+new Throwable().printStackTrace();
+
+}]]></Code>
+<RelationshipList/>
+</Item>
+</Items>
+<Mobiles>
+<Mobile gender="true" hp="10" maxhp="10" maxmp="10" mp="10" name="Character #2">
+<SingularNames/>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>yo</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList/>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[//código a ejecutar cuando se inicializa el personaje
+void onInit()
+{
+   set(self,"containedItemsInScope",true);
+}]]></Code>
+<Traits>
+<SkillList/>
+</Traits>
+<Inventory/>
+<RelationshipList/>
+<CurrentRoom id="Room #1"/>
+<LastRoom id="Room #1"/>
+</Mobile>
+</Mobiles>
+<Spells/>
+<AbstractEntities/>
+</World>
