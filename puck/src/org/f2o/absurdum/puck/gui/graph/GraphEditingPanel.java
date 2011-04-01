@@ -721,6 +721,16 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 		requestFocus();
 	}
 	
+	public void focusOnNode ( Node n , boolean showPropertiesPanel )
+	{
+		resetSelections();
+		selectNode(n);
+		if ( showPropertiesPanel )
+			getPropertiesPanel().show(n);
+		centerViewOn(n);
+		repaint();
+	}
+	
 	public void mouseClicked(MouseEvent arg0) 
 	{
 		if ( toolListener != null )
