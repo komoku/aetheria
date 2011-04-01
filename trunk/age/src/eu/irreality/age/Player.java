@@ -812,7 +812,11 @@ public class Player extends Mobile implements Informador
 			}
 		}
 		
-		//ahora vemos los posibles prefijos para el parseCommand. //TODO: I think this is no longer needed but I may be wrong.
+		//ahora vemos los posibles prefijos para el parseCommand. 
+		//TODO: I think this is no longer needed but I may be wrong.
+		//TODO: removed 2011-04-01. Let's see if it works.
+		//seems to work fine.
+		/*
 		if ( !matchedTwoEntities )
 		{
 			int nArgToks = StringMethods.numToks(arguments,' ');
@@ -828,6 +832,7 @@ public class Player extends Mobile implements Informador
 				}
 			}
 		}
+		*/
 
 
 
@@ -2365,9 +2370,10 @@ public class Player extends Mobile implements Informador
 			}
 
 
-			//two-way parsecommands!!!1!one
-
-			if ( path1.size() == 1 && path2.size() == 1 ) //only for things NOT contained in anything
+			//standard (not "onContents") parseCommands:
+			if ( (path1.size() == 1 && path2.size() == 1) || this.getPropertyValueAsBoolean("containedItemsInScope") ) 
+			//in default mode, regular parseCommands are executed only for things NOT contained in anything (hence the path size check) 
+			//in extended scope mode, also for contained items
 			{
 				//	    ejecutar parseCommand() de objeto 1
 				if ( !onWorld && obj1 instanceof SupportingCode )
@@ -2690,9 +2696,10 @@ public class Player extends Mobile implements Informador
 			//ejecutar parseCommand() de objeto
 			if ( !onWorld && objetivo instanceof SupportingCode )
 			{
-				//the following if ensures that standard parseCommand's are not executed on objects that are inside containers.
+				//in default mode, the following if ensures that standard parseCommand's are not executed on objects that are inside containers.
 				//to define commands on those objects we have to define parseCommandOnContents.
-				if ( objetivoVector.size() == 1 )
+				//in extended scope mode, this check is bypassed.
+				if ( objetivoVector.size() == 1 || this.getPropertyValueAsBoolean("containedItemsInScope") )
 				{
 					if ( !ejecutado )
 					{
