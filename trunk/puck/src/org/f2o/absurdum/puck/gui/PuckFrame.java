@@ -41,6 +41,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.f2o.absurdum.puck.bsh.BeanShellCodeValidator;
 import org.f2o.absurdum.puck.gui.clipboard.CopyAction;
 import org.f2o.absurdum.puck.gui.clipboard.CutAction;
 import org.f2o.absurdum.puck.gui.clipboard.PasteAction;
@@ -882,6 +883,21 @@ public class PuckFrame extends JFrame
 		}
 		);
 		toolsMenu.add(verbListMenuItem);
+		
+		final JMenuItem validateMenuItem = new JMenuItem(Messages.getInstance().getMessage("menu.tools.validatebsh"));
+		validateMenuItem.addActionListener(new ActionListener()
+		{
+			public void actionPerformed ( ActionEvent e )
+			{
+				BeanShellCodeValidator bscv = new BeanShellCodeValidator(graphPanel);
+				if ( !bscv.validate() )
+				{
+					JOptionPane.showMessageDialog(PuckFrame.this, bscv.getErrorText());
+				}
+			}
+		}
+		);
+		toolsMenu.add(validateMenuItem);
 		
 		mainMenuBar.add(toolsMenu);
 		

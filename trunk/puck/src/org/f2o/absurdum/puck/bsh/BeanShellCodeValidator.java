@@ -51,7 +51,7 @@ public class BeanShellCodeValidator
 		catch ( ParseException pe )
 		{
 			errorText.append("ERROR IN CODE OF " + source.toString() + "\n");
-			errorText.append(pe.getErrorText()+"\n");
+			errorText.append(pe.getMessage()+"\n");
 			return false;
 		}
 		catch ( EvalError ee )
@@ -63,6 +63,7 @@ public class BeanShellCodeValidator
 	
 	public boolean validate ()
 	{
+		boolean ok = true;
 		errorText = new StringBuffer();
 		Collection nodes = gep.getNodes();
 		for ( Iterator it = nodes.iterator() ; it.hasNext() ;  )
@@ -72,12 +73,12 @@ public class BeanShellCodeValidator
 			if ( ep instanceof BeanShellCodeHolder )
 			{
 				BeanShellCodeHolder bsch = (BeanShellCodeHolder)ep;
-				if ( !validateCode(bsch.getBSHCode(),n) ) return false;
+				ok = ok && validateCode(bsch.getBSHCode(),n);
 			}
 		}
 		BeanShellCodeHolder worldPanel = (WorldPanel)gep.getWorldNode().getAssociatedPanel();
-		if ( !validateCode(worldPanel.getBSHCode(),gep.getWorldNode()) ) return false;
-		return true;
+		ok = ok && validateCode(worldPanel.getBSHCode(),gep.getWorldNode());
+		return ok;
 	}
 	
 	public String getErrorText()
