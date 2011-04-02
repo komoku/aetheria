@@ -320,6 +320,11 @@ public class NaturalLanguage
 		infinitivoAImperativo.remove(infinitive);
 	}
 	
+	public Set getVerbForms()
+	{
+		return imperativoAInfinitivo.keySet();
+	}
+	
 	/**
 	 * Devuelve Comprueba si una palabra dada es un verbo, incluyendo soporte de "le".
 	 * @param s Palabra a comprobar.
