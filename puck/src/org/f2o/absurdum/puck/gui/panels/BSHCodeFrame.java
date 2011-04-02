@@ -132,6 +132,11 @@ public class BSHCodeFrame extends JFrame
 		instances.clear();
 	}
 	
+	public static List getAllInstances() //used for validation
+	{
+		return instances;
+	}
+	
 	//public BSHCodeFrame( String title , JEditorPane toWriteTo )
 	public BSHCodeFrame( String title , JEditorPane toWriteTo , String context , BSHCodePanel codePanel )
 	{

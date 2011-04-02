@@ -96,7 +96,6 @@ public class AbstractEntityPanel extends EntityPanel
 	
 	private AbstractEntityNode node;
 	
-	
 	public AbstractEntityPanel( AbstractEntityNode node )
 	{
 		super();
@@ -113,6 +112,12 @@ public class AbstractEntityPanel extends EntityPanel
 	public String getName()
 	{
 		return nameTextField.getText();
+	}
+
+	
+	public String getBSHCode()
+	{
+		return bcp.getCode();
 	}
 	
 	public void linkWithGraph()

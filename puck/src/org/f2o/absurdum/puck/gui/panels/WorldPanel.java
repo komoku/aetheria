@@ -43,6 +43,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.f2o.absurdum.puck.bsh.BeanShellCodeHolder;
 import org.f2o.absurdum.puck.gui.graph.AbstractEntityNode;
 import org.f2o.absurdum.puck.gui.graph.Arrow;
 import org.f2o.absurdum.puck.gui.graph.CharacterNode;
@@ -66,7 +67,7 @@ import org.w3c.dom.NodeList;
  *
  * Created at regulus, 20-jul-2005 18:51:54
  */
-public class WorldPanel extends GraphElementPanel 
+public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 {
 	
 
@@ -1508,7 +1509,11 @@ public class WorldPanel extends GraphElementPanel
 		super.paintComponent(g);
 	}
 	
-
+	
+	public String getBSHCode()
+	{
+		return bcp.getCode();
+	}
 	
 	
 }

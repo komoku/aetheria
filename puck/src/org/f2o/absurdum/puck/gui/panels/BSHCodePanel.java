@@ -220,6 +220,11 @@ public class BSHCodePanel extends JPanel
 		
 	}
 	
+	public String getCode()
+	{
+		return jep.getText();
+	}
+	
 	public Node getXML ( Document d )
 	{
 		

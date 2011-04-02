@@ -31,7 +31,7 @@ import org.w3c.dom.Node;
  *
  * Created at regulus, 20-jul-2005 18:51:54
  */
-public class EntityPanel extends GraphElementPanel 
+public class EntityPanel extends GraphElementPanel
 {
 
 	protected EnhancedJTextField nameTextField = new EnhancedJTextField(20);
@@ -211,5 +211,7 @@ public class EntityPanel extends GraphElementPanel
 		return defaultValue;
 	    }
 	}
+	
+	
 	
 }
