@@ -597,6 +597,7 @@ public class PuckFrame extends JFrame
 						GraphElementPanel.emptyQueue(); //stop deferred loads
 						graphPanel.clear();
 						propPanel.clear();
+						BSHCodeFrame.closeAllInstances();
 						propPanel.show(graphPanel.getWorldNode());
 						editingFileName = null;
 						saveMenuItem.setEnabled(false);
