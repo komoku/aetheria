@@ -50,6 +50,7 @@ import org.f2o.absurdum.puck.gui.dialog.ExecuteDialog;
 import org.f2o.absurdum.puck.gui.dialog.FindEntityDialog;
 import org.f2o.absurdum.puck.gui.dialog.IconSizesDialog;
 import org.f2o.absurdum.puck.gui.dialog.ShowHideDialog;
+import org.f2o.absurdum.puck.gui.dialog.VerbListFrame;
 import org.f2o.absurdum.puck.gui.graph.AbstractEntityNode;
 import org.f2o.absurdum.puck.gui.graph.CharacterNode;
 import org.f2o.absurdum.puck.gui.graph.GraphEditingPanel;
@@ -866,6 +867,22 @@ public class PuckFrame extends JFrame
 		
 		mainMenuBar.add(optionsMenu);
 		
+		
+		JMenu toolsMenu = new JMenu(Messages.getInstance().getMessage("menu.tools"));
+		
+		final JMenuItem verbListMenuItem = new JMenuItem(Messages.getInstance().getMessage("menu.tools.verblist"));
+		verbListMenuItem.addActionListener(new ActionListener()
+		{
+			public void actionPerformed ( ActionEvent e )
+			{
+				VerbListFrame vlf = VerbListFrame.getInstance();
+				vlf.setVisible(true);
+			}
+		}
+		);
+		toolsMenu.add(verbListMenuItem);
+		
+		mainMenuBar.add(toolsMenu);
 		
 		
 		JMenu helpMenu = new JMenu(Messages.getInstance().getMessage("menu.help"));
