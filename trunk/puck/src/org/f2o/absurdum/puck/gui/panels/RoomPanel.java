@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
+import org.f2o.absurdum.puck.bsh.BeanShellCodeHolder;
 import org.f2o.absurdum.puck.gui.graph.Arrow;
 import org.f2o.absurdum.puck.gui.graph.RoomNode;
 import org.f2o.absurdum.puck.i18n.Messages;
@@ -37,7 +38,7 @@ import org.w3c.dom.NodeList;
  *
  * Created at regulus, 20-jul-2005 18:51:54
  */
-public class RoomPanel extends EntityPanel 
+public class RoomPanel extends EntityPanel implements BeanShellCodeHolder
 {
 
 	//private JTextField nameTextField = new EnhancedJTextField(20);
@@ -217,6 +218,12 @@ public class RoomPanel extends EntityPanel
 				return i;
 		}
 		return -1;
+	}
+	
+	
+	public String getBSHCode()
+	{
+		return bcp.getCode();
 	}
 	
 	/*

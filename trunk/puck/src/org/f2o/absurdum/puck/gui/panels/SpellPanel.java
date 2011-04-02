@@ -32,6 +32,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
+import org.f2o.absurdum.puck.bsh.BeanShellCodeHolder;
 import org.f2o.absurdum.puck.gui.graph.Arrow;
 import org.f2o.absurdum.puck.gui.graph.ItemNode;
 import org.f2o.absurdum.puck.gui.graph.SpellNode;
@@ -48,7 +49,7 @@ import org.w3c.dom.NodeList;
  *
  * Created at regulus, 20-jul-2005 18:51:54
  */
-public class SpellPanel extends EntityPanel 
+public class SpellPanel extends EntityPanel implements BeanShellCodeHolder
 {
 
 	
@@ -664,7 +665,14 @@ public class SpellPanel extends EntityPanel
 		if ( textField.getText().trim().length() <= 0 )
 			textField.setText(value);
 	}
+
+	
+	public String getBSHCode()
+	{
+		return bcp.getCode();
+	}
 	
 	
 }
+
 

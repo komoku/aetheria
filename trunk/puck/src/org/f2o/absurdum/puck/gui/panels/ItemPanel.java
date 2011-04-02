@@ -32,6 +32,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
+import org.f2o.absurdum.puck.bsh.BeanShellCodeHolder;
 import org.f2o.absurdum.puck.gui.graph.Arrow;
 import org.f2o.absurdum.puck.gui.graph.ItemNode;
 import org.f2o.absurdum.puck.i18n.Messages;
@@ -47,7 +48,7 @@ import org.w3c.dom.NodeList;
  *
  * Created at regulus, 20-jul-2005 18:51:54
  */
-public class ItemPanel extends EntityPanel 
+public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 {
 
 	
@@ -143,6 +144,12 @@ public class ItemPanel extends EntityPanel
 		;
 	}
 	*/
+	
+	
+	public String getBSHCode()
+	{
+		return bcp.getCode();
+	}
 	
 	//adds combo boxes with item nodes, etc.
 	public void linkWithGraph()
