@@ -128,17 +128,7 @@ public class WorldPanel extends GraphElementPanel
 		this.gep = gep;
 		tfAgeVersion.setText("1.0.3");
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		
-		listEntities.addListSelectionListener ( new ListSelectionListener()
-		{
-			public void valueChanged(ListSelectionEvent e) 
-			{
-				Node theNode = (Node) listEntities.getSelectedValue();
-				gep.focusOnNode(theNode,false);
-			}
-			
-		}
-		);
+		entitiesPanel = new EntityListPanel(gep);
 	}
 	
 	public String toString()
@@ -176,7 +166,7 @@ public class WorldPanel extends GraphElementPanel
 	private JTextField tfFontFile = new EnhancedJTextField(20);
 	private JTextField tfFontSize = new EnhancedJTextField(5);
 	
-	private JList listEntities = new JList();
+	private EntityListPanel entitiesPanel;
 	
 	public void linkWithGraph()
 	{
@@ -313,16 +303,7 @@ public class WorldPanel extends GraphElementPanel
 		JPanel thirdTab = new JPanel();
 		
 		thirdTab.setLayout(new BoxLayout(thirdTab, BoxLayout.PAGE_AXIS));
-		
-		JPanel entitiesPanel = new JPanel();
-		entitiesPanel.setLayout(new BoxLayout(entitiesPanel,BoxLayout.PAGE_AXIS));
-		//listEntities.setListData(gep.getNodes());
-		JScrollPane listScroll = new JScrollPane(listEntities);
-		listScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		listScroll.setPreferredSize(new Dimension(80,45));
-		entitiesPanel.add(listScroll);
 		thirdTab.add(entitiesPanel);
-		
 		jtp.add(Messages.getInstance().getMessage("tab.entities"),thirdTab);
 		
 		
@@ -330,9 +311,7 @@ public class WorldPanel extends GraphElementPanel
 	
 	public void refresh()
 	{
-		//TODO: create a *sorted* copy of the getNodes() list here?
-		//TODO: sortable JTable rather than JList?
-		listEntities.setListData(gep.getNodes());
+		entitiesPanel.refresh();
 	}
 
 	public static String colorToString ( Color color )
