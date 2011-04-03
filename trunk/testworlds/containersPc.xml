@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<World author="" date="" moduleName="" parserVersion="1.0.3" type="" version="" worldDir="." worldName="">
+<World author="" date="" moduleName="" parserVersion="1.1.0" type="" version="" worldDir="." worldName="">
 <IdeMetaInf>
 <View xoffset="0.0" yoffset="0.0" zoom="2.0"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Room #1" x="240" y="240"/>
