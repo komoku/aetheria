@@ -669,6 +669,7 @@ public class SpellPanel extends EntityPanel implements BeanShellCodeHolder
 	
 	public String getBSHCode()
 	{
+		if ( bcp == null ) forceRealInitFromXml(true); //code panel not yet initted.
 		return bcp.getCode();
 	}
 	

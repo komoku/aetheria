@@ -13,6 +13,7 @@ import org.f2o.absurdum.puck.gui.graph.GraphEditingPanel;
 import org.f2o.absurdum.puck.gui.graph.Node;
 import org.f2o.absurdum.puck.gui.panels.EntityPanel;
 import org.f2o.absurdum.puck.gui.panels.WorldPanel;
+import org.f2o.absurdum.puck.i18n.Messages;
 
 import bsh.EvalError;
 import bsh.Interpreter;
@@ -50,7 +51,7 @@ public class BeanShellCodeValidator
 		}
 		catch ( ParseException pe )
 		{
-			errorText.append("ERROR IN CODE OF " + source.toString() + "\n");
+			errorText.append(Messages.getInstance().getMessage("bsh.parse.error.in") + source.toString() + "\n");
 			errorText.append(pe.getMessage()+"\n");
 			return false;
 		}
@@ -73,11 +74,13 @@ public class BeanShellCodeValidator
 			if ( ep instanceof BeanShellCodeHolder )
 			{
 				BeanShellCodeHolder bsch = (BeanShellCodeHolder)ep;
-				ok = ok && validateCode(bsch.getBSHCode(),n);
+				boolean thisOneOk = validateCode(bsch.getBSHCode(),n);
+				ok = ok && thisOneOk;
 			}
 		}
 		BeanShellCodeHolder worldPanel = (WorldPanel)gep.getWorldNode().getAssociatedPanel();
-		ok = ok && validateCode(worldPanel.getBSHCode(),gep.getWorldNode());
+		boolean thisOneOk = validateCode(worldPanel.getBSHCode(),gep.getWorldNode());
+		ok = ok && thisOneOk;
 		return ok;
 	}
 	

@@ -894,6 +894,11 @@ public class PuckFrame extends JFrame
 				{
 					JOptionPane.showMessageDialog(PuckFrame.this, bscv.getErrorText());
 				}
+				else
+				{
+					JOptionPane.showMessageDialog(PuckFrame.this, Messages.getInstance().getMessage("bsh.code.ok"), "OK!", JOptionPane.INFORMATION_MESSAGE);
+					//JOptionPane.showMessageDialog(PuckFrame.this, bscv.getErrorText());
+				}
 			}
 		}
 		);
