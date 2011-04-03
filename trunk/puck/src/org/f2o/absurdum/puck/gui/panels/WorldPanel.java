@@ -1512,6 +1512,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 	
 	public String getBSHCode()
 	{
+		if ( bcp == null ) forceRealInitFromXml(true); //code panel not yet initted.
 		return bcp.getCode();
 	}
 	

@@ -117,6 +117,7 @@ public class AbstractEntityPanel extends EntityPanel
 	
 	public String getBSHCode()
 	{
+		if ( bcp == null ) forceRealInitFromXml(true); //code panel not yet initted.
 		return bcp.getCode();
 	}
 	
