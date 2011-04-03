@@ -281,3 +281,6 @@ verblist.target=Infinitivo
 verblist.explanation=<html><br>Aquí puedes ver la lista de verbos por defecto en esta versión de AGE. Se presenta como referencia, dado que la lista de verbos no se puede modificar en esta ventana. Sin embargo, puedes añadir entradas para tu mundo mediante código BeanShell: world.getLanguage().addVerbEntry("forma","infinitivo");</br></html>
 bsh.parse.error.in=Error sintáctico en código de 
 bsh.code.ok=<html><p>El código BeanShell del mundo es sintácticamente correcto.<br/>(Nota: esto no quiere decir que no pueda haber errores no sintácticos)</p></html>
+bsh.errors.explanation=<html><p>Se han encontrado los siguientes errores sintácticos en el código BeanShell:</p></html>
+bsh.errors.dialogtitle=Errores sintácticos BeanShell
+bsh.errors.ok=Cerrar

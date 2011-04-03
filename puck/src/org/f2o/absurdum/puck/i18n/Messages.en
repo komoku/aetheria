@@ -282,3 +282,6 @@ verblist.target=Infinitive
 verblist.explanation=<html><br>Here is the default AGE verb list. Note that the verb list cannot be modified in this window. However, you can add verbs to your world using BSH code: world.getLanguage().addVerbEntry("form","infinitive");</br></html>
 bsh.parse.error.in=Parse error in code of: 
 bsh.code.ok=<html><p>The world's BeanShell code is syntactically correct.</p></html>
+bsh.errors.explanation=<html><p>The following syntax errors have been found in BeanShell code:</p></html>
+bsh.errors.dialogtitle=BeanShell syntax errors
+bsh.errors.ok=Close
