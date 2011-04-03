@@ -46,6 +46,7 @@ import org.f2o.absurdum.puck.gui.clipboard.CopyAction;
 import org.f2o.absurdum.puck.gui.clipboard.CutAction;
 import org.f2o.absurdum.puck.gui.clipboard.PasteAction;
 import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
+import org.f2o.absurdum.puck.gui.dialog.BeanShellErrorsDialog;
 import org.f2o.absurdum.puck.gui.dialog.DocumentationLinkDialog;
 import org.f2o.absurdum.puck.gui.dialog.ExecuteDialog;
 import org.f2o.absurdum.puck.gui.dialog.FindEntityDialog;
@@ -892,7 +893,9 @@ public class PuckFrame extends JFrame
 				BeanShellCodeValidator bscv = new BeanShellCodeValidator(graphPanel);
 				if ( !bscv.validate() )
 				{
-					JOptionPane.showMessageDialog(PuckFrame.this, bscv.getErrorText());
+					BeanShellErrorsDialog bsed = new BeanShellErrorsDialog (PuckFrame.this, bscv.getErrorText());
+					bsed.setVisible(true);
+					//JOptionPane.showMessageDialog(PuckFrame.this, bscv.getErrorText());
 				}
 				else
 				{
