@@ -618,41 +618,53 @@ public class ObjectCode
 		for ( m = 0 ; m < metodos.length ; m++ )
 		{
 			BshMethod method = metodos[m];
+						
 			if ( method.getName().equals(methodName) && method.getParameterTypes().length == arguments.length )
 			{
 				boolean correct = true;
 				for ( int k = 0 ; k < arguments.length ; k++ )
 				{
 					
+					Class argumentClass;
+					if ( arguments[k] instanceof bsh.Primitive ) //if code is invoked from the bsh innards, we will get basic type values wrapped in bsh.Primitive
+					{
+						argumentClass = ((bsh.Primitive)arguments[k]).getType();
+					}
+					else //if code is invoked from AGE, we don't wrap basic type values, we use them directly as arguments
+					{
+						argumentClass = arguments[k].getClass();
+					}
+					
 					if ( arguments[k] == null && !method.getParameterTypes()[k].isAssignableFrom(Object.class) )
 						;
 					
-					else if ( ( arguments[k].getClass() == int.class || arguments[k].getClass() == Integer.class ) 
+					else if ( ( argumentClass == int.class || argumentClass == Integer.class ) 
 							&& ( method.getParameterTypes()[k] == int.class || method.getParameterTypes()[k] == Integer.class ) )
 						; //	correct = true;
 					
-					else if ( ( arguments[k].getClass() == long.class || arguments[k].getClass() == Long.class ) 
+					else if ( ( argumentClass == long.class || argumentClass == Long.class ) 
 							&& ( method.getParameterTypes()[k] == long.class || method.getParameterTypes()[k] == Long.class ) )
 						; // correct = true;
 					
-					else if ( ( arguments[k].getClass() == boolean.class || arguments[k].getClass() == Boolean.class ) 
+					else if ( ( argumentClass == boolean.class || argumentClass == Boolean.class ) 
 							&& ( method.getParameterTypes()[k] == boolean.class || method.getParameterTypes()[k] == Boolean.class ) )
 						; // correct = true;
 					
-					else if ( ( arguments[k].getClass() == char.class || arguments[k].getClass() == Character.class ) 
+					else if ( ( argumentClass == char.class || argumentClass == Character.class ) 
 							&& ( method.getParameterTypes()[k] == char.class || method.getParameterTypes()[k] == Character.class ) )
 						; // correct = true;
 					
-					else if ( ( arguments[k].getClass() == float.class || arguments[k].getClass() == Float.class ) 
+					else if ( ( argumentClass == float.class || argumentClass == Float.class ) 
 							&& ( method.getParameterTypes()[k] == float.class || method.getParameterTypes()[k] == Float.class ) )
 						; // correct = true;
 					
-					else if ( ( arguments[k].getClass() == double.class || arguments[k].getClass() == Double.class ) 
+					else if ( ( argumentClass == double.class || argumentClass == Double.class ) 
 							&& ( method.getParameterTypes()[k] == double.class || method.getParameterTypes()[k] == Double.class ) )
 						; // correct = true;
 					
-					else if ( arguments[k] != null && !method.getParameterTypes()[k].isAssignableFrom(arguments[k].getClass()) )
+					else if ( arguments[k] != null && !method.getParameterTypes()[k].isAssignableFrom(argumentClass) )
 						correct = false;
+					
 				}
 				if ( correct ) break;
 			}
