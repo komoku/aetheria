@@ -625,19 +625,23 @@ public class ObjectCode
 				for ( int k = 0 ; k < arguments.length ; k++ )
 				{
 					
-					Class argumentClass;
+					Class argumentClass = null;
 					if ( arguments[k] instanceof bsh.Primitive ) //if code is invoked from the bsh innards, we will get basic type values wrapped in bsh.Primitive
 					{
 						argumentClass = ((bsh.Primitive)arguments[k]).getType();
 					}
 					else //if code is invoked from AGE, we don't wrap basic type values, we use them directly as arguments
 					{
-						argumentClass = arguments[k].getClass();
+						if ( arguments[k] != null )
+							argumentClass = arguments[k].getClass();
 					}
 					
-					if ( arguments[k] == null && !method.getParameterTypes()[k].isAssignableFrom(Object.class) )
-						;
+					if ( arguments[k] == null && Object.class.isAssignableFrom(method.getParameterTypes()[k]) )
+						; //    correct = true;
 					
+					else if ( arguments[k] == null && !Object.class.isAssignableFrom(method.getParameterTypes()[k]) )
+						correct = false; //null parameter, basic type
+						
 					else if ( ( argumentClass == int.class || argumentClass == Integer.class ) 
 							&& ( method.getParameterTypes()[k] == int.class || method.getParameterTypes()[k] == Integer.class ) )
 						; //	correct = true;
