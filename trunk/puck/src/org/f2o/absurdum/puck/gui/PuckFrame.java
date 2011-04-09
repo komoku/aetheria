@@ -600,6 +600,9 @@ public class PuckFrame extends JFrame
 						graphPanel.clear();
 						propPanel.clear();
 						BSHCodeFrame.closeAllInstances();
+						WorldPanel wp = new WorldPanel(graphPanel);
+						WorldNode wn = new WorldNode(wp);
+						graphPanel.setWorldNode(wn);
 						propPanel.show(graphPanel.getWorldNode());
 						editingFileName = null;
 						saveMenuItem.setEnabled(false);
