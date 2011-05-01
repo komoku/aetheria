@@ -33,7 +33,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	/*04*/ protected String title;
 	
 	/**Es instancia de.*/
-	/*05*/ private int isInstanceOf;
+	/*05*/ private String isInstanceOf;
 	
 	/**Lista dinámica de descripciones.*/
 	/*10*/ protected Description[] descriptionList;
@@ -149,9 +149,9 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		this.mundo=mundo;
 		it.inheritsFrom = 0;
 		
-		if ( this.isInstanceOf == 0 )
+		if ( this.isInstanceOf == null || StringMethods.isStringOfZeroes ( this.isInstanceOf ) )
 		{
-			it.isInstanceOf = idnumber;
+			it.isInstanceOf = title;
 			Debug.println("1) instanceOf set to " + idnumber);
 		}
 		else
@@ -445,11 +445,11 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 					title = linea; break;	
 				case 5:
 					/*la herencia fuerte se hace exactamente igual que la débil, no pueden aparecer las dos (se ignoraría la 2a)*/
-					isInstanceOf = Integer.valueOf(linea).intValue(); 
-					if ( isInstanceOf < idnumber && allowInheritance ) /*el item del que heredamos debe tener ID menor*/
+					isInstanceOf = String.valueOf(Integer.valueOf(linea).intValue()); 
+					if ( Integer.valueOf(isInstanceOf).intValue() < Integer.valueOf(idnumber).intValue() && allowInheritance ) /*el item del que heredamos debe tener ID menor*/
 					{
 						/*construimos segun constructor de la habitacion de que heredamos*/
-						constructItem ( mundo, Utility.itemFile(mundo,isInstanceOf) , true , itemtype ); 
+						constructItem ( mundo, Utility.itemFile(mundo,Integer.valueOf(isInstanceOf).intValue()) , true , itemtype ); 
 						/*overrideamos lo que tengamos que overridear*/
 						constructItem ( mundo, itemfile , false , itemtype );
 						return; 
@@ -694,13 +694,19 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			
 			//1. overrideamos el super-item usando su associated node para construirlo
 			
+			System.err.println("Building item from node " + e.getAttribute("name"));
+			new Throwable().printStackTrace();
+			
 			constructItem ( mundo , mundo.getItemNode( e.getAttribute("clones") ) , true , itemtype );
 			
 			Debug.println("Overridden item gender is " + gender);
 			
 			//2. overrideamos lo que debamos overridear
+			//no overriding in strong inheritance!
+			//removed the following line 2011-05-01.
+			//constructItem ( mundo , n , false , itemtype );
 			
-			constructItem ( mundo , n , false , itemtype );
+			isInstanceOf = e.getAttribute("clones");
 			
 			Debug.println("Overridden item gender is now " + gender);
 		
@@ -882,7 +888,13 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		}
 		//plural reference names (respondToPlur) just same as singular reference names.
 		
+		//System.err.println("respondToSing of item " + this + " initted to " + respondToSing);
+		//new Throwable().printStackTrace();
+		 
 		respondToPlur = Utility.loadNameListFromXML ( mundo , e , "PluralReferenceNames" , true );
+		
+		//System.err.println("respondToPlur of item " + this + " initted to " + respondToPlur);
+		//new Throwable().printStackTrace();
 		
 		//inventory:
 		//NO lo hacemos ahora: es una carga DIFERIDA. Repito: DIFERIDA.
@@ -1545,7 +1557,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		return matchesCommand ( commandArgs , listaDeInteres , mundo.getCommandMatchingMode() );
 	}
 	
-	public int getInstanceOf ( )
+	public String getInstanceOf ( )
 	{
 		return isInstanceOf;
 	}
@@ -1555,7 +1567,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		this.mundo = mundo;
 	}
 	
-	public void setInstanceOf ( int newid )
+	public void setInstanceOf ( String newid )
 	{
 		isInstanceOf = newid;
 	}
@@ -1565,9 +1577,11 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	
 		Debug.print ( "isSame " + this + "("+this.getTitle()+","+this.idnumber+", cloning "+this.getInstanceOf()+")" + " " + other + "("+other.getTitle()+","+other.idnumber+", cloning "+other.getInstanceOf()+")? "); 
 	
+		/*
 		Debug.println ( "" + (  ( idnumber % 10000000 == other.getInstanceOf () % 10000000 ) 
 		         || ( isInstanceOf % 10000000 == other.getID () % 10000000 )
 				 || ( isInstanceOf % 10000000 == other.getInstanceOf() % 10000000 && isInstanceOf % 10000000 != 0 )  ) );
+		*/
 	
 		//Debug.print("this.getInstanceOf = " + isInstanceOf);
 		//Debug.print(" other.getInstanceOf = " + other.getInstanceOf());
@@ -1577,12 +1591,26 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		//fix for problem with first item, which always seems same as everything because
 		//items which aren't instance of anything have instanceof 0, and that item
 		//has id 0
-		if ( isInstanceOf == 0 || other.getInstanceOf() == 0 ) return false;
+		//removed 2011-05-01
+		//if ( isInstanceOf == 0 || other.getInstanceOf() == 0 ) return false;
 		
 		
+		/*
 		return (  ( idnumber % 10000000 == other.getInstanceOf () % 10000000 ) 
 		         || ( isInstanceOf % 10000000 == other.getID () % 10000000 )
 				 || ( isInstanceOf % 10000000 == other.getInstanceOf() % 10000000 && isInstanceOf % 10000000 != 0 )  );
+		*/
+		return ( 
+				this.getTitle().equals(other.getInstanceOf()) 
+			||	other.getTitle().equals(this.getInstanceOf())
+			||  (
+					this.getInstanceOf() != null &&
+					this.getInstanceOf().equals(other.getInstanceOf()) &&
+					!StringMethods.isStringOfZeroes(this.getInstanceOf())
+				)
+		);
+		
+		
 		/*observemos que la herencia fuerte no producira los resultados
 		deseados si se encadena (A hereda de B, B de C...). No se implementan
 		las cadenas porque son inutiles y solo recargarian el juego. Las
@@ -2498,7 +2526,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	
 		it.itemType = "corpse";
 		it.inheritsFrom = 0;
-		it.isInstanceOf = 0;	
+		it.isInstanceOf = "0";	
 		it.title = "cadáver de " + m.constructName(1);
 	
 		it.descriptionList = new Description[1];
@@ -2754,6 +2782,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	 */
 	public List getPluralReferenceNames()
 	{
+		//System.err.println("The item: " + this + " with pl. names: " + respondToPlur);
 		return Conversions.getReferenceNameList(respondToPlur);
 	}
 	

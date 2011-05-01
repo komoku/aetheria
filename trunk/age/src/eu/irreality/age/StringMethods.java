@@ -240,4 +240,14 @@ public class StringMethods
 	
 	//protected String GetWord ( String thestring , int i )
 	
+	public static boolean isStringOfZeroes ( String s )
+	{
+		boolean is = true;
+		for ( int i = 0 ; i < s.length() ; i++ )
+		{
+			if ( s.charAt(i) != '0' ) is = false;
+		}
+		return is;
+	}
+	
 }
