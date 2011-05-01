@@ -84,7 +84,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	/*04*/ protected String title;
 
 	/**Es instancia de.*/
-	/*05*/ private int isInstanceOf;
+	/*05*/ private String isInstanceOf;
 
 	/**Lista din�mica de descripciones.*/
 	/*10*/ protected Description[] descriptionList;
@@ -313,11 +313,11 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				title = linea; break;	
 			case 5:
 				/*la herencia fuerte se hace exactamente igual que la d�bil, no pueden aparecer las dos (se ignorar�a la 2a)*/
-				isInstanceOf = Integer.valueOf(linea).intValue(); 
-				if ( isInstanceOf < idnumber && allowInheritance ) /*el item del que heredamos debe tener ID menor*/
+				isInstanceOf = linea; 
+				if ( Integer.valueOf(isInstanceOf).intValue() < idnumber && allowInheritance ) /*el item del que heredamos debe tener ID menor*/
 				{
 					/*construimos segun constructor de la habitacion de que heredamos*/
-					constructMob ( mundo, Utility.mobFile(mundo,isInstanceOf) , true , mobtype ); 
+					constructMob ( mundo, Utility.mobFile(mundo,Integer.valueOf(isInstanceOf).intValue()) , true , mobtype ); 
 					/*overrideamos lo que tengamos que overridear*/
 					constructMob ( mundo, mobfile , false , mobtype );
 					return; 
@@ -685,9 +685,12 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 			constructMob ( mundo , mundo.getMobileNode( e.getAttribute("clones") ) , true , mobtype );
 
+			isInstanceOf = e.getAttribute("clones");
+			
+			return;
+			
 			//2. overrideamos lo que debamos overridear
-
-			constructMob ( mundo , n , false , mobtype );
+			//constructMob ( mundo , n , false , mobtype );
 		}
 
 		//mandatory XML-attribs exceptions
@@ -1361,18 +1364,32 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		return matchesCommand ( commandArgs , listaDeInteres , mundo.getCommandMatchingMode() );
 	}
 
-	public int getInstanceOf ( )
+	public String getInstanceOf ( )
 	{
 		return isInstanceOf;
 	}
 
 	public boolean isSame ( Mobile other )
 	{
+		//old
+		/*
 		return (  
 				( idnumber == other.getID() )
 				||	( idnumber == other.getInstanceOf () ) 
 				|| ( isInstanceOf == other.getID () )
 				|| ( isInstanceOf == other.getInstanceOf () && isInstanceOf != 0 )  );
+		*/
+		
+		//new
+		return ( 
+				this.getTitle().equals(other.getInstanceOf()) 
+			||	other.getTitle().equals(this.getInstanceOf())
+			||  (
+					this.getInstanceOf() != null &&
+					this.getInstanceOf().equals(other.getInstanceOf()) &&
+					!StringMethods.isStringOfZeroes(this.getInstanceOf())
+				) );
+		
 		/*observemos que la herencia fuerte no producira los resultados
 		deseados si se encadena (A hereda de B, B de C...). No se implementan
 		las cadenas porque son inutiles y solo recargarian el juego. Las
@@ -6645,10 +6662,10 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		Mobile it = (Mobile) this.clone();
 		it.inheritsFrom = 0;
 
-		if ( this.isInstanceOf == 0 )
+		if ( this.isInstanceOf == null || StringMethods.isStringOfZeroes ( this.isInstanceOf ) )
 		{
-			it.isInstanceOf = idnumber;
-			Debug.println("1) instanceOf set to " + idnumber);
+			it.isInstanceOf = title;
+			Debug.println("1) instanceOf set to " + title);
 		}
 		else
 		{

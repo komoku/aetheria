@@ -152,7 +152,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		if ( this.isInstanceOf == null || StringMethods.isStringOfZeroes ( this.isInstanceOf ) )
 		{
 			it.isInstanceOf = title;
-			Debug.println("1) instanceOf set to " + idnumber);
+			Debug.println("1) instanceOf set to " + title);
 		}
 		else
 		{
@@ -694,8 +694,8 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			
 			//1. overrideamos el super-item usando su associated node para construirlo
 			
-			System.err.println("Building item from node " + e.getAttribute("name"));
-			new Throwable().printStackTrace();
+			//System.err.println("Building item from node " + e.getAttribute("name"));
+			//new Throwable().printStackTrace();
 			
 			constructItem ( mundo , mundo.getItemNode( e.getAttribute("clones") ) , true , itemtype );
 			
