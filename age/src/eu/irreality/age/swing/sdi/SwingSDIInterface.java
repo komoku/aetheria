@@ -268,7 +268,14 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 				return; 
 			}*/
 			
-			theWorld = WorldLoader.loadWorld( moduledir , gameLog, io, mundoSemaphore);
+			try
+			{
+				theWorld = WorldLoader.loadWorld( moduledir , gameLog, io, mundoSemaphore);
+			}
+			catch ( Exception e )
+			{
+				write ( "Exception on loading world: " + e );
+			}
 			if ( theWorld == null ) return;
 			mundo = theWorld;
 
