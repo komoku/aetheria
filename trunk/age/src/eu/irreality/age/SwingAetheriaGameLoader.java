@@ -1047,9 +1047,14 @@ de la ventana hasta acabar de cargar.
 		{
 			final boolean fsm = fullScreenMode;
 			setFullScreenMode(false);
+			
+			//dejemonos de finuras, total, vamos a recargar el mundo. [2011-05-01]
+			/*
 			maquinaEstados.uninitServerMenu(this);
 			maquinaEstados.exitForReinit();
 			((ColoredSwingClient)io).uninitClientMenu(this);
+			*/
+			maquinaEstados.exitNow();
 			
 			Thread thr = new Thread() {
 				public void run()
