@@ -929,6 +929,10 @@ public class World implements Informador , SupportingCode
 		if ( new VersionComparator().compare(parserVersion,"1.0") < 0 )
 			this.setCommandMatchingMode(Entity.LEGACY_COMMAND_MATCHING);
 		
+		//set lenient command matching mode if needed (versions strictly btw 1.1.1 and 1.0)
+		if ( new VersionComparator().compare(parserVersion,"1.0") > 0 && new VersionComparator().compare(parserVersion,"1.1.1") < 0 )
+			this.setCommandMatchingMode(Entity.LENIENT_COMMAND_MATCHING);
+		
 		if ( !jugadorAsignadoACliente && !noSerCliente )
 		{
 			//Debug.println("Gonna add player ASAP.");
@@ -2952,7 +2956,7 @@ public class World implements Informador , SupportingCode
 
 	
 	//go back to legacy if things fail
-	public int commandMatchingMode = Entity.LENIENT_COMMAND_MATCHING;
+	public int commandMatchingMode = Entity.MODERATE_COMMAND_MATCHING;
 	
 	/**
 	 * values should be static constants from class Entity.

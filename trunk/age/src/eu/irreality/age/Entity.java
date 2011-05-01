@@ -624,6 +624,34 @@ public abstract class Entity
 		return 0;
 	}
 	
+	
+	/**
+	 * New matchesCommand mode implemented 2011-05-01, a bit less lenient than the lenient matchesCommand. Will search for
+	 * matches with words.
+	 * @param commandArgs
+	 * @param referenceNameList
+	 * @return
+	 */
+	protected int moderateMatchesCommand ( String commandArgs , String referenceNameList )
+	{
+		int nToksList = StringMethods.numToks( referenceNameList , '$');
+		for ( int j = 1 ; j <= nToksList ; j++ )
+		{
+			String currentReferenceName = StringMethods.getTok( referenceNameList , j , '$' );
+			int position = commandArgs.toLowerCase().indexOf(currentReferenceName.toLowerCase());
+			if ( position < 0 ) //does not match
+				continue;
+			if ( position != 0 && !Character.isWhitespace(commandArgs.charAt(position-1)) ) //matches but starts at a place other than beginning/whitespace
+				continue;
+			if ( position+currentReferenceName.length() != commandArgs.length() && !Character.isWhitespace(commandArgs.charAt(position)) ) //matches but ends at a place other than end/whitespace
+				continue;
+			//if we have reached this point, the match is acceptable
+			return j;
+		}
+		return 0;
+	}
+	
+	
 	/**
 	 * Note: takes a legacy, $-separated list of reference names
 	 * This method may be called by subclass-specific implementations of the matchesCommand ( String , boolean ) method.
@@ -635,13 +663,16 @@ public abstract class Entity
 	{
 		if ( commandMatchingMode == LEGACY_COMMAND_MATCHING )
 			return legacyMatchesCommand ( commandArgs , referenceNameList );
-		else
+		else if ( commandMatchingMode == LENIENT_COMMAND_MATCHING )
 			return lenientMatchesCommand ( commandArgs , referenceNameList );
+		else
+			return moderateMatchesCommand ( commandArgs , referenceNameList );
 	}
 	
 	//command matching modes
-	public static int LEGACY_COMMAND_MATCHING = 0;
-	public static int LENIENT_COMMAND_MATCHING = 1;
+	public static final int LEGACY_COMMAND_MATCHING = 0;
+	public static final int LENIENT_COMMAND_MATCHING = 1;
+	public static final int MODERATE_COMMAND_MATCHING = 2;
 	
 	
 	
