@@ -3,12 +3,15 @@ package eu.irreality.age;
 import java.io.File;
 import java.util.Vector;
 
+import eu.irreality.age.filemanagement.Paths;
+
 public class CommandLineClientLauncher 
 {
 	
 	private static String worldPath = null;
 	private static String logPath = null;
 	private static String statePath = null;
+	private static String saveDirPath = null;
 	private static boolean rebotFriendly = false;
 	private static boolean unstrict = false;
 	
@@ -22,6 +25,7 @@ public class CommandLineClientLauncher
 		System.out.println("-r: rebot-friendly options, disables the prompt and changes some default texts to better accomodate to" +
 				" multiprotocol networking via rebot.");
 		System.out.println("-u: unstrict metacommands, makes it possible to save/quit without using commands starting with a slash.");
+		System.out.println("-sd savedir: path to a directory where savegames will be stored by default.");
 	}
 
 	public static void main ( String[] args )
@@ -74,6 +78,18 @@ public class CommandLineClientLauncher
 						System.out.println("No world specified after option -state");
 					}
 				}
+				else if ( args[i].equalsIgnoreCase("-savedir") || args[i].equalsIgnoreCase("-sd") )
+				{
+					if ( i+1 < args.length )
+					{
+						saveDirPath = args[i+1];
+						i++;
+					}
+					else
+					{
+						System.out.println("No path to saves directory specified after option -savedir");
+					}
+				}
 				else if ( args[i].equalsIgnoreCase("-r") )
 				{
 					rebotFriendly = true;
@@ -106,6 +122,7 @@ public class CommandLineClientLauncher
 			InputOutputClient io = new CommandLineClient(gameLog,rebotFriendly,unstrict); //init client
 			File inputAsFile = new File(worldPath);
 			World theWorld = null;
+			
 			
 			if ( inputAsFile.isFile() )
 			{
@@ -151,6 +168,13 @@ public class CommandLineClientLauncher
 			
 			//{theWorld NOT null}
 			
+			
+	        //set save dir if requested
+	        if ( saveDirPath != null )
+	        {
+	        	Paths.setSaveDir(saveDirPath);
+	        }
+	        
 	
 			//usar estado si lo hay
 			if ( statePath != null )

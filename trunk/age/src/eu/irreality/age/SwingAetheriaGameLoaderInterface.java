@@ -263,6 +263,11 @@ public class SwingAetheriaGameLoaderInterface
             .withDescription(  "A file to append the error output to" )
             .create( "errorlog" );
 			
+			Option saveDir = OptionBuilder.withArgName( "pathToDir" )
+			.hasArg()
+			.withDescription("Path to the directory where saves will be stored by default")
+			.create("savedir");
+			
 			Options options = new Options();
 
 			options.addOption( sdi );
@@ -271,6 +276,7 @@ public class SwingAetheriaGameLoaderInterface
 			options.addOption( logFile );
 			options.addOption( stateFile );
 			options.addOption( errorLog );
+			options.addOption( saveDir );
 			
 			CommandLineParser parser = new GnuParser();
 		    try 
@@ -285,15 +291,25 @@ public class SwingAetheriaGameLoaderInterface
 		        
 		        String errorLogFile = null;
 		        
+		        String saveDirPath = null;
+		        
 		        if ( line.hasOption("errorlog") ) errorLogFile = line.getOptionValue("errorlog");
 		        
 		        if ( line.hasOption("statefile") ) desiredStateFile = line.getOptionValue("statefile");
 		        if ( line.hasOption("logfile") ) desiredLogFile = line.getOptionValue("logfile");
 		        if ( line.hasOption("worldfile") ) desiredWorldFile = line.getOptionValue("worldfile");
 		        
+		        if ( line.hasOption("savedir") ) saveDirPath = line.getOptionValue("savedir");
+		        
 		        //first, redirect std. error if necessary
 		        if ( errorLogFile != null ) redirectStandardError(errorLogFile);
 		        
+		        //set save dir if requested
+		        if ( saveDirPath != null )
+		        {
+		        	Paths.setSaveDir(saveDirPath);
+		        }
+		        	
 		        //if ( line.hasOption("worldurl") ) desiredWorldFile = line.getOptionValue("worldurl");
 		        if ( desiredWorldFile == null /*&& desiredWorldUrl == null*/ && line.getArgs().length > 0 ) desiredWorldFile = line.getArgs()[0];
 		        boolean desiredSdi = line.hasOption("sdi");  //Boolean.valueOf( line.getOptionValue("sdi") ).booleanValue();	    
