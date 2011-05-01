@@ -215,7 +215,15 @@ public class NaturalLanguage
 		return (String) sinonimos.get ( palabra.toLowerCase() );
 	}
 	
+	/**
+	 * @deprecated Use {@link #getAlias(String)} instead
+	 */
 	public String obtenerAlias ( String palabra )
+	{
+		return getAlias(palabra);
+	}
+
+	public String getAlias ( String palabra )
 	{
 		return (String) alias.get ( palabra.toLowerCase() );
 	}
@@ -320,10 +328,56 @@ public class NaturalLanguage
 		infinitivoAImperativo.remove(infinitive);
 	}
 	
+	/**
+	 * Removes an verb in all of its forms, given the infinitive, if it exists.
+	 * @param source
+	 */
+	public void removeVerbEntry ( String infinitive )
+	{
+		String imper = (String) infinitivoAImperativo.get(infinitive);
+		infinitivoAImperativo.remove(infinitive);
+		if ( imper != null )
+		{
+			imperativoAInfinitivo.remove(imper);
+		}
+	}
+	
 	public Set getVerbForms()
 	{
 		return imperativoAInfinitivo.keySet();
 	}
+	
+	/**
+	 * Adds an entry to the aliases table.
+	 * @param source The source of the alias.
+	 * @param target The target of the alias.
+	 */
+	public void addAlias ( String source , String target )
+	{
+		alias.put(source,target);
+	}
+	
+	/**
+	 * Removes a (source,target) entry from the alias association if it exists.
+	 * @param source
+	 * @param target
+	 */
+	public void removeAlias ( String source , String target )
+	{
+		if ( alias.get(source).equals(target) )
+			removeAlias(source);
+	}
+	
+	/**
+	 * Removes an alias if it exists.
+	 * @param source
+	 */
+	public void removeAlias ( String source )
+	{
+		alias.remove(source);
+	}
+	
+
 	
 	/**
 	 * Devuelve Comprueba si una palabra dada es un verbo, incluyendo soporte de "le".
@@ -370,7 +424,7 @@ public class NaturalLanguage
 		while ( st.hasMoreTokens() )
 		{
 			String tok = st.nextToken();
-			String sin = obtenerAlias(tok);
+			String sin = getAlias(tok);
 			if ( sin == null )
 			{
 				nueva += tok;
