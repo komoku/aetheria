@@ -2168,6 +2168,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					}
 				//cosas que llevas puestas
 				Inventory wornItems = getWornItems(); //this shadows the homonymous attribute
+				Set alreadyShown = new HashSet(); //para prevenir que prendas se muestren dos veces si se llevan en varios miembros
 				if ( wornItems != null )
 					for ( int i = 0 ; i < wornItems.size() ; i++ )
 					{
@@ -2177,6 +2178,10 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							escribir( io.getColorCode("information") + "Llevas " + (wieldedWeapons.elementAt(i)).constructName2True(1,(wieldedWeapons.elementAt(i)).getState())  + " en " + (wieldingLimbs.elementAt(i)).constructName2True(1,(wieldingLimbs.elementAt(i)).getState()) + ".\n" + io.getColorCode("reset") );
 							 */
 							Item vestido = wornItems.elementAt(i);
+							
+							if ( alreadyShown.contains(vestido) ) continue; //this worn item was already shown (worn in several limbs)
+							else alreadyShown.add(vestido);
+							
 							Vector miembrosOcupados = new Vector();
 							//buscar miembros que visten el wearable
 							for ( int j = 0 ; j < limbs.size() ; j++ )
