@@ -1,4 +1,4 @@
-frame.title=PUCK - Playable Universe Construction Kit, v1.1.0
+frame.title=PUCK - Playable Universe Construction Kit, v1.1.1
 tool.addroom=Añadir Habitación
 tool.additem=Añadir Cosa
 tool.addchar=Añadir Personaje
@@ -17,7 +17,7 @@ exec.dialogtitle=Jugar mundo en AGE
 entity.uniquename=Nombre único:
 none=<nada>
 inherit.from=Heredar de:
-clone.from=Ejemplo de:
+clone.from=Ejemplar de:
 path.src=Habitación origen:
 path.dst=Habitación destino:
 path.dir=Dirección estándar:
