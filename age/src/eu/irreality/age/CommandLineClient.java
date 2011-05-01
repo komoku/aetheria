@@ -16,6 +16,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
+import eu.irreality.age.filemanagement.Paths;
+
 public class CommandLineClient implements InputOutputClient 
 {
 
@@ -256,7 +258,7 @@ public class CommandLineClient implements InputOutputClient
 	private void processSaveLogCommand ( String command )
 	{
 		String path = command.substring(command.indexOf(" ")+1);
-		File f = new File(path);
+		File f = new File(Paths.SAVE_PATH,path);
 		try
 		{
 			saveLog(f);

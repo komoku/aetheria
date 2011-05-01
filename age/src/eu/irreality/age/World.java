@@ -25,6 +25,7 @@ import org.w3c.dom.*;
 
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
+import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.messages.Messages;
 import eu.irreality.age.spell.AGESpellChecker;
 import eu.irreality.age.util.VersionComparator;
@@ -160,16 +161,44 @@ public class World implements Informador , SupportingCode
 			jugador.endOfLog();	
 		}
 	}
+	
+	/**
+	 * Opens a log file either in the path directly specified or, if not found, in the saves directory.
+	 * @param s
+	 * @return
+	 * @throws java.io.FileNotFoundException
+	 */
+	public FileInputStream openLogFile ( String s ) throws java.io.FileNotFoundException
+	{
+		FileInputStream logInput = null; 
+		try
+		{
+			logInput = new FileInputStream(s);
+		}
+		catch ( FileNotFoundException exc )
+		{
+			try
+			{
+				logInput = new FileInputStream ( new File ( Paths.SAVE_PATH , s ) );
+			}
+			catch ( FileNotFoundException exc2 )
+			{
+				throw(exc);
+			}
+		}
+		return logInput;
+	}
 
 	/*
 		Multiplayer Log Support (try): 04.03.29
 		This substitutes Player::prepareLog(String).
 		Prepares (same) log for (all) world's players.
+		First tries the path s as it comes, then tries it relative to the default saves directory.
 	*/
 	public void prepareLog(String s) throws java.io.FileNotFoundException
 	{
 		from_log = true;
-		FileInputStream logInput = new FileInputStream(s);
+		FileInputStream logInput = openLogFile(s); 
 		logReader = new BufferedReader ( Utility.getBestInputStreamReader ( logInput ) );
 		try
 		{
@@ -2113,7 +2142,7 @@ public class World implements Informador , SupportingCode
 	public void setRandomNumberSeed (String logfile) throws java.io.FileNotFoundException
 	{
 	
-		FileInputStream logInput = new FileInputStream(logfile);
+		FileInputStream logInput = openLogFile(logfile);
 		BufferedReader logReader = new BufferedReader ( Utility.getBestInputStreamReader ( logInput ) );
 		try
 		{
@@ -2701,7 +2730,25 @@ public class World implements Informador , SupportingCode
 
 		DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		io.write(io.getColorCode("information") + "Obteniendo árbol DOM de los datos XML [estado]...\n" + io.getColorCode("reset") );
-		d = db.parse( new FileInputStream ( new File ( statefname ) ) );
+		
+		FileInputStream fis = null; 
+		try
+		{
+			fis = new FileInputStream(new File(statefname));
+		}
+		catch (FileNotFoundException fnfe )
+		{
+			try
+			{
+				fis = new FileInputStream(new File(Paths.SAVE_PATH,statefname));
+			}
+			catch ( FileNotFoundException fnfe2 )
+			{
+				throw(fnfe);
+			}
+		}
+		
+		d = db.parse( fis );
 		
 	
 		org.w3c.dom.Element n = d.getDocumentElement();
