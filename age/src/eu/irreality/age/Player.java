@@ -1313,7 +1313,7 @@ public class Player extends Mobile implements Informador
 					if ( patternMatchVectorSing.size() > 0 ) //miramos un objeto
 					{
 						Item ourItem = ((Item)patternMatchVectorSing.elementAt(0));
-						write( io.getColorCode("action") + ((Item)patternMatchVectorSing.elementAt(0)).abrir() + io.getColorCode("reset") + "\n" );
+						write( io.getColorCode("action") + ((Item)patternMatchVectorSing.elementAt(0)).abrir(this) + io.getColorCode("reset") + "\n" );
 						habitacionActual.reportAction(this,ourItem,null,"$1 intenta abrir $2.\n","$1 intenta abrirte.\n","Intentas abrir $2.\n",false);
 						mirado=true;
 					}	
@@ -1334,7 +1334,7 @@ public class Player extends Mobile implements Informador
 							habitacionActual.reportAction(this,ourItem,null,"$1 intenta abrir $2.\n","$1 intenta abrirte.\n","Intentas abrir $2.\n",false);
 
 
-							write( io.getColorCode("action") + ((Item)ourItem).abrir() + io.getColorCode("reset") + "\n"  );
+							write( io.getColorCode("action") + ((Item)ourItem).abrir(this) + io.getColorCode("reset") + "\n"  );
 
 						}	
 					}
@@ -1354,7 +1354,7 @@ public class Player extends Mobile implements Informador
 						Item ourItem = ((Item)patternMatchVectorSing.elementAt(0));
 						mirado=true;
 						habitacionActual.reportAction(this,ourItem,null,"$1 intenta abrir $2.\n","$1 intenta abrirte.\n","Intentas abrir $2.\n",false);
-						write( io.getColorCode("action") +  ((Item)patternMatchVectorSing.elementAt(0)).abrir() + io.getColorCode("reset") + "\n" );
+						write( io.getColorCode("action") +  ((Item)patternMatchVectorSing.elementAt(0)).abrir(this) + io.getColorCode("reset") + "\n" );
 					}	
 					else if ( patternMatchVectorPlur.size() > 0 )
 					{
@@ -1370,7 +1370,7 @@ public class Player extends Mobile implements Informador
 							write ( mundo.getMessages().getMessage("you.try.open.from.inventory","$item",ourItem.constructName2True ( 1 , this ),new Object[]{this,arguments} ));							
 							
 							habitacionActual.reportAction(this,ourItem,null,"$1 intenta abrir $2 que lleva.\n","$1 intenta abrirte.\n","Intentas abrir $2 que llevas.\n",false);
-							write( io.getColorCode("action") + ((Item)ourItem).abrir() + io.getColorCode("reset") + "\n" );
+							write( io.getColorCode("action") + ((Item)ourItem).abrir(this) + io.getColorCode("reset") + "\n" );
 
 						}	
 					}
@@ -1430,7 +1430,7 @@ public class Player extends Mobile implements Informador
 					if ( patternMatchVectorSing.size() > 0 /* && !(((Item)patternMatchVectorSing.elementAt(0)).getDescription(this).equals("")) */ ) //miramos un objeto
 					{
 						Item ourItem = ((Item)patternMatchVectorSing.elementAt(0));
-						write( io.getColorCode("action") + ((Item)patternMatchVectorSing.elementAt(0)).cerrar() + io.getColorCode("reset") + "\n" );
+						write( io.getColorCode("action") + ((Item)patternMatchVectorSing.elementAt(0)).cerrar(this) + io.getColorCode("reset") + "\n" );
 						habitacionActual.reportAction(this,ourItem,null,"$1 intenta cerrar $2.\n","$1 intenta cerrarte.\n","Intentas cerrar $2.\n",false);
 						mirado=true;
 					}	
@@ -1452,7 +1452,7 @@ public class Player extends Mobile implements Informador
 							
 							
 								habitacionActual.reportAction(this,ourItem,null,"$1 intenta cerrar $2.\n","$1 intenta cerrarte.\n","Intentas cerrar $2.\n",false);
-								write( io.getColorCode("action") + ((Item)ourItem).cerrar() + io.getColorCode("reset") +"\n" );
+								write( io.getColorCode("action") + ((Item)ourItem).cerrar(this) + io.getColorCode("reset") +"\n" );
 							//}
 						}	
 					}
@@ -1470,7 +1470,7 @@ public class Player extends Mobile implements Informador
 					if ( patternMatchVectorSing.size() > 0 /* && !(((Item)patternMatchVectorSing.elementAt(0)).getDescription(this).equals("") ) */ ) //miramos un objeto
 					{
 						mirado=true;
-						write( io.getColorCode("action") + ((Item)patternMatchVectorSing.elementAt(0)).cerrar() + io.getColorCode("reset") + "\n" );
+						write( io.getColorCode("action") + ((Item)patternMatchVectorSing.elementAt(0)).cerrar(this) + io.getColorCode("reset") + "\n" );
 					}	
 					else if ( patternMatchVectorPlur.size() > 0 )
 					{
@@ -1488,7 +1488,7 @@ public class Player extends Mobile implements Informador
 								write ( mundo.getMessages().getMessage("you.try.close.from.inventory","$item",ourItem.constructName2True ( 1 , this ),new Object[]{this,arguments} ));															
 								
 								habitacionActual.reportAction(this,ourItem,null,"$1 intenta cerrar $2 que lleva.\n","$1 intenta cerrarte.\n","Intentas cerrar $2 que llevas.\n",false);
-								write( io.getColorCode("action") + ((Item)ourItem).cerrar() + io.getColorCode("reset") + "\n" );
+								write( io.getColorCode("action") + ((Item)ourItem).cerrar(this) + io.getColorCode("reset") + "\n" );
 							}
 						}	
 					}
@@ -3657,7 +3657,7 @@ public class Player extends Mobile implements Informador
 			Item ourDoor = (Item)puertas.get(i);
 			Item ourKey = (Item)llaves.get(i);
 			habitacionActual.reportAction(this,ourDoor,new Entity[]{ourKey},"$1 intenta abrir $2 con $3.\n","$1 intenta abrirte con $3.\n","Intentas abrir $2 con $3.\n",false);
-			write( io.getColorCode("action") + ((Item)ourDoor).unlock(ourKey) + io.getColorCode("reset") + "\n"   );
+			write( io.getColorCode("action") + ((Item)ourDoor).unlock(ourKey,this) + io.getColorCode("reset") + "\n"   );
 		}
 		return true;
 
@@ -4113,7 +4113,7 @@ public class Player extends Mobile implements Informador
 			Item ourDoor = (Item)puertas.get(i);
 			Item ourKey = (Item)llaves.get(i);
 			habitacionActual.reportAction(this,ourDoor,new Entity[]{ourKey},"$1 intenta cerrar $2 con $3.\n","$1 intenta cerrarte con $3.\n","Intentas cerrar $2 con $3.\n",false);
-			write( io.getColorCode("action") + ((Item)ourDoor).lock(ourKey) + io.getColorCode("reset") + "\n"   );
+			write( io.getColorCode("action") + ((Item)ourDoor).lock(ourKey,this) + io.getColorCode("reset") + "\n"   );
 		}
 		return true;
 

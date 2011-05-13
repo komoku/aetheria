@@ -3,6 +3,9 @@
  * Licencia en license/bsd.txt / License in license/bsd.txt
  */
 package eu.irreality.age;
+
+import java.util.StringTokenizer;
+
 //package AetheriaAWT;
 /**
 * Descripción con comparando y máscara, devuelve un texto u otro según el estado.
@@ -298,7 +301,7 @@ public class Description
 						//return ( new Description ( t.getData() , comparand , mask ) );
 						this.comparand=comparand;
 						this.mask=mask;
-						//this.text=t.getData().trim();
+						this.text=t.getData().trim(); //necessary because XML saving adds whitespace to text nodes
 						this.text = t.getData();
 						this.text = StringMethods.textualSubstitution( this.text, "\\n" , "\n" );
 						this.text = StringMethods.textualSubstitution( this.text, "\\s" , " " ); //escape character for space
@@ -342,6 +345,58 @@ public class Description
 		
 		}
 	
+	}
+	
+	
+	//metodos especificos para open y close descriptions
+	
+	/**
+	 * Returns whether this description is marked as a success or failure description
+	 * (for open/close descriptions)
+	 */
+	public boolean hasSuccessMark()
+	{
+		return text.startsWith("SUCCESS:") || text.startsWith("EXITO:") || text.startsWith("FAIL:") || text.startsWith("SUCCESS:") 
+		|| text.startsWith("FRACASO:");
+	}
+	
+	/**
+	 * Returns whether this description is marked as a success description (for
+	 * open/close descriptions).
+	 * @return
+	 */
+	public boolean isSuccessDescription()
+	{
+		return text.startsWith("SUCCESS:") || text.startsWith("EXITO:");
+	}
+	
+	/**
+	 * Returns whether this description is marked as a failure description (for
+	 * open/close descriptions).
+	 * @return
+	 */
+	public boolean isFailDescription()
+	{
+		return text.startsWith("FAIL:") || text.startsWith("FRACASO:");
+	}
+	
+	/**
+	 * Returns the pure text of the description without the success/fail mark.
+	 * Transitional method. When the open/close/lock/unlock system is further
+	 * modernised, the success/fail status should not be saved directly in the
+	 * description text and therefore this should be equivalent to getText(),
+	 * but at the moment that doesn't hold.
+	 * @return
+	 */
+	public String getTextWithoutSuccessMark()
+	{
+		if ( hasSuccessMark() )
+		{
+			StringTokenizer st = new StringTokenizer(text,":");
+			st.nextToken();
+			return st.nextToken("").substring(1); //the 1 is to remove the : delimiter from the beginning.
+		}
+		else return text;
 	}
 	
 }

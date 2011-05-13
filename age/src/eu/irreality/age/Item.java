@@ -1736,7 +1736,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	}
 	
 	//intentar abrir sin llave. 
-	public String abrir (  )
+	public String abrir ( Mobile abridor )
 	{
 		boolean exito = false; //si realmente abrimos el objeto
 		String descriptionText = "";
@@ -1757,7 +1757,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			{
 				//Debug.print("A");
 			    Description des_actual = openDescriptionList[i];
-				if ( des_actual.matchesConditions ( this /*add viewer*/ ) )
+				if ( des_actual.matchesConditions ( this , abridor ) )
 				{
 					//Debug.print("B");
 					//Debug.print(des_actual.getText());
@@ -1815,7 +1815,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	
 	
 	//intentar cerrar sin llave
-	public String cerrar ( )
+	public String cerrar ( Mobile cerrador )
 	{
 		if ( !isCloseable() )
 		{
@@ -1830,7 +1830,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			for ( int i = 0 ; i < closeDescriptionList.length ; i++ )
 			{
 			    Description des_actual = closeDescriptionList[i];
-				if ( des_actual.matchesConditions ( this /*add viewer*/ ) )
+				if ( des_actual.matchesConditions ( this , cerrador ) )
 				{
 					String elTexto = des_actual.getText();
 					StringTokenizer st = new StringTokenizer(elTexto,":");
@@ -1883,7 +1883,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	}
 
 
-	public String unlock ( Item key )
+	public String unlock ( Item key , Mobile unlocker )
 	{
 		if ( !isUnlockable() )
 		{
@@ -1893,10 +1893,14 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		else
 		{
 			//descripciones unlock: a diferencia de las open, pueden tener dos diferentes
-			//son de la forma SUCCESS:des1:FAIL:des2
+			//son de la forma SUCCESS:des1:FAIL:des2 <- sólo un succ/fail por descripción as of 2011-05-13
 			//(las open sólo tienen una de las dos partes que indica si abres o no
 			//en ese estado; pero en las unlock el que abras o no viene dado por
 			//la llave que uses aparte del estado)
+			
+			//2011-05-13: si no tiene la llave, miramos solo fail (eso ya estaba antes).
+			//si tiene la llave, miramos primero success. si alguna matchea, perfecto
+			//si no, miramos fail (puede fallar por otras condiciones ajenas a la llave).
 			
 			String descriptionText = "";
 			
@@ -1908,7 +1912,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 				{
 					Description des_actual = unlockDescriptionList[i];
 					String elTexto2 = ""; //to append to description
-					if ( des_actual.matchesConditions ( this /*add viewer*/ ) )
+					if ( des_actual.matchesConditions ( this , unlocker ) )
 					{
 						//buscar descripción fail (obligatoria) <- no oblig. (2008-04)
 						String elTexto1 = des_actual.getText();
@@ -1936,59 +1940,45 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			else
 			{
 				//consideramos la descripción "success" y abrimos, o, si no hay
-				//descripción "success", falla por el estado
+				//descripción "success", entonces miramos descripciones fail
+				//(puede fallar por motivos como que la puerta no este cerrada
+				//con llave, etc.)
 			
 				boolean unlocked = false;
 				
+				//check success descriptions first
 				for ( int i = 0 ; i < unlockDescriptionList.length ; i++ )
 				{
-					Description des_actual = unlockDescriptionList[i];
-					String elTexto2 = ""; //to append to description
-					if ( des_actual.matchesConditions ( this /*add viewer*/ ) )
+					Description des_actual = unlockDescriptionList[i];					
+					//String elTexto2 = ""; //to append to description
+					if ( des_actual.matchesConditions ( this , unlocker ) )
 					{
-						//buscar descripción success (puede no haberla)
-						String elTexto1 = des_actual.getText();
-						StringTokenizer st = new StringTokenizer(elTexto1,":");
-						String temp = null;
-						while ( st.hasMoreTokens() && !((temp=st.nextToken()).equalsIgnoreCase("SUCCESS")) && !temp.equalsIgnoreCase("EXITO") )
+						
+						if ( des_actual.isSuccessDescription() )
 						{
-							;
-							
-							//se abre
-							
-						}
-						if ( temp.equalsIgnoreCase("SUCCESS") || temp.equalsIgnoreCase("EXITO") )
-						{
-							elTexto2 = st.nextToken();
+							descriptionText += des_actual.getTextWithoutSuccessMark();
 							unlocked = true;
 						}
-						unlocked=true;
-						/* commented 2008-04-27
-						if ( elTexto2.equals("") )
-						{
-							//buscar descripción fail (obligatoria)
-							StringTokenizer st2 = new StringTokenizer(elTexto1,":");
-							String temp2 = null;
-							Debug.println("Des_actual: " + des_actual.getText());
-							StringTokenizer st3 = new StringTokenizer(elTexto1,":");
-							Debug.println(st3.nextToken());
-							Debug.println(st3.nextToken());
-							while ( st2.hasMoreTokens() && !(  (temp2=st2.nextToken()).equalsIgnoreCase("FAIL")  ) && !temp2.equalsIgnoreCase("FRACASO")  )
-							{
-								Debug.println("TOK: " + temp2 ) ;
-								Debug.println("des_actual: " + des_actual );
-								;
-							}
-							elTexto2 = st.nextToken();
-						}
-						*/
-					} //end if matches getstate
-					if ( !elTexto2.equals("") )
-					{
-						descriptionText += "\n";
-						descriptionText += elTexto2;
 					}
 				} //end for all possible descriptions in different states
+				
+				//now if not successful, check fail descriptions
+				if ( !unlocked )
+				{
+					for ( int i = 0 ; i < unlockDescriptionList.length ; i++ )
+					{
+						Description des_actual = unlockDescriptionList[i];					
+						//String elTexto2 = ""; //to append to description
+						if ( des_actual.matchesConditions ( this /*add viewer*/ ) )
+						{
+							
+							if ( des_actual.isFailDescription() )
+							{
+								descriptionText += des_actual.getTextWithoutSuccessMark();
+							}
+						}
+					} //end for all possible descriptions in different states
+				}
 				
 				if ( unlocked )
 				{
@@ -2005,7 +1995,8 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 					for ( int i = 0 ; i < habitaciones.size() ; i++ )
 					{
 						Room thisHabitacion = (Room) habitaciones.get(i);
-						thisHabitacion.reportAction(this,null,null,"$1 se abre con llave.\n","Te abres con llave.\n","Abres con llave.\n",false);
+						//removed, does not make sense:
+						//thisHabitacion.reportAction(this,null,null,"$1 se abre con llave.\n","Te abres con llave.\n","Abres con llave.\n",false);
 					}
 				}
 			
@@ -2019,7 +2010,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	} //end function
 	
 	
-	public String lock ( Item key )
+	public String lock ( Item key , Mobile locker )
 	//simétrico de unlock
 	{
 		if ( !isLockable() )
@@ -2030,10 +2021,14 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		else
 		{
 			//descripciones lock: igual que las de unlock, pueden tener dos diferentes
-			//son de la forma SUCCESS:des1:FAIL:des2
+			//son de la forma SUCCESS:des1:FAIL:des2 <- sólo un succ/fail por descripción as of 2011-05-13
 			//(las open sólo tienen una de las dos partes que indica si abres o no
 			//en ese estado; pero en las unlock/lock el que abras o no viene dado por
 			//la llave que uses aparte del estado)
+			
+			//2011-05-13: si no tiene la llave, miramos solo fail (eso ya estaba antes).
+			//si tiene la llave, miramos primero success. si alguna matchea, perfecto
+			//si no, miramos fail (puede fallar por otras condiciones ajenas a la llave).
 			
 			String descriptionText = "";
 			
@@ -2045,7 +2040,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 				{
 					Description des_actual = lockDescriptionList[i];
 					String elTexto2 = ""; //to append to description
-					if ( des_actual.matchesConditions ( this /*add viewer*/ ) )
+					if ( des_actual.matchesConditions ( this , locker ) )
 					{
 						//buscar descripción fail (obligatoria)
 						String elTexto1 = des_actual.getText();
@@ -2069,77 +2064,67 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			
 			else
 			{
-				//consideramos la descripción "success" y abrimos, o, si no hay
-				//descripción "success", falla por el estado
+				//consideramos la descripción "success" y lockeamos, o, si no hay
+				//descripción "success", miramos las fail
 			
 				boolean locked = false;
 				
-				for ( int i = 0 ; i < lockDescriptionList.length ; i++ )
-				{
-					Description des_actual = lockDescriptionList[i];
-					String elTexto2 = ""; //to append to description
-					if ( des_actual.matches ( getState() ) )
+					//check success descriptions first
+					for ( int i = 0 ; i < lockDescriptionList.length ; i++ )
 					{
-						//buscar descripción success (puede no haberla)
-						String elTexto1 = des_actual.getText();
-						StringTokenizer st = new StringTokenizer(elTexto1,":");
-						String temp = null;
-						while ( st.hasMoreTokens() && !((temp=st.nextToken()).equalsIgnoreCase("SUCCESS")) && !temp.equalsIgnoreCase("EXITO") )
+						Description des_actual = lockDescriptionList[i];					
+					//String elTexto2 = ""; //to append to description
+						if ( des_actual.matchesConditions ( this , locker ) )
 						{
-							;
-							
-							
-							
-						}
-						//se cierra
-						if ( temp.equalsIgnoreCase("SUCCESS") || temp.equalsIgnoreCase("EXITO") )
-						{
-							elTexto2 = st.nextToken();
-							locked = true;
-						}
-						locked=true;
-						/* removed 2008-04-07
-						if ( elTexto2.equals("") )
-						{
-							//buscar descripción fail (obligatoria)
-							StringTokenizer st2 = new StringTokenizer(elTexto1,":");
-							String temp2=null;
-							while ( st2.hasMoreTokens() && !((temp2=st2.nextToken()).equalsIgnoreCase("FAIL")) && !temp2.equalsIgnoreCase("FRACASO") )
-							{
-								;
-							}
-							elTexto2 = st2.nextToken();
-						}
-						*/
-					} //end if matches getstate
-					if ( !elTexto2.equals("") )
-					{
-						descriptionText += "\n";
-						descriptionText += elTexto2;
-					}
-				} //end for all possible descriptions in different states
-				
-				if ( locked )
-				{
-					//hemos conseguido cerrarlo
-					//cambiar el estado para que se refleje esto
-					
-					//old lock
-						setNewState( getState() | 512 );
-					//new lock
-						setProperty("locked",true);
-					//locked item inform
-					List habitaciones = getRoomReferences();
-					for ( int i = 0 ; i < habitaciones.size() ; i++ )
-					{
-						Room thisHabitacion = (Room) habitaciones.get(i);
-						thisHabitacion.reportAction(this,null,null,"$1 se cierra con llave.\n","Te cierras con llave.\n","Cierras con llave.\n",false);
-					}	
 						
-				}
+							if ( des_actual.isSuccessDescription() )
+							{
+								descriptionText += des_actual.getTextWithoutSuccessMark();
+								locked = true;
+							}
+						}
+					} //end for all possible descriptions in different states
+				
+					//now if not successful, check fail descriptions
+					if ( !locked )
+					{
+						for ( int i = 0 ; i < lockDescriptionList.length ; i++ )
+						{
+							Description des_actual = lockDescriptionList[i];					
+							//String elTexto2 = ""; //to append to description
+							if ( des_actual.matchesConditions ( this /*add viewer*/ ) )
+							{
+							
+								if ( des_actual.isFailDescription() )
+								{
+									descriptionText += des_actual.getTextWithoutSuccessMark();
+								}
+							}
+						} //end for all possible descriptions in different states
+					}
+					
+					
+					if ( locked )
+					{
+						//hemos conseguido cerrarlo
+						//cambiar el estado para que se refleje esto
+						
+						//old lock
+							setNewState( getState() | 512 );
+						//new lock
+							setProperty("locked",true);
+						//locked item inform
+						List habitaciones = getRoomReferences();
+						for ( int i = 0 ; i < habitaciones.size() ; i++ )
+						{
+							Room thisHabitacion = (Room) habitaciones.get(i);
+							//removed 2011-05-13:
+							//thisHabitacion.reportAction(this,null,null,"$1 se cierra con llave.\n","Te cierras con llave.\n","Cierras con llave.\n",false);
+						}	
+							
+					}			
 			
-			
-			} //end else (if unlocks with key) 
+				} //end else (if unlocks with key) 
 			
 			return descriptionText;
 		
