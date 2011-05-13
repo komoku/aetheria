@@ -1804,6 +1804,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		}
 		try
 		{	
+			execCode("onClose" , new Object[] {abridor , new Boolean(exito)} );
 			execCode("onOpen" , new Object[] {new Boolean(exito)} );
 		}
 		catch ( bsh.TargetError bshte )
@@ -1871,6 +1872,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			}
 			try
 			{	
+				execCode("onClose" , new Object[] {cerrador , new Boolean(exito)} );
 				execCode("onClose" , new Object[] {new Boolean(exito)} );
 			}
 			catch ( bsh.TargetError bshte )
@@ -1901,6 +1903,8 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			//2011-05-13: si no tiene la llave, miramos solo fail (eso ya estaba antes).
 			//si tiene la llave, miramos primero success. si alguna matchea, perfecto
 			//si no, miramos fail (puede fallar por otras condiciones ajenas a la llave).
+			
+			boolean unlocked = false;
 			
 			String descriptionText = "";
 			
@@ -1944,7 +1948,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 				//(puede fallar por motivos como que la puerta no este cerrada
 				//con llave, etc.)
 			
-				boolean unlocked = false;
+				unlocked = false;
 				
 				//check success descriptions first
 				for ( int i = 0 ; i < unlockDescriptionList.length ; i++ )
@@ -2003,6 +2007,16 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			
 			} //end else (if unlocks with key) 
 			
+			try
+			{	
+				execCode("onUnlock" , new Object[] {unlocker , key , new Boolean(unlocked)} );
+				//execCode("onUnlock" , new Object[] {new Boolean(exito)} );
+			}
+			catch ( bsh.TargetError bshte )
+			{
+				return( "bsh.TargetError found onUnlock , item " + this + ": " + bshte + "[description was: " + descriptionText + "]" );
+			}
+			
 			return descriptionText;
 		
 		} //end else (if it's unlockable)
@@ -2029,6 +2043,8 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			//2011-05-13: si no tiene la llave, miramos solo fail (eso ya estaba antes).
 			//si tiene la llave, miramos primero success. si alguna matchea, perfecto
 			//si no, miramos fail (puede fallar por otras condiciones ajenas a la llave).
+			
+			boolean locked = false;
 			
 			String descriptionText = "";
 			
@@ -2067,7 +2083,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 				//consideramos la descripción "success" y lockeamos, o, si no hay
 				//descripción "success", miramos las fail
 			
-				boolean locked = false;
+				locked = false;
 				
 					//check success descriptions first
 					for ( int i = 0 ; i < lockDescriptionList.length ; i++ )
@@ -2125,6 +2141,16 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 					}			
 			
 				} //end else (if unlocks with key) 
+			
+			try
+			{	
+				execCode("onLock" , new Object[] {locker , key , new Boolean(locked)} );
+				//execCode("onUnlock" , new Object[] {new Boolean(exito)} );
+			}
+			catch ( bsh.TargetError bshte )
+			{
+				return( "bsh.TargetError found onLock , item " + this + ": " + bshte + "[description was: " + descriptionText + "]" );
+			}
 			
 			return descriptionText;
 		
