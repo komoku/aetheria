@@ -1708,7 +1708,8 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	
 	public boolean isOpen()
 	{
-		return ( (256 & getState()) == 0 ) && ( !getPropertyValueAsBoolean("closed") );
+		return //( (256 & getState()) == 0 ) && //legacy state removed 2011-05-14
+				( !getPropertyValueAsBoolean("closed") );
 	}
 	public boolean isClosed()
 	{
@@ -1716,7 +1717,8 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	}
 	public boolean isUnlocked()
 	{
-		return ( (512 & getState()) == 0 ) && ( !getPropertyValueAsBoolean("locked") );
+		return //( (512 & getState()) == 0 ) && //legacy state removed 2011-05-14
+			( !getPropertyValueAsBoolean("locked") );
 	}
 	public boolean isLocked()
 	{
