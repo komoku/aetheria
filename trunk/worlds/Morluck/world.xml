@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<World author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2009-12-30" moduleName="Wizard's Quest: Morluck's Lair" type="Rolero" version="0.2.1b" worldDir="." worldName="Wizard's Quest">
+<World author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2009-12-30" moduleName="Wizard's Quest: Morluck's Lair" parserVersion="" type="Rolero" version="0.2.1b" worldDir="." worldName="Wizard's Quest">
 <IdeMetaInf>
 <View xoffset="-58.902321590172164" yoffset="-92.90232159017205" zoom="1.6471820345351496"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Limbo" x="240" y="40"/>
@@ -58,6 +58,8 @@
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Libro de magia antimagia" x="420" y="280"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Lago" x="100" y="340"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Lámpara de araña" x="320" y="560"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Garrote tosco" x="380" y="220"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Hacha de guerra" x="60" y="440"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="invocar flores" x="400" y="160"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="desencantar" x="480" y="320"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="cierre mágico" x="420" y="360"/>
@@ -87,8 +89,6 @@
 <Node class="org.f2o.absurdum.puck.gui.graph.SpellNode" name="Detectar magia" x="480" y="280"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.SpellNode" name="Contrahechizo" x="480" y="240"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.SpellNode" name="Fuego" x="420" y="420"/>
-<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Garrote tosco" x="380" y="220"/>
-<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Hacha de guerra" x="60" y="440"/>
 </IdeMetaInf>
 <Code language="BeanShell"><![CDATA[/*Introducción del juego para un jugador*/
 
@@ -2190,11 +2190,15 @@ void parseCommandObj1 ( Mobile aCreature , String verb , String args1 , String a
 <Description>
 <Condition language="BeanShell">self.isLocked()</Condition>FAIL:El arcón ya está cerrado con llave.</Description>
 <Description>
-<Condition language="BeanShell">!self.isLocked()</Condition>SUCCESS:Un click te indica que el arcón se ha cerrado con llave.:FAIL:No logras cerrar el arcón.</Description>
+<Condition language="BeanShell">!self.isLocked()</Condition>SUCCESS:Un click te indica que el arcón se ha cerrado con llave.</Description>
+<Description>
+<Condition language="BeanShell">!self.isLocked()</Condition>FAIL:No logras cerrar el arcón.</Description>
 </LockDescriptionList>
 <UnlockDescriptionList>
 <Description>
-<Condition language="BeanShell">self.isLocked()</Condition>FAIL:No parece que sea ésa la llave que abra el arcón.:SUCCESS:Abres el arcón con la llave sin problemas.</Description>
+<Condition language="BeanShell">self.isLocked()</Condition>FAIL:No parece que sea ésa la llave que abra el arcón.</Description>
+<Description>
+<Condition language="BeanShell">self.isLocked()</Condition>SUCCESS:Abres el arcón con la llave sin problemas.</Description>
 <Description>
 <Condition language="BeanShell">!self.isLocked()</Condition>FAIL:El arcón no está cerrado con llave.</Description>
 </UnlockDescriptionList>
