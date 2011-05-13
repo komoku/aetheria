@@ -298,8 +298,10 @@ public class Description
 						//return ( new Description ( t.getData() , comparand , mask ) );
 						this.comparand=comparand;
 						this.mask=mask;
-						this.text=t.getData().trim();
+						//this.text=t.getData().trim();
+						this.text = t.getData();
 						this.text = StringMethods.textualSubstitution( this.text, "\\n" , "\n" );
+						this.text = StringMethods.textualSubstitution( this.text, "\\s" , " " ); //escape character for space
 						terminamos = true;
 					}
 					catch ( ClassCastException cce )
