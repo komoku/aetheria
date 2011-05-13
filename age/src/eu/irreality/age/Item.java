@@ -1804,7 +1804,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		}
 		try
 		{	
-			execCode("onClose" , new Object[] {abridor , new Boolean(exito)} );
+			execCode("onOpen" , new Object[] {abridor , new Boolean(exito)} );
 			execCode("onOpen" , new Object[] {new Boolean(exito)} );
 		}
 		catch ( bsh.TargetError bshte )
