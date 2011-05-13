@@ -26,8 +26,10 @@
 		<menu context="item" name="Definir eventos de cosa" description="Definir eventos de cosa">
 				<item name="onGet(Mobile)" description="Al coger esta cosa" template-ref="item-onget.tpl"/>
 				<item name="onDrop(Mobile)" description="Al dejar esta cosa" template-ref="item-ondrop.tpl"/>
-				<item name="onOpen(boolean)" description="Al abrir esta cosa" template-ref="item-onopen.tpl"/>
-				<item name="onClose(boolean)" description="Al cerrar esta cosa" template-ref="item-onclose.tpl"/>
+				<item name="onOpen(Mobile,boolean)" description="Al abrir esta cosa" template-ref="item-onopen.tpl"/>
+				<item name="onClose(Mobile,boolean)" description="Al cerrar esta cosa" template-ref="item-onclose.tpl"/>
+				<item name="onUnlock(Mobile,key,boolean)" description="Al abrir esta cosa con llave" template-ref="item-onunlock.tpl"/>
+				<item name="onLock(Mobile,key,boolean)" description="Al cerrar esta cosa con llave" template-ref="item-onlock.tpl"/>
 				<item name="onWear(Mobile,List)" description="Al vestir esta cosa" template-ref="item-onwear.tpl"/>
 				<item name="onUnwear(Mobile,List)" description="Al desvestir esta cosa" template-ref="item-onunwear.tpl"/>
 				<item name="onPutInside(Mobile,Item,Item)" description="Al poner esta cosa dentro de otra (u otra en ésta)" template-ref="item-onputinside.tpl"/>
