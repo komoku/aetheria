@@ -72,12 +72,62 @@ public class Description
 		return (( mask & ( state ^ comparand ) ) == 0 ); // si true, entonces es la descripción buscada (o una de ellas).
 	}
 	
+	
+	/**
+	* Nos dice si la descripción cumple las condiciones para ser mostrada,
+	* permitiendo utilizar variables en dichas condiciones, cuyas inicializaciones
+	* se pasan en variableInitialization.
+	* Por ejemplo, este array podría ser: { { viewer , mobile("fulano") , actor , mobile("mengano") } }.
+	*
+	* @return Si la descripción cumple las condiciones para ser mostrada.
+	*/
+	public boolean matchesConditions ( Entity context , Object[][] variableInitializations )
+	{
+						
+		if ( conditions == null ) return true;
+		
+		//{conditions not null}
+		for ( int i = 0 ; i < conditions.size() ; i++ )
+		{
+			
+			ReturnValue rv = new ReturnValue(null);
+			
+			try
+			{
+			
+				//have to add additional code to set viewer
+				((ObjectCode)conditions.get(i)).run ( null , context , null , rv , 
+					variableInitializations
+				);	
+				
+				//Debug.println("Code ran.");
+				
+			}
+			catch ( bsh.TargetError te )
+			{
+				//error al evaluar condición.
+				te.printStackTrace();
+				continue;
+			}
+			
+			if ( rv.getRetVal() instanceof Boolean )
+			{
+				//Debug.println("Boolean return value: " + ((Boolean)rv.getRetVal()).booleanValue() );
+				if ( ((Boolean)rv.getRetVal()).booleanValue() == false )
+					return false;
+			}
+			
+		}
+		//{all conditions checked: true, not boolean or condition checking error}
+		return true;
+		
+	}
+	
 	/**
 	* Nos dice si la descripción cumple las condiciones para ser mostrada,
 	* incluyendo cualquiera relacionada con viewer (relationship-states)
 	* [parte del 2.0 description support]
-	* El viewer puede ser null, en cuyo caso se llama a la versión sin viewer
-	* de matchesConditions.
+	* El viewer puede ser null.
 	*
 	* @return Si la descripción cumple las condiciones para ser mostrada.
 	*/
@@ -87,11 +137,15 @@ public class Description
 		//Debug.println("Called matchesConditions( " + context + ", " + viewer + " )");
 	
 		//viewer can be nullified if convenient
-		if ( viewer == null ) return matchesConditions ( context );
+		//removed 2011-05-14 (redundant):
+		//if ( viewer == null ) return matchesConditions ( context );
 	
 		//old support		
-		long comparand = (long)((Mobile)viewer).getRelationshipState( context )*((long)Math.pow(2,32)) + context.getState();
-		if ( !matches( comparand ) ) return false;
+		if ( viewer != null )
+		{
+			long comparand = (long)((Mobile)viewer).getRelationshipState( context )*((long)Math.pow(2,32)) + context.getState();
+			if ( !matches( comparand ) ) return false;
+		}
 		
 		//Debug.println("Comparand matches.");
 		
@@ -153,6 +207,7 @@ public class Description
 	*
 	* @return Si la descripción cumple las condiciones para ser mostrada.
 	*/
+	/*
 	public boolean matchesConditions( Entity context )
 	{
 		
@@ -199,7 +254,7 @@ public class Description
 		return true;
 		
 	}
-	
+	*/
 	
 	/**
 	* Método de acceso al texto de la descripción.
