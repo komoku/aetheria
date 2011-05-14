@@ -1737,6 +1737,17 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			return false;
 	}
 	
+	/**
+	 * Returns an initialization array for matchesConditions with the viewer, actor and key variables.
+	 * @param viewer
+	 * @param actor
+	 * @return
+	 */
+	private static Object[][] viewerActorKey ( Mobile viewer , Mobile actor , Item key )
+	{
+		return new Object[][] { {"viewer",viewer},{"actor" ,actor},{"key", key} };
+	}
+	
 	//intentar abrir sin llave. 
 	public String abrir ( Mobile abridor )
 	{
@@ -1759,7 +1770,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			{
 				//Debug.print("A");
 			    Description des_actual = openDescriptionList[i];
-				if ( des_actual.matchesConditions ( this , abridor ) )
+				if ( des_actual.matchesConditions ( this , viewerActorKey(abridor,abridor,null) ) )
 				{
 					//Debug.print("B");
 					//Debug.print(des_actual.getText());
@@ -1833,7 +1844,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			for ( int i = 0 ; i < closeDescriptionList.length ; i++ )
 			{
 			    Description des_actual = closeDescriptionList[i];
-				if ( des_actual.matchesConditions ( this , cerrador ) )
+				if ( des_actual.matchesConditions ( this , viewerActorKey(cerrador,cerrador,null) ) )
 				{
 					String elTexto = des_actual.getText();
 					StringTokenizer st = new StringTokenizer(elTexto,":");
@@ -1918,7 +1929,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 				{
 					Description des_actual = unlockDescriptionList[i];
 					String elTexto2 = ""; //to append to description
-					if ( des_actual.matchesConditions ( this , unlocker ) )
+					if ( des_actual.matchesConditions ( this , viewerActorKey(unlocker,unlocker,key) ) )
 					{
 						//buscar descripción fail (obligatoria) <- no oblig. (2008-04)
 						String elTexto1 = des_actual.getText();
@@ -1957,7 +1968,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 				{
 					Description des_actual = unlockDescriptionList[i];					
 					//String elTexto2 = ""; //to append to description
-					if ( des_actual.matchesConditions ( this , unlocker ) )
+					if ( des_actual.matchesConditions ( this , viewerActorKey(unlocker,unlocker,key) ) )
 					{
 						
 						if ( des_actual.isSuccessDescription() )
@@ -1975,7 +1986,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 					{
 						Description des_actual = unlockDescriptionList[i];					
 						//String elTexto2 = ""; //to append to description
-						if ( des_actual.matchesConditions ( this /*add viewer*/ ) )
+						if ( des_actual.matchesConditions ( this , viewerActorKey(unlocker,unlocker,key) ) )
 						{
 							
 							if ( des_actual.isFailDescription() )
@@ -2058,7 +2069,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 				{
 					Description des_actual = lockDescriptionList[i];
 					String elTexto2 = ""; //to append to description
-					if ( des_actual.matchesConditions ( this , locker ) )
+					if ( des_actual.matchesConditions ( this , viewerActorKey(locker,locker,key) ) )
 					{
 						//buscar descripción fail (obligatoria)
 						String elTexto1 = des_actual.getText();
@@ -2092,7 +2103,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 					{
 						Description des_actual = lockDescriptionList[i];					
 					//String elTexto2 = ""; //to append to description
-						if ( des_actual.matchesConditions ( this , locker ) )
+						if ( des_actual.matchesConditions ( this , viewerActorKey(locker,locker,key) ) )
 						{
 						
 							if ( des_actual.isSuccessDescription() )
@@ -2110,7 +2121,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 						{
 							Description des_actual = lockDescriptionList[i];					
 							//String elTexto2 = ""; //to append to description
-							if ( des_actual.matchesConditions ( this /*add viewer*/ ) )
+							if ( des_actual.matchesConditions ( this , viewerActorKey(locker,locker,key) ) )
 							{
 							
 								if ( des_actual.isFailDescription() )

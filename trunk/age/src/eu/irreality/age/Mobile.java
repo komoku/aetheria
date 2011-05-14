@@ -1145,6 +1145,11 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		return desString;	
 	}
 
+	/**
+	 * @deprecated Use getName ( boolean s_p , Entity viewer ) instead.
+	 * @param s_p
+	 * @return
+	 */
 	public String getName ( boolean s_p )
 	{
 		Description[] theList;
@@ -1153,7 +1158,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		String desString="";
 		for ( int i = 0 ; i < theList.length ; i++ )
 		{
-			if ( theList[i].matchesConditions(this) )
+			if ( theList[i].matchesConditions(this,(Entity)null) ) //oh wow, casting null
 				desString += theList[i].getText();
 		}	
 		return desString;
