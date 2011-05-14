@@ -1,0 +1,121 @@
+01[10:24] <@Al-Khwarizmi> Buenas, mistery.
+[10:24] <mistery> nas Al-Khwarizmi 
+01[10:24] <@Al-Khwarizmi> Te cuento si quieres un poco del tema de puertas en multijugador... que ayer estaba baldado y me fui a la cama.
+[10:28] <mistery> ok. dame dos minutos y vuelvo
+[10:32] <mistery> dime! ¿Se puede usar el viewer?
+[10:35] <mistery> he vuelto :)
+01[10:36] <@Al-Khwarizmi> Ah. A ver, veamos. Te cuento el tema.
+01[10:36] <@Al-Khwarizmi> En multijugador, en general (aquí no sólo hablo del tema puertas), hay una cosa que aumenta la complejidad, y es la siguiente:
+01[10:36] <@Al-Khwarizmi> Cada vez que pasa algo, como por ejemplo que Fulano coge la seta, tienes que emitir varias descripciones/mensajes.
+01[10:36] <@Al-Khwarizmi> Uno que diga "coges la seta" para que lo vea Fulano, otro que diga "Fulano coge la seta" para que lo vean los demás...
+[10:37] <mistery> sí, para cada tipo de observador/actor
+01[10:37] <@Al-Khwarizmi> Y si es un mensaje que se refiere a un personaje, incluso un tercero: "Fulano te coge".
+[10:37] <mistery> ok
+01[10:37] <@Al-Khwarizmi> Bien. En acciones como coger, dejar y cosas así, los mensajes son genéricos.
+01[10:37] <@Al-Khwarizmi> Así que en el fichero de mensajes por defecto están todos esos mensajes.
+01[10:38] <@Al-Khwarizmi> No añade mucha complejidad para el creador de aventuras, porque no tiene por qué personalizarlos si no quiere...
+[10:38] <mistery> vale
+01[10:38] <@Al-Khwarizmi> Y si sí quiere, y la aventura es de un solo jugador, sólo tiene que personalizar el de "Coges la seta", el resto no tiene por qué tocarlos.
+01[10:38] <@Al-Khwarizmi> Pero claro, con lo de abrir, cerrar, etc.
+01[10:38] <@Al-Khwarizmi> Hay el problema de que los mensajes no son genéricos, son específicos.
+01[10:38] <@Al-Khwarizmi> Cada cosa que se abre/cierra/etc. da mensajes distintos que se definen en la sección de abribles/cerrables.
+01[10:39] <@Al-Khwarizmi> Entonces claro... si se quisiera hacer estrictamente como con los demás mensajes, cada una de esas descripciones que se ponen en esa sección debería tener tres (o al menos dos) subdescripciones.
+[10:39] <mistery> ya
+01[10:39] <@Al-Khwarizmi> Pero eso ya me parecía muy complejo, sobre todo porque los creadores de aventuras monojugador tendrían que ver eso ahí.
+01[10:39] <@Al-Khwarizmi> Y no sería precisamente muy amigable.
+[10:40] <mistery> sí, sería un poco sobrecargado
+01[10:40] <@Al-Khwarizmi> Así que lo que hice fue que en esos casos el mensaje de primera persona fuera personalizado, pero los otros genéricos (por supuesto alguien que quisiera redefinirlos podría hacerlo, pero no con los formularios, tendría que recurrir ya a código).
+01[10:41] <@Al-Khwarizmi> Por eso ahora mismo en las descripciones de open/close/etc., el "viewer" siempre es el que maneja la puerta, porque siempre son descripciones de primera persona, y por lo tanto el que ve la descripción es el que abre/cierra.
+[10:41] <mistery> Ahhh!!! Está claro, ahora
+01[10:41] <@Al-Khwarizmi> Pero de todas formas, ése es un fenómeno muy particular por esa decisión de simplificar los formularios ahí, y tampoco es algo a lo que me gustaría atarme...
+01[10:42] <@Al-Khwarizmi> Porque si un día decido por cualquier motivo que sí que haya una descripción de abrir en 3ª persona, el viewer ya no sería el que abre.
+[10:42] <mistery> Tendría que haber un viewer y un "actor" por ejemplo
+[10:43] <mistery> Porque son acciones, no como las descripciones generales de los objetos
+01[10:43] <@Al-Khwarizmi> Sí, es algo que estuve pensando... mi idea era no meter muchas variables mágicas en las descripciones, pero la verdad, puede que ésa haga falta, sí.
+01[10:43] <@Al-Khwarizmi> Sí, es que en el fondo son como acciones.
+01[10:43] <@Al-Khwarizmi> Igual es que realmente tratar eso como descripciones no fue una decisión de diseño muy buena.
+[10:43] <mistery> Bueno, está bien por uniformizar todo
+[10:44] <mistery> Pero sí que tiene sus pequeñas pegas
+01[10:44] <@Al-Khwarizmi> Sí, y para casos sencillos realmente simplifica... si a uno le valen las puertas americanas yo creo que simplifica. Pero tiene pegas, sí.
+[10:44] <mistery> Lo que pasa es que cambiar todo eso ahora es un lío, y se perdería retrocompatibilidad
+[10:45] <[drizzt]> nas
+[10:45] <mistery> nad [drizzt] 
+01[10:45] <@Al-Khwarizmi> Sí, efectivamente. Así que supongo que lo del actor puede ser una buena opción.
+[10:45] <mistery> *nas
+01[10:45] <@Al-Khwarizmi> Buenas, [drizzt].
+01[10:45] <@Al-Khwarizmi> No sé, tengo que pensar más a ver si se me ocurre algo mejor.
+01[10:46] <@Al-Khwarizmi> Y si no se me ocurre, supongo que pondré eso.
+01[10:46] <@Al-Khwarizmi> Que no es que me guste mucho, pero bueno, al final en todos los sistemas grandes hay que acabar tomando alguna decisión truculenta.
+[10:46] <mistery> ¿Se podrían extender estas "descripciones en el xml, aunque no se vean en el puck, con los otros dos casos con alguna modificación del cñodigo?
+[10:48] <mistery> Bueno, tres opciones no habrá nunca, solo dos, porque no creo que se abra o cierre un player 
+01[10:49] <@Al-Khwarizmi> Por poder se podría hacer, pero la verdad, tengo mis dudas de que ahí merezca mucho la pena... porque para andar editando el XML, ya casi mejor implementarlo directamente en código, ¿no?
+[10:50] <mistery> Por hacerlo compatible, si dejamos que estas descripciones se muestren al actor, y dupicando las descripciones a mostrar al viewer valdría
+[10:50] <mistery> que mal me explico :)
+[10:50] <mistery> Te lo explico de nuevo?
+01[10:51] <@Al-Khwarizmi> ¿Pero te parece más sencillo tener que definir un porrón de descripciones en el XML que simplemente redefinir la acción abrir?
+01[10:52] <@Al-Khwarizmi> Es que yo creo que hay un umbral a partir del cual el código se vuelve más sencillo que los formularios.
+01[10:52] <@Al-Khwarizmi> Los formularios están bien para cosas simples, pero cuando ya te tienes que preocupar de descripciones para open/close/lock/unlock, dentro de eso fail y success, y dentro de eso 1ª y 3ª persona...
+01[10:52] <@Al-Khwarizmi> Yo creo que ahí ya pasas el umbral, la verdad :D
+[10:53] <mistery> Todo lo que sea obligar al código te va a hacer huir a algún usuario
+[10:53] <mistery> Y además, como dices tú, en AGE solo hay que hacr un objeto de cada tipo :)
+01[10:54] <@Al-Khwarizmi> Ya, pero ¿obligar a editar el XML a pelo no hará huir a los usuarios también? :D
+[10:55] <mistery> Touche!!!   :)
+[10:55] <mistery> Dejeme pensarlo un minuto
+[10:55] <mistery> Voy a ver cómo se guarda en el xml
+01[10:56] <@Al-Khwarizmi> Y también... ¿realmente un usuario que está haciendo una aventura multijugador y quiere que para cada puerta se muestra un mensaje personalizado de tercera persona cuando "Fulanito abre la puerta", no está en un nivel ya en el que no le debería importar tirar código? :D
+[10:59] <mistery> Vale, sólo se me ocurre una opción para hacerlo compatible, y se puede meter en los formularios o que se edite el xml
+[10:59] <mistery> Igual dentro de un rato se me ocurre otra :)
+01[10:59] <@Al-Khwarizmi> ¿Y qué opción es?
+[11:00] <mistery> Primero, hay que meter el "actor" para que se pueda usar en las condiciones, no veo más solución sin rehacer todo
+[11:00] <mistery> y luego
+[11:01] <mistery> la descripción en tercera persona la metes en el xml junto con la descripción en primera, pero separandola por algún caracter que no se use demasiado o conjunto de caracteres
+[11:01] <mistery> Abres la puerta@@@%actor% abre la puerta
+[11:02] <mistery> Luego puedes dejar que se añada en el xml o incluso añadir un campo de texto más,en el puck
+[11:02] <mistery> Y luego cambiar código para que interprete esa descripción en tercera persona
+[11:02] <mistery> Un apañete
+01[11:03] <@Al-Khwarizmi> Hmm... pues dentro de las posibles chapuzas que se pueden hacer, no es muy mala, no :D
+01[11:03] <@Al-Khwarizmi> Parece relativamente cómoda para el usuario.
+[11:03] <mistery> Si no salen pegas, podría valer
+[11:04] <mistery> y sería compatible con lo anterior
+[11:06] <mistery> Ahora, es un poco trabajosa
+01[11:06] <@Al-Khwarizmi> Trabajosa va a ser cualquier cosa. Es que el problema en sí es complejo. Todo lo que sea multijugador es complicadillo.
+01[11:07] <@Al-Khwarizmi> Si ya hacer una aventura monojugador es una tarea trabajosa porque siempre hay que considerar bastantes casos, en multijugador todo se multiplica.
+[11:07] <mistery> Sí, sí. Hay que tener en cuenta todos los puntos de vista.
+[11:08] <mistery> Esta explicación que me has dado es muy buena, copiatela por si alguien te pregunta lo mismo en el futuro :) o para la documentación
+01[11:17] <@Al-Khwarizmi> juas... a ver si luego guardo el log :D
+[11:43] <mistery> En el puck las pestaña de Abrir cerrar queda muy apretada, mejor hacer dos pestañas, una para Abrir/Cerrar y otra para "Abrir/Cerrar con llave"
+01[11:43] <@Al-Khwarizmi> Anda, pues mira que había estado pensando en soluciones para ese apretujamiento, y justo ésa no se me había ocurrido :D
+01[11:43] <@Al-Khwarizmi> Pues sí, es una solución.
+[11:44] <mistery> :)
+01[11:44] <@Al-Khwarizmi> Supongo que la puerta española ya te ha funcionado por completo, ¿no?
+[11:44] <mistery> Sí, sí, va perfecta, sin un chirrido
+[11:48] <mistery> Ahora hay que hacer una puerta real
+01[11:49] <@Al-Khwarizmi> ¿Real? ¿Las otras son irreales? :D
+[11:49] <mistery> Sí :)
+[11:49] <mistery> Hay que hacer dos puertas asociadas para que
+[11:50] <mistery> por un lado funcione como la española, pero por el otro siempre se abra con llave, 
+[11:50] <mistery> vamos, como la de tu casa :)
+01[11:50] <@Al-Khwarizmi> Hmmm, no entiendo, ¿qué funcionalidad le falta a la española tal como la tenías hecha tú?
+[11:50] <mistery> este lockeada o no, por fuera se usa la llave
+01[11:51] <@Al-Khwarizmi> Ahhhhh.
+[11:51] <mistery> para abrirla
+01[11:51] <@Al-Khwarizmi> Vale, vale.
+01[11:51] <@Al-Khwarizmi> Ya lo pillo.
+01[11:51] <@Al-Khwarizmi> Sí, efectivamente para eso harían falta dos asociadas, claro.
+[11:51] <mistery> Soy un filosofo de las puertas :)
+01[11:51] <@Al-Khwarizmi> Bueno, no necesariamente harían falta dos asociadas, también podrías mirar en qué sala está quien la abre... pero ahí volveríamos a lo del actor :D
+[11:52] <mistery> En el futuro se podría hacer así, claro. Más elegante.
+[11:56] <mistery> Hace falta el actor como el comer :)
+[11:57] <mistery> A fuerza de ver puertas falsas en las aventuras nos hemos creído que en la realidad son así :)
+[11:58] <mistery> Seguro que nos extrañaría ver una bien hecha en una aventura
+01[12:01] <@Al-Khwarizmi> Sí, meteré el actor, sin duda. De una manera o de otra pero lo meteré...
+01[12:01] <@Al-Khwarizmi> Pues sí, fíjate...
+01[12:01] <@Al-Khwarizmi> Cuando me hablaste de la "puerta real" no tenía ni idea de lo que me estabas hablando...
+01[12:02] <@Al-Khwarizmi> :D
+01[12:03] <@Al-Khwarizmi> No es sólo cosa de las aventuras, en casi todos los juegos las puertas son "falsas", es curioso.
+[12:05] <mistery> ¿de una maera u otra? :) ¿En qué estás pensando?
+[12:05] <mistery> *manera
+01[12:05] <@Al-Khwarizmi> Nah, que no sé si le meteré más métodos a la clase Description o más bien crearé otra clase, porque con tantos matices las descripciones de abrir/cerrar cada vez se van diferenciando más de las descripciones a secas.
+[12:08] <mistery> ah! ok
+[12:09] <mistery> Voy a hacerme la comida, hasta luego
+01[12:10] <@Al-Khwarizmi> Taluego :)
