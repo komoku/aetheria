@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<World author="" date="" moduleName="" parserVersion="1.1.1" type="" version="" worldDir="." worldName="">
+<IdeMetaInf>
+<View xoffset="-2.0" yoffset="-2.0" zoom="2.0"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Room #9" x="300" y="240"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Room #8" x="100" y="240"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.CharacterNode" name="Joe Abrepuertas" x="160" y="340"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="puerta americana" x="160" y="180"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="llave americana" x="220" y="140"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Llave" x="280" y="140"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="puerta española" x="280" y="200"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Room #1" x="200" y="240"/>
+</IdeMetaInf>
+<Code language="BeanShell"><![CDATA[/*Introducción del juego para un jugador*/
+void intro( Player aPlayer )
+{
+	
+	//aPlayer: jugador al que le hacemos la introducción.
+	
+	aPlayer.write("Bienvenido a PuertaLandia. Eres Joe Abrepuertas, y te han contratado para comprobar el funcionamiento de una puerta"+
+    " española y otra americana.\n");
+    
+    Debug.setEvalEnabled(true);
+
+	//(...)
+	
+}]]></Code>
+<PlayerList>
+<Player id="Joe Abrepuertas"/>
+</PlayerList>
+<VisualConfiguration>
+<Colors>
+<Story color="#ffffff"/>
+<Information color="#ffffff"/>
+<Default color="#ffffff"/>
+<Input color="#ffffff"/>
+<Description color="#ffffff"/>
+<Foreground color="#ffffff"/>
+<Important color="#ffffff"/>
+<Denial color="#ffffff"/>
+<Action color="#ffffff"/>
+<Background color="#000000"/>
+<Error color="#ff0000"/>
+</Colors>
+<Font filename="" name="Courier New" size="15.0"/>
+</VisualConfiguration>
+<Rooms>
+<Room name="Room #9">
+<DescriptionList/>
+<ExtraDescriptionList/>
+<PropertyList/>
+<PathList>
+<Path destination="Room #1" direction="oeste" exitTime="0" standard="true">
+<AssociatedItem id="puerta española"/>
+<PropertyList/>
+<DescriptionList/>
+<CommandList/>
+</Path>
+</PathList>
+<Inventory>
+<ItemRef id="puerta española"/>
+</Inventory>
+<MobileList/>
+<RelationshipList>
+<Relationship id="Room #1">
+<PropertyList/>
+</Relationship>
+<Relationship id="puerta española">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+<Room name="Room #8">
+<DescriptionList>
+<Description>Una sala decorada con la bandera de los Estados Unidos de América.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<PathList>
+<Path destination="Room #1" direction="este" exitTime="0" standard="true">
+<AssociatedItem id="puerta americana"/>
+<PropertyList/>
+<DescriptionList/>
+<CommandList/>
+</Path>
+</PathList>
+<Inventory>
+<ItemRef id="puerta americana"/>
+</Inventory>
+<MobileList/>
+<RelationshipList>
+<Relationship id="Room #1">
+<PropertyList/>
+</Relationship>
+<Relationship id="puerta americana">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+<Room name="Room #1">
+<DescriptionList>
+<Description>Una sala circular muy bonita. Una puerta americana conduce hacia el oeste, y una puerta española hacia el este.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<PathList>
+<Path destination="Room #8" direction="oeste" exitTime="0" standard="true">
+<AssociatedItem id="puerta americana"/>
+<PropertyList/>
+<DescriptionList/>
+<CommandList/>
+</Path>
+<Path destination="Room #9" direction="este" exitTime="0" standard="true">
+<AssociatedItem id="puerta española"/>
+<PropertyList/>
+<DescriptionList/>
+<CommandList/>
+</Path>
+</PathList>
+<Inventory>
+<ItemRef id="llave americana"/>
+<ItemRef id="puerta americana"/>
+<ItemRef id="Llave"/>
+<ItemRef id="puerta española"/>
+</Inventory>
+<MobileList>
+<MobRef id="Joe Abrepuertas"/>
+</MobileList>
+<RelationshipList>
+<Relationship id="Room #8">
+<PropertyList/>
+</Relationship>
+<Relationship id="Room #9">
+<PropertyList/>
+</Relationship>
+<Relationship id="llave americana">
+<PropertyList/>
+</Relationship>
+<Relationship id="puerta americana">
+<PropertyList/>
+</Relationship>
+<Relationship id="Llave">
+<PropertyList/>
+</Relationship>
+<Relationship id="puerta española">
+<PropertyList/>
+</Relationship>
+<Relationship id="Joe Abrepuertas">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+</Rooms>
+<Items>
+<Item canGet="false" closeable="true" gender="false" lockable="true" name="puerta americana" openable="true" unlockable="true" volume="0" weight="0">
+<SingularNames/>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>puerta americana</Name>
+<Name>puerta</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>puertas americanas</Name>
+<Name>puertas</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>Una puerta decorada con la bandera de los Estados Unidos de América.\s</Description>
+<Description>
+<Condition language="BeanShell">self.isOpen()</Condition>Está abierta.</Description>
+<Description>
+<Condition language="BeanShell">self.isClosed() &amp;&amp; self.isUnlocked()</Condition>Está cerrada, aunque no con llave.</Description>
+<Description>
+<Condition language="BeanShell">self.isLocked()</Condition>Está cerrada con llave.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<OpenDescriptionList>
+<Description>
+<Condition language="BeanShell">self.isClosed() &amp;&amp; self.isLocked()</Condition>FAIL:No puedes abrirla porque está cerrada con llave.</Description>
+<Description>
+<Condition language="BeanShell">self.isOpen()</Condition>FAIL:No tiene sentido abrirla porque ya está abierta.</Description>
+<Description>
+<Condition language="BeanShell">self.isClosed() &amp;&amp; self.isUnlocked()</Condition>SUCCESS:Abres la puerta americana.</Description>
+</OpenDescriptionList>
+<CloseDescriptionList>
+<Description>
+<Condition language="BeanShell">self.isClosed()</Condition>FAIL:No tiene sentido cerrarla porque ya está cerrada.</Description>
+<Description>
+<Condition language="BeanShell">self.isOpen()</Condition>SUCCESS:Cierras la puerta americana.</Description>
+</CloseDescriptionList>
+<LockDescriptionList>
+<Description>
+<Condition language="BeanShell">self.isOpen()</Condition>FAIL:Para cerrarla con llave, primero necesitarías cerrarla. Por algo es americana.</Description>
+<Description>
+<Condition language="BeanShell">self.isLocked()</Condition>FAIL:No tiene sentido porque ya está cerrada con llave.</Description>
+<Description>
+<Condition language="BeanShell">self.isClosed() &amp;&amp; self.isUnlocked()</Condition>SUCCESS:Cierras la puerta con llave, o como dirían los anglosajones, la loqueas.</Description>
+<Description>
+<Condition language="BeanShell">self.isClosed() &amp;&amp; self.isUnlocked()</Condition>FAIL:No parece que encaje en la cerradura.</Description>
+</LockDescriptionList>
+<UnlockDescriptionList>
+<Description>
+<Condition language="BeanShell">self.isOpen()</Condition>FAIL:No tiene sentido porque está abierta de par en par.</Description>
+<Description>
+<Condition language="BeanShell">self.isClosed() &amp;&amp; self.isUnlocked()</Condition>FAIL:No tiene sentido porque no está cerrada con llave.</Description>
+<Description>
+<Condition language="BeanShell">self.isLocked()</Condition>SUCCESS:Abres la cerradura de la puerta, o sea, por decirlo en español macarrónico, la desloqueas.</Description>
+<Description>
+<Condition language="BeanShell">self.isLocked()</Condition>FAIL:No parece que encaje en la cerradura.</Description>
+</UnlockDescriptionList>
+<PropertyList>
+<PropertyEntry name="closed" timeUnitsLeft="-1" value="true"/>
+<PropertyEntry name="locked" timeUnitsLeft="-1" value="true"/>
+</PropertyList>
+<Code language="BeanShell"><![CDATA[/*
+Método que captura el evento lanzado cuando se ha abierto o intentado abrir este ítem con llave.
+*/
+void onUnlock ( Mobile unlocker , Item key , boolean success )
+{
+ 	
+    if ( success )
+        unlocker.write("Suena el himno de los Estados Unidos de América en tu honor.\n");
+ 	  
+}]]></Code>
+<KeyList>
+<Inventory>
+<ItemRef id="llave americana"/>
+</Inventory>
+</KeyList>
+<RelationshipList>
+<Relationship id="llave americana">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Item>
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="llave americana" openable="false" unlockable="false" volume="0" weight="0">
+<SingularNames>
+<Description>llave americana</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>llave americana</Name>
+<Name>llave</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>llaves americanas</Name>
+<Name>llaves</Name>
+<Name>todo</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>Una llave metálica que tiene grabada la bandera de los Estados Unidos de América.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*
+Método que captura el evento lanzado cuando una criatura coge este ítem.
+*/
+void onGet ( Mobile getter )
+{
+    
+    getter.write("Hum.\n");
+ 	
+ 	//getter: criatura que coge esta cosa.
+ 	//self: cosa que ha cogido (es decir, esta cosa).
+ 	  
+}]]></Code>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="Llave" openable="false" unlockable="false" volume="0" weight="0">
+<SingularNames>
+<Description>llave española</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>llave española</Name>
+<Name>llave</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>llaves españolas</Name>
+<Name>llaves</Name>
+<Name>todo</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>Una llave que lleva grabada la bandera de España.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<RelationshipList/>
+</Item>
+<Item canGet="false" closeable="true" gender="false" lockable="true" name="puerta española" openable="true" unlockable="true" volume="0" weight="0">
+<SingularNames/>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>puerta española</Name>
+<Name>puerta</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>puertas españolas</Name>
+<Name>puertas</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>Una puerta decorada con la bandera de España.\s</Description>
+<Description>
+<Condition language="BeanShell">self.isOpen()</Condition>Está abierta.\s</Description>
+<Description>
+<Condition language="BeanShell">self.isClosed()</Condition>Está cerrada.\s</Description>
+<Description>
+<Condition language="BeanShell">self.isLocked()</Condition>Está cerrada con llave.</Description>
+<Description>
+<Condition language="BeanShell">self.isUnlocked()</Condition>Está abierta con llave.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<OpenDescriptionList>
+<Description>
+<Condition language="BeanShell">self.isOpen()</Condition>FAIL:La puerta ya está abierta.</Description>
+<Description>
+<Condition language="BeanShell">self.isClosed() &amp;&amp; self.isLocked() &amp;&amp; !actor.hasItem(world.getItem("Llave"))</Condition>FAIL:La puerta está cerrada con llave.</Description>
+<Description>
+<Condition language="BeanShell">self.isClosed() &amp;&amp; self.isUnlocked()</Condition>SUCCESS:Abres la puerta.</Description>
+<Description>
+<Condition language="BeanShell">self.isClosed() &amp;&amp; self.isLocked() &amp;&amp; world.getPlayer().hasItem(world.getItem("Llave"))</Condition>SUCCESS:Abres la puerta con la llave.</Description>
+</OpenDescriptionList>
+<CloseDescriptionList>
+<Description>
+<Condition language="BeanShell">self.isClosed()</Condition>FAIL:La puerta ya está cerrada.</Description>
+<Description>
+<Condition language="BeanShell">self.isOpen()</Condition>SUCCESS:Cierras la puerta.</Description>
+</CloseDescriptionList>
+<LockDescriptionList>
+<Description>
+<Condition language="BeanShell">self.isLocked()</Condition>FAIL:La puerta ya está cerrada con llave.</Description>
+<Description>
+<Condition language="BeanShell">self.isUnlocked()</Condition>SUCCESS:Cierras la puerta con llave.</Description>
+</LockDescriptionList>
+<UnlockDescriptionList>
+<Description>
+<Condition language="BeanShell">self.isUnlocked()</Condition>FAIL:La puerta ya está abierta con llave.</Description>
+<Description>
+<Condition language="BeanShell">self.isLocked()</Condition>SUCCESS:Abres la puerta grande con la llave.</Description>
+</UnlockDescriptionList>
+<PropertyList>
+<PropertyEntry name="locked" timeUnitsLeft="-1" value="true"/>
+<PropertyEntry name="closed" timeUnitsLeft="-1" value="true"/>
+</PropertyList>
+<Code language="BeanShell"><![CDATA[/*
+M�todo que captura el evento lanzado cuando se ha abierto o intentado abrir este �tem.
+*/
+void onOpen ( Mobile opener , boolean success )
+{
+ 	
+ 	//success: indica si se ha realizado con éxito la acción de abrir.
+ 	//self: cosa que se ha abierto o intentado abrir (es decir, esta cosa).
+
+
+    if (success) 
+    {
+        set ( self , "locked" , false );
+    }
+}
+
+void onLock ( Mobile locker , Item key , boolean success )
+{
+    if (success) set ( self , "closed" , true );
+}]]></Code>
+<KeyList>
+<Inventory>
+<ItemRef id="Llave"/>
+</Inventory>
+</KeyList>
+<RelationshipList>
+<Relationship id="Llave">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Item>
+</Items>
+<Mobiles>
+<Mobile gender="true" hp="10" maxhp="10" maxmp="10" mp="10" name="Joe Abrepuertas">
+<SingularNames/>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>joe</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>Eres Joe Abrepuertas, el mejor abridor y cerrador de puertas al oeste del Pecos.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Traits>
+<SkillList/>
+</Traits>
+<Inventory/>
+<RelationshipList/>
+<CurrentRoom id="Room #1"/>
+<LastRoom id="Room #1"/>
+</Mobile>
+</Mobiles>
+<Spells/>
+<AbstractEntities/>
+</World>
