@@ -191,7 +191,7 @@ someone.dies=$1 muere.\n
 you.try.open.from.floor=Intentas abrir $item:
 
 #Intentando abrir algo del inventario en un comando con varios objetivos (abrir las cajas, etc.)
-you.try.open.from.floor=Tratas de abrir $item que llevas:
+you.try.open.from.inventory=Tratas de abrir $item que llevas:
 
 #Intentando cerrar algo del suelo en un comando con varios objetivos (cerrar las cajas, etc.)
 you.try.close.from.floor=Intentas cerrar $item:
