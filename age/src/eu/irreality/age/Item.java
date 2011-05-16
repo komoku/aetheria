@@ -1968,14 +1968,13 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 				{
 					Description des_actual = unlockDescriptionList[i];					
 					//String elTexto2 = ""; //to append to description
-					if ( des_actual.matchesConditions ( this , viewerActorKey(unlocker,unlocker,key) ) )
+					if ( des_actual.isSuccessDescription() && des_actual.matchesConditions ( this , viewerActorKey(unlocker,unlocker,key) ) )
 					{
-						
-						if ( des_actual.isSuccessDescription() )
-						{
+						//if ( des_actual.isSuccessDescription() )
+						//{
 							descriptionText += des_actual.getTextWithoutSuccessMark();
 							unlocked = true;
-						}
+						//}
 					}
 				} //end for all possible descriptions in different states
 				
@@ -1986,13 +1985,13 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 					{
 						Description des_actual = unlockDescriptionList[i];					
 						//String elTexto2 = ""; //to append to description
-						if ( des_actual.matchesConditions ( this , viewerActorKey(unlocker,unlocker,key) ) )
+						if ( des_actual.isFailDescription() && des_actual.matchesConditions ( this , viewerActorKey(unlocker,unlocker,key) ) )
 						{
 							
-							if ( des_actual.isFailDescription() )
-							{
+							//if ( des_actual.isFailDescription() )
+							//{
 								descriptionText += des_actual.getTextWithoutSuccessMark();
-							}
+							//}
 						}
 					} //end for all possible descriptions in different states
 				}
@@ -2103,14 +2102,14 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 					{
 						Description des_actual = lockDescriptionList[i];					
 					//String elTexto2 = ""; //to append to description
-						if ( des_actual.matchesConditions ( this , viewerActorKey(locker,locker,key) ) )
+						if ( des_actual.isSuccessDescription() && des_actual.matchesConditions ( this , viewerActorKey(locker,locker,key) ) )
 						{
 						
-							if ( des_actual.isSuccessDescription() )
-							{
+							//if ( des_actual.isSuccessDescription() )
+							//{
 								descriptionText += des_actual.getTextWithoutSuccessMark();
 								locked = true;
-							}
+							//}
 						}
 					} //end for all possible descriptions in different states
 				
@@ -2121,13 +2120,13 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 						{
 							Description des_actual = lockDescriptionList[i];					
 							//String elTexto2 = ""; //to append to description
-							if ( des_actual.matchesConditions ( this , viewerActorKey(locker,locker,key) ) )
+							if ( des_actual.isFailDescription() && des_actual.matchesConditions ( this , viewerActorKey(locker,locker,key) ) )
 							{
 							
-								if ( des_actual.isFailDescription() )
-								{
+								//if ( des_actual.isFailDescription() )
+								//{
 									descriptionText += des_actual.getTextWithoutSuccessMark();
-								}
+								//}
 							}
 						} //end for all possible descriptions in different states
 					}
