@@ -35,8 +35,6 @@ public class EscuchadorCargarDesdeLog implements ActionListener
 
 		if(returnVal == JFileChooser.APPROVE_OPTION) 
 		{
-			System.out.println("Nombre: " + selector.getSelectedFile().getAbsolutePath() );
-
 			String worldFile;
 			try
 			{
@@ -51,7 +49,6 @@ public class EscuchadorCargarDesdeLog implements ActionListener
 			}
 
 			Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-
 
 			//test:
 			GameInfo gi = GameInfo.getGameInfoFromFile ( worldFile );

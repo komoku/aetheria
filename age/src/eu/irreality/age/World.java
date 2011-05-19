@@ -199,6 +199,15 @@ public class World implements Informador , SupportingCode
 	{
 		from_log = true;
 		FileInputStream logInput = openLogFile(s); 
+		prepareLog ( logInput );
+	}
+	
+	/**
+	 * Prepare (multiplayer, in theory) log from input stream.
+	 * @param is
+	 */
+	public void prepareLog ( InputStream logInput )
+	{
 		logReader = new BufferedReader ( Utility.getBestInputStreamReader ( logInput ) );
 		try
 		{

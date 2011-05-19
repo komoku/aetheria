@@ -1,6 +1,8 @@
 package eu.irreality.age.swing.applet;
 
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -435,9 +437,17 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 		//menuArchivo.add(itemNuevo,0);
 		//itemNuevo.addActionListener(new NewFromFileListener(this));
 
-		//JMenuItem itemLoadLog = new JMenuItem("Cargar partida...");
-		//menuArchivo.add(itemLoadLog,1);
-		//itemLoadLog.addActionListener(new LoadFromLogListener(this));
+		JMenuItem itemLoadLog = new JMenuItem("Cargar partida...");
+		menuArchivo.add(itemLoadLog,1);
+		itemLoadLog.addActionListener(new ActionListener()
+		{
+			public void actionPerformed( ActionEvent evt )
+			{
+				write("El contenido del log es:\n");
+				write("["+CookieUtils.readCookie(SwingSDIApplet.this,"log"));
+				write("]\n");
+			}
+		});
 
 		//JMenuItem itemLoadState = new JMenuItem("Cargar estado...");
 		//menuArchivo.add(itemLoadState,2);
@@ -546,8 +556,23 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 	public void guardarLog()
 	{
 		write("AVISO: Desde el navegador no se pueden guardar partidas. Pero puedes guardar partidas si te descargas el Aetheria Game Engine, que permite jugar a aventuras como ésta con plena funcionalidad. Bájalo en http://code.google.com/p/aetheria/downloads/list\n");
+		
+		String logToString = "";
+		
+		for ( int i = 0 ; i < gameLog.size() ; i++ )
+		{
+			logToString += gameLog.get(i);
+			logToString +="\\n"; //con \n no se ejecuta bien el js
+		}
+			
+		write("Guardando: "  + logToString);
+		
+		CookieUtils.eraseCookie(this,"log");
+		CookieUtils.createCookie(this,"log",logToString,100);
+		
 		/*
 		File elFichero = null;
+		
 
 		JFileChooser selectorFichero = new JFileChooser( Paths.SAVE_PATH );
 		selectorFichero.setFileSelectionMode(JFileChooser.FILES_ONLY);
