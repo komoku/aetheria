@@ -929,8 +929,8 @@ public class World implements Informador , SupportingCode
 		if ( new VersionComparator().compare(parserVersion,"1.0") < 0 )
 			this.setCommandMatchingMode(Entity.LEGACY_COMMAND_MATCHING);
 		
-		//set lenient command matching mode if needed (versions strictly btw 1.1.1 and 1.0)
-		if ( new VersionComparator().compare(parserVersion,"1.0") > 0 && new VersionComparator().compare(parserVersion,"1.1.1") < 0 )
+		//set lenient command matching mode if needed (versions strictly btw 1.1.2 and 1.0)
+		if ( new VersionComparator().compare(parserVersion,"1.0") > 0 && new VersionComparator().compare(parserVersion,"1.1.2") < 0 )
 			this.setCommandMatchingMode(Entity.LENIENT_COMMAND_MATCHING);
 		
 		if ( !jugadorAsignadoACliente && !noSerCliente )
