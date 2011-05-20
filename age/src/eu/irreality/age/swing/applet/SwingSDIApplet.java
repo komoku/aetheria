@@ -483,7 +483,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 
 	public void startGame ( final String moduledir , final boolean usarLog , final InputStream logStream , final String stateFile )
 	{
-
+		
 		if ( loaderThread != null ) //a game is started already
 		{
 			stopGameSaveAndUnlink();
