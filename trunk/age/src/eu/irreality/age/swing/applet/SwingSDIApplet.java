@@ -4,7 +4,10 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -57,7 +60,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 
 	private String moduledir;
 	private boolean usarLog;
-	private String logFile;
+	private InputStream logStream;
 	private String stateFile;
 
 	private Object mundoSemaphore = new Object();
@@ -234,8 +237,10 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 			{
 				try
 				{
-					theWorld.prepareLog(logFile);
-					theWorld.setRandomNumberSeed( logFile );
+					logStream.mark(100000);
+					theWorld.prepareLog(logStream);
+					logStream.reset();
+					theWorld.setRandomNumberSeed( logStream );
 				}
 				catch ( Exception exc )
 				{
@@ -443,9 +448,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 		{
 			public void actionPerformed( ActionEvent evt )
 			{
-				write("El contenido del log es:\n");
-				write("["+CookieUtils.readCookie(SwingSDIApplet.this,"log"));
-				write("]\n");
+				loadLogFromCookie();
 			}
 		});
 
@@ -458,8 +461,27 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 		setSize(500,400);
 	}
 
+	
+	public void loadLogFromCookie()
+	{
+		String logAsString = CookieUtils.readCookie(SwingSDIApplet.this,"log");
+		try
+		{
+			logStream = new ByteArrayInputStream(logAsString.getBytes("UTF-8"));
+		}
+		catch ( UnsupportedEncodingException uee )
+		{
+			uee.printStackTrace();
+			write(uee.toString());
+		}
+		usarLog = true;
+		write("El contenido del log es:\n");
+		write("["+CookieUtils.readCookie(SwingSDIApplet.this,"log"));
+		write("]\n");
+		reinit();
+	}
 
-	public void startGame ( final String moduledir , final boolean usarLog , final String logFile , final String stateFile )
+	public void startGame ( final String moduledir , final boolean usarLog , final InputStream logStream , final String stateFile )
 	{
 
 		if ( loaderThread != null ) //a game is started already
@@ -469,7 +491,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 
 		this.moduledir=moduledir;
 		this.usarLog=usarLog;
-		this.logFile=logFile;
+		this.logStream=logStream;
 		this.stateFile=stateFile;
 
 		System.out.println("B");
@@ -494,13 +516,13 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 	}
 
 	//local init
-	public SwingSDIApplet ( final String moduledir , final boolean usarLog , final String logFile , final String stateFile  )
+	public SwingSDIApplet ( final String moduledir , final boolean usarLog , final InputStream logStream , final String stateFile  )
 	{
 		//Create Window
 
 		this(moduledir);
 
-		startGame ( moduledir , usarLog , logFile , stateFile );
+		startGame ( moduledir , usarLog , logStream , stateFile );
 
 	}
 
@@ -555,7 +577,8 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 	
 	public void guardarLog()
 	{
-		write("AVISO: Desde el navegador no se pueden guardar partidas. Pero puedes guardar partidas si te descargas el Aetheria Game Engine, que permite jugar a aventuras como ésta con plena funcionalidad. Bájalo en http://code.google.com/p/aetheria/downloads/list\n");
+		write("AVISO: La funcionalidad de guardar partidas es EXPERIMENTAL y es posible que tenga errores. Además, sólo se puede guardar una partida a la vez, requiere que tu navegador acepte cookies, y el juego salvado no es permanente sino que podía borrarse si tu navegador elimina las cookies cada cierto tiempo.\n");
+		write("Puedes guardar partidas de forma totalmente fiable (y tener guardadas múltiples partidas a la vez) si te descargas el Aetheria Game Engine, que permite jugar a aventuras como ésta con plena funcionalidad. Bájalo en http://code.google.com/p/aetheria/downloads/list\n");
 		
 		String logToString = "";
 		
@@ -565,10 +588,12 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 			logToString +="\\n"; //con \n no se ejecuta bien el js
 		}
 			
-		write("Guardando: "  + logToString);
+		//write("Guardando: "  + logToString);
 		
 		CookieUtils.eraseCookie(this,"log");
 		CookieUtils.createCookie(this,"log",logToString,100);
+		
+		write("La partida ha sido guardada.\n");
 		
 		/*
 		File elFichero = null;
@@ -603,7 +628,10 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 	
 	public void guardarEstado()
 	{
-		write("AVISO: Desde el navegador no se pueden guardar partidas. Pero puedes guardar partidas si te descargas el Aetheria Game Engine, que permite jugar a aventuras como ésta con plena funcionalidad. Bájalo en http://code.google.com/p/aetheria/downloads/list\n");
+		//write("AVISO: Desde el navegador no se pueden guardar partidas. Pero puedes guardar partidas si te descargas el Aetheria Game Engine, que permite jugar a aventuras como ésta con plena funcionalidad. Bájalo en http://code.google.com/p/aetheria/downloads/list\n");
+		write("AVISO: Desde el navegador no se puede guardar estado, pero se guardará la partida en su lugar.\n");
+		guardarEstado();
+		
 		/*
 		File elFichero = null;
 
@@ -640,7 +668,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 		System.err.println(this.getClass().getResource("worlds/Vampiro/world.xml"));
 		System.err.println(this.getClass().getResource("libinvoke.bsh"));
 		SwingAetheriaGameLoaderInterface.loadFont();
-		startGame ( this.getParameter("worldUrl") , usarLog , logFile , stateFile );
+		startGame ( this.getParameter("worldUrl") , usarLog , logStream , stateFile );
 
 
 	}
