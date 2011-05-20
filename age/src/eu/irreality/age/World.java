@@ -2152,11 +2152,11 @@ public class World implements Informador , SupportingCode
 			item[i].loadNumberGenerator(this);
 		}
 	}
-	public void setRandomNumberSeed (String logfile) throws java.io.FileNotFoundException
-	{
 	
-		FileInputStream logInput = openLogFile(logfile);
-		BufferedReader logReader = new BufferedReader ( Utility.getBestInputStreamReader ( logInput ) );
+	
+	public void setRandomNumberSeed ( InputStream logStream )
+	{
+		BufferedReader logReader = new BufferedReader ( Utility.getBestInputStreamReader ( logStream ) );
 		try
 		{
 			logReader.readLine(); //la primera linea no contiene la semilla
@@ -2188,7 +2188,12 @@ public class World implements Informador , SupportingCode
 		{
 			spell[i].loadNumberGenerator(this);
 		}
-		
+	}
+	
+	public void setRandomNumberSeed (String logfile) throws java.io.FileNotFoundException
+	{
+		FileInputStream logInput = openLogFile(logfile);
+		setRandomNumberSeed(logInput);
 	}
 	
 	public long getRandomNumberSeed ( )
