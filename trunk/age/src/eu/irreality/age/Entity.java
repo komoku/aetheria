@@ -643,14 +643,13 @@ public abstract class Entity
 				continue;
 			if ( position != 0 && !Character.isWhitespace(commandArgs.charAt(position-1)) ) //matches but starts at a place other than beginning/whitespace
 				continue;
-			if ( position+currentReferenceName.length() != commandArgs.length() && !Character.isWhitespace(commandArgs.charAt(position)) ) //matches but ends at a place other than end/whitespace
+			if ( position+currentReferenceName.length() != commandArgs.length() && !Character.isWhitespace(commandArgs.charAt(position+currentReferenceName.length())) ) //matches but ends at a place other than end/whitespace
 				continue;
 			//if we have reached this point, the match is acceptable
 			return j;
 		}
 		return 0;
 	}
-	
 	
 	/**
 	 * Note: takes a legacy, $-separated list of reference names
