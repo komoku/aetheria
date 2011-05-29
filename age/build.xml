@@ -64,7 +64,11 @@
 	<target name="corejar" depends="compile" description="generate core jar file">
 		<echo message="Generando archivo .jar del núcleo..."/>
 		<copy todir="${build}/images">
-		    <fileset dir="${src}/images"/>
+		    <fileset dir="${src}/images">
+		    	<include name="agelogo.jpg"/>
+		    	<include name="intficon.gif"/>
+		    	<include name="llama.gif"/>
+			</fileset>
 		</copy>
 		<copy todir="${build}/lang">
 		    <fileset dir="${src}/lang"/>
