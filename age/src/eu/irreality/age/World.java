@@ -517,7 +517,7 @@ public class World implements Informador , SupportingCode
 		if ( e.hasAttribute("language") )
 			languageCode = e.getAttribute("language");
 		messages = Messages.getDefaultInstance(languageCode);
-		lenguaje = new NaturalLanguage(languageCode);
+		lenguaje = NaturalLanguage.getInstance(languageCode);
 		
 		Thread.currentThread().yield();
 		
@@ -1110,7 +1110,7 @@ public class World implements Informador , SupportingCode
 		
 		
 		write( io.getColorCode("information") + "\nCargando datos lingüísticos..." + io.getColorCode("reset") );
-		lenguaje = new NaturalLanguage();
+		lenguaje = NaturalLanguage.getInstance();
 		messages = Messages.getDefaultInstance(languageCode);
 		
 		

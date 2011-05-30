@@ -48,7 +48,7 @@ public class VerbListFrame extends JFrame
 	{
 		super(Messages.getInstance().getMessage("verblist.frametitle"));
 		setSize(600,600);
-		eu.irreality.age.NaturalLanguage lang = new eu.irreality.age.NaturalLanguage();
+		eu.irreality.age.NaturalLanguage lang = eu.irreality.age.NaturalLanguage.getInstance();
 		sourceForms.addAll ( lang.getVerbForms() ); //to sort them we add them to TreeSet.
 		
 		tableData = new Object[sourceForms.size()][2];
