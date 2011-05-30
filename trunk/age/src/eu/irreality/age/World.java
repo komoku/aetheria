@@ -130,10 +130,14 @@ public class World implements Informador , SupportingCode
 	private BufferedReader logReader;
 	
 	boolean from_log; //input gotten from log	
+	
+	//world language
+	String languageCode = NaturalLanguage.DEFAULT_LANGUAGE_CODE;
 
 	//default messages
-	private Messages messages = Messages.getDefaultInstance();
+	private Messages messages; 
 
+	
 	public Messages getMessages()
 	{
 		return messages;
@@ -419,6 +423,7 @@ public class World implements Informador , SupportingCode
 		if ( e.hasAttribute("type") )
 			type = e.getAttribute("type");
 
+
 		
 		//visual client configuration
 		org.w3c.dom.NodeList confNodes = e.getElementsByTagName("VisualConfiguration");
@@ -508,7 +513,11 @@ public class World implements Informador , SupportingCode
 		}
 		
 		write( io.getColorCode("information") + "Cargando datos lingüísticos...\n" + io.getColorCode("reset") );
-		lenguaje = new NaturalLanguage();
+		//language configuration
+		if ( e.hasAttribute("language") )
+			languageCode = e.getAttribute("language");
+		messages = Messages.getDefaultInstance(languageCode);
+		lenguaje = new NaturalLanguage(languageCode);
 		
 		Thread.currentThread().yield();
 		
@@ -1102,6 +1111,7 @@ public class World implements Informador , SupportingCode
 		
 		write( io.getColorCode("information") + "\nCargando datos lingüísticos..." + io.getColorCode("reset") );
 		lenguaje = new NaturalLanguage();
+		messages = Messages.getDefaultInstance(languageCode);
 		
 		
 		Thread.currentThread().yield();

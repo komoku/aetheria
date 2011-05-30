@@ -12,6 +12,7 @@ import java.util.Properties;
 
 import bsh.This;
 
+import eu.irreality.age.NaturalLanguage;
 import eu.irreality.age.ReturnValue;
 import eu.irreality.age.World;
 import eu.irreality.age.debug.Debug;
@@ -29,6 +30,11 @@ public class Messages
 	private Map tempChanged = new HashMap();
 
 	public static String defaultMessagePath = Paths.LANG_FILES_PATH + "/messages.lan";
+	
+	public static String getPathForLanguage ( String languageCode )
+	{
+		return Paths.LANG_FILES_PATH + "/" + languageCode + "/messages.lan";
+	}
 	
 	/**
 	 * If a Messages instance is associated to a particular world, then the getMessage() method will attempt to call scripting code
@@ -80,7 +86,7 @@ public class Messages
 	public String getMessage ( String key )
 	{
 		String mess = getEntryForKey ( key );
-		if ( mess == null && !(this == getDefaultInstance()) ) mess = getDefaultInstance().getMessage(key); //fallback to default instance
+		if ( mess == null && !(this == getDefaultInstance(world)) ) mess = getDefaultInstance(world).getMessage(key); //fallback to default instance
 		return ( mess != null ? mess : "??" + key + "??" );
 	}
 	
@@ -107,15 +113,34 @@ public class Messages
 		}
 		
 		String mess = getEntryForKey ( key );
-		if ( mess == null && !(this == getDefaultInstance()) ) mess = getDefaultInstance().getMessage(key,argumentsForScriptCode); //fallback
+		if ( mess == null && !(this == getDefaultInstance(world)) ) mess = getDefaultInstance(world).getMessage(key,argumentsForScriptCode); //fallback
 		return ( mess != null ? mess : "??" + key + "??" );
 	}
 	
-	public static Messages getDefaultInstance()
+	/**
+	 * Returns the default repository of messages for a given language code. The same instance is always returned for the same language code.
+	 * @param languageCode
+	 * @return
+	 */
+	public static Messages getDefaultInstance(String languageCode)
 	{
 		if ( defaultInstance == null )
-			defaultInstance = new Messages(defaultMessagePath);
+			defaultInstance = new Messages(getPathForLanguage(languageCode));
 		return defaultInstance;
+	}
+	
+	/**
+	 * Returns the default repository of messages provided by AGE for a given world, i.e., the repository of messages for the language code associated with the
+	 * language of that world.
+	 * @param w
+	 * @return
+	 */
+	public static Messages getDefaultInstance(World w)
+	{
+		String languageCode = null;
+		if ( w != null ) languageCode = w.getLanguage().getLanguageCode();
+		if ( languageCode == null ) languageCode = NaturalLanguage.DEFAULT_LANGUAGE_CODE;
+		return getDefaultInstance ( languageCode );
 	}
 	
 	public void setMessage ( String key , String message )

@@ -15,10 +15,10 @@ import eu.irreality.age.spell.SpellingCorrector;
 public class NaturalLanguage
 {
 
-	public static String pathVerbos = Paths.LANG_FILES_PATH + "/verbos.lan";
-	public static String pathSinonimos = Paths.LANG_FILES_PATH + "/sinon.lan";
-	public static String pathAlias = Paths.LANG_FILES_PATH + "/alias.lan";
-	public static String pathVerbos32 = Paths.LANG_FILES_PATH + "/verbos32.lan";
+	private static String defaultVerbPath = Paths.LANG_FILES_PATH + "/verbos.lan";
+	private static String defaultSynonymPath = Paths.LANG_FILES_PATH + "/sinon.lan";
+	private static String defaultAliasPath = Paths.LANG_FILES_PATH + "/alias.lan";
+	private static String defaultVerb32Path = Paths.LANG_FILES_PATH + "/verbos32.lan";
 
 	private Hashtable imperativoAInfinitivo;
 	private Hashtable infinitivoAImperativo;
@@ -27,6 +27,62 @@ public class NaturalLanguage
 	private Hashtable terceraASegunda;
 	
 	private SpellingCorrector corrector;
+	
+	public static String DEFAULT_LANGUAGE_CODE = "es";
+	
+	/**
+	 * The ISO code for this language.
+	 */
+	private String languageCode = null;
+	
+	/**
+	 * ISO language code.
+	 * @return
+	 */
+	public String getLanguageCode()
+	{
+		return languageCode;
+	}
+	
+	/**
+	 * Obtain path to verb file.
+	 * @return
+	 */
+	String getVerbPath ( )
+	{
+		if ( languageCode != null ) return Paths.LANG_FILES_PATH + "/" + languageCode + "/verbos.lan";
+		return defaultVerbPath;
+	}
+	
+	/**
+	 * Obtain path to synonym file (unused).
+	 * @return
+	 */
+	String getSynonymPath ( )
+	{
+		if ( languageCode != null ) return Paths.LANG_FILES_PATH + "/" + languageCode + "/sinon.lan";
+		return defaultSynonymPath;
+	}
+	
+	/**
+	 * Obtain path to alias file.
+	 * @return
+	 */
+	String getAliasPath ( )
+	{
+		if ( languageCode != null ) return Paths.LANG_FILES_PATH + "/" + languageCode + "/alias.lan";
+		return defaultAliasPath;
+	}
+	
+	/**
+	 * Obtain path to verb 3rd to 2nd person file.
+	 * @return
+	 */
+	String getVerb32Path ( )
+	{
+		if ( languageCode != null ) return Paths.LANG_FILES_PATH + "/" + languageCode + "/verbos32.lan";
+		return defaultVerb32Path;
+	}
 	
 	/**Verbs that are considered guessable by second-chance mode 
 	 * even if the guess policy is set to false
@@ -151,12 +207,19 @@ public class NaturalLanguage
 
 	public NaturalLanguage ( )
 	{
+		this( DEFAULT_LANGUAGE_CODE );
+	}
+	
+	public NaturalLanguage ( String languageCode )
+	{
+		this.languageCode = languageCode;
+		
 		//load the files needed for the natural language utils to work
 		
 		try
 		{
-			imperativoAInfinitivo = loadTableFromPath ( pathVerbos , '=' );
-			infinitivoAImperativo = loadInvertedTableFromPath ( pathVerbos , '=' , false );
+			imperativoAInfinitivo = loadTableFromPath ( getVerbPath() , '=' );
+			infinitivoAImperativo = loadInvertedTableFromPath ( getVerbPath() , '=' , false );
 			//false: en este caso solo las primeras, i.e. a imperativo, no a 1ª pers
 		}
 		catch ( Exception exc )
@@ -168,7 +231,7 @@ public class NaturalLanguage
 		
 		try
 		{
-			sinonimos = loadTableFromPath ( pathSinonimos , '=' );
+			sinonimos = loadTableFromPath ( getSynonymPath() , '=' );
 		}
 		catch ( Exception exc )
 		{
@@ -177,7 +240,7 @@ public class NaturalLanguage
 		}
 		try
 		{
-			alias = loadTableFromPath ( pathAlias , '=' );
+			alias = loadTableFromPath ( getAliasPath() , '=' );
 		}
 		catch ( Exception exc )
 		{
@@ -186,14 +249,13 @@ public class NaturalLanguage
 		}
 		try
 		{
-			terceraASegunda = loadTableFromPath ( pathVerbos32 , ' ' );
+			terceraASegunda = loadTableFromPath ( getVerb32Path() , ' ' );
 		}
 		catch ( Exception exc )
 		{
 			System.err.println("Aviso: no se ha encontrado fichero de conjugación en 2ª persona, la tabla estará vacía.");
 			terceraASegunda = new Hashtable(1);
 		}
-		
 	}
 	
 
