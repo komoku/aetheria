@@ -8,6 +8,7 @@ import java.io.*;
 import java.util.*;
 
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.language.Mentions;
 import eu.irreality.age.language.Spanish;
 import eu.irreality.age.spell.Correction;
 import eu.irreality.age.spell.SimpleReverseCorrector;
@@ -613,5 +614,31 @@ public class NaturalLanguage
 		if ( corrector == null ) initVerbSpellingCorrector();
 		return corrector;
 	}
+	
+	
+	/**
+	 * By default, do nothing.
+	 * @param p
+	 * @param command
+	 * @param mentions
+	 * @return
+	 */
+	public String substitutePronouns ( Player p , String command , Mentions mentions )
+	{
+		return command;
+	}
+	
+	/**
+	 * By default, do nothing.
+	 * @param p
+	 * @param command
+	 * @param mentions
+	 * @return
+	 */
+	public String substitutePronounsIfVerb ( Player p , String command , Mentions mentions )
+	{
+		return command;
+	}
+	
 	
 }
