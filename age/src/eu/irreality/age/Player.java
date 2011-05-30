@@ -13,6 +13,7 @@ import bsh.TargetError;
 
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
+import eu.irreality.age.language.Mentions;
 /**
  * Clase del personaje, jugador.
  *
@@ -29,6 +30,8 @@ public class Player extends Mobile implements Informador
 	protected Vector commandQueue = new Vector();
 
 	/**Variables del parser de strings: zonas de referencia*/
+	
+	/*
 	protected String ZR_verbo = "mirar";
 	protected String ZR_objeto_masculino_singular="";
 	protected String ZR_objeto_femenino_singular="";
@@ -36,6 +39,9 @@ public class Player extends Mobile implements Informador
 	protected String ZR_objeto_masculino_plural="";
 	protected String ZR_objeto_femenino_plural="";
 	protected String ZR_objeto_plural="";
+	*/
+	Mentions mentions = new Mentions();
+	
 	//unused: protected String ZR_persona_masculino;
 	//unused: protected String ZR_persona_femenino;
 	//unused: protected String ZR_persona;
@@ -560,7 +566,7 @@ public class Player extends Mobile implements Informador
 			{
 				//luego esto lo hara el codigo
 				setNewState( 1 /*IDLE*/, 1 );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				return true;
 			}
 			/*Fin de preprocessCommand()*/
@@ -629,7 +635,7 @@ public class Player extends Mobile implements Informador
 				command = StringMethods.getTok(commandstring,1,' ').trim();	
 				
 				write ( io.getColorCode("denial") + mundo.getMessages().getMessage("ambiguous.pronoun","$command",command,new Object[]{this,commandstring}) + io.getColorCode("reset") );
-				ZR_verbo = firstWord(substitutePronounsInSentence(commandstring));
+				mentions.setLastMentionedVerb ( firstWord(substitutePronounsInSentence(commandstring)) );
 				cancelPending();
 				return false;	
 			}
@@ -705,7 +711,7 @@ public class Player extends Mobile implements Informador
 		{
 			//luego esto lo hara el codigo
 			setNewState( 1 /*IDLE*/, 1 );
-			ZR_verbo = command;
+			mentions.setLastMentionedVerb(command);
 			return true;
 		}
 
@@ -732,7 +738,7 @@ public class Player extends Mobile implements Informador
 		{
 			//luego esto lo hara el codigo
 			setNewState( 1 , 1 ); //idle state
-			ZR_verbo = command;
+			mentions.setLastMentionedVerb(command);
 			return true;
 		} */
 
@@ -781,7 +787,7 @@ public class Player extends Mobile implements Informador
 		if ( ejecutado ) //código hizo end()
 		{
 			setNewState( 1 , 1 );
-			ZR_verbo = command;
+			mentions.setLastMentionedVerb(command);
 			return true;
 		}
 
@@ -790,7 +796,7 @@ public class Player extends Mobile implements Informador
 		if ( ejecutado ) //código hizo end()
 		{
 			setNewState( 1 , 1 );
-			ZR_verbo = command;
+			mentions.setLastMentionedVerb(command);
 			return true;
 		}
 		
@@ -807,7 +813,7 @@ public class Player extends Mobile implements Informador
 			if ( ejecutado ) //código hizo end()
 			{
 				setNewState( 1 , 1 );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				return true;
 			}
 		}
@@ -827,7 +833,7 @@ public class Player extends Mobile implements Informador
 				if ( ejecutado ) //código hizo end()
 				{
 					setNewState( 1 , 1 );
-					ZR_verbo = command;
+					mentions.setLastMentionedVerb(command);
 					return true;
 				}
 			}
@@ -872,7 +878,7 @@ public class Player extends Mobile implements Informador
 
 		if ( ejecutado ) 
 		{
-			ZR_verbo = command;
+			mentions.setLastMentionedVerb(command);
 			return true ;
 		}
 
@@ -882,14 +888,14 @@ public class Player extends Mobile implements Informador
 		if ( ejecutado ) //código hizo end()
 		{
 			setNewState( 1 , 1 );
-			ZR_verbo = command;
+			mentions.setLastMentionedVerb(command);
 			return true;
 		}
 		ejecutado = resolveParseCommandForOneEntity ( posiblesObjetivos , arguments , arguments , true );
 		if ( ejecutado ) //código hizo end()
 		{
 			setNewState( 1 , 1 );
-			ZR_verbo = command;
+			mentions.setLastMentionedVerb(command);
 			return true;
 		}
 		
@@ -917,7 +923,7 @@ public class Player extends Mobile implements Informador
 		{
 			//luego esto lo hara el codigo
 			setNewState( 1 , 1 ); //idle state
-			ZR_verbo = command;
+			mentions.setLastMentionedVerb(command);
 			return true;
 		} 
 
@@ -935,7 +941,7 @@ public class Player extends Mobile implements Informador
 			{
 
 				write ( io.getColorCode("denial") + mundo.getMessages().getMessage("go.nowhere",new Object[]{this}) + io.getColorCode("reset") );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				cancelPending();
 				return false;
 			}	
@@ -943,7 +949,7 @@ public class Player extends Mobile implements Informador
 			else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("norte")
 					|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("n") )
 			{
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				//return go (habitacionActual.getExit( true,Path.NORTE ));
 
 				actionArgs[0] = habitacionActual.getExit ( true , Path.NORTE );
@@ -952,21 +958,21 @@ public class Player extends Mobile implements Informador
 			else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("sur")
 					|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("s") )
 			{
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				//return go (habitacionActual.getExit( true,Path.SUR ));
 				actionArgs[0] = habitacionActual.getExit ( true , Path.SUR );
 			}
 			else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("oeste")
 					|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("e") )
 			{
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				//return go (habitacionActual.getExit( true,Path.OESTE ));
 				actionArgs[0] = habitacionActual.getExit ( true , Path.OESTE );
 			}
 			else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("este")
 					|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("o") )
 			{
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				//return go (habitacionActual.getExit( true,Path.ESTE ));
 				actionArgs[0] = habitacionActual.getExit ( true , Path.ESTE );
 			}	
@@ -975,7 +981,7 @@ public class Player extends Mobile implements Informador
 					|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("se") 
 					|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("sureste") )
 			{
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				//return go (habitacionActual.getExit( true,Path.ESTE ));
 				actionArgs[0] = habitacionActual.getExit ( true , Path.SUDESTE );
 			}	
@@ -984,7 +990,7 @@ public class Player extends Mobile implements Informador
 					|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("so")
 					|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("suroeste") )
 			{
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				//return go (habitacionActual.getExit( true,Path.ESTE ));
 				actionArgs[0] = habitacionActual.getExit ( true , Path.SUROESTE );
 			}	
@@ -993,7 +999,7 @@ public class Player extends Mobile implements Informador
 					|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("noreste")
 					|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("ne") )
 			{
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				//return go (habitacionActual.getExit( true,Path.ESTE ));
 				actionArgs[0] = habitacionActual.getExit ( true , Path.NORDESTE );
 			}	
@@ -1001,7 +1007,7 @@ public class Player extends Mobile implements Informador
 			else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("noroeste")
 					|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("no") )
 			{
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				//return go (habitacionActual.getExit( true,Path.ESTE ));
 				actionArgs[0] = habitacionActual.getExit ( true , Path.NOROESTE );
 			}	
@@ -1009,14 +1015,14 @@ public class Player extends Mobile implements Informador
 			else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("arriba")
 					|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("ar") )
 			{
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				//return go (habitacionActual.getExit( true,Path.ARRIBA ));
 				actionArgs[0] = habitacionActual.getExit ( true , Path.ARRIBA );
 			}	
 			else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("abajo")
 					|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("ab") )
 			{
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				//return go (habitacionActual.getExit( true,Path.ABAJO ));
 				actionArgs[0] = habitacionActual.getExit ( true , Path.ABAJO );
 			}	
@@ -1027,7 +1033,7 @@ public class Player extends Mobile implements Informador
 				{
 					if ( habitacionActual.isValidExit(false,i) && habitacionActual.getExit(false,i).matchExitCommand( arguments /*StringMethods.getTok( arguments,StringMethods.numToks(arguments,' '), ' ' ) */ ) )
 					{
-						ZR_verbo = command;
+						mentions.setLastMentionedVerb(command);
 						actionArgs[0] = habitacionActual.getExit ( false , i );	
 						//return go (habitacionActual.getExit( false,i ));
 					}
@@ -1039,7 +1045,7 @@ public class Player extends Mobile implements Informador
 					escribirDenegacionComando(io.getColorCode("denial") + 
 							mundo.getMessages().getMessage("go.where",new Object[]{this,arguments})  //"¿Cómo? ¿Hacia dónde quieres ir?\n" 
 							+ io.getColorCode("reset") );
-					ZR_verbo = command;	
+					mentions.setLastMentionedVerb(command);	
 					cancelPending();
 					return false;
 				}
@@ -1057,7 +1063,7 @@ public class Player extends Mobile implements Informador
 			{
 				if ( habitacionActual.isValidExit(true,i) && mundo.getRoom(habitacionActual.getExit(true,i).getDestinationID()) == habitacionAnterior )
 				{
-					ZR_verbo = command;
+					mentions.setLastMentionedVerb(command);
 					//return go (habitacionActual.getExit( true , i ));	
 					actionArgs[0] = habitacionActual.getExit ( true , i );
 					break;
@@ -1070,7 +1076,7 @@ public class Player extends Mobile implements Informador
 				{
 					if ( habitacionActual.isValidExit(false,i) && mundo.getRoom(habitacionActual.getExit(false,i).getDestinationID()) == habitacionAnterior )
 					{
-						ZR_verbo = command;
+						mentions.setLastMentionedVerb(command);
 						//return go (habitacionActual.getExit( false , i ));
 						actionArgs[0] = habitacionActual.getExit ( false , i );	
 						break;			  
@@ -1081,7 +1087,7 @@ public class Player extends Mobile implements Informador
 			if ( actionArgs[0] == null )
 			{
 				escribirDenegacionComando(io.getColorCode("denial") + mundo.getMessages().getMessage("cant.go.back",new Object[]{this,arguments}) + io.getColorCode("reset"));
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				cancelPending();
 				return false;
 			}
@@ -1093,7 +1099,7 @@ public class Player extends Mobile implements Informador
 				//mirar a secas (no extrades)
 				show_room(mundo);
 				setNewState( 1 /*IDLE*/, 1 );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				return true;	
 			}		
 			else //miras algo en concreto
@@ -1105,7 +1111,7 @@ public class Player extends Mobile implements Informador
 				{
 					write(io.getColorCode("description")+s+io.getColorCode("reset")+"\n");
 					setNewState( 1 /*IDLE*/, 1 );
-					ZR_verbo = command;
+					mentions.setLastMentionedVerb(command);
 					return true;	
 				}
 				else
@@ -1176,13 +1182,13 @@ public class Player extends Mobile implements Informador
 						escribirDenegacionComando(io.getColorCode("denial") + 
 								mundo.getMessages().getMessage("look.what",new Object[]{this,arguments})  //"¿Qué pretendes mirar?\n" 
 								+ io.getColorCode("reset"));
-						ZR_verbo = command;
+						mentions.setLastMentionedVerb(command);
 						cancelPending();
 						return false;
 					}
 					else
 					{
-						ZR_verbo = command;
+						mentions.setLastMentionedVerb(command);
 
 						//added bugfix. without this, TU's can get negative if looking several times
 						setNewState( 1 /*IDLE*/, 1 );
@@ -1215,13 +1221,13 @@ public class Player extends Mobile implements Informador
 				escribirDenegacionComando(io.getColorCode("denial")+
 						mundo.getMessages().getMessage("attack.what",new Object[]{this,arguments})  //"¿Cómo? ¿Atacar a quién?\n" 
 						+io.getColorCode("reset")  );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				cancelPending();
 				return false;
 			}
 			else
 			{
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				return true;
 			}
 
@@ -1241,13 +1247,13 @@ public class Player extends Mobile implements Informador
 				escribirDenegacionComando(io.getColorCode("denial")+
 						mundo.getMessages().getMessage("block.what",new Object[]{this,arguments})  //"¿Cómo? ¿Defenderse de quién?\n" 
 						+io.getColorCode("reset")  );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				cancelPending();
 				return false;
 			}
 			else
 			{
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				return true;
 			}
 
@@ -1262,13 +1268,13 @@ public class Player extends Mobile implements Informador
 				escribirDenegacionComando(io.getColorCode("denial") + 
 						mundo.getMessages().getMessage("dodge.what",new Object[]{this,arguments})  //"No te atacan. ¿Esquivar qué?\n" 
 						+io.getColorCode("reset") );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				cancelPending();
 				return false;
 			}
 			else
 			{
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				return true;
 			}
 		}
@@ -1386,13 +1392,13 @@ public class Player extends Mobile implements Informador
 				escribirDenegacionComando(io.getColorCode("denial")+
 						mundo.getMessages().getMessage("open.what",new Object[]{this,arguments})  //"¿Qué pretendes abrir?\n" 
 						+io.getColorCode("reset")  );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				cancelPending();
 				return false;
 			}
 			else
 			{
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				setNewState( 1 /*IDLE*/, 1 );
 				return true;
 			}
@@ -1503,13 +1509,13 @@ public class Player extends Mobile implements Informador
 				escribirDenegacionComando ( io.getColorCode("denial") + 
 						mundo.getMessages().getMessage("close.what",new Object[]{this,arguments})  //"¿Qué pretendes cerrar?\n"  
 						+ io.getColorCode("reset") );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				cancelPending();
 				return false;
 			}
 			else
 			{
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				setNewState( 1 /*IDLE*/, 1 );
 				return true;
 			}	
@@ -1537,13 +1543,13 @@ public class Player extends Mobile implements Informador
 					escribirDenegacionComando( io.getColorCode("denial") + 
 							mundo.getMessages().getMessage("wear.what",new Object[]{this,arguments})  //"¿Qué pretendes vestir?\n"
 							+ io.getColorCode("reset") );
-					ZR_verbo = command;
+					mentions.setLastMentionedVerb(command);
 					cancelPending();
 					return false;		
 				}
 				else
 				{
-					ZR_verbo = command;
+					mentions.setLastMentionedVerb(command);
 					return true;
 				}
 			}
@@ -1575,13 +1581,13 @@ public class Player extends Mobile implements Informador
 				escribirDenegacionComando( io.getColorCode("denial") + 
 						mundo.getMessages().getMessage("put.what.where",new Object[]{this,arguments})  //"¿Cómo? ¿Poner qué dónde?\n" 
 						+ io.getColorCode("reset") );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				cancelPending();
 				return false;
 			}
 			else
 			{
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				return true;
 			}	
 
@@ -1609,13 +1615,13 @@ public class Player extends Mobile implements Informador
 					escribirDenegacionComando( io.getColorCode("denial") + 
 							mundo.getMessages().getMessage("unwear.what",new Object[]{this,arguments})  //"¿Qué pretendes quitarte?\n"
 							+ io.getColorCode("reset") );
-					ZR_verbo = command;
+					mentions.setLastMentionedVerb(command);
 					cancelPending();
 					return false;		
 				}
 				else
 				{
-					ZR_verbo = command;
+					mentions.setLastMentionedVerb(command);
 					return true;
 				}
 			}
@@ -1633,7 +1639,7 @@ public class Player extends Mobile implements Informador
 			if ( mirado )
 			{
 				setNewState( 1 /*IDLE*/, 1 );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				return true;
 			}
 			else
@@ -1641,7 +1647,7 @@ public class Player extends Mobile implements Informador
 				escribirDenegacionComando( io.getColorCode("denial") + 
 						mundo.getMessages().getMessage("get.what",new Object[]{this,arguments})  //"¿Qué pretendes coger?\n"
 						+ io.getColorCode("reset") );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				cancelPending();
 				return false;
 			}		
@@ -1656,7 +1662,7 @@ public class Player extends Mobile implements Informador
 				escribirDenegacionComando( io.getColorCode("denial") + 
 						mundo.getMessages().getMessage("drop.what",new Object[]{this,arguments})  //"¿Qué pretendes dejar?\n"
 						+ io.getColorCode("reset") );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				cancelPending();
 				return false;		
 			}
@@ -1732,7 +1738,7 @@ public class Player extends Mobile implements Informador
 			else write( io.getColorCode("information") + "No tienes nada.\n" + io.getColorCode("reset") );
 			 */
 			setNewState( 1 /*IDLE*/, 1 );
-			ZR_verbo = command;
+			mentions.setLastMentionedVerb(command);
 			return true;
 		} //FIN CMD INVENTARIO
 
@@ -1753,7 +1759,7 @@ public class Player extends Mobile implements Informador
 				write( io.getColorCode("information") + "No sabes hacer magia.\n" );
 			}
 			setNewState( 1 /*IDLE*/, 1 );
-			ZR_verbo = command;
+			mentions.setLastMentionedVerb(command);
 			return true;
 		} //FIN CMD INVENTARIO
 
@@ -1771,7 +1777,7 @@ public class Player extends Mobile implements Informador
 				escribirDenegacionComando( io.getColorCode("denial") + 
 						mundo.getMessages().getMessage("unwear.what",new Object[]{this,arguments})  //"¿Qué pretendes quitarte?\n"
 						+ io.getColorCode("reset") );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				cancelPending();
 				return false;		
 			}
@@ -1784,7 +1790,7 @@ public class Player extends Mobile implements Informador
 				escribirDenegacionComando( io.getColorCode("denial") + 
 						mundo.getMessages().getMessage("wear.what",new Object[]{this,arguments})  //"¿Qué pretendes vestir?\n"
 						+ io.getColorCode("reset") );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				cancelPending();
 				return false;		
 			}
@@ -1797,7 +1803,7 @@ public class Player extends Mobile implements Informador
 				escribirDenegacionComando( io.getColorCode("denial") + 
 						mundo.getMessages().getMessage("wield.what",new Object[]{this,arguments})  //"¿Qué arma pretendes blandir?\n"
 						+ io.getColorCode("reset") );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				cancelPending();
 				return false;		
 			}
@@ -1810,7 +1816,7 @@ public class Player extends Mobile implements Informador
 				escribirDenegacionComando( io.getColorCode("denial") + 
 						mundo.getMessages().getMessage("unwield.what",new Object[]{this,arguments})  //"¿Qué arma enfundar?\n"
 						+ io.getColorCode("reset") );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				cancelPending();
 				return false;		
 			}
@@ -1827,7 +1833,7 @@ public class Player extends Mobile implements Informador
 			comandoDecir ( arguments );
 
 			setNewState( 1 /*IDLE*/, 1 );
-			ZR_verbo = command;
+			mentions.setLastMentionedVerb(command);
 			return true;
 		}
 		else if ( command.equalsIgnoreCase( "salir" ) )
@@ -1857,7 +1863,7 @@ public class Player extends Mobile implements Informador
 			{
 				//esperar 1 UGT
 				setNewState( 1 /*IDLE*/, 1 );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				return true;	
 			}
 			else
@@ -1872,14 +1878,14 @@ public class Player extends Mobile implements Informador
 
 				}
 				setNewState( 1 /*IDLE*/, nsecs );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				return true;
 			}
 		}
 		else if ( command.equalsIgnoreCase( "hablar" ) )
 		{
 			escribirDenegacionComando( io.getColorCode("denial") + "La mejor forma de hablar es decir algo.\n" + io.getColorCode("reset") );
-			ZR_verbo = command;
+			mentions.setLastMentionedVerb(command);
 			cancelPending();
 			return false;
 		}
@@ -1922,13 +1928,13 @@ public class Player extends Mobile implements Informador
 			if(!mirado) //no atacamos nada, no nos entiende.
 			{
 				escribirDenegacionComando(io.getColorCode("denial")+mundo.getMessages().getMessage("cast.no.spell",new Object[]{this,arguments})+io.getColorCode("reset")  );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				cancelPending();
 				return false;
 			}
 			else
 			{
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				return true;
 			}
 
@@ -1959,7 +1965,7 @@ public class Player extends Mobile implements Informador
 				//escribirDenegacionComando ( io.getColorCode("denial") + "¿Cómo? ¿" + originalTrimmedCommandString + "?\n" + io.getColorCode("reset") );
 				escribirDenegacionComando ( io.getColorCode("denial") + mundo.getMessages().getMessage("undefined.action","$command",originalTrimmedCommandString,new Object[]{this,originalTrimmedCommandString}) + io.getColorCode("reset") );
 			}
-			ZR_verbo = command;	
+			mentions.setLastMentionedVerb(command);	
 			cancelPending();
 			return false;
 		}
@@ -1980,7 +1986,7 @@ public class Player extends Mobile implements Informador
 		//Ahora, si no lo hemos hecho ya, probamos
 		//a ver si es que ha habido una elipsis de verbo, añadiendo el verbo de la zona
 		//de referencia.
-		else if ( !ZR_verbo.equalsIgnoreCase( command ) && lenguaje.isGuessable(ZR_verbo) )
+		else if ( !mentions.getLastMentionedVerb().equalsIgnoreCase( command ) && lenguaje.isGuessable(mentions.getLastMentionedVerb()) )
 		{
 
 			/*DON'T USE QUEUE, JUST EXEC'IT*/
@@ -1997,7 +2003,7 @@ public class Player extends Mobile implements Informador
 
 			secondChance = true;
 
-			return execCommand (ZR_verbo + " " + commandstring );
+			return execCommand (mentions.getLastMentionedVerb() + " " + commandstring );
 
 
 		}
@@ -2420,7 +2426,7 @@ public class Player extends Mobile implements Informador
 				{
 					//luego esto lo hara el codigo
 					setNewState( 1 , 1 );
-					ZR_verbo = command;
+					mentions.setLastMentionedVerb(command);
 					return true;
 				}
 
@@ -2502,7 +2508,7 @@ public class Player extends Mobile implements Informador
 			{
 				//luego esto lo hara el codigo
 				setNewState( 1 , 1 );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				return true;
 			}
 
@@ -2549,7 +2555,7 @@ public class Player extends Mobile implements Informador
 		{
 			//luego esto lo hara el codigo
 			setNewState( 1 , 1 );
-			ZR_verbo = command;
+			mentions.setLastMentionedVerb(command);
 		}
 		return ejecutado;
 		
@@ -2760,7 +2766,7 @@ public class Player extends Mobile implements Informador
 			{
 				//luego esto lo hara el codigo
 				setNewState( 1 , 1 );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				return true;
 			}
 
@@ -2926,7 +2932,7 @@ public class Player extends Mobile implements Informador
 			{
 				//luego esto lo hara el codigo
 				setNewState( 1 , 1 );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				return true;
 			}		
 		} //end if pattern matching vector size not zero
@@ -3025,7 +3031,7 @@ public class Player extends Mobile implements Informador
 			{
 				//luego esto lo hara el codigo
 				setNewState( 1 , 1 );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				return true;
 			}
 
@@ -3099,7 +3105,7 @@ public class Player extends Mobile implements Informador
 			{
 				//luego esto lo hara el codigo
 				setNewState( 1 , 1 );
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				return true;
 			}		
 		} //end if pattern matching vector size not zero
@@ -3344,20 +3350,28 @@ public class Player extends Mobile implements Informador
 	{
 		if ( obj.getGender() )
 		{
-			ZR_objeto_masculino_singular = obj.getBestReferenceName ( false );
+			mentions.setLastMentionedObjectMS( obj.getBestReferenceName ( false ) );
+			//ZR_objeto_masculino_singular = obj.getBestReferenceName ( false );
 		}
 		else
 		{
-			ZR_objeto_femenino_singular = obj.getBestReferenceName ( false );
+			mentions.setLastMentionedObjectFS( obj.getBestReferenceName ( false ) );
+			//ZR_objeto_femenino_singular = obj.getBestReferenceName ( false );
 		}
-		ZR_objeto_singular = obj.getBestReferenceName ( false );
+		//ZR_objeto_singular = obj.getBestReferenceName ( false );
+		mentions.setLastMentionedObjectS( obj.getBestReferenceName ( false ) );
 	}
 
 	public void resetZRPlural ( )
 	{
+		mentions.setLastMentionedObjectMP("");
+		mentions.setLastMentionedObjectFP("");
+		mentions.setLastMentionedObjectP("");
+		/*
 		ZR_objeto_masculino_plural = "";
 		ZR_objeto_femenino_plural = "";
 		ZR_objeto_plural = "";
+		*/
 	}
 
 	//se van añadiendo a una lista con comas, cogible por comandos.
@@ -3365,19 +3379,34 @@ public class Player extends Mobile implements Informador
 	{
 		if ( obj.getGender() )
 		{
+			/*
 			if ( !ZR_objeto_masculino_plural.equals("") )
 				ZR_objeto_masculino_plural += ", ";
 			ZR_objeto_masculino_plural += obj.getBestReferenceName ( true );
+			*/
+			if ( !mentions.getLastMentionedObjectMP().equals("") )
+				mentions.setLastMentionedObjectMP( mentions.getLastMentionedObjectMP() + ", ");
+			mentions.setLastMentionedObjectMP( mentions.getLastMentionedObjectMP() + obj.getBestReferenceName ( true ));
 		}
 		else
 		{
+			/*
 			if ( !ZR_objeto_femenino_plural.equals("") )
 				ZR_objeto_femenino_plural += ", ";
 			ZR_objeto_femenino_plural += obj.getBestReferenceName ( true );
+			*/
+			if ( !mentions.getLastMentionedObjectFP().equals("") )
+				mentions.setLastMentionedObjectFP( mentions.getLastMentionedObjectFP() + ", ");
+			mentions.setLastMentionedObjectFP( mentions.getLastMentionedObjectFP() + obj.getBestReferenceName ( true ));
 		}
+		if ( !mentions.getLastMentionedObjectP().equals("") )
+			mentions.setLastMentionedObjectP( mentions.getLastMentionedObjectP() + ", ");
+		mentions.setLastMentionedObjectP( mentions.getLastMentionedObjectP() + obj.getBestReferenceName ( true ));
+		/*
 		if ( !ZR_objeto_plural.equals("") )
 			ZR_objeto_plural += ", ";
 		ZR_objeto_plural += obj.getBestReferenceName ( true );	
+		*/
 	}
 
 	
@@ -3414,7 +3443,7 @@ public class Player extends Mobile implements Informador
 			//lo quitamos
 			String cut = firstWord(thestring).substring(0,firstWord(thestring).length()-3);
 			//añadimos la ZR femenina plural
-			thestring = cut + " " + ZR_objeto_femenino_plural + " " + restWords(thestring);
+			thestring = cut + " " + mentions.getLastMentionedObjectFP() + " " + restWords(thestring);
 			doneSomething = true;
 		}
 		else if ( firstWord(thestring).toLowerCase().endsWith ( "los" ) && firstWord(thestring).length() > 3 )
@@ -3424,7 +3453,7 @@ public class Player extends Mobile implements Informador
 			//lo quitamos
 			String cut = firstWord(thestring).substring(0,firstWord(thestring).length()-3);
 			//añadimos la ZR plural
-			thestring = cut + " " + ZR_objeto_plural + " " +  restWords(thestring);
+			thestring = cut + " " + mentions.getLastMentionedObjectP() + " " +  restWords(thestring);
 		}
 		else if ( firstWord(thestring).toLowerCase().endsWith ( "lo" ) && firstWord(thestring).length() > 2 )
 		{
@@ -3433,7 +3462,7 @@ public class Player extends Mobile implements Informador
 			//lo quitamos
 			String cut  = firstWord(thestring).substring(0,firstWord(thestring).length()-2);
 			//añadimos la ZR masculina singular
-			thestring = cut + " " + ZR_objeto_masculino_singular + " " +  restWords(thestring);
+			thestring = cut + " " + mentions.getLastMentionedObjectMS() + " " +  restWords(thestring);
 		}
 		else if ( firstWord(thestring).toLowerCase().endsWith ( "la" ) && firstWord(thestring).length() > 2 )
 		{
@@ -3442,7 +3471,7 @@ public class Player extends Mobile implements Informador
 			//lo quitamos
 			String cut  = firstWord(thestring).substring(0,firstWord(thestring).length()-2);
 			//añadimos la ZR masculina singular
-			thestring = cut + " " + ZR_objeto_femenino_singular + " " +  restWords(thestring);
+			thestring = cut + " " + mentions.getLastMentionedObjectFS() + " " +  restWords(thestring);
 		}
 		
 		//these can appears with the others
@@ -4399,14 +4428,14 @@ public class Player extends Mobile implements Informador
 
 			if ( ! hecho )
 			{
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				cancelPending();
 				return true;
 			}
 			else
 			{
 				//setNewState( 1 /*IDLE*/, 5 ); //action does it
-				ZR_verbo = command;
+				mentions.setLastMentionedVerb(command);
 				return true;
 			}		
 
@@ -4423,20 +4452,20 @@ public class Player extends Mobile implements Informador
 
 				if ( ! hecho )
 				{
-					ZR_verbo = command;
+					mentions.setLastMentionedVerb(command);
 					cancelPending();
 					return true;
 				}
 			}
 
 			//setNewState( 1 /*IDLE*/, 5 ); //action does it
-			ZR_verbo = command;
+			mentions.setLastMentionedVerb(command);
 			return true;
 		}
 		else			
 		{
 			//jugador.escribirDenegacionComando( io.getColorCode("denial") + "¿Qué pretendes quitarte?\n" + io.getColorCode("reset") );
-			ZR_verbo = command;
+			mentions.setLastMentionedVerb(command);
 			cancelPending();
 			return false;		
 		}
