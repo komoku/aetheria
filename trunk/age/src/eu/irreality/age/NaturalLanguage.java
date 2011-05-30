@@ -8,6 +8,7 @@ import java.io.*;
 import java.util.*;
 
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.language.Spanish;
 import eu.irreality.age.spell.Correction;
 import eu.irreality.age.spell.SimpleReverseCorrector;
 import eu.irreality.age.spell.SpellingCorrector;
@@ -205,12 +206,26 @@ public class NaturalLanguage
 			return tabla;
 	}
 
-	public NaturalLanguage ( )
+	
+	public static NaturalLanguage getInstance ( )
+	{
+		return getInstance ( DEFAULT_LANGUAGE_CODE );
+	}
+	
+	public static NaturalLanguage getInstance ( String languageCode )
+	{
+		if ( languageCode.equals("es") )
+			return new Spanish();
+		else
+			return new NaturalLanguage(languageCode);
+	}
+	
+	private NaturalLanguage ( )
 	{
 		this( DEFAULT_LANGUAGE_CODE );
 	}
 	
-	public NaturalLanguage ( String languageCode )
+	protected NaturalLanguage ( String languageCode )
 	{
 		this.languageCode = languageCode;
 		
