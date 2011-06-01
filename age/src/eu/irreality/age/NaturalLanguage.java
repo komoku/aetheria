@@ -8,6 +8,7 @@ import java.io.*;
 import java.util.*;
 
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.language.LanguageUtils;
 import eu.irreality.age.language.Mentions;
 import eu.irreality.age.language.Spanish;
 import eu.irreality.age.spell.Correction;
@@ -22,11 +23,11 @@ public class NaturalLanguage
 	private static String defaultAliasPath = Paths.LANG_FILES_PATH + "/alias.lan";
 	private static String defaultVerb32Path = Paths.LANG_FILES_PATH + "/verbos32.lan";
 
-	private Hashtable imperativoAInfinitivo;
-	private Hashtable infinitivoAImperativo;
-	private Hashtable sinonimos;
-	private Hashtable alias;
-	private Hashtable terceraASegunda;
+	private Map imperativoAInfinitivo;
+	private Map infinitivoAImperativo;
+	private Map sinonimos;
+	private Map alias;
+	private Map terceraASegunda;
 	
 	private SpellingCorrector corrector;
 	
@@ -142,72 +143,6 @@ public class NaturalLanguage
 		}
 	}
 
-	private Hashtable loadTableFromPath ( String f , char separator ) throws IOException , FileNotFoundException
-	{
-		return loadTableFromPath ( f , separator , true );
-	}
-	
-	private Hashtable loadInvertedTableFromPath ( String f , char separator ) throws IOException , FileNotFoundException
-	{
-		return loadInvertedTableFromPath ( f , separator , true );
-	}
-
-	private Hashtable loadTableFromPath ( String f , char separator , boolean dejarRepeticiones ) throws IOException , FileNotFoundException
-	{
-		//contar entradas que tendremos que meter en Hashtable
-			BufferedReader filein = new BufferedReader ( Utility.getBestInputStreamReader ( this.getClass().getClassLoader().getResourceAsStream(f) ) );
-			int nlineas = 0;
-			while ( filein.readLine() != null ) nlineas++;
-		
-		//crear la tabla teniendo en cuenta este número
-			Hashtable tabla = new Hashtable ( (int)Math.round( nlineas * 1.5 ) );
-		
-		//ahora, meter los verbos en la tabla
-			filein = new BufferedReader ( Utility.getBestInputStreamReader ( this.getClass().getClassLoader().getResourceAsStream(f) ) );
-			String linea;
-			while ( ( linea = filein.readLine() ) != null )
-			{
-				//usamos hashtable.put(key,value)
-				String laClave = StringMethods.getTok( linea , 1 , separator ).trim();
-				String elValor = StringMethods.getTok( linea , 2 , separator ).trim();
-				
-				//System.err.println(laClave + " , " + elValor);
-				
-				if ( dejarRepeticiones == false || tabla.get(laClave) == null )
-					tabla.put ( laClave,elValor );	
-				//tabla.put ( laClave,elValor );	
-			}
-		//devolvemos la hashtable.
-			return tabla;
-	}
-	
-	private Hashtable loadInvertedTableFromPath ( String f , char separator , boolean dejarRepeticiones ) throws IOException , FileNotFoundException
-	{
-		//contar entradas que tendremos que meter en Hashtable
-			BufferedReader filein = new BufferedReader ( Utility.getBestInputStreamReader ( this.getClass().getClassLoader().getResourceAsStream(f) ) );
-			int nlineas = 0;
-			while ( filein.readLine() != null ) nlineas++;
-		
-		//crear la tabla teniendo en cuenta este número
-			Hashtable tabla = new Hashtable ( (int)Math.round( nlineas * 1.5 ) );
-		
-		//ahora, meter los verbos en la tabla
-			filein = new BufferedReader ( Utility.getBestInputStreamReader ( this.getClass().getClassLoader().getResourceAsStream(f) ) );
-			String linea;
-			while ( ( linea = filein.readLine() ) != null )
-			{
-				//usamos hashtable.put(key,value)
-				String laClave = StringMethods.getTok( linea , 2 , separator ).trim();
-				String elValor = StringMethods.getTok( linea , 1 , separator ).trim();
-				
-				if ( dejarRepeticiones == false || tabla.get(laClave) == null )
-					tabla.put ( laClave,elValor );	
-			}
-		//devolvemos la hashtable.
-			return tabla;
-	}
-
-	
 	public static NaturalLanguage getInstance ( )
 	{
 		return getInstance ( DEFAULT_LANGUAGE_CODE );
@@ -234,8 +169,8 @@ public class NaturalLanguage
 		
 		try
 		{
-			imperativoAInfinitivo = loadTableFromPath ( getVerbPath() , '=' );
-			infinitivoAImperativo = loadInvertedTableFromPath ( getVerbPath() , '=' , false );
+			imperativoAInfinitivo = LanguageUtils.loadTableFromPath ( getVerbPath() , '=' );
+			infinitivoAImperativo = LanguageUtils.loadInvertedTableFromPath ( getVerbPath() , '=' , false );
 			//false: en este caso solo las primeras, i.e. a imperativo, no a 1ª pers
 		}
 		catch ( Exception exc )
@@ -247,7 +182,7 @@ public class NaturalLanguage
 		
 		try
 		{
-			sinonimos = loadTableFromPath ( getSynonymPath() , '=' );
+			sinonimos = LanguageUtils.loadTableFromPath ( getSynonymPath() , '=' );
 		}
 		catch ( Exception exc )
 		{
@@ -256,7 +191,7 @@ public class NaturalLanguage
 		}
 		try
 		{
-			alias = loadTableFromPath ( getAliasPath() , '=' );
+			alias = LanguageUtils.loadTableFromPath ( getAliasPath() , '=' );
 		}
 		catch ( Exception exc )
 		{
@@ -265,7 +200,7 @@ public class NaturalLanguage
 		}
 		try
 		{
-			terceraASegunda = loadTableFromPath ( getVerb32Path() , ' ' );
+			terceraASegunda = LanguageUtils.loadTableFromPath ( getVerb32Path() , ' ' );
 		}
 		catch ( Exception exc )
 		{
@@ -617,7 +552,8 @@ public class NaturalLanguage
 	
 	
 	/**
-	 * By default, do nothing.
+	 * By default, do nothing. Concrete languages will override this with their
+	 * pronoun handling.
 	 * @param p
 	 * @param command
 	 * @param mentions
@@ -629,7 +565,8 @@ public class NaturalLanguage
 	}
 	
 	/**
-	 * By default, do nothing.
+	 * By default, do nothing. Concrete languages will override this with their
+	 * pronoun handling.
 	 * @param p
 	 * @param command
 	 * @param mentions
