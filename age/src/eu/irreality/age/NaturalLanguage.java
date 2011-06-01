@@ -11,6 +11,7 @@ import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.language.LanguageUtils;
 import eu.irreality.age.language.Mentions;
 import eu.irreality.age.language.Spanish;
+import eu.irreality.age.language.Translation;
 import eu.irreality.age.spell.Correction;
 import eu.irreality.age.spell.SimpleReverseCorrector;
 import eu.irreality.age.spell.SpellingCorrector;
@@ -575,6 +576,36 @@ public class NaturalLanguage
 	public String substitutePronounsIfVerb ( Player p , String command , Mentions mentions )
 	{
 		return command;
+	}
+	
+	
+	/**
+	 * Translates a verb from this language into another, using the translation tables obtained from the corresponding files.
+	 * The nullIfNotFound parameter controls what happens when a translation is not available: if the parameter is true, then the method
+	 * returns null in that case, if it is false, then it returns the original verb. 
+	 * @param verb
+	 * @param targetLanguage
+	 * @param nullIfNotFound
+	 * @return
+	 */
+	public String translateVerb ( String verb , String targetLanguage , boolean nullIfNotFound )
+	{
+		if ( this.getLanguageCode().equals(targetLanguage) ) return verb; //translation from one language to itself
+		String translation = Translation.translate( verb , this.getLanguageCode() , targetLanguage );
+		if ( translation == null && !nullIfNotFound ) translation = verb;
+		return translation;
+	}
+	
+	/**
+	 * Translates a verb from this language into another, using the translation tables obtained from the corresponding files.
+	 * Returns the verb as it was if a translation is not found.
+	 * @param verb
+	 * @param targetLanguage
+	 * @return
+	 */
+	public String translateVerb ( String verb , String targetLanguage )
+	{
+		return translateVerb ( verb , targetLanguage , false );
 	}
 	
 	

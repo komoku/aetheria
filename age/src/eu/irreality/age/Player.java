@@ -1092,7 +1092,7 @@ public class Player extends Mobile implements Informador
 				return false;
 			}
 		} //FIN CMD VOLVER
-		else if ( command.equalsIgnoreCase( "mirar" ) )
+		else if ( lenguaje.translateVerb(command,"en").equalsIgnoreCase( "look" ) )
 		{
 			if ( StringMethods.numToks(commandstring,' ') < 2 )
 			{

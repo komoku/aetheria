@@ -33,7 +33,7 @@ public class Translation
 	 */
 	public static String getTranslationFilePath ( String sourceLanguageCode , String targetLanguageCode )
 	{
-		return Paths.LANG_FILES_PATH + "/tr-" + sourceLanguageCode + "-" + targetLanguageCode;
+		return Paths.LANG_FILES_PATH + "/tr-" + sourceLanguageCode + "-" + targetLanguageCode + ".lan";
 	}
 	
 	/**
@@ -50,7 +50,7 @@ public class Translation
 		{
 			try
 			{
-				loadTranslationMap ( sourceLanguageCode , targetLanguageCode );
+				theMap = loadTranslationMap ( sourceLanguageCode , targetLanguageCode );
 			}
 			catch ( IOException ioe )
 			{
@@ -83,9 +83,9 @@ public class Translation
 	 */
 	public static String translate ( String verb , String sourceLanguage , String targetLanguage )
 	{
-		String result = null;
 		Map m = getTranslationMap ( sourceLanguage , targetLanguage );
-		return (String) m.get(verb);
+		if ( m == null ) return null;
+		else return (String) m.get(verb);
 	}
 	
 }
