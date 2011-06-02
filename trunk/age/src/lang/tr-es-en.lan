@@ -8,6 +8,7 @@ vestir=wear
 desvestir=unwear
 atacar=attack
 bloquear=block
+defender=defend
 esquivar=dodge
 inventario=inventory
 esperar=wait

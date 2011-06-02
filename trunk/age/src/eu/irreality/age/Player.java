@@ -931,7 +931,7 @@ public class Player extends Mobile implements Informador
 
 
 		//si no estaba definido en la habitacion		
-		if ( command.equalsIgnoreCase( "ir" ) )
+		if ( lenguaje.translateVerb(command,"en").equalsIgnoreCase( "go" ) ) //ir
 		{
 
 			actionName = "go";
@@ -1051,7 +1051,7 @@ public class Player extends Mobile implements Informador
 				}
 			} 
 		} // FIN CMD IR
-		else if ( command.equalsIgnoreCase ( "volver" ) )
+		else if ( lenguaje.translateVerb(command,"en").equalsIgnoreCase( "return" ) ) //volver
 		{
 			//vuelve a la ultima habitacion visitada (habitacionAnterior)
 
@@ -1092,7 +1092,7 @@ public class Player extends Mobile implements Informador
 				return false;
 			}
 		} //FIN CMD VOLVER
-		else if ( lenguaje.translateVerb(command,"en").equalsIgnoreCase( "look" ) )
+		else if ( lenguaje.translateVerb(command,"en").equalsIgnoreCase( "look" ) ) //mirar
 		{
 			if ( StringMethods.numToks(commandstring,' ') < 2 )
 			{
@@ -1200,7 +1200,7 @@ public class Player extends Mobile implements Informador
 			}
 		} // FIN CMD MIRAR
 
-		else if ( command.equalsIgnoreCase( "atacar" ) )
+		else if ( lenguaje.translateVerb(command,"en").equalsIgnoreCase( "attack" ) ) //atacar
 		{
 
 			boolean mirado = false;
@@ -1235,7 +1235,7 @@ public class Player extends Mobile implements Informador
 
 		} //FIN CMD ATACAR
 
-		else if ( command.equalsIgnoreCase( "bloquear" ) || command.equalsIgnoreCase( "defender" ) )
+		else if ( lenguaje.translateVerb(command,"en").equalsIgnoreCase( "block" ) || lenguaje.translateVerb(command,"en").equalsIgnoreCase( "defend" ) ) //bloquear, defender
 		{
 
 			boolean mirado = false;
@@ -1259,7 +1259,7 @@ public class Player extends Mobile implements Informador
 
 		}
 
-		else if ( command.equalsIgnoreCase( "esquivar" ) )
+		else if ( lenguaje.translateVerb(command,"en").equalsIgnoreCase( "dodge" ) ) //esquivar
 		{
 			boolean mirado = false;
 			mirado = esquivar();
@@ -1280,7 +1280,7 @@ public class Player extends Mobile implements Informador
 		}
 
 
-		else if ( command.equalsIgnoreCase( "abrir" ) )
+		else if ( lenguaje.translateVerb(command,"en").equalsIgnoreCase( "open" ) ) //abrir
 		{
 
 
@@ -1404,7 +1404,7 @@ public class Player extends Mobile implements Informador
 			}
 
 		} // FIN CMD ABRIR (estructura igual a mirar)
-		else if ( command.equalsIgnoreCase( "cerrar" ) )
+		else if ( lenguaje.translateVerb(command,"en").equalsIgnoreCase( "close" ) ) //cerrar
 		{
 
 
