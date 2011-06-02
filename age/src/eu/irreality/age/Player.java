@@ -1530,7 +1530,8 @@ public class Player extends Mobile implements Informador
 
 
 
-		else if ( command.equalsIgnoreCase( "poner" ) || command.equalsIgnoreCase( "meter" ) )
+		//else if ( command.equalsIgnoreCase( "poner" ) || command.equalsIgnoreCase( "meter" ) )
+		else if ( "put".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) ) //poner, meter
 		{
 
 			boolean mirado = false;
@@ -1597,7 +1598,7 @@ public class Player extends Mobile implements Informador
 
 
 
-		else if ( command.equalsIgnoreCase( "coger" ) )
+		else if ( "take".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) ) //coger
 		{
 			
 			//TODO: This verb uses quite ancient things (that string that we are passing...) and should be updated to make
@@ -1654,7 +1655,7 @@ public class Player extends Mobile implements Informador
 		} //FIN CMD COGER
 
 
-		else if ( command.equalsIgnoreCase( "dejar" ) )
+		else if ( "drop".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) ) //dejar
 		{
 
 			if ( !oneTargetAction("drop",arguments,inventory) )
@@ -1668,7 +1669,7 @@ public class Player extends Mobile implements Informador
 			}
 
 		} //FIN CMD DEJAR
-		else if ( command.equalsIgnoreCase( "inventario" ) && arguments.trim().length() < 1 ) //deja de valer poner inventario algo.
+		else if ( "inventory".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) && arguments.trim().length() < 1 ) //inventario. deja de valer poner inventario algo.
 		{
 			showInventory();
 			/*
@@ -1742,7 +1743,7 @@ public class Player extends Mobile implements Informador
 			return true;
 		} //FIN CMD INVENTARIO
 
-		else if ( command.equalsIgnoreCase( "hechizos" ) && arguments.trim().length() < 1 ) //deja de valer poner inventario algo.
+		else if ( "spells".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) && arguments.trim().length() < 1 ) //hechizos. deja de valer poner hechizos algo.
 		{
 			if ( spellRefs != null )
 			{
@@ -1763,14 +1764,15 @@ public class Player extends Mobile implements Informador
 			return true;
 		} //FIN CMD INVENTARIO
 
-		else if ( command.equalsIgnoreCase( "suicidar" ) || command.equalsIgnoreCase( "suicidarse" ) )
+		else if ( "suicide".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) ) //suicidar, suicidarse
+		//else if ( command.equalsIgnoreCase( "suicidar" ) || command.equalsIgnoreCase( "suicidarse" ) )
 		{
 			suicide();
 			//no necesitarás zr con esto.
 			return true;
 		}
 
-		else if ( command.equalsIgnoreCase("desvestir") )
+		else if ( "unwear".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) ) //desvestir
 		{
 			if ( !oneTargetAction("unwear",arguments,getWornItems()) )
 			{
@@ -1783,7 +1785,7 @@ public class Player extends Mobile implements Informador
 			}
 		}
 
-		else if ( command.equalsIgnoreCase("vestir") )
+		else if ( "wear".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) ) //vestir
 		{
 			if ( !oneTargetAction("wear",arguments,inventory) )
 			{
@@ -1796,7 +1798,7 @@ public class Player extends Mobile implements Informador
 			}
 		}
 
-		else if ( command.equalsIgnoreCase("blandir") )
+		else if ( "wield".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) ) //blandir
 		{
 			if ( !oneTargetAction("wield",arguments,inventory) )
 			{
@@ -1809,7 +1811,7 @@ public class Player extends Mobile implements Informador
 			}
 		}
 
-		else if ( command.equalsIgnoreCase("enfundar") )
+		else if ( "unwield".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) ) //enfundar
 		{
 			if ( !oneTargetAction("unwield",arguments,wieldedWeapons) )			
 			{
@@ -1824,7 +1826,7 @@ public class Player extends Mobile implements Informador
 
 
 
-		else if ( command.equalsIgnoreCase( "decir" ) )
+		else if ( "say".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) ) //decir
 		{
 			//habitacionActual.informActionAuto ( this , null , "$1 dice \"" + arguments + "\"\n" );
 			//say(arguments);
@@ -1857,7 +1859,7 @@ public class Player extends Mobile implements Informador
 			return true;
 		}
 		*/
-		else if ( command.equalsIgnoreCase( "esperar" ) )
+		else if ( "wait".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) ) //esperar
 		{
 			if ( StringMethods.numToks(commandstring,' ') < 2 )
 			{
@@ -1882,16 +1884,19 @@ public class Player extends Mobile implements Informador
 				return true;
 			}
 		}
-		else if ( command.equalsIgnoreCase( "hablar" ) )
+		else if ( "talk".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) ) //hablar
 		{
 			escribirDenegacionComando( io.getColorCode("denial") + "La mejor forma de hablar es decir algo.\n" + io.getColorCode("reset") );
 			mentions.setLastMentionedVerb(command);
 			cancelPending();
 			return false;
 		}
+		/*
 		else if ( command.equalsIgnoreCase( "salvar" ) || command.equalsIgnoreCase("save")
 				|| command.equalsIgnoreCase( "cargar" ) || command.equalsIgnoreCase("load")
 				|| command.equalsIgnoreCase( "grabar" ) || command.equalsIgnoreCase("restaurar") )
+		*/
+		else if ( "load".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) || "save".equalsIgnoreCase(lenguaje.translateVerb(command,"en"))  ) //salvar, grabar, cargar, restaurar, save, load
 		{
 			escribirDenegacionComando( io.getColorCode("error") + "De momento, las opciones de salvar y cargar no están disponibles por texto en este interfaz. Puedes usar los menús para ello.\n" + io.getColorCode("reset") );
 			cancelPending();
@@ -1899,7 +1904,12 @@ public class Player extends Mobile implements Informador
 		}
 
 
-		else if ( command.equalsIgnoreCase("invocar") || command.equalsIgnoreCase("convocar") || command.equalsIgnoreCase("hacer") || command.equalsIgnoreCase("realizar") || command.equalsIgnoreCase("usar") || command.equalsIgnoreCase("utilizar") || command.equalsIgnoreCase("crear") || command.equalsIgnoreCase("ejecutar") || command.equalsIgnoreCase("pronunciar") || command.equalsIgnoreCase("conjurar") )
+		//else if ( command.equalsIgnoreCase("invocar") || command.equalsIgnoreCase("convocar") || command.equalsIgnoreCase("hacer") || command.equalsIgnoreCase("realizar") || command.equalsIgnoreCase("usar") || command.equalsIgnoreCase("utilizar") || command.equalsIgnoreCase("crear") || command.equalsIgnoreCase("ejecutar") || command.equalsIgnoreCase("pronunciar") || command.equalsIgnoreCase("conjurar") )
+		else if ( "invoke".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) || "convoke".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) 
+				|| "make".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) || "realize".equalsIgnoreCase(lenguaje.translateVerb(command,"en"))
+				|| "create".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) || "use".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) 
+				|| "execute".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) || "pronounce".equalsIgnoreCase(lenguaje.translateVerb(command,"en"))
+				|| "cast".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) )
 		{
 
 			//try to cast spell
