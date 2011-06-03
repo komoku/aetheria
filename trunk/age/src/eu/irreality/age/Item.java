@@ -186,6 +186,17 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		return it;
 	}
 	
+	/**
+	 * Returns true if this item is a container and contains the specified item.
+	 * @param it
+	 * @return
+	 */
+	public boolean contains ( Item it )
+	{
+		if ( !isContainer() ) return false;
+		else return getContents().contains(it);
+	}
+	
 
 	//notación un poco inconsistente con la de Entity::copyEntityFields; pero bueno
 	public void copyItemFieldsTo ( Item it )
