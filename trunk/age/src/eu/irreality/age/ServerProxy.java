@@ -233,10 +233,10 @@ public class ServerProxy extends Thread implements ARSPConstants
 						int loopTimes;
 						if ( (loopTimes=Integer.valueOf(st2.nextToken()).intValue()) > 0 )
 						{
-							if ( st.hasMoreTokens() )
+							if ( st2.hasMoreTokens() )
 							{
-								double seconds = Double.parseDouble(st.nextToken());
-								double delay = Double.parseDouble(st.nextToken());
+								double seconds = Double.parseDouble(st2.nextToken());
+								double delay = Double.parseDouble(st2.nextToken());
 								cliente.getSoundClient().audioFadeIn(st2.nextToken("").trim(),loopTimes,seconds,delay);
 							}
 							else
@@ -252,6 +252,24 @@ public class ServerProxy extends Thread implements ARSPConstants
 			catch ( Exception e )
 			{
 				e.printStackTrace();
+			}
+		}
+		else if ( command.equalsIgnoreCase( AUDIO_SET_GAIN ) )
+		{
+			if ( cliente.isSoundEnabled() )
+			{
+				StringTokenizer st2 = new StringTokenizer(arguments);
+				try
+				{
+					double gain = 0.0;
+					if ( st2.hasMoreTokens() ) gain = Double.valueOf(st2.nextToken()).doubleValue();
+					if ( st2.hasMoreTokens() ) 
+						cliente.getSoundClient().audioSetGain(st2.nextToken(""),gain);
+				}
+				catch ( NumberFormatException nfe )
+				{
+					nfe.printStackTrace();
+				}
 			}
 		}
 				
