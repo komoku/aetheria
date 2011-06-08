@@ -23,7 +23,7 @@ public class GameEngineThread extends Thread
 	
 	public static String getVersionNumber()
 	{
-		return "1.1.2";
+		return "1.1.3";
 	}
 
 	
