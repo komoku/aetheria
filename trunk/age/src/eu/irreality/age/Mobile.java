@@ -5358,7 +5358,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			}
 
 			//write ( io.getColorCode("action") + "Te quitas " + it.constructName2OneItem() + ".\n" + io.getColorCode("reset") );
-			writeAction ( mundo.getMessages().getMessage("you.unwear.item","$item",it.constructName2OneItem(),new Object[]{this,it}) );
+			writeAction ( mundo.getMessages().getMessage("you.unwear.item","$item",it.constructName2OneItem(this),new Object[]{this,it}) );
 						
 			//habitacionActual.reportActionAuto ( this , null , "$1 se quita " + it.constructName2OneItem() + ".\n" , false );
 			habitacionActual.reportActionAuto ( this , null , mundo.getMessages().getMessage("someone.unwears.item","$item",it.constructName2OneItem(),new Object[]{this,it}) , false );
