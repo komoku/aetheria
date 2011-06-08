@@ -400,6 +400,7 @@ public class VisualConfiguration
 						URLUtils.openFileOrURL(f);
 					Font fuente = Font.createFont ( Font.TRUETYPE_FONT , is );
 					laFuente = fuente.deriveFont((float)fontSize);
+					GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(laFuente);
 					usingDefaultFont = false;
 				}
 				catch ( Exception ex )

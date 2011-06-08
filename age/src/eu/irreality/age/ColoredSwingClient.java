@@ -215,8 +215,16 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		laVentana.getMainPanel().setBackground ( c.getBackgroundColor() ); 
 		StyleConstants.setForeground(atributos,c.getForegroundColor());
 		elAreaTexto.repaint();
-		elAreaTexto.setFont(c.getFont());
-		elCampoTexto.setFont(c.getFont().deriveFont((float)24.0));
+		Font laFuente = c.getFont();
+		elAreaTexto.setFont(laFuente);
+		//System.err.println("Size matters: " + c.getFont().getSize());
+		//elAreaTexto.setFont(c.getFont().deriveFont((float)24.0));
+		//elAreaTexto.repaint();
+		GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(laFuente);
+		setCurrentOutputFont(laFuente);
+		StyleConstants.setFontFamily((MutableAttributeSet)atributos,laFuente.getFamily());
+		StyleConstants.setFontSize((MutableAttributeSet)atributos,laFuente.getSize());
+		elCampoTexto.setFont(laFuente.deriveFont((float)24.0));
 		this.vc = c;
 	}
 	
@@ -1425,10 +1433,15 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	 */
 	public void setCurrentOutputFont ( final Font f )
 	{
+		//write("Setting current output font: " + f + "\n");
+		new Throwable().printStackTrace();
+		//GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(f);
 		execInDispatchThread ( new Runnable() { public void run() { 
+			GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(f);
 			((FancyAttributeSet)atributos).setFont(f);
 			StyleConstants.setFontFamily((MutableAttributeSet)atributos,f.getFamily());
 			StyleConstants.setFontSize((MutableAttributeSet)atributos,f.getSize());
+			//write("Done the setting to " + f);
 			} } );
 	}
 	
@@ -1460,7 +1473,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		try
 		{
 			Font fuente = Font.createFont ( Font.TRUETYPE_FONT , is );
-			setCurrentOutputFont ( fuente.deriveFont((float)fontSize) );
+			Font derived = fuente.deriveFont((float)fontSize);
+			setCurrentOutputFont ( derived );
 		}
 		catch ( Exception e )
 		{
