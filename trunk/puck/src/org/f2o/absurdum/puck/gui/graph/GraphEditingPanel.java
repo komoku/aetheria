@@ -31,6 +31,7 @@ import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
@@ -46,6 +47,7 @@ import org.f2o.absurdum.puck.gui.DeleteArrowAction;
 import org.f2o.absurdum.puck.gui.DeleteNodeAction;
 import org.f2o.absurdum.puck.gui.PasteNodeAction;
 import org.f2o.absurdum.puck.gui.PropertiesPanel;
+import org.f2o.absurdum.puck.gui.PuckFrame;
 import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
 import org.f2o.absurdum.puck.gui.panels.EntityPanel;
 import org.f2o.absurdum.puck.gui.panels.RoomPanel;
@@ -1089,17 +1091,24 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 		*/
 	}
 	
+	
+	public boolean confirmDeletion ( Object obj )
+	{
+		int option = JOptionPane.showConfirmDialog( null , Messages.getInstance().getMessage("confirm.delete.element.message") , Messages.getInstance().getMessage("confirm.delete.element.title") + " " + obj , JOptionPane.OK_CANCEL_OPTION , JOptionPane.QUESTION_MESSAGE  );
+		return ( option == JOptionPane.OK_OPTION );
+	}
+	
 	public void keyPressed ( KeyEvent evt ) {}
 	public void keyReleased ( KeyEvent evt ) 
 	{
 		//System.err.println("Released " + evt.getKeyCode() + " vs " + KeyEvent.VK_DELETE );
 		if ( evt.getKeyCode() == KeyEvent.VK_DELETE )
 		{
-			if ( selectedNode != null )
+			if ( selectedNode != null && confirmDeletion(selectedNode.getName()) )
 			{
 				totallyRemoveNode(selectedNode);
 			}
-			else if ( selectedArrow != null )
+			else if ( selectedArrow != null && confirmDeletion(selectedArrow.getName()) )
 			{
 				selectedArrow.getSource().removeArrow(selectedArrow);
 			}
