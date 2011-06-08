@@ -732,6 +732,24 @@ public class AGESoundClient implements SoundClient
 		}
 	}
 	
+	public void audioSetGain ( final URL u , final double gain )
+	{
+		final BasicPlayer bp = (BasicPlayer) basicPlayers.get(u);
+		try 
+		{
+			bp.setGain(gain);
+		} 
+		catch (BasicPlayerException e1) 
+		{
+			e1.printStackTrace();
+		}
+	}
+	
+	public void audioSetGain ( String s , double gain )
+	{
+		audioSetGain ( URLUtils.stringToURL ( s ) , gain );
+	}
+	
 	public void audioFadeIn ( final URL u , final int loopTimes , final double seconds , final double delay ) throws UnsupportedAudioFileException, LineUnavailableException, IOException
 	{
 

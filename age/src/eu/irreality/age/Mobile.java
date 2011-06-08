@@ -7150,6 +7150,26 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			}
 		}
 	}
+	
+	public boolean setAudioGainIfAvailable ( String audioFileName , double gain )
+	{
+		SoundClient sc = getSoundClientIfAvailable();
+		if ( sc == null ) return false;
+		try
+		{
+			sc.audioSetGain ( audioFileName , gain );
+			return true;
+		}
+		catch ( Exception e )
+		{
+			return false;
+		}
+	}
+	
+	public boolean setAudioGainIfAvailable ( URL u , double gain )
+	{
+		return setAudioGainIfAvailable ( u.toString() , gain );
+	}
 
 	/*
 	public boolean playMODIfAvailable ( URL modURL )
