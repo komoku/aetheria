@@ -1570,7 +1570,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		{
 			try
 			{
-				SwingUtilities.invokeLater(r);
+				//changed from invokeLater, 2011-06-09.
+				SwingUtilities.invokeAndWait(r);
 			}
 			catch ( Exception ie )
 			{
