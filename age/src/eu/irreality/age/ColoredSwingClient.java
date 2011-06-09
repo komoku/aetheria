@@ -1434,7 +1434,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	public void setCurrentOutputFont ( final Font f )
 	{
 		//write("Setting current output font: " + f + "\n");
-		new Throwable().printStackTrace();
+		//new Throwable().printStackTrace();
 		//GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(f);
 		execInDispatchThread ( new Runnable() { public void run() { 
 			GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(f);
