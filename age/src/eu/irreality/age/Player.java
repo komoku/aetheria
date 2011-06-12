@@ -4104,7 +4104,7 @@ public class Player extends Mobile implements Informador
 			if ( inv.elementAt(i).isContainer() && !( inv.elementAt(i).isCloseable() && !inv.elementAt(i).isOpen() ) )
 			{
 				String tempstring = infoString;
-				infoString += " en ";
+				infoString += " de ";
 				infoString += inv.elementAt(i).constructName2True ( 1 , this );
 				//para que muestre "coges la moneda EN el cofre", p.ej.
 				mirado = cogerItem ( args , inv.elementAt(i).getContents() , infoString );
@@ -4119,7 +4119,7 @@ public class Player extends Mobile implements Informador
 				if ( inv.elementAt(i).isContainer() && !( inv.elementAt(i).isCloseable() && !inv.elementAt(i).isOpen() ) )
 				{
 					String tempstring = infoString;
-					infoString += " en ";
+					infoString += " de ";
 					infoString += inv.elementAt(i).constructName2True ( 1 , this );
 					mirado = cogerContenido ( args , inv.elementAt(i).getContents() , infoString );
 					if ( mirado ) break;
@@ -4141,7 +4141,7 @@ public class Player extends Mobile implements Informador
 			if ( inv.elementAt(i).isContainer() && !( inv.elementAt(i).isCloseable() && !inv.elementAt(i).isOpen() ) )
 			{
 				String tempstring = infoString;
-				infoString += " en ";
+				infoString += " de ";
 				infoString += inv.elementAt(i).constructName2True ( 1 , this );
 				//para que muestre "coges la moneda EN el cofre", p.ej.
 				mirado = cogerItem ( inv.elementAt(i).getContents() , infoString );
@@ -4156,7 +4156,7 @@ public class Player extends Mobile implements Informador
 				if ( inv.elementAt(i).isContainer() && !( inv.elementAt(i).isCloseable() && !inv.elementAt(i).isOpen() ) )
 				{
 					String tempstring = infoString;
-					infoString += " en ";
+					infoString += " de ";
 					infoString += inv.elementAt(i).constructName2True ( 1 , this );
 					mirado = cogerContenido ( inv.elementAt(i).getContents() , infoString );
 					if ( mirado ) break;
