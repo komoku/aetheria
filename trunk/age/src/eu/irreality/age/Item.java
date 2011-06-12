@@ -2824,5 +2824,14 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	{
 		return itsCode;
 	}
+	
+	public boolean removeItem ( Item viejo )
+	{
+		if ( !isContainer() ) return false;
+		else
+		{
+			return inventory.removeItem(viejo);
+		}
+	}
 
 } //end class item
