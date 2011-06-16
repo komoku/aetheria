@@ -1,13 +1,14 @@
 
 FUEGO.
-v1.2, 2008-09-16
-(c) 2008 Carlos Gómez (Al-Khwarizmi)
+v1.2.1, 2011-05-05
+(c) 2008, 2011 Carlos Gómez (Al-Khwarizmi)
+Este documento actualizado 2011-05-05
 
 Se trata de una aventura contrarreloj. Has de escapar de un incendio. Pensada para jugar en tiempo real, tienes que resolverla rápidamente o morirás.
 
 Para jugarla, extraerla en el directorio del motor Aetheria Game Engine (AGE). Ejecutar el motor, y hacer doble click sobre "Fuego" en el cargador de juegos.
 
-También puedes descargar un pack jugable de AGE con varias aventuras (incluyendo ésta) de http://irreality.eu/aetheria
+También puedes descargar un pack jugable de AGE con varias aventuras (incluyendo ésta) de http://code.google.com/p/aetheria
 
 
 

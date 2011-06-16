@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<World author="Al-Khwarizmi" date="2008-09-15" moduleName="Fuego" type="Aventura de velocidad" version="1.2" worldDir="." worldName="Fuego">
+<World author="Al-Khwarizmi" date="2011-06-16" moduleName="Fuego" parserVersion="1.1" type="Aventura de velocidad" version="1.2.2" worldDir="." worldName="Fuego">
 <IdeMetaInf>
-<View xoffset="-22.0" yoffset="-21.0" zoom="2.0"/>
+<View xoffset="-19.0" yoffset="-24.0" zoom="2.0"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Habitación de hotel" x="120" y="260"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Pasillo (oeste)" x="120" y="180"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Pasillo (este)" x="240" y="180"/>
@@ -25,10 +25,10 @@
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Puerta del ascensor" x="420" y="120"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Puerta verde" x="440" y="240"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Llamas" x="400" y="320"/>
-<Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Incendio" x="360" y="320"/>
-<Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Bomberos" x="360" y="380"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Pata de la cama" x="0" y="320"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Pata de la mesilla" x="200" y="260"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Incendio" x="360" y="320"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Bomberos" x="360" y="380"/>
 </IdeMetaInf>
 <Code language="BeanShell"><![CDATA[/*Introducción del juego para un jugador*/
 
@@ -50,8 +50,11 @@ void intro( Player aPlayer )
 	aPlayer.borrarPantalla();
 	aPlayer.write("¡¡¡¡MUY IMPORTANTE!!!!\n");
 	aPlayer.write("Nota para jugar esta aventura:\n");
-	aPlayer.write("Pon el modo Tiempo Real AHORA (Servidor - Modo de Juego - Tiempo Real). En esta aventura es importante hacer las cosas con cierta rapidez, así que es un desafío pasársela a tiempo real.\n");
-	
+	//aPlayer.write("Pon el modo Tiempo Real AHORA (Servidor - Modo de Juego - Tiempo Real). En esta aventura es importante hacer las cosas con cierta rapidez, así que es un desafío pasársela a tiempo real.\n");
+    aPlayer.write("Esta aventura es en TIEMPO REAL. Esto quiere decir que las acciones tardan un tiempo realista en realizarse, " 
+    + "y también que puede ser importante tomar decisiones rápido, porque desde el momento en que "
+    + "selecciones el nivel de dificultad sucederán cosas aunque tú no teclees nada. ¡Ten cuidado!\n");	
+
 	aPlayer.write("\n****\n\n");
 	
 	
@@ -144,12 +147,13 @@ void parseCommand( Player aPlayer , String verb , String args )
 <Input color="#ff9999"/>
 <Description color="#ffcc66"/>
 <Foreground color="#ffffff"/>
+<Important color="#ffffff"/>
 <Denial color="#ff3300"/>
 <Action color="#cc6600"/>
 <Background color="#000000"/>
 <Error color="#cc0000"/>
 </Colors>
-<Font filename="Courier.ttf" name="Arial" size="16.0"/>
+<Font filename="Courier.ttf" name="Arial" size="20.0"/>
 </VisualConfiguration>
 <Rooms>
 <Room name="Habitación de hotel">
@@ -170,6 +174,10 @@ void parseCommand( Player aPlayer , String verb , String args )
 <DescriptionList>
 <Description>
 <Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")==0)</Condition>
+
+
+
+
 
 
 
@@ -209,9 +217,17 @@ La ventana de la habitación da a un patio de luces... y mirando hacia abajo, ve
 
 
 
+
+
+
+
 La ventana de la habitación da a un patio de luces... y mirando hacia abajo, ves un montón de fuego, el patio está siendo consumido por llamas que alcanzan varios pisos de altura. Imposible salir por ahí, ¡qué horror!</Description>
 <Description>
 <Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")&gt;=2)</Condition>
+
+
+
+
 
 
 
@@ -326,10 +342,10 @@ void parseCommand( Player aPlayer , String verb , String args )
 <Relationship id="Puerta de madera">
 <PropertyList/>
 </Relationship>
-<Relationship id="Jugador">
+<Relationship id="Pata de la mesilla">
 <PropertyList/>
 </Relationship>
-<Relationship id="Pata de la mesilla">
+<Relationship id="Jugador">
 <PropertyList/>
 </Relationship>
 </RelationshipList>
@@ -762,9 +778,17 @@ void onRoomText ( String text )
 
 
 
+
+
+
+
 La ventana da a la calle, donde se ven algunos curiosos mirando hacia arriba. Pero te encuentras en un décimo piso y no parece que haya ninguna cornisa, así que es imposible salir por ahí sin matarse.</Description>
 <Description>
 <Condition language="BeanShell">world.getAbstractEntity("Bomberos").getPropertyValueAsString("firemenState").equals("coming")</Condition>
+
+
+
+
 
 
 
@@ -790,9 +814,17 @@ La ventana da a la calle, donde se ven algunos curiosos mirando hacia arriba. Pe
 
 
 
+
+
+
+
 La ventana da a la calle, donde puedes ver, muy abajo (te encuentras en un décimo piso) un coche de bomberos y a un hombre con megáfono.</Description>
 <Description>
 <Condition language="BeanShell">world.getAbstractEntity("Bomberos").getPropertyValueAsString("firemenState").equals("announcing")</Condition>
+
+
+
+
 
 
 
@@ -812,6 +844,10 @@ La ventana da a la calle, donde puedes ver, muy abajo (te encuentras en un déci
 <DescriptionList>
 <Description>
 <Condition language="BeanShell">world.getAbstractEntity("Bomberos").getPropertyValueAsString("firemenState").equals("announcing") || world.getAbstractEntity("Bomberos").getPropertyValueAsString("firemenState").equals("installing")</Condition>
+
+
+
+
 
 
 
@@ -960,7 +996,7 @@ void parseCommand( Player aPlayer , String verb , String args )
 </Room>
 </Rooms>
 <Items>
-<Item closeable="false" gender="false" lockable="false" name="Camastrujamiento Terminaloide" openable="false" unlockable="false" volume="5" weight="5">
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="Camastrujamiento Terminaloide" openable="false" unlockable="false" volume="5" weight="5">
 <SingularNames>
 <Description>cama</Description>
 </SingularNames>
@@ -987,7 +1023,7 @@ void parseCommand( Player aPlayer , String verb , String args )
 <PropertyList/>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="false" lockable="false" name="Cama" openable="false" unlockable="false" volume="5000" weight="5000">
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="Cama" openable="false" unlockable="false" volume="5000" weight="5000">
 <SingularNames/>
 <PluralNames/>
 <SingularReferenceNames>
@@ -1019,7 +1055,7 @@ void parseCommand( Player aPlayer , String verb , String args )
 <PropertyList/>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="false" lockable="false" name="Mesilla de noche" openable="false" unlockable="false" volume="4000" weight="4000">
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="Mesilla de noche" openable="false" unlockable="false" volume="4000" weight="4000">
 <SingularNames/>
 <PluralNames/>
 <SingularReferenceNames>
@@ -1067,7 +1103,7 @@ void parseCommand( Player aPlayer , String verb , String args )
 </Relationship>
 </RelationshipList>
 </Item>
-<Item closeable="false" gender="true" lockable="false" name="Teléfono fijo" openable="false" unlockable="false" volume="5" weight="5">
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Teléfono fijo" openable="false" unlockable="false" volume="5" weight="5">
 <SingularNames>
 <Description>teléfono fijo</Description>
 </SingularNames>
@@ -1158,7 +1194,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 }]]></Code>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="true" lockable="false" name="Telefono móvil" openable="false" unlockable="false" volume="5" weight="5">
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Telefono móvil" openable="false" unlockable="false" volume="5" weight="5">
 <SingularNames>
 <Description>teléfono móvil</Description>
 </SingularNames>
@@ -1303,7 +1339,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 }]]></Code>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="true" lockable="false" name="Extintor" openable="false" unlockable="false" volume="50" weight="50">
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Extintor" openable="false" unlockable="false" volume="50" weight="50">
 <SingularNames>
 <Description>extintor</Description>
 </SingularNames>
@@ -1427,7 +1463,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 }]]></Code>
 <RelationshipList/>
 </Item>
-<Item closeable="true" gender="false" lockable="false" name="Puerta de madera" openable="true" unlockable="false" volume="4000" weight="4000">
+<Item canGet="true" closeable="true" gender="false" lockable="false" name="Puerta de madera" openable="true" unlockable="false" volume="4000" weight="4000">
 <SingularNames/>
 <PluralNames/>
 <SingularReferenceNames>
@@ -1480,7 +1516,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 }]]></Code>
 <RelationshipList/>
 </Item>
-<Item closeable="true" gender="false" lockable="false" name="Puerta del almacén" openable="true" unlockable="false" volume="4000" weight="4000">
+<Item canGet="true" closeable="true" gender="false" lockable="false" name="Puerta del almacén" openable="true" unlockable="false" volume="4000" weight="4000">
 <SingularNames/>
 <PluralNames/>
 <SingularReferenceNames>
@@ -1542,7 +1578,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 }]]></Code>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="false" lockable="false" name="Pata de cabra" openable="false" unlockable="false" volume="4" weight="4">
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="Pata de cabra" openable="false" unlockable="false" volume="4" weight="4">
 <SingularNames>
 <Description>pata de cabra</Description>
 </SingularNames>
@@ -1628,7 +1664,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 }]]></Code>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="false" lockable="false" name="Antorcha improvisada" openable="false" unlockable="false" volume="4" weight="4">
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="Antorcha improvisada" openable="false" unlockable="false" volume="4" weight="4">
 <SingularNames>
 <Description>antorcha improvisada</Description>
 </SingularNames>
@@ -1659,7 +1695,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 </PropertyList>
 <RelationshipList/>
 </Item>
-<Item closeable="true" gender="false" lockable="false" name="Puerta del ascensor" openable="true" unlockable="false" volume="4000" weight="4000">
+<Item canGet="true" closeable="true" gender="false" lockable="false" name="Puerta del ascensor" openable="true" unlockable="false" volume="4000" weight="4000">
 <SingularNames/>
 <PluralNames/>
 <SingularReferenceNames>
@@ -1718,7 +1754,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 }]]></Code>
 <RelationshipList/>
 </Item>
-<Item closeable="true" gender="false" lockable="false" name="Puerta verde" openable="true" unlockable="true" volume="4000" weight="4000">
+<Item canGet="true" closeable="true" gender="false" lockable="false" name="Puerta verde" openable="true" unlockable="true" volume="4000" weight="4000">
 <SingularNames/>
 <PluralNames/>
 <SingularReferenceNames>
@@ -1779,7 +1815,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 }]]></Code>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="true" lockable="false" name="Llamas" openable="false" unlockable="false" volume="0" weight="0">
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Llamas" openable="false" unlockable="false" volume="0" weight="0">
 <SingularNames/>
 <PluralNames/>
 <SingularReferenceNames>
@@ -1845,7 +1881,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 }]]></Code>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="false" lockable="false" name="Pata de la cama" openable="false" unlockable="false" volume="5" weight="5">
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="Pata de la cama" openable="false" unlockable="false" volume="5" weight="5">
 <SingularNames>
 <Description>
 <Condition language="BeanShell">self.getPropertyValueAsBoolean("gotten")==true</Condition>pata</Description>
@@ -1911,11 +1947,10 @@ void parseCommand( Mobile aCreature , String verb , String args )
 	//terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
 	//comando y ejecución de la acción correspondiente
 	
-}
-]]></Code>
+}]]></Code>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="false" lockable="false" name="Pata de la mesilla" openable="false" unlockable="false" volume="0" weight="0">
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="Pata de la mesilla" openable="false" unlockable="false" volume="0" weight="0">
 <SingularNames/>
 <PluralNames/>
 <SingularReferenceNames>
@@ -1946,15 +1981,15 @@ void parseCommand( Mobile aCreature , String verb , String args )
 </Item>
 </Items>
 <Mobiles>
-<Mobile gender="true" hp="10" maxhp="10" maxmp="10" mp="10" properName="true" name="mujer joven">
+<Mobile gender="true" hp="10" maxhp="10" maxmp="10" mp="10" name="mujer joven">
 <SingularNames>
-<Description>
+<Description properName="true">
 <Condition language="BeanShell">viewer == null</Condition>una mujer joven</Description>
-<Description>
+<Description properName="true">
 <Condition language="BeanShell">(viewer != null) &amp;&amp; (self.getRelationshipPropertyValueAsString(viewer,"nombre") == null || self.getRelationshipPropertyValueAsString(viewer,"nombre").equals("unknown")) &amp;&amp; !viewer.getPropertyValueAsBoolean("knowsMujerJoven")</Condition>una mujer joven</Description>
-<Description>
+<Description properName="true">
 <Condition language="BeanShell">(viewer != null) &amp;&amp; (self.getRelationshipPropertyValueAsString(viewer,"nombre") == null || self.getRelationshipPropertyValueAsString(viewer,"nombre").equals("unknown")) &amp;&amp; viewer.getPropertyValueAsBoolean("knowsMujerJoven")</Condition>la mujer joven</Description>
-<Description>
+<Description properName="true">
 <Condition language="BeanShell">(viewer != null &amp;&amp; self.getRelationshipPropertyValueAsString(viewer,"nombre") != null &amp;&amp; !self.getRelationshipPropertyValueAsString(viewer,"nombre").equals("unknown"))</Condition>la joven María</Description>
 </SingularNames>
 <PluralNames>
@@ -2503,6 +2538,8 @@ boolean parseDifLevel ( Player aPlayer , String entrada )
 					
 				aPlayer.borrarPantalla();
 
+                Thread.currentThread().setRealTimeEnabled(true);
+
 				aPlayer.write("¡BOOOOOOOOOM! ¡BOOOOOOOOOM! ¡Aaah!\n");
 
 				aPlayer.write("Dos ensordecedores estampidos, acompañados de agudos gritos de terror, te despiertan de golpe. Levantándote al momento de la cama, te das cuenta de que te encuentras bien; pero algo horrible debe de haber pasado en el hotel. Desde alguna otra parte del edificio te llega el grito inconfundible de alguien que se desgañita: \"¡FUEGO! ¡FUEGO!\"\n");
@@ -2516,9 +2553,7 @@ boolean parseDifLevel ( Player aPlayer , String entrada )
 		}
 
 
-}
-
-]]></Code>
+}]]></Code>
 <Traits>
 <SkillList/>
 </Traits>
