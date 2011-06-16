@@ -314,7 +314,7 @@ public class GameEngineThread extends Thread
 				break;
 			}
 				
-			if ( realTimeEnabled )
+			if ( realTimeEnabled && !theWorld.isLoadingLog() )
 			{
 				esperarCuanto();
 			}

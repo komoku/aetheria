@@ -212,6 +212,7 @@ public class World implements Informador , SupportingCode
 	 */
 	public void prepareLog ( InputStream logInput )
 	{
+		from_log = true;
 		logReader = new BufferedReader ( Utility.getBestInputStreamReader ( logInput ) );
 		try
 		{
@@ -2228,7 +2229,10 @@ public class World implements Informador , SupportingCode
 	}
 
 
-
+	public boolean isLoadingLog()
+	{
+		return from_log;
+	}
 
 
 
