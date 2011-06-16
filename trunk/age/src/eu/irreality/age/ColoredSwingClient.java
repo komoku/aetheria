@@ -48,7 +48,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	private Document doc;
 	private MutableAttributeSet atributos = new FancyAttributeSet();
 	
-	private Color textFieldForeground = Color.black; //this color will turn to red sometimes in real time
+	private Color textFieldForeground = Color.black; //colour of the text field when it's responding. the text field will turn to red sometimes in real time, then go back to this colour
 	
 
 	//if deactivated, all input-getting methods will automatically return no input
@@ -1017,7 +1017,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		showAfterLogLoad();
 		
 		String temp = currentInput;
-		setTextFieldForeground(Color.black);
+		setTextFieldForeground(textFieldForeground);
 		currentInput = null;
 		if ( temp == null ) //log a noop
 			loguear("");

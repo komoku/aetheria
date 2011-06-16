@@ -42,6 +42,14 @@ void intro( Player aPlayer )
 		return;
 		
 	aPlayer.setProperty("sawIntro",true);
+
+
+    InputOutputClient client = aPlayer.getIO();
+    if ( client instanceof ColoredSwingClient )
+    {
+        client.setInputFieldBackground(Color.black);
+        client.setInputFieldForeground(Color.white);
+    }
 	
 	//aPlayer: jugador al que le hacemos la introducción.
 
