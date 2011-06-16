@@ -1,0 +1,228 @@
+//parte de la biblioteca light.bsh
+
+//command parsing
+
+String parseCommand ( Mobile sujeto , String cmd , String args )
+{
+	libinvoke ( "parseCommand" , new Object[] { sujeto , cmd , args } );
+	return null;
+}
+
+String getDescription ( Entity viewer )
+{
+	String s = libinvoke ( "getDescription" , new Object[] { viewer } );
+	if ( s != null )
+		return s;
+	else
+		return self.getDescription(viewer); 
+}
+
+String light_getDescription ( Entity viewer )
+{
+	if ( isDark() )
+	{
+		if ( self.getPropertyValueAsString("light_darkness_description") == null )
+			return "Está oscuro, no se ve nada.";
+		else
+			return self.getPropertyValueAsString("light_darkness_description");
+	}
+	return null;
+}
+
+
+void onEnterRoom ( Mobile m )
+{
+	libinvoke ( "onEnterRoom" , new Object[] { m } );
+}
+
+void light_onEnterRoom ( Mobile m )
+{
+	
+	//scan for light sources in mob's inventory and set room's relationship with them
+	Inventory inv = m.getInventory();
+	for ( int i = 0 ; i < inv.size() ; i++ )
+	{
+		Item it = inv.elementAt(i);
+		if ( it.getPropertyValueAsBoolean("light_source") )
+			self.setRelationshipProperty ( it , "light_source_in_room" , true );
+	}
+
+}
+
+void onExitRoom ( Mobile m )
+{
+	libinvoke ( "onExitRoom" , new Object[] { m } ); 
+}
+
+void light_onExitRoom ( Mobile m )
+{
+
+	//scan for light sources in mob's inventory and unset room's relationship with them
+	Inventory inv = m.getInventory();
+	for ( int i = 0 ; i < inv.size() ; i++ )
+	{
+		Item it = inv.elementAt(i);
+		if ( it.getPropertyValueAsBoolean("light_source") )
+			self.setRelationshipProperty ( it , "light_source_in_room" , false );
+	}
+
+}
+
+Item lightSource;
+
+//método que nos dice si la habitación está oscura
+//efecto lateral: pone lo que nos permite ver en lightSource.
+boolean isDark ( )
+{
+
+	//see if room is in the dark
+	
+	boolean darkness = false;
+	
+	//Item lightSource; //lo que permite ver (atr. ext.)
+	
+	if ( self.getPropertyValueAsBoolean("dark") )
+	{
+		darkness = true;
+	
+		//check if there are light sources in the room
+		
+		Inventory roomInv = self.getInventory();
+		for ( int i = 0 ; i < roomInv.size() ; i++ )
+		{
+			Item it = roomInv.elementAt(i);
+			if ( self.getRelationshipPropertyValueAsBoolean( it , "light_source_in_room" ) && it.getPropertyValueAsBoolean("light_enabled") )
+			{
+				darkness = false;
+				lightSource = it;
+				break;
+			}
+		}
+		
+		if ( darkness )
+		{
+			//check if there are light sources held by mobiles in the room
+			MobileList ml = self.getMobiles();
+			for ( int k = 0 ; k < ml.size() ; k++ )
+			{
+				Mobile m = ml.elementAt(k);
+				Inventory mobInv = m.getInventory();
+				for ( int i = 0 ; i < mobInv.size() ; i++ )
+				{
+					Item it = mobInv.elementAt(i);
+					if ( self.getRelationshipPropertyValueAsBoolean( it , "light_source_in_room" ) && it.getPropertyValueAsBoolean("light_enabled") )
+					{
+						darkness = false;
+						lightSource = it;
+						break;
+					}
+				}
+				if ( !darkness ) break;
+			}
+			
+		}
+		
+	}
+	
+	return darkness;
+	
+}
+
+//configura la habitación para que permita añadir o quitar comandos que se pueden llevar a cabo en la oscuridad;
+//pero inicialmente los comandos presentes serán los por defecto.
+void default_commands ( )
+{
+	self.setProperty("light_custom_commands",true);
+	self.setProperty("light_custom_command_enabled_ir",true);
+	self.setProperty("light_custom_command_enabled_encender",true);
+	self.setProperty("light_custom_command_enabled_apagar",true);
+	self.setProperty("light_custom_command_enabled_inventario",true);
+	self.setProperty("light_custom_command_enabled_esperar",true);
+	self.setProperty("light_custom_command_enabled_mirar",true);
+	self.setProperty("light_custom_command_enabled_decir",true);
+}
+
+//permite que un comando sea llevado a cabo en la oscuridad.
+void allow_command ( String verb )
+{
+	if ( !self.getPropertyValueAsBoolean("light_custom_commands") )
+		default_commands();
+	self.setProperty("light_custom_command_enabled_"+verb,true);
+}
+
+//permite que un comando no pueda ser llevado a cabo en la oscuridad.
+void disallow_command ( String verb )
+{
+	if ( !self.getPropertyValueAsBoolean("light_custom_commands") )
+		default_commands();
+	self.setProperty("light_custom_command_enabled_"+verb,false);
+}
+
+void set_too_dark_sentence ( String newSentence )
+{
+	self.setProperty("light_too_dark_sentence",newSentence);
+}
+
+void set_darkness_description ( String newSentence )
+{
+	self.setProperty("light_darkness_description",newSentence);
+}
+
+String light_parseCommand ( Mobile sujeto , String cmd , String args )
+{
+	
+	//check if room is in the dark
+	boolean darkness = isDark();
+	
+	if ( darkness ) 
+	{
+	
+		if ( cmd.equalsIgnoreCase("mirar") )
+		{
+			System.out.println("Lila Pause!");
+			sujeto.escribir(sujeto.getIO().getColorCode("description")+self.getDescription(sujeto)+sujeto.getIO().getColorCode("reset")+"\n");
+			end();
+		}
+	
+		//check if command is allowed
+		boolean allowed; 
+	
+		if ( self.getPropertyValueAsBoolean("light_custom_commands") )
+		{
+			if ( self.getPropertyValueAsBoolean("light_custom_command_enabled_" + cmd) )
+				allowed = true;
+			else
+				allowed = false;
+		}
+		else if ( !cmd.equalsIgnoreCase("ir") && !cmd.equalsIgnoreCase("encender") && !cmd.equalsIgnoreCase("inventario") && !cmd.equalsIgnoreCase("esperar") && !cmd.equalsIgnoreCase("apagar") && !cmd.equalsIgnoreCase("tocar") && !cmd.equalsIgnoreCase("decir") && !cmd.equalsIgnoreCase("mirar") )
+			allowed = false;
+		else
+			allowed = true;
+		System.out.println("Allowed.");
+		if ( !allowed )
+		{
+			if ( self.getPropertyValueAsString("light_too_dark_sentence") == null )
+				sujeto.escribir("¡Está demasiado oscuro para hacer eso!\n");
+			else
+				sujeto.escribir(self.getPropertyValueAsString("light_too_dark_sentence")+"\n");
+			end();
+		}
+	
+	}
+	else if ( self.getPropertyValueAsBoolean("dark") )
+	{
+	
+		System.out.println("Elsie. " + cmd);
+		if ( cmd.equalsIgnoreCase("mirar") )
+		{
+			System.out.println("lSource = " + lightSource);
+			sujeto.escribir("La luz de " + lightSource.constructName2OneItem(sujeto) + " te permite ver.\n");
+		}
+	
+	}
+	
+	return null;
+	
+	
+}
+

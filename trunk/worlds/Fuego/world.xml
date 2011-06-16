@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <World author="Al-Khwarizmi" date="2011-06-16" moduleName="Fuego" parserVersion="1.1" type="Aventura de velocidad" version="1.2.2" worldDir="." worldName="Fuego">
 <IdeMetaInf>
-<View xoffset="-19.0" yoffset="-24.0" zoom="2.0"/>
+<View xoffset="24.0" yoffset="-50.0" zoom="2.0"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Habitación de hotel" x="120" y="260"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Pasillo (oeste)" x="120" y="180"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Pasillo (este)" x="240" y="180"/>
-<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Almacén" x="240" y="80"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Dentro del ascensor (inalcanzable)" x="360" y="80"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Sala del ascensor" x="360" y="180"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Sala de mantenimiento este" x="480" y="180"/>
@@ -29,6 +28,7 @@
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Pata de la mesilla" x="200" y="260"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Incendio" x="360" y="320"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Bomberos" x="360" y="380"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Almacén" x="240" y="80"/>
 </IdeMetaInf>
 <Code language="BeanShell"><![CDATA[/*Introducción del juego para un jugador*/
 
@@ -153,7 +153,7 @@ void parseCommand( Player aPlayer , String verb , String args )
 <Background color="#000000"/>
 <Error color="#cc0000"/>
 </Colors>
-<Font filename="Courier.ttf" name="Arial" size="20.0"/>
+<Font filename="marydbol.ttf" name="Arial" size="28.0"/>
 </VisualConfiguration>
 <Rooms>
 <Room name="Habitación de hotel">
@@ -174,6 +174,9 @@ void parseCommand( Player aPlayer , String verb , String args )
 <DescriptionList>
 <Description>
 <Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")==0)</Condition>
+
+
+
 
 
 
@@ -221,9 +224,15 @@ La ventana de la habitación da a un patio de luces... y mirando hacia abajo, ve
 
 
 
+
+
+
 La ventana de la habitación da a un patio de luces... y mirando hacia abajo, ves un montón de fuego, el patio está siendo consumido por llamas que alcanzan varios pisos de altura. Imposible salir por ahí, ¡qué horror!</Description>
 <Description>
 <Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")&gt;=2)</Condition>
+
+
+
 
 
 
@@ -478,94 +487,6 @@ void parseCommand( Player aPlayer , String verb , String args )
 </Relationship>
 </RelationshipList>
 </Room>
-<Room name="Almacén">
-<DescriptionList>
-<Description>
-<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")==0)</Condition>Te encuentras en un pequeño almacén, lleno de trastos sucios e inservibles.</Description>
-<Description>
-<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")==1)</Condition>Te encuentras en un pequeño almacén, lleno de trastos sucios e inservibles. Las llamas ya han entrado, y la puerta y algunos de los objetos del suelo están ardiendo. Pronto no se podrá estar aquí.</Description>
-<Description>
-<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")&gt;=2)</Condition>El almacén se ha convertido en un horno, las llamas se propagan por todas partes y llegan hasta el techo, quemándote a cada momento.</Description>
-</DescriptionList>
-<ExtraDescriptionList/>
-<PropertyList>
-<PropertyEntry name="dark" timeUnitsLeft="0" value="1"/>
-</PropertyList>
-<Code language="BeanShell"><![CDATA[include("lib/light.bsh");
- 
-void onInit()
-{
-	set_too_dark_sentence("¡Está demasiado oscuro para hacer nada, y corres peligro de que te coma un gru!");
-  	set_darkness_description("Este almacén está oscuro como boca de lobo. Corres el riesgo de ser devorado por un gru.");
-}
-
-/*Método de análisis sintáctico de la entrada en una habitación*/
-/*
-//NAH, USAMOS LA BIBLIOTECA LIGHT
-void parseCommand( Player aPlayer , String verb , String args )
-{
-	
-	//aPlayer: jugador que introduce un comando.
-	//verb: comando que introduce, por ejemplo "coger"
-	//args: resto de la orden que introduce, por ejemplo "el cuchillo grande"
-	
-	if ( self.getPropertyValueAsInteger("fire_level") == 0 ) //si no hay fuego, no hay luz a no ser que lleves o que esté aquí la antorcha
-	{
-		if ( !aPlayer.hasItem("Antorcha improvisada")  && !self.hasItem("Antorcha improvisada") )
-		{
-			if ( !verb.equalsIgnoreCase("ir") && !verb.equalsIgnoreCase("decir") && !verb.equalsIgnoreCase("gritar") )
-			{
-				aPlayer.writeDenial("Está oscuro como boca de lobo, no ves lo suficiente para hacer nada.");
-				end();
-			}
-		}
-	}
-
-	
-	//terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
-	//por defecto ante ella
-	//terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
-	//comando y ejecución de la acción correspondiente
-	
-}
-*/]]></Code>
-<PathList>
-<Path destination="Pasillo (este)" direction="sur" exitTime="3" standard="true">
-<AssociatedItem id="Puerta del almacén"/>
-<PropertyList/>
-<DescriptionList>
-<Description>
-<Condition language="BeanShell">self.isOpen()</Condition>Sales del almacén al pasillo.</Description>
-<Description>
-<Condition language="BeanShell">!self.isOpen()</Condition>La puerta del almacén está cerrada, tendrías que abrirla para salir.</Description>
-</DescriptionList>
-<CommandList>
-<Command name="salir"/>
-<Command name="fuera"/>
-<Command name="pasillo"/>
-<Command name="habitación"/>
-<Command name="habitacion"/>
-<Command name="sala"/>
-</CommandList>
-</Path>
-</PathList>
-<Inventory>
-<ItemRef id="Puerta del almacén"/>
-<ItemRef id="Pata de cabra"/>
-</Inventory>
-<MobileList/>
-<RelationshipList>
-<Relationship id="Pasillo (este)">
-<PropertyList/>
-</Relationship>
-<Relationship id="Puerta del almacén">
-<PropertyList/>
-</Relationship>
-<Relationship id="Pata de cabra">
-<PropertyList/>
-</Relationship>
-</RelationshipList>
-</Room>
 <Room name="Dentro del ascensor (inalcanzable)">
 <DescriptionList/>
 <ExtraDescriptionList/>
@@ -782,9 +703,15 @@ void onRoomText ( String text )
 
 
 
+
+
+
 La ventana da a la calle, donde se ven algunos curiosos mirando hacia arriba. Pero te encuentras en un décimo piso y no parece que haya ninguna cornisa, así que es imposible salir por ahí sin matarse.</Description>
 <Description>
 <Condition language="BeanShell">world.getAbstractEntity("Bomberos").getPropertyValueAsString("firemenState").equals("coming")</Condition>
+
+
+
 
 
 
@@ -818,9 +745,15 @@ La ventana da a la calle, donde se ven algunos curiosos mirando hacia arriba. Pe
 
 
 
+
+
+
 La ventana da a la calle, donde puedes ver, muy abajo (te encuentras en un décimo piso) un coche de bomberos y a un hombre con megáfono.</Description>
 <Description>
 <Condition language="BeanShell">world.getAbstractEntity("Bomberos").getPropertyValueAsString("firemenState").equals("announcing")</Condition>
+
+
+
 
 
 
@@ -844,6 +777,9 @@ La ventana da a la calle, donde puedes ver, muy abajo (te encuentras en un déci
 <DescriptionList>
 <Description>
 <Condition language="BeanShell">world.getAbstractEntity("Bomberos").getPropertyValueAsString("firemenState").equals("announcing") || world.getAbstractEntity("Bomberos").getPropertyValueAsString("firemenState").equals("installing")</Condition>
+
+
+
 
 
 
@@ -993,6 +929,94 @@ void parseCommand( Player aPlayer , String verb , String args )
 <Inventory/>
 <MobileList/>
 <RelationshipList/>
+</Room>
+<Room name="Almacén">
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")==0)</Condition>Te encuentras en un pequeño almacén, lleno de trastos sucios e inservibles.</Description>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")==1)</Condition>Te encuentras en un pequeño almacén, lleno de trastos sucios e inservibles. Las llamas ya han entrado, y la puerta y algunos de los objetos del suelo están ardiendo. Pronto no se podrá estar aquí.</Description>
+<Description>
+<Condition language="BeanShell">(self.getPropertyValueAsInteger("fire_level")&gt;=2)</Condition>El almacén se ha convertido en un horno, las llamas se propagan por todas partes y llegan hasta el techo, quemándote a cada momento.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList>
+<PropertyEntry name="dark" timeUnitsLeft="0" value="1"/>
+</PropertyList>
+<Code language="BeanShell"><![CDATA[include(world.getResource("lib/light.bsh"));
+ 
+void onInit()
+{
+	set_too_dark_sentence("¡Está demasiado oscuro para hacer nada, y corres peligro de que te coma un gru!");
+  	set_darkness_description("Este almacén está oscuro como boca de lobo. Corres el riesgo de ser devorado por un gru.");
+}
+
+/*Método de análisis sintáctico de la entrada en una habitación*/
+/*
+//NAH, USAMOS LA BIBLIOTECA LIGHT
+void parseCommand( Player aPlayer , String verb , String args )
+{
+	
+	//aPlayer: jugador que introduce un comando.
+	//verb: comando que introduce, por ejemplo "coger"
+	//args: resto de la orden que introduce, por ejemplo "el cuchillo grande"
+	
+	if ( self.getPropertyValueAsInteger("fire_level") == 0 ) //si no hay fuego, no hay luz a no ser que lleves o que esté aquí la antorcha
+	{
+		if ( !aPlayer.hasItem("Antorcha improvisada")  && !self.hasItem("Antorcha improvisada") )
+		{
+			if ( !verb.equalsIgnoreCase("ir") && !verb.equalsIgnoreCase("decir") && !verb.equalsIgnoreCase("gritar") )
+			{
+				aPlayer.writeDenial("Está oscuro como boca de lobo, no ves lo suficiente para hacer nada.");
+				end();
+			}
+		}
+	}
+
+	
+	//terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
+	//por defecto ante ella
+	//terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
+	//comando y ejecución de la acción correspondiente
+	
+}
+*/]]></Code>
+<PathList>
+<Path destination="Pasillo (este)" direction="sur" exitTime="3" standard="true">
+<AssociatedItem id="Puerta del almacén"/>
+<PropertyList/>
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">self.isOpen()</Condition>Sales del almacén al pasillo.</Description>
+<Description>
+<Condition language="BeanShell">!self.isOpen()</Condition>La puerta del almacén está cerrada, tendrías que abrirla para salir.</Description>
+</DescriptionList>
+<CommandList>
+<Command name="salir"/>
+<Command name="fuera"/>
+<Command name="pasillo"/>
+<Command name="habitación"/>
+<Command name="habitacion"/>
+<Command name="sala"/>
+</CommandList>
+</Path>
+</PathList>
+<Inventory>
+<ItemRef id="Puerta del almacén"/>
+<ItemRef id="Pata de cabra"/>
+</Inventory>
+<MobileList/>
+<RelationshipList>
+<Relationship id="Pasillo (este)">
+<PropertyList/>
+</Relationship>
+<Relationship id="Puerta del almacén">
+<PropertyList/>
+</Relationship>
+<Relationship id="Pata de cabra">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
 </Room>
 </Rooms>
 <Items>
