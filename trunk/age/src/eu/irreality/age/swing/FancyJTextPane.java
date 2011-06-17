@@ -25,6 +25,14 @@ public class FancyJTextPane extends JTextPane
 				setOpaque(false);
 			else
 				setOpaque(true);
+		    //repaint so that change takes place
+		    javax.swing.SwingUtilities.invokeLater(new Runnable()
+		    {
+		        public void run()
+		        {
+		            repaint();
+		        }
+		    });
 		}
 
 		public FancyJTextPane()
