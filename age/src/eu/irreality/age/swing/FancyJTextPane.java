@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -22,9 +23,23 @@ public class FancyJTextPane extends JTextPane
 
 		private ImageIcon rasterBackgroundImage;
 		private SVGIcon vectorBackgroundImage;
-	
+		
+		//for the top margin (issue 200 avoidance)
+		private BufferedImage subImage;
+		
 		public ImageIcon getRasterBackgroundImage() { return rasterBackgroundImage; }
 		public SVGIcon getVectorBackgroundImage() { return vectorBackgroundImage; }
+		
+		
+
+		public void refreshSubImage()
+		{
+			Rectangle rect = getVisibleRect();
+			subImage = new BufferedImage(rect.width,getMargin().top,BufferedImage.TYPE_INT_ARGB);
+			Graphics tempG = subImage.createGraphics();
+			tempG.drawImage(rasterBackgroundImage.getImage(),0,0,rect.width,rect.height,this);
+			tempG.dispose();
+		}
 		
 		public void setRasterBackgroundImage(ImageIcon i) 
 		{ 
@@ -33,6 +48,10 @@ public class FancyJTextPane extends JTextPane
 				setOpaque(false);
 			else
 				setOpaque(true);
+			
+			if ( rasterBackgroundImage != null )
+				refreshSubImage();
+						
 		    //repaint so that change takes place
 		    javax.swing.SwingUtilities.invokeLater(new Runnable()
 		    {
@@ -93,6 +112,8 @@ public class FancyJTextPane extends JTextPane
 		}
 	
 		
+		private int lastWidth=-1;
+		private int lastHeight=-1;
 		
 		//change to paintComponent to avoid exceptions? done (was paint, also in super call)
 		public void paintComponent(Graphics g)
@@ -100,6 +121,8 @@ public class FancyJTextPane extends JTextPane
 			//super.paint(g);
 			//g.setXORMode(Color.white);
 			Rectangle rect = null;
+			
+			
 			if ( rasterBackgroundImage != null )
 			{
 				rect = getVisibleRect();
@@ -112,18 +135,24 @@ public class FancyJTextPane extends JTextPane
 				vectorBackgroundImage.setScaleToFit(true);
 				vectorBackgroundImage.paintIcon(this, g, rect.x, rect.y);
 			}
-			
-			
+		
 			//g.drawImage(backgroundImage,0, 0, this);
 			//g.setColor(Color.RED);
 			//g.drawOval(5, 5, 100, 100);
 				super.paintComponent(g);
+				
 			//esto si queremos que el margen superior sea "non-scrolling":
 			if ( rasterBackgroundImage != null )
 			{
-				g.setClip(rect.x,rect.y,rect.width,getMargin().top);
+				//Rectangle oldArea = g.getClipBounds();
+				//g.setClip(rect.x,rect.y,rect.width,getMargin().top);
 				//System.err.println("Clipping rectangle: " + rect.x + " " + rect.y + " " + rect.width + " " + getMargin().top);
-				g.drawImage(rasterBackgroundImage.getImage(),rect.x,rect.y,rect.width,rect.height,this);
+				//g.drawImage(rasterBackgroundImage.getImage(),rect.x,rect.y,rect.width,rect.height,this);
+				//g.setClip(oldArea);
+				//g.fillRect(rect.x, rect.y, rect.width, getMargin().top);
+				if ( lastWidth != rect.width || lastHeight != rect.height ) refreshSubImage();
+				lastWidth = rect.width; lastHeight = rect.height;
+				g.drawImage(subImage,rect.x,rect.y,rect.width,getMargin().top,this);
 			}
 			if ( vectorBackgroundImage != null )
 			{
