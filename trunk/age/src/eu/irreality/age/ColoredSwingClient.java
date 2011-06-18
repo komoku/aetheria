@@ -853,7 +853,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	
 	}
 	
-	public void insertIcon ( ImageIcon icon )
+	public void insertIcon ( Icon icon )
 	{
 	
 		elAreaTexto.setSelectionStart(elAreaTexto.getText().length());
@@ -864,10 +864,10 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	
 	}
 	
-	public void insertIcon ( URL location ) { insertIcon ( new ImageIcon(location) ); }
+	public void insertIcon ( URL location ) { insertIcon ( IconLoader.loadIcon(location) ); }
 	public void insertIcon ( String filename ) { insertIcon ( new ImageIcon(filename) ); }
 	
-	public void insertCenteredIcon ( ImageIcon icon )
+	public void insertCenteredIcon ( Icon icon )
 	{
 		
 		elAreaTexto.setSelectionStart(elAreaTexto.getText().length());
@@ -882,7 +882,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	
 	}
 	
-	public void insertCenteredIcon ( URL location ) { if ( location == null ) return; insertCenteredIcon ( new ImageIcon ( location ) ); }
+	public void insertCenteredIcon ( URL location ) { if ( location == null ) return; insertCenteredIcon ( IconLoader.loadIcon( location ) ); }
 	public void insertCenteredIcon ( String fileName ) { if ( fileName == null ) return; insertCenteredIcon ( new ImageIcon ( fileName ) ); }
 	
 	public boolean isGraphicsEnabled()
