@@ -18,7 +18,9 @@ import javax.swing.JTextPane;
 
 import com.kitfox.svg.app.beans.SVGIcon;
 
-public class FancyJTextPane extends JTextPane
+import eu.irreality.age.ImageConstants;
+
+public class FancyJTextPane extends JTextPane implements ImageConstants
 {
 
 		private ImageIcon rasterBackgroundImage;
@@ -30,7 +32,7 @@ public class FancyJTextPane extends JTextPane
 		public ImageIcon getRasterBackgroundImage() { return rasterBackgroundImage; }
 		public SVGIcon getVectorBackgroundImage() { return vectorBackgroundImage; }
 		
-		
+		//private int scalingMode = FIT_BOTH;
 
 		public void refreshSubImage()
 		{
@@ -111,7 +113,58 @@ public class FancyJTextPane extends JTextPane
 			setBackground(new Color(0,0,0,0));
 		}
 	
+		//scaling options not yet implemented
+		/*
+		private Rectangle getDrawingCoordinates ( int baseHeight , int baseWidth , Rectangle viewport )
+		{
+			 int imageHeight = (int) baseHeight;
+			 int imageWidth = (int) baseWidth;
+			 int panelHeight = viewport.height;
+			 int panelWidth = viewport.width;
+				
+			 //FIT_BOTH
+			int drawX = viewport.x;
+			int drawY = viewport.y;
+			int drawW = panelWidth;
+			int drawH = panelHeight;
+			
+			//theVectorImage.setScaleToFit(false);
+			
+			if ( scalingMode == NO_SCALING )
+			{
+				drawX = panelWidth/2 - imageWidth/2;
+				drawY = panelHeight/2 - imageHeight/2;
+				drawW = imageWidth;
+				drawH = imageHeight;
+				//theVectorImage.setScaleToFit(false);
+			}
+			if ( scalingMode == FIT_WIDTH )
+			{
+				drawX = 0;
+				drawW = panelWidth;
+				drawH = (int) ( panelWidth * ( (double) imageHeight / (double) imageWidth ) );
+				drawY = panelHeight/2 - drawH/2;
+			}
+			if ( scalingMode == FIT_HEIGHT )
+			{
+				drawY = 0;
+				drawH = panelHeight;
+				drawW = (int) ( panelHeight * ( (double) imageWidth / (double) imageHeight ) );
+				drawX = panelWidth/2 - drawW/2;
+			}
+				
+			//	theVectorImage.setPreferredSize(new Dimension(drawW,drawH));
+				
+			    //theVectorImage.setScaleToFit(false);
+			    //theVectorImage.setPreferredSize(new Dimension(200,200));
+				//System.err.println(theVectorImage.getPreferredSize()); //yeah, gets the nominal size
+				//theVectorImage.setScaleToFit(true); //we can set another pref. size to scale
+			//theVectorImage.paintIcon(this, g, drawX, drawY);
+			return new Rectangle(drawX,drawY,drawW,drawH);
+		}
+		*/
 		
+		//these variables are kept so that we know when to refresh the top margin subimage
 		private int lastWidth=-1;
 		private int lastHeight=-1;
 		
