@@ -5,23 +5,31 @@
 package eu.irreality.age.swing;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Rectangle;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JTextPane;
+
+import com.kitfox.svg.app.beans.SVGIcon;
 
 public class FancyJTextPane extends JTextPane
 {
 
-		private Image backgroundImage;
+		private ImageIcon rasterBackgroundImage;
+		private SVGIcon vectorBackgroundImage;
 	
-		public Image getBackgroundImage() { return backgroundImage; }
-		public void setBackgroundImage(Image i) 
+		public ImageIcon getRasterBackgroundImage() { return rasterBackgroundImage; }
+		public SVGIcon getVectorBackgroundImage() { return vectorBackgroundImage; }
+		
+		public void setRasterBackgroundImage(ImageIcon i) 
 		{ 
-			this.backgroundImage = i; 
-			if ( backgroundImage != null ) 
+			this.rasterBackgroundImage = i; 
+			if ( rasterBackgroundImage != null || vectorBackgroundImage != null ) 
 				setOpaque(false);
 			else
 				setOpaque(true);
@@ -33,6 +41,46 @@ public class FancyJTextPane extends JTextPane
 		            repaint();
 		        }
 		    });
+		}
+		
+		public void setVectorBackgroundImage(SVGIcon i) 
+		{ 
+			this.vectorBackgroundImage = i; 
+			if ( vectorBackgroundImage != null || rasterBackgroundImage != null ) 
+				setOpaque(false);
+			else
+				setOpaque(true);
+		    //repaint so that change takes place
+		    javax.swing.SwingUtilities.invokeLater(new Runnable()
+		    {
+		        public void run()
+		        {
+		            repaint();
+		        }
+		    });
+		}
+		
+		
+		public void setBackgroundImage(Icon ic) 
+		{ 
+			if ( ic == null )
+			{
+				if ( vectorBackgroundImage != null ) setVectorBackgroundImage(null);
+				if ( rasterBackgroundImage != null ) setRasterBackgroundImage(null);
+				return;
+			}
+		    if ( !(ic instanceof ImageIcon) && !(ic instanceof SVGIcon) )
+			throw new UnsupportedOperationException("setBackgroundImage only supports ImageIcon or SVGIcon");
+		    else if ( ic instanceof ImageIcon )
+			{
+		    	setRasterBackgroundImage((ImageIcon)ic);
+		    	vectorBackgroundImage = null;
+		    }
+		    else if ( ic instanceof SVGIcon )
+		    {
+		    	setVectorBackgroundImage((SVGIcon)ic);
+		    	rasterBackgroundImage = null;
+		    }
 		}
 
 		public FancyJTextPane()
@@ -52,20 +100,35 @@ public class FancyJTextPane extends JTextPane
 			//super.paint(g);
 			//g.setXORMode(Color.white);
 			Rectangle rect = null;
-			if ( backgroundImage != null )
+			if ( rasterBackgroundImage != null )
 			{
 				rect = getVisibleRect();
-				g.drawImage(backgroundImage,rect.x,rect.y,rect.width,rect.height,this);
+				g.drawImage(rasterBackgroundImage.getImage(),rect.x,rect.y,rect.width,rect.height,this);
 			}
+			if ( vectorBackgroundImage != null )
+			{
+				rect = getVisibleRect();
+				vectorBackgroundImage.setPreferredSize(new Dimension(rect.width,rect.height));
+				vectorBackgroundImage.setScaleToFit(true);
+				vectorBackgroundImage.paintIcon(this, g, rect.x, rect.y);
+			}
+			
+			
 			//g.drawImage(backgroundImage,0, 0, this);
 			//g.setColor(Color.RED);
 			//g.drawOval(5, 5, 100, 100);
 				super.paintComponent(g);
 			//esto si queremos que el margen superior sea "non-scrolling":
-			if ( backgroundImage != null )
+			if ( rasterBackgroundImage != null )
 			{
 				g.setClip(rect.x,rect.y,rect.width,getMargin().top);
-				g.drawImage(backgroundImage,rect.x,rect.y,rect.width,rect.height,this);
+				g.drawImage(rasterBackgroundImage.getImage(),rect.x,rect.y,rect.width,rect.height,this);
+			}
+			if ( vectorBackgroundImage != null )
+			{
+				g.setClip(rect.x,rect.y,rect.width,getMargin().top);
+				vectorBackgroundImage.setPreferredSize(new Dimension(rect.x,rect.y));
+				vectorBackgroundImage.paintIcon(this, g, rect.x, rect.y);
 			}
 			
 		}
