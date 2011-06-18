@@ -1270,7 +1270,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		if ( fileName == null ) 
 			elAreaTexto.setBackgroundImage(null);
 		else
-			elAreaTexto.setBackgroundImage(new ImageIcon(fileName).getImage());
+			//TODO: g.setClip(rect.x,rect.y,rect.width,getMargin().top);
+			elAreaTexto.setBackgroundImage(new ImageIcon(fileName));
 	}
 	
 	public void showImageInBackground ( URL location )
@@ -1278,7 +1279,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		if ( location == null ) 
 			elAreaTexto.setBackgroundImage(null);
 		else
-			elAreaTexto.setBackgroundImage(new ImageIcon(location).getImage());
+			elAreaTexto.setBackgroundImage(IconLoader.loadIcon(location));
 	}
 	
 	
