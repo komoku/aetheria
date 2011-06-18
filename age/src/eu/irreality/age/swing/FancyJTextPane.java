@@ -73,13 +73,13 @@ public class FancyJTextPane extends JTextPane
 			throw new UnsupportedOperationException("setBackgroundImage only supports ImageIcon or SVGIcon");
 		    else if ( ic instanceof ImageIcon )
 			{
-		    	setRasterBackgroundImage((ImageIcon)ic);
 		    	vectorBackgroundImage = null;
+		    	setRasterBackgroundImage((ImageIcon)ic);
 		    }
 		    else if ( ic instanceof SVGIcon )
 		    {
-		    	setVectorBackgroundImage((SVGIcon)ic);
 		    	rasterBackgroundImage = null;
+		    	setVectorBackgroundImage((SVGIcon)ic);
 		    }
 		}
 
@@ -122,12 +122,13 @@ public class FancyJTextPane extends JTextPane
 			if ( rasterBackgroundImage != null )
 			{
 				g.setClip(rect.x,rect.y,rect.width,getMargin().top);
+				//System.err.println("Clipping rectangle: " + rect.x + " " + rect.y + " " + rect.width + " " + getMargin().top);
 				g.drawImage(rasterBackgroundImage.getImage(),rect.x,rect.y,rect.width,rect.height,this);
 			}
 			if ( vectorBackgroundImage != null )
 			{
 				g.setClip(rect.x,rect.y,rect.width,getMargin().top);
-				vectorBackgroundImage.setPreferredSize(new Dimension(rect.x,rect.y));
+				vectorBackgroundImage.setPreferredSize(new Dimension(rect.width,rect.height));
 				vectorBackgroundImage.paintIcon(this, g, rect.x, rect.y);
 			}
 			
