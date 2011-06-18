@@ -71,6 +71,7 @@ public class FancyJTextPane extends JTextPane implements ImageConstants
 				setOpaque(false);
 			else
 				setOpaque(true);
+			vectorBackgroundImage.setAntiAlias(true);
 		    //repaint so that change takes place
 		    javax.swing.SwingUtilities.invokeLater(new Runnable()
 		    {
