@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.Vector;
 
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.filemanagement.URLUtils;
+import eu.irreality.age.filemanagement.WorldLoader;
 
 public class CommandLineClientLauncher 
 {
@@ -118,6 +120,8 @@ public class CommandLineClientLauncher
 		if ( worldPath != null )
 		{
 			
+			//TODO this code duplicates functionality in WorldLoader.
+			
 			Vector gameLog = new Vector(); //init game log
 			InputOutputClient io = new CommandLineClient(gameLog,rebotFriendly,unstrict); //init client
 			File inputAsFile = new File(worldPath);
@@ -133,7 +137,7 @@ public class CommandLineClientLauncher
 				System.out.println("Attempting world location: " +  inputAsFile );
 				try
 				{
-					theWorld = new World ( worldPath , io , false );
+					theWorld = new World ( URLUtils.stringToURL(WorldLoader.goIntoFileIfCompressed(worldPath)) , io , false );
 					System.out.println("World generated.\n");
 					gameLog.addElement( inputAsFile.getAbsolutePath() ); //primera línea del log, fichero de mundo
 				}
