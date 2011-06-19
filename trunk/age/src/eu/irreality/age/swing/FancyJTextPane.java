@@ -64,9 +64,12 @@ public class FancyJTextPane extends JTextPane implements ImageConstants
 		    });
 		}
 		
-		public void setVectorBackgroundImage(SVGIcon i) 
+		public void setVectorBackgroundImage(Icon i) //this should really be a SVGIcon, but declaring it as Icon removes applet dependency 
+		//(there is some reflection method in jcomponent that looks at the component's method's 
+		//arguments and complains if classes are not in the classpath, for some
+		//reason)
 		{ 
-			this.vectorBackgroundImage = i; 
+			this.vectorBackgroundImage = (SVGIcon) i; 
 			if ( vectorBackgroundImage != null || rasterBackgroundImage != null ) 
 				setOpaque(false);
 			else
