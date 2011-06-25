@@ -4141,8 +4141,8 @@ public class Player extends Mobile implements Informador
 			if ( inv.elementAt(i).isContainer() && !( inv.elementAt(i).isCloseable() && !inv.elementAt(i).isOpen() ) )
 			{
 				String tempstring = infoString;
-				infoString += " de ";
-				infoString += inv.elementAt(i).constructName2True ( 1 , this );
+				String toConcat = " de " + inv.elementAt(i).constructName2True ( 1 , this );
+				infoString = toConcat + infoString;
 				//para que muestre "coges la moneda EN el cofre", p.ej.
 				mirado = cogerItem ( inv.elementAt(i).getContents() , infoString );
 				if ( mirado ) break;
@@ -4156,8 +4156,8 @@ public class Player extends Mobile implements Informador
 				if ( inv.elementAt(i).isContainer() && !( inv.elementAt(i).isCloseable() && !inv.elementAt(i).isOpen() ) )
 				{
 					String tempstring = infoString;
-					infoString += " de ";
-					infoString += inv.elementAt(i).constructName2True ( 1 , this );
+					String toConcat = " de " + inv.elementAt(i).constructName2True ( 1 , this );
+ 					infoString = toConcat + infoString;
 					mirado = cogerContenido ( inv.elementAt(i).getContents() , infoString );
 					if ( mirado ) break;
 					infoString = tempstring;
