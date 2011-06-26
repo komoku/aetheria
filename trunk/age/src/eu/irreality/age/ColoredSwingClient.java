@@ -848,6 +848,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		elAreaTexto.setCaretPosition(elAreaTexto.getText().length()); //this doesn't select
 		elAreaTexto.setVisible(true);
 		
+		elAreaTexto.repaint();
 		
 		//System.err.println("Selectionan gaems " + elAreaTexto.getSelectionStart() + " " + elAreaTexto.getSelectionEnd() );
 	
