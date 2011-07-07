@@ -1,6 +1,6 @@
 WIZARD'S QUEST: MORLUCK'S LAIR.
-v0.2.1, public beta release, 2009-12-30
-(c) 2009 Carlos Gómez Rodríguez (Al-Khwarizmi), solrac888@yahoo.com
+v0.2.2, public beta release, 2011-07-05
+(c) 2009-2011 Carlos Gómez Rodríguez (Al-Khwarizmi), solrac888@yahoo.com
 
 Para jugar la aventura, extraerla en el directorio del motor Aetheria Game Engine (AGE). Ejecutar el motor, y hacer doble click sobre "Wizard's Quest: Morluck's Lair" en el cargador de juegos.
 
