@@ -458,8 +458,9 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 	{
 		wearableLimbPanels.add(newPanel);
 		innerPanelFifth.add(newPanel);
-		fifthTab.setVisible(false);
-		fifthTab.setVisible(true);
+		//fifthTab.setVisible(false);
+		//fifthTab.setVisible(true);
+		fifthTab.revalidate();
 		buttonLess.setEnabled(true);
 	}
 	
@@ -469,8 +470,9 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 		PathCommandsPanel thePanel = (PathCommandsPanel) wearableLimbPanels.get(wearableLimbPanels.size()-1);
 		wearableLimbPanels.remove(thePanel);
 		innerPanelFifth.remove(thePanel);
-		fifthTab.setVisible(false);
-		fifthTab.setVisible(true);
+		//fifthTab.setVisible(false);
+		//fifthTab.setVisible(true);
+		fifthTab.revalidate();
 		if ( wearableLimbPanels.size() < 1 ) buttonLess.setEnabled(false);
 	}
 	
@@ -479,8 +481,9 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 	{
 		wieldableLimbPanels.add(newPanel);
 		innerPanelSixth.add(newPanel);
-		sixthTab.setVisible(false);
-		sixthTab.setVisible(true);
+		//sixthTab.setVisible(false);
+		//sixthTab.setVisible(true);
+		sixthTab.revalidate();
 		buttonLess2.setEnabled(true);
 	}
 	
@@ -490,8 +493,9 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 		PathCommandsPanel thePanel = (PathCommandsPanel) wieldableLimbPanels.get(wieldableLimbPanels.size()-1);
 		wieldableLimbPanels.remove(thePanel);
 		innerPanelSixth.remove(thePanel);
-		sixthTab.setVisible(false);
-		sixthTab.setVisible(true);
+		//sixthTab.setVisible(false);
+		//sixthTab.setVisible(true);
+		sixthTab.revalidate();
 		if ( wieldableLimbPanels.size() < 1 ) buttonLess2.setEnabled(false);
 	}
 	
