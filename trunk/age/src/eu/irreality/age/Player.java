@@ -792,7 +792,8 @@ public class Player extends Mobile implements Informador
 		}
 
 		//ejecutar parseCommand sobre una entidad, if possible
-		ejecutado = resolveParseCommandForOneEntity ( posiblesObjetivos , arguments , arguments , false );
+		if ( !matchedTwoEntities ) //TODO: add possibility of setting property so that parseCommands for one entity will also be executed when two are matched. 
+			ejecutado = resolveParseCommandForOneEntity ( posiblesObjetivos , arguments , arguments , false );
 		if ( ejecutado ) //código hizo end()
 		{
 			setNewState( 1 , 1 );
@@ -891,7 +892,9 @@ public class Player extends Mobile implements Informador
 			mentions.setLastMentionedVerb(command);
 			return true;
 		}
-		ejecutado = resolveParseCommandForOneEntity ( posiblesObjetivos , arguments , arguments , true );
+		
+		if ( !matchedTwoEntities ) //TODO: add possibility of setting property so that parseCommands for one entity will also be executed when two are matched. 
+			ejecutado = resolveParseCommandForOneEntity ( posiblesObjetivos , arguments , arguments , true );
 		if ( ejecutado ) //código hizo end()
 		{
 			setNewState( 1 , 1 );
