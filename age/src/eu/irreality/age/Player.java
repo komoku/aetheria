@@ -792,7 +792,7 @@ public class Player extends Mobile implements Informador
 		}
 
 		//ejecutar parseCommand sobre una entidad, if possible
-		if ( !matchedTwoEntitiesPermissive ) //TODO: add possibility of setting property so that parseCommands for one entity will also be executed when two are matched. 
+		//if ( !matchedTwoEntitiesPermissive ) //TODO: add possibility of setting property so that parseCommands for one entity will also be executed when two are matched. 
 			ejecutado = resolveParseCommandForOneEntity ( posiblesObjetivos , arguments , arguments , false );
 		if ( ejecutado ) //código hizo end()
 		{
@@ -893,7 +893,7 @@ public class Player extends Mobile implements Informador
 			return true;
 		}
 		
-		if ( !matchedTwoEntitiesPermissive ) //TODO: add possibility of setting property so that parseCommands for one entity will also be executed when two are matched. 
+		//if ( !matchedTwoEntitiesPermissive ) //TODO: add possibility of setting property so that parseCommands for one entity will also be executed when two are matched. 
 			ejecutado = resolveParseCommandForOneEntity ( posiblesObjetivos , arguments , arguments , true );
 		if ( ejecutado ) //código hizo end()
 		{
