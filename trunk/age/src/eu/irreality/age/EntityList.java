@@ -9,6 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import eu.irreality.age.debug.Debug;
+import eu.irreality.age.matching.Match;
+import eu.irreality.age.matching.Matches;
 
 public class EntityList
 {
@@ -161,20 +163,59 @@ public class EntityList
 	
 	
 	
-	/*if pearl is inside box inside chest, and we ask for pearl, then
-	 * this generates a [pearl,box,chest] vector (full path to pearl)
+
+	/**
+	 * This generates a vector of vectors, where each subvector is a path of containers
+	 * to the object mentioned in the arguments.
 	 * 
-	 * i think no, actually it generates a vector of vectors, where each subvector is a path
-	 * [pearl,box,chest], [pearl,bottle] if there are two pearls.
+	 * Such a path is of the form [pearl,box,chest] if the pearl is inside the box which
+	 * is inside the chest.
+	 * 
+	 * The return value of this method can have zero or more paths: for example, if there
+	 * are two pearls, one in the box inside the chest and one in a bottle, this method
+	 * would return [ [pearl,box,chest], [pearl,bottle] ].
 	 */
 	public java.util.Vector patternMatchWithRecursion ( String arguments , boolean singOrPlur )
 	{
-		java.util.Vector resultado = new java.util.Vector ( );
+		//java.util.Vector resultado = new java.util.Vector ( );
+		Matches resultado = new Matches();
 		java.util.Vector path = new java.util.Vector ( );
-		return patternMatchWithRecursion ( arguments , singOrPlur , path , resultado );
+		return patternMatchWithRecursion ( arguments , singOrPlur , path , resultado ).toPathVector();
 	}
+	
+	
+	
+	protected Matches patternMatchWithRecursion ( String arguments, boolean singOrPlur , java.util.Vector /*of entities*/ path , Matches resultado )
+	{
+		for ( int i = 0 ; i < size() ; i++ )
+		{ 
+		
+			if ( entityAt(i) == null ) continue; //esto pasa en los wieldedWeapons invs. p.ej.
+		
+			int currentMatchPriority = entityAt(i).matchesCommand(arguments,singOrPlur);
+			
+			//con el plural, "dejar piedras" devolvera lista de piedras para dejarlas todas. Con el singular, normalmente solo consideraremos una de la lista. Pero esto no es cosa de esta función.
+			if ( ( currentMatchPriority != 0 ) )
+			{				
+				java.util.Vector pathToAdd = (java.util.Vector) path.clone();
+				pathToAdd.add(0,entityAt(i));
+				resultado.addMatch(new Match(pathToAdd,currentMatchPriority));	
+			}
+			
+			if ( entityAt(i) instanceof Item && ((Item)entityAt(i)).getContents() != null )
+			{
+				Inventory inv = ((Item)entityAt(i)).getContents();
+				java.util.Vector newPath = (java.util.Vector) path.clone();
+				newPath.add(0,entityAt(i));
+				((Item)entityAt(i)).getContents().patternMatchWithRecursion(arguments,singOrPlur,newPath,resultado);
+			}		
+		}
+		return resultado;
+	}
+	
 
-	protected java.util.Vector patternMatchWithRecursion ( String arguments, boolean singOrPlur , java.util.Vector /*of entities*/ path , java.util.Vector resultado )
+	/*
+	protected java.util.Vector patternMatchWithRecursion_old ( String arguments, boolean singOrPlur , java.util.Vector path , java.util.Vector resultado )
 	{
 	
 		//Debug.println("patternMatch call: " + this + " - " + arguments + " - " + singOrPlur );
@@ -229,6 +270,7 @@ public class EntityList
 		}
 		return resultado;
 	}
+	*/
 
 	
 	
@@ -261,8 +303,8 @@ public class EntityList
 			{
 				String parte1 = StringMethods.getToks ( arguments , 1 , punto_division , ' ' );
 				String parte2 = StringMethods.getToks ( arguments , punto_division+1 , ntokens , ' ' );
-				java.util.Vector result1 = patternMatchWithRecursion ( parte1 , singOrPlur1 , new java.util.Vector() , new java.util.Vector() );
-				java.util.Vector result2 = patternMatchWithRecursion ( parte2 , singOrPlur2 , new java.util.Vector() , new java.util.Vector() );
+				java.util.Vector result1 = patternMatchWithRecursion ( parte1 , singOrPlur1 );
+				java.util.Vector result2 = patternMatchWithRecursion ( parte2 , singOrPlur2 );
 				if ( result1.size() > 0 && result2.size() > 0 )
 				{
 					resultado[0] = result1;
