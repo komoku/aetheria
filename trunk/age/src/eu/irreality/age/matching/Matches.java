@@ -56,11 +56,9 @@ public class Matches
 	public Vector toPathVector()
 	{
 		Vector result = new Vector();
-		System.err.println("Matches: ");
 		for ( Iterator it = iterator() ; it.hasNext() ; )
 		{
 			Match next = (Match)it.next();
-			System.err.println(next);
 			result.add(next.getPath());
 		}
 		return result;
