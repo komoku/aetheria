@@ -5892,7 +5892,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 		try
 		{
-			ourContainer.getContents().addItem(ourItem);
+			ourContainer.addItem(ourItem);
 			removeItem(ourItem);
 
 			boolean eventEnded = false;
@@ -5985,7 +5985,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			//velar por el principio de conservacion de la masa
 			inv.removeItem ( ourItem );
 			if ( inv == habitacionActual.getInventory() ) ourItem.removeRoomReference(habitacionActual);
-
+			ourItem.removeFromContainers(); //si estaba en un contenedor
+			
 			//ejecutar descripci�n (pesa poquito, etc. etc.)
 			boolean execced = false;
 			try

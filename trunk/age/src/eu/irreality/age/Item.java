@@ -101,9 +101,10 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	protected boolean properName = false; //marks names by proper as default
 	
 	
+	//esto se irá rellenando al hacer addItem().
 	protected transient List rooms = new ArrayList(); //habitaciones donde está el item.
 	protected transient List mobiles = new ArrayList(); //mobiles donde está el item.
-	//esto se irá rellenando al hacer addItem().
+	protected transient List containers = new ArrayList(); //contenedores donde está el item.
 	
 	public void addRoomReference ( Room r )
 	{
@@ -128,6 +129,18 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	public List getMobileReferences ( )
 	{
 		return mobiles;
+	}
+	public void addContainerReference ( Item c )
+	{
+		containers.add(c);
+	}	
+	public void removeContainerReference ( Item c )
+	{
+		containers.remove(c);
+	}
+	public List getContainerReferences ( )
+	{
+		return containers;
 	}
 	
 	
@@ -2195,6 +2208,19 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		return ( Character.toLowerCase( tmp.charAt(0) ) ) + tmp.substring(1);
 	}
 	
+	/**
+	 * Used when contained items are put inside of a container on world load, to set the references from those items to
+	 * their container.
+	 */
+	private void createReferencesInContainedItems()
+	{
+		if ( isContainer() )
+			for ( int i = 0 ; i < inventory.size() ; i++ )
+			{
+				((Item)inventory.get(i)).addContainerReference(this);
+			}
+	}
+	
 	/* Carga diferida del inventario (y también del parts-inventory o inventario de composite)*/
 	/* (y del key list) <- 2008-04-27*/
 	public void loadInventoryFromXML ( World mundo ) throws XMLtoWorldException
@@ -2232,6 +2258,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		else
 		{
 			inventory = new Inventory ( mundo , (org.w3c.dom.Node)realInventoryNodes.get(0) );
+			createReferencesInContainedItems();
 		}		
 		
 		if ( partsInventoryNodes.size ( ) < 1 )
@@ -2294,7 +2321,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			//Debug.println("Adding item to container.");
 			try
 			{
-				inventory.addItem ( mundo.getItem(StringMethods.getTok(inventoryString,i+3,'$')) );
+				this.addItem ( mundo.getItem(StringMethods.getTok(inventoryString,i+3,'$')) );
 			}
 			catch (WeightLimitExceededException exc) 
 			{
@@ -2727,6 +2754,16 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			Mobile m = (Mobile) mobiles.get(i);
 			m.removeItem(this);
 		}
+		removeFromContainers();
+	}
+	
+	public void removeFromContainers ( )
+	{
+		for ( int i = 0 ; i < containers.size() ; i++ )
+		{
+			Item cont = (Item) containers.get(i);
+			cont.removeItem(this);
+		}
 	}
 	
 	public void moveTo ( Room target ) throws WeightLimitExceededException,VolumeLimitExceededException
@@ -2741,8 +2778,34 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		target.addItem(this);
 	}
 	
+	public void moveTo ( Item target ) throws WeightLimitExceededException,VolumeLimitExceededException 
+	{
+		removeFromInventories();
+		target.addItem(this);
+	}
 	
+	/**
+	 * Returns a list of all the locations (rooms, mobiles, containers) this item is in.
+	 * @return
+	 */
+	public EntityList getLocations()
+	{
+		EntityList result = new EntityList();
+		for ( int i = 0 ; i < rooms.size() ; i++ ) result.addEntity((Entity)rooms.get(i));
+		for ( int i = 0 ; i < mobiles.size() ; i++ ) result.addEntity((Entity)mobiles.get(i));
+		for ( int i = 0 ; i < containers.size() ; i++ ) result.addEntity((Entity)containers.get(i));
+		return result;
+	}
 	
+	/**
+	 * Returns the first location (room, mobile, container) this item is in. Note that an item can
+	 * be at several locations at the same time, but this method returns only one.
+	 * @return
+	 */
+	public Entity getLocation()
+	{
+		return getLocations().get(0);
+	}
 	
 	
 	//devuelve un Inventory formado por el contenido, el contenido del contenido, etc. etc.
@@ -2830,8 +2893,21 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		if ( !isContainer() ) return false;
 		else
 		{
+			viejo.removeContainerReference(this);
 			return inventory.removeItem(viejo);
 		}
+	}
+	
+	public boolean addItem ( Item nuevo ) throws WeightLimitExceededException , VolumeLimitExceededException
+	{
+		if ( !isContainer() ) return false;
+		else if ( !inventory.contains(nuevo) )
+		{
+			inventory.addItem(nuevo);
+			nuevo.addContainerReference(this);
+			return true;
+		}
+		else return false;
 	}
 
 } //end class item
