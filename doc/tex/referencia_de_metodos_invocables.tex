@@ -1,0 +1,89 @@
+\chapter {Referencia de métodos invocables}
+
+\section {Manipulación del modelo de mundo}
+
+\section {Notificación de acciones y sucesos}
+
+\subsection {Notificar sobre algo que ha ocurrido en una habitación}
+
+En la clase \textsf{Room} tenemos los siguientes métodos:
+
+\begin{lstlisting}
+void reportAction ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , String sufferDes , String execDes , boolean self_included )
+void reportAction ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , String sufferDes , String execDes , String style , boolean self_included )
+\end{lstlisting}
+
+Informa a todos los jugadores presentes en la habitación de un suceso que
+se ha producido, donde:
+
+\begin{itemize}
+\item {\textsf{source} es el sujeto del suceso (por ejemplo, Juan),}
+\item {\textsf{target} es el objeto del suceso (por ejemplo, un goblin),}
+\item {\textsf{objects} son otras entidades que hayan intervenido en el
+suceso (por ejemplo, una espada),}
+\item {\textsf{thirdPersonDes} es la descripción en tercera persona con los
+objetos parametrizados con \textsf{\$1} (sujeto), \textsf{\$2} (objeto),
+\textsf{\$3}...\textsf{\$n} (resto). Por ejemplo: ``\$1 ataca a \$2 con
+\$3''.}
+\item {\textsf{sufferDes} es la descripción que se mostrará al objeto del
+suceso (``\$1 te ataca con \$3'').}
+\item {\textsf{execDes} es la descripción que es mostrará al sujeto del
+suceso (``Atacas a \$1 con \$3'').}
+\item {\textsf{style} permite especificar un estilo (color) para mostrar el
+texto a los jugadores (puede ser ``story'', ``description'', ``action'',
+etc.)}
+\item {\textsf{self\_included}: si es \textsf{true}, se muestra el texto
+también para el sujeto, si no, sólo para el resto de jugadores/criaturas.}
+\end{itemize}
+
+\begin{lstlisting}
+void reportActionAuto ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , boolean self_included )
+void reportActionAuto ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , String style , boolean self_included )
+\end{lstlisting}
+
+Hace lo mismo que \textsf{reportAction}; pero sólo proporcionamos la
+descripción en tercera persona y AGE intenta generar las otras dos mediante
+sus tablas de ``tercera a segunda''. Utilizar sólo en los dos casos
+siguientes:
+
+\begin{itemize}
+\item {Si realmente no es necesario el grado de detalle que da
+\textsf{reportAction}, pues no hay que emitir descripciones distintas en
+primera, segunda y tercera persona (por ejemplo, en juegos monojugador).}
+\item {Si sí es necesario emitir descripciones distintas en primera,
+segunda y tercera persona; pero la oración es lo suficientemente sencilla
+como para que AGE pueda convertirla (en el futuro se darán más detalles de
+cuáles se pueden convertir automáticamente y cuáles no, de momento se puede
+saber por prueba y error).}
+\end{itemize}
+
+\subsection {Notificar sobre algo que ha ocurrido con una cosa}
+
+En la clase Item tenemos los siguientes métodos:
+
+\begin{lstlisting}
+void reportAction ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , String sufferDes , String execDes  , boolean self_included )
+void reportAction ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , String sufferDes , String execDes , String style , boolean self_included )
+void reportActionAuto ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes ,  boolean self_included )
+void reportActionAuto ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , String style , boolean self_included )
+\end{lstlisting}
+
+Funcionan exactamente igual que los de la clase \textsf{Room}, y lo que
+hacen es mostrar la notificación en todas las habitaciones en las que esté
+el \textsf{Item} dado.
+
+\subsection {Notificar sobre algo que ha ocurrido con una criatura}
+
+No hay métodos específicos en la clase \textsf{Mobile}, ya que una criatura
+siempre está en una sola habitación, fácilmente accesible mediante
+\textsf{getRoom()}. Por lo tanto, podemos hacer estas notificaciones
+fácilmente así:
+
+\begin{lstlisting}
+elMobile.getRoom().informAction(...)
+elMobile.getRoom().informActionAuto(...)
+\end{lstlisting}
+
+\section {Presentación general}
+
+\section {Métodos útiles de la API de Java}

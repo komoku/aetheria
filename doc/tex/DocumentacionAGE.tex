@@ -1,0 +1,40 @@
+\documentclass[a4paper,10pt,twoside]{report}
+
+% He agrupado todo el c\'odigo de definiciones y dem\'as en "estilos.sty"
+\usepackage{estilos}
+
+\title{\huge \textbf{Cmo crear aventuras con Aetheria Game Engine}}
+\author{Al--Khwarizmi}
+
+\begin{document}
+
+\lstset{language=java,
+				basicstyle=\footnotesize\sffamily,
+				breaklines=true,
+				keywordstyle=\color{black}\bfseries,
+				stringstyle=\sffamily,
+				showstringspaces=false,
+				frame=trBL}
+
+\input{titulo.tex} %P\'agina de portada
+
+\input{CartaPresentacion.tex}
+
+\tableofcontents
+\listoftables
+\listoffigures
+
+\input{uso_basico_de_puck.tex}
+\input{uso_del_lenguaje_beanshell.tex}
+\input{manipulacion_basica_de_entidades.tex}
+\input{propiedades_y_relaciones.tex}
+\input{manejo_de_arrays_y_listas.tex}
+\input{errores_comunes_con_beanshell.tex}
+\input{aspectos_avanzados_del_modelo_de_mundo.tex}
+\input{metodos_redefinibles.tex}
+\input{analisis_de_la_entrada.tex}
+\input{presentacion_del_mundo.tex}
+\input{referencia_de_metodos_invocables.tex}
+\input{distribucion_como_juego_online.tex}
+
+\end{document}

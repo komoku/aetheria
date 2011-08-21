@@ -1,0 +1,681 @@
+\chapter {Presentación del mundo}
+
+En las secciones anteriores nos hemos centrado en cómo modelar un mundo con
+AGE y hacer que funcione; pero no nos hemos detenido mucho en aspectos de
+presentación, sino sólo en el texto puro. Si bien el texto es la base de
+cualquier mundo en AGE, el sistema proporciona al programador de aventuras
+un detallado control sobre cómo presentar el mundo y acompañarlo de
+multimedia, incluyendo colores de texto, tipografías, configuración de los
+prompts, uso de imágenes y animaciones, sonido, etc.
+
+Al utilizar estas características, es importante tener en cuenta que AGE es
+un sistema donde una aventura se puede jugar en diferentes clientes con
+distintas características. En particular, se pueden jugar aventuras de AGE
+de las siguientes maneras (y el diseño de AGE deja abierta la posibilidad
+de que aparezcan más en el futuro):
+
+\begin{enumerate}
+\item {Mediante cliente gráfico:
+	\begin{itemize}
+	\item {Modo SDI (simpleage.bat, simpleage.sh, simpleage.command):
+	una ventana de escritorio por mundo, para partidas locales.}
+	\item {Modo MDI (aetheria.bat, aetheria.sh, aetheria.command): una sola
+	ventana de escritorio con subventanas para cada mundo, para partidas
+	locales y remotas (por internet).}
+	\item {Online mediante applet: una página web donde se muestra el mundo,
+	para partidas online.}
+	\end{itemize}
+}
+\item {Mediante cliente en modo consola (cheapage.bat, cheapage.sh,
+cheapage.command): se juega en la terminal/consola del sistema, para
+partidas locales.}
+\item {A través de un cliente telnet, para partidas remotas.}
+\item {A través de un cliente IRC, para partidas remotas.}
+\end{enumerate}
+
+Debido a que estas formas de jugar son muy diferentes, las posibilidades de
+presentación de aventuras cambiarán entre unas y otras: por ejemplo,
+evidentemente no se podrán mostrar imágenes en un cliente de consola, igual
+que no se podrán tocar sonidos en un cliente IRC. En particular, en la
+actualidad:
+
+\begin{enumerate}
+\item{En el cliente gráfico (sea en modo SDI, MDI o como applet) están
+disponibles todas las opciones de presentación.}
+\item{En modos consola y telnet no está disponible actualmente ninguna
+opción de presentación; se muestra el texto sin más.}
+\item{A través de IRC está disponible la posibilidad de colorear textos
+(restringida, pues sólo hay 16 colores en el IRC), pero no el resto de las
+opciones.}
+\end{enumerate}
+
+En todo caso, el programador de aventuras no necesita saber exactamente qué
+soporta y qué no cada uno de los clientes a la hora de programar (cosa que
+además podría cambiar en el futuro, si se añadiese funcionalidad a algún
+cliente). El programador no necesita preocuparse de la variedad de clientes
+que haya porque todas las características de presentación o bien se ignoran
+automáticamente para clientes que no las soportan (caso de los colores de
+texto), o bien existen métodos con los que le puede preguntar al cliente de
+forma genérica si las soportan o no (caso de los sonidos). Al explicar cada
+una de las características veremos en cuál de estos dos casos se encuadra,
+y si es o no necesario hacer alguna comprobación antes de utilizarlas para
+ver si el cliente las soporta.
+
+\section {Estilos de texto}
+
+\section {Prompt}
+
+\subsection {Métodos de manipulación del prompt}
+
+\begin{itemize}
+\item {Cambiar colores
+	\begin{itemize}
+	\item {\textsf{void setInputFieldForeground( String color )}: color del texto del prompt.}
+	\item {\textsf{void setInputFieldBackground( String color )}: color del fondo del texto del prompt.}
+	\item {\textsf{void setOutputAreaBackground( String color )}: color del fondo.}
+	\end{itemize}
+}
+\item {Cambiar texto del prompt
+	\begin{itemize}
+	\item {\textsf{void setPrompts ( String leftPrompt , String rightPrompt )}: modificar la parte izquierda (anterior al texto introducido por el usuario) y derecha (posterior al texto introducido por el usuario) del prompt.}
+	\end{itemize}
+}
+\item {Cambiar márgenes del texto
+	\begin{itemize}
+	\item {\textsf{void setMargins ( int top , int left , int bottom , int right )}: margenes superior, izquierdo, inferior y derecho del area de texto.}
+	\end{itemize}
+}
+\end{itemize}
+
+\subsection {Ejemplos de código}
+
+Nota: Todos estos métodos deben comprobar que el cliente que usa el jugador
+es un \textsf{ColoredSwingClient}:
+
+\begin{lstlisting}
+if ( aPlayer.getIO() instanceof ColoredSwingClient )
+{
+  usar los métodos;
+}
+\end{lstlisting}
+
+Cambiar los colores del prompt.
+
+\begin{lstlisting}
+if ( aPlayer.getIO() instanceof ColoredSwingClient )
+{
+  aPlayer.getIO().setInputFieldForeground("FF0000");
+  aPlayer.getIO().setInputFieldBackground("00FF00");
+  aPlayer.getIO().setOutputFieldBackground("0000FF");
+}
+\end{lstlisting}
+
+Cambiar el texto del prompt al clásico ``>''.
+
+\begin{lstlisting}
+aPlayer.getIO().setPrompts(">","");
+\end{lstlisting}
+
+Cambiar el texto del prompt: Si el jugador teclea ``hola'', en el prompt
+aparecería ``Tu texto aquí: (hola)''.
+
+\begin{lstlisting}
+aPlayer.getIO().setPrompts("Tu texto aquí: (", ")");
+\end{lstlisting}
+
+\section {Tipografías en AGE}
+
+AGE incluye diferentes opciones que permiten cambiar las tipografías
+(fuentes) con las que se muestra tanto el campo de entrada de la aventura
+(Prompt) como el texto de salida.
+
+\subsection {Control básico de la tipografía}
+
+El entorno de desarrollo integrado PUCK permite cambiar la tipografía
+general de una aventura de forma sencilla y sin tocar una línea de código,
+mediante formularios. Para ello, hacemos click en alguna parte del mapa que
+esté vacía (es decir, que no contenga ninguna entidad ni relación) para
+seleccionar el objeto mundo. Hecho esto, tendremos el panel de mundo a mano
+derecha. Seleccionando la pestaña ``Presentación'', en la parte de abajo
+del panel hay una sección de ``Tipografía'' con tres campos de formulario,
+que nos permiten especificar ``Fuente'', ``Fichero'' o ``Tamaño''. Estos
+campos se utilizan para cambiar la fuente por defecto en la que se
+mostrarán todos los textos de la aventura (también se puede cambiar la
+fuente puntualmente para mostrar textos con diferentes tipografías en la
+misma aventura; pero esto no se puede hacer mediante formularios sino sólo
+programando, véase ``Control avanzado de la tipografía'').
+
+El campo ``Fuente'' se utiliza para especificar el nombre de una fuente que
+se suponga instalada en el sistema operativo del jugador. Por ejemplo,
+podemos teclear Courier New y, si el usuario tiene instalada una fuente con
+ese nombre, los textos de la aventura se le mostrarán con dicha fuente. En
+el caso de que el usuario no tenga instalada la fuente, este campo no
+tendrá efecto, y simplemente se utilizará la fuente por defecto de AGE.
+
+El campo ``Fichero'' se usa si, en lugar de llamar a una fuente instalada
+en el sistema, se quiere incluir un fichero de fuente TrueType con la
+aventura. Por ejemplo, podemos incluir un fichero de fuente TrueType
+``Biergarten.ttf'' en el directorio de mundo, y en este campo teclearíamos
+Biergarten.ttf para utilizar esa fuente.
+
+\textbf{Nota}: Los tipos de fuentes soportados con Java pueden variar un
+poco según la versión de la máquina virtual Java y del sistema operativo.
+Por lo que he visto, muchas fuentes TrueType funcionan en todas las VM's
+(Windows, Linux y Mac); aunque hay una minoría que no funcionan (¿tal vez
+dependiendo de la versión del estándar?) En cualquier caso, si por un
+motivo u otro la fuente especificada en el fichero no funciona, no se
+producirá ningún error desagradable sino que simplemente el cambio de
+fuente no tendrá efecto.
+
+Por último, el campo ``Tamaño'' se utiliza para especificar el tamaño de la
+letra, tanto en las fuentes dadas mediante el campo ``Fuente'' como en las
+dadas mediante el campo ``Fichero''.
+
+En el caso de que se teclee algo tanto en el campo ``Fichero'' como en el
+campo ``Fuente'', tomará prioridad el campo ``Fichero''. Si no se puede
+obtener una fuente a partir del fichero (sea porque éste no existe o porque
+su formato no es válido), se utilizará el campo ``Fuente''. Si éste tampoco
+funciona, se usará la fuente por defecto de AGE.
+
+\subsection {Control avanzado de la tipografía}
+
+La clase \textsf{ColoredSwingClient} cuenta con los siguientes métodos para
+cambiar de forma dinámica la tipografía:
+
+\begin{lstlisting}
+public void setOutputAreaFont ( URL u , int fontSize )
+public void setInputFieldFont ( URL u , int fontSize )
+public void setCurrentOutputFont ( URL u , int fontSize )
+ 
+public void setOutputAreaFont ( Font f )
+public void setInputFieldFont ( Font f )
+public void setCurrentOutputFont ( Font f )
+ 
+public void setOutputAreaFont ( InputStream is , int fontSize )
+public void setInputFieldFont ( InputStream is , int fontSize )
+public void setCurrentOutputFont ( InputStream is , int fontSize )
+\end{lstlisting}
+
+Estos métodos permiten cambiar la tipografía de tres maneras:
+
+\begin{itemize}
+\item {Los métodos llamados \textsf{setInputFieldFont} cambian la tipografía
+con la que se escribe en el campo de entrada de texto.}
+\item {Los métodos llamados \textsf{setOutputAreaFont} cambian la tipografía
+de toda el área de salida de texto (es decir, todo el texto existente en
+dicha área pasa a dibujarse con la fuente dada).}
+\item {Los métodos llamados \textsf{setCurrentOutputFont} cambian la
+tipografía actual del área de salida de texto. Esto quiere decir que el
+texto que haya sido mostrado hasta ahora en dicha área no cambia; pero a
+partir de ahora los nuevos textos que se muestren tendrán la nueva
+tipografía. Se puede utilizar este método para mezclar diferentes
+tipografías en el mismo juego.}
+\end{itemize}
+
+Cada uno de los métodos tiene tres variantes diferentes según el tipo de los parámetros que le pasemos.
+
+A la primera variante le pasamos una URL al fichero de fuente junto con el
+tamaño de la fuente. La URL puede especificar la localización del fichero de
+fuente en el disco duro local, en una página web, en un archivo zip, etc.
+Esta variante es la más sencilla para cargar un fichero de fuente que
+incluyamos junto con nuestro mundo, dado que podemos utilizar el método
+\textsf{world.getResource("nombreFichero.ttf")} para obtener su URL. Así,
+podemos hacer:
+
+\begin{lstlisting}
+client.setCurrentOutputFont(world.getResource("fuente3.ttf"),16);
+\end{lstlisting}
+
+Y se usará un fichero de fuente ``fuente3.ttf'' almacenado en el directorio
+del mundo.
+
+Las otras dos variantes, más complejas, son:
+
+\begin{itemize}
+\item {Uno al que le pasamos un objeto de la clase Font, el objeto que en
+Java se utiliza para representar una fuente (incluyendo tipo de letra,
+tamaño y otras características como negrita o cursiva). La API de Java nos
+permite obtener objetos Font de muchas maneras. Por ejemplo:
+\begin{lstlisting}
+Font f = Font.createFont ( Font.TRUETYPE_FONT , new File("C:\\Fuentes\\miFuente.ttf" );
+\end{lstlisting}
+}
+\item {Uno al que le pasamos un objeto de la clase InputStream con los datos
+de la fuente y un tamaño de fuente. El InputStream se puede obtener de un
+fichero de fuente, de una URL, de un fichero zip, etc.}
+\end{itemize}
+
+Estas dos últimas variantes serán útiles para los usuarios avanzados que
+necesiten crear o manipular fuentes directamente, utilizando la API de Java
+para ello.
+
+Es importante recordar que los métodos mencionados en esta sección sólo
+existen en la clase \textsf{ColoredSwingClient}, que implementa el cliente
+de ventanas Swing para AGE. Otros clientes (como el que se utiliza para
+jugar por IRC o por telnet) no soportan cambio de fuentes. Así pues, es
+importante asegurarse de que el cliente que usa el jugador es realmente un
+\textsf{ColoredSwingClient} antes de llamar a cualquiera de estos métodos:
+
+\begin{lstlisting}
+InputOutputClient client = jugador.getIO();
+if ( client instanceof ColoredSwingClient )
+  client.setOutputAreaFont(world.getResource("fuente3.ttf"),16);
+\end{lstlisting}
+
+\section{Métodos gráficos}
+
+Son aquellos métodos que nos permiten añadir gráficos, frames, etc.
+
+\subsection{Imágenes} \label{sec:imagenes}
+
+\subsubsection{Métodos para imágenes}
+
+\begin{itemize}
+\item {\textsf{insertCenteredIcon( String imageFile )}: Mostrar una imagen
+centrada integrada en el texto.}
+\item {\textsf{useImage ( String imageFile , int mode , int position , int scaling )}:
+muestra la imagen que está en el fichero \textsf{imageFile}. Este método
+puede usarse tanto para mostrar imágenes en medio del texto, como en marcos
+o como fondo.
+	\begin{itemize}
+	\item {El parámetro mode indica cómo se mostrará la imagen. Sus valores
+	pueden ser \textsf{ImageConstants.INLINE} (mostrar con el texto),
+	\textsf{ImageConstants.FRAME} (mostrar en un marco), o
+	\textsf{ImageConstants.BACKGROUND} (mostrar como fondo).}
+	\item {El parámetro position indica en qué posición se mostrará la imagen.
+	Si el modo es \textsf{ImageConstants.INLINE}, el parámetro position puede
+	valer \textsf{ImageConstants.CENTER (imagen centrada)} o
+	\textsf{ImageConstants.LEFT} (imagen alineada a la derecha). Si el modo es
+	\textsf{ImageConstants.FRAME}, el parámetro position puede valer
+	\textsf{ImageConstants.TOP} (arriba), \textsf{ImageConstants.BOTTOM}
+	(abajo), \textsf{ImageConstants.LEFT} (izquierda) o
+	\textsf{ImageConstants.RIGHT} (derecha), según en qué frame se quiere
+	mostrar la imagen. Si el modo es \textsf{ImageConstants.BACKGROUND}, el
+	parámetro position no tiene de momento ningún efecto (en este caso se
+	puede pasar cualquier valor, por ejemplo 0).}
+	\item {El parámetro scaling indica qué tipo de escalado se aplicará a la
+	imagen. Este parámetro, al menos de momento, sólo tiene sentido en el modo
+	\textsf{ImageConstants.FRAME} (ya que por ejemplo una imagen que se
+	muestra en el medio del texto no necesita escalado). En el resto de los
+	modos se puede pasar cualquier valor, por ejemplo 0. En modo
+	\textsf{ImageConstants.FRAME}, tenemos los siguientes valores permitidos
+	para el parámetro scaling: \textsf{ImageConstants.NO\_SCALING} (la imagen
+	no se escalará, sino que se mostrará a su tamaño natural),
+	\textsf{ImageConstants.FIT\_WIDTH} (la imagen se escalará para ocupar toda
+	la anchura del frame, manteniendo la proporción de aspecto original, o
+	sea, sin estirar ni encoger la imagen), \textsf{ImageConstants.FIT\_HEIGHT}
+	(la imagen se escalará para ocupar toda la altura del frame, manteniendo
+	la proporción de aspecto original), y por último
+	\textsf{ImageConstants.FIT\_BOTH} (la imagen se escalará para ocupar toda
+	la altura y anchura del frame, pudiendo para ello modificar la proporción
+	de aspecto).}
+	\end{itemize}
+}
+\end{itemize}
+
+\subsubsection{Ejemplos de código}
+
+Mostrar una imagen de fondo:
+
+\begin{lstlisting}
+theClient.useImage( imagen , ImageConstants.BACKGROUND , 0 , 0 );
+\end{lstlisting}
+
+Mostrar una imagen centrada integrada en el texto:
+
+\begin{lstlisting}
+theClient.useImage( imagen , ImageConstants.INLINE , ImageConstants.CENTER , 0 );
+\end{lstlisting}
+
+Otra forma de mostrar una imagen centrada integrada en el texto:
+
+\begin{lstlisting}
+theClient.insertCenteredIcon( imagen );
+\end{lstlisting}
+
+\subsection{Frames}
+\subsubsection{Utilidad de los frames}
+
+Los frames son áreas de tamaño fijo que se pueden añadir a la ventana de
+juego para mostrar imágenes. Los frames se pueden añadir o quitar de la
+ventana dinámicamente, además de ir cambiando la imagen que muestran en
+cada momento. Esto permite, por ejemplo, implementar el clásico interfaz
+que muestra una imagen de la habitación en la que se encuentra el jugador
+en la parte superior de la ventana y el texto de la descripción debajo,
+entre otras funcionalidades.
+
+\subsubsection{Métodos para crear y borrar frames}
+
+Los siguientes métodos se pueden ejecutar sobre un objeto de la clase
+\textsf{MultimediaInputOutputClient}:\footnote{el método \textsf{getIO()} de
+la clase \textsf{Player} nos devuelve una instancia de
+\textsf{MultimediaInputOutputClient} cuando el jugador esté utilizando un
+cliente de juego con soporte multimedia, como lo es el interfaz de ventanas
+de Aetheria Game Engine. Nótese que otros clientes, como el de línea de
+comandos \textsf{cheapAGE}, pueden no soportar multimedia y por lo tanto no
+permitir el uso de frames.}
+
+\begin{itemize}
+\item {\textsf{addFrame ( int position , int size )}: crea un marco en la
+posición dada, y del tamaño en pixels dado.
+	\begin{itemize}
+	\item {La posición puede ser \textsf{ImageConstants.TOP} (arriba),
+	\textsf{ImageConstants.BOTTOM} (abajo), \textsf{ImageConstants.LEFT}
+	(izquierda) o \textsf{ImageConstants.RIGHT} (derecha).}
+	\item {El tamaño se refiere al alto si el frame se crea arriba o abajo, o
+	al ancho si se crea a la derecha o a la izquierda (la otra dimensión
+	variará según el tamaño de la ventana de AGE).}
+	\item {Puede haber varios marcos a la vez, aunque de momento sólo uno por
+	posición (o sea, por ejemplo, no puede haber dos marcos encima del texto
+	a la vez).}
+	\end{itemize}
+}
+\item {\textsf{removeFrames ()}: quita todos los marcos que se hayan creado.
+Esto es útil si una aventura tiene partes que muestran imágenes y otras que
+no. Más tarde se pueden volver a crear los marcos con \textsf{addFrame()}.}
+\end{itemize}
+
+\subsubsection{Métodos para mostrar imágenes en frames}
+
+Para mostrar una imagen en un frame, puede utilizarse el método
+\textsf{useImage} especificando como modo de mostrado
+\textsf{ImageConstants.FRAME}, tal y como se muestra en la sección
+\ref{sec:imagenes} Imágenes.
+
+\subsubsection{Ejemplos de código}
+
+Creamos un frame en la parte superior de la pantalla de 300 píxeles de alto,
+y que incluye la imagen ``titulo.png'' sin escalar.
+
+\begin{lstlisting}
+if ( jugador.getIO() instanceof MultimediaInputOutputClient && jugador.getIO().isGraphicsEnabled() )
+{
+  MultimediaInputOutputClient theClient = jugador.getIO();
+  URL imageURL = world.getResource("titulo.png");
+  theClient.addFrame ( ImageConstants.TOP , 300 );
+  theClient.useImage ( imageURL , ImageConstants.FRAME , ImageConstants.TOP , ImageConstants.NO_SCALING );
+}
+\end{lstlisting}
+
+\section {sonido}
+
+Una buena forma de enriquecer un mundo es añadirle efectos sonoros y música
+ambiente. En Aetheria Game Engine es sencillo conseguir esto, mediante
+código BeanShell. AGE soporta una gran variedad de formatos de audio y
+música para este propósito.
+
+\subsection {Audio}
+
+Un fichero de \textit{audio} es aquél que guarda una grabación digital de
+sonido. Son la manera más general y más utilizada de representar sonidos,
+porque en ellos podemos tener almacenados efectos, música, voces, o
+cualquier otro tipo de sonido.
+
+El soporte de audio de AGE permite utilizar mayor variedad de formatos de
+audio que otros sistemas, y permite tocar sonidos, detenerlos, repetirlos
+en bucle y cambiar dinámicamente el volúmen de forma muy sencilla.
+
+Los formatos de audio actualmente soportados por AGE son: WAV, AIFF, MP3,
+OGG y SPX (nótese que AGE también soporta música en MIDI y MOD; pero éstos
+no son formatos de audio y su manejo se hace con otros métodos distintos,
+que se explican más adelante).
+
+Los sonidos se pueden reproducir y gestionar directamente desde métodos de
+la clase \textsf{Mobile}, de forma que para que un jugador escuche un
+sonido en su cliente, invocaremos los métodos directamente sobre ese
+jugador.
+
+\subsubsection {Reproducir un sonido}
+
+\begin{lstlisting}
+/*clase Mobile*/ boolean playAudioIfAvailable ( URL sound )
+\end{lstlisting}
+
+\textsf{m.playAudioIfAvailable( sound )} toca el sonido referenciado por
+\textsf{sound} en el cliente asociado con la criatura \textsf{m} (que
+normalmente será un jugador), si esto es posible.
+
+En el caso de que sea posible y el cliente del jugador tenga el volumen
+activado, comenzará a sonar el audio y el método devolverá inmediatamente
+\textsf{true} (sin esperar a que la reproducción termine).
+
+En el caso de que no sea posible reproducir el sonido, no sonará nada y el
+método devolverá \textsf{false}. Esto puede suceder por las siguientes
+razones:
+
+\begin{itemize}
+\item {La criatura es un personaje no jugador y por lo tanto no puede
+escuchar sonidos,}
+\item {La criatura es un jugador pero está jugando a través de un cliente
+que no soporta sonidos (por ejemplo, conectado por medio de telnet),}
+\item {La URL pasada como parámetro es errónea, o apunta a un fichero que
+no existe, o apunta a un fichero que no es de ninguno de los formatos de
+audio reconocidos por AGE.}
+\end{itemize}
+
+Cabe recordar que para obtener el objeto de la clase URL que apunta a un
+fichero que incluimos con el mundo, podemos utilizar el método
+\textsf{getResource()} de la clase \textsf{World}. Así, para reproducir un
+sonido llamado ``musica.ogg'' que incluimos con el mundo, haríamos:
+
+\begin{lstlisting}
+jugador.playAudioIfAvailable( world.getResource("musica.ogg") );
+\end{lstlisting}
+
+Nótese que en este caso estamos ignorando el valor de retorno
+(\textsf{true} o \textsf{false}) porque no nos importa: simplemente queremos
+que si el jugador está jugando en un cliente que soporta sonido, pueda
+oírlo, y si no, tampoco pasa nada. El valor de retorno sólo será importante
+si queremos programar algún comportamiento alternativo para clientes que no
+tengan sonido.
+
+\begin{lstlisting}
+/*clase Mobile*/ boolean playAudioIfAvailable ( URL sound , int loopTimes )
+\end{lstlisting}
+
+Este método hace lo mismo que \textsf{boolean playAudioIfAvailable ( URL sound );}
+pero nos permite especificar a mayores un parámetro entero \textsf{loopTimes}
+que sirve para hacer que un sonido se repita un determinado número de veces:
+
+\begin{itemize}
+\item {Si pasamos $loopTimes = 1$, el sonido se reproducirá una vez (es
+decir, igual que con el método sin parámetro),}
+\item {Si pasamos $loopTimes > 1$, el sonido se reproducirá
+\textsf{loopTimes} veces,}
+\item {Si pasamos $loopTimes < 1$, el sonido se repetirá indefinidamente
+(pero se puede parar usando \textsf{stopAudioIfAvailable()}, que se verá
+más abajo).}
+\end{itemize}
+
+\begin{lstlisting}
+/*clase Mobile*/ boolean playAudioIfAvailable ( URL sound , int loopTimes , boolean fade )
+\end{lstlisting}
+
+Este método hace lo mismo que \textsf{boolean playAudioIfAvailable ( URL sound , int loopTimes );}
+pero nos permite especificar un parámetro booleano adicional \textsf{fade}.
+Si este parámetro se pone a \textsf{true}, el sonido se reproducirá con un
+``fade in'' (transición de inicio). Si se pone a \textsf{false}, el método
+se comportará igual que la versión sin este parámetro.
+
+\subsubsection {Detener un sonido}
+
+\begin{lstlisting}
+/*clase Mobile*/ boolean stopAudioIfAvailable ( URL sound )
+\end{lstlisting}
+
+\textsf{m.stopAudioIfAvailable( sound )} para la reproducción del sonido
+referenciado por \textsf{sound} en el cliente asociado con la criatura
+\textsf{m} (que normalmente será un jugador), si este sonido se encuentra
+sonando.
+
+En el caso de que el sonido esté sonando, además de detenerlo, el método
+devuelve \textsf{true}. Si no está sonando (bien porque no ha llegado a
+reproducirse o porque ya ha terminado su reproducción), el método no tiene
+efecto y devuelve \textsf{false}.
+
+\begin{lstlisting}
+/*clase Mobile*/ boolean stopAudioIfAvailable ( URL sound , boolean fade )
+\end{lstlisting}
+
+Este método hace lo mismo que boolean \textsf{stopAudioIfAvailable ( URL sound );}
+pero nos permite especificar un parámetro booleano adicional \textsf{fade}.
+Si este parámetro se pone a \textsf{true}, el sonido se reproducirá con un
+``fade out'' (transición de final). Si se pone a \textsf{false}, el método
+se comportará igual que la versión sin este parámetro.
+
+\subsubsection {Cambiar el volumen de un sonido}
+
+\begin{lstlisting}
+/*clase Mobile*/ boolean setAudioGainIfAvailable ( URL sound , double gain )
+\end{lstlisting}
+
+\textsf{m.setAudioGainIfAvailable ( sound , gain )} permite cambiar el
+volumen del sonido referenciado por \textsf{sound} que esté sonando en el
+cliente asociado con la criatura \textsf{m} (que normalmente será un
+jugador), si esto es posible. El volumen toma el valor \textsf{gain}, que ha
+de estar entre 0.0 y 1.0, siendo 0.0 el volumen nulo (sin sonido) y 1.0 el
+volumen máximo. El método devolverá \textsf{true} si el volumen se ha podido
+cambiar, y \textsf{false} de lo contrario.
+
+Nótese que para cambiar el volumen, el sonido tiene que estar sonando. Sin
+embargo, podemos cambiar el volumen de un sonido desde el principio llamando
+inmediatamente a \textsf{setAudioGainIfAvailable} después de
+\textsf{playAudioIfAvailable}:
+
+\begin{lstlisting}
+jugador.playAudioIfAvailable( world.getResource("musica.ogg") );
+jugador.setAudioGainIfAvailable( world.getResource("musica.ogg") , 0.2 );
+\end{lstlisting}
+
+Como nada más lanzar el sonido ya llamamos al cambio de volumen, el efecto
+de este código será que el audio ``musica.ogg'' se reproduzca con volumen
+0.2.
+
+Si en lugar de llamar a \textsf{setAudioGainIfAvailable} inmediatamente lo
+llamamos más adelante, con el sonido a medias, el volumen cambiará
+dinámicamente.
+
+\subsubsection {Ejemplo}
+
+Supongamos que queremos parar un sonido que estaba sonando (sonido1.mp3) y
+comenzar a reproducir otro (sonido2.mp3) con volumen 0.5. Entonces, haríamos
+lo siguiente:
+
+\begin{lstlisting}
+//parar un sonido si está tocando
+jugador.stopAudioIfAvailable( world.getResource("sonido1.mp3") );
+ 
+//tocar un sonido, si existe el fichero y el jugador usa un cliente que soporta audio
+jugador.playAudioIfAvailable( world.getResource("sonido2.mp3") );
+jugador.setAudioGainIfAvailable( world.getResource("sonido2.mp3") , 0.5 );
+\end{lstlisting}
+
+Cabe destacar que también es posible reproducir varios sonidos a la vez.
+Esto puede ser interesante si, por ejemplo, tenemos un sonido de música
+ambiente pero queremos que además se produzcan efectos sonoros al llevar a
+cabo acciones.
+
+\subsection {Música MIDI}
+
+Los ficheros de música MIDI (con extensión \textsf{.mid}) son archivos que,
+en lugar de almacenar una grabación de sonido (como los ficheros de audio),
+guardan música en forma de una partitura que el ordenador puede reproducir.
+
+Esta manera de representar la música es mucho más limitada que los ficheros
+de audio, porque no se guarda una representación fidedigna de los sonidos
+sino sólo notas y orientaciones sobre a qué instrumento corresponden, y
+suele suceder que la interpretación de esos instrumentos suena de manera
+muy distinta dependiendo de la tarjeta de sonido, sistema operativo y
+configuración de cada máquina. Por otra parte, la ventaja que tienen los
+ficheros MIDI es que ocupan mucho menos espacio que los ficheros de audio.
+
+Los métodos para reproducir y detener música MIDI en AGE son similares a los
+correspondientes al audio, aunque proporcionan menos funcionalidad:
+
+\begin{itemize}
+\item {No se soportan funciones como los ``fade--in'' y ``fade--out'' porque
+el volumen de los ficheros MIDI se comporta de una manera muy distinta en
+cada sistema operativo y configuración y es difícil garantizar un
+comportamiento fidedigno de ese tipo de funciones.}
+\item {Sólo se puede reproducir un fichero MIDI a la vez, al contrario que
+con los ficheros de audio, que pueden sonar varios a la vez. Por lo tanto,
+antes de reproducir una nueva música en MIDI se debe siempre llamar al
+método que detiene la anterior, que veremos más abajo. Nótese que esto no
+afecta a la combinación de MIDI y audio: no se puede tener varios MIDI
+sonando a la vez, pero sí un solo MIDI sonando a la vez que uno o varios
+ficheros de audio.}
+\end{itemize}
+
+Por todo esto, en general sólo es recomendable utilizar música en formato
+MIDI en AGE en casos en los que sea necesario que el mundo ocupe poco
+espacio en disco. De lo contrario, es mucho más recomendable usar formatos
+de audio: en caso de duda, siempre audio, ya que es más flexible, suena
+mejor y es más fiable.
+
+\subsubsection {Reproducir un fichero MIDI}
+
+\begin{lstlisting}
+/*clase Mobile*/ boolean playMidiIfAvailable ( URL sound )
+\end{lstlisting}
+
+\textsf{m.playMidiIfAvailable( sound )} toca el fichero MIDI por
+\textsf{sound} en el cliente asociado con la criatura \textsf{m} (que
+normalmente será un jugador), si esto es posible.
+
+En el caso de que no sea posible reproducir la música, no sonará nada y el
+método devolverá \textsf{false}. Esto puede suceder por las siguientes
+razones:
+
+\begin{itemize}
+\item {La criatura es un personaje no jugador y por lo tanto no puede
+escuchar sonidos,}
+\item {La criatura es un jugador pero está jugando a través de un cliente
+que no soporta sonidos (por ejemplo, conectado por medio de telnet),}
+\item {La URL pasada como parámetro es errónea, o apunta a un fichero que
+no existe, o apunta a un fichero que no es un fichero MIDI válido.}
+\end{itemize}
+
+También puede suceder que no se pueda reproducir la música porque esté
+sonando otra (como ya se ha dicho, sólo se puede reproducir un fichero MIDI
+a la vez). En este caso, el comportamiento depende del sistema operativo y
+de la configuración: puede ser que el método se niegue a reproducir el
+sonido y devuelva \textsf{false}, o bien que se pare el sonido anterior y
+empiece a sonar el nuevo, o bien incluso que se paren los dos. Por lo tanto,
+lo más razonable es no intentar reproducir nunca dos MIDIs a la vez, ya que
+no hay garantía de que el comportamiento vaya a ser el mismo en una máquina
+que en otra.
+
+\begin{lstlisting}
+/*clase Mobile*/ boolean playMidiIfAvailable ( URL sound , int loopTimes )
+\end{lstlisting}
+
+Este método hace lo mismo que \textsf{boolean playMidiIfAvailable ( URL sound );}
+pero nos permite especificar a mayores un parámetro entero
+\textsf{loopTimes} que sirve para hacer que una música en MIDI se repita un
+determinado número de veces:
+
+\begin{itemize}
+\item {Si pasamos $loopTimes = 1$, el MIDI se reproducirá una vez (es decir,
+igual que con el método sin parámetro),}
+\item {Si pasamos $loopTimes > 1$, el MIDI se reproducirá loopTimes veces,}
+\item {Si pasamos $loopTimes < 1$, el MIDI se repetirá indefinidamente (pero
+se puede parar usando \textsf{stopMidiIfAvailable()}, que se verá más
+abajo).}
+\end{itemize}
+
+\subsubsection {Detener un fichero MIDI}
+
+\begin{lstlisting}
+/*clase Mobile*/ boolean stopMidiIfAvailable ( )
+\end{lstlisting}
+
+\textsf{m.stopMidiIfAvailable( sound )} para la música MIDI que esté
+sonando en el cliente asociado con la criatura \textsf{m} (que normalmente
+será un jugador).
+
+En el caso de que algún MIDI esté sonando, además de detenerlo, el método
+devuelve \textsf{true}. Si no está sonando (bien porque no ha llegado a
+reproducirse o porque ya ha terminado su reproducción), el método no tiene
+efecto y devuelve \textsf{false}.
+
+\section{Otros aspectos de la presentación}

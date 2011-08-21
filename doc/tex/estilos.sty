@@ -1,0 +1,47 @@
+\ProvidesPackage{estilos}
+
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\addto\captionsspanish{\renewcommand{\chaptername}{Capítulo}}
+\addto\captionsspanish{\renewcommand{\partname}{Módulo}}
+\addto\captionsspanish{\renewcommand{\tablename}{Tabla}}
+\addto\captionsspanish{\renewcommand{\listtablename}{Lista de tablas}}
+
+\usepackage[pdftex]{graphicx}
+
+\usepackage[colorlinks=true, linkcolor=blue]{hyperref}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\newcommand{\codigo}[1]{\textbf{\textsf{#1}}}
+\newcommand{\comillas}[1]{\textrm{\guillemotleft{#1}\guillemotright}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Titulos de pagina
+\usepackage{fancyhdr}
+\setlength{\headheight}{15pt}
+ 
+\pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{#1}{}}
+ 
+\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[RE]{\textit{\nouppercase{\leftmark}}}
+\fancyhead[LO]{\textit{\nouppercase{\rightmark}}}
+ 
+\fancypagestyle{plain}{ %
+\fancyhf{} % borra todo
+\renewcommand{\headrulewidth}{0pt} % quita las lineas también
+\renewcommand{\footrulewidth}{0pt}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{multicol}
+\usepackage{multirow}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{makeidx}
+\makeindex
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{listings}

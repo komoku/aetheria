@@ -1,0 +1,522 @@
+\section{Manejo de arrays y listas}
+Los tipos de datos que hemos visto en las secciones anteriores nos permiten
+representar datos de uno en uno: por ejemplo, en una variable de la clase
+\textsf{Item} podemos guardar una cosa, y en una variable de la clase
+\textsf{String}, una cadena de texto. Sin embargo, a veces nos interesará
+referirnos a grupos o listas de objetos: por ejemplo, el inventario de una
+criatura será una lista de objetos de la clase \textsf{Item}.
+
+Los arrays y listas son tipos de datos que nos permiten manejar una serie de
+objetos. Una variable de tipo array o lista contendrá varios objetos, en
+orden, desde el objeto con número 0 hasta el objeto con número
+\textsf{longitud--1}, donde longitud es el número de objetos que tiene.
+Tanto en los arrays como en las listas, podremos referirnos a cualquiera de
+sus objetos, recorrerlos todos mediante un bucle, y cambiar sus contenidos.
+
+\subsection{Arrays}
+
+Un array es una variable que se utiliza para almacenar una cantidad fija de
+datos del mismo tipo. Por ejemplo, un array para almacenar cuatro datos de
+tipo String (array de tamaño/longitud 4) se declara así:
+
+\begin{lstlisting}
+String[] cadenas = new String[4];
+\end{lstlisting}
+
+Esto viene a ser como declarar cuatro variables \textsf{String}, cuyos
+nombres serían \textsf{cadenas[0]}, \textsf{cadenas[1]}, \textsf{cadenas[2]}
+y \textsf{cadenas[3]}. Es decir, para acceder a cada dato del array, se
+utiliza un número (llamado el índice de ese dato) que está entre 0 y el
+tamaño del array menos uno: el primer objeto \textsf{String} es
+\textsf{cadenas[0]}, el segundo \textsf{cadenas[1]}, etc.
+
+Así, podemos hacer cosas como ésta:
+
+\begin{lstlisting}
+String[] cadenas = new String[4];
+cadenas[0] = "uno";
+cadenas[1] = "dos";
+mobile("jugador").write(cadenas[0] + "\n"); //escribe "uno"
+cadenas[3] = cadenas[1]; //pone cadenas[3] a "dos"
+mobile("jugador").write(cadenas[2] + "\n"); //escribe "null": cadenas[2] vale null porque no se ha inicializado.
+cadenas[2] = "siete";
+int longitud = cadenas.length; //el campo especial "nombrearray.length" devuelve la longitud del array.
+\end{lstlisting}
+
+Pero accediendo a los elementos de uno en uno de esta manera, un array no
+nos aporta mucho más que una serie de variables (en este caso, cuatro) por
+separado. Lo que sí que nos será más útil será acceder a los elementos del
+array usando como índice una variable. Con esto podemos, por ejemplo,
+recorrer todos los elementos usando un bucle:
+
+\begin{lstlisting}
+for ( int i = 0 ; i < cadenas.length ; i++ ) //cadenas.length es la longitud del array cadenas
+{
+  mobile("jugador").write(cadenas[i] + "\n");
+}
+\end{lstlisting}
+
+Con ese código, se mostrarán en la pantalla del jugador los elementos del
+array por orden, uno detrás de otro.
+
+Aunque hemos usado un array de \textsf{String} como ejemplo, los arrays
+pueden ser de cualquier tipo de datos, incluyendo tanto tipos básicos como
+clases:
+
+\begin{lstlisting}
+String[] cadenas = new String[4];
+int[] numeros = new int[10];
+Entity[] entidades = new Entity[3];
+cosas[0] = item("llave dorada");
+cosas[1] = mobile("jugador");
+cosas[2] = room("sala grande");
+\end{lstlisting}
+
+\subsection {Listas}
+Las listas son objetos que nos permiten almacenar una cantidad cambiante de
+datos de un tipo dado. Es decir, cuando declaramos un array decimos qué
+tamaño va a tener y el array nunca podrá tener más objetos que ese tamaño
+fijo. Sin embargo, las listas pueden crecer y decrecer en tiempo de
+ejecución, pues en cualquier momento se les puede añadir o quitar objetos.
+
+Existen varias clases diferentes de listas que resultarán útiles en AGE, y
+en breve las veremos. Todas ellas tienen en común la forma de acceder a los
+objetos: con
+
+\begin{lstlisting}
+nombreLista.size()
+\end{lstlisting}
+
+obtenemos el tamaño actual de la lista (que, como de ha dicho, puede variar).
+Con
+
+\begin{lstlisting}
+nombreLista.get(i)
+\end{lstlisting}
+
+accedemos al objeto de la lista con índice \textsf{i}. Análogamente al caso
+de los arrays, los índices van desde $0$ hasta \verb|nombreLista.size()-1|.
+Si utilizamos un índice que no está en ese rango, obtendremos una excepción
+(error). Otro método útil que se puede aplicar en todas las listas es
+
+\begin{lstlisting}
+nombreLista.contains(objeto)
+\end{lstlisting}
+
+que nos devuelve \textsf{true} o \textsf{false} según si nuestra lista
+contiene o no el objeto dado.
+
+Otras operaciones con listas variarán según el tipo de lista con el que
+estemos tratando. A continuación veremos diferentes tipos de listas que nos
+serán útiles:
+
+\subsubsection{Inventario (\textsf{Inventory})}
+
+La clase \textsf{Inventory} se utiliza para definir inventarios (conjuntos
+de cosas) en AGE. Esto comprende tanto el inventario de una criatura (el
+conjunto de cosas que lleva), como el de una habitación (cosas que hay en
+esa habitación) u objeto contenedor (cosas que están, por ejemplo, dentro de
+un baúl). Para obtener estos inventarios, se hace de la siguiente manera:
+
+\begin{lstlisting}
+Inventory inventarioTroll = mobile("troll").getInventory();
+Inventory inventarioSalaGrande = room("sala grande").getInventory();
+Inventory contenidoBaul = item("baúl").getContents();
+\end{lstlisting}
+
+Los inventarios sólo pueden contener objetos de la clase \textsf{Item}, y
+además tienen la particularidad de que tienen un peso y un volumen máximos.
+Cuando se añadan objetos que hagan que un inventario supere su peso o volumen
+máximo, se producirá una excepción (\textsf{WeightLimitExceededException} o
+\textsf{VolumeLimitExceededException}, respectivamente).
+
+Podemos obtener el peso y volumen de un inventario, así como sus límites,
+con los siguientes métodos:
+
+\begin{lstlisting}
+/*clase Inventory*/ int getWeight ( )
+/*clase Inventory*/ int getVolume ( )
+/*clase Inventory*/ int getWeightLimit ( )
+/*clase Inventory*/ int getVolumeLimit ( )
+\end{lstlisting}
+
+Estos métodos devuelven, respectivamente: el peso total de los objetos del
+inventario, su volumen total, el límite máximo de peso del inventario, y su
+límite máximo de volumen. Estos límites también se pueden cambiar:
+
+\begin{lstlisting}
+/*clase Inventory*/ void setWeightLimit ( int newLimit )
+/*clase Inventory*/ void setVolumeLimit ( int newLimit )
+\end{lstlisting}
+
+Estos dos métodos cambian el límite de peso y el de volumen, respectivamente,
+al valor dado por el parámetro \textsf{newLimit}.
+
+Podemos obtener una representación de un inventario en forma de cadena
+mediante los siguientes métodos:
+
+\begin{lstlisting}
+/*clase Inventory*/ String toString ( )
+/*clase Inventory*/ String toString ( Entity viewer )
+\end{lstlisting}
+
+El primero devuelve una descripción genérica, mientras que el segundo
+devuelve una descripción adaptada a una criatura determinada que se supone
+que es la que ``ve´ el inventario (\textsf{viewer}). Esto último es porque,
+como se verá más adelante, AGE permite definir descripciones dinámicas que
+cambien según quién las ve (por ejemplo, para un monje sabio, un libro
+podría verse como ``El Códice de Antelys'' mientras que para un bárbaro
+inculto el mismo libro podría ser ``un gran tomo''). Por lo tanto, siempre
+será mejor utilizar el segundo método para mostrarle un inventario a una
+criatura, por si utilizamos descripciones dinámicas de este tipo o en algún
+momento futuro queremos utilizarlas.
+
+La cadena que devuelven los métodos \textsf{toString()} es una enumeración
+de la siguiente forma: si el inventario está vacío, la cadena es ``nada.'',
+mientras que si tiene cosas, es de la forma ``una espada, una moneda y un
+escudo.'', por ejemplo. Esta cadena es parte de lo que se muestra a los
+jugadores cuando miran una habitación que contiene cosas.
+
+Además de los métodos que hemos visto, la clase \textsf{Inventory} también
+cuenta con métodos que permiten agregar y quitar objetos de un inventario.
+Sin embargo, es muy \textbf{importante} tener en cuenta que el creador de
+aventuras \textbf{no} debe usarlos para agregar o quitar objetos a una
+habitación o criatura. En su lugar, deben usarse los métodos de más alto
+nivel que hemos visto en la sección \ref{sec:ManipEntidades} manipulación
+básica de entidades para mover objetos: por ejemplo, para añadir una cosa al
+inventario de una habitación, utilizaremos el método
+\verb|void addItem ( Item newItem )| de la clase \textsf{Room}, y para
+quitarla el método \verb|boolean removeItem ( Item oldItem )| de la misma
+clase, que vimos en esa sección. Estos métodos tienen el efecto de poner y
+quitar cosas del inventario de la habitación; pero además hacen otras
+manipulaciones internas que el AGE necesita para llevar su control interno
+de las cosas.
+
+Para otros usos de los inventarios que se verán en futuras secciones, y
+donde agregar o quitar objetos de los mismos sí sea válido, los métodos que
+lo hacen son éstos:
+
+\begin{lstlisting}
+/*clase Inventory*/ void addItem ( Item new ) throws WeightLimitExceededException, VolumeLimitExceededException
+/*clase Inventory*/ boolean removeItem ( Item old )
+\end{lstlisting}
+
+El primero añade una cosa dada al inventario, siempre que lo permitan sus
+límites de peso y volumen tirando una excepción en caso contrario, y el
+segundo quita una cosa dada del inventario si estaba en él, devolviendo
+\textsf{true}, o devuelve false en el caso de que no estuviese.
+
+Así pues, dejando al margen de momento este último grupo de métodos que no
+usaremos hasta secciones más avanzadas, el uso principal de la clase
+\textsf{Inventory} y sus métodos es el de poder consultar qué objetos tiene
+una criatura, habitación o contenedor, y también nos permite generar una
+descripción del inventario y manipular los límites de peso y volumen; pero
+no se debe usar esta clase para modificar los inventarios sino los métodos
+que ya vimos de las clases \textsf{Room}, \textsf{Item} y \textsf{Mobile}.
+
+Veamos algunos ejemplos prácticos de uso de la clase Inventory. Un uso
+sencillo que se nos puede ocurrir sería comprobar si el jugador tiene un
+objeto determinado en su inventario. Esto se puede hacer con el método
+\textsf{contains} del inventario; pero realmente no es necesario porque el
+método \textsf{hasItem} de la clase \textsf{Mobile} que vimos con
+anterioridad (ver manipulación básica de entidades) nos cubre esta necesidad
+de forma más simple. Sin embargo, hay comprobaciones más complejas que no se
+pueden hacer de forma fácil con \textsf{hasItem}.
+
+Por ejemplo, imaginemos que no queremos dejar al jugador internarse en el
+desierto si no tiene bebida, y hay distintos objetos en nuestro mundo que
+pueden servir como bebida (usamos una propiedad ``bebida'' para marcar esos
+objetos). En lugar de usar \textsf{hasItem} uno por uno con todos esos
+objetos para comprobar si el jugador los tiene, cosa que sería bastante
+farragosa y poco escalable, podemos hacerlo más fácilmente poniendo el
+siguiente código en el método \textsf{parseCommand} del mundo que vimos en
+\ref{sec:PrimerosPasosBeanShell} primeros pasos con BeanShell:
+
+\begin{lstlisting}
+void parseCommand ( Mobile aCreature , String verb , String args )
+{
+  if ( equals(verb,"ir") && equals(args,"norte") && equals(aCreature.getRoom(),room("al sur del desierto")) )
+  { 
+    Inventory inv = jugador.getInventory();
+    boolean tieneBebida = false;
+    for ( int i = 0 ; i < inv.size() ; i++ )
+    {
+      Item cosa = inv.get(i);
+      if ( get ( cosa , "bebida" ) )
+      {
+        tieneBebida = true;
+      }   
+    }
+    if ( !tieneBebida )
+    {
+      jugador.write("No puedes adentrarte en el desierto sin bebida, te morirías de sed...\n");
+      end(); 
+    }
+  } 
+}
+\end{lstlisting}
+
+Este código se define en el \textsf{parseCommand} del mundo; pero sólo se
+aplica si el jugador quiere ir al norte desde una habitación dada, cosa que
+comprobamos con un \textsf{if}. Una forma más sencilla de hacer lo mismo
+sería utilizar un \textsf{parseCommand} específico para una habitación, que
+no hemos visto en las secciones anteriores. Para ello, seleccionamos en el
+mapa del PUCK la habitación que esté directamente al sur del desierto, vamos
+a su campo de código y, en el menú contextual, elegimos Insertar código --~
+Redefinir métodos de habitación -- Método de análisis de la entrada. Se nos
+generará una plantilla como ésta:
+
+\begin{lstlisting}
+/*Método de análisis sintáctico de la entrada en una habitación*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "coger"
+	//args: resto de la orden que introduce, por ejemplo "el cuchillo grande"
+ 
+ 
+	//terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
+	//por defecto ante ella
+	//terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
+	//comando y ejecución de la acción correspondiente	
+}
+\end{lstlisting}
+
+Este método de análisis de la entrada funciona igual que el del mundo pero
+se ejecuta sólo para comandos de jugadores que están en la habitación en la
+que se define. Esto nos ayuda a compartimentar mejor el código, definiendo
+el comportamiento asociado a una habitación en esa habitación en lugar de
+tenerlo todo junto en el código del mundo. Usando este método
+\textsf{parseCommand}, podemos implementar el ejemplo anterior sin tener que
+comprobar dónde se encuentra el jugador:
+
+\begin{lstlisting}
+void parseCommand ( Mobile aCreature , String verb , String args )
+{
+  if ( equals(verb,"ir") && equals(args,"norte") )
+  { 
+    Inventory inv = jugador.getInventory();
+    boolean tieneBebida = false;
+    for ( int i = 0 ; i < inv.size() ; i++ )
+    {
+      Item cosa = inv.get(i);
+      if ( get ( cosa , "bebida" ) )
+      {
+        tieneBebida = true;
+      }   
+    }
+    if ( !tieneBebida )
+    {
+      jugador.write("No puedes adentrarte en el desierto sin bebida, te morirías de sed...\n");
+      end(); 
+    }
+  } 
+}
+\end{lstlisting}
+
+Todavía hay una forma más sencilla de implementar un comportamiento como
+éste, que sería mediante eventos (código que se ejecuta cuando tiene lugar
+un hecho determinado en el mundo, como por ejemplo que un jugador quiera
+moverse). Esto nos permite definir un comportamiento asociado a un hecho
+independientemente de la orden que pueda provocar ese hecho (o sea,
+definiríamos el comportamiento ``cuando el jugador va hacia el desierto'',
+en lugar de ``cuando el jugador teclea ir norte en la habitación X'').
+Veremos cómo hacer este tipo de cosas más adelante, en la sección sobre
+eventos. %%% XXX colocar enlace a la sección de eventos
+
+Un ejemplo más complicado de utilización de inventarios sería éste, en el
+que consultamos el inventario del jugador para ver si tiene algún objeto
+inflamable y prenderle fuego (podríamos usarlo para activar una trampa de
+bola de fuego):
+
+\begin{lstlisting}
+Inventory inv = jugador.getInventory();
+for ( int i = inv.size()-1 ; i >= 0 ; i-- )
+{
+  Item cosa = inv.get(i);
+  if ( get ( cosa , "inflamable" ) )
+  {
+    jugador.write("¡Las llamas calcinan totalmente " + cosa.getSingName(jugador) + "!\n");
+    jugador.removeItem(cosa); 
+  }   
+}
+\end{lstlisting}
+
+En este ejemplo hay algo que nos puede llamar la atención: hemos recorrido
+los elementos del inventario del último a primero, y no del primero al
+último. Esto tiene un motivo, y es el siguiente: cuando quitamos una cosa
+del inventario, todas las otras cosas se ``corren'' una posición hacia la
+izquierda. Es decir, si nuestro inventario tiene el siguiente contenido:
+
+\begin{verbatim}
+inv.get(0) es item("espada")
+inv.get(1) es item("libro")
+inv.get(2) es item("pergamino")
+inv.get(3) es item("escudo")
+\end{verbatim}
+
+y hacemos \textsf{jugador.removeItem("libro")}, entonces el inventario se
+modificará y quedará así:
+
+\begin{verbatim}
+inv.get(0) es item("espada")
+inv.get(1) es item("libro")
+inv.get(2) es item("escudo")
+\end{verbatim}
+
+Por lo tanto, si recorriésemos el inventario hacia adelante, haríamos lo
+siguiente: con $i=0$ miraríamos la espada, con $i=1$ miraríamos el libro y
+entonces lo quitaríamos porque es inflamable, pasaríamos a $i=2\ldots$ y
+debido al borrado que hemos hecho $i=2$ sería el escudo, con lo cual nos
+habríamos saltado el pergamino sin poder recorrerlo y darnos cuenta de que
+es inflamable.
+
+Recorrer el inventario hacia atrás es un viejo truco para que los borrados
+que hacemos no hagan que nos saltemos cosas en el recorrido. En general,
+siempre habrá que tener cuidado cuando modifiquemos un inventario a la vez
+que lo estamos recorriendo, para que las modificaciones no afecten al
+recorrido. Otro truco diferente sería crear una nueva lista, ir poniendo en
+ella los objetos inflamables y finalmente quitárselos al jugador (más abajo
+veremos cómo podemos crear una lista genérica de objetos que serviría para
+este propósito).
+
+\subsubsection {Lista de criaturas (\textsf{MobileList})}
+
+La clase \textsf{MobileList} se utiliza para definir listas de criaturas en
+AGE, por ejemplo, la lista de criaturas que hay en una habitación en un
+momento dado es un objeto de esta clase. Podemos obtenerla con el método
+
+\begin{lstlisting}
+/*clase Room*/ MobileList getMobiles ( )
+\end{lstlisting}
+
+Por ejemplo:
+
+\begin{lstlisting}
+MobileList criaturasEnRecibidor;
+criaturasEnRecibidor = room("recibidor").getMobiles();
+if ( criaturasEnRecibidor.size() > 0 )
+{
+  Mobile primero = criaturasEnRecibidor.get(0); //primera criatura que hay en el recibidor
+}
+\end{lstlisting}
+
+El manejo de la clase es igual que el de \textsf{Inventory} pero más
+sencillo, pues una \textsf{MobileList} no tiene límite de peso ni de volumen.
+Así pues, de estas listas sólo nos interesará usar los métodos \textsf{size()},
+\textsf{get()} y \textsf{contains()} comunes a todas las listas, y
+posiblemente los métodos \textsf{toString()} que funcionan exactamente igual
+que los de la clase \textsf{Inventory}, es decir:
+
+\begin{lstlisting}
+/*clase MobileList*/ String toString ( )
+/*clase MobileList*/ String toString ( Entity viewer )
+\end{lstlisting}
+
+que devuelven una descripción textual de la lista, bien genérica en el caso
+del primer método, o bien para mostrársela a una criatura dada en el caso
+del segundo.
+
+\subsubsection {Lista genérica (\textsf{List})}
+
+La clase \textsf{List} de Java se utiliza para crear listas genéricas que
+pueden contener objetos de cualquier tipo, al contrario que las listas
+anteriores (que estaban restringidas a objetos de la clase \textsf{Item}, en
+el caso de \textsf{Inventory}, o de la clase \textsf{Mobile}, en el caso de
+\textsf{MobileList}).
+
+Hay métodos de AGE que devuelven listas de la clase \textsf{List}, por
+ejemplo los métodos \textsf{getRelatedEntities()} y
+\textsf{getRelatedEntitiesByValue()} devuelven entidades relacionadas con
+una dada. Así, podemos hacer cosas como:
+
+\begin{lstlisting}
+List cosasQueGustanAlTroll = mobile("troll").getRelatedEntitiesByValue("gusta",true);
+for ( int i = 0 ; i < cosasQueGustanAlTroll.size() ; i++ )
+{
+  Entity entidad = cosasQueGustanAlTroll.get(i);
+  if ( entidad instanceof Item )
+  {
+    jugador.write( "Al troll le gusta " + entidad.getSingName(jugador) );
+  }  
+}
+\end{lstlisting}
+
+El código le saca por pantalla al jugador una lista de todas las cosas del
+mundo que le gustan al troll. En este código, entidad \textsf{instanceof Item}
+es una comprobación de si la entidad dada es de la clase \textsf{Item} (ya
+que podría haber entidades que le gustasen al troll y no fuesen cosas). En
+general, la operación \textsf{a instanceof B} devuelve \textsf{true} si el
+objeto \textsf{a} es de la clase \textsf{B}, y \textsf{false} de lo
+contrario.
+
+A veces nos interesará crear nosotros mismos listas (en lugar de obtenerlas
+de un método como \textsf{getRelatedEntitiesByValue}). Las listas nos pueden
+servir para almacenar temporalmente datos que luego procesaremos.
+
+Para crear una lista, podemos hacerlo de la siguiente manera:
+
+\begin{lstlisting}
+List nuestraLista = new ArrayList();
+\end{lstlisting}
+
+\textsf{ArrayList} es un tipo concreto de lista. Existen más; pero éste es
+válido para todos los usos básicos de las listas que nos hagan falta en AGE.
+
+Además de los métodos \textsf{size()}, \textsf{get()} y \textsf{contains()}
+que hemos visto que son comunes a todas las listas de AGE, los siguientes
+métodos nos serán útiles para manipular listas de tipo \textsf{List}:
+
+\begin{lstlisting}
+/*clase List*/ void add ( Object o )
+\end{lstlisting}
+
+Añade un objeto al final de la lista (su tamaño, por lo tanto, se incrementa
+en 1).
+
+\begin{lstlisting}
+/*clase List*/ boolean remove ( Object o )
+\end{lstlisting}
+
+Quita el objeto dado de la lista, si existe en ella. En ese caso, devuelve
+\textsf{true}. Si el objeto no se encuentra, el método no hace nada y
+devuelve \textsf{false}.
+
+\begin{lstlisting}
+/*clase List*/ Object set ( int i , Object new )
+\end{lstlisting}
+
+Reemplaza el objeto que está en el índice \textsf{i} de la lista por el
+objeto \textsf{new}, devolviendo el objeto antiguo.
+
+Como ejemplo de manejo de listas, podemos reescribir el código anterior que
+quemaba los objetos inflamables del jugador, utilizando una lista temporal
+para no necesitar recorrer el inventario de derecha a izquierda:
+
+\begin{lstlisting}
+Inventory inv = jugador.getInventory();
+List inflamables = new ArrayList();
+for ( int i = 0 ; i < inv.size() ; i++ )
+{
+  Item cosa = inv.get(i);
+  if ( get ( cosa , "inflamable" ) )
+    inflamables.add(cosa);
+}
+for ( int i = 0 ; i < inflamables.size() ; i++ )
+{
+  Item cosa = inv.get(i);
+  jugador.write("¡Las llamas calcinan totalmente " + cosa.getSingName(jugador) + "!\n");
+  jugador.removeItem(cosa); 
+}
+\end{lstlisting}
+
+Las operaciones básicas con listas que hemos visto aquí deberían ser
+suficientes para trabajar con conjuntos de objetos en AGE. Sin embargo, la
+API estándar de Java cuenta con una variedad mucho más grande de métodos que
+trabajan con listas, así como clases de listas (subclases de \textsf{List}
+diferentes de \textsf{ArrayList}) y otras colecciones de objetos (conjuntos,
+árboles, mapas, tablas hash, etc.)
+
+Los usuarios que sepan programación en Java o que no teman profundizar en
+ella pueden usar en AGE todas estas clases, su documentación detallada se
+puede consultar en la documentación del sistema de colecciones de Java.

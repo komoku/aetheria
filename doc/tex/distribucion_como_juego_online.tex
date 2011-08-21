@@ -1,0 +1,124 @@
+\chapter {Distribución como juego online}
+
+Las aventuras de AGE se pueden jugar online, directamente desde el
+navegador, a través de un applet que viene con el propio AGE.
+
+Para distribuir una aventura de AGE de esta manera, es requisito
+indispensable que los accesos a ficheros que haga la aventura (imágenes,
+música, etc.) se hagan mediante el método \textsf{getResource()} de la
+clase \textsf{World}.
+
+Cumplido este requisito, distribuir una aventura de AGE para jugar online
+es muy fácil. Sólo hay que hacer lo siguiente:
+
+\begin{enumerate}
+\item {Copiar en un directorio el fichero \textsf{AgeCore.jar} y el
+directorio \textsf{lib del} AGE.}
+\item {Con el directorio \textsf{worlds} que contenga la aventura se pueden
+tomar dos alternativas diferentes: o bien copiarlo también junto al
+\textsf{AgeCore.jar} y al directorio \textsf{lib}; o bien meterlo dentro del
+fichero \textsf{AgeCore.jar}. Si se quiere usar esta segunda alternativa,
+se hace así:
+	\begin{enumerate}
+	\item {Abrir el fichero \textsf{AgeCore.jar} con un programa de manejo de
+	ficheros zip (el formato \textsf{.jar} es lo mismo que el formato
+	\textsf{.zip}, pero renombrado. Si el programa descompresor de ficheros
+	zip no quiere abrirlo, puedes cambiarle la extensión temporalmente a zip).}
+	\item {Meter el directorio \textsf{worlds} que contenga la aventura dentro
+	del \textsf{AgeCore.jar}.}
+	\end{enumerate}}
+\item {Crear un fichero .html basado en el ejemplo que sigue:
+\lstset{language=html}
+\begin{lstlisting}
+<html>
+<body>
+<center></center>
+</body>
+</html>
+ 
+<html> 
+<body> 
+<div align="center" style='position: relative; min-height: 95%; min-width: 95%'> 
+<applet code = "eu.irreality.age.swing.applet.SwingSDIApplet"
+    archive = "AgeCore.jar,lib/bsh-2.0b4.jar,lib/commons-cli-1.2.jar", 
+    width = "750", 
+    height = "95%"
+    align = "center">
+    <param name="worldUrl" value="worlds/Morluck/world.xml"/>
+    <param name="java_arguments" value="-Xmx300M"/>
+</applet>
+</div> 
+</body> 
+</html>
+\end{lstlisting}
+
+Haciendo los cambios siguientes:}
+\item {Donde pone ``worlds/Morluck/world.xml'', debes cambiarlo a la ruta
+correspondiente al fichero \textsf{world.xml} de tu aventura dentro del
+archivo \textsf{.jar}.}
+\item {Donde pone ``AgeCore.jar,lib/bsh-2.0b4.jar,lib/commons-cli-1.2.jar'',
+debes añadir (separadas por comas) las rutas a las bibliotecas adicionales
+que utilice tu aventura. Por ejemplo, si tu aventura tiene música en formato
+ogg, tendrás que añadir la biblioteca que toca música en formato ogg. He
+aquí una tabla de las bibliotecas que necesitas añadir en cada caso:
+
+\begin{tabular}{|l|l|}
+\hline
+\textbf{biblioteca} & \textbf{cuándo hace falta} \\
+\hline
+\hline
+\textsf{lib/bsh-2.0b4.jar} & Necesaria siempre \\
+\hline
+\textsf{lib/commons-cli-1.2.jar} & Necesaria siempre \\
+\hline
+\textsf{lib/basicplayer3.0.jar} & Aventuras con audio mp3, ogg y/o speex \\
+\hline
+\textsf{lib/commons-logging-api.jar} & Aventuras con audio mp3, ogg y/o speex \\
+\hline
+\textsf{lib/jl1.0.jar} & Aventuras con audio mp3, ogg y/o speex \\
+\hline
+\textsf{lib/tritonus\_share.jar} & Aventuras con audio mp3, ogg y/o speex \\
+\hline
+\textsf{lib/jogg-0.0.7.jar} & Aventuras con audio ogg \\
+\hline
+\textsf{lib/jorbis-0.0.15.jar} & Aventuras con audio ogg \\
+\hline
+\textsf{lib/vorbisspi1.0.2.jar} & Aventuras con audio ogg \\
+\hline
+\textsf{lib/jspeex0.9.7.jar} & Aventuras con audio speex \\
+\hline
+\textsf{lib/micromod.jar} & Aventuras con audio en formato mod \\
+\hline
+\textsf{lib/mp3spi1.9.4.jar} & Aventuras con audio en formato mp3 \\
+\hline
+\textsf{lib/svgSalamander.jar} & Aventuras con gráficos vectoriales svg \\
+\hline
+\end{tabular}
+}
+\end{enumerate}
+
+Una vez completados estos pasos, deberías poder jugar la aventura
+localmente, abriendo en tu navegador la página HTML que has creado. Sólo
+falta el directorio completo (incluyendo la página web, el fichero
+\textsf{AgeCore.jar} y el subdirectorio \textsf{lib}) a tu servidor web, y
+ya se podrá jugar a tu aventura a través de internet, accediendo a la URL
+de la página HTML.
+
+Nótese que si quieres crear páginas para jugar varios mundos distintos, no
+necesitas subir al servidor distintos directorios con copias del fichero
+\textsf{AGECore.jar} y el subirectorio \textsf{lib}. Basta con subir una
+sola copia, que todos los mundos a jugar estén en el directorio
+\textsf{worlds} (esté éste metido dentro de \textsf{AgeCore.jar} o fuera),
+y crear una página HTML para cada mundo que especifique la ruta al mismo en
+el parámetro \textsf{worldUrl}.
+
+La diferencia entre poner el directorio worlds dentro del
+\textsf{AgeCore.jar} o fuera está en los tiempos de carga. Si se pone
+dentro, el fichero \textsf{.jar}, que es lo que hay que descargarse al
+empezar a jugar la aventura, será más grande. Esto supone una espera inicial
+más larga; pero a cambio, los posibles elementos multimedia que tenga el
+juego se mostrarán más rápido una vez superada esta espera inicial, ya que
+están todos dentro del \textsf{.jar}. Si se pone fuera, sucederá lo
+contrario: la espera inicial será más corta; pero a cambio, cada vez que se
+utilice un nuevo fichero multimedia habrá que bajarlo del servidor por lo
+que se producirá una espera adicional.
