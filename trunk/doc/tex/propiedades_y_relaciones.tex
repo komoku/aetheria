@@ -1,0 +1,555 @@
+\section {propiedades y relaciones}
+
+En la sección anterior vimos distintas manipulaciones básicas que se pueden
+llevar a cabo con entidades, como quitarlas, ponerlas o cambiarlas de sitio.
+Pero a veces, puede interesarnos tener entidades que puedan estar en
+diferentes estados dependiendo de lo que hagamos con ellas o del momento del
+juego en que estemos (por ejemplo, un televisor puede estar encendido o
+apagado, un cuchillo puede estar afilado o romo). También puede ser
+interesante guardar valores relacionados con alguna entidad (como un número
+que mida la cantidad de batería de un teléfono móvil que se puede utilizar
+durante un tiempo limitado); o incluso a veces valores relacionados con dos
+entidades (como un valor de ``simpatía'' que mida cómo de simpático le cae
+Fulanito a Menganito). Esta funcionalidad se puede conseguir en AGE mediante
+las \textit{propiedades} y \textit{relaciones}.
+
+\subsection {Propiedades}
+
+Las propiedades nos permiten asociar un valor a una entidad. Este valor se
+almacena asociado a la entidad, y podemos consultarlo y modificarlo en
+cualquier momento de la partida. El valor tiene un nombre que lo identifica,
+que es una cadena (String). De esta manera, una misma entidad puede tener
+distintas propiedades, cada una de las cuales está identificada por un
+nombre diferente, y tiene un valor independiente del de las demás.
+
+Para fijar el valor de una propiedad, podemos utilizar la siguiente función:
+
+\begin{lstlisting}
+void set ( Entity ent , String name , <tipo básico o String> value )
+\end{lstlisting}
+
+que hace que la propiedad de nombre \textsf{name} de la entidad \textsf{ent}
+pase a valer \textsf{value}.
+
+Para obtener el valor de una propiedad, podemos utilizar la siguiente
+función:
+
+\begin{lstlisting}
+<tipo básico o String> get ( Entity ent , String name )
+\end{lstlisting}
+
+que nos devuelve el valor de la propiedad de nombre \textsf{name} de la
+entidad \textsf{ent}.
+
+De este modo, podemos hacer cosas como éstas:
+
+\begin{lstlisting}
+Entity televisor = item("televisor");
+set ( televisor , "encendido" , true );
+boolean b = get ( televisor , "encendido" ); //devuelve true
+set ( televisor , precioEnEuros , 1000 );
+set ( televisor , marca , "Telefunken" );
+set ( televisor , pulgadas , 24 );
+int a = get ( televisor , "pulgadas" ); //devuelve 24
+\end{lstlisting}
+
+Nótese que a una propiedad le podemos asignar valores de cualquier tipo
+básico o bien valores de tipo cadena (\textsf{String}); pero no le podemos
+asignar otros objetos. Sin embargo, es útil saber que si queremos asociar
+a una propiedad una entidad (\textsf{Entity}), podemos en su lugar guardar
+el nombre único de ese objeto \textsf{Entity} mediante el método
+\textsf{set}, y luego recuperar la entidad:
+
+\begin{lstlisting}
+Entity televisor = item("televisor");
+set ( televisor , "propietario" , "Manolito" );
+Mobile elPropietario = mobile ( get ( televisor , "propietario" ) ); //devuelve true
+\end{lstlisting}
+
+Con lo cual a efectos prácticos es como si el valor de la propiedad fuese
+una entidad (aunque para relacionar entre sí dos entidades, como en ``el
+propietario del televisor es Manolo'', puede ser más adecuado usar la
+funcionalidad de relaciones, que veremos más tarde).
+
+Las propiedades son útiles para tener en nuestras aventuras entidades que
+puedan estar en distintos estados y que reaccionen de manera diferente según
+el estado en que esté. Un ejemplo puede ser un televisor en el que pongamos
+un código como éste:
+
+\begin{lstlisting}
+void parseCommand ( Mobile aCreature , String verb , String args )
+{
+  if ( get ( self , "encendido" ) )
+  {
+    if ( equals ( verb , "mirar" ) ) { aCreature.write("Están echando un aburrido documental sobre bacterias.\n"); end(); }
+    if ( equals ( verb , "encender" ) ) { aCreature.write("¡El televisor ya está encendido!\n"); end(); }
+    if ( equals ( verb , "apagar" ) ) 
+    { 
+      aCreature.write("Apagas el televisor.\n"); 
+      set ( self , "encendido" , false ); 
+      end(); 
+    } 
+  }  
+  else
+  {
+    if ( equals ( verb , "mirar" ) ) { aCreature.write("El televisor está apagado.\n"); end(); }
+    else if ( equals ( verb , "encender" ) )
+    {
+      aCreature.write("Pulsando el botón, enciendes el televisor.\n"); 
+      set ( self , "encendido" , true );    
+      end(); 
+    }   
+    else if ( equals ( verb , "apagar" ) ) { aCreature.write("¡El televisor ya está apagado!\n"); end(); }   
+  }   
+}
+\end{lstlisting}
+
+Con esto, implementamos un televisor que se puede encender y apagar, y que
+si está encendido, al mirarlo muestra un documental sobre bacterias.
+Añadiendo más propiedades podríamos hacerlo más complejo: por ejemplo,
+podríamos tener una propiedad ``canal'' a la que asignáramos un valor de
+tipo \textsf{int}, de forma que el televisor nos mostrara programas
+distintos al cambiar de canal.
+
+\textbf{Nota importante}: Este código no funciona por sí solo, porque para
+que funcione es necesario darle un valor inicial a la propiedad ``encendido''
+del televisor, es decir, establecer si al principio de la aventura el
+televisor va a estar encendido o apagado. Esto es muy sencillo de hacer,
+para ver cómo, sigue leyendo hasta la subsección de inicialización de
+propiedades un poco más abajo.
+
+\subsection {Temporización y método \textsf{update}}
+
+En el ejemplo anterior, utilizamos una propiedad para poner una entidad en
+uno u otro estado según lo que hiciese con ella el jugador. Otra posibilidad
+es utilizar las propiedades para poner entidades en un estado durante un
+determinado tiempo, de forma que el estado pueda cambiar al terminar ese
+tiempo. Por ejemplo, nos puede interesar tener un teléfono móvil que podamos
+encender pero que sólo aguante encendida hasta que se le acaben las pilas.
+Para hacer este tipo de cosas, primero debemos hacer un pequeño receso para
+explicar cómo funciona la temporización en AGE.
+
+El sistema de tiempo de AGE no se basa en turnos, sino en el concepto de
+unidades de tiempo. Una unidad de tiempo es la cantidad más pequeña de
+tiempo que se puede manejar en un juego de AGE. Una acción, como coger una
+cosa o moverse de una localidad a otra, puede consumir una unidad de tiempo
+o puede llevar más. Por ejemplo, las acciones de coger y dejar objetos
+consumen una unidad de tiempo, al igual que las de mirar o consultar el
+inventario. Por otra parte, las acciones de moverse a una localidad contigua
+consumen un número de unidades de tiempo que depende de la ``longitud del
+camino'' (que se fija en el PUCK); y las acciones de combate consumen una
+cantidad de unidades de tiempo que dependerán de las características del
+arma que usemos, nuestra pericia con ellas y otros factores relacionados.
+
+Cualquier mundo de AGE tiene dos modos de juego, que puede seleccionar el
+jugador aunque también se pueden cambiar desde BeanShell: el modo síncrono
+(``turnos'' aparentes) y el modo de tiempo real. En el modo síncrono, cada
+vez que el jugador teclea una orden se simulan del tirón todas las unidades
+de tiempo que correspondan hasta la siguiente orden. Esto puede dar la
+impresión de que se juega ``por turnos''; pero no es exactamente así: por
+ejemplo, si un jugador se mueve de una habitación a otra y esto le consume
+diez unidades de tiempo, tal vez en esas diez unidades de tiempo un goblin
+que está en otra habitación pueda estar cogiendo y dejando un objeto cinco
+veces. En el modo tiempo real, por otra parte, las unidades de tiempo del
+juego se traducen en unidades de tiempo de la vida real: es decir, se fija
+cuánto dura una unidad de tiempo (por ejemplo, cincuenta milisegundos) y
+cada cincuenta milisegundos transcurre una. Esto quiere decir que si el
+jugador teclea una orden que consume diez unidades de tiempo, AGE tardaría
+medio segundo en responder a su orden y permitirle teclear otra. Igual que
+en el caso anterior, el goblin podría mientras tanto coger y dejar un objeto
+cinco veces: lo que puede suceder en el mundo del juego no varía entre un
+modo u otro, sólo cambia cómo lo ve el jugador.
+
+Dicho esto, es interesante saber que cuando fijamos el valor de una
+propiedad, podemos ponerle asimismo un contador de tiempo que indica el
+número de unidades de tiempo que tardará en actualizarse esa propiedad. A
+partir de ese momento, el contador de tiempo irá decrementándose en una
+unidad cada vez que pase una unidad de tiempo, hasta que al llegar a cero
+la propiedad se actualizará. ``Actualizarse'' consiste en llamar a un método
+\textsf{update} que definimos nosotros, y donde podemos programar una actualización
+de la propiedad o cualquier otra cosa que nos venga bien que suceda en ese
+tiempo: las propiedades con contador de tiempo no sólo van bien para poner
+en los objetos estados que duren una determinada cantidad de tiempo, sino
+también como herramienta para temporizar en general (podemos utilizar una
+propiedad con contador de tiempo como un ``reloj'' para lanzar eventos que
+deban suceder en un momento dado).
+
+Para fijar el valor de una propiedad junto con su temporizador, utilizamos
+la siguiente función set:
+
+\begin{lstlisting}
+void set ( Entity ent , String name , <tipo básico o String> value , long timeunits )
+\end{lstlisting}
+
+que hace que la propiedad de nombre name de la entidad \textsf{ent} pase a
+valer \textsf{value}, y además su temporizador pase a valer
+\textsf{timeunits}. El tipo de dato \textsf{long} viene a ser lo mismo que
+\textsf{int}, sólo que admite números más grandes. En la práctica podemos
+tratarlo como si fuese un \textsf{int}.
+
+Para obtener el temporizador de una propiedad, podemos utilizar la siguiente
+función:
+
+\begin{lstlisting}
+long getTime ( Entity ent , String name )
+\end{lstlisting}
+
+Que nos devuelve el temporizador asociado a la propiedad \textsf{name} de la
+entidad \textsf{ent}.
+
+También podemos usar
+
+\begin{lstlisting}
+void setTime ( Entity ent , String name , long time )
+\end{lstlisting}
+
+Si queremos cambiar el valor del temporizador de la propiedad \textsf{name}
+de la entidad \textsf{ent}; pero dejando el valor de la propiedad como está.
+
+Los temporizadores de las propiedades no son útiles si no se define además
+el método de actualización que, como acabamos de explicar, se ejecutará
+cuando el temporizador de cada propiedad llegue a cero. Para definir este
+método en PUCK, vamos al campo de código del formulario correspondiente a la
+entidad donde hemos definido la propiedad, y en el menú contextual
+seleccionamos: Insertar código -- Redefinir métodos de (entidad) -- Método
+de actualización de (la entidad). Se nos generará una plantilla como ésta:
+
+\begin{lstlisting}
+/*Método de actualización de esta entidad*/
+ 
+//pe: propiedad que se actualiza 
+//(pe.getName(): nombre)
+//w: el mundo
+ 
+void update ( PropertyEntry pe , World w )
+{
+ 
+}
+\end{lstlisting}
+
+El método update se llamará cada vez que el contador de una propiedad
+cualquiera de la entidad en la que estamos (\textsf{self}) llegue a cero.
+Para saber cuál es exactamente la propiedad cuyo temporizador ha llegado a
+cero, podemos utilizar \verb|pe.getName()|: el primer parámetro del método,
+de tipo \textsf{PropertyEntry}, contiene toda la información sobre esa
+propiedad que se actualiza (\verb|pe.getName()| nos da el nombre, y
+\verb|pe.getValueAsWrapper()| el valor; aunque esto último no lo necesitamos
+porque simplemente podemos obtener el valor con un \textsf{get}). El
+parámetro \verb|World w| es redundante, nos devuelve el mundo que siempre
+podemos acceder mediante world así que no sirve para nada, es un parámetro
+que se mantiene por compatibilidad con versiones beta anteriores de AGE y
+podemos simplemente hacer como si no existiera.
+
+De esta forma, podemos programar un radiador con termostato que se encienda
+y se apague cada diez unidades de tiempo:
+
+\begin{lstlisting}
+void update ( PropertyEntry pe , World w )
+{
+  if ( equals ( pe.getName() , "encendido" ) ) //mirar si la propiedad cuyo temporizador llegó a 0 es "encendido"
+  { 
+    if ( get ( self , "encendido" ) )
+    {
+      set ( self , "encendido" , false , 10 ); //apagamos y se vuelve a actualizar en 10 UT's 
+      if ( mobile("jugador").getRoom().hasItem(self) ) //si el jugador está en la habitación del radiador, le decimos que se ha apagado
+      {
+         //hay formas mejores de hacer esto, véase nota abajo
+         mobile("jugador").write("El radiador se apaga solo por el efecto del termostato.\n");
+      }   
+    }
+    else
+    {
+      set ( self , "encendido" , true , 10 ); //encendemos y se vuelve a actualizar en 10 UT's 
+      if ( mobile("jugador").getRoom().hasItem(self) ) //si el jugador está en la habitación del radiador, le decimos que se ha encendido
+      {
+         //hay formas mejores de hacer esto, véase nota abajo
+         mobile("jugador").write("El radiador se enciende solo por el efecto del termostato.\n");
+      }   
+    }    
+  }   
+ 
+}
+\end{lstlisting}
+
+Si ponemos este código en una entidad radiador, cada diez unidades de tiempo
+cambiará de estado, de encendido a apagado y viceversa. Además, si el jugador
+está en la habitación del radiador, se le mostrará un mensaje informándole
+de que el radiador se ha encendido o apagado.
+
+Hay dos notas que hacer a este ejemplo. La primera es que, igual que el
+ejemplo anterior, es necesario inicializar la propiedad (dándole un valor al
+principio de la aventura) para que funcione (enseguida veremos cómo se hace).
+
+La segunda puntualización es que, debido a que todavía no conocemos a fondo
+todo lo que se puede hacer con el AGE, la forma de notificar al jugador en
+este ejemplo es bastante chapucera: sirve para aventuras para un solo jugador
+(donde hemos puesto a la entidad del jugador el nombre único ``jugador''),
+pero, ¿qué pasa en aventuras multijugador?
+
+Para hacer estas cosas de forma más genérica y que funcionen bien (por
+ejemplo) en el caso multijugador, existen métodos para que se muestre un
+mensaje a todos los jugadores que están en una habitación, o incluso para
+que una entidad (como el radiador) emita un mensaje que llegue a todos los
+jugadores de las habitaciones en donde esté. Pero esto lo veremos más
+adelante. De momento, conformémonos con saber que, aunque ésta no es la
+forma más general de notificar que ha ocurrido algo en una habitación, al
+menos en el caso de aventuras monojugador nos servirá.
+
+Es útil saber que, si no queremos que una propiedad llame nunca a su método
+update, podemos conseguirlo poniendo su temporizador al valor $-1$. El valor
+$-1$ significa ``infinito'', es decir, la propiedad tardará infinito en
+actualizarse (no se actualizará nunca).
+
+En el ejemplo de esta sección, hemos visto un posible uso de las propiedades
+con temporizador: tener un objeto que cambie cíclicamente de estado cada
+cierto tiempo. Pero existen otros muchos usos, como por ejemplo:
+
+\begin{itemize}
+\item{Tener un objeto que está en un estado sólo durante un cierto tiempo y
+luego pasa a otro, para no volver al anterior (como una radio que se apaga
+porque se le acabó la pila).}
+\item{Tener un comportamiento que se repita cada cierto tiempo (por ejemplo,
+que un reloj de cuco dé la hora).}
+\item{Tener una serie de eventos distintos que cada uno suceda en un momento
+dado del tiempo (podemos tener una propiedad numérica que cuente cuántos
+eventos se han ejecutado, y cada X unidades de tiempo la incrementamos en $1$
+para ejecutar el siguiente).}
+\item{Tener una magnitud que va variando sola con el tiempo (por ejemplo, que
+la sed de nuestro personaje empiece a $0$ y cada diez unidades de tiempo se
+incremente en $1$; que al beber se vuelva a poner a $0$, y que cuando llegue
+a $50$ el personaje se muera de sed).}
+\item{Y un largo etcétera con todo lo que se nos ocurra.}
+\end{itemize}
+
+\subsection{Inicialización de propiedades}
+
+Normalmente nos interesará que una determinada propiedad tenga un valor dado
+ya desde el principio de la aventura. Por ejemplo, en el caso del televisor
+anterior, querremos fijar en qué estado está al principio de la partida,
+cuando el jugador lo encuentre (por ejemplo, apagado).
+
+Además, si hacemos un get sobre una propiedad sin antes haber fijado ningún
+valor para ella, el valor que se nos devolverá será un valor nulo
+(\textsf{null}). Este valor nulo nos dará un error si intentamos asignárselo
+a un tipo básico: es decir, por ejemplo,
+
+\begin{lstlisting}
+boolean b = get ( item("televisor") , "encendido" )
+\end{lstlisting}
+
+nos dará un error si antes no hemos fijado el valor de ``encendido'', porque
+no podemos asignar a una variable boolean el valor \textsf{null}.
+
+Por lo tanto, en general suele ser altamente recomendable dar un valor
+inicial a las propiedades que vayamos a utilizar en un mundo dado. Esto se
+puede hacer de dos maneras: o bien desde Puck, o bien mediante código
+BeanShell.
+
+\subsubsection{Inicialización desde PUCK}
+
+Para inicializar las propiedades de una entidad desde PUCK, basta con ir al
+panel de formularios de esa entidad y seleccionar la pestaña ``Código y
+propiedades''. En la parte inferior, debajo del área de código, hay un
+formulario que dice ``Propiedades''. Para dar un valor inicial a una
+propiedad de la entidad, tecleamos el nombre de la propiedad (sin comillas)
+en el campo ``nombre'', su valor inicial en el campo ``valor'', y el valor
+del temporizador en ``tiempo restante''. Si no queremos usar el temporizador
+(es decir, si queremos que la propiedad no se actualice nunca), usamos $-1$
+como valor del temporizador. Tras teclear en los tres campos, le damos al
+botón ``Añadir'' y veremos en la lista cómo el valor inicial de nuestra
+propiedad queda guardado.
+
+Si nos hemos equivocado al introducir algún valor inicial de propiedades o
+queremos cambiarlo, podemos seleccionar dicha propiedad en la lista, editar
+los campos ``nombre'', ``valor'' y ``temporizador'' en el formulario, y
+darle al botón ``cambiar'' para guardar los cambios. El botón ``borrar'' nos
+permite borrar una fila de la lista, es decir, borrar el valor inicial de la
+propiedad que seleccionemos.
+
+Los valores de las propiedades que especificamos aquí serán los que tomen
+dichas propiedades al principio de la aventura, que luego podrán cambiar
+durante las partidas. Así, por ejemplo, podemos rellenar los campos poniendo
+el nombre ``encendido'', el valor ``false'' y el temporizador ``$-1$'' para
+que funcione el ejemplo del televisor que veíamos con anterioridad, y el
+televisor comience apagado. Poniendo el valor ``true'', comenzaría encendido.
+
+\subsubsection{Inicialización desde BeanShell}
+
+Si por cualquier motivo preferimos inicializar las propiedades de una entidad
+usando código BeanShell en lugar del formulario anterior, también podemos
+hacerlo, redefiniendo el \textit{evento} que se ejecuta al inicializarse la
+entidad. Los eventos son métodos BeanShell que nos permiten actuar cuando
+ocurre algún hecho determinado en el mundo. Concretamente, el evento de
+inicialización de una entidad (llamado \textsf{onInit}) nos permite actuar
+justo cuando se acaba de inicializar esa entidad.
+
+Para redefinirlo, vamos al menú contextual del campo de código de la entidad
+y seleccionamos: Insertar código -- Definir eventos de (entidad) -- Al
+inicializarse la (entidad). Se nos generará una sencilla plantilla como
+ésta:
+
+\begin{lstlisting}
+//código a ejecutar cuando se inicializa la cosa
+void onInit()
+{
+}
+\end{lstlisting}
+
+Y en este método \textsf{onInit()} podemos poner código para dar valores
+iniciales a las propiedades:
+
+\begin{lstlisting}
+void onInit()
+{
+  set ( self , "encendido" , true );
+  set ( self , "canal" , 4 ); 
+}
+\end{lstlisting}
+
+Aparte de incluir cualquier otro código que queramos que se ejecute cuando
+esa entidad se inicializa.
+
+\subsection{Relaciones}
+
+De la misma forma que las propiedades nos permiten asociar un valor a una
+entidad, las relaciones sirven para asociar un valor a un par de entidades.
+Esto suele ser útil para, como su nombre indica, expresar relaciones entre
+dos objetos.
+
+Algunos ejemplos en los que se pueden utilizar relaciones son los siguientes:
+
+\begin{itemize}
+\item{Queremos saber si Fulanito conoce o no a Menganito. Entonces,
+utilizamos una relación ``conoce'' de Fulanito a Menganito, que tomará valor
+\textsf{true} si Fulanito conoce a Menganito, y \textsf{false} de lo
+contrario.}
+\item{En una aventura romántica, queremos saber el grado de atracción que
+Juan siente por María. Para eso, utilizamos una relación ``gusta'' de Juan a
+María, que tomará valores \textsf{int} de $0$ a $10$ según ese grado de
+atracción.}
+\item{En un juego de rol, tenemos que sobornar a un troll dándole un objeto
+que le guste. Para marcar qué objetos le gustan, usamos una relación
+``gusta'' del troll a cada uno de los objetos que le gusten, que tomará
+valor true para esos objetos.}
+\item{...}
+\end{itemize}
+
+Es importante saber que las relaciones siempre son unidireccionales, es
+decir, no es lo mismo una relación entre A y B que una relación entre B y A.
+Si queremos expresar que a Juan le atrae María pero además a María también
+le atrae Juan, necesitaremos dos relaciones, una en cada sentido.
+
+Para fijar el valor de una relación, podemos usar la siguiente función:
+
+\begin{lstlisting}
+void set ( Entity e1 , String relName , Entity e2 , <tipo básico o String> value )
+\end{lstlisting}
+
+que hace que la relación \textsf{relName} de la entidad \textsf{e1} a la
+entidad \textsf{e2} pase a valer \textsf{value}.
+
+Podemos fijar también el contador de tiempo de la relación, tal y como
+hacíamos para las propiedades, de esta manera:
+
+\begin{lstlisting}
+void setTime ( Entity e1 , String relName , Entity e2 , long time )
+\end{lstlisting}
+
+que hace que el temporizador de la relación \textsf{relName} de la entidad
+\textsf{e1} a la entidad \textsf{e2} pase a valer \textsf{time}.
+
+\textbf{Nota}: Aunque el temporizador de las relaciones va bajando hasta
+llegar a cero como el de las propiedades, y por lo tanto se podría usar para
+medir tiempos; por el momento no existe un método update que se pueda
+redefinir para las relaciones como lo había en las entidades. En posteriores
+versiones de AGE seguramente se añadirá este método.
+
+Para obtener el valor de una relación, podemos utilizar la función
+siguiente:
+
+\begin{lstlisting}
+<tipo básico o String> get ( Entity e1 , String relName , Entity e2 )
+\end{lstlisting}
+
+que devuelve el valor de la relación \textsf{relName} de la entidad
+\textsf{e1} a la entidad \textsf{e2}. Nótese que, igual que en el caso de
+las propiedades, si la relación no está inicializada (nunca le hemos dado un
+valor) este método devolverá el valor especial \textsf{null}, que puede dar
+problemas. Por lo tanto, se recomienda inicializar todas las relaciones de
+las que vayamos a hacer un \textsf{get}, cosa que se puede hacer por ejemplo
+en el evento \textsf{onInit()} de alguna de las entidades relacionadas.
+
+Así, podemos hacer cosas como éstas:
+
+\begin{lstlisting}
+set ( mobile("troll") , "gusta" , item("manzana") , false ); //al troll no le gusta la manzana
+set ( mobile("troll") , "gusta" , item("plátano") , true ); //al troll le gusta el plátano
+get ( mobile("troll") , "gusta" , item("manzana") ); //devuelve false (al troll no le gusta la manzana).
+get ( mobile("troll") , "gusta" , item("pera") ); //esto devuelve null (no false).
+\end{lstlisting}
+
+Al igual que las propiedades, las relaciones también se pueden inicializar
+directamente usando PUCK. Para ello, creamos una flecha entre las dos
+entidades que queramos relacionar. Seleccionando la flecha en el mapa de
+PUCK, nos aparecerá un panel asociado a la flecha. En su ficha ``Otras
+relaciones'', nos aparecerá una lista de ``Relaciones personalizadas'' que
+funciona de la misma manera que la lista de propiedades de los objetos:
+podemos añadir relaciones aportando su nombre, valor y temporizador.
+
+Nótese que crear una flecha entre determinados tipos de objetos en PUCK crea
+por defecto lo que se llama una relación estructural, que es una relación
+especial que usa AGE para determinar dónde están los objetos y no es lo
+mismo que las relaciones personalizadas que aquí estamos creando: por
+ejemplo, si los objetos son dos habitaciones se crea por defecto un camino,
+si son una habitación y una cosa se crea una relación ``contiene'' que
+significa que la cosa está dentro de la habitación. Si lo único que queremos
+es crear relaciones personalizadas, nos interesará desactivar estas
+relaciones estructurales: esto se hace desmarcando el botón ``hay camino'',
+entre habitaciones, o poniendo el campo ``Relación estructural'' a ``Ninguna''
+en la ficha ``Relación estructural'' del panel de la flecha, en el resto de
+los casos. Si queremos tener tanto una relación estructural como
+personalizada a la vez entre dos objetos, no necesitaremos desactivar la
+estructural de esta manera.
+
+Dos métodos muy útiles cuando trabajamos con relaciones son los siguientes:
+
+\begin{lstlisting}
+/*class Entity*/
+List getRelatedEntities ( String relName )
+/*class Entity*/
+List getRelatedEntitiesByValue ( String propertyName , int/boolean boolVal )
+\end{lstlisting}
+
+Ambos son métodos de la clase Entity, con lo cual se pueden ejecutar sobre
+objetos de las clases \textsf{Room}, \textsf{Item}, \textsf{Mobile}, etc
+(que son subclases de \textsf{Entity}). El primero nos devuelve una lista
+con todas las entidades que están relacionadas con aquélla con la que se
+invoca, independientemente del valor que tenga la relación. El segundo nos
+devuelve una lista con todas las entidades relacionadas con aquélla con la
+que se invoca, y donde además la relación tiene el valor dado. Es decir, por
+ejemplo:
+
+\begin{lstlisting}
+mobile("troll").getRelatedEntities("gusta")
+\end{lstlisting}
+
+nos devuelve todas las cosas de la aventura para las cuales hemos
+especificado si le gustan al troll o no (es decir, tales que hemos fijado la
+relación ``gusta'' del troll hacia esas cosas, sea a true o a false). Nótese
+que el método va en una dirección, es decir, no nos devolvería cosas que
+estén relacionadas en sentido inverso (de la cosa al troll).
+
+\begin{lstlisting}
+mobile("troll").getRelatedEntities("gusta",true)
+\end{lstlisting}
+
+nos devuelve todas las cosas de la aventura para las cuales hemos
+especificado que le gustan al troll (es decir, hemos fijado la relación
+``gusta'' del troll hacia esas cosas, y concretamente la hemos puesto a
+true).
+
+Estos métodos nos permiten extraer todo el potencial de las relaciones, al
+poder consultar en todo momento qué objetos hay relacionados con uno dado, y
+sin temer encontrar valores nulos. Eso sí, lo que devuelve el método es un
+objeto de la clase \textsf{List}, que no hemos visto todavía cómo podemos
+manejar. Lo veremos en la sección sobre listas.

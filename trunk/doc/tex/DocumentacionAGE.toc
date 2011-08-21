@@ -1,0 +1,126 @@
+\select@language {spanish}
+\contentsline {chapter}{\numberline {1}Uso b\'asico de puck}{8}{chapter.1}
+\contentsline {section}{\numberline {1.1}Crear mundos con PUCK}{8}{section.1.1}
+\contentsline {section}{\numberline {1.2}Creaci\'on de Mundos para AGE con PUCK: Resumen}{8}{section.1.2}
+\contentsline {section}{\numberline {1.3}Primeros Pasos: Creando Habitaciones y Caminos}{10}{section.1.3}
+\contentsline {subsection}{\numberline {1.3.1}Habitaciones y Caminos}{10}{subsection.1.3.1}
+\contentsline {subsection}{\numberline {1.3.2}Creando un Personaje Jugador}{14}{subsection.1.3.2}
+\contentsline {section}{\numberline {1.4}Seres inertes}{16}{section.1.4}
+\contentsline {subsection}{\numberline {1.4.1}Descripciones de componentes}{16}{subsection.1.4.1}
+\contentsline {subsection}{\numberline {1.4.2}Cosas}{17}{subsection.1.4.2}
+\contentsline {subsubsection}{Creaci\'on de cosas}{17}{section*.5}
+\contentsline {subsubsection}{Caracter\IeC {\'\i }sticas b\'asicas de cosas}{18}{section*.6}
+\contentsline {subsubsection}{Nombres para mostrar y nombres de referencia}{19}{section*.7}
+\contentsline {subsubsection}{Interacciones b\'asicas con las cosas}{20}{section*.8}
+\contentsline {chapter}{\numberline {2}Uso del lenguaje BeanShell}{22}{chapter.2}
+\contentsline {section}{\numberline {2.1}Primeros pasos con BeanShell}{22}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}Los formularios de c\'odigo}{23}{subsection.2.1.1}
+\contentsline {subsection}{\numberline {2.1.2}Los m\'etodos}{23}{subsection.2.1.2}
+\contentsline {subsection}{\numberline {2.1.3}Variables y entrada/salida sencilla}{26}{subsection.2.1.3}
+\contentsline {subsubsection}{Mostr\'andole texto al jugador}{26}{section*.9}
+\contentsline {subsubsection}{La funci\'on \textsf {end()}}{27}{section*.10}
+\contentsline {subsubsection}{Variables y asignaciones}{27}{section*.11}
+\contentsline {subsubsection}{Operaciones con los tipos b\'asicos}{30}{section*.12}
+\contentsline {subsection}{\numberline {2.1.4}La estructura condicional (\textsf {if})}{31}{subsection.2.1.4}
+\contentsline {subsubsection}{Comparaciones}{32}{section*.13}
+\contentsline {subsection}{\numberline {2.1.5}Los bucles}{34}{subsection.2.1.5}
+\contentsline {subsubsection}{El bucle \textsf {while}}{35}{section*.14}
+\contentsline {subsubsection}{El bucle \textsf {for}}{36}{section*.15}
+\contentsline {subsubsection}{El bucle \textsf {do while}}{37}{section*.16}
+\contentsline {subsubsection}{\textsf {break} y \textsf {continue}}{38}{section*.17}
+\contentsline {subsection}{\numberline {2.1.6}Recapitulaci\'on}{38}{subsection.2.1.6}
+\contentsline {section}{\numberline {2.2}Manipulaci\'on b\'asica de entidades}{39}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}M\'etodo de an\'alisis de la entrada referida a una entidad}{39}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.2}M\'etodos para quitar, poner y mover entidades}{41}{subsection.2.2.2}
+\contentsline {subsection}{\numberline {2.2.3}Las variables \textsf {self} y \textsf {world}}{43}{subsection.2.2.3}
+\contentsline {subsection}{\numberline {2.2.4}M\'etodos para comprobar d\'onde est\'an las entidades}{44}{subsection.2.2.4}
+\contentsline {subsection}{\numberline {2.2.5}M\'etodo de an\'alisis de la entrada referida a dos entidades}{46}{subsection.2.2.5}
+\contentsline {subsection}{\numberline {2.2.6}Variantes del m\'etodo referido a dos entidades}{50}{subsection.2.2.6}
+\contentsline {section}{\numberline {2.3}propiedades y relaciones}{53}{section.2.3}
+\contentsline {subsection}{\numberline {2.3.1}Propiedades}{53}{subsection.2.3.1}
+\contentsline {subsection}{\numberline {2.3.2}Temporizaci\'on y m\'etodo \textsf {update}}{54}{subsection.2.3.2}
+\contentsline {subsection}{\numberline {2.3.3}Inicializaci\'on de propiedades}{58}{subsection.2.3.3}
+\contentsline {subsubsection}{Inicializaci\'on desde PUCK}{58}{section*.18}
+\contentsline {subsubsection}{Inicializaci\'on desde BeanShell}{59}{section*.19}
+\contentsline {subsection}{\numberline {2.3.4}Relaciones}{59}{subsection.2.3.4}
+\contentsline {section}{\numberline {2.4}Manejo de arrays y listas}{62}{section.2.4}
+\contentsline {subsection}{\numberline {2.4.1}Arrays}{62}{subsection.2.4.1}
+\contentsline {subsection}{\numberline {2.4.2}Listas}{63}{subsection.2.4.2}
+\contentsline {subsubsection}{Inventario (\textsf {Inventory})}{63}{section*.20}
+\contentsline {subsubsection}{Lista de criaturas (\textsf {MobileList})}{68}{section*.21}
+\contentsline {subsubsection}{Lista gen\'erica (\textsf {List})}{68}{section*.22}
+\contentsline {section}{\numberline {2.5}Errores comunes con BeanShell}{70}{section.2.5}
+\contentsline {subsection}{\numberline {2.5.1}Mensajes de error}{70}{subsection.2.5.1}
+\contentsline {subsection}{\numberline {2.5.2}Tipos de error comunes}{74}{subsection.2.5.2}
+\contentsline {subsection}{\numberline {2.5.3}Funcionalidad de depuraci\'on}{75}{subsection.2.5.3}
+\contentsline {subsubsection}{Impresi\'on de informaci\'on de depuraci\'on en los parseCommand}{75}{section*.23}
+\contentsline {subsubsection}{Debugger din\'amico}{76}{section*.24}
+\contentsline {chapter}{\numberline {3}Aspectos avanzados del modelo de mundo}{77}{chapter.3}
+\contentsline {section}{\numberline {3.1}Descripciones y nombres din\'amicos}{77}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Descripciones din\'amicas}{78}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}Nombres din\'amicos}{79}{subsection.3.1.2}
+\contentsline {section}{\numberline {3.2}Cosas abribles y cerrables}{80}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Definiendo cosas abribles y cerrables}{80}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}Llaves}{82}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}Puertas}{83}{subsection.3.2.3}
+\contentsline {subsection}{\numberline {3.2.4}Contenedores abribles y cerrables}{84}{subsection.3.2.4}
+\contentsline {section}{\numberline {3.3}Miembros, prendas y armaduras}{84}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}Miembros}{85}{subsection.3.3.1}
+\contentsline {subsection}{\numberline {3.3.2}Prendas}{86}{subsection.3.3.2}
+\contentsline {section}{\numberline {3.4}Combate y armas}{87}{section.3.4}
+\contentsline {section}{\numberline {3.5}Entidades abstractas}{87}{section.3.5}
+\contentsline {section}{\numberline {3.6}Conjuros}{89}{section.3.6}
+\contentsline {section}{\numberline {3.7}Mensajes por defecto}{89}{section.3.7}
+\contentsline {subsection}{\numberline {3.7.1}Cambiar los mensajes por defecto}{89}{subsection.3.7.1}
+\contentsline {subsubsection}{Cambiar mensaje por mensaje}{90}{section*.25}
+\contentsline {subsubsection}{Cambiar todos los mensajes de una sola vez}{90}{section*.26}
+\contentsline {subsection}{\numberline {3.7.2}Generar din\'amicamente los mensajes por defecto}{91}{subsection.3.7.2}
+\contentsline {chapter}{\numberline {4}M\'etodos redefinibles}{92}{chapter.4}
+\contentsline {section}{\numberline {4.1}Eventos}{92}{section.4.1}
+\contentsline {section}{\numberline {4.2}Otros m\'etodos redefinibles}{92}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}M\'etodos de Mobile (para PSIs)}{92}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}Ejemplo de uso}{93}{subsection.4.2.2}
+\contentsline {chapter}{\numberline {5}El an\'alisis de la entrada}{94}{chapter.5}
+\contentsline {section}{\numberline {5.1}M\'etodos de an\'alisis de la entrada (\textsf {parseCommand})}{94}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}Los m\'etodos de an\'alisis de la entrada}{94}{subsection.5.1.1}
+\contentsline {subsection}{\numberline {5.1.2}Ejemplo de uso}{95}{subsection.5.1.2}
+\contentsline {subsection}{\numberline {5.1.3}Tipos de m\'etodos de an\'alisis de la entrada}{95}{subsection.5.1.3}
+\contentsline {subsection}{\numberline {5.1.4}El proceso de an\'alisis de AGE}{97}{subsection.5.1.4}
+\contentsline {section}{\numberline {5.2}Preprocesado de la entrada}{99}{section.5.2}
+\contentsline {section}{\numberline {5.3}Gesti\'on de verbos}{100}{section.5.3}
+\contentsline {chapter}{\numberline {6}Presentaci\'on del mundo}{101}{chapter.6}
+\contentsline {section}{\numberline {6.1}Estilos de texto}{102}{section.6.1}
+\contentsline {section}{\numberline {6.2}Prompt}{102}{section.6.2}
+\contentsline {subsection}{\numberline {6.2.1}M\'etodos de manipulaci\'on del prompt}{102}{subsection.6.2.1}
+\contentsline {subsection}{\numberline {6.2.2}Ejemplos de c\'odigo}{102}{subsection.6.2.2}
+\contentsline {section}{\numberline {6.3}Tipograf\IeC {\'\i }as en AGE}{103}{section.6.3}
+\contentsline {subsection}{\numberline {6.3.1}Control b\'asico de la tipograf\IeC {\'\i }a}{103}{subsection.6.3.1}
+\contentsline {subsection}{\numberline {6.3.2}Control avanzado de la tipograf\IeC {\'\i }a}{104}{subsection.6.3.2}
+\contentsline {section}{\numberline {6.4}M\'etodos gr\'aficos}{105}{section.6.4}
+\contentsline {subsection}{\numberline {6.4.1}Im\'agenes}{105}{subsection.6.4.1}
+\contentsline {subsubsection}{M\'etodos para im\'agenes}{105}{section*.27}
+\contentsline {subsubsection}{Ejemplos de c\'odigo}{106}{section*.28}
+\contentsline {subsection}{\numberline {6.4.2}Frames}{106}{subsection.6.4.2}
+\contentsline {subsubsection}{Utilidad de los frames}{106}{section*.29}
+\contentsline {subsubsection}{M\'etodos para crear y borrar frames}{107}{section*.30}
+\contentsline {subsubsection}{M\'etodos para mostrar im\'agenes en frames}{107}{section*.31}
+\contentsline {subsubsection}{Ejemplos de c\'odigo}{107}{section*.32}
+\contentsline {section}{\numberline {6.5}sonido}{107}{section.6.5}
+\contentsline {subsection}{\numberline {6.5.1}Audio}{108}{subsection.6.5.1}
+\contentsline {subsubsection}{Reproducir un sonido}{108}{section*.33}
+\contentsline {subsubsection}{Detener un sonido}{109}{section*.34}
+\contentsline {subsubsection}{Cambiar el volumen de un sonido}{109}{section*.35}
+\contentsline {subsubsection}{Ejemplo}{110}{section*.36}
+\contentsline {subsection}{\numberline {6.5.2}M\'usica MIDI}{110}{subsection.6.5.2}
+\contentsline {subsubsection}{Reproducir un fichero MIDI}{111}{section*.37}
+\contentsline {subsubsection}{Detener un fichero MIDI}{112}{section*.38}
+\contentsline {section}{\numberline {6.6}Otros aspectos de la presentaci\'on}{112}{section.6.6}
+\contentsline {chapter}{\numberline {7}Referencia de m\'etodos invocables}{113}{chapter.7}
+\contentsline {section}{\numberline {7.1}Manipulaci\'on del modelo de mundo}{113}{section.7.1}
+\contentsline {section}{\numberline {7.2}Notificaci\'on de acciones y sucesos}{113}{section.7.2}
+\contentsline {subsection}{\numberline {7.2.1}Notificar sobre algo que ha ocurrido en una habitaci\'on}{113}{subsection.7.2.1}
+\contentsline {subsection}{\numberline {7.2.2}Notificar sobre algo que ha ocurrido con una cosa}{114}{subsection.7.2.2}
+\contentsline {subsection}{\numberline {7.2.3}Notificar sobre algo que ha ocurrido con una criatura}{114}{subsection.7.2.3}
+\contentsline {section}{\numberline {7.3}Presentaci\'on general}{115}{section.7.3}
+\contentsline {section}{\numberline {7.4}M\'etodos \'utiles de la API de Java}{115}{section.7.4}
+\contentsline {chapter}{\numberline {8}Distribuci\'on como juego online}{116}{chapter.8}

@@ -1,0 +1,1016 @@
+\chapter {Uso del lenguaje BeanShell}
+
+Los formularios de PUCK, como los vistos en el capítulo anterior,
+proporcionan una manera sencilla de construir un mundo con diferentes
+localizaciones y objetos que los jugadores puedan manipular; sin necesidad
+de escribir código en ningún lenguaje de programación. Sin embargo, si
+queremos conseguir mundos complejos donde las entidades exhiban
+comportamientos dinámicos y donde podamos definir acciones personalizadas
+que vayan más allá de los comportamientos por defecto, sí que necesitaremos
+programar.
+
+Para estas definiciones de comportamientos complejos que requieren
+programación, AGE utiliza el lenguaje BeanShell. BeanShell es un lenguaje de
+scripting muy parecido a Java. De hecho, la sintaxis de Java se puede
+utilizar tal cual en BeanShell; pero éste además permite usar variables con
+tipado dinámico y tiene otras características donde ``relaja'' los requisitos
+de Java.
+
+Para añadir código BeanShell a un mundo con PUCK, se puede ir a la pestaña
+``Código y Propiedades'' de cualquier entidad (las entidades son los objetos
+del mundo representados por iconos que añadimos en el mapa de PUCK, como
+habitaciones, cosas y criaturas) o bien del propio mundo, y nos aparecerá un
+área de texto (con un botón ``Ampliar'' que la convierte en una ventana
+independiente) para introducir el código. AGE es un sistema orientado a
+objetos, de modo que el código que modifique el comportamiento de una
+entidad determinada deberá introducirse en el campo de código de esa
+entidad. El campo de código del mundo permite hacer modificaciones más
+globales en el comportamiento de la aventura.
+
+A lo largo de las secciones de este capítulo veremos una introducción a cómo
+programar en BeanShell para crear aventuras en AGE. Esta información se
+ampliará en subsiguientes capítulos, donde la entremezclaremos con más cosas
+que se pueden hacer en los formularios de PUCK; ya que ambas cosas no son
+independientes sino que hay aspectos de PUCK que hacen uso o interactúan con
+el código BeanShell, haciendo necesario tratarlas de forma entrelazada.
+
+\section{Primeros pasos con BeanShell} \label{sec:PrimerosPasosBeanShell}
+BeanShell es un lenguaje orientado a objetos, basado en Java, que se utiliza
+para definir comportamientos avanzados en entidades y mundos de AGE. En ésta
+y las siguientes secciones, describiremos cómo se puede usar BeanShell para
+este propósito. Esto quiere decir que no veremos exhaustivamente todas las
+características de BeanShell, sino que sólo describiremos lo necesario para
+utilizarlo en AGE de forma lo más sencilla posible. Los programadores que
+quieran un conocimiento más completo y riguroso de BeanShell, incluyendo
+todas sus características y no limitado a AGE, pueden consultar su página
+web \url{http://www.beanshell.org}.
+
+\subsection {Los formularios de código}
+
+En los formularios de ``Código y propiedades'' de PUCK se puede escribir
+código BeanShell. Este código puede estar asociado a una entidad concreta
+del mundo (una habitación, cosa, etc.), en el caso de que lo escribamos en
+el formulario de una entidad; o al mundo en su conjunto, si lo escribimos en
+el panel del mundo. La idea es que el comportamiento de cada entidad se
+especifique dentro de esa entidad, de modo que las entidades sean unidades
+autocontenidas que se puedan llevar fácilmente de un mundo a otro. Por
+ejemplo, si definimos una máquina de coser, querremos que el código que
+usamos para que cosa esté definido en la entidad ``máquina de coser': de
+este modo no sólo queda más claro dónde buscar el código de cada cosa, sino
+que además nos podríamos llevar esa entidad a otra aventura y seguiría
+cosiendo. El panel de código del mundo, por lo tanto, se utilizará para
+comportamientos que no estén asociados a una entidad particular, sino al
+juego en general.
+
+\subsection {Los métodos}
+
+El código que escribamos en un formulario siempre tendrá que constar de uno
+o más métodos. Un método es una porción de código que recibe unos datos de
+entrada y los procesa de una u otra manera, y, para los que vengan de otros
+lenguajes, es algo análogo al concepto de función o subrutina.
+
+El código de un método consta de una cabecera, que indica qué datos espera
+el método como entrada y cuáles produce como salida, y un cuerpo escrito
+entre llaves que contiene las instrucciones ejecutadas por el método. Las
+cabeceras de los métodos no hace falta escribirlas, las podemos generar
+directamente con los menús del PUCK. Sólo hará falta escribir, pues, el
+cuerpo de los métodos (parte delimitada por llaves).
+
+Por ejemplo, en el siguiente método:
+
+\begin{lstlisting}
+void parseCommand(Mobile aCreature, String verb, String args)
+{
+  if (equals(verb,"saludar"))
+    aCreature.write("Hola.\n");
+  end();
+}
+\end{lstlisting}
+
+La cabecera es
+
+\begin{lstlisting}
+void parseCommand(Mobile aCreature, String verb, String args)
+\end{lstlisting}
+
+donde:
+
+\begin{enumerate}
+\item {\textsf{Mobile aCreature, String verb, String args} es la lista de
+argumentos o parámetros de entrada del método. Cada parámetro corresponde a
+un dato que el método espera recibir cuando se ejecute. Cuando usemos
+BeanShell para mundos en AGE, normalmente será el AGE quien invoque la
+mayoría de los métodos y nos proporcione los datos de los parámetros.}
+\item {Cada una de las tres partes separadas por comas en la lista de
+parámetros (por ejemplo, \textsf{String verb}) es la definición de un
+parámetro de entrada. Un método puede tener cualquier cantidad de parámetros
+de entrada, incluyendo no tener ninguno (en cuyo caso no habría nada dentro
+de los paréntesis). La declaración de un parámetro consta de un \textit{tipo
+de dato} y un \textit{identificador} o nombre. En el ejemplo, \textsf{String}
+sería el tipo de dato (indicando que ese parámetro es una cadena de texto)
+y \textsf{verb} sería el nombre. El tipo de dato tiene que ser uno de los que
+soporta AGE o Java (hay formas de crearlos nuevos, pero no las usaremos);
+mientras que el nombre es totalmente arbitrario mientras dentro del mismo
+método nos refiramos al parámetro siempre por el mismo nombre: por ejemplo,
+podríamos haberle llamado a ese parámetro \textsf{verbo} en lugar de
+\textit{verb}, y todo funcionaría igual mientras cambiáramos ese nombre
+también en el cuerpo del método (\textsf{if ( equals(verbo,"saludar") )});
+pero no podríamos hacer un cambio semejante con el tipo de dato.}
+\item {Algunos de los tipos de datos más usados son:
+	\begin{itemize}
+	\item {\textsf{int}: número entero.}
+	\item {\textsf{boolean}: representa algo que puede ser verdadero o falso,
+	tiene dos valores válidos: \textsf{true} o \textsf{false}.}
+	\item {\textsf{double}: permite representar números con cifras decimales.}
+	\item {\textsf{char}: representa una letra o símbolo.}
+	\item {\textsf{String}: cadena de texto.}
+	\item {\textsf{World}: mundo de AGE.}
+	\item {\textsf{Entity}: cualquier entidad del mundo.}
+	\item {\textsf{Item}: cosa del mundo.}
+	\item {\textsf{Mobile}: criatura del mundo.}
+	\item {\textsf{Room}: habitación del mundo.}
+	\end{itemize}}
+\item {Al escribir los tipos de datos, es importante respetar las
+convenciones de mayúsculas y minúsculas que se ven en la lista (BeanShell es
+sensible a mayúsculas y minúsculas). El motivo de que unos tipos de dato se
+escriban con minúscula y otros con mayúscula es que los que son con
+mayúscula corresponden a objetos (y se llaman clases, es decir, \textsf{Room}
+es un tipo de dato que es una clase y la habitación de Pedro sería un objeto
+de tipo \textsf{Room}) mientras que los que son con minúscula son tipos de
+datos que se llaman \textit{básicos} y corresponden a valores (como el entero
+$-4$, el booleano \textsf{false} o el double $3.25$) y no a objetos. En AGE
+usaremos muy pocos tipos básicos (de hecho, sólo los de la lista y uno más
+que mencionaremos ahora mismo); sin embargo podremos usar bastantes clases
+(no sólo las de la lista), que iremos viendo.}
+\item {\textsf{parseCommand} es el nombre del método, que junto con los tipos
+de los parámetros (no sus nombres) es lo que lo identifica y distingue de
+otros. En general, el nombre puede ser cualquier palabra que cumpla ciertas
+reglas (por ejemplo si tiene sólo letras mayúsculas y minúsculas siempre
+servirá).}
+\item {Lo que viene antes del nombre, en este caso \textsf{void}, es el tipo
+de retorno del método. Y es que, además de procesar unos parámetros de
+entrada, un método puede devolver un resultado como salida. El tipo básico
+\textsf{void} es un tipo básico especial que no tiene ningún valor, y se
+utiliza en el caso en que un método no devuelve nada.}
+\item {En general, podemos definir métodos con cualquier combinación de
+nombre, parámetros y tipo de retorno. Pero como normalmente vamos a querer
+que AGE ejecute nuestros métodos, para que así queden integrados en el
+conjunto de la aventura, necesitaremos ponerles unos nombres (y tipos de
+parámetros y de retorno, aunque no necesariamente nombres de parámetros, que
+como dijimos son arbitrarios) determinados que son los que el AGE espera
+encontrar. Sin embargo, no es necesario saber de memoria los nombres y
+parámetros de los métodos que invoca AGE, ya que el PUCK nos generará
+automáticamente una plantilla de los mismos desde los menús contextuales de
+los formularios de código. Por ejemplo, si en el PUCK abrimos el área en que
+se introduce el código del mundo y vamos a su menú contextual con el botón
+derecho, seleccionando la opción ``Insertar código -- Método de análisis de
+la entrada (estándar)'' se nos generará automáticamente una plantilla que
+contendrá la cabecera del método y unos comentarios sobre para qué sirve el
+método y la función de cada parámetro. Eso sí, el cuerpo del método que
+aparece automáticamente estará vacío y por lo tanto no hará nada, tendremos
+que rellenarlo nosotros para que haga algo.}
+\item {Si generamos esta plantilla, o cualquier otra con el PUCK, veremos
+texto que viene después de dobles barras. El texto que viene en una línea
+después de una doble barra es un comentario de código y no se ejecuta, es
+simplemente para que nosotros escribamos explicaciones de qué hace ese
+código o cosas que queramos recordar. Lo mismo sucede con el texto
+comprendido entre /* y */, que puede ocupar una o varias líneas. Los
+comentarios de código pueden ir en cualquier parte del mismo: sea en la
+cabecera de un método, en su cuerpo, o incluso fuera de cualquier método, ya
+que AGE los ignora por completo y no los ejecuta.}
+\end{enumerate}
+
+\begin{lstlisting}
+//esto es un comentario
+/* y esto
+también */
+\end{lstlisting}
+
+El cuerpo del método del ejemplo anterior es el código entre llaves:
+
+\begin{lstlisting}
+{
+  if ( equals(verb,"saludar") )
+    aCreature.write("Hola.\n");
+  end();
+}
+\end{lstlisting}
+
+Y lo que hace es que, si la cadena (verbo) que nos han pasado como segundo
+parámetro corresponde a la palabra ``saludar'' (sin comillas), entonces
+escribimos una línea que dice ``Hola.'' en la salida asociada a la criatura
+que viene dada como primer parámetro.
+
+\subsection {Variables y entrada/salida sencilla}
+Ahora que ya sabemos que tenemos que definir métodos y que estructura básica
+tienen, y tenemos una idea de cómo obtener sus cabeceras con el PUCK, vamos
+a ver qué tipo de cosas podemos poner en los cuerpos de los métodos para
+ejecutar código útil.
+Para ello, por el momento siempre partiremos del método
+\textsf{void parseCommand(Mobile aCreature, String verb, String args)} cuya
+cabecera se genera automáticamente en la opción ``Insertar código -- Método
+de análisis de la entrada (estándar)'' del menú contextual del campo de
+código de mundo. Ese método lo invoca AGE cuando un jugador introduce una
+entrada, y los parámetros que recibe son, por orden: el objeto que representa
+al jugador que ha escrito esa entrada (de momento el único jugador, ya que
+nos centraremos en aventuras para un solo jugador), el verbo que ha puesto
+(o primera palabra de la cadena que ha tecleado en la entrada), y el resto
+de la cadena de entrada. Por ejemplo, si el jugador teclea ``comer el plátano
+de Canarias'', entonces el parámetro aCreature corresponderá a ese jugador,
+el parámetro verb a la cadena ``comer'', y args a la cadena ``el plátano de
+Canarias''.
+
+\subsubsection {Mostrándole texto al jugador}
+Una de las primeras cosas que podemos hacer es probar a mostrar un texto al
+jugador cada vez que se ejecute el método (es decir, en el caso de este
+método particular, cada vez que escribe algo). Esto podríamos hacerlo así:
+
+\begin{lstlisting}
+void parseCommand(Mobile aCreature, String verb, String args)
+{
+  aCreature.write("Hola.\n");
+}
+\end{lstlisting}
+
+Si ponemos este código en el mundo, cada vez que el jugador escriba algo,
+AGE le dirá ``Hola''. La sintaxis \verb|aCreature.write("Hola.\n")|
+significa que queremos al método write del objeto \textsf{aCreature}, y
+pasarle como parámetro la cadena \verb|"Hola.\n"|. Para ello, tiene que
+haber definido en la clase a la que pertenece aCreature (o sea, la clase
+Mobile) un método llamado write que coja una cadena como único parámetro, y
+efectivamente, este método existe, y lo que hace es escribir algo por la
+ventana o consola de esa criatura. El punto y coma sirve para terminar la
+instrucción. Se pueden ejecutar varias instrucciones en secuencia, una
+después de otra, escribiéndolas una después de otra. No se debe olvidar
+poner un punto y coma después de cada una:
+
+\begin{lstlisting}
+void parseCommand(Mobile aCreature, String verb, String args)
+{
+  aCreature.write("Esta línea se escribe primero.\n");
+  aCreature.write("Y ésta se escribe ");
+  aCreature.write("después.\n");
+}
+\end{lstlisting}
+
+La secuencia de caracteres \verb|\n| dentro de una cadena significa un salto
+de línea. Por lo tanto, este código escribirá dos líneas, una que dirá ``Esta
+línea se escribe primero.'' y otra que dirá ``Y ésta se escribe después.''.
+
+\subsubsection{La función \textsf{end()}}
+Si probamos a ejecutar nuestra aventura de ejemplo con el código que hemos
+añadido, veremos que la salida es algo similar a esto:
+
+\begin{verbatim}
+> inventario
+Esta línea se escribe primero.
+Y ésta se escribe después.
+No tienes nada.
+> asdasf
+Esta línea se escribe primero.
+Y ésta se escribe después.
+No entiendo...
+\end{verbatim}
+
+Es decir, nuestra aventura está diciéndole escribiéndole al jugador el texto
+cada vez que escribe algo, pero después está siguiendo el procesado normal
+que hace AGE (por ejemplo, mostrar el inventario si lo que escribió fue
+``inventario'').
+
+Si en lugar de esto se quiere que el método que hemos definido sustituya al
+procesado por defecto de AGE, es decir, que cuando un jugador escriba algo
+se le escriba el texto dado y \textit{nada más}, podemos utilizar la función
+\textsf{end()}:
+
+
+\begin{lstlisting}
+void parseCommand(Mobile aCreature, String verb, String args)
+{
+  aCreature.write("Esta línea se escribe primero.\n");
+  aCreature.write("Y ésta se escribe ");
+  aCreature.write("después.\n");
+	end();
+}
+\end{lstlisting}
+
+De esta forma nuestra salida será
+
+\begin{verbatim}
+> inventario
+Esta línea se escribe primero.
+Y ésta se escribe después.
+No tienes nada.
+> asdasf
+Esta línea se escribe primero.
+Y ésta se escribe después.
+\end{verbatim}
+
+Podemos utilizar la función end() para interrumpir el procesado normal del
+AGE en cualquier momento de la mayoría de los métodos. La plantilla que el
+PUCK genera de cada método da información explícita sobre si se puede usar o
+no la función end().
+
+A end() le hemos llamado función, y no método, porque no está asociada a un
+objeto. Un método se invoca sobre un objeto, con la sintaxis
+objeto.método(parámetros),\footnote{O a veces sobre una clase, con la
+sintaxis Clase.método(parámetros). Los métodos que se invocan sobre una
+clase se llaman métodos estáticos} mientras que una función se invoca sin
+más, con la sintaxis función(parámetros).
+
+\subsubsection {Variables y asignaciones}
+
+En BeanShell, como en otros muchos lenguajes de programación, una
+\textit{variable} es un nombre simbólico que se asocia a un determinado
+valor u objeto en memoria, que pueden cambiar a lo largo de la ejecución del
+código. Los parámetros de los métodos, que vimos con anterioridad, son un
+tipo particular de variables que almacenan los datos y objetos que se pasan
+como entradas a un método; pero como programadores también podemos crear
+otras variables para almacenar todo tipo de información temporal que se
+utilice en el interior de un método.
+
+Una variable tiene tres atributos esenciales: su nombre, su tipo de dato y
+su valor. El nombre es simplemente una palabra que el programador escoge
+para referirse a la variable, mientras que el tipo de dato describe qué
+valores puede contener la variable. Los tipos de datos son los mismos que
+hemos visto en la sección sobre los parámetros de los métodos, que pueden
+ser tipos básicos o clases.
+
+Un ejemplo de uso de variables podría ser el siguiente: si estamos
+escribiendo un código para describir todos los objetos que un jugador lleva
+en su inventario, probablemente usaremos una variable para llevar cuenta de
+cuántos objetos llevamos descritos (que será de tipo \textsf{int}, pues el
+número de objetos descritos en cada momento es un número entero) y otra
+variable donde almacenaremos temporalmente cada objeto al consultarlo en el
+inventario para describirlo (que será de la clase \textsf{Item}, que
+representa las cosas en AGE).
+
+Para crear una nueva variable, se utiliza una sintaxis como ésta:
+
+\begin{lstlisting}
+int index;
+\end{lstlisting}
+
+donde \textsf{int} es el tipo de datos de la variable que queremos declarar,
+e \textsf{index} es su nombre.
+
+Para asignarle un nuevo valor a una variable ya declarada, lo hacemos de la
+siguiente manera:
+
+\begin{lstlisting}
+index = 0;
+\end{lstlisting}
+
+Con este código estamos haciendo que la variable entera \textsf{index} tome
+como valor el número entero 0. Es importante tener en cuenta que cada
+variable sólo puede tomar valores legales según su tipo de datos. Por
+ejemplo, a una variable entera le podemos dar el valor $0$; pero no le
+podemos dar el valor ``Hola'' o $3.5$, porque éstos no son números enteros.
+
+Aquí vemos cómo podemos asignar valores a variables de distintos tipos:
+
+\begin{lstlisting}
+int index;
+double number;
+boolean condition;
+char letter;
+String name;
+Room aRoom;
+Item anItem;
+Mobile aCreature;
+ 
+index = -4;
+number = 7.23;
+condition = true; //o false
+letter = 'a'; //los valores de tipo carácter se escriben
+			//entre comillas simples
+name = "Pablo Picasso"; //los valores de tipo cadena (String)
+			//se escriben entre comillas dobles
+aRoom = room("Sala del trono"); //room() es una función a la que
+			//le pasamos una cadena y nos devuelve la
+			//habitación que tiene esa cadena como nombre único
+anItem = item("Bolígrafo"); //item() es análogo a room(),
+			//pero con una cosa
+aCreature = mobile("Juan"); //mobile() es análogo a room(),
+			//pero con una criatura
+\end{lstlisting}
+
+Este proceso se puede abreviar asignando un valor inicial a las variables a
+la vez que las creamos, de la siguiente manera:
+
+\begin{lstlisting}
+int index = -4;
+double number = 7.23;
+boolean condition = true;
+char letter = 'a'; 
+String name = "Pablo Picasso";
+Room aRoom = room("Sala del trono");
+Item anItem = item("Bolígrafo");
+Mobile aCreature = mobile("Juan");
+\end{lstlisting}
+
+A las variables también se les puede asignar el valor de otra variable, o
+el valor que devuelve una expresión (que puede contener operaciones o
+llamadas a métodos o funciones):
+
+\begin{lstlisting}
+int index = 7;
+int index2 = index; //copiamos el valor de index a index2,
+		//ahora index2 vale 7
+int index3 = index1 + index2; //la expresión index1 + index2
+		//devuelve la suma de index1 e index2, ahora index3 vale 14
+index3 = index3 + 1; //incrementamos index3 en 1
+ 
+Item arma = item("Espada"); //obtenemos el objeto de nombre
+		//único "Espada" y lo almacenamos en la variable arma
+int pesoArma = arma.getWeight(); //getWeight() es un método de la
+		//clase Item que nos devuelve el peso de una cosa. Aquí ponemos
+		//el peso de nuestra espada en la variable pesoArma. Nótese
+		//que podemos hacer esto porque el tipo de retorno del
+		//método getWeight() es int, y el tipo de la variable
+		//pesoArma también es int. En general no podemos asignar
+		//a una variable un valor que no sea de su tipo
+int doblePesoArma = arma.getWeight() * 2; //el * es el operador
+		//de multiplicación. Como vemos, se pueden combinar llamadas
+		//a métodos con operaciones para formar una expresión que
+		//devuelve un valor, valor que se puede después meter en una variable
+ 
+arma = 7; //esto fallaría porque intentamos asignar a la
+		//variable arma, de tipo Item, el valor 7, de tipo int.
+		//No coinciden los tipos, así que la asignación no se puede
+		//llevar a cabo
+\end{lstlisting}
+
+\subsubsection {Operaciones con los tipos básicos}
+En la sección anterior hemos visto algunos ejemplos de cómo se hacen
+operaciones, como por ejemplo una suma. Veamos aquí una lista algo más
+exhaustiva de operaciones útiles.
+
+Con \textsf{int}:
+
+\begin{lstlisting}
+int a = 7;
+int b = 4;
+int c;
+c = a + b; //suma a y b (c valdría 11)
+c = a - b; //resta a menos b (c valdría 3)
+c = a * b; //multiplica a por b (c valdría 28)
+c = a / b; //división entera de a entre b (c valdría 1)
+c = a % b; //resto de la división entera de a entre b (c valdría 3).
+ 
+a++; //incrementa la variable a (es equivalente a poner a = a + 1)
+a--; //decrementa la variable a (es como poner a = a - 1)
+ 
+a *= 3; //abreviatura de a = a * 3. Esto se puede hacer análogamente
+	//con todos los operadores de los tipos básicos que aparecen
+	//en esta sección.
+\end{lstlisting}
+
+Con \textsf{double}:
+
+\begin{lstlisting}
+double a = 7.0; //nótese el .0 para indicar que el valor se
+	//considera un double y no un int, aunque matemáticamente
+	//sea el mismo valor
+double b = 4.0;
+double c;
+c = a + b; //suma a y b (c valdría 11.0)
+c = a - b; //resta a menos b (c valdría 3.0)
+c = a * b; //multiplica a por b (c valdría 28.0)
+c = a / b; //división con decimales de a entre b (c valdría 1.75)
+\end{lstlisting}
+
+Con cadenas:
+
+\begin{lstlisting}
+String a = "Juan";
+String b = "Pepe";
+String c = a + b; //la "suma" de cadenas es su
+	//concatenación: la cadena "JuanPepe"
+ 
+int a = 7;
+double b = 3.0;
+String mensaje = "La variable a vale " + a + " y la variable b vale " + b;
+	//las cadenas también se pueden concatenar con otros tipos de datos,
+	//en cuyo caso esos valores se convierten a cadenas. En este
+	//caso mensaje quedaría como "La variable a vale 7 y la variable b
+	//vale 3.0"
+\end{lstlisting}
+
+Con booleanos:
+
+\begin{lstlisting}
+boolean si = true;
+boolean no = false;
+boolean resultado;
+resultado = !si; //la ! es el operador not (negación).
+	//Aplicado a true, devuelve false, y aplicado a false,
+	//devuelve true.
+resultado = si || no; //operador or lógico.
+	//Devuelve true si al menos uno de los dos operandos
+	//es true (en este caso devolvería true).
+resultado = si && no; //operador and lógico.
+	//Devuelve true sólo cuando los dos operandos son
+	//true (en este caso devolvería false).
+\end{lstlisting}
+
+Los operadores se pueden combinar en expresiones complejas, utilizando
+paréntesis si es necesario para definir el orden:
+
+\begin{lstlisting}
+int d = a + b + c; //suma de a, b y c
+d = (a + b) * c; //sumar a y b, y multiplicar el resultado por c
+String juanes = a + a + a; //"JuanJuanJuan"
+juanes += juanes; //"JuanJuanJuanJuanJuanJuan"
+boolean complejo = ( si && si ) || ( no || no ); //esto da true
+\end{lstlisting}
+
+\subsection {La estructura condicional (\textsf{if})}
+
+Hasta ahora, hemos visto cómo crear un método, escribir cosas en la pantalla
+o ventana del jugador y crear o actualizar variables. Estas instrucciones se
+pueden combinar en secuencias para que se ejecuten unas después de otras;
+pero con lo que de momento hemos visto, nuestro método siempre hará
+exactamente lo mismo, una secuencia de operaciones predeterminadas. Esto
+limita mucho el conjunto de cosas que podemos hacer. Para crear métodos más
+interesantes, necesitamos de alguna forma poder hacer que se comporten de
+manera diferente según las circunstancias: por ejemplo, que el método
+parseCommand que estamos definiendo actúe de manera distinta según el verbo
+que ha escrito el jugador, o según la habitación en la que está, si ha
+realizado o no con anterioridad una determinada acción, o cualquier otra
+circunstancia que se nos ocurra.
+
+Para conseguir estos comportamientos diferentes según las circunstancias,
+podemos utilizar la estructura condicional, llamada \textit{if}. La
+estructura condicional nos permite definir un código que sólo se ejecuta si
+se cumple una determinada condición (por ejemplo, que el jugador esté en la
+habitación ``cocina''), y, opcionalmente, otro código que sólo se ejecuta si
+no se cumple la condición:
+
+\begin{lstlisting}
+Mobile jugador = aCreature;
+if ( equals ( room("Cocina") , jugador.getRoom() ) )
+  jugador.write("En estos momentos estás en la cocina.\n");
+else
+  jugador.write("En estos momentos estás en otra parte que no es la cocina.\n");
+\end{lstlisting}
+
+En general, la sintaxis de la instrucción if para ejecutar un código si y
+sólo si se cumple una determinada condición es la siguiente:
+
+if ( condición ) cuerpo
+
+Donde el código de \textsf{cuerpo} sólo se ejecutará en el caso de que
+\textsf{condición} sea cierta. En concreto, \textsf{condición} tiene que ser
+siempre una expresión que devuelva un valor de tipo \textsf{boolean}
+(\textsf{true} o \textsf{false}). El código de cuerpo se ejecutará si el
+valor de condición es \textsf{true}, y no se ejecutará si dicho valor es
+\textsf{false}.
+
+En el caso de que el cuerpo del if esté formado por varias instrucciones, se
+deben delimitar dichas instrucciones con llaves, como si fueran el cuerpo de
+un método:
+
+\begin{lstlisting}
+if ( equals ( room("Cocina") , jugador.getRoom() ) )
+{
+  jugador.write("En estos momentos estás en la cocina.\n");
+  jugador.write("Te dan ganas de ponerte a cocinar algo.\n"); 
+}
+\end{lstlisting}
+
+Si el cuerpo del if está formado por una única instrucción, se puede poner
+la instrucción sin más, sin llaves:
+
+\begin{lstlisting}
+if ( equals ( room("Cocina") , jugador.getRoom() ) )
+  jugador.write("En estos momentos estás en la cocina.\n");
+\end{lstlisting}
+
+O bien ponerla con llaves como antes, que en este caso es equivalente:
+
+\begin{lstlisting}
+if ( equals ( room("Cocina") , jugador.getRoom() ) )
+{
+  jugador.write("En estos momentos estás en la cocina.\n");
+}
+\end{lstlisting}
+
+La sintaxis de la estructura if para ejecutar un código si se cumple una
+condición y otro distinto si no se cumple es la siguiente:
+
+if ( condición ) cuerpo1 else cuerpo2
+
+De nuevo, cuerpo1 y cuerpo2 tienen que ir necesariamente entre llaves si
+tienen más de una instrucción, y pueden ir sin llaves si tienen sólo una.
+
+\begin{lstlisting}
+if ( equals ( room("Cocina") , jugador.getRoom() ) )
+{
+  jugador.write("En estos momentos estás en la cocina.\n");
+  jugador.write("Te dan ganas de ponerte a cocinar algo.\n"); 
+} 
+else
+  jugador.write("No estás en la cocina.\n");
+\end{lstlisting}
+
+Una estructura ``if--else'' se puede combinar con otras estructuras
+``if--else'' para dar una estructura ``if--else if--else if...--else'', como
+ésta:
+
+\begin{lstlisting}
+if ( equals ( verb , "comer" ) )
+  jugador.write("Has puesto el verbo comer.\n"); 
+else if ( equals ( verb , "beber" ) )
+  jugador.write("Has puesto el verbo beber.\n");
+else if ( equals ( verb , "dormir" ) )
+  jugador.write("Has puesto el verbo dormir.\n");
+else
+  jugador.write("No entiendo el verbo que has puesto.\n");
+\end{lstlisting}
+
+Este código escribe una cosa u otra en la consola del jugador según el valor
+del parámetro verb del método.
+
+\subsubsection {Comparaciones}
+
+Para decidir entre una rama u otra de una estructura condicional, necesitamos
+que nuestro código utilice alguna expresión o variable de tipo boolean, de
+modo que ejecute la rama del if si esta expresión tiene un valor verdadero,
+y la rama del else (o nada) si su valor es falso.
+
+¿Cómo obtenemos expresiones de tipo \textsf{boolean} que sean relevantes para
+definir nuestros métodos \textsf{if}? Existen muchas maneras, dependiendo de
+lo que uno quiera hacer; pero una de las más básicas y comunes son las
+comparaciones. Muchas veces queremos ejecutar un código si un valor es igual
+a otro (por ejemplo, si el valor de una variable es igual a un valor dado).
+Esto se consigue con la función de comparación de igualdad equals.\footnote {Nota
+para programadores: BeanShell tiene otras comparaciones de igualdad por
+defecto, que son el método \textsf{equals} de la clase Object y el
+operador \textsf{==}. La función equals que se cubre aquí es una función de
+más alto nivel creada a propósito para simplificar las comparaciones en AGE,
+cubriendo los casos de uso más comunes en las aventuras. Los programadores
+que tengan conocimientos de Java o de BeanShell pueden utilizar en su lugar
+las comparaciones tradicionales con el método \textsf{equals} de
+\textsf{Object} y con \textsf{==}, que por supuesto funcionan en AGE como
+en Java.}
+
+La comparación de igualdad de AGE es una función equals al que se le pasan
+dos parámetros que pueden ser de cualquier tipo (tipos básicos u objetos).
+La función equals devuelve \textsf{true} si los dos parámetros que se le han
+pasado tienen el mismo valor, y \textsf{false} si son distintos.
+
+Así, por ejemplo, podríamos hacer lo siguiente:
+
+\begin{lstlisting}
+equals(3,4); //devuelve false
+equals(3,3); //devuelve true
+equals(2+2,4); //devuelve true
+equals(2+2,5); //devuelve false
+equals("Fulanito","Menganito"); //devuelve false
+String f = "Fulanito";
+equals("Fulanito",f); //devuelve true
+String g = "Fula";
+String h = "nito";
+equals(f,g); //devuelve false
+equals(f,h); //devuelve false
+equals(f,g+h); //devuelve true
+equals(room("Cocina"),room("Cocina")); //devuelve true 
+equals(room("Cocina"),room("Baño")); //devuelve false (salvo que no existan habitaciones llamadas Cocina ni Baño, en cuyo caso se consideran iguales porque ninguna de las dos existe)
+\end{lstlisting}
+
+Podemos ver un uso práctico de una comparación de igualdad en conjunción con
+una estructura condicional si, en el método \textsf{parseCommand} visto con
+anterioridad, queremos hacer que se responda de una manera determinada sólo
+cuando el jugador escribe un determinado verbo. Por ejemplo:
+
+\begin{lstlisting}
+void parseCommand ( Mobile aCreature , String verb , String args )
+{
+  if ( equals(verb,"comer") )
+  { 
+    aCreature.write("No puedes comer ahora, que estás a régimen.\n");
+    end();
+  } 
+}
+\end{lstlisting}
+
+Con esto conseguimos que cuando el jugador use el verbo comer, se le diga
+que está a régimen, sin cambiar el comportamiento de los otros verbos:
+
+\begin{verbatim}
+> inventario
+Tienes una manzana.
+> comer la manzana
+No puedes comer ahora, que estás a régimen.
+\end{verbatim}
+
+Nótese que el \textsf{end()} está dentro del cuerpo del \textsf{if}, con lo
+cual sólo se impide que AGE ejecute sus comportamientos estándar si
+realmente se usa el verbo comer. Si hubiésemos puesto el \textsf{end()} fuera
+del cuerpo del \textsf{if}, haríamos que dejara de funcionar el comando
+``inventario'' (y cualquier otro) porque el \textsf{end()} se ejecutaría
+siempre e impediría que AGE ejecutase sus comportamientos por defecto. Si no
+hubiésemos puesto un \textsf{end()} en absoluto, ni siquiera dentro del
+\textsf{if}, entonces al usar el verbo ``comer'' se imprimiría nuestro
+mensaje pero después se seguiría procesando la entrada como si tal cosa,
+cosa que provocaría efectos no deseados:
+
+\begin{verbatim}
+> comer la manzana
+No puedes comer ahora, que estás a régimen.
+¿Cómo? ¿Comer?
+\end{verbatim}
+
+En este caso, imprimimos el mensaje pero luego AGE procesa el comando, y como
+por defecto no lo entiende (no está definido por defecto en AGE qué pasa al
+comer algo), da un mensaje de error. Hay que tener cuidado, pues, de usar
+los \textsf{end()} en los momentos en que se necesitan.
+
+Si en lugar de comprobar si dos cosas son iguales queremos comprobar si son
+distintas, podemos utilizar el operador \textsf{!} visto antes, que niega
+un valor booleano. Así, \verb|equals(verb,"comer")| devuelve \textsf{true}
+si y sólo si el parámetro \textsf{verb} tiene como valor ``comer''; mientras
+que \verb|!equals(verb,"comer")| devuelve true sólo si el valor del
+parámetro no es ``comer''.
+
+En el caso de trabajar con números (sean \textsf{int} o \textsf{double}), a
+menudo nos interesará hacer comparaciones de superioridad y de inferioridad,
+en lugar de las de igualdad. Es decir, querremos saber si un número es mayor
+o menor que otro. Esto se hace con los operadores <, >, <= y >=:
+
+\begin{lstlisting}
+boolean b;
+b = ( 4 > 3 ); //devuelve true
+b = ( 4 >= 3 ); //devuelve false
+b = ( 4 >= 4 ); //devuelve true
+b = ( 4.2 > 3.5 ); //devuelve true
+b = ( 4 < 3 ); //devuelve true
+b = ( 3 < 4 ); //devuelve true;
+if ( x >= 0 ) aCreature.write("Equis es mayor que cero.\n"); //para esto tendremos que haber declarado antes la variable x
+\end{lstlisting}
+
+\subsection {Los bucles}
+
+La estructura condicional (if--else) que hemos visto es una de las
+principales estructuras de control, es decir, maneras de gestionar qué
+camino va siguiendo un programa en BeanShell para ejecutar sus
+instrucciones. Las otras estructuras de control importantes que
+necesitaremos para gestionar el flujo de los programas son los bucles.
+
+Como hemos visto, una estructura condicional nos permite escoger entre un
+código a ejecutar y otro según si se da o no una determinada condición. Este
+código que se ejecuta lo hace únicamente una vez (salvo que estemos llamando
+al \textsf{if} varias veces desde código externo a él, claro).
+
+Los bucles nos permiten ejecutar un bloque de código varias veces,
+repitiéndose mientras una condición determinada se cumpla. El código del
+cuerpo del bucle sólo parará de ejecutarse cuando esa condición no se cumpla
+(¡ojo, porque si nunca deja de cumplirse, el bucle se ejecutará
+indefinidamente, cosa que normalmente no es lo que se busca!).
+
+Cada una de las ejecuciones del cuerpo de un bucle se llama una
+\textit{iteración}.
+
+Ejemplos de aplicaciones típicas de los bucles son:
+
+\begin{itemize}
+\item {Ejecutar un código un número determinado de veces. Por ejemplo,
+supongamos que queremos sacar un texto por la pantalla cien veces. Podríamos
+copiar cien veces el código \verb|jugador.write("...");|; pero sería un
+proceso pesado y daría como resultado un código largo y farragoso. Así que
+lo que hacemos es declarar una variable que empiece a cero (número de veces
+que hemos escrito el texto), y crear un bucle que escriba el texto mientras
+la variable no llegue a cien. En el cuerpo del bucle, además de escribir el
+texto, le sumamos uno a la variable, de tal manera que efectivamente cuando
+el código haya escrito el texto cien veces la variable llegará a cien, y
+saldremos del bucle.}
+\item {Ejecutar un código mientras no suceda algo que sabemos que al final
+tiene que ocurrir. Por ejemplo, si el jugador quiere entrar en una cueva y
+nosotros le pedimos que confirme poniendo ``sí'' o ``no'', podemos querer
+pedirle esa confirmación mientras no dé una respuesta clara. Es decir, si le
+preguntamos ``¿De verdad que quieres entrar en la cueva?'' y contesta
+``Cachifú'', queremos volver a preguntarle. Esto sería un bucle que se
+repetiría mientras la respuesta dada no sea ``sí'' ni ``no''.}
+\item {Ejecutar un código sobre una serie de objetos. Por ejemplo, para
+mostrar el inventario del jugador, podemos querer escribir un código (si no
+estuviese ya hecho por defecto en AGE) que fuese sacando por pantalla el
+nombre de cada objeto del inventario. Esto también lo podemos hacer con un
+bucle, donde vamos tomando en cada iteración un objeto del inventario, y el
+bucle se ejecuta mientras aún queden objetos por imprimir.}
+\end{itemize}
+
+En BeanShell existen tres tipos de bucle: el bucle \textsf{while}, el bucle
+\textsf{for} y el bucle \textsf{do while}. En realidad los tres se basan en
+la misma idea básica y con cualquiera de ellos se puede hacer lo mismo que
+con cualquiera de los demás, es decir, desde el punto de vista funcional
+llegaría con usar un solo bucle para todo. Lo que pasa es que, dependiendo
+de lo que queramos hacer en cada caso, puede resultar más cómodo, más
+sencillo o más claro usar uno u otro bucle.
+
+\subsubsection {El bucle \textsf{while}}
+
+El bucle \textsf{while} tiene la siguiente sintaxis:
+
+\begin{verbatim}
+while ( condición ) cuerpo;
+\end{verbatim}
+
+Es decir, una sintaxis análoga a la de un \textsf{if}. Al igual que en éste,
+el cuerpo puede ser una única instrucción (no necesariamente delimitada por
+llaves), o una serie de una o más instrucciones delimitadas por llaves.
+
+El significado del bucle \textsf{while} es el siguiente: si se cumple la
+condición (es decir, si vale \textsf{true}) se ejecuta el cuerpo del bucle,
+si no, no se ejecuta nada (hasta aquí funciona como el \textsf{if}). Ahora
+bien, si se ha ejecutado el cuerpo del bucle, una vez terminada esta
+ejecución (iteración) se comprueba la condición de nuevo, y a partir de ahí
+se repite el proceso: si la condición sigue siendo cierta, se vuelve a
+ejecutar el cuerpo del bucle (y así sucesivamente), mientras que si es
+falsa, se sale del bucle.
+
+Así, por ejemplo, el siguiente código hace que cuando el jugador ponga el
+verbo ``saludar'', el juego muestre la palabra ``Hola'' cinco veces:
+
+\begin{lstlisting}
+void parseCommand ( Mobile aCreature , String verb , String args )
+{
+  if ( equals(verb,"saludar") )
+  { 
+    int veces = 0;
+    while ( veces < 5 )
+    {
+      aCreature.write("Hola\n"); 
+      veces++;
+    }    
+    end();
+  } 
+}
+\end{lstlisting}
+
+La variable \textsf{veces} lleva cuenta del número de veces que ya hemos
+impreso la cadena \verb|"Hola\n"|, y se incrementa en uno en cada iteración
+del bucle. Por lo tanto, se ejecutará el cuerpo del bucle cinco veces (en la
+primera, la variable \textsf{veces} empieza valiendo 0, y en las siguientes
+vale 1, 2, 3 y 4, respectivamente. Como al final de esa última iteración (en
+la que empieza valiendo 4) la variable \textsf{veces} ya toma un valor de 5,
+al volver a comprobar la condición se sale del bucle.
+
+Nótese también que en este ejemplo hemos puesto la estructura while dentro
+de una estructura \textsf{if}. En general, tanto la estructura \textsf{if}
+como la \textsf{while} se pueden poner en cualquier lugar donde pudiese ir
+una instrucción. Por lo tanto, se pueden anidar unas dentro de otras (es
+decir, incluir una de estas estructuras dentro del cuerpo de otra
+estructura); como hemos hecho aquí.
+
+Otra cosa a tener en cuenta es que, cuando una variable de declara dentro de
+un bloque entre llaves, sólo tiene validez en el ámbito de ese bloque. Esto
+quiere decir que la variable \textsf{veces}, que se ha declarado dentro del
+cuerpo del \textsf{if}, sólo podemos usarla en el interior de ese cuerpo del
+\textsf{if} (o de los bloques de código que estén dentro de él, como por
+ejemplo el cuerpo del \textsf{while}). Si quisiéramos usarla en bloques de
+código ajenos al cuerpo del \textsf{if}, tendríamos que declararla en ellos:
+por ejemplo, si hubiésemos declarado la variable nada más empezar el método,
+tendría validez en todo el método.
+
+Los valores de las variables nunca se conservan entre ejecuciones de métodos.
+En cuanto un bloque de código delimitado entre llaves termina de ejecutarse,
+todas las variables que estaban en él se descartan y su valor se pierde.
+Existen maneras de almacenar valores que se conserven entre distintas
+ejecuciones de un método o de distintos métodos, como las propiedades, que
+veremos más adelante.
+
+\subsubsection {El bucle \textsf{for}}
+El bucle \textsf{for} es una alternativa al bucle \textsf{while} que permite
+definir algunos tipos de bucles de una manera más compacta y clara (aunque
+no permite hacer nada nuevo que no podamos hacer con el \textsf{while}). La
+idea del bucle for se basa en que en la práctica muchos bucles siguen un
+patrón común de funcionamiento en el que justo antes del bucle se declara e
+inicializa alguna variable de control que sirve para ver cómo vamos
+progresando en el bucle y cuánto falta para terminar (como la variable
+\textsf{veces} del ejemplo anterior), y al final del cuerpo del bucle se
+cambia esa variable (como hacemos con \verb|veces++| en el ejemplo). El
+bucle \textsf{for} proporciona una sintaxis abreviada que nos permite
+representar la declaración de la variable de control, la condición del
+bucle y la modificación de la variable todas juntas. La sintaxis es así:
+
+\begin{verbatim}
+for ( inicialización ; condición ; modificación ) cuerpo;
+\end{verbatim}
+
+Y es exactamente equivalente a esto:
+
+\begin{verbatim}
+inicialización;
+while ( condición )
+{
+cuerpo;
+modificación;
+}
+\end{verbatim}
+
+Así, lo mismo que hicimos antes con un bucle \textsf{while} lo podríamos
+hacer con un bucle \textsf{for} de la siguiente manera:
+
+\begin{lstlisting}
+void parseCommand ( Mobile aCreature , String verb , String args )
+{
+  if ( equals(verb,"saludar") )
+  { 
+    for ( int veces = 0 ; veces < 5 ; veces++ )
+    {
+      aCreature.write("Hola\n"); 
+    }    
+    end();
+  } 
+}
+\end{lstlisting}
+
+Que queda un poco más claro y compacto (y más compacto aún si omitimos las
+llaves del cuerpo del bucle \textsf{for}, cosa que ahora podemos hacer
+porque se ha quedado con sólo una instrucción).
+
+En el caso de que un bucle determinado no necesite inicialización o
+modificación de variables, esos campos se pueden dejar en blanco. Aunque en
+este caso tendríamos que plantearnos si realmente el bucle \textsf{for} nos
+clarifica las cosas para lo que queremos hacer, o más bien sería más
+adecuado un simple \textsf{while}. Por último, la condición del \textsf{for}
+también se puede dejar en blanco, en este caso el bucle se ejecutará
+indefinidamente como si la condición fuese la constante \textsf{true}.
+
+\subsubsection{El bucle \textsf{do while}}
+
+Existe un tercer tipo de bucle utilizable en BeanShell, llamado bucle
+\textsf{do while}:
+
+\begin{verbatim}
+do cuerpo while (condición);
+\end{verbatim}
+
+Su diferencia con el \textsf{while} es que el cuerpo del bucle se ejecuta al
+menos una vez (antes de evaluar la condición), y la condición se evalúa
+después (en lugar de antes) de cada iteración.
+
+Todo lo que se puede hacer con \textsf{do while} se puede hacer con
+\textsf{while} sin complicarse mucho más, y algunos conocidos programadores
+(como Bjarne Stroustrup) incluso defienden no usar nunca \textsf{do while}
+porque no aporta mucho. Al hilo de estas reflexiones, en este tutorial no
+utilizaremos bucles \textsf{do while}; aunque quien quiera puede utilizarlos
+en AGE y hay más información sobre ellos en cualquier tutorial de Java o de
+BeanShell.
+
+\subsubsection{\textsf{break} y \textsf{continue}}
+
+Existen dos instrucciones especiales, llamadas \textsf{break} y
+\textsf{continue}, que permiten que nuestro código ``haga trampa'' en un
+bucle, rompiendo el flujo de ejecución normal del mismo. Concretamente, la
+instrucción \textsf{break} hace que salgamos del bucle inmediatamente en el
+momento en que se ejecuta, sin comprobar la condición del bucle, y sin
+importar que se cumpla o no. Por otra parte, la instrucción \textsf{continue}
+hace que en el momento en que se ejecuta nos saltemos el resto de la
+iteración actual y pasemos directamente a la siguiente comprobación de la
+condición del bucle.
+
+Así, podríamos hacer algo como esto:
+
+\begin{lstlisting}
+void parseCommand ( Mobile aCreature , String verb , String args )
+{
+  if ( equals(verb,"saludar") )
+  { 
+    int veces = 0;
+    while ( true )
+    {
+      aCreature.write("Hola\n");
+      if ( equals(veces,5) )
+        break;   
+      veces++;
+    }    
+    end();
+  } 
+}
+\end{lstlisting}
+
+Que sería otra manera de imprimir ``Hola'' cinco veces; aunque menos clara
+que las anteriores ya que hay que mirar el cuerpo del bucle para saber
+realmente cuál es su sentido y cúando terminará. Así pues, esto es un
+ejemplo para ver lo que hace la instrucción \textsf{break} pero no es un
+ejemplo de buen uso. Un buen uso sería cuando tenemos un bucle que
+normalmente debe ejecutarse hasta que deje de cumplirse una condición dada;
+pero adicionalmente hay alguna otra condición secundaria que lo puede hacer
+parar, esta condición la podríamos poner con el \textsf{break} si
+consideramos que quedaría feo añadirla a la condición principal del bucle.
+
+Cuando la instrucción \textsf{break} aparece dentro de varios bucles a la
+vez (por ejemplo, en el cuerpo de un \textsf{for} que está dentro del cuerpo
+de un \textsf{while}), sólo se interrumpirá la ejecución del bucle más
+interno. Para que afecte al otro, habría que poner otro \textsf{break} en el
+cuerpo del bucle externo. Con la instrucción \textsf{continue} sucede lo
+mismo: sólo termina la iteración actual del bucle más interno.
+
+\subsection {Recapitulación}
+
+En esta sección hemos introducido los ingredientes básicos que necesitamos
+para escribir código en BeanShell. Pero para poder utilizarlos para
+programar situaciones, comportamientos y problemas interesantes en el
+contexto de una aventura; necesitaremos ver cómo se hace que el código
+BeanShell interactúe con las entidades que componen un mundo en AGE.

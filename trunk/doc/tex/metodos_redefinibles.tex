@@ -1,0 +1,64 @@
+\chapter {Métodos redefinibles}
+
+\section {Eventos}
+
+\section {Otros métodos redefinibles}
+
+\subsection {Métodos de Mobile (para PSIs)}
+
+\begin {itemize}
+\item {Métodos de combate
+	\begin {itemize}
+	\item {\verb|void addEnemy ( Mobile m )|: añadirle a un enemigo, al que
+	atacará automáticamente en cuanto lo vea.}
+	\item {\verb|void attack ( Mobile m , Weapon w )|: atacar a otra criatura
+	con el arma dada.}
+	\item {\verb|void block ( Mobile m , Weapon w )|: bloquear.}
+	\item {\verb|void cast ( Spell s , Entity e )|: conjurar el hechizo dado
+	sobre la entidad dada.}
+	\item {\verb|void die()|: morir.}
+	\item {\verb|void dodge ( Mobile m )|: esquivar.}
+	\end {itemize}
+}
+\item {Métodos de movimiento
+	\begin {itemize}
+	\item {\verb|boolean goTo ( Room r )|: ir a la habitación dada (contigua
+	a la actual).}
+	\item {\verb|boolean makeRandomValidMove()|: moverse aleatoriamente hacia
+	alguna habitación accesible desde la actual.}
+	\end {itemize}
+}
+\item {Métodos para hablar y reaccionar
+	\begin {itemize}
+	\item {\verb|void say ( String s )|: decir el texto dado.}
+	\item {\verb|void say ( String s , String style )|: decir el texto dado,
+	y que los mensajes de notificación correspondientes se impriman en el
+	estilo dado.}
+	\item {\verb|void onSay ( Mobile aCreature , String text )|: quién ha
+	hablado y que ha dicho. ej: decir ``hola''}
+	\item {\verb|void onSayTo ( Mobile speaker , String text , Mobile hearer )|:
+	quién ha hablado, que ha dicho y a quien. ej: decir ``hola'' a Gandalf.}
+	\item {\verb|void onRoomText ( String text )|: para que el PSI pueda
+	reaccionar al texto que se envía a la habitación.}
+	\end {itemize}
+}
+\end {itemize}
+
+\subsection {Ejemplo de uso}
+
+Estos ejemplos (si no se dice lo contrario) van en la pestaña
+\textit {Código y propiedades} del PSI.
+
+Ejemplo de detección de texto enviado a la habitación. Cogemos una pelota,
+y el PSI se enfada, puesto que es suya.
+
+\begin{lstlisting}
+void onRoomText ( String text )
+{
+  if ( text.contains("coge la pelota") )
+  {
+      self.say("¡Eh! ¡Esa pelota es mía!\n¡Ya no me ajunto contigo!\n");
+  }
+}
+\end{lstlisting}
+

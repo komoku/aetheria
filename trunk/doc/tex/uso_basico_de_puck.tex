@@ -1,0 +1,645 @@
+\chapter{Uso básico de puck}
+\section{Crear mundos con PUCK}
+
+El \textbf{PUCK} (Playable Universe Construction Kit) es una herramienta
+gráfica de desarrollo que permite la creación de mundos interactivos para
+ser jugados con el \textbf{Aetheria Game Engine}. Estos mundos pueden
+utilizarse para jugar aventuras de texto, MUDs o juegos de rol mono y
+multijugador.
+
+En las siguientes secciones explicaremos detalladamente cómo se puede
+utilizar PUCK para crear un juego completo. Empezaremos con un resumen
+que nos dará una idea general de lo que tendremos que hacer, para luego
+entrar más específicamente en cada una de las etapas de creación de un
+mundo.
+
+En la figura \ref{fig:puck_vampiro} puedes ver un ejemplo de aventura en
+PUCK.
+\begin{figure}
+\includegraphics[width=\textwidth]{imagenes/puck_vampiro.png} 
+\caption{Ventana de trabajo de puck.} \label{fig:puck_vampiro}
+\end{figure}
+
+\section{Creación de Mundos para AGE con PUCK: Resumen}
+Un juego en Aetheria Game Engine viene dado por un mundo, y un mundo es una
+colección de diferentes objetos, que pueden ser de diversos tipos:
+
+\begin{itemize}
+\item {\textbf{\textit{Habitaciones}} (también llamadas localidades), que son lugares del
+mundo conectados entre sí por caminos. Una habitación puede representar
+literalmente una dependencia de una casa; pero también podría ser,
+dependiendo de la ambientación, un cruce de caminos, una calle, etc.}
+\item {\textbf{\textit{Personajes}}, que son seres vivos que pueblan el mundo, incluyendo al
+jugador, y que se pueden mover entre habitaciones a través de los caminos.
+Por ejemplo, tenderos, camareros, enemigos, animales, el propio jugador,
+etc.}
+\item {\textbf{\textit{Cosas}}, que son seres inertes que se encuentran en
+las habitaciones o que llevan los personajes. Por ejemplo, puertas, llaves,
+cofres, sillas, mesas, espadas, dinero, etc.}
+\end{itemize}
+
+Para crear un juego completo, necesitaremos hacer las siguientes cosas (no
+necesariamente en orden):
+
+\begin{itemize}
+\item {Crear los objetos del juego,}
+\item {Crear las relaciones entre ellos (por ejemplo, un camino es una
+relación entre dos habitaciones. O, si un personaje lleva un objeto,
+entonces el personaje y el objeto están relacionados mediante una relación
+``leva''),}
+\item {Dar a los objetos nombres y descripciones para que se muestren en el
+juego,}
+\item {Dotar a los objetos de comportamiento, es decir, que puedan
+reaccionar ante lo que hace el jugador y los demás objetos.}
+\end{itemize}
+
+El PUCK (Playable Universe Construction Kit) da soporte a todas estas
+actividades de la siguiente manera:
+
+\begin{itemize}
+\item {La creación de objetos se hace en el editor gráfico que ocupa la
+parte izquierda de la ventana de PUCK. Las herramientas \textit{crear
+habitación}, \textit{crear personaje} y \textit{crear cosa} permiten crear
+los objetos y colocarlos en el mundo: simplemente haz click sobre la
+herramienta correspondiente en la barra de herramientas, y a continuación
+lleva el objeto creado hasta el lugar del mundo en el que lo quieres poner.
+Nota: la representación gráfica del mundo es simplemente una herramienta de
+conveniencia. El lugar del panel donde coloques un objeto no tendrá ninguna
+relevancia en el juego, así que simplemente colócalos como más cómodos te
+sean para verlos y manipularlos.}
+\item {La creación de relaciones entre objetos se hace también en el editor
+gráfico, mediante las herramientas \textit{crear relación estructural} y
+\textit{crear relación auxiliar}. Para crear una relación, basta con hacer
+click sobre la herramienta correspondiente, y a continuación sobre los dos
+objetos que se desea relacionar. La representación gráfica de cada relación
+es una flecha.}
+\item {La descripción de los objetos se hace en los \textit{paneles de
+objeto} que aparecen en la parte derecha de la ventana de PUCK. Para acceder
+al panel de un objeto dado, basta con hacer click sobre él en la
+representación gráfica cuando ninguna herramienta está seleccionada. Se nos
+mostrará toda la información de ese objeto (nombres, descripciones, etc.) y
+podremos modificarla.}
+\item {Por último, la descripción del comportamiento se hace también en los
+\textit{paneles de objeto}. Ésta es la parte de la creación de un mundo en
+la que entra en juego la programación, para lo cual se utiliza el lenguaje
+de scripting BeanShell. El código para cada objeto se modifica en la ficha
+``Código y Propiedades'' de su panel de objeto correspondiente.}
+\end{itemize}
+
+\begin{figure}
+\includegraphics{imagenes/puck_icons.png} 
+\caption{Iconos de puck.} \label{fig:puck_icons}
+\end{figure}
+
+\section {Primeros Pasos: Creando Habitaciones y Caminos} \label{HabitYCamin}
+\subsection {Habitaciones y Caminos}
+
+Veamos ahora cómo podemos usar PUCK para definir un mundo. Lo primero que
+haremos será crear un par de habitaciones unidas entre sí mediante un
+camino, de manera que el jugador pueda hacer algo como esto:
+
+\textsf{> \textit{mirar}}
+
+\textsf{Te encuentras al este del gran río Pecos. Hay muchos árboles bajos
+a tu alrededor. Un precario puente de madera lo atraviesa, hacia el oeste.}
+
+\textsf{> \textit{ir hacia el oeste}}
+
+\textsf{ Atraviesas el puente hacia el oeste cuidadosamente. Las tablas de
+madera que lo forman crujen inquietantemente; pero llegas sano y salvo a la
+otra orilla.}
+
+\textsf{Te encuentras al oeste del gran río Pecos. Hay unos cuantos árboles
+altos a tu alrededor. Un tosco puente de madera lo atraviesa, hacia el este.}
+
+\textsf{> \textit{ir por el puente}}
+
+\textsf{Atraviesas el puente hacia el este con sumo cuidado. Las tablas que
+lo componen emiten crujidos inquietantes; pero llegas sin incidencias a la
+otra orilla.}
+
+\textsf{Te encuentras al este del gran río Pecos. Hay muchos árboles bajos
+a tu alrededor. Un precario puente de madera lo atraviesa, hacia el oeste.\\}
+
+Para ello, lo primero que debemos hacer es ir al menú ``Archivo -- Nuevo'',
+que nos creará un nuevo mundo en blanco para trabajar.
+
+Al hacer esto veremos a la izquierda el editor gráfico en blanco, que es
+donde colocaremos nuestros objetos; y a la derecha el panel de objeto
+asociado al mundo. En este panel aparece un formulario con una serie de
+\textit{propiedades del mundo}. Es recomendable cubrir al menos el
+\textit{nombre corto} y el \textit{nombre largo}, que AGE utilizará para
+identificar el mundo. El nombre corto debería estar formado por una única
+palabra, aconsejablemente de no más de doce caracteres; mientras que el
+nombre largo puede ser un título de la longitud que se desee, y es lo que
+se mostrará al jugador como nombre de la aventura. El resto de campos
+(autor, versión, fecha...) son datos meramente informativos que se
+mostrarán al jugador cuando vaya a cargar el juego.
+
+Si queremos dejar estas propiedades para más tarde, o modificarlas en algún
+momento, es conveniente saber que podemos volver cuando queramos a este
+panel de mundo, simplemente seleccionando una zona vacía del editor gráfico.
+
+Pero pasemos a la acción: vamos a crear las dos habitaciones del ejemplo,
+situadas una al oeste de otra y separadas por un camino (puente). Para ello
+hacemos lo siguiente:
+
+\begin {itemize}
+\item {Hacemos click en icono de la herramienta ``añadir habitación'' de la
+barra de herramientas. \includegraphics{imagenes/addroom.png}}
+\item {Movemos el cursor por el editor gráfico. Veremos que aparece un
+cuadrado (la habitación que estamos creando) que se mueve junto a nuestro
+cursor. Hacemos click, y la habitación quedará fija en el editor. A la
+derecha podremos ver su panel de objeto.}
+\item {Hagamos que esta habitación represente la orilla oeste del gran río
+Pecos. Para ello, cubrimos los campos del panel de objeto:}
+	\begin{itemize}
+	\item {Donde pone ``Nombre único'', pondremos un nombre corto como por
+	ejemplo ``Oeste Pecos''. Este nombre no se mostrará al jugador, se utiliza
+	para identificar internamente la habitación en el juego y distinguirla de
+	las demás. Nosotros también lo utilizaremos cuando nos queramos referir a
+	esta habitación en el futuro.}
+	\item {Donde pone ``Descripciones'' irán las descripciones de la
+	habitación, que son lo que se muestra al jugador cuando teclea ``mirar'' o
+	cuando entra en la misma. Puede extrañarte que no haya una sola
+	``Descripción'', sino un campo para ``Descripciones''. Esto es porque las
+	descripciones en AGE no son un texto estático, sino algo que puede variar
+	según distintas condiciones (por ejemplo, la descripción de una localidad
+	puede ser distinta según si es de día o de noche). El sistema que se
+	utiliza para hacer posible esto es que la descripción que se muestra al
+	jugador esté formada por distintos trozos que se pueden mostrar o no
+	dependiendo de las condiciones que se den. En este caso, nos conformaremos
+	con una descripción estática, con lo cual sólo necesitaremos uno de estos
+	trozos, y sin ninguna condición asociada. Para ello, donde pone
+	``Descripción'' teclearemos la descripción completa de la habitación:
+	
+	\textsf{Te encuentras al oeste del gran río Pecos. Hay unos cuantos árboles
+	altos a tu alrededor. Un tosco puente de madera lo atraviesa, hacia el este.}
+	
+	Y pulsamos el botón ``Añadir''. Vemos que la descripción introducida
+	aparecerá en el cuadro ``Descripciones'', precedida de la palabra
+	``Siempre''. Esto último quiere decir que esta descripción se mostrará
+	siempre que un jugador mire la habitación, es decir, no está sujeta a
+	condición alguna.}
+	\end{itemize}
+\item {Por el momento no necesitamos añadir nada más a esta habitación. Es
+bueno saber que, si más tarde queremos modificar sus datos, basta con hacer
+click sobre su representación en el editor gráfico (cuando no estemos usando
+ninguna herramienta) para poder ver y modificar de nuevo su panel de objeto.}
+\item {Del mismo modo que creamos la habitación anterior, creamos una nueva
+para representar la orilla este del río. Para ello, tenemos que volver a
+hacer click en la herramienta ``añadir habitación'', ya que cada uso de la
+herramienta sirve para añadir una sola vez. Colocaremos la nueva habitación
+a la derecha de la anterior, dado que se encuentra al este. Si no hemos
+dejado espacio suficiente en el editor gráfico para colocarla, podemos
+utilizar las herramientas de desplazamiento y zoom:}
+	\begin{itemize}
+	\item {Para usar la herramienta de desplazamiento, hacemos click sobre su
+	icono en la barra de herramientas: \includegraphics{imagenes/move.png}
+	A continuación, hacemos un click sobre el editor gráfico, y movemos el
+	cursor: los objetos del editor se desplazarán con él. Con otro click
+	dejamos de usar la herramienta.}
+	\item {La herramienta zoom se utiliza del mismo modo. Después de hacer click
+	en su icono \includegraphics{imagenes/zoom.png}
+	y en el editor gráfico, podemos mover el ratón hacia arriba para alejar la
+	vista o hacia abajo para acercarla.}
+	\end{itemize}
+\item {Rellenamos el nombre único y la descripción de la nueva habitación de
+la misma manera que lo habíamos hecho con la anterior, reflejando que
+estamos al este del Pecos.}
+\item {Ahora vamos a crear la conexión entre las dos habitaciones. Como
+podemos ver en el texto de lo que queremos conseguir, las dos localidades
+deben estar unidas por un puente que cruza de este a oeste. El puente se
+debe poder cruzar en las dos direcciones; pero es importante saber que en
+AGE los caminos son de una sola dirección. Por lo tanto, para permitir el
+tránsito en las dos direcciones tenemos que crear dos caminos: uno de oeste
+a este y otro de este a oeste. Nótese que, aunque esto pueda parecer
+incómodo para casos simples, hace el sistema más poderoso, porque se puede
+dar tratamiento distinto a cada sentido del camino, incluyendo permitir el
+paso en un solo sentido, tener descripciones distintas para ambos, hacer que
+suceda algo al cruzar en un sentido dado, etc.}
+\item {Para crear los caminos, utilizaremos la herramienta ``añadir relación
+estructural'' de la barra de herramientas, que está identificada por este
+icono: \includegraphics{imagenes/addstruct.png}}
+\item {Las relaciones en AGE son formas de expresar cualquier tipo de
+relación, permanente o temporal, entre dos objetos. Existen dos tipos de
+relaciones: \textit{relaciones estructurales} y \textit{relaciones
+auxiliares}. Las estructurales se llaman así porque son las que definen la
+estructura del mundo: nos dicen dónde están los objetos. También se
+caracterizan porque un objeto no tendría ningún sentido si no estuviese (o
+al menos pudiese estar) conectado al resto del mundo mediante relaciones
+estructurales. Las relaciones auxiliares se utilizan para definir otros
+aspectos de las interacciones entre objetos.}
+\item {Un camino se modela en AGE como una relación estructural entre una
+habitación y otra, de ahí que se cree con esta herramienta. Para crear un
+camino entre las dos habitaciones, seguimos los siguientes pasos:}
+	\begin{itemize}
+	\item {Hacemos click sobre la herramienta ``añadir relación
+	estructural'' \includegraphics{imagenes/addstruct.png}}
+	\item {Hacemos click sobre la habitación que representa el Oeste del
+	Pecos.}
+	\item {Hacemos click sobre la otra habitación. Veremos que aparece una
+	flecha entre las dos habitaciones, que representa el camino que las une.}
+	\end{itemize}
+\item {Al igual que los objetos, podemos ver que las relaciones también
+tienen paneles de objeto. Nada más crear esta relación camino, podremos ver
+en la parte derecha de la ventana de PUCK su panel correspondiente. El panel
+tiene algunos campos ya cubiertos, como son las habitaciones origen y destino
+(que son las que marcamos en el mapa) y la dirección estándar, que es un
+punto cardinal asociado al camino. Como habíamos colocado una habitación a
+la derecha de la otra, el camino aparecerá automáticamente marcado con la
+dirección estándar ``este''. Esto implica que se podrá utilizar con comandos
+como ``ir al este''. Si a pesar de haber colocado las habitaciones de esa
+manera éste no era el comportamiento que queríamos, podemos cambiar la
+dirección estándar (o quitarla para no tener ninguna) en el panel de objeto
+correspondiente al camino. Del mismo modo podríamos cambiar en cualquier
+momento las habitaciones origen y destino, podemos ver que para esto se
+utiliza el ``nombre único'' que hace referencia a cada habitación.}
+\item {Debajo de estos campos podemos ver una lista, inicialmente vacía, de
+\textit{comandos personalizados}. En esta lista podemos introducir todas
+aquellas palabras que el jugador pueda usar para referirse a este camino
+además del punto cardinal dado por la dirección estándar. Como queremos que
+el jugador pueda teclear cosas como ``ir puente'' o ``ir por el puente'',
+añadimos ``puente'': para ello, introducimos la palabra donde pone
+``Comando'' y pulsamos el botón ``Añadir''.}
+\item {A continuación podemos ver un área para descripciones, que ya debería
+resultarnos familiar. Las descripciones para los caminos funcionan
+exactamente igual que para las habitaciones; pero se muestran cuando el
+jugador cruza el camino correspondiente. Así, para obtener el comportamiento
+que buscamos para este camino, debemos teclear en el campo ``Descripción'':
+
+\textsf{Atraviesas el puente hacia el este con sumo cuidado. Las tablas que
+lo componen emiten crujidos inquietantes; pero llegas sin incidencias a la
+otra orilla.}}
+\item{Con esto tenemos todo lo que necesitábamos por el momento para este
+camino. Cuando volvamos a necesitar modificar este panel de objeto, basta
+con que hagamos click sobre la flecha que representa el camino en el mapa
+para acceder a él.}
+\item {Para crear el otro camino, como es imaginable, basta con repetir el
+mismo proceso; pero haciendo click primero sobre la habitación del este y
+luego sobre la del oeste. Nos aparecerá otra flecha en dirección opuesta,
+que no se solapa con la anterior para que podamos hacer click fácilmente en
+cualquiera de ellas accediendo a su correspondiente panel de objeto. La
+descripción y el comando personalizado se introducen del mismo modo.}
+\end {itemize}
+
+\subsection{Creando un Personaje Jugador}
+Con esto ya hemos creado un mínimo mundo con el que jugar; pero nos falta
+un elemento necesario para que la aventura tenga sentido: un personaje que
+pueda recorrerlo. En AGE, los jugadores están en la piel de personajes que
+habitan en el mundo e interactúan con él (aunque también pueden crearse
+personajes que no sean jugadores). Por lo tanto, incluso en un juego para
+un solo jugador deberemos poner al menos un personaje que represente a ese
+jugador para que se pueda jugar. Para ello, utilizaremos la herramienta
+``añadir personaje'' de la barra de herramientas:
+
+\includegraphics{imagenes/addchar.png}
+
+Y haremos lo siguiente:
+
+\begin {itemize}
+\item {Para usar esta herramienta, procedemos de la misma manera que cuando
+añadimos habitaciones al mundo: hacemos click sobre su icono en la barra de
+herramientas, deslizamos el cursor por el editor gráfico y hacemos click
+sobre el punto en que queremos dejar al personaje. Será conveniente que lo
+coloquemos cerca de la habitación donde queremos que el jugador aparezca al
+principio del juego; pero --ojo, importante-- \textbf{\textit{no}} dentro de
+ella. Esto es porque en el editor gráfico el hecho de que algo esté dentro
+de una habitación no se representa colocando su icono dentro de la misma;
+sino uniendo la habitación a ese algo mediante una relación estructural.
+Representar unas cosas dentro de otras podría parecer más natural a simple
+vista; pero resultaría engorroso cuando una habitación contuviese gran
+número de personajes o cosas.}
+\item {Así pues, el siguiente paso será crear la relación estructural entre
+la habitación (que puede ser la oeste o la este, dependiendo de dónde
+queréis que empiece el personaje: lo que creamos con PUCK es siempre el
+estado inicial del mundo, que luego podrá cambiar durante el juego cuando
+los personajes se muevan y manipulen los objetos) y el personaje. Para ello,
+utilizamos la herramienta ``crear relación estructural'' que ya conocemos:
+\includegraphics{imagenes/addstruct.png}
+y hacemos click primero sobre la habitación y luego sobre el personaje (el
+orden es importante). Esto nos creará una relación estructural de tipo
+``contiene'' que significa que la habitación contiene al personaje, y que,
+al contrario que la relación ``camino'' que veíamos antes, no tiene nada que
+configurar.}
+\item {Para que todo funcione, sólo falta una cosa: especificar que el
+personaje que hemos creado es un jugador. Para ello, hacemos click sobre él
+para obtener su panel de objeto, y marcamos la casilla que dice ``jugador''.
+Esto hace que, cuando alguien arranque la aventura, el AGE lo ponga en la
+piel de este personaje (en juegos multijugador las cosas son algo más
+complicadas; pero ya las veremos).}
+\item {Si hurgamos en el panel de objeto asociado al personaje podemos ver
+que tiene diversos datos configurables, como por ejemplo nombre único y
+descripciones. Estas últimas funcionan del mismo modo que las de las
+habitaciones y caminos, y en este caso se mostrarían si el jugador se mirase
+a sí mismo. Puedes cubrirlas si quieres; aunque no son necesarias para el
+comportamiento que queríamos.}
+\end {itemize}
+
+Ahora sí que tenemos un mundo de AGE completo y jugable (aunque, de momento,
+no muy emocionante). Para jugarlo, no tenemos más que hacer click en la
+herramienta Ejecutar mundo:
+
+\includegraphics{imagenes/gobutton.png}
+
+La herramienta nos recuerda que para probar la aventura tiene que guardar
+el fichero (lo hará automáticamente) y nos da a elegir entre dos interfaces
+de ejecución: el SDI (ventana simple) o el MDI (ventana con sub--ventanas).
+Podemos escoger cualquiera de los dos; aunque para propósitos de prueba de
+aventuras de un solo jugador el SDI suele resultar suficiente y más sencillo.
+Después, le damos al botón Aceptar para ejecutar la aventura.
+
+Si lo hemos hecho todo bien, podremos jugar la partida que hemos visto al
+principio de la sección.
+
+No se puede decir que haya sido difícil, ¿verdad? Pues ahora vamos a mejorarlo.
+
+\section {Seres inertes}
+\subsection {Descripciones de componentes}
+
+En la sección \ref{HabitYCamin}, hemos visto algunos conceptos básicos de
+PUCK y hemos definido un mundo rudimentario con un par de habitaciones y
+caminos. Por el momento, lo único que este mundo permite hacer al jugador es
+desplazarse de una habitación a otra a través de los caminos; pero la
+interacción con el mundo no va mucho más allá. Por ejemplo:
+
+\textsf{> \textit{mirar}}
+
+\textsf{Te encuentras al este del gran río Pecos. Hay muchos árboles bajos a
+tu alrededor. Un precario puente de madera lo atraviesa, hacia el oeste.}
+
+\textsf{> \textit{mirar los árboles}}
+
+\textsf{¿Qué pretendes mirar?}
+
+\textsf{> \textit{mirar el puente}}
+
+\textsf{¿Qué pretendes mirar?}
+
+Parece que una primera característica deseable para mejorar la interacción
+del jugador con el mundo sería que se pudiesen mirar los objetos que
+aparecen mencionados en las descripciones. Así, nos gustaría que cuando el
+jugador pusiese ``mirar los árboles'', apareciese una descripción de los
+mismos para dar ambientación. La forma más sencilla de conseguir esto en AGE
+mediante las llamadas \textit{descripciones de componentes} o descripciones
+extra. Las descripciones de componentes pueden añadirse a casi cualquier
+objeto del mundo (incluyendo habitaciones, personajes, cosas, etc.) y siguen
+siempre el mismo sistema, que es una extensión del que seguían las
+descripciones convencionales que hemos visto.
+
+Así, si en la sección anterior veíamos que las descripciones convencionales
+eran realmente listas de descripciones, cada una de las cuales tenía
+asociada una condición (que por el momento habíamos dejado en blanco para
+que se mostraran siempre) y un texto; las descripciones extra también serán
+listas de descripciones; pero cada una tendrá asociada una serie de
+\textit{nombres}, una condición y un texto. Si añadimos una descripción
+extra a una localidad y el jugador teclea ``mirar <algo>'' (o alguna frase
+sinónima) en ella, entonces se mostrará la descripción si ese <algo>
+coincide con uno de los nombres y además la condición asociada se cumple.
+
+Vamos a hacer que el jugador pueda mirar los árboles y el puente desde la
+localidad oeste. Para ello, hacemos click sobre esta localidad en el editor
+gráfico, y nos aparece su panel de objetos. Debajo de la sección de
+descripciones convencionales que ya tenemos cubierta, vemos la sección
+``Descripciones de componente''. En el campo ``Nombres de ref. sep. por
+comas'' tecleamos, sin las comillas: ``árbol,árboles''; y en el campo
+``Descripción'' ponemos lo que queremos que le aparezca al jugador cuando
+mire los árboles, como puede ser ``Son unos árboles muy verdes y muy
+bonitos.'' Como en ocasiones anteriores, dejamos el campo ``Condición''
+vacío, ya que esta descripción no dependerá de ninguna condición externa, y
+pulsamos el botón ``Añadir''. En la lista de descripciones extra veremos
+algo como ``árbol,árboles: Siempre: Son unos árboles muy verdes y muy
+bonitos'', donde se muestran los nombres y la descripción; y la palabra
+``Siempre'' indica que la descripción va a mostrarse siempre que el jugador
+mire, sin depender de ningún otro factor.
+
+Lo mismo podemos hacer con el puente si añadimos una descripción extra con
+nombre ``puente'' y descripción ``Es un precario puente de madera.'' o
+cualquier texto similar. Si queremos que el puente se vea desde las dos
+localidades, como sería lógico, tenemos que poner su descripción extra en
+ambas.
+
+\subsection{Cosas}
+
+Las descripciones de componentes proporcionan una primera manera de hacer el
+mundo más interesante y llegar un poco más allá de las habitaciones y
+caminos; pero tienen sus limitaciones. Las descripciones de componentes nos
+permiten definir elementos del mundo que los jugadores pueden mirar; pero la
+posible interacción con ellos se reduce sólo a eso: a mirar.
+
+A la hora de crear un juego decente, esto seguramente no sea suficiente.
+Nos interesan objetos físicos con los que los jugadores puedan interactuar
+de más maneras: cogerlos, llevarlos en su inventario, dejarlos en alguna
+otra parte, y seguramente hacer más cosas dependiendo del tipo de objeto que
+sea. Este tipo de objetos físicos son lo que en AGE denominamos ``cosas''.
+
+Para probar las cosas, vamos a crear una piedra que el jugador pueda al
+menos coger, llevar y dejar. En capítulos posteriores del tutorial veremos
+cómo hacer cosas más complejas (por ejemplo que puedan abrirse y cerrarse,
+llevar otras cosas dentro, etc.); pero por el momento empezaremos por lo
+básico.
+
+\subsubsection {Creación de cosas}
+
+Al contrario que las descripciones extra, las cosas son objetos de pleno
+derecho en AGE, y tienen una representación gráfica en el editor del PUCK.
+Para añadir una cosa, utilizamos la herramienta ``añadir cosa'':
+
+\includegraphics{imagenes/additem.png}
+
+A la hora de utilizar esta herramienta, procedemos de manera análoga a
+cuando habíamos añadido un personaje al mundo: hacemos click sobre el icono
+de ``añadir cosa'', movemos el cursor por el editor gráfico hasta dejarlo
+en la ubicación deseada para el objeto (que no debe coincidir con la
+habitación en la que queremos ponerlo; aunque sí es conveniente que esté
+cerca), y hacemos click sobre esa ubicación. Para colocar la cosa en una
+localidad, igual que habíamos hecho con el personaje, creamos una relación
+estructural: hacemos click en la herramienta ``crear relación estructural''
+
+\includegraphics{imagenes/addstruct.png}
+
+y a continuación en la habitación y en la cosa, por ese orden. Esto creará
+una relación ``contiene'' entre habitación y cosa que indica que la cosa
+está situada en dicha habitación.
+
+\subsubsection {Características básicas de cosas}
+
+Una vez que tenemos nuestra cosa creada y vinculada a una habitación,
+hacemos click en su icono del editor gráfico para ver su panel de objeto.
+Los paneles de objeto de las cosas son algo más complicados que los de las
+habitaciones; pero algunos de sus componentes nos resultarán familiares, y
+otros los aprenderemos fácilmente.
+
+En primer lugar podemos ver el campo para el nombre único, que funciona
+igual que el de las habitaciones, sirviendo para distinguir internamente el
+objeto. En este punto es conveniente aclarar que los nombres únicos deben
+ser realmente únicos, es decir, no debe haber en un mundo dos objetos con el
+mismo nombre único, ni siquiera si son objetos de tipos completamente
+distintos. Esto quiere decir que no debes ponerle a una cosa un nombre que
+hayas utilizado para, por ejemplo, una habitación. A nuestro objeto podemos
+llamarle ``Piedra''.
+
+Bajo el nombre único, debajo de unos campos ``Heredar de:'' y ``Ejemplo de:''
+que no veremos por el momento, podemos ver un campo de ``Género'', que nos
+da a elegir entre masculino y femenino. El género de una cosa es el género
+que tiene en castellano el nombre de esa cosa, y se utiliza para construir
+los textos del juego. Si pusiésemos que la piedra es ``Masculino'', podríamos
+obtener textos en el juego como ``aquí hay un piedra'' o ``coges el piedra
+del suelo'', así que es importante cubrir bien este campo si queremos un
+mundo que hable decentemente el idioma.
+
+Debajo del género, podemos ver unos campos para el ``Peso'' y el ``Volumen''
+de la cosa que, como es imaginable, representan el peso y el volumen que
+tiene el objeto en el mundo virtual que estamos creando. Aunque se pueden
+utilizar para más cosas, la consecuencia más inmediata de estos valores es
+que un personaje no podrá llevar consigo objetos que superen el máximo peso
+y volumen que pueda acarrear. Si en tu juego no quieres prestar atención a
+esos detalles, simplemente puedes dejar el peso y el volumen de todos los
+objetos a cero. En este caso podemos poner, por ejemplo, peso y volumen 5.
+
+Después de los campos correspondientes al peso y el volumen, hay en el
+formulario dos opciones llamadas ``Contenedor'' y ``Fijo en el sitio''. La
+opción ``Contenedor'' puede marcarse para representar cosas que puedan tener
+otras cosas dentro, como una bolsa o un baúl.\footnote{El autor de AGE
+recomienda a título personal no usar los contenedores en juegos más de lo
+estrictamente necesario, pues tienden a complicar innecesariamente la vida
+al jugador al tener que preocuparse de sacar y meter objetos de dentro de
+otros, cosa que puede ser interesante cuando es parte del argumento de la
+aventura (encontrar la llave de un antiguo baúl, etc.) pero no aporta mucho
+si se usa como elemento de ambientación.} La opción ``Fijo en el sitio''
+denota un objeto que no se puede coger, como una farola o una montaña; todas
+las cosas que no tengan esta opción marcada serán por defecto susceptibles
+de ser cogidas por los jugadores. En el caso de la piedra, lo lógico será no
+marcar ninguna de las dos opciones, ya que una piedra no puede contener
+otras cosas en su interior, y queremos que el jugador la pueda coger.
+
+A continuación están las descripciones y las descripciones de componentes,
+que se rellenan de la misma manera que en las habitaciones. Las descripciones
+en este caso aparecerán cuando un jugador ponga ``mirar <nuestra cosa>'', y
+funcionarán tanto si el jugador lleva consigo la cosa como si simplemente
+está en la misma localidad. Las descripciones de componentes se pueden usar
+para describir partes o características de los objetos: por ejemplo, si
+nuestro objeto es una linterna, podemos usar una descripción extra para
+describir el botón de encendido de la linterna. Si ponemos como nombre para
+la descripción de componente ``botón'', y nuestra linterna respondía al
+nombre ``linterna'', el jugador podrá ver la descripción extra tecleando
+``mirar el botón de la linterna''. Nosotros nos limitaremos a añadir una
+descripción convencional para la piedra, algo como: ``Es una piedra estándar,
+de las de toda la vida. Podrías abrir cabezas con ella.''
+
+\subsubsection{Nombres para mostrar y nombres de referencia}
+
+Todo lo mencionado está en la ficha ``General'' del panel de objeto, que es
+la que hemos visto hasta ahora en todos los objetos que hemos creado. Sin
+embargo, puede que ya te hayas fijado en que algunos de ellos tienen más
+fichas aparte de ésta, y es el caso de nuestra recién creada piedra. Ahora
+vamos a ir a la segunda ficha, llamada ``Nombres''. Cubrir esta ficha es
+esencial para crear una cosa, porque nos permite definir el nombre o nombres
+de dicha cosa.
+
+Hasta ahora, en la ficha ``General'' del panel habíamos visto el ``Nombre
+único'' de la cosa, que nos servía para identificarla. Pero, como ya
+mencionamos al hablar de habitaciones, los nombres únicos de los objetos
+sólo se usan para que los distinga el creador del juego y el propio juego;
+sin que se muestren en ningún caso al jugador. Por lo tanto, tendremos que
+definir otros nombres (que pueden coincidir o no con el nombre único) para
+mostrar al jugador y para que el jugador pueda interactuar con la piedra.
+
+En la ficha ``Nombres'' podemos ver espacio para poner cuatro tipos de
+nombres: ``Nombres singulares para mostrar'', ``Nombres plurales para
+mostrar'', ``Nombres singulares de referencia'' y ``Nombres plurales de
+referencia''.
+
+Los dos primeros tipos son los nombres que se mostrarán al jugador, y
+funcionan exactamente igual que las descripciones. Si queremos que el objeto
+se llame siempre de una manera determinada y ya está, basta con que
+tecleemos su nombre en el campo ``Nombre:'' de ``Nombres singulares para
+mostrar'' y pulsemos ``Añadir''. En nuestro caso, si añadimos de esta manera
+el nombre ``piedra'', esto se traducirá en el juego a textos como ``aquí
+puedes ver una piedra'', ``coges la piedra'' ``dejas la piedra'', ``llevas
+una piedra''... Si quisiésemos que el nombre de un objeto cambiase según
+circunstancias del juego (por ejemplo, la piedra podría convertirse en una
+``piedra mojada'' si le echásemos agua por encima), tendríamos que añadirle
+más nombres singulares y asociarles diferentes condiciones. Nosotros nos
+conformaremos con un nombre estático, así que añadimos ``piedra'' sin
+especificar condición alguna.
+
+Los ``Nombres plurales para mostrar'' se utilizan para mostrar al jugador si
+hay varios objetos iguales en un mismo sitio. Por ejemplo, para que el juego
+pudiese construir frases como ``llevas dos piedras'' o ``aquí hay tres
+piedras'', tendríamos que añadir ``piedras'' como nombre plural. Si no va a
+haber varios objetos iguales en el juego que se puedan agrupar de esta
+manera, como es nuestro caso, podemos dejar los nombres plurales en blanco.
+Más adelante veremos cómo se pueden crear varios objetos idénticos que se
+puedan agrupar, y utilizaremos estos nombres plurales.
+
+Los ``Nombres singulares de referencia'' son aquellos nombres por los cuales
+el jugador se puede referir al objeto. Estos nombres no se muestran en la
+aventura; pero serán los que el sistema utilice para saber que el jugador se
+ha referido en su orden a un objeto dado. Como al jugador puede ocurrírsele
+referirse a una cosa usando una palabra que no sea el nombre que se le
+muestra en pantalla, suele ser recomendable incluir sinónimos en los nombres
+de referencia. Por ejemplo, en este caso podemos añadir los siguientes
+nombres de referencia para la piedra: ``piedra'', ``roca'' y ``pedrusco''.
+Después de teclear cada nombre en el campo ``Nombre'', pulsamos el botón
+``Añadir'' para colocarlos en la lista, o podemos pulsar ``Cambiar'' para
+modificar alguno si nos hemos equivocado. De este modo, el jugador podrá
+referirse a la piedra mediante comandos como ``coger piedra'', ``dejar roca''
+o ``mirar pedrusco'', y todos serán entendidos como referidos a nuestro
+objeto piedra.
+
+En los ``Nombres plurales de referencia'' pondremos los nombres por los
+cuales el jugador se puede referir a un conjunto de objetos que incluya
+éste. Normalmente, tendremos aquí las versiones de los nombres singulares
+de referencia: en este caso ``piedras'', ``rocas'' y ``pedruscos''. De esta
+forma, si hay varias piedras (todas con esos nombres de referencia) y el
+jugador pone ``coger las piedras'' o ``coger todas las rocas'', su orden se
+ejecutará sobre todas ellas. Un truco que suele venir bien, y podemos hacer
+en este caso, es poner como último nombre plural de referencia ``todo''. De
+esta manera, cuando el jugador ponga ``coger todo'', su orden actuará sobre
+todos los objetos que tengan ese nombre plural de referencia.
+
+\subsubsection {Interacciones básicas con las cosas}
+
+Una vez rellenados de este modo los nombres para mostrar y de referencia de
+nuestra piedra, podemos utilizar la herramienta ``Ejecutar mundo'' para
+probar el objeto que hemos creado. Deberíamos ser capaces de hacer estas
+cosas:
+
+\textsf{> \textit{mirar}}
+
+\textsf{Te encuentras al este del gran río Pecos. Hay muchos árboles bajos a tu alrededor. Un precario puente de madera lo atraviesa, hacia el oeste.}
+
+\textsf{Aquí hay una piedra.}
+
+\textsf{> \textit{mirar los árboles}}
+
+\textsf{Son unos árboles muy verdes y muy bonitos.}
+
+\textsf{> \textit{mirar la piedra}}
+
+\textsf{Es una piedra estándar, de las de toda la vida. Podrías abrir cabezas con ella.}
+
+\textsf{> \textit{coger la roca}}
+
+\textsf{Coges la piedra.}
+
+\textsf{Es una piedra estándar, de las de toda la vida. Podrías abrir cabezas con ella.}
+
+\textsf{> \textit{inventario}}
+
+\textsf{Tienes una piedra.}
+
+\textsf{> \textit{dejar todo}}
+
+\textsf{Dejas la piedra.}
+
+\textsf{> \textit{inventario}}
+
+\textsf{No tienes nada.}
+
+\textsf{> \textit{mirar}}
+
+\textsf{Te encuentras al este del gran río Pecos. Hay muchos árboles bajos a tu alrededor. Un precario puente de madera lo atraviesa, hacia el oeste.}
+
+\textsf{Aquí hay una piedra.}

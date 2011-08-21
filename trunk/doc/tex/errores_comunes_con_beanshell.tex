@@ -1,0 +1,367 @@
+\section {Errores comunes con BeanShell}
+
+\subsection {Mensajes de error}
+
+Con el material visto en las secciones anteriores, puedes experimentar
+creando aventuras básicas que utilicen código BeanShell. Como nadie es
+perfecto, esto seguramente te llevará a cometer algún error. Los errores en
+el código BeanShell suelen aparecer en forma de errores de sintaxis o bien
+de excepciones no capturadas, que se muestran en las partidas como un texto
+largo en rojo. He aquí un ejemplo de un error de sintaxis:
+
+\begin{lstlisting}
+Syntax error in BeanShell code in object: [ eu.irreality.age.Player:20000000:el character #3 ]\\
+Loaded to call method onInit\\
+(with no arguments)\\
+File: inline evaluation of: ``void onInit() {    set ( "prop" , number + 3 );    };''\\
+Stack trace: Sourced file: inline evaluation of: ``onInit( );'' : illegal use of undefined variable, class, or 'void' literal : at\\ 
+Line: 3 : in file: inline evaluation of: ``void onInit() {    set ( "prop" , number + 3 );    };'' : ) ;\\
+
+Called from method: onInit : at Line: 1 : in file: inline evaluation of: ``onInit( );'' : onInit ( )\\
+	at bsh.BSHBinaryExpression.eval(Unknown Source)\\
+	at bsh.BSHArguments.getArguments(Unknown Source)\\
+	at bsh.BSHMethodInvocation.eval(Unknown Source)\\
+	at bsh.BSHPrimaryExpression.eval(Unknown Source)\\
+	at bsh.BSHPrimaryExpression.eval(Unknown Source)\\
+	at bsh.BSHBlock.evalBlock(Unknown Source)\\
+	at bsh.BSHBlock.eval(Unknown Source)\\
+	at bsh.BshMethod.invokeImpl(Unknown Source)\\
+	at bsh.BshMethod.invoke(Unknown Source)\\
+	at bsh.BshMethod.invoke(Unknown Source)\\
+	at bsh.Name.invokeLocalMethod(Unknown Source)\\
+	at bsh.Name.invokeMethod(Unknown Source)\\
+	at bsh.BSHMethodInvocation.eval(Unknown Source)\\
+	at bsh.BSHPrimaryExpression.eval(Unknown Source)\\
+	at bsh.BSHPrimaryExpression.eval(Unknown Source)\\
+	at bsh.Interpreter.eval(Unknown Source)\\
+	at bsh.Interpreter.eval(Unknown Source)\\
+	at bsh.Interpreter.eval(Unknown Source)\\
+	at eu.irreality.age.ObjectCode.run(ObjectCode.java:197)\\
+	at eu.irreality.age.Mobile.execCode(Mobile.java:1394)\\
+	at eu.irreality.age.Mobile.constructMob(Mobile.java:1060)\\
+	at eu.irreality.age.Mobile.<init>(Mobile.java:193)\\
+	at eu.irreality.age.Player.<init>(Player.java:100)\\
+	at eu.irreality.age.World.loadWorldFromXML(World.java:810)\\
+	at eu.irreality.age.World.loadWorldFromStream(World.java:1416)\\
+	at eu.irreality.age.World.<init>(World.java:1502)\\
+	at eu.irreality.age.filemanagement.WorldLoader.loadWorldFromPath(WorldLoader.java:35)\\
+	at eu.irreality.age.filemanagement.WorldLoader.loadWorld(WorldLoader.java:150)\\
+	at eu.irreality.age.swing.sdi.SwingSDIInterface$LoaderThread.run(SwingSDIInterface.java:270)\\
+\\
+Cause report: [no exception]
+\end{lstlisting}
+
+Cuando nos encontremos un error como éste, es importante saber interpretar
+(aunque sea aproximadamente) el mensaje, que nos dirá qué tipo de error es
+y dónde está. Esto facilita mucho el proceso de arreglar los fallos.
+
+Para ver cómo lo interpretamos, analicemos el mensaje:
+
+\begin{lstlisting}
+Syntax error in BeanShell code in object: [ eu.irreality.age.Player:20000000:el jugador ]
+\end{lstlisting}
+
+Esta primera línea nos informa de que el error es de sintaxis. A
+continuación, nos está diciendo en qué campo de código se ha encontrado el
+error. En este caso, el error está en el código del jugador.
+
+\begin{lstlisting}
+Loaded to call method onInit
+(with no arguments)
+\end{lstlisting}
+
+Esto nos dice cuál es el método que ha causado el error: en este caso, el
+método \textsf{onInit()} del jugador. Se nos aclara también que el método
+no tiene argumentos (parámetros), si los tuviera aparecerían aquí.
+
+\begin{lstlisting}
+File: inline evaluation of: ``void onInit() {    set ( "prop" , number + 3 );    };
+\end{lstlisting}
+
+Esto nos proporciona todo el código que dio el error, o un resumen. No
+suele ser muy útil porque el resto de información es más detallada, pero
+puede ayudarnos a hacernos una composición de lugar.
+
+\begin{lstlisting}
+Stack trace: Sourced file: inline evaluation of: ``onInit( );'' : illegal use of undefined variable, class, or 'void' literal : at Line: 3 : in file: inline evaluation of: ``void 
+\end{lstlisting}
+
+Esto, en cambio, es muy útil: nos dice en qué línea del campo de código se
+ha encontrado el error (en este caso, en la línea 3); y qué es el error
+exactamente (en este caso, ``uso ilegal de variable, clase o literal void
+no definido''). Efectivamente, el error es que en la línea 3 hemos
+utilizado una variable, \textsf{number}, que no habíamos declarado.
+
+\begin{lstlisting}
+Called from method: onInit : at Line: 1 : in file: inline evaluation of: ``onInit( );'' : onInit ( )\\
+	at bsh.BSHBinaryExpression.eval(Unknown Source)\\
+(...)
+\end{lstlisting}
+
+La primera línea de esta parte nos vuelve a repetir que el error estaba en
+el método \textsf{onInit()} y nos dice en qué línea empieza el método. A
+continuación, viene un volcado de la pila en el momento del error. Esto
+normalmente no resultará muy útil, al menos para un uso básico de AGE. Pero
+si alguna vez se produce un error que no sea culpa vuestra sino de algún
+bug interno de AGE (esperemos que no; pero nadie es perfecto :))
+seguramente el autor de AGE os pida que le mandéis esta información de la
+pila para localizar el fallo interno.
+
+Otras veces, en lugar de errores de sintaxis, nos podemos encontrar
+excepciones, como ésta:
+
+\begin{lstlisting}
+bsh.TargetError found at world's parseCommand, command was mirar, error was Sourced file: inline evaluation of: ``parseCommand( arg0, arg1, arg2);'' : at Line: 6 : in file: inline evaluation of: ``/*Método de análisis sintáctico de la entrada*/ void parseCommand( Mobile aCreat . . . '' : it .getWeight ( ) 
+
+Called from method: parseCommand : at Line: 1 : in file: inline evaluation of: ``parseCommand( arg0, arg1, arg2);'' : parseCommand ( arg0 , arg1 , arg2 ) 
+Target exception: java.lang.NullPointerException: Null Pointer in Method Invocation
+**
+Error: java.lang.NullPointerException: Null Pointer in Method Invocation
+Location: inline evaluation of: ``/*Método de análisis sintáctico de la entrada*/ void parseCommand( Mobile aCreat . . . ''
+Line: 6
+Offending text: it .getWeight ( ) 
+Message: Sourced file: inline evaluation of: ``parseCommand( arg0, arg1, arg2);''
+Detailed trace: Sourced file: inline evaluation of: ``parseCommand( arg0, arg1, arg2);'' : at Line: 6 : in file: inline evaluation of: ``/*Método de análisis sintáctico de la entrada*/ void parseCommand( Mobile aCreat . . . '' : it .getWeight ( ) 
+
+Called from method: parseCommand : at Line: 1 : in file: inline evaluation of: ``parseCommand( arg0, arg1, arg2);'' : parseCommand ( arg0 , arg1 , arg2 ) 
+Target exception: java.lang.NullPointerException: Null Pointer in Method Invocation
+
+	at bsh.UtilTargetError.toEvalError(Unknown Source)
+	at bsh.UtilEvalError.toEvalError(Unknown Source)
+	at bsh.BSHMethodInvocation.eval(Unknown Source)
+	at bsh.BSHPrimaryExpression.eval(Unknown Source)
+	at bsh.BSHPrimaryExpression.eval(Unknown Source)
+	at bsh.BSHBlock.evalBlock(Unknown Source)
+	at bsh.BSHBlock.eval(Unknown Source)
+	at bsh.BshMethod.invokeImpl(Unknown Source)
+	at bsh.BshMethod.invoke(Unknown Source)
+	at bsh.BshMethod.invoke(Unknown Source)
+	at bsh.Name.invokeLocalMethod(Unknown Source)
+	at bsh.Name.invokeMethod(Unknown Source)
+	at bsh.BSHMethodInvocation.eval(Unknown Source)
+	at bsh.BSHPrimaryExpression.eval(Unknown Source)
+	at bsh.BSHPrimaryExpression.eval(Unknown Source)
+	at bsh.Interpreter.eval(Unknown Source)
+	at bsh.Interpreter.eval(Unknown Source)
+	at bsh.Interpreter.eval(Unknown Source)
+	at eu.irreality.age.ObjectCode.run(ObjectCode.java:348)
+	at eu.irreality.age.World.execCode(World.java:2050)
+	at eu.irreality.age.Player.execCommand(Player.java:867)
+	at eu.irreality.age.Player.execCommand(Player.java:578)
+	at eu.irreality.age.Player.characterChangeState(Player.java:2330)
+	at eu.irreality.age.Player.changeState(Player.java:2167)
+	at eu.irreality.age.Entity.update(Entity.java:308)
+	at eu.irreality.age.Player.update(Player.java:252)
+	at eu.irreality.age.Entity.update(Entity.java:94)
+	at eu.irreality.age.World.update(World.java:2582)
+	at eu.irreality.age.GameEngineThread.run(GameEngineThread.java:294)
+
+Target report: java.lang.NullPointerException: Null Pointer in Method Invocation
+	at bsh.Name.invokeMethod(Unknown Source)
+	at bsh.BSHMethodInvocation.eval(Unknown Source)
+	at bsh.BSHPrimaryExpression.eval(Unknown Source)
+	at bsh.BSHPrimaryExpression.eval(Unknown Source)
+	at bsh.BSHBlock.evalBlock(Unknown Source)
+	at bsh.BSHBlock.eval(Unknown Source)
+	at bsh.BshMethod.invokeImpl(Unknown Source)
+	at bsh.BshMethod.invoke(Unknown Source)
+	at bsh.BshMethod.invoke(Unknown Source)
+	at bsh.Name.invokeLocalMethod(Unknown Source)
+	at bsh.Name.invokeMethod(Unknown Source)
+	at bsh.BSHMethodInvocation.eval(Unknown Source)
+	at bsh.BSHPrimaryExpression.eval(Unknown Source)
+	at bsh.BSHPrimaryExpression.eval(Unknown Source)
+	at bsh.Interpreter.eval(Unknown Source)
+	at bsh.Interpreter.eval(Unknown Source)
+	at bsh.Interpreter.eval(Unknown Source)
+	at eu.irreality.age.ObjectCode.run(ObjectCode.java:348)
+	at eu.irreality.age.World.execCode(World.java:2050)
+	at eu.irreality.age.Player.execCommand(Player.java:867)
+	at eu.irreality.age.Player.execCommand(Player.java:578)
+	at eu.irreality.age.Player.characterChangeState(Player.java:2330)
+	at eu.irreality.age.Player.changeState(Player.java:2167)
+	at eu.irreality.age.Entity.update(Entity.java:308)
+	at eu.irreality.age.Player.update(Player.java:252)
+	at eu.irreality.age.Entity.update(Entity.java:94)
+	at eu.irreality.age.World.update(World.java:2582)
+	at eu.irreality.age.GameEngineThread.run(GameEngineThread.java:294)
+**
+\end{lstlisting}
+
+Como vemos, la estructura del error es parecida, aunque se incluye algo más
+de información de depuración. La primera parte realmente importante es:
+
+\begin{lstlisting}
+bsh.TargetError found at world's parseCommand, command was mirar, error was Sourced file: inline evaluation of: ``parseCommand( arg0, arg1, arg2);'' : at Line: 6 : in 
+\end{lstlisting}
+
+En primer lugar, se nos dice que se ha encontrado un
+\textsf{bsh.TargetError}. Esto no es más que un nombre genérico para las
+excepciones, cuando nos aparezca quiere decir que el error no está en la
+sintaxis del código, sino en lo que hace.
+
+A continuación, se dice que el error está en el \textsf{parseCommand} del
+mundo, y que el comando introducido fue ``mirar''. Después se aclara que el
+error estaba en la línea 6, que contenía el código \textsf{it.getWeight()}.
+
+La otra parte importante es la que nos dice qué tipo de excepción es la que
+ha aparecido:
+
+\begin{lstlisting}
+Target exception: java.lang.NullPointerException: Null Pointer in Method Invocation
+\end{lstlisting}
+
+Se nos dice que es una excepción de tipo \textsf{NullPointerException} y,
+más concretamente, el texto nos explica: ``puntero nulo en invocación a
+método''. Esto nos da la pista de lo que ha pasado: que en el código
+\textsf{it.getWeight()} que tiene el error, la variable it tiene valor
+\textsf{null}, y no podemos acceder al peso de una variable nula (que no
+está guardando realmente ningún objeto).
+
+Como vemos, si los sabemos interpretar, los mensajes de error de BeanShell
+nos suelen conducir directamente al error que hemos cometido. A
+continuación veremos una recopilación de mensajes de error comunes y lo que
+significa cada uno.
+
+\subsection{Tipos de error comunes}
+
+Para quienes no se lleven bien con el inglés o no estén muy familiarizados
+con los mensajes que suelen dar los compiladores e intérpretes de lenguajes
+de programación, he aquí una recopilación de los mensajes de error más
+comunes que se pueden encontrar en BeanShell y qué significan. La inmensa
+mayoría de los errores que se cometen en BeanShell son de alguno de estos
+tipos, y se depuran muy fácilmente conociendo los mensajes:
+
+\begin{lstlisting}
+Syntax error (...) Parse error at line 5, column 5.  Encountered: end
+\end{lstlisting}
+
+Error genérico de sintaxis: el analizador sintáctico de código BeanShell se
+ha encontrado algún elemento en el código que no esperaba. Esto puede
+suceder, por ejemplo, si nos olvidamos de poner un punto y coma, de cerrar
+una llave, un paréntesis, etc.
+
+El mensaje nos detalla la línea y la columna en la que se ha encontrado el
+error en el código, así como el elemento inesperado que el analizador
+sintáctico se encontró en ese lugar (en este caso, la palabra \textsf{end}).
+Con respecto a la información sobre la columna del error, hay que tener en
+cuenta que si por algún motivo indentaras el código con tabuladores, puede
+no coincidir con el número de columna que muestra el editor de PUCK. Por
+defecto, el editor indenta con espacios y de este modo el número de columna
+es fiable.
+
+También hay que tener en cuenta que a veces los errores de sintaxis se
+detectan en un lugar un poco distinto de donde nosotros hemos cometido el
+error. Por ejemplo, si nos hemos olvidado de abrir un paréntesis, es
+posible que el analizador sintáctico no se dé cuenta en el sitio donde
+tendríamos que abrirlo, sino más adelante, cuando se encuentre el cierre de
+paréntesis que le correspondía y ha quedado huérfano. Por lo tanto, la
+información de fila y columna es una orientación que a veces ``acertará''
+dónde estaba el error, pero no podemos fiarnos ciegamente de ella.
+
+\begin{lstlisting}
+Syntax error (...) Command not found: nombre()
+\end{lstlisting}
+
+Se ha intentado utilizar una función de BeanShell que no existe. Por
+ejemplo, si en lugar de \textsf{equals(a,b)} escribiéramos erróneamente
+\textsf{equal(a,b)}; saltaría este error.
+
+\begin{lstlisting}
+java.lang.NullPointerException: Null Pointer in Method Invocation
+\end{lstlisting}
+
+Se ha llamado a un método sobre una variable nula. Es decir, se ha hecho
+\textsf{variable.metodo()} cuando el valor de variable es \textsf{null}.
+Éste es uno de los errores más comunes; pero también de los más fáciles de
+depurar, pues siempre significa esto, y no hay más que ir a la línea de
+código que se menciona y ver qué objeto aparece antes de un punto y es
+\textsf{null}, y ya está, arreglado.
+
+\begin{lstlisting}
+java.lang.NullPointerException
+\end{lstlisting}
+
+(pero sin lo de Null Pointer in Method Invocation)
+
+Este error se genera porque se ha llamado a algún método que por dentro ha
+invocado a su vez otro método sobre una variable \textsf{null}. En la
+práctica, en una aventura de AGE esto casi siempre será porque hemos pasado
+un \textsf{null} como parámetro a una función o método que requiere
+parámetros no nulos. Por ejemplo, si hacemos algo como
+\verb|String s = null; Item it = item(s);| se nos provocará este error
+porque hemos pasado el parámetro nulo a la función \textsf{item()}.
+
+\begin{lstlisting}
+Syntax error (...) Error in method invocation: 
+Method hasIteem( eu.irreality.age.Item ) not found in class'eu.irreality.age.Player'
+\end{lstlisting}
+
+Este error se genera porque hemos invocado a un método que no existe. Nos
+puede pasar tanto porque nos hayamos equivocado en el nombre del método,
+como en sus parámetros (por ejemplo, un método que requiera un parámetro de
+un tipo, pero lo llamemos con un parámetro de otro tipo).
+
+El error es muy fácil de depurar porque el mensaje nos muestra exactamente
+(además de la línea en la que se ha producido) cuál es el nombre y los
+parámetros del método que hemos intentado llamar, y sobre qué clase. Por
+ejemplo, en este caso, la causa del error es que escribimos \textsf{hasIteem}
+en lugar de \textsf{hasItem}. Por eso nos dice que no encontró el método
+\textsf{hasIteem( eu.irreality.age.Item )} en la clase \textsf{Player}.
+
+\begin{lstlisting}
+java.lang.ArrayIndexOutOfBoundsException
+\end{lstlisting}
+
+Esta excepción ocurre si hemos intentado acceder a una posición ilegal de
+un array. Por ejemplo, si tenemos un array de tamaño 7 e intentamos acceder
+a un índice mayor que seis, o menor que cero.
+
+\begin{lstlisting}
+Error: java.lang.IndexOutOfBoundsException: Index: 3, Size: 3
+\end{lstlisting}
+
+Esta excepción es análoga a la anterior, pero para listas. Se nos informa
+del índice ilegal al que hemos intentado acceder (en este caso, 3) y el
+tamaño de la lista (también 3). Con esto, y la posición del error en el
+código, no deberíamos tener problema para depurar el fallo.
+
+\subsection{Funcionalidad de depuración}
+
+AGE incluye la siguiente funcionalidad para ayudar a depurar aventuras:
+
+\subsubsection{Impresión de información de depuración en los parseCommand}
+
+Si ejecutamos el siguiente código:
+
+\begin{lstlisting}
+Debug.setCodeDebugging(true);
+\end{lstlisting}
+
+los parámetros de todos los métodos \textsf{parseCommand} que se llamen
+desde nuestra aventura aparecerán impresos en la salida de error estándar
+(que se muestra por defecto en la consola en los scripts de AGE para Linux
+y Mac, o en un log en el script de Windows).
+
+\subsubsection{Debugger dinámico}
+
+AGE dispone de un depurador o ``debugger'' que permite evaluar expresiones
+BeanShell durante la ejecución de las aventuras. Se puede activar
+ejecutando el código
+
+\begin{lstlisting}
+Debug.setEvalEnabled(true);
+\end{lstlisting}
+
+y una vez activado, podemos utilizar la orden especial ``eval'' en la
+aventura para obtener el valor de una expresión BeanShell en cualquier
+momento del juego. Por ejemplo, podríamos hacer
+
+\begin{lstlisting}
+eval 1+1
+eval get ( mobile("jugador") , "cansado" )
+eval item("puerta roja").isClosed()
+eval mobile("goblin").hasItem(item("espada"))
+\end{lstlisting}
+
+y nos aparecerá por pantalla el valor de esas expresiones en ese momento.

@@ -1,0 +1,842 @@
+\chapter {Aspectos avanzados del modelo de mundo}
+
+Con lo que se ha visto en las secciones 1 y 2 de esta documentación, es más
+que suficiente para crear aventuras de texto funcionales: hemos visto cómo
+construir un mundo con habitaciones y cosas conectadas entre sí, cómo
+responder a órdenes del jugador, manipular las entidades (comprobando si un
+personaje tiene una cosa, quitando y poniendo elementos en el mundo,
+moviendo objetos, etc.) y guardar y manejar datos mediante las propiedades
+y relaciones. Hemos visto también cómo se programa en BeanShell, incluyendo
+todo lo esencial para crear código que funcione: métodos, estructuras
+condicionales, bucles, manejo de arrays y listas, e interpretación de los
+mensajes de error del intérprete.
+
+Una vez visto esto, como autor de AGE y de este documento recomiendo que os
+pongáis manos a la obra y creéis alguna aventura sencillita para ponerlo a
+prueba y cogerle el truco a la herramienta. Y hecho esto, podéis profundizar
+más en ésta y las siguientes secciones.
+
+En la presente sección cubriremos algunos aspectos más avanzados del modelo
+de mundo que no hemos visto por anterioridad, y que sirven sobre todo para
+facilitar la inclusión de objetos y comportamientos que son comunes en las
+aventuras y que; aunque se podrían programar ``a mano'' con lo que hemos
+visto hasta ahora, resulta mucho más cómodo y rápido tener predefinidos:
+por ejemplo, el soporte para puertas y objetos abribles y cerrables,
+descripciones dinámicas, armas, etc.
+
+Cada parte de esta sección cubre una funcionalidad concreta y cada una de
+esas partes se pueden leer independientemente de las demás, de forma que
+puedes consultar directamente la funcionalidad que te haga falta.
+
+\section{Descripciones y nombres dinámicos}
+
+Un buen juego no se mantiene siempre estático a lo largo de las partidas;
+sino que cambia con el tiempo. AGE proporciona un sencillo mecanismo de
+\textit{descripciones y nombres dinámicos} que facilita que las
+descripciones y nombres de habitaciones, cosas y personajes puedan cambiar
+según las circunstancias. Con esto, se pueden conseguir efectos como:
+
+\begin{itemize}
+\item {Que la descripción de una calle cambie según si es de día o de
+noche,}
+\item {Que cambie según el humor del personaje (lo que para uno es un día
+alegre para otro podría ser un día horrible),}
+\item {Que la descripción y/o nombre de una cosa cambie según su estado (la
+misma espada a lo largo de una aventura puede estar limpia o manchada de
+sangre, o tal vez oxidada),}
+\item {Que el nombre de un personaje se muestre distinta según si un
+jugador lo conoce o no (el jugador podría ver a un personaje como ``un
+hombre de mediana edad'' cuando no sabe quién es, y una vez que se lo han
+presentado verlo como ``Benito''),}
+\item {Que el nombre o descripción de una cosa se muestre distinto según
+los conocimientos de un jugador (lo que para un bárbaro iletrado es ``un
+libro muy grande'', para un mago podría ser ``un tomo sobre magia de
+combate'').}
+\end{itemize}
+
+Todo esto se consigue de forma sencilla especificando condiciones en las
+áreas de nombres y descripciones de PUCK.
+
+\subsection{Descripciones dinámicas}
+
+Las descripciones dinámicas se pueden definir tanto para habitaciones como
+para cosas y personajes. Esto se hace introduciendo una lista de
+condiciones y descripciones en el cuadro ``Descripciones'' de la ficha
+``General'' de estas entidades. Para añadir un elemento a esta lista,
+introducimos una condición en el campo ``Condición'', la descripción
+asociada en el campo ``Descripción'', y pulsamos Añadir. La condición que
+introduzcamos en el campo ``Condición'' es un pedazo de código BeanShell
+con las siguientes características:
+
+\begin{itemize}
+\item {Tiene que ser una expresión booleana, es decir, un trozo de código
+simple (sin estructuras \textsf{if}, bucles ni puntos y coma; aunque sí
+puede tener llamadas a métodos, operaciones, etc.) y que devuelva un valor
+de tipo \textsf{boolean} (\textsf{true} o \textsf{false}). Dicho con otras
+palabras, la condición puede ser cualquier trozo de código que pudiese ir
+como condición de un \textsf{if}.}
+\item {Podemos usar la variable \textsf{self} para referirnos al objeto en
+que estamos definiendo la descripción, y la variable \textsf{world} para
+referirnos al mundo, exactamente igual que en los métodos definidos
+mediante BeanShell.}
+\item {Adicionalmente, en estos campos de condición tenemos una variable
+especial \textsf{viewer} que podemos utilizar para referirnos al jugador o
+criatura que está mirando aquello que describimos. Esto se puede usar, por
+ejemplo, en los ejemplos de aplicación que proponíamos antes para mostrar
+diferentes descripciones a un jugador según su humor o según sus
+conocimientos sobre la entidad.}
+\end{itemize}
+
+Así, ejemplos de posibles condiciones podrían ser:
+
+\textsf{get(self,"oxidada")} -- esta descripción es sólo para si la cosa
+que describimos (una espada, por ejemplo) está oxidada.
+
+\textsf{!get(self,"oxidada")} -- lo contrario, se muestra sólo si la espada
+no está oxidada.
+
+\textsf{get(viewer,"conoce",self)} -- descripción que se muestra sólo si el
+jugador que está mirando al personaje que describimos ya lo conoce (hecho
+descrito por una relación ``conoce'').
+
+\textsf{get(viewer,"humor") > 5} -- mostrar esa descripción sólo si el humor
+del jugador que mira es mayor que 5 (si hemos definido el humor como una
+propiedad de tipo int que toma valores de 0 a 10, por ejemplo, esto sería
+una descripción que sólo se ve si estás de buen humor).
+
+Cuando un jugador mire la entidad cuya descripción dinámica hemos definido
+de esta manera, la descripción que se mostrará al jugador será la
+concatenación de todas aquellas descripciones de la lista cuyas condiciones
+asociadas se cumplan. Nótese que esto quiere decir que podemos construir
+descripciones dinámicas ``a trozos'', dividiéndolas en partes con distintas
+condiciones. Un ejemplo de esto sería el siguiente, en una habitación:
+
+Condición: en blanco (``siempre''), descripción: Te encuentras en una
+habitación de hotel.
+
+Condición: \textsf{get(self,"luzEncendida")}, descripción: Es una habitación
+pequeña y sencilla: sólo tiene una cama, un armario y una pequeña mesilla
+de noche.
+
+Condición: \textsf{!get(self,"luzEncendida")}, descripción: La luz está
+apagada, y la escasa luz de las farolas que entra desde la ventana apenas
+te deja intuir la silueta de una cama.
+
+Condición: \verb|( get(self,"luzEncendida") && get(viewer,"humor") > 5 )|,
+descripción: En una de las paredes hay un cuadro de dudoso gusto que
+muestra un hombre a caballo.
+
+Condición: \verb|( get(self,"luzEncendida") && get(viewer,"humor") <= 5 )|,
+descripción: En una de las paredes hay un cuadro de un hombre a caballo,
+tan horriblemente pintado que dan ganas de tirarlo por la ventana.
+
+Así, is por ejemplo la luz estuviera encendida y el humor del jugador fuese
+2, se le mostraría esta descripción de la habitación:
+
+\textsf{Te encuentras en una habitación de hotel. Es una habitación pequeña
+y sencilla: sólo tiene una cama, un armario y una pequeña mesilla de noche.
+En una de las paredes hay un cuadro de un hombre a caballo, tan
+horriblemente pintado que dan ganas de tirarlo por la ventana.}
+
+Mientras que si la luz estuviese apagada, se mostraría
+
+\textsf{Te encuentras en una habitación de hotel. La luz está apagada, y la
+escasa luz de las farolas que entra desde la ventana apenas te deja intuir
+la silueta de una cama.}
+
+\subsection{Nombres dinámicos}
+
+El mismo mecanismo que hemos explicado para las descripciones de
+habitaciones, cosas y criaturas se aplica también a los nombres singulares
+y plurales para mostrar de las cosas y criaturas. Las características que
+deben cumplir las condiciones en este caso son las mismas que para las
+descripciones, incluida la posibilidad de utilizar la variable especial
+\textsf{viewer}.
+
+Hay, sin embargo, una diferencia: los nombres dinámicos que se muestran a
+los jugadores no se construyen ``a trozos'' como las descripciones, ya que
+eso no tendría mucha utilidad, sino que simplemente se muestra el primer
+nombre cuya condición se cumpla. Si hay más de un nombre cuya condición se
+cumple, el resto se ignorarán.
+
+\section{Cosas abribles y cerrables}
+
+En muchos juegos basados en texto aparecen objetos que pueden abrirse y
+cerrarse. Puertas, ventanas, baúles, cajas fuertes o maletas son ejemplos
+típicos de objetos así. El AGE proporciona soporte para crear fácilmente
+tales objetos, que los jugadores y criaturas pueden abrir y cerrar con o
+sin necesitar para ello una llave, según cómo están configurados.
+
+Grosso modo, el sistema de cosas abribles y cerrables de AGE funciona de la
+siguiente manera:
+
+\begin{itemize}
+\item {En un momento dado, una cosa puede estar abierta o cerrada.}
+\item {Además, una cosa que está cerrada puede estar cerrada con llave o no.}
+\item {La orden \textsf{cerrar cosa} introducida por un jugador sirve para
+cerrar algo que está abierto, la orden \textsf{abrir cosa} para abrir algo
+que está cerrado. Es posible definir condiciones para que estos comandos
+funcionen o no según el criterio que se quiera (por ejemplo, una puerta que
+no se pueda abrir sin más porque está atrancada, etc.)}
+\item {La orden \textsf{abrir cosa con llave} introducida por un jugador
+sirve para quitar el cerrojo a algo que está cerrado con llave, y la orden
+\textsf{cerrar cosa con llave} hace lo contrario. AGE permite definir qué
+cosa del juego es la llave de cada cosa abrible/cerrable con llave. Asimismo,
+también se pueden definir condiciones para que estos comandos funcionen o no
+(además de la condición implícita de tener la llave).}
+\item {En cada cosa, se puede marcar individual e independientemente si es
+abrible, cerrable, abrible con llave y cerrable con llave. Esto nos permite
+la flexibilidad de definir, por ejemplo, algo que se puede abrir pero no se
+puede volver a cerrar una vez abierto; o también de obviar el sistema de
+llaves si no las necesitamos en nuestro juego.}
+\item {Se pueden crear puertas especificando que una cosa es la puerta
+asociada a un camino, de forma que no se dejará pasar al jugador por ella
+cuando esté cerrada.}
+\item {Si una cosa cerrada es un contenedor, no permitirá a los jugadores
+manipular lo que haya en su interior hasta que se abra.}
+\end{itemize}
+
+\subsection{Definiendo cosas abribles y cerrables}
+
+Para definir una cosa abrible y/o cerrable en nuestro mundo de AGE, creamos
+una cosa en el PUCK de forma normal (rellenando su nombre único, nombres de
+referencia y demás campos útiles como de costumbre) y a continuación vamos
+a la ficha llamada ``Abrir/Cerrar'' de su panel de objeto.
+
+Lo primero que vemos en esta ficha son cuatro cuadros que podemos marcar
+para determinar si la cosa es ``Abrible'', ``Cerrable'', ``Cerrable con
+llave'' y ``Abrible con llave'', respectivamente. Así, por ejemplo, si
+queremos crear una caja que se pueda abrir y cerrar pero que no necesite
+una llave para ello, marcaremos los dos primeros cuadros. Si lo que
+queremos es una puerta que además tenga una llave que tenga una cerradura
+con llave, los marcaremos todos. Es perfectamente posible marcar cualquier
+combinación de acciones posibles: por ejemplo, un plástico donde venga
+envuelto un CD de música podría modelarse como un objeto abrible, pero no
+cerrable (una vez que lo rompemos, no podemos devolverlo a su estado
+original).
+
+A continuación vemos cuatro formularios para textos dinámicos asociadas a
+cada una de las cuatro acciones: abrir, cerrar, cerrar con llave y abrir
+con llave. Como es lógico, sólo tendremos que cubrir los campos
+correspondientes a las acciones que hayamos marcado como posibles en los
+cuadros anteriores (por ejemplo, a abrir y cerrar en el caso de la caja).
+
+El formulario de estos textos dinámicos es análogo al de las descripciones
+y nombres dinámicos; pero con un añadido: además de especificar una
+condición y un texto asociado, también tenemos la posibilidad de marcar o
+no una casilla llamada ``Con éxito''. Esta casilla determina si la acción
+correspondiente (abrir, cerrar, etc.) se llevará a cabo con éxito o no, en
+el caso de que la condición asociada sea cierta. De este modo, en el
+formulario de ``Texto al abrir'' no sólo estamos definiendo el texto en sí,
+sino también las condiciones que son necesarias para que la cosa se pueda
+abrir; y lo análogo para ``Texto al cerrar'' y el resto de formularios
+similares.
+
+Más en detalle, cuando un jugador teclea una orden abrir sobre una cosa,
+AGE hace lo siguiente:
+
+\begin{enumerate}
+\item {Si la cosa no está marcada como ``Abrible'', se le dice al jugador
+que no tiene sentido abrir eso.}
+\item {Si la cosa sí está marcada como ``Abrible'', se recorren las entradas
+del formulario ``Texto al abrir'' comprobando si se cumple la condición de
+alguna de ellas. En el caso de que se cumpla la condición de una de ellas:
+	\begin{enumerate}
+	\item {Si esa entrada del formulario era de ``Éxito'' (se marcó la
+	casilla ``Con éxito''), entonces se muestra el mensaje correspondiente, y
+	la cosa se abre.}
+	\item {Si esa entrada del formulario era sin éxito (no se marcó la casilla
+	``Con éxito''), entonces se muestra el mensaje correspondiente; pero no
+	se hace ningún cambio en el estado de la cosa.}
+	\end{enumerate}
+}
+\end{enumerate}
+
+El funcionamiento de cerrar es análogo, trabajando en cada caso con la
+casilla y el formulario correspondientes a esa orden.
+
+Las condiciones que se pueden teclear en estos formularios son expresiones
+booleanas en BeanShell, exactamente igual que para las descripciones y
+nombres dinámicos. A menudo, para escribir estas condiciones necesitaremos
+tener una forma de saber si una cosa está abierta o cerrada, y si está
+cerrada con llave o no. Para ello, podemos usar los siguientes métodos de
+la clase \textsf{Item}:
+
+\begin{lstlisting}
+/*clase Item*/ boolean isOpen ( )
+/*clase Item*/ boolean isClosed ( )
+/*clase Item*/ boolean isLocked ( )
+/*clase Item*/ boolean isUnlocked ( )
+\end{lstlisting}
+
+Estos métodos nos permiten comprobar el estado de las cosas
+abribles/cerrables: son métodos booleanos que devuelven \textsf{true} si la
+cosa sobre la que los ejecutamos está abierta, cerrada, cerrada con llave o
+no cerrada con llave, respectivamente; y false de lo contrario.
+
+De este modo, por ejemplo, podemos definir una caja que se abra y se cierre
+marcándola como abrible y cerrable en la ficha correspondiente, y luego
+introduciendo lo siguiente en los formularios:
+
+\begin{itemize}
+\item {Texto al abrir 1:
+	\begin{itemize}
+	\item {Condición: self.isClosed()}
+	\item {Éxito: sí}
+	\item {Texto: Abres la caja.}
+	\end{itemize}}
+\item {Texto al abrir 2:
+	\begin{itemize}
+	\item {Condición: self.isOpen()}
+	\item {Éxito: no}
+	\item {Texto: ¡No puedes abrir la caja porque ya está abierta!}
+	\end{itemize}}
+\item {Texto al cerrar 1:
+	\begin{itemize}
+	\item {Condición: self.isClosed()}
+	\item {Éxito: no}
+	\item {Texto: ¡No puedes cerrar la caja porque ya está cerrada!}
+	\end{itemize}}
+\item {Texto al cerrar 2:
+	\begin{itemize}
+	\item {Condición: self.isOpen()}
+	\item {Éxito: sí}
+	\item {Texto: Cierras la caja.}
+	\end{itemize}}
+\end{itemize}
+
+De esta forma, conseguimos una caja que funciona de la manera más normal:
+se puede abrir si está cerrada, se puede cerrar si está abierta, y las
+otras posibles combinaciones (como abrirla si ya está abierta) no funcionan
+y nos dan un mensaje que podemos personalizar. Sin embargo, el sistema de
+condiciones también nos da la posibilidad de crear cosas abribles y
+cerrables que funcionen de maneras más extrañas, si es necesario.
+
+Para definir el estado inicial de un objeto abrible/cerrable, podemos
+utilizar la propiedad closed: si vamos a la ficha ``Propiedades'' del panel
+de nuestra caja y añadimos una propiedad closed con valor \textsf{true} y
+tiempo restante $-1$ (infinito), la caja comenzará estando cerrada. De lo
+contrario, empezará abierta hasta que alguien la cierre.
+
+\subsection {Llaves}
+
+Si además queremos que para abrir una cosa abrible o cerrable haga falta
+tener en posesión otro objeto (que comúnmente llamamos llave), podemos
+hacerlo marcando la cosa como abrible/cerrable con llave y utilizando los
+otros dos formularios, que procesan las órdenes de tipo \textsf{cerrar X con
+Y} y \textsf{abrir X con Y}. Éstos funcionan exactamente igual que los
+formularios para \textsf{abrir X} y \textsf{cerrar X} que hemos visto antes,
+con la salvedad de que AGE nos proporciona una manera de definir qué objeto
+u objetos $Y$ son los que sirven para abrir $X$.
+
+Para hacer esto, creamos una relación (flecha) que vaya de $X$ (el objeto
+que se abre) a $Y$ (su llave asociada), y en el panel de la relación, donde
+se nos pregunta ``Relación estructural'', marcamos ``Se abre con'' para
+expresar que $X$ se abre con $Y$. Es posible definir de esta manera varias
+llaves que abran una misma puerta, o varias puertas que se abran con una
+misma llave, creando varias flechas.
+
+De este modo, cuando un jugador teclea una orden \textsf{abrir X con Y}, si
+$X$ e $Y$ son cosas válidas y que están al alcance del jugador, AGE hace lo
+siguiente:
+
+\begin{enumerate}
+\item {Si la cosa $X$ no está marcada como ``Abrible con llave'', se le dice
+al jugador que no tiene sentido abrir eso con llave.}
+\item {Si la cosa $X$ está marcada como ``Abrible con llave'', se recorren
+las descripciones del formulario ``Texto al abrir con llave'', procediendo
+de forma análoga a como se hacía para el formulario ``Texto al abrir'';
+pero con una diferencia, que es la siguiente: si el objeto $Y$ no es una
+llave válida para abrir $X$, sólo se considerarán las descripciones ``Sin
+éxito''; mientras que si el objeto $Y$ sí es una de las llaves válidas para
+abrir $X$, se considerarán tanto las descripciones ``Sin éxito'' como
+aquellas ``Con éxito''.}
+\end{enumerate}
+
+De esta manera, AGE nos comprueba automáticamente que el jugador lleva la
+llave adecuada, y hace que la acción de abrir con llave no tenga éxito en
+caso contrario; pero seguimos pudiendo utilizar las condiciones de las
+descripciones para determinar si hay éxito o fracaso en el caso de que el
+jugador sí tenga la llave (por ejemplo, tal vez el jugador tiene la llave
+pero la puerta está atrancada...)
+
+La acción de abrir con llave se comporta de forma totalmente análoga a la
+acción cerrar con llave, pero usando los formularios correspondientes.
+
+La propiedad 'locked' nos permite definir inicialmente si una cosa va a
+estar cerrada con llave o no: poniendo dicha propiedad a 'true' y con
+temporizador $-1$ en la ficha de ``Propiedades'' de una cosa, nos
+aseguraremos de que empiece cerrada con llave al principio del juego.
+
+Nótese que con el sistema de apertura y cierre con llave aquí descrito se
+implementa por defecto el manejo de llaves típico de los juegos americanos
+clásicos, en los que para abrir una puerta primero hay que ``abrirla con
+llave'' (unlock), que corresponde sólo a girar la llave, y después
+``abrirla'' realmente (open). En el mundo hispanohablante, muchos autores
+actuales prefieren un sistema más simple en el que al poner ``abrir puerta''
+ya se abra con llave automáticamente (incluyendo las acciones unlock+open)
+en el caso de que el jugador tenga la llave. Este sistema de apertura y
+cierre fácil de conseguir en AGE, simplemente ignorando las casillas y
+formularios de ``Abrible con llave'' y ``Cerrable con llave'' y definiendo
+las condiciones del ``abrir'' y ``cerrar'' normales para que miren si el
+jugador tiene la llave. Otras variantes se pueden definir de forma similar.
+
+\subsection {Puertas}
+
+Un uso común de las cosas abribles o cerrables es que sirvan como puertas
+de acceso entre una localidad y otra, de forma que haya sea necesario abrir
+la puerta para atravesar el camino correspondiente.
+
+Para definir una puerta entre dos habitaciones, hacemos lo siguiente:
+
+\begin{itemize}
+\item {Creamos una cosa abrible/cerrable que represente la puerta. Podemos
+hacerlo de forma similar a la caja vista en el ejemplo anterior, o podemos
+hacer cambios (como añadir la funcionalidad de abrir/cerrar con llave)
+según cómo queramos que funcione la puerta.}
+\item {Hacemos click en el camino o caminos entre las dos localidades y, en
+la ficha ``Relación estructural'' de su panel de relación, vamos a donde
+pone ``Puerta:'' y seleccionamos nuestra entidad puerta. Lo que hace esto
+es vincular el camino con la puerta de forma que si el jugador intenta andar
+por ese camino y la puerta está cerrada, fracasará en su empeño.}
+\item {Añadimos la puerta a las dos localidades (mediante flechas de cada
+una de las localidades a la puerta). Si no hacemos esto, el camino estaría
+vinculado a la puerta pero ésta no sería accesible desde las localidades,
+de manera que no podríamos abrirla o cerrarla, por ejemplo.}
+\end{itemize}
+
+Aunque no es necesario para que la puerta funcione, muchas veces será
+conveniente no ponerle nombres para mostrar. Esto hace que no se muestre
+tras la descripción de las habitaciones (o sea, que no aparezcan cosas como
+``Aquí hay una espada, un escudo y una puerta roja'', cosa que suele ser
+antinatural). Por supuesto, sí que es necesario que la puerta tenga algún
+nombre de referencia para poder manipularla.
+
+\subsection {Contenedores abribles y cerrables}
+Otro uso común para las cosas abribles o cerrables es servir para modelar
+objetos que hay que abrir para sacar otros objetos de su interior, como
+baúles o cajones. Para hacer esto, basta con crear un objeto abrible y/o
+cerrable (como la caja vista anteriormente) y definirlo a la vez como
+contenedor, y AGE se encargará automáticamente de que sólo se pueda acceder
+a los objetos que contiene cuando esté abierta. En la siguiente sección,
+contenedores, veremos cómo se define una cosa como contenedor.
+
+\section{Miembros, prendas y armaduras}
+
+Una \textit{prenda} es una cosa que los jugadores y criaturas pueden vestir
+en alguna parte de su cuerpo. Las prendas pueden tener propósito de
+armadura (en los juegos que incluyan combates) o no tenerlo (en el resto de
+los juegos). Así, ejemplos de objetos que se pueden modelar como prendas en
+AGE podrían ser una cota de mallas, un traje, unos guantes, un guantelete,
+unas botas o incluso un anillo o un pendiente.
+
+Las prendas se ponen y se quitan por defecto mediante las órdenes
+\textsf{vestir prenda} y \textsf{desvestir prenda}. A partir de la versión
+1.0.3 de AGE, las órdenes \textsf{poner jugador prenda} (ponerse prenda) y
+\textsf{coger jugador prenda} (quitarse/sacarse prenda) también funcionan
+para ponerse y quitarse prendas.
+
+Una prenda en AGE siempre se pone en una o varias partes del cuerpo, esto
+permite crear un sistema de prendas realista (por ejemplo, si tenemos un
+yelmo puesto no nos podremos poner otro a la vez, porque ambos ocuparían la
+cabeza; pero sí que podemos tener puestos a la vez un yelmo y unas botas
+porque el primero va en la cabeza y las segundas en los pies).
+
+Así pues, el sistema de prendas en AGE va ligado al sistema de partes del
+cuerpo (miembros), que es el que sirve para decidir qué prendas pueden
+combinarse con otras. No obstante, si en un mundo de AGE no es necesario
+este nivel de complejidad, se puede simplificar, como se verá más adelante.
+
+\subsection {Miembros}
+
+Los miembros son cosas que representan las partes del cuerpo de un jugador
+o criatura. Con la funcionalidad por defecto del AGE, la utilidad de los
+miembros es que sirven para blandir armas así como para vestir prendas y
+armaduras. Por supuesto, el creador de aventuras puede dar otros usos a los
+miembros programando en BeanShell si lo considera necesario.
+
+Para definir un miembro, como por ejemplo la cabeza del jugador, la añadimos
+en el PUCK como una cosa cualquiera, rellenando los campos (nombre único,
+nombre de referencia, género, etc.) que sean necesarios. A continuación,
+creamos una relación estructural que vaya del jugador a la cabeza. Por
+defecto, la flecha resultante está etiquetada con la palabra ``tiene'', que
+quiere decir que la cabeza está en el inventario del jugador (como si éste
+llevase una cabeza cortada consigo). Para ponerla como miembro, hacemos
+click en la flecha de la relación, y en la ficha ``Relación estructural''
+del panel asociado cambiamos ``tiene'' por ``se compone de''. De este modo,
+la cabeza pasa a ser un miembro del jugador, tal y como queremos.
+
+Es posible hacer que un miembro se componga de otros miembros (por ejemplo,
+que una mano tenga varios dedos) creando relaciones ``se compone de'' entre
+unos y otros. Sin embargo, esto no es necesario, al menos con la
+funcionalidad por defecto del AGE. Si queremos tener anillos que se pongan
+en los dedos, en la práctica es igualmente válido poner éstos como partes
+del jugador en lugar de como partes de la mano; aunque un perfeccionista
+del modelado pueda querer hacer lo segundo.
+
+Cada criatura puede llevar a cabo acciones sobre sus propios miembros (por
+ejemplo, vendarse el brazo izquierdo, suponiendo que definamos la respuesta
+al verbo ``vendar'' adecuadamente en el brazo); pero por defecto no puede
+llevar a cabo acciones sobre los miembros de los demás.
+
+Si queremos trabajar con los miembros de alguna criatura desde código
+BeanShell, podemos utilizar los siguientes métodos:
+
+\begin{lstlisting}
+/*clase Mobile*/ Inventory getPartsInventory()
+\end{lstlisting}
+
+Este método devuelve una lista de la clase \textsf{Inventory} que contiene
+los miembros directos de la criatura sobre la que se invoca. Con directos
+queremos decir que, si un brazo está modelado como parte de la criatura y a
+su vez una mano como parte del brazo, la lista contendrá el brazo pero no
+la mano.
+
+Este inventario se puede modificar, añadiendo o quitando elementos para
+añadir o quitar miembros dinámicamente a una criatura.
+
+\begin{lstlisting}
+/*clase Item*/ Inventory getParts()
+\end{lstlisting}
+
+Devuelve una lista de clase \textsf{Inventory} con las partes de la cosa
+dada. En el ejemplo anterior, si lo invocáramos sobre el brazo, devolvería
+un inventario conteniendo la mano.
+
+Este inventario se puede modificar, añadiendo o quitando cosas para añadir
+o quitar partes dinámicamente a un miembro.
+
+\begin{lstlisting}
+/*clase Mobile*/ Inventory getFlattenedPartsInventory()
+\end{lstlisting}
+
+Devuelve una lista de clase \textsf{Inventory} conteniendo los miembros
+directos e indirectos de la criatura sobre la que se invoca. Es decir, en
+el ejemplo anterior, este método devolvería una lista conteniendo tanto el
+brazo como la mano.
+
+Al contrario que los anteriores, este inventario es de ``sólo lectura''. Si
+se modifica, no tendrá el efecto de añadir ni quitar miembros a la criatura.
+
+\subsection {Prendas}
+
+Como se explicó anteriormente, una prenda es una cosa que los jugadores
+pueden vestir en alguna parte de su cuerpo. Para crear una prenda en PUCK,
+lo hacemos de la siguiente manera:
+
+\begin{itemize}
+\item {Creamos una cosa en PUCK, rellenando todos los campos estándar de
+nombres, género, descripción, etc.}
+\item {Vamos a la ficha ``Prenda'' del panel de entidad de la cosa, y
+marcamos la casilla ``Es prenda'', indicando que efectivamente se trata de
+una prenda.}
+\item {A continuación, tenemos que especificar en qué miembro o miembros de
+las criaturas se podrá llevar esa prenda. Por ejemplo, un casco se podrá
+llevar en la cabeza. Para hacer esto, utilizamos el formulario llamado
+``Miembros requeridos'' de la ficha ``Prenda'':}
+\item {Pulsamos el botón ``Añadir miembro''. Esto hace que nos aparezca un
+nuevo panel de ``Miembro'', que nos da la opción de añadir una serie de
+nombres. Introducimos ``cabeza'', y con esto, el casco ya tiene la
+información de que puede ponerse en la cabeza.}
+\end{itemize}
+
+Si en lugar de un solo miembro, una prenda necesita ocupar varios (por
+ejemplo, unas botas podrían ocupar el pie izquierdo y el pie derecho, si
+los modelamos como objetos distintos); entonces le daremos varias veces al
+botón ``Añadir miembro'', y en cada uno de los paneles que aparezcan
+introduciremos el nombre de uno de los miembros (por ejemplo, ``pie
+izquierdo'' en uno, y ``pie derecho'' en el otro).
+
+Por otra parte, si una misma prenda se puede poner en distintos tipos de
+miembros (pero sólo en uno de cada vez), lo que haremos será darle a
+``Añadir miembro'' una sola vez; pero añadirle varios nombres: por ejemplo,
+si un guante es reversible y puede encajar tanto en la mano derecha como en
+la izquierda, podríamos poner ``mano derecha'' y ``mano izquierda'' como
+nombres en su miembro requerido. Estos nombres siempre se procesan en orden,
+es decir, si ponemos primero ``mano derecha'' y después ``mano izquierda''
+y el jugador teclea \textsf{vestir guante}, se colocará éste en la mano
+derecha si la tiene libre, y sólo en el caso de que no la tenga libre se lo
+pondrá en la izquierda.
+
+Si queremos que una criatura comience el juego con una prenda puesta, lo
+haremos creando en PUCK una relación llamada ``wears'' con valor
+\textsf{true} que vaya del miembro correspondiente a la criatura. Por
+ejemplo, si queremos que un jugador comience con un casco puesto en su
+cabeza:
+
+\begin{itemize}
+\item {Creamos una relación (flecha) de la cabeza al casco,}
+\item {Clickeamos en ella,}
+\item {Vamos a la ficha ``Otras relaciones'' del panel de la relación,}
+\item {Introducimos nombre ``wears'', valor \textsf{true}, y tiempo restante
+$-1$ (infinito).}
+\end{itemize}
+
+Si queremos modificar desde el código BeanShell las prendas que lleva
+puestas o deja de llevar una criatura, basta con poner el valor de la
+relación ``wears'' entre cada miembro y la correspondiente prenda a
+\textsf{true} o \textsf{false} (véase cómo hacerlo en la sección de
+relaciones). También podemos utilizar el mecanismo de relaciones para
+consultar qué prendas lleva puesta una criatura y en qué miembros; pero
+adicionalmente, AGE nos proporciona métodos para hacer esto más
+rápidamente:
+
+\begin{lstlisting}
+/*clase Mobile*/ Inventory getWornItems()
+\end{lstlisting}
+
+Este método devuelve una lista de todas las prendas que lleva puesta la
+criatura sobre la que se invoca. El inventario devuelto es de sólo lectura,
+es decir, quitarle y ponerle cosas no tendrá ningún efecto sobre lo que
+lleva puesta la criatura (para esto, debemos usar las relaciones).
+
+\begin{lstlisting}
+/*clase Mobile*/ Item getWornItem( Item limb )
+\end{lstlisting}
+
+Devuelve la prenda que lleva puesta la criatura sobre la que se invoca en
+el miembro dado por limb o, si no lleva ninguna prenda, devuelve \textsf{null}.
+
+\begin{lstlisting}
+/*clase Mobile*/ boolean wearsItem( Item wearable )
+\end{lstlisting}
+
+Sirve para comprobar si la criatura sobre la que se invoca lleva o no
+puesta la prenda dada como parámetro. Devuelve \textsf{true} si la lleva
+puesta (en cualquiera de sus miembros) y \textsf{false} de lo contrario.
+
+\section {Combate y armas}
+
+\section {Entidades abstractas}
+
+En las secciones preliminares de esta documentación, hemos visto que los
+objetos del mundo que aparecen representados en el mapa de PUCK
+(habitaciones, cosas, etc.) se denominan \textit{entidades}. Las entidades
+son objetos de una clase llamada \textsf{Entity}, que tiene diferentes
+subclases (como \textsf{Room}, \textsf{Mobile} o \textsf{Item}) para
+representar entidades de distintas características y que juegan diferentes
+papeles en el mundo.
+
+Sin embargo, todas estas entidades tienen unas características en común
+(que son precisamente lo que hace que sean entidades). Estas
+características han ido apareciendo poco a poco a lo largo de esta
+documentación; pero nunca las hemos listado explícitamente. Son las
+siguientes:
+
+\begin{enumerate}
+\item {Toda entidad tiene un nombre único, que no puede coincidir con el de
+ninguna otra entidad. Podemos obtener una entidad del mundo a partir de su
+nombre único con \textsf{entity("nombre único")} (aunque las entidades de
+cada clase también se puedan obtener llamando a una una función específica,
+como en \textsf{item("mesa")} o \textsf{mobile("orco")}).}
+\item {Toda entidad puede tener definido código BeanShell.}
+\item {Toda entidad puede tener propiedades (con un valor y un temporizador)
+y relaciones con cualquier otra entidad (también con un valor y un
+temporizador). El sistema AGE decrementa los temporizadores de cada
+propiedad cada vez que pasa una unidad de tiempo, y cuando uno de estos
+temporizadores llega a cero, llama a un método de actualización (\textsf{update}) si
+lo hemos definido en BeanShell, que podemos usar para definir lo que sucede
+al ``expirar'' la propiedad.}
+\end{enumerate}
+
+Hasta ahora, hemos utilizado todas estas características en entidades como
+las habitaciones, cosas o criaturas; que además representan objetos
+``palpables'' en el mundo con los que se puede interactuar. Pero en
+ocasiones, nos puede interesar tener un objeto que también soporte estas
+características (código BeanShell, propiedades, relaciones y temporizadores)
+pero que no represente ningún objeto concreto o ``palpable'' del mundo. Ésta
+es la función que tienen en AGE las entidades abstractas.
+
+Una entidad abstracta es un objeto de la clase \textsf{AbstractEntity}, la
+cual, al igual que \textsf{Room} o \textsf{Item}, es una subclase de la
+clase \textsf{Entity}. Podemos agregar entidades abstractas al mapa desde
+PUCK mediante el botón ``Añadir entidad abstracta'', estas entidades tienen
+un icono y se pueden colocar en el mapa como el resto, y también cuentan
+con formularios en PUCK al igual que el resto. Sin embargo, el formulario
+de una entidad abstracta es más sencillo que el de otros tipos de entidad,
+ya que permite introducir poco más que nombre único, código BeanShell y
+propiedades.
+
+Así, funcionalmente una entidad abstracta no es más que un contenedor de
+código BeanShell, propiedades y relaciones; que nos proporciona toda la
+funcionalidad que nos dan estas características de AGE sin necesidad de
+traducirse en un objeto concreto y material del mundo que se simula. Sin
+embargo, como través del código BeanShell de una entidad abstracta podemos
+referirnos a otras entidades y llamar a métodos que las afecten, una
+entidad abstracta puede implementar comportamientos que tengan efectos
+visibles en el mundo.
+
+Algunos ejemplos de comportamientos que se han implementado con entidades
+abstractas son los siguientes:
+
+\begin {enumerate}
+\item {Una entidad abstracta ``tiempo atmosférico'' que controle cómo va
+cambiando el tiempo en las distintas habitaciones del mundo, propagando los
+cambios de unas a otras mediante cambios de una propiedad en esas
+habitaciones. Esos cambios de tiempo atmosférico se reflejan en las
+correspondientes descripciones dinámicas.}
+\item {Una entidad abstracta ``incendio'' que haga que las llamas de un
+incendio se vayan propagando por las habitaciones, esto se utilizó en la
+aventura ``Fuego''.}
+\item {Una entidad abstracta ``guión'' que haga que ciertos eventos de una
+historia vayan sucediendo en momentos prefijados en distintas partes del
+mundo, esto se utilizó en la aventura ``15 meses y un día''.}
+\end{enumerate}
+
+Éstos son sólo ejemplos; pero los comportamientos que se pueden implementar
+con entidades abstractas sólo están limitados por el ingenio del
+programador.
+
+\section {Conjuros}
+
+\section {Mensajes por defecto}
+
+Muchos de los textos que una aventura de AGE muestra al jugador son textos
+que el autor del juego no necesita escribir explícitamente, porque ya están
+programados en el AGE. Éstos son lo que llamamos mensajes por defecto. Por
+ejemplo, en la siguiente interacción:
+
+\begin{verbatim}
+> coger el asdfasdf
+¿Qué pretendes coger?
+> inventario
+No tienes nada.
+> coger la piedra
+Coges la piedra.
+\end{verbatim}
+
+Los tres mensajes que muestra como salida el AGE son mensajes por defecto.
+En el caso de los dos primeros, todo el texto que se muestra (``¿Qué
+pretendes coger?'' y ``No tienes nada.'') es texto puesto por el sistema
+sin necesidad de que el jugador lo especifique en ninguna parte. En el
+tercer caso, el texto ``Coges'' proviene asimismo del sistema, mientras que
+el sintagma ``la piedra'' se genera dinámicamente porque le hemos dado a
+esa entidad el nombre para mostrar ``piedra'' y el género femenino que
+implica el artículo ``la''.
+
+\subsection {Cambiar los mensajes por defecto}
+
+En ciertos mundos puede resultar conveniente cambiar los mensajes por
+defecto, si es que los que vienen de base con el AGE no nos gustan por
+algún motivo. Por ejemplo, en un juego de ambientación medieval podríamos
+querer que el sistema se dirigiera al jugador con un tratamiento más
+arcaico: ``¿Qué pretende coger vuesa merced?'' o ``Cogéis la piedra.'' Por
+supuesto, el AGE proporciona la posibilidad de hacer esto, para lo cual
+existen varias maneras.
+
+En primer lugar, observemos el fichero ``lang/messages.lan'' que está dentro
+de ``AgeCore.jar'' (este fichero .jar se puede abrir como si fuera un .zip
+para ver dicho fichero .lan). En él, podemos ver entradas como:
+
+\begin{verbatim}
+#Cuando intentas coger algo que no está en la habitación
+get.what=¿Qué pretendes coger?\n
+#Mostrar inventario (vacío)
+you.have.nothing=No tienes nada.\n
+#Cuando coges el objeto $item
+you.get.item=Coges $item.\n
+\end{verbatim}
+
+Estas entradas describen mensajes por defecto de AGE, en concreto, los
+vistos en el ejemplo anterior. La línea que empieza con \verb|#| en cada
+entrada es simplemente un comentario que explica de qué trata el mensaje.
+El texto anterior al signo ``$=$'' en cada línea sin comentario es el
+nombre que identifica ese mensaje por defecto. Lo que hay a la derecha del
+signo ``$=$'' es el mensaje en sí, donde los identificadores que tienen el
+símbolo del dólar se van a sustituir por nombres de entidades (normalmente
+debería ser obvio por el contexto cuáles: por ejemplo, en el último de los
+mensajes de ejemplo, el identificador \verb|$item| se sustituye por el
+nombre de la cosa que el jugador esté cogiendo, con su artículo
+correspondiente).
+
+Si cambiásemos los mensajes de este fichero, estaríamos modificando los
+mensajes por defecto de AGE. Pero no es esto lo que queremos hacer, sino
+modificarlos para un mundo en particular. Sin embargo, abrir el fichero
+``messages.lan'' es útil para esta tarea porque para cambiar mensajes para
+un mundo concreto necesitaremos saber el nombre de los mensajes que
+queremos redefinir (lo que viene antes del signo $=$, como
+\textsf{you.get.item}) así como los parámetros que soportan (en este caso,
+\verb|$item|). Sabido esto, existen dos maneras de cambiar los mensajes:
+
+\subsubsection {Cambiar mensaje por mensaje}
+
+Para cambiar un mensaje individual, por ejemplo, si quisiéramos que el
+parser nos tratara de ``vos'' al coger una cosa, hacemos lo siguiente:
+
+\begin{lstlisting}
+world.getMessages().setMessage( "you.get.item" , "Cogéis $item" );
+\end{lstlisting}
+
+El método \textsf{getMessages()} de la clase \textsf{World} nos proporciona
+un objeto de la clase \textsf{Messages} que encapsula los mensajes por
+defecto, y el método \textsf{setMessage} nos permite cambiar cada uno de
+ellos.
+
+Este cambio de mensaje será permanente, es decir, a partir de la llamada a
+este método se imprimirá ``Cogéis ...'' cada vez que un jugador coja una
+cosa. Sin embargo, en ocasiones también querremos que se imprima un mensaje
+por defecto en particular sólo en una ocasión. Para ello, también existe la
+posibilidad de cambiar el mensaje sólo para la próxima vez que se imprima.
+Así, si por ejemplo quisiéramos que al coger un cubito de hielo se nos
+mostrara un mensaje diciendo que está frío, podríamos poner en el código
+para la orden ``coger'' sobre el cubito se hiciese algo como:
+
+\begin{lstlisting}
+world.getMessages().setNextMessage( "you.get.item" , "Coges $item. ¡Buf, qué frío está!" );
+\end{lstlisting}
+
+De esta manera conseguiríamos que se mostrase un mensaje distinto sólo al
+coger el cubito; pero no con el resto de las cosas del mundo.
+
+\subsubsection {Cambiar todos los mensajes de una sola vez}
+
+Si queremos personalizar una aventura completa, es posible que queramos
+cambiar gran parte de los mensajes por defecto, o incluso todos. En ese
+caso, es más sencillo utilizar este método:
+
+\begin{enumerate}
+\item {Crear un fichero con el formato del messages.lan (por ejemplo,
+haciendo una copia de éste y modificándola).}
+\item {Ponerlo en el directorio del mundo.}
+\item {Hacer que el mundo ejecute el siguiente código:
+\begin{lstlisting}
+world.loadMessages(world.getResource("nombrefichero.lan"));
+\end{lstlisting}
+}
+\end{enumerate}
+
+Si no se van a cambiar los mensajes a lo largo de toda la aventura, como
+sería lo más común, lo normal sería ejecutar uno de estos códigos en el
+método intro (ya que se ejecuta al principio). Si se quieren tener
+diferentes mensajes o juegos de mensajes en distintas partes de la historia,
+estos métodos se pueden ejecutar en cualquier punto de la misma para
+cambiarlos a partir de ese momento (se pueden tener varios ficheros de
+mensajes, o se pueden cambiar los mensajes uno por uno varias veces sin
+problema).
+
+\subsection {Generar dinámicamente los mensajes por defecto}
+
+Si en una aventura interesa que los mensajes por defecto sean muy dinámicos
+y cambiantes (por ejemplo, que cada vez que cojamos un objeto se elija un
+mensaje diferente de un conjunto de alternativas de forma aleatoria, o
+alguna otra cosa que requiera procesado); es posible controlar mediante
+código BeanShell el mostrado del mensaje, pasando por encima tanto de los
+mensajes por defecto definidos por AGE como de los establecidos para el
+mundo según lo visto en la sección anterior. Para ello, en el objeto mundo,
+redefinimos el método
+
+\begin{lstlisting}
+String getMessage ( String messageName , Object[] arguments )
+\end{lstlisting}
+
+donde como parámetro se nos pasa el nombre del mensaje que AGE quiere
+mostrar (por ejemplo, \textsf{you.get.item}) y un array con todas las
+entidades u otros objetos relevantes al mensaje (en este caso, el array
+tendría longitud 1 y sólo contendría la cosa que se está cogiendo y que se
+utilizaría por defecto para sustituir \verb|$item|).
+
+El método debe devolver el mensaje que queremos que se muestre en ese caso,
+o bien \textsf{null} si no queremos alterar el comportamiento para ese
+mensaje y objetos sino delegar en el mecanismo por defecto de mensajes del
+mundo o de AGE.
+

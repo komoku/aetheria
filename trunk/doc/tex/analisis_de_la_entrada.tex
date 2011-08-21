@@ -1,0 +1,362 @@
+\chapter{El análisis de la entrada}
+
+\section{Métodos de análisis de la entrada (\textsf{parseCommand})} \label{sec:parseCommand}
+
+\subsection {Los métodos de análisis de la entrada}
+
+En el funcionamiento típico de los juegos basados en texto, los jugadores
+introducen lo que quieren que sus personajes hagan en forma de órdenes dadas
+como cadenas de texto. El juego lee entonces estas cadenas de texto y, si
+consigue interpretar su significado, ejecuta las acciones desencadenadas
+por la orden del jugador.
+
+Los métodos de análisis de la entrada (o métodos \textsf{parseCommand}) son,
+probablemente, los métodos redefinibles más importantes del Aetheria Game
+Engine, ya que permiten al creador de juegos inyectar código para cambiar
+la manera en que se analiza la entrada, y por lo tanto también las acciones
+que ésta desencadena.
+
+Algunas de las cosas más comunes que se pueden hacer con los métodos
+parseCommand son:
+
+\begin{itemize}
+\item {Definir nuevos verbos y órdenes que no estén definidos por defecto en
+el AGE.}
+\item {Cambiar el comportamiento por defecto de las órdenes que sí existen
+en el AGE, haciendo que en nuestro juego hagan otra cosa en lugar de (o
+aparte de) ejecutar el comportamiento por defecto.}
+\item {Definir o cambiar el comportamiento de órdenes situacionalmente; es
+decir, hacer que una orden tenga normalmente el comportamiento por defecto,
+pero actúe de forma distinta en determinadas situaciones (cuando se está en
+una habitación dada, se ejecuta sobre un objeto determinado, etc.)}
+\end{itemize}
+
+Aparte de estos usos, que son los más comunes, la versatilidad de los
+métodos \textsf{parseCommand} hace que realmente sean pocas las cosas que
+no se pueden hacer con ellos. Al dejarnos inyectar código que se ejecuta
+durante el proceso de análisis de la entrada, un programador avanzado puede
+llegar a cambiar por completo todo el funcionamiento de un juego en AGE,
+sustituyendo todos los comportamientos por defecto por código propio.
+
+\subsection {Ejemplo de uso}
+
+Como es habitual en los sistemas de creación de juegos basados en texto,
+Aetheria Game Engine es capaz de interpretar y procesar por defecto las
+órdenes más comunes. Por ejemplo, si un jugador está en una habitación que
+contiene un plátano y teclea ``cojo el plátano'', el AGE se encargará de
+hacer que la sabrosa fruta pase a las pertenencias del jugador, mostrándole
+además el mensaje de texto correspondiente. Esto es porque la acción
+``coger'' es algo común a la mayoría de los juegos de texto: lo normal es
+que si una cosa no pesa demasiado, y no está fija en el sitio (como lo
+estaría un adoquín del suelo), se pueda coger.
+
+Muchas de las acciones que se llevan a cabo en un juego de texto típico son
+acciones estándar comunes a todos los juegos, como la de coger el plátano.
+Sin embargo, si queremos implementar un buen juego, lo normal es que en
+algún momento necesitemos crear acciones personalizadas, que implementen
+comportamientos específicos de nuestro juego. Por ejemplo, podemos querer
+que el personaje se pueda comer el plátano, saciando su hambre y quedándose
+con una piel de plátano utilizable para hacer resbalar a algún malvado.
+Como esto no es un comportamiento genérico que venga en el sistema por
+defecto, lo tendremos que implementar nosotros en el objeto plátano, lo
+cual se puede hacer mediante un método de análisis de la entrada:
+
+\begin{lstlisting}
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+    if ( equals(verb,"comer") )
+    {
+        aCreature.writeAction("Te comes el plátano. ¡Ñam, ñam! ¡Qué rico!\n");
+        aCreature.removeItem(item("plátano"));
+        aCreature.addItem(item("piel de plátano"));
+        end();   
+    }
+}
+\end{lstlisting}
+
+\subsection {Tipos de métodos de análisis de la entrada}
+
+Aquí se muestran los diferentes métodos de análisis de la entrada que se
+pueden redefinir, así como el orden en que AGE los ejecuta. Nótese que esta
+tabla parece muy complicada; pero no hay ninguna necesidad de saberla en la
+práctica, se muestra sólo como referencia de consulta para usuarios
+avanzados. En realidad, muchos de los métodos no son necesarios salvo para
+usos muy avanzados y específicos. En concreto, los métodos que contienen la
+subcadena \textsf{OnContents} sólo hacen falta para usos avanzados de
+contenedores, que les gusta poner a algunos autores pero no son para nada
+necesarios en una aventura. Muchos de los métodos restantes son alternativos
+unos a otros, de modo que unos autores pueden preferir por comodidad usar
+unos y otros autores usar otros: por ejemplo, un método
+\textsf{parseCommandGeneric} hace todo lo que pueden hacer
+\textsf{parseCommandObj1}, \textsf{parseCommandObj2},
+\textsf{parseCommandTwoObjects} y \textsf{parseCommand}; pero unos autores
+pueden preferir utilizar un sólo método más complejo para todas las
+situaciones, y otros usar varios métodos más sencillos y adaptados a cada
+situación específica. También cabe destacar que no es necesario para nada
+saber los nombres, parámetros y función de estos métodos, ya que los menús
+de PUCK nos permiten encontrar el método que queremos y generar su
+declaración y explicación de parámetros automáticamente (en la columna
+derecha se muestra el menú del PUCK que conduce a cada método).
+\\
+{\footnotesize\begin{tabular}{|c|l|p{6cm}|p{5cm}|}
+\hline
+Orden & Objeto & Signatura del método & Nomenclatura en menús de PUCK \\
+\hline
+\hline
+1 & Player & \textsf{String parseCommand( String verb , String args )} & Método de análisis de la entrada (estándar) -- Introducida por este jugador \\
+\hline
+2 & Mobile/Item & \textsf{void parseCommandOnContentsObj1 ( Mobile aCreature , String verb , String args1 , String args2 , Vector path1 , Vector path2 , Entity obj2 )} & Método de análisis de la entrada (para contenedores y objetos contenidos) -- Referente a ésta y otra cosa, en ese orden \\
+\hline
+2	& Mobile/Item	& \textsf{void parseCommandOnContentsObj2 ( Mobile aCreature , String verb , String args1 , String args2 , Vector path1 , Vector path2 , Entity obj1 )} & Método de análisis de la entrada (para contenedores y objetos contenidos) -- Referente a otra cosa y ésta, en ese orden \\
+\hline
+3	& Mobile/Item & \textsf{void parseCommandOnContentsTwoObjects ( Mobile aCreature , String verb , String args1 , String args2 , Vector path1 , Vector path2 , Entity otherEnt )}	& Método de análisis de la entrada (para contenedores y objetos contenidos) -- Referente a ésta y otra cosa, en cualquier orden \\
+\hline
+3,6* & Mobile/Item & \textsf{void parseCommandOnContentsGeneric ( Mobile aCreature , String verb , String args1 , String args2 , Vector path1 , Vector path2 , Entity obj1 , Entity obj2 , boolean goesFirst )}	& Método de análisis de la entrada (para contenedores y objetos contenidos) -- Referente a ésta y, opcionalmente, otra cosa \\
+\hline
+4	& Mobile/Item & \textsf{void parseCommandObj1 ( Mobile aCreature , String verb , String args1 , String args2 , Entity obj2 )}	& Método de análisis de la entrada (estándar) -- Referente a ésta y otra cosa, en ese orden \\
+\hline
+4	& Mobile/Item & \textsf{void parseCommandObj2 ( Mobile aCreature , String verb , String args1 , String args2 , Entity obj1 )}	& Método de análisis de la entrada (estándar) -- Referente a otra cosa y ésta, en ese orden \\
+\hline
+5	& Mobile/Item & \textsf{void parseCommandTwoObjects ( Mobile aCreature , String verb , String args1 , String args2 , Entity otherEnt )}	& Método de análisis de la entrada (estándar) -- Referente a ésta y otra cosa, en cualquier orden \\
+\hline
+5,7* & Mobile/Item & \textsf{void parseCommandGeneric ( Mobile aCreature , String verb , String args1 , String args2 , Entity obj1 , Entity obj2 , boolean goesFirst )}	& Método de análisis de la entrada (estándar) -- Referente a ésta y, opcionalmente, otra cosa \\
+\hline
+6	& Mobile/Item & \textsf{void parseCommandOnContents ( Mobile aCreature , String verb , String args , Vector path )}	& Método de análisis de la entrada (para contenedores y objetos contenidos) -- Referente a esta cosa \\
+\hline
+7	& Mobile/Item & \textsf{void parseCommand ( Mobile aCreature , String verb , String args )}	& Método de análisis de la entrada (estándar) -- Referente a esta cosa \\
+\hline
+8	& Room & \textsf{void parseCommand ( Player aPlayer , String verb , String args )} & Método de análisis de la entrada \\
+\hline
+9	& World & \textsf{void parseCommandOnContentsTwoObjects ( Mobile aCreature , String verb , String args1 , String args2 , Vector path1 , Vector path2 , Entity obj1 , Entity obj2 )}	& Método de análisis de la entrada (para contenedores y objetos contenidos) -- Referente a dos cosas \\
+\hline
+9,11*	& World & \textsf{void parseCommandOnContentsGeneric ( Mobile aCreature , String verb , String args1 , String args2 , Vector path1 , Vector path2 , Entity obj1 , Entity obj2 )} & Método de análisis de la entrada (para contenedores y objetos contenidos) -- Referente a una o dos cosas \\
+\hline
+10 & World & \textsf{void parseCommandTwoObjects ( Mobile aCreature , String verb , String args1 , String args2 , Entity obj1 , Entity obj2 )} & Método de análisis de la entrada (estándar) -- Referente a dos cosas \\
+\hline
+10,12* & World & \textsf{void parseCommandGeneric ( Mobile aCreature , String verb , String args1 , String args2 , Entity obj1 , Entity obj2 )} & Método de análisis de la entrada (estándar) -- Referente a una o dos cosas \\
+\hline
+11 & World & \textsf{void parseCommandOnContents ( Mobile aCreature , String verb , String args , Vector path , Entity target )} & Método de análisis de la entrada (para contenedores y objetos contenidos) -- Referente a una cosa \\
+\hline
+12 & World & \textsf{void parseCommand ( Mobile aCreature , String verb , String args , Entity target )} & Método de análisis de la entrada (estándar) -- Referente a una cosa \\
+\hline
+13 & World & \textsf{void parseCommand ( Mobile aCreature , String verb , String args )} & Método de análisis de la entrada (estándar) -- Para cualquier entrada \\
+\hline
+\end{tabular}}
+
+* Los métodos de tipo ``generic'' se muestran con dos órdenes de ejecución
+porque pueden ejecutarse tanto para procesar comandos que se refieren a dos
+entidades del mundo como para los que se refieren a uno solo. Para el caso
+de dos entidades, se ejecutan junto a los métodos análogos que procesan
+comandos referidos a dos entidades (en el primer orden que aparece en la
+tabla). Para el caso de una entidad, se ejecutan junto a los demás métodos
+para una entidad (en el segundo orden).
+
+\subsection{El proceso de análisis de AGE}
+
+Para ahorrar trabajo al creador de juegos y que no tenga que encargarse de
+interpretar las frases que introduce el jugador, sino sólo de definir qué
+cosas puede hacer su juego; el AGE lleva a cabo por sí solo un análisis
+sintáctico de la entrada, pasándole al creador de aventuras (a través de
+los métodos \textsf{parseCommand}) una entrada ya preprocesada. Por ejemplo,
+si el jugador teclease ``coge el plátano y cómelo'', AGE rompería el
+comando en sus dos partes y se encargaría de los pronombres y los tiempos
+verbales, traduciéndolo como ``coger el plátano'', por un lado, y ``comer el
+plátano'', por otro. De este modo, el método \textsf{parseCommand} que vimos
+en el ejemplo anterior funcionará para ``coge el plátano y cómelo''; aunque
+el verbo no esté en infinitivo como aparece en el código, y aunque el
+jugador haya tecleado ``cómelo'' en lugar de poner explícitamente ``comer el
+plátano''.
+
+\textbf{Nota}: Si en algún caso se hace necesario analizar toda la entrada
+a mano, sin que AGE lleve a cabo este preprocesado, también es posible; pero
+esto debe hacerse mediante el método \textsf{preprocessCommand} (véase \ref{sec:PreprocesadoEntrada}
+preprocesado de la entrada) en lugar de \textsf{parseCommand}. Los métodos
+\textsf{parseCommand} siempre nos dan la entrada preprocesada.
+
+Más en detalle, los pasos del procesado de textos que realiza AGE son los
+siguientes (no debería ser necesario saber esto salvo para usos muy
+avanzados):
+
+\begin{enumerate}
+\item {Si la orden es compuesta, romperla en órdenes simples: así, ``coge el
+plátano y cómelo'' se romperá en las dos órdenes ``coge el plátano'' y
+``cómelo''. Cada una de ellas se tratará como una orden independiente de
+cara a todos los métodos \textsf{parseCommand}.}
+\item {Sustituir los pronombres: cada uno de los pronombres enclíticos se
+sustituye por el nombre que referencia, que se supone que es el último
+nombre referenciado que coincide en género con el pronombre. Así, el ``lo''
+de ``cómelo'' se sustituiría por ``plátano'', dando lugar a ``cóme plátano''
+(sic). Nótese que la sustitución de pronombres funciona también entre
+distintas órdenes, es decir, si el jugador primero teclea ``coge el plátano'',
+y más tarde en una línea separada teclea ``cómelo'', el pronombre será
+sustituido igualmente.}
+\item {Corregir automáticamente (sólo desde versión 1.0.2): desde la versión
+1.0.2 de AGE, si la primera palabra de la orden es algo que se parece mucho
+a un verbo conocido pero no lo es (por ejemplo, ``cgoer''), se cambia por
+dicho verbo. A partir de la versión 1.0.3, las siguientes palabras también
+se corrigen si se parecen mucho a un nombre de referencia de un objeto del
+mundo pero no lo son (por ejemplo, ``trajje'' por ``traje''). Estas
+funcionalidades se pueden desactivar poniendo la propiedad booleana
+``\textsf{noVerbSpellChecking}'' del jugador a \textsf{true}.}
+\item {Sustituir las formas verbales por infinitivos: las formas que
+aparezcan en imperativo o segunda persona son cambiadas por infinitivos,
+para evitar al programador de juegos el tener que reconocer distintas
+formas. Así, las órdenes del ejemplo quedarían cambiadas por ``coger el
+plátano'' y ``comer plátano''.}
+\item {Sustituir alias: hay algunos verbos que están definidos como
+sinónimos de otros, para que el programador de aventuras no tenga que tratar
+individualmente con cada sinónimo. Por ejemplo, ``subir'' se sustituye por
+``ir arriba'', y ``tomar'' se sustituye por ``coger'', de modo que el código
+definido antes para el \textsf{parseCommand} funcionaría también para
+``toma el plátano''.}
+\item {Detectar a qué objetos se refiere la orden: la palabra ``plátano'' no
+es un sustantivo cualquiera, es un sustantivo que se refiere a una entidad
+del mundo (siempre que la hayamos puesto como nombre de referencia del
+plátano, claro). El AGE detecta nombres de referencia en las órdenes y toma
+nota de a qué entidad hacen referencia.}
+\item {Ejecutar los \textsf{parseCommand}: se ejecutan los diferentes
+métodos \textsf{parseCommand}, en el orden que se muestra en la tabla de
+más arriba. Los \textsf{parseCommand} en concreto que se ejecuten dependerán
+de las entidades a las que haga referencia la orden: por ejemplo, como
+``comer plátano'' se refiere a una entidad (el plátano), se ejecutará el
+método \textsf{parseCommand ( Mobile aCreature, String verb , String args )}
+de la entidad plátano; pero no se ejecutarán los métodos para órdenes que
+se refieren a dos entidades (como \textsf{parseCommandTwoObjects}) ya que
+en la orden no aparecen dos entidades.}
+item {Llevar a cabo el comportamiento por defecto, si es posible: si en los
+\textsf{parseCommand} ejecutados en el paso anterior no se llamó a
+\textsf{end()}, hay dos posibilidades:
+	\begin{enumerate}
+	\item {Que la frase empiece por un verbo: en cuyo caso, si hay un
+	comportamiento por defecto para ese verbo (como sucede con ``coger'') se
+	ejecuta; mientras que si no lo hay (como en ``comer'') se muestra un
+	mensaje para indicar al jugador que la aventura no entiende lo que quiere
+	hacer.}
+	\item {Que la frase no empice por un verbo: en este caso, se repite todo
+	el procesado de la entrada suponiendo que la frase va precedida del
+	último verbo que se ha utilizado; esto es el llamado modo ``second chance''.
+	Esto puede servir para interpretar algunos comandos donde se omite el
+	verbo: por ejemplo, si el jugador teclea ``comer el plátano'' y después
+	sigue con ``ahora la manzana'', refiriéndose a que quiere comer la
+	manzana. Si después del modo ``second chance'' se llega al punto 7.a; es
+	señal de que la frase introducida no era inteligible en absoluto y se
+	muestra el mensaje de que no se ha entendido.}
+	\end{enumerate}
+}
+\end{enumerate}
+
+Como programadores de aventuras, lo que nos interesa saber es que en el
+\textsf{parseCommand}, el AGE siempre nos va a dar órdenes simples (con un
+solo verbo), con el verbo en infinitivo, y con una serie de sinónimos
+sustituidos por verbos estándar. Verbos estándar son (lista incompleta)
+coger, dejar, mirar, ir, poner, decir, vestir, desvestir, atacar, bloquear,
+esquivar. Algunos verbos no estándar típicos son examinar (se convierte en
+mirar), tomar (se convierte en coger), quitar (en coger), sacar (en coger),
+entrar (se convierte en ir dentro), etc.
+
+\section{Preprocesado de la entrada} \label {sec:PreprocesadoEntrada}
+
+Los métodos de análisis de la entrada (\textsf{parseCommand}) que hemos ido
+utilizando a lo largo de esta documentación, y detallado más en la sección
+\ref{sec:parseCommand} sobre métodos de análisis de la entrada, son el
+mecanismo principal para definir o modificar cómo un mundo de AGE procesa
+las entradas del jugador. Como hemos visto, estos métodos reciben la
+entrada preprocesada, es decir, no trabajan directamente con el texto que
+teclea el jugador, sino que AGE le hace a dicho texto una serie de
+transformaciones (dividirlo en oraciones simples, cambiar los verbos a
+infinitivo, hacer correcciones en palabras mal escritas, sustituir los
+pronombres por los objetos a los que se refieren, etc.).\footnote{Estas
+transformaciones están documentadas en detalle en la sección
+\ref{sec:parseCommand} sobre métodos de análisis de la entrada.} En
+general, dichas transformaciones son útiles porque le quitan trabajo al
+programador de aventuras, que no tiene que preocuparse de problemas como
+tratar con diferentes formas verbales o pronombres. Sin embargo, puede
+haber situaciones donde, por cualquier motivo, el programador quiera
+acceder directamente al texto tecleado por el usuario, sin que AGE
+interfiera. Esto se puede hacer mediante el método de preprocesado de la
+entrada.
+
+Para definir este método en PUCK, vamos al panel de código de mundo,
+hacemos click derecho, y seleccionamos Insertar código -- Redefinir métodos
+de mundo -- Método de preprocesado de la entrada.
+
+Nos aparecerá algo así:
+
+\begin{lstlisting}
+/*
+Método de preprocesado de la entrada. Con él podemos obtener y procesar directamente la entrada
+que introduce un jugador o criatura, antes de que entre en juego el parser de AGE.
+La cadena que devolvamos desde este método será la que se pase al parser.
+*/
+String preprocessCommand ( Mobile aCreature , String inputText )
+{
+	/* Manipulación del comando */
+ 
+	return inputText;
+}
+\end{lstlisting}
+
+El método de preprocesado de la entrada se llama \textsf{preprocessCommand}
+y toma dos parámetros: el jugador que ha introducido una determinada entrada
+(\textsf{Mobile aCreature}) y el texto que ha escrito
+(\textsf{String inputText}). Como se ha mencionado, este último parámetro
+nos proporciona el texto tal cual ha sido escrito, sin ninguna modificación
+hecha por AGE.
+
+El método debe devolver un resultado de tipo \textsf{String}, que será la
+cadena que se pase al parser de AGE (que realiza todo el preprocesado
+mencionado anteriormente, y después llama a los métodos \textsf{parseCommand}
+y realiza el procesado por defecto). Utilizar este valor de retorno nos
+permite emplear el método \textsf{preprocessCommand} no sólo para conocer y
+procesar la entrada del jugador; sino también para modificarla. Por ejemplo,
+si quisiéramos que una aventura exigiera que el jugador le pidiese todo por
+favor para funcionar, podríamos hacer algo como:
+
+\begin{lstlisting}
+String preprocessCommand ( Mobile aCreature , String inputText )
+{
+  if ( inputText.toLowerCase().startsWith("por favor") )
+  {
+    StringTokenizer st = new StringTokenizer(inputText);
+    st.nextToken(); //consume la palabra por
+    st.nextToken(); //consume la palabra favor
+    return st.nextToken("").trim(); //devuelve el resto de las palabras
+  }
+  else
+  { 
+    aCreature.write("Eres un maleducado. No haré nada si no me lo pides con la palabra mágica.\n");
+    end(); 
+  }
+}
+\end{lstlisting}
+
+En este ejemplo, si la entrada que nos ponen no empieza por ``por favor'',
+mostramos un mensaje de protesta interrumpimos el procesado con \textsf{end()},
+que funciona de la misma forma que en los métodos \textsf{parseCommand},
+interrumpiendo el procesado de la orden. Nótese que si se interrumpe una
+orden a este nivel, nunca llegará a ser procesada por los métodos
+\textsf{parseCommand}, ya que \textsf{preprocessCommand} va antes.
+
+En el caso de que la entrada sí empiece por ``por favor'', le quitamos el
+``por favor'' del principio dejando que AGE procese el resto de la oración
+de forma normal. Así pues, será la oración sin ``por favor'', que es lo que
+devolvemos, la que sea procesada por los métodos \textsf{parseCommand}.
+
+Produciendo salidas como ésta:
+
+\begin{verbatim}
+> ve al norte
+Eres un maleducado. No haré nada si no me lo pides con la palabra mágica.
+> por favor, ve al norte
+Me dirijo hacia el norte.
+Estoy en un camino de tierra, desde aquí puedo ir al norte, al sur o al oeste.
+> ve al sur
+Eres un maleducado. No haré nada si no me lo pides con la palabra mágica.
+\end{verbatim}
+
+Nótese que, en el caso de no interrumpir el procesado con un \textsf{end()},
+devolver un valor de tipo \textsf{String} es obligatorio. En el caso de no
+querer hacer ningún cambio a la cadena de entrada antes de que AGE la
+procese, simplemente devolveríamos el propio parámetro \textsf{inputText}.
+
+\section {Gestión de verbos}
