@@ -486,7 +486,7 @@ public class ExtraDescriptionsPanel extends JPanel
 						if ( j < names.size() - 1 )
 							commaSeparatedList += ",";
 					}
-					listContent.addElement(new String[]{commaSeparatedList,conditionText,descriptionText});
+					listContent.addElement(new String[]{commaSeparatedList,conditionText.trim(),descriptionText.trim()});
 					
 					
 				} //foreach Description node in ExtraDescription's DescriptionList
@@ -521,7 +521,7 @@ public class ExtraDescriptionsPanel extends JPanel
 					if ( j < names.size() - 1 )
 						commaSeparatedList += ",";
 				}
-				listContent.addElement(new String[]{commaSeparatedList,"",descriptionText});
+				listContent.addElement(new String[]{commaSeparatedList,"",descriptionText.trim()});
 				
 			}
 			
