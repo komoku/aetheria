@@ -641,7 +641,7 @@ public class DescriptionListPanel extends JPanel
 				else
 					propList.add(Boolean.FALSE);
 			}
-			listContent.addElement(new String[]{conditionText.trim(),descriptionText.trim()});
+			listContent.addElement(new String[]{conditionText.trim(),descriptionText.trim()}); //alternatively, ignore text nodes containing only whitespace and there will be no need to trim here.
 		}
 	}
 	
