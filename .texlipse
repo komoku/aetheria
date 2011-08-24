@@ -1,0 +1,13 @@
+#TeXlipse project settings
+#Wed Aug 24 16:07:11 CEST 2011
+builderNum=2
+outputDir=doc/tex/
+makeIndSty=
+bibrefDir=
+outputFormat=pdf
+tempDir=doc/tex
+mainTexFile=DocumentacionAGE.tex
+outputFile=DocumentacionAGE.pdf
+langSpell=
+markDer=true
+srcDir=doc/tex/
