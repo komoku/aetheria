@@ -547,8 +547,10 @@ public class AGESoundClient implements SoundClient
 							*/
 							if ( !isOn() ) return;
 							bp.stop();
+							double theGain = getCurrentGain(u);
 							bp.open(u.openStream());
 							bp.play();
+							bp.setGain(theGain);
 						}
 						catch ( BasicPlayerException bpe )
 						{
@@ -572,8 +574,10 @@ public class AGESoundClient implements SoundClient
 							*/
 							if ( !isOn() ) return;
 							bp.stop();
-							bp.open(u.openStream());
+							double theGain = getCurrentGain(u);
+							bp.open(u.openStream());						
 							bp.play();
+							bp.setGain(theGain);
 						}
 						catch ( BasicPlayerException bpe )
 						{
@@ -585,7 +589,10 @@ public class AGESoundClient implements SoundClient
 						}
 					}
 					else
+					{
 						basicPlayers.remove(u);
+						resetCurrentGain(u);
+					}
 				}
 			}
 
@@ -732,11 +739,43 @@ public class AGESoundClient implements SoundClient
 		}
 	}
 	
+	
+	private Hashtable gainsForURLs = new Hashtable();
+	
+	/**
+	 * Because BasicPlayer API won't give us the gain in a reliable format (if we do setGain, then getGainValue returns different units!)
+	 * @param u
+	 */
+	private void setCurrentGain ( final URL u , final double gain )
+	{
+		gainsForURLs.put(u,new Double(gain));
+	}
+	
+	/**
+	 * Because BasicPlayer API won't give us the gain in a reliable format (if we do setGain, then getGainValue returns different units!)
+	 */
+	private double getCurrentGain ( final URL u )
+	{
+		Double d = (Double) gainsForURLs.get(u);
+		if ( d == null ) return 1.0; //default gain
+		else return d.doubleValue();
+	}
+	
+	/**
+	 * Because BasicPlayer API won't give us the gain in a reliable format (if we do setGain, then getGainValue returns different units!)
+	 */
+	private void resetCurrentGain ( final URL u )
+	{
+		gainsForURLs.remove(u);
+	}
+	
+	
 	public void audioSetGain ( final URL u , final double gain )
 	{
 		final BasicPlayer bp = (BasicPlayer) basicPlayers.get(u);
 		try 
 		{
+			setCurrentGain ( u , gain );
 			bp.setGain(gain);
 		} 
 		catch (BasicPlayerException e1) 
