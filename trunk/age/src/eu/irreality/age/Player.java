@@ -4184,10 +4184,6 @@ public class Player extends Mobile implements Informador
 	} //end method
 
 
-	public InputOutputClient getIO ( )
-	{
-		return io;
-	}
 
 	public Vector getFinalCommandLog() //para estadísticas
 	{
