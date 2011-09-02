@@ -6310,27 +6310,37 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 	public boolean drop ( Item it )
 	{
-		return executeAction ( "drop" , new Object[]{it} );
+		boolean success = executeAction ( "drop" , new Object[]{it} );
+		if ( !success ) setNewState ( 1 /*IDLE*/ , 1 );
+		return success;
 	}
 	
 	public boolean wear ( Item it )
 	{
-		return executeAction ( "wear" , new Object[]{it} );
+		boolean success = executeAction ( "wear" , new Object[]{it} );
+		if ( !success ) setNewState ( 1 /*IDLE*/ , 1 );
+		return success;
 	}
 	
 	public boolean unwear ( Item it )
 	{
-		return executeAction ( "wear" , new Object[]{it} );
+		boolean success = executeAction ( "unwear" , new Object[]{it} );
+		if ( !success ) setNewState ( 1 /*IDLE*/ , 1 );
+		return success;
 	}
 	
 	public boolean wield ( Item it )
 	{
-		return executeAction ( "wield" , new Object[]{it} );
+		boolean success = executeAction ( "wield" , new Object[]{it} );
+		if ( !success ) setNewState ( 1 /*IDLE*/ , 1 );
+		return success;
 	}
 	
 	public boolean unwield ( Item it )
 	{
-		return executeAction ( "unwield" , new Object[]{it} );
+		boolean success = executeAction ( "unwield" , new Object[]{it} );
+		if ( !success ) setNewState ( 1 /*IDLE*/ , 1 );
+		return success;
 	}
 	
 	public boolean take ( Item it )
