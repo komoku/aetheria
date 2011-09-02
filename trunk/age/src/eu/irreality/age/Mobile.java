@@ -876,6 +876,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			//Debug.println("Inventory node: " + inventoryNodes.item(0) );
 			//Debug.println("Inventory's parent: " + inventoryNodes.item(0).getParentNode() );
 			//Debug.println(inventory);
+			createReferencesInInventoryItems();
 		}			
 
 		//virtual inv
@@ -1075,6 +1076,19 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			mundo.writeError(ExceptionPrinter.getExceptionReport(te));
 		}
 
+	}
+	
+	
+	/**
+	 * Used when contained items are put inside of a container on world load, to set the references from those items to
+	 * their container.
+	 */
+	private void createReferencesInInventoryItems()
+	{
+		for ( int i = 0 ; i < inventory.size() ; i++ )
+		{
+			((Item)inventory.get(i)).addMobileReference(this);
+		}
 	}
 
 
