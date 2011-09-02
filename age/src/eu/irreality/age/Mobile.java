@@ -1119,6 +1119,12 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			return ( StringMethods.numToks ( constructName(1,comparand) , ' ' ) < 1 );
 	}
 	 */
+	
+
+	public InputOutputClient getIO ( )
+	{
+		return io;
+	}
 
 	public boolean isInvisible ( Entity viewer )
 	{
@@ -6284,6 +6290,45 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 		return false;
 
+	}
+	
+	//action wrappers
+
+	public boolean drop ( Item it )
+	{
+		return executeAction ( "drop" , new Object[]{it} );
+	}
+	
+	public boolean wear ( Item it )
+	{
+		return executeAction ( "wear" , new Object[]{it} );
+	}
+	
+	public boolean unwear ( Item it )
+	{
+		return executeAction ( "wear" , new Object[]{it} );
+	}
+	
+	public boolean wield ( Item it )
+	{
+		return executeAction ( "wield" , new Object[]{it} );
+	}
+	
+	public boolean unwield ( Item it )
+	{
+		return executeAction ( "unwield" , new Object[]{it} );
+	}
+	
+	public boolean take ( Item it )
+	{
+		Inventory inv = null;
+		Entity location = it.getLocation();
+		if ( location instanceof Room ) inv = ((Room)location).getInventory();
+		else if ( location instanceof Item ) inv = ((Item)location).getContents();
+		if ( inv != null && inv.contains(it) )
+			return executeAction ( "get" , new Object[]{it,inv,""} );
+		else
+			return false;
 	}
 
 
