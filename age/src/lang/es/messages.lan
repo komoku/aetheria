@@ -351,3 +351,22 @@ you.hit.dodge.failed.enemy.nodamage=A pesar de su intento de esquivar el ataque,
 someone.misses.dodged.someone=El ataque de $1 falla a $2.\n
 enemy.misses.dodged.you=El ataque de $1 te falla. Tienes la iniciativa...\n
 you.miss.dodged.enemy=Tu ataque falla a $2. Te desequilibras...\n
+
+#Combate: la armadura $armor de $1 absorbe totalmente un impacto
+someones.armor.absorbed=$armor de $1 absorbe totalmente el impacto.\n
+your.armor.absorbed=$armor te protege absorbiendo totalmente el impacto.\n
+
+#Combate: ataque con arma
+someone.attacks.someone=$1 ataca a $2 con $weapon.\n
+enemy.attacks.you=$1 te ataca con $weapon.\n
+you.attack.enemy=Atacas a $2 con $weapon.\n
+
+#Combate: intentar bloquear
+someone.tries.to.block.someone=$1 intenta defenderse de $2 con $weapon.\n
+enemy.tries.to.block.you=$1 intenta defenderse con $weapon.\n
+you.try.to.block.enemy=Intentas defenderte de $2 con $weapon.\n
+
+#Combate: intentar esquivar
+someone.tries.to.dodge.someone=$1 intenta esquivar el ataque de $2.\n
+enemy.tries.to.dodge.you=$1 intenta esquivarte.\n
+you.try.to.dodge.enemy=Intentas esquivar el ataque de $2.\n
