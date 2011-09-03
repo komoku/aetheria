@@ -2951,7 +2951,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 						if ( !ejec )
-							habitacionActual.reportAction ( this , objetivo , null , "No te da tiempo a bloquear el ataque de $1...\n" , "A $2 no le da tiempo a bloquear tu ataque...\n" , true );
+							habitacionActual.reportAction ( this , objetivo , null ,
+									null , 
+									//"No te da tiempo a bloquear el ataque de $1...\n" , 
+									//"A $2 no le da tiempo a bloquear tu ataque...\n" , 
+									mundo.getMessages().getMessage("you.fail.block.time.someone",new Object[]{this,objetivo} ) , 
+									mundo.getMessages().getMessage("someone.fails.block.time.you",new Object[]{this,objetivo} ) , 
+									true );
 
 					}
 
@@ -2972,7 +2978,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 						if ( !ejec )
-							habitacionActual.reportAction ( this , objetivo , null , "No te da tiempo a esquivar el ataque de $1...\n" , "A $2 no le da tiempo a esquivar tu ataque...\n" , true );
+							habitacionActual.reportAction ( this , objetivo , null ,
+									null , 
+									//"No te da tiempo a esquivar el ataque de $1...\n" , 
+									//"A $2 no le da tiempo a esquivar tu ataque...\n" , 
+									mundo.getMessages().getMessage("you.fail.dodge.time.someone",new Object[]{this,objetivo} ) , 
+									mundo.getMessages().getMessage("someone.fails.dodge.time.you",new Object[]{this,objetivo} ) , 
+									true );
 
 					}
 
@@ -3124,7 +3136,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					}
 					if ( !ejec )
 					{
-						habitacionActual.reportAction ( this , objetivo , null , "Tienes la iniciativa...\n" , "$2 interrumpe su intento de bloquear...\n" , true );
+						habitacionActual.reportAction ( this , objetivo , null ,
+								null , 
+								//"Tienes la iniciativa...\n" , 
+								//"$2 interrumpe su intento de bloquear...\n" , 
+								mundo.getMessages().getMessage("someone.fails.blocking.you",new Object[]{this,objetivo} ) , 
+								mundo.getMessages().getMessage("you.fail.blocking.someone",new Object[]{this,objetivo} ) , 
+								true );
 					}
 
 				}
@@ -3151,7 +3169,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					}
 					if ( !ejec )
 					{
-						habitacionActual.reportAction ( this , objetivo , null , "Tienes la iniciativa...\n" , "$2 interrumpe su intento de esquivar...\n" , true );
+						habitacionActual.reportAction ( this , objetivo , null ,
+								null , 
+								//"Tienes la iniciativa...\n" , 
+								//"$2 interrumpe su intento de esquivar...\n" , 
+								mundo.getMessages().getMessage("someone.fails.dodging.you",new Object[]{this,objetivo} ) , 
+								mundo.getMessages().getMessage("you.fail.dodging.someone",new Object[]{this,objetivo} ) , 
+								true );
 					}
 
 				}
@@ -3198,18 +3222,24 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						{
 							if ( numeric_damage )
 							{
-								habitacionActual.reportAction ( this , objetivo ,
-										"$2 se defiende de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem() + " recibiendo " + danyo + " puntos de da�o...\n" ,
-										"Te defiendes de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem(objetivo) + " recibiendo " + danyo + " puntos de da�o...\n" ,
-										"$2 se defiende con " + objetivo.getCurrentWeapon().constructName2OneItem(this) + " recibiendo " + danyo + " puntos de da�o...\n" ,
+								habitacionActual.reportAction ( this , objetivo , null ,
+										mundo.getMessages().getMessage("someone.hits.blocked.someone.numeric","$weapon",objetivo.getCurrentWeapon().constructName2OneItem(),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,objetivo.getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("enemy.hits.blocked.you.numeric","$weapon",objetivo.getCurrentWeapon().constructName2OneItem(objetivo),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,objetivo.getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("you.hit.blocked.enemy.numeric","$weapon",objetivo.getCurrentWeapon().constructName2OneItem(this),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,objetivo.getCurrentWeapon(),new Integer(danyo)} ) , 					
+										//"$2 se defiende de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem() + " recibiendo " + danyo + " puntos de da�o...\n" ,
+										//"Te defiendes de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem(objetivo) + " recibiendo " + danyo + " puntos de da�o...\n" ,
+										//"$2 se defiende con " + objetivo.getCurrentWeapon().constructName2OneItem(this) + " recibiendo " + danyo + " puntos de da�o...\n" ,	
 										true );
 							}
 							else
 							{
-								habitacionActual.reportAction ( this , objetivo ,
-										"$2 se defiende de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem() + " recibiendo " + objetivo.estimateDamage(danyo) + "...\n" ,
-										"Te defiendes de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem(objetivo) + " recibiendo " + objetivo.estimateDamage(danyo) + "...\n" ,
-										"$2 se defiende con " + objetivo.getCurrentWeapon().constructName2OneItem(this) + " recibiendo " + objetivo.estimateDamage(danyo) + "...\n" ,
+								habitacionActual.reportAction ( this , objetivo , null ,
+										mundo.getMessages().getMessage("someone.hits.blocked.someone","$weapon",objetivo.getCurrentWeapon().constructName2OneItem(),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,objetivo.getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("enemy.hits.blocked.you","$weapon",objetivo.getCurrentWeapon().constructName2OneItem(objetivo),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,objetivo.getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("you.hit.blocked.enemy","$weapon",objetivo.getCurrentWeapon().constructName2OneItem(this),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,objetivo.getCurrentWeapon(),new Integer(danyo)} ) , 						
+										//"$2 se defiende de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem() + " recibiendo " + objetivo.estimateDamage(danyo) + "...\n" ,
+										//"Te defiendes de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem(objetivo) + " recibiendo " + objetivo.estimateDamage(danyo) + "...\n" ,
+										//"$2 se defiende con " + objetivo.getCurrentWeapon().constructName2OneItem(this) + " recibiendo " + objetivo.estimateDamage(danyo) + "...\n" ,
 										true );
 
 								habitacionActual.reportActionAuto ( objetivo , null , null , "$1 " + objetivo.estimateStatus() + ".\n" , true );
@@ -3218,10 +3248,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						}
 						else
 						{
-							habitacionActual.reportAction ( this , objetivo ,
-									"$2 se defiende de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem() + ", desviando el ataque...\n" ,
-									"Te defiendes de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem(objetivo) + ", desviando el ataque...\n" ,
-									"$2 se defiende con " + objetivo.getCurrentWeapon().constructName2OneItem(this) + ", desviando el ataque...\n" ,
+							habitacionActual.reportAction ( this , objetivo , null ,
+									mundo.getMessages().getMessage("someone.hits.blocked.someone.nodamage","$weapon",objetivo.getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,objetivo.getCurrentWeapon()} ) , 
+									mundo.getMessages().getMessage("enemy.hits.blocked.you.nodamage","$weapon",objetivo.getCurrentWeapon().constructName2OneItem(objetivo),new Object[]{this,objetivo,objetivo.getCurrentWeapon()} ) , 
+									mundo.getMessages().getMessage("you.hit.blocked.enemy.nodamage","$weapon",objetivo.getCurrentWeapon().constructName2OneItem(this),new Object[]{this,objetivo,objetivo.getCurrentWeapon()} ) , 						
+									//"$2 se defiende de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem() + ", desviando el ataque...\n" ,
+									//"Te defiendes de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem(objetivo) + ", desviando el ataque...\n" ,
+									//"$2 se defiende con " + objetivo.getCurrentWeapon().constructName2OneItem(this) + ", desviando el ataque...\n" ,
 									true );
 						}
 					}
@@ -3261,18 +3294,24 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						{
 							if ( numeric_damage )
 							{
-								habitacionActual.reportAction ( this , objetivo ,
-										"$2 no consigue parar el ataque de $1, que le acierta con " + getCurrentWeapon().constructName2OneItem() + " infligi�ndole " + danyo + " puntos de da�o...\n" ,
-										"No consigues parar el ataque de $1, que te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligi�ndote " + danyo + " puntos de da�o...\n" ,
-										"$2 no consigue parar tu ataque, le aciertas con " + getCurrentWeapon().constructName2OneItem(this) + " infligi�ndole " + danyo + " puntos de da�o...\n" ,
+								habitacionActual.reportAction ( this , objetivo , null ,
+										mundo.getMessages().getMessage("someone.hits.block.failed.someone.numeric","$weapon",getCurrentWeapon().constructName2OneItem(),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("enemy.hits.block.failed.you.numeric","$weapon",getCurrentWeapon().constructName2OneItem(objetivo),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("you.hit.block.failed.enemy.numeric","$weapon",getCurrentWeapon().constructName2OneItem(this),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 								
+										//"$2 no consigue parar el ataque de $1, que le acierta con " + getCurrentWeapon().constructName2OneItem() + " infligi�ndole " + danyo + " puntos de da�o...\n" ,
+										//"No consigues parar el ataque de $1, que te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligi�ndote " + danyo + " puntos de da�o...\n" ,
+										//"$2 no consigue parar tu ataque, le aciertas con " + getCurrentWeapon().constructName2OneItem(this) + " infligi�ndole " + danyo + " puntos de da�o...\n" ,
 										true );
 							}
 							else
 							{
-								habitacionActual.reportAction ( this , objetivo ,
-										"$2 no consigue parar el ataque de $1, que le acierta con " + getCurrentWeapon().constructName2OneItem() + " infligi�ndole " + objetivo.estimateDamage(danyo) + "...\n" ,
-										"No consigues parar el ataque de $1, que te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligi�ndote " + objetivo.estimateDamage(danyo) + "...\n" ,
-										"$2 no consigue parar tu ataque, le aciertas con " + getCurrentWeapon().constructName2OneItem(this) + " infligi�ndole " + objetivo.estimateDamage(danyo) + "...\n" ,
+								habitacionActual.reportAction ( this , objetivo , null ,
+										mundo.getMessages().getMessage("someone.hits.block.failed.someone","$weapon",getCurrentWeapon().constructName2OneItem(),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("enemy.hits.block.failed.you","$weapon",getCurrentWeapon().constructName2OneItem(objetivo),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("you.hit.block.failed.enemy","$weapon",getCurrentWeapon().constructName2OneItem(this),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 								
+										//"$2 no consigue parar el ataque de $1, que le acierta con " + getCurrentWeapon().constructName2OneItem() + " infligi�ndole " + objetivo.estimateDamage(danyo) + "...\n" ,
+										//"No consigues parar el ataque de $1, que te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligi�ndote " + objetivo.estimateDamage(danyo) + "...\n" ,
+										//"$2 no consigue parar tu ataque, le aciertas con " + getCurrentWeapon().constructName2OneItem(this) + " infligi�ndole " + objetivo.estimateDamage(danyo) + "...\n" ,
 										true );
 
 								habitacionActual.reportActionAuto ( objetivo , null , null , "$1 " + objetivo.estimateStatus() + ".\n" , true );
@@ -3299,10 +3338,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						}
 						if ( !ejec )
 						{
-							habitacionActual.reportAction ( this , objetivo ,
-									"$2 no consigue parar el ataque de $1, que le acierta con " + getCurrentWeapon().constructName2OneItem() + " pero no le hace da�o...\n" ,
-									"No consigues parar el ataque de $1, que te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " pero no te hace da�o...\n" ,
-									"$2 no consigue parar tu ataque, le aciertas con " + getCurrentWeapon().constructName2OneItem(this) + " pero no le haces da�o...\n" ,
+							habitacionActual.reportAction ( this , objetivo , null ,
+									mundo.getMessages().getMessage("someone.hits.block.failed.someone.nodamage","$weapon",getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+									mundo.getMessages().getMessage("enemy.hits.block.failed.you.nodamage","$weapon",getCurrentWeapon().constructName2OneItem(objetivo),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+									mundo.getMessages().getMessage("you.hit.block.failed.enemy.nodamage","$weapon",getCurrentWeapon().constructName2OneItem(this),new Object[]{this,objetivo,getCurrentWeapon()} ) , 								
+									//"$2 no consigue parar el ataque de $1, que le acierta con " + getCurrentWeapon().constructName2OneItem() + " pero no le hace da�o...\n" ,
+									//"No consigues parar el ataque de $1, que te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " pero no te hace da�o...\n" ,
+									//"$2 no consigue parar tu ataque, le aciertas con " + getCurrentWeapon().constructName2OneItem(this) + " pero no le haces da�o...\n" ,
 									true );
 						}
 
@@ -3339,7 +3381,14 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				}
 				if ( !ejec )
 				{
-					habitacionActual.reportAction ( this , objetivo , "El ataque de $1 falla a $2.\n" , "El ataque de $1 te falla.\n" , "Tu ataque falla a $2.\n" , true );
+					habitacionActual.reportAction ( this , objetivo , null ,
+							mundo.getMessages().getMessage("someone.misses.blocked.someone","$weapon",getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+							mundo.getMessages().getMessage("enemy.misses.blocked.you","$weapon",getCurrentWeapon().constructName2OneItem(objetivo),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+							mundo.getMessages().getMessage("you.miss.blocked.enemy","$weapon",getCurrentWeapon().constructName2OneItem(this),new Object[]{this,objetivo,getCurrentWeapon()} ) , 								
+							//"El ataque de $1 falla a $2.\n" , 
+							//"El ataque de $1 te falla.\n" , 
+							//"Tu ataque falla a $2.\n" , 
+							true );
 				}
 
 				setNewState ( ATTACK_RECOVER , generateAttackRecoverTime(getCurrentWeapon()) );
@@ -3387,10 +3436,11 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					}
 					if ( !ejec )
 					{
-						habitacionActual.reportAction ( this , objetivo ,
-								"$2 esquiva h�bilmente el ataque de $1.\n",
-								"Esquivas el ataque de $1.\n" ,
-								"$2 esquiva tu ataque.\n" ,
+						habitacionActual.reportAction ( this , objetivo , null ,
+								mundo.getMessages().getMessage("someone.dodged.by.someone","$weapon",getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+								mundo.getMessages().getMessage("enemy.dodged.by.you","$weapon",getCurrentWeapon().constructName2OneItem(objetivo),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+								mundo.getMessages().getMessage("you.dodged.by.enemy","$weapon",getCurrentWeapon().constructName2OneItem(this),new Object[]{this,objetivo,getCurrentWeapon()} ) , 								
+								
 								true );
 					}		
 
@@ -3430,18 +3480,21 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						{
 							if ( numeric_damage )
 							{
-								habitacionActual.reportAction ( this , objetivo ,
-										"$2 intenta esquivar el golpe de $1; pero no lo consigue, $1 le acierta con " + getCurrentWeapon().constructName2OneItem() + " infligi�ndole " + danyo + " puntos de da�o...\n" ,
-										"Tu intento de esquivar falla, y $1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligi�ndote " + danyo + " puntos de da�o...\n" ,
-										"A pesar de su intento de esquivar el ataque, aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + ", infligi�ndole " + danyo + " puntos de da�o...\n" ,
+								habitacionActual.reportAction ( this , objetivo , null ,
+										mundo.getMessages().getMessage("someone.hits.dodge.failed.someone.numeric","$weapon",getCurrentWeapon().constructName2OneItem(),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("enemy.hits.dodge.failed.you.numeric","$weapon",getCurrentWeapon().constructName2OneItem(objetivo),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("you.hit.dodge.failed.enemy.numeric","$weapon",getCurrentWeapon().constructName2OneItem(this),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 								
 										true );
 							}		
 							else
 							{
-								habitacionActual.reportAction ( this , objetivo ,
-										"$2 intenta esquivar el golpe de $1; pero no lo consigue, $1 le acierta con " + getCurrentWeapon().constructName2OneItem() + " infligi�ndole " + objetivo.estimateDamage(danyo) + ".\n" ,
-										"Tu intento de esquivar falla, y $1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligi�ndote " + objetivo.estimateDamage(danyo) + ".\n"  ,
-										"A pesar de su intento de esquivar el ataque, aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + ", infligi�ndole " + objetivo.estimateDamage(danyo) + ".\n"  ,
+								habitacionActual.reportAction ( this , objetivo , null ,
+										mundo.getMessages().getMessage("someone.hits.dodge.failed.someone","$weapon",getCurrentWeapon().constructName2OneItem(),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("enemy.hits.dodge.failed.you","$weapon",getCurrentWeapon().constructName2OneItem(objetivo),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("you.hit.dodge.failed.enemy","$weapon",getCurrentWeapon().constructName2OneItem(this),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 								
+										//"$2 intenta esquivar el golpe de $1; pero no lo consigue, $1 le acierta con " + getCurrentWeapon().constructName2OneItem() + " infligi�ndole " + objetivo.estimateDamage(danyo) + ".\n" ,
+										//"Tu intento de esquivar falla, y $1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligi�ndote " + objetivo.estimateDamage(danyo) + ".\n"  ,
+										//"A pesar de su intento de esquivar el ataque, aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + ", infligi�ndole " + objetivo.estimateDamage(danyo) + ".\n"  ,
 										true );
 
 								habitacionActual.reportActionAuto ( objetivo , null , null , "$1 " + objetivo.estimateStatus() + ".\n" , true );
@@ -3468,10 +3521,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						}
 						if ( !ejec )
 						{
-							habitacionActual.reportAction ( this , objetivo ,
-									"$2 intenta esquivar el golpe de $1; pero no lo consigue, $1 le acierta con " + getCurrentWeapon().constructName2OneItem() + " pero no le hace da�o.\n" ,
-									"Tu intento de esquivar falla, y $1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " pero no te hace da�o.\n" ,
-									"A pesar de su intento de esquivar el ataque, aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + "; pero no le haces da�o.\n" ,
+							habitacionActual.reportAction ( this , objetivo , null ,
+									mundo.getMessages().getMessage("someone.hits.dodge.failed.someone.nodamage","$weapon",getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+									mundo.getMessages().getMessage("enemy.hits.dodge.failed.you.nodamage","$weapon",getCurrentWeapon().constructName2OneItem(objetivo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+									mundo.getMessages().getMessage("you.hit.dodge.failed.enemy.nodamage","$weapon",getCurrentWeapon().constructName2OneItem(this),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 								
+									//"$2 intenta esquivar el golpe de $1; pero no lo consigue, $1 le acierta con " + getCurrentWeapon().constructName2OneItem() + " pero no le hace da�o.\n" ,
+									//"Tu intento de esquivar falla, y $1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " pero no te hace da�o.\n" ,
+									//"A pesar de su intento de esquivar el ataque, aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + "; pero no le haces da�o.\n" ,
 									true );
 						}		
 					}
@@ -3497,7 +3553,14 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 				//attack unsuccessful
 
-				habitacionActual.reportAction ( this , objetivo , "El ataque de $1 falla a $2.\n" , "El ataque de $1 te falla. Tienes la iniciativa...\n" , "Tu ataque falla a $2. Te desequilibras...\n" , true );
+				habitacionActual.reportAction ( this , objetivo , null ,
+						mundo.getMessages().getMessage("someone.misses.dodged.someone","$weapon",getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+						mundo.getMessages().getMessage("enemy.misses.dodged.you","$weapon",getCurrentWeapon().constructName2OneItem(objetivo),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+						mundo.getMessages().getMessage("you.miss.dodged.enemy","$weapon",getCurrentWeapon().constructName2OneItem(this),new Object[]{this,objetivo,getCurrentWeapon()} ) , 								
+						//"El ataque de $1 falla a $2.\n" , 
+						//"El ataque de $1 te falla. Tienes la iniciativa...\n" , 
+						//"Tu ataque falla a $2. Te desequilibras...\n" , 
+						true );
 
 				setNewState ( ATTACK_RECOVER , generateAttackRecoverTime(getCurrentWeapon()) );
 
