@@ -7026,13 +7026,21 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			}
 		}
 		
-		write("No estás blandiendo ningún arma útil para suicidarte.\n");
+		//write("No estás blandiendo ningún arma útil para suicidarte.\n");
+		writeDenial(mundo.getMessages().getMessage("no.suicide.weapon",new Object[]{this}));
 
 	}
 
 	public void suicideWith ( Weapon w )
 	{
-		habitacionActual.reportAction ( this,null,new Entity[]{w} , "$1 se suicida con $3.\n", "Te suicidas con $3.\n", "Te suicidas con $3.\n", true );
+		habitacionActual.reportAction ( this,null,new Entity[]{w} ,
+				mundo.getMessages().getMessage("someone.suicides",new Object[]{this,w}),
+				mundo.getMessages().getMessage("you.suicide",new Object[]{this,w}),
+				mundo.getMessages().getMessage("you.suicide",new Object[]{this,w}),
+				//"$1 se suicida con $3.\n", 
+				//"Te suicidas con $3.\n", 
+				//"Te suicidas con $3.\n", 
+				true );
 		decreaseHP ( getHP() );
 	}
 
