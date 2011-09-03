@@ -2863,7 +2863,14 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			Debug.println("Oops... El bicho atacado no estï¿½.");
 
-			habitacionActual.reportAction(this, null, "$1 interrumpe su ataque ante la ausencia de su contrincante.\n", "$1 vacila ante tu ausencia.\n", "Te disponï¿½as a atacar; pero vacilas ante la ausencia de tu enemigo.\n", true);
+			habitacionActual.reportAction(this, null, null,
+					//"$1 interrumpe su ataque ante la ausencia de su contrincante.\n", 
+					//"$1 vacila ante tu ausencia.\n", 
+					//"Te disponï¿½as a atacar; pero vacilas ante la ausencia de tu enemigo.\n", 
+					mundo.getMessages().getMessage("someone.attacks.absent",new Object[]{this} ) , 
+					mundo.getMessages().getMessage("someone.attacks.you.absent",new Object[]{this} ) , 
+					mundo.getMessages().getMessage("you.attack.absent",new Object[]{this} ) , 
+					true);
 
 			setNewState ( IDLE , 0 );
 
@@ -2904,7 +2911,14 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						writeError(ExceptionPrinter.getExceptionReport(te));
 					}
 					if ( !ejec )
-						habitacionActual.reportAction ( this , objetivo , "Las armas de $1 y $2 chocan en el aire...\n" , "Tu arma y la de $1 chocan en el aire...\n" , "Tu arma y la de $2 chocan en el aire...\n" , true );
+						habitacionActual.reportAction ( this , objetivo , null , 
+								//"Las armas de $1 y $2 chocan en el aire...\n" , 
+								//"Tu arma y la de $1 chocan en el aire...\n" , 
+								//"Tu arma y la de $2 chocan en el aire...\n" , 
+								mundo.getMessages().getMessage("someone.clashes.someone",new Object[]{this,objetivo} ) , 
+								mundo.getMessages().getMessage("enemy.clashes.you",new Object[]{this,objetivo} ) , 
+								mundo.getMessages().getMessage("you.clash.enemy",new Object[]{this,objetivo} ) , 
+								true );
 
 					setNewState ( ATTACK_RECOVER , generateAttackRecoverTime(getCurrentWeapon()) );
 					objetivo.setNewState ( ATTACK_RECOVER , objetivo.generateAttackRecoverTime(objetivo.getCurrentWeapon()) );
@@ -5636,29 +5650,29 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		String result;
 
 		if ( percent < 5 )
-			result = "muy ligeros daños";
+			result = mundo.getMessages().getMessage("damage.5",new Object[]{this});
 		else if ( percent < 10 )
-			result = "ligeros daños";	
+			result = mundo.getMessages().getMessage("damage.10",new Object[]{this});	
 		else if ( percent < 18 )
-			result = "algún daño";	
+			result = mundo.getMessages().getMessage("damage.18",new Object[]{this});
 		else if ( percent < 25 )
-			result = "un daño significativo";
+			result = mundo.getMessages().getMessage("damage.25",new Object[]{this});
 		else if ( percent < 33 )
-			result = "daños moderados";
+			result = mundo.getMessages().getMessage("damage.33",new Object[]{this});
 		else if ( percent < 40 )
-			result = "bastante daño";
+			result = mundo.getMessages().getMessage("damage.40",new Object[]{this});
 		else if ( percent < 50 )
-			result = "severos daños";
+			result = mundo.getMessages().getMessage("damage.50",new Object[]{this});
 		else if ( percent < 60 )
-			result = "mucho daño";
+			result = mundo.getMessages().getMessage("damage.60",new Object[]{this});
 		else if ( percent < 70 )
-			result = "gran daño";
+			result = mundo.getMessages().getMessage("damage.70",new Object[]{this});
 		else if ( percent < 80 )
-			result = "enorme daño";
+			result = mundo.getMessages().getMessage("damage.80",new Object[]{this});
 		else if ( percent < 90 )
-			result = "terribles heridas";	
+			result = mundo.getMessages().getMessage("damage.90",new Object[]{this});
 		else
-			result = "daño mortal";	
+			result = mundo.getMessages().getMessage("damage.lethal",new Object[]{this});
 
 		return result;
 
@@ -5673,33 +5687,33 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		String result;
 
 		if ( percent <= 0.1 )
-			result = "está intacto";
+			result = mundo.getMessages().getMessage("woundstatus.1",new Object[]{this});
 		else if ( percent < 5 )
-			result = "tiene algún rasguño";
+			result = mundo.getMessages().getMessage("woundstatus.5",new Object[]{this});
 		else if ( percent < 10 )
-			result = "tiene ligeras heridas";	
+			result = mundo.getMessages().getMessage("woundstatus.10",new Object[]{this});
 		else if ( percent < 18 )
-			result = "tiene heridas poco graves";	
+			result = mundo.getMessages().getMessage("woundstatus.18",new Object[]{this});
 		else if ( percent < 25 )
-			result = "tiene heridas de cierta consideración";
+			result = mundo.getMessages().getMessage("woundstatus.25",new Object[]{this});
 		else if ( percent < 33 )
-			result = "tiene heridas importantes";
+			result = mundo.getMessages().getMessage("woundstatus.33",new Object[]{this});
 		else if ( percent < 40 )
-			result = "tiene heridas graves";
+			result = mundo.getMessages().getMessage("woundstatus.40",new Object[]{this});
 		else if ( percent < 50 )
-			result = "tiene heridas preocupantes";
+			result = mundo.getMessages().getMessage("woundstatus.50",new Object[]{this});
 		else if ( percent < 60 )
-			result = "está gravemente herido";
+			result = mundo.getMessages().getMessage("woundstatus.60",new Object[]{this});
 		else if ( percent < 70 )
-			result = "está muy gravemente herido";
+			result = mundo.getMessages().getMessage("woundstatus.70",new Object[]{this});
 		else if ( percent < 80 )
-			result = "está críticamente herido";
+			result = mundo.getMessages().getMessage("woundstatus.80",new Object[]{this});
 		else if ( percent < 90 )
-			result = "está en las últimas";	
+			result = mundo.getMessages().getMessage("woundstatus.90",new Object[]{this});
 		else if ( percent < 100 )
-			result = "está a un paso de la tumba";	
+			result = mundo.getMessages().getMessage("woundstatus.100",new Object[]{this});
 		else
-			result = "está mortalmente herido";
+			result = mundo.getMessages().getMessage("woundstatus.lethal",new Object[]{this});
 
 		return result;
 
@@ -5745,8 +5759,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		Debug.println("Mana Cost: " + manaCost);
 		if ( manaCost > mp )
 		{
-			Debug.println("Mana Cost Flubbed!");
-			write("No tienes suficiente manï¿½ para ejecutar ese hechizo.\n");
+			//Debug.println("Mana Cost Flubbed!");
+			//write("No tienes suficiente manï¿½ para ejecutar ese hechizo.\n");
+			writeDenial(mundo.getMessages().getMessage("not.enough.mana","$spell",s.getTitle(),new Object[]{this,s,target}));
 			return;
 		}  
 		else
@@ -5817,13 +5832,16 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		switch ( getState() )
 		{
 		case MOVING:
-			write( Character.toUpperCase(cause.charAt(0)) + cause.substring(1) + " interrumpe tu intento de irte.\n" );
+			write(mundo.getMessages().getMessage("interrupted.move","$cause",Character.toUpperCase(cause.charAt(0)) + cause.substring(1),new Object[]{this,cause}));
+			//write( Character.toUpperCase(cause.charAt(0)) + cause.substring(1) + " interrumpe tu intento de irte.\n" );
 			break;
 		case ATTACKING:
-			write( Character.toUpperCase(cause.charAt(0)) + cause.substring(1) + " interrumpe tu intento de ataque.\n" );
+			write(mundo.getMessages().getMessage("interrupted.attack","$cause",Character.toUpperCase(cause.charAt(0)) + cause.substring(1),new Object[]{this,cause}));
+			//write( Character.toUpperCase(cause.charAt(0)) + cause.substring(1) + " interrumpe tu intento de ataque.\n" );
 			break;
 		case CASTING:
-			write( Character.toUpperCase(cause.charAt(0)) + cause.substring(1) + " interrumpe tu intento de hacer magia.\n" );
+			write(mundo.getMessages().getMessage("interrupted.cast","$cause",Character.toUpperCase(cause.charAt(0)) + cause.substring(1),new Object[]{this,cause}));
+			//write( Character.toUpperCase(cause.charAt(0)) + cause.substring(1) + " interrumpe tu intento de hacer magia.\n" );
 			break;
 		}
 

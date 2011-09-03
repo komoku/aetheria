@@ -227,3 +227,50 @@ someone.misses.someone=$1's attack misses $2.\n
 enemy.misses.you=$1's attack misses you.\n
 you.miss.enemy=Your attack misses $2.\n
 
+#Damage reports
+damage.5=very light damage
+damage.10=light damage
+damage.18=some damage
+damage.25=significant damage
+damage.33=moderate damage
+damage.40=quite a lot of damage
+damage.50=severe damage
+damage.60=lots of damage
+damage.70=a great damage
+damage.80=an enormous damage
+damage.90=terrible wounds
+damage.lethal=lethal damage
+
+#Wound reports
+woundstatus.1=is intact
+woundstatus.5=has some bruises
+woundstatus.10=has light wounds
+woundstatus.18=has quite light wounds
+woundstatus.25=has significant wounds
+woundstatus.33=has important wounds
+woundstatus.40=has serious wounds
+woundstatus.50=has worrying wounds
+woundstatus.60=is heavily wounded
+woundstatus.70=is very heavily wounded
+woundstatus.80=is critically wounded
+woundstatus.90=is in a really pitiful state
+woundstatus.100=is a step away from death
+woundstatus.lethal=is lethally wounded
+
+#Not enough mana to cast $spell
+not.enough.mana=You don't have enough mana to cast that spell.\n
+
+#Interruptions: you are interrupted while mooving, attacking or casting by $cause.
+interrupted.move=$cause interrupts your attempt to leave.\n
+interrupted.attack=$cause interrupts your attempt to attack.\n
+interrupted.cast=$cause interrupts your attempt to use magic.\n
+
+#$1 attacks someone who isn't there any longer
+someone.attacks.absent=$1 interrupts the attack given the absence of the enemy.\n
+someone.attacks.you.absent=$1 hesitates in your absence.\n
+you.attack.absent=You were going to attack, but you hesitate seeing the absence of your enemy.\n
+
+#Combat: clash of weapons in the air
+someone.clashes.someone=$1 and $2's weapons clash in the air...\n
+enemy.clashes.you=Your weapon and $1's clash in the air...\n
+you.clash.enemy="Your weapon and $2's clash in the air...\n

@@ -210,12 +210,12 @@ cant.go.back=No ves el modo de volver...\n
 
 #Combate: acierto con arma, daño numérico ($1 ataca a $2 con $weapon, acierta, le inflige $damage daño)
 someone.hits.someone.numeric=$1 acierta a $2 con $weapon infligiéndole $damage puntos de daño...\n
-enemy.hits.you.numeric=$1 te acierta con $weapon infligiéndole $damage puntos de daño...\n
+enemy.hits.you.numeric=$1 te acierta con $weapon infligiéndote $damage puntos de daño...\n
 you.hit.enemy.numeric=Aciertas a $2 con $weapon infligiéndole $damage puntos de daño...\n
 
 #Combate: acierto con arma, daño subjetivo
 someone.hits.someone=$1 acierta a $2 con $weapon infligiéndole $damage...\n
-enemy.hits.you=$1 te acierta con $weapon infligiéndole $damage...\n
+enemy.hits.you=$1 te acierta con $weapon infligiéndote $damage...\n
 you.hit.enemy=Aciertas a $2 con $weapon infligiéndole $damage...\n
 
 #Combate: acierto con arma, pero sin daños
@@ -227,4 +227,52 @@ you.hit.enemy.nodamage=Aciertas a $2 con $weapon pero no le haces daño...\n
 someone.misses.someone=El ataque de $1 falla a $2.\n
 enemy.misses.you=El ataque de $1 te falla.\n
 you.miss.enemy=Tu ataque falla a $2.\n
+
+#Informes de daño
+damage.5=muy ligeros daños
+damage.10=ligeros daños
+damage.18=algún daño
+damage.25=un daño significativo
+damage.33=daños moderados
+damage.40=bastante daño
+damage.50=severos daños
+damage.60=mucho daño
+damage.70=gran daño
+damage.80=enorme daño
+damage.90=terribles heridas
+damage.lethal=daño mortal
+
+#Informes de heridas
+woundstatus.1=está intacto
+woundstatus.5=tiene algún rasguño
+woundstatus.10=tiene ligeras heridas
+woundstatus.18=tiene heridas poco graves
+woundstatus.25=tiene heridas de cierta consideración
+woundstatus.33=tiene heridas importantes
+woundstatus.40=tiene heridas graves
+woundstatus.50=tiene heridas preocupantes
+woundstatus.60=está gravemente herido
+woundstatus.70=está muy gravemente herido
+woundstatus.80=está críticamente herido
+woundstatus.90=está en las últimas
+woundstatus.100=está a un paso de la tumba
+woundstatus.lethal=está mortalmente herido
+
+#Maná insuficiente para conjurar $spell
+not.enough.mana=No tienes suficiente maná para ejecutar ese hechizo.\n
+
+#Interrupciones: te interrumpen un movimiento, un ataque o un lanzamiento de hechizo por causa $cause.
+interrupted.move=$cause interrumpe tu intento de irte.\n
+interrupted.attack=$cause interrumpe tu intento de ataque.\n
+interrupted.cast=$cause interrumpe tu intento de hacer magia.\n
+
+#$1 ataca a alguien que ya no está
+someone.attacks.absent=$1 interrumpe su ataque ante la ausencia de su contrincante.\n
+someone.attacks.you.absent=$1 vacila ante tu ausencia.\n
+you.attack.absent=Te disponías a atacar; pero vacilas ante la ausencia de tu enemigo.\n
+
+#Combate: choque de armas en el aire
+someone.clashes.someone=Las armas de $1 y $2 chocan en el aire...\n
+enemy.clashes.you=Tu arma y la de $1 chocan en el aire...\n
+you.clash.enemy="Tu arma y la de $2 chocan en el aire...\n
 
