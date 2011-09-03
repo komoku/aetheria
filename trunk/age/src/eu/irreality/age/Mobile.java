@@ -701,9 +701,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		if ( !e.hasAttribute("hp") )
 			throw ( new XMLtoWorldException ( "Mobile node lacks attribute hp" ) );		
 		if ( !e.hasAttribute("maxhp") )
-			throw ( new XMLtoWorldException ( "Item node lacks attribute maxhp" ) );
+			throw ( new XMLtoWorldException ( "Mobile node lacks attribute maxhp" ) );
 		if ( !e.hasAttribute("gender") )
-			throw ( new XMLtoWorldException ( "Item node lacks attribute gender" ) );	
+			throw ( new XMLtoWorldException ( "Mobile node lacks attribute gender" ) );	
 
 		//mandatory XML-attribs parsing
 		try
@@ -724,7 +724,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		}
 		catch ( NumberFormatException nfe )
 		{
-			throw ( new XMLtoWorldException ( "Bad number format at attribute hp in item node" ) );
+			throw ( new XMLtoWorldException ( "Bad number format at attribute hp in mobile node" ) );
 		}
 		try
 		{
@@ -732,7 +732,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		}
 		catch ( NumberFormatException nfe )
 		{
-			throw ( new XMLtoWorldException ( "Bad number format at attribute maxhp in item node" ) );
+			throw ( new XMLtoWorldException ( "Bad number format at attribute maxhp in mobile node" ) );
 		}
 		if ( e.hasAttribute("mp") )
 		{
@@ -742,7 +742,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			}
 			catch ( NumberFormatException nfe )
 			{
-				throw ( new XMLtoWorldException ( "Bad number format at attribute mp in item node" ) );
+				throw ( new XMLtoWorldException ( "Bad number format at attribute mp in mobile node" ) );
 			}
 		}
 		if ( e.hasAttribute("maxmp") )
@@ -753,7 +753,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			}
 			catch ( NumberFormatException nfe )
 			{
-				throw ( new XMLtoWorldException ( "Bad number format at attribute maxmp in item node" ) );
+				throw ( new XMLtoWorldException ( "Bad number format at attribute maxmp in mobile node" ) );
 			}
 		}
 
