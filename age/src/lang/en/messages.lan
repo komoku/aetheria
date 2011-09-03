@@ -1,0 +1,229 @@
+#Default AGE messages for English language
+
+#When you take the item $item
+you.get.item=You take $item.\n
+
+#When you take the item $item which is inside containers ($location)
+you.get.item.from.location=You take $item $location.\n
+
+#When $1 takes the item $item
+someone.gets.item=$1 takes $item.\n
+
+#When $1 takes the item $item which is inside containers ($location)
+someone.gets.item.from.location=$1 takes $item $location.\n
+
+#When you drop the item $item
+you.drop.item=You drop $item.\n
+
+#When $1 drops the item $item
+someone.drops.item=$1 drops $item.\n
+
+#When you wear the item $item on $limbs
+you.wear.item=You wear $item on $limbs.\n
+
+#When $1 wears the item $item on $limbs
+someone.wears.item=$1 wears $item.\n
+
+#When you unwear the item $item
+you.unwear.item=You take off $item.\n
+
+#When $1 unwears the item $item
+someone.unwears.item=$1 takes off $item.\n
+
+#When you wield the item $item on $limbs
+you.wield.item=You wield $item on $limbs.\n
+
+#When $1 wields the item $item on $limbs
+someone.wields.item=$1 wields $item.\n
+
+#When you unwield the item $item
+you.unwield.item=You stop wielding $item.\n
+
+#When $1 unwields the item $item
+someone.unwields.item=$1 stops wielding $item.\n
+
+#When you cannot get an item because it's not gettable (fixed in place)
+denial.get.ungettable=It doesn't make much sense to try to take $item.\n
+
+#When the parser does not understand something.
+error.parsing=I don't understand...\n
+
+#When an item cannot be taken due to weight
+cant.get.item.weight=You are carrying too much weight to take $item.\n
+
+#When an item cannot be taken due to volume
+cant.get.item.volume=You are carrying too much bulk to take $item.\n
+
+#When an item cannot be dropped due to weight
+cant.drop.item.weight=You cannot leave $item here, there is too much weight.\n
+
+#When an item cannot be dropped due to volume
+cant.drop.item.volume=You cannot leave $item here, there is not enough room.\n
+
+#When you try to open an unopenable thing ($item)
+item.not.openable=$item is not something you can open.
+
+#When you try to close an uncloseable thing ($item)
+item.not.closeable=$item is not something you can close.
+
+#When you try to unlock something that is not unlockable ($item)
+item.not.unlockable=That doesn't seem to be unlockable.
+
+#When you try to lock something that is not lockable ($item)
+item.not.lockable=That doesn't seem to be lockable.
+
+#When you try to wield something that is not a weapon
+wield.non.weapon=$item does not seem to be a weapon.\n
+
+#When you try to wield something you're already wielding
+wield.already.wielded=You're already wielding $item.\n
+
+#When you try to wear something you're already wearing
+wear.already.worn=You're already wearing $item.\n
+
+#When you try to wear something ($item) on a limb where you are wearing something else
+wear.already.worn=You need to take something off to be able to wear $item.\n
+
+#When you try to wield a weapon that requires a kind of limb that you don't have
+wield.no.suitable.limbs=That doesn't seem designed for your species.\n
+
+#When you try to wear a piece of armour that requires a kind of limb that you don't have
+wear.no.suitable.limbs=That doesn't seem designed for your species.\n
+
+#When you place $item in $container
+you.put.into=You place $item in $container.\n
+
+#When you cannot put $item into $container due to excess weight
+cant.put.into.weight=$container cannot handle that much weight.\n
+
+#When you cannot put $item into $container due to excess bulk
+cant.put.into.volume=$item won't fit inside $container.\n
+
+#When you try to put something inside $container which is not really a container.
+cant.put.into.noncontainer=Putting things in $container doesn't seem very useful.\n
+
+#When you try to put something inside a closed $container.
+cant.put.into.closed=$container is closed.\n
+
+#When you try to look at something that doesn't exist
+look.what=What are you trying to look at?\n
+
+#When you try to open something that doesn't exist
+open.what=What are you trying to open?\n
+
+#When you try to close something that isn't there
+close.what=What are you trying to close?\n
+
+#When you try to take something that isn't in the room
+get.what=What are you trying to take?\n
+
+#When you try to drop something that doesn't exist or you don't have
+drop.what=What are you trying to drop?\n
+
+#When you try to unwear something that doesn't exist or you are not wearing
+unwear.what=What are you trying to take off?\n
+
+#When you try to wear something that doesn't exist or you don't have
+wear.what=What are you trying to wear?\n
+
+#When you try to wield something that doesn't exist or you don't have
+wield.what=What weapon are you trying to wield?\n
+
+#When you try to unwield something that doesn't exist or you are not wielding
+unwield.what=What weapon are you trying to stop wielding?\n
+
+#When you try to go to an unrecognised place
+go.where=What? Where do you want to go?\n
+
+#When you try to go through a path marked as invalid (currently unused)
+go.where=What? Go where?\n
+
+When the verb go appears without arguments
+go.nowhere=Go where?\n
+
+#When you try to go towards a standard direction (north, south, etc.) but there is no exit
+go.noexit=There doesn't seem to be an exit in that direction.\n
+
+#Cuando intentas atacar a alguien que no está
+attack.what=¿Cómo? ¿Atacar a quién?\n
+
+#Cuando intentas bloquear a alguien que no está
+block.what=¿Cómo? ¿Defenderse de quién?\n
+
+#Cuando intentas esquivar a alguien que no está
+dodge.what=No te atacan. ¿Esquivar qué?\n
+
+#Cuando intentas poner algo en algo y los objetos no se reconocen
+put.what.where=¿Cómo? ¿Poner qué dónde?\n
+
+#Lista de objetos en una habitación
+items.here=Aquí hay $inventory.
+
+#Si hay un personaje en una habitación
+mobile.here=Aquí está $list.
+
+#Si hay varios personajes en una habitación
+mobiles.here=Aquí están $list.
+
+#Mostrar inventario (con cosas)
+you.have.items=Tienes $inventory.\n
+
+#Mostrar inventario (vacío)
+you.have.nothing=No tienes nada.\n
+
+#Mostrar prenda que llevas puesta
+you.are.wearing.item=Llevas $item en $limbs.\n
+
+#Mostrar arma que llevas blandida
+you.are.wielding.item=Estás blandiendo $item en $limbs.\n
+
+#Intentar conjurar conjuro que no existe o conoces
+cast.no.spell=No conoces tal hechizo.\n
+
+#Cuando mueres
+you.die=Mueres.\n
+
+#Cuando alguien muere
+someone.dies=$1 muere.\n
+
+#Intentando abrir algo del suelo en un comando con varios objetivos (abrir las cajas, etc.)
+you.try.open.from.floor=Intentas abrir $item:
+
+#Intentando abrir algo del inventario en un comando con varios objetivos (abrir las cajas, etc.)
+you.try.open.from.inventory=Tratas de abrir $item que llevas:
+
+#Intentando cerrar algo del suelo en un comando con varios objetivos (cerrar las cajas, etc.)
+you.try.close.from.floor=Intentas cerrar $item:
+
+#Intentando cerrar algo del inventario en un comando con varios objetivos (cerrar las cajas, etc.)
+you.try.close.from.inventory=Tratas de cerrar $item que llevas:
+
+#Cuando se teclea un verbo que está en las listas de verbos pero para el que no hemos definido comportamiento
+undefined.action=¿Cómo? ¿$command?\n
+
+#Cuando la propiedad noPronounDisambiguation de un jugador está puesto a true y se usa un pronombre "lo/la/los/las" donde la acción anterior se refería a dos entidades. Se puede usar $command para referirse al verbo.
+ambiguous.pronoun=No entiendo muy bien una orden pronominal cuando la orden anterior se refería a dos objetos.\n
+
+#Cuando intentas volver pero no hay ninguna salida que conduzca a la habitación anterior
+cant.go.back=No ves el modo de volver...\n
+
+#Combate: acierto con arma, daño numérico ($1 ataca a $2 con $weapon, acierta, le inflige $damage daño)
+someone.hits.someone.numeric=$1 acierta a $2 con $weapon infligiéndole $damage puntos de daño...\n
+enemy.hits.you.numeric=$1 te acierta con $weapon infligiéndole $damage puntos de daño...\n
+you.hit.enemy.numeric=Aciertas a $2 con $weapon infligiéndole $damage puntos de daño...\n
+
+#Combate: acierto con arma, daño subjetivo
+someone.hits.someone=$1 acierta a $2 con $weapon infligiéndole $damage...\n
+enemy.hits.you=$1 te acierta con $weapon infligiéndole $damage...\n
+you.hit.enemy=Aciertas a $2 con $weapon infligiéndole $damage...\n
+
+#Combate: acierto con arma, pero sin daños
+someone.hits.someone.nodamage=$1 acierta a $2 con $weapon pero no le hace daño...\n
+enemy.hits.you.nodamage=$1 te acierta con $weapon pero no te hace daño...\n
+you.hit.enemy.nodamage=Aciertas a $2 con $weapon pero no le haces daño...\n
+
+#Combate: fallo con arma
+someone.misses.someone=El ataque de $1 falla a $2.\n
+enemy.misses.you=El ataque de $1 te falla.\n
+you.miss.enemy=Tu ataque falla a $2.\n
+
