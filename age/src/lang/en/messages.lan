@@ -144,86 +144,86 @@ go.nowhere=Go where?\n
 #When you try to go towards a standard direction (north, south, etc.) but there is no exit
 go.noexit=There doesn't seem to be an exit in that direction.\n
 
-#Cuando intentas atacar a alguien que no está
-attack.what=¿Cómo? ¿Atacar a quién?\n
+#When you try to attack someone who isn't there
+attack.what=What? Attack whom?\n
 
-#Cuando intentas bloquear a alguien que no está
-block.what=¿Cómo? ¿Defenderse de quién?\n
+#When you try to block someone who isn't there
+block.what=What? Block whom?\n
 
-#Cuando intentas esquivar a alguien que no está
-dodge.what=No te atacan. ¿Esquivar qué?\n
+#When you try to dodge and they aren't attacking you
+dodge.what=You're not being attacked. Dodge what?\n
 
-#Cuando intentas poner algo en algo y los objetos no se reconocen
-put.what.where=¿Cómo? ¿Poner qué dónde?\n
+#When you try to put something into something and the objects are not recognised
+put.what.where=What? Put what where?\n
 
-#Lista de objetos en una habitación
-items.here=Aquí hay $inventory.
+#List of items in a room
+items.here=You see $inventory here.
 
-#Si hay un personaje en una habitación
-mobile.here=Aquí está $list.
+#A character in a room
+mobile.here=$list is here.
 
-#Si hay varios personajes en una habitación
-mobiles.here=Aquí están $list.
+#Several characters in a room
+mobiles.here=$list are here.
 
-#Mostrar inventario (con cosas)
-you.have.items=Tienes $inventory.\n
+#Show nonempty inventory
+you.have.items=You have $inventory.\n
 
-#Mostrar inventario (vacío)
-you.have.nothing=No tienes nada.\n
+#Show empty inventory
+you.have.nothing=You have nothing.\n
 
-#Mostrar prenda que llevas puesta
-you.are.wearing.item=Llevas $item en $limbs.\n
+#Show garment that you are wearing
+you.are.wearing.item=You are wearing $item on $limbs.\n
 
-#Mostrar arma que llevas blandida
-you.are.wielding.item=Estás blandiendo $item en $limbs.\n
+#Show weapon that you are wielding
+you.are.wielding.item=You are wielding $item on $limbs.\n
 
-#Intentar conjurar conjuro que no existe o conoces
-cast.no.spell=No conoces tal hechizo.\n
+#Try to cast a spell that doesn't exist or that you don't know
+cast.no.spell=You don't know such spell.\n
 
-#Cuando mueres
-you.die=Mueres.\n
+#When you die
+you.die=You die.\n
 
-#Cuando alguien muere
-someone.dies=$1 muere.\n
+#When someone dies
+someone.dies=$1 dies.\n
 
-#Intentando abrir algo del suelo en un comando con varios objetivos (abrir las cajas, etc.)
-you.try.open.from.floor=Intentas abrir $item:
+#Trying to open something on the ground with a multi-target command (open the boxes, etc.)
+you.try.open.from.floor=You try to open $item:
 
-#Intentando abrir algo del inventario en un comando con varios objetivos (abrir las cajas, etc.)
-you.try.open.from.inventory=Tratas de abrir $item que llevas:
+#Trying to open something from your inventory with a multi-target command (open the boxes, etc.)
+you.try.open.from.inventory=You try to open $item that you are carrying:
 
-#Intentando cerrar algo del suelo en un comando con varios objetivos (cerrar las cajas, etc.)
-you.try.close.from.floor=Intentas cerrar $item:
+#Trying to close something on the ground with a multi-target command (close the boxes, etc.)
+you.try.close.from.floor=You try to close $item:
 
-#Intentando cerrar algo del inventario en un comando con varios objetivos (cerrar las cajas, etc.)
-you.try.close.from.inventory=Tratas de cerrar $item que llevas:
+#Trying to close something from your inventory with a multi-target command (close the boxes, etc.)
+you.try.close.from.inventory=You try to close $item that you are carrying:
 
-#Cuando se teclea un verbo que está en las listas de verbos pero para el que no hemos definido comportamiento
-undefined.action=¿Cómo? ¿$command?\n
+#When a verb ($command) is entered which is defined in the verb lists, but has no defined behaviour
+undefined.action=What? $command?\n
 
-#Cuando la propiedad noPronounDisambiguation de un jugador está puesto a true y se usa un pronombre "lo/la/los/las" donde la acción anterior se refería a dos entidades. Se puede usar $command para referirse al verbo.
-ambiguous.pronoun=No entiendo muy bien una orden pronominal cuando la orden anterior se refería a dos objetos.\n
+#When the property noPronounDisabiguation of a player is set to true and a pronoum "him/her/it" is used, where the previous action was referring to two entities. $command can be used to refer to the verb.
+ambiguous.pronoun=I can't resolve a pronominal action when the previous action referred to two objects.\n
 
-#Cuando intentas volver pero no hay ninguna salida que conduzca a la habitación anterior
-cant.go.back=No ves el modo de volver...\n
+#When you try to go back but you see no path leading to the previous room
+cant.go.back=You don't see a way of returning...\n
 
-#Combate: acierto con arma, daño numérico ($1 ataca a $2 con $weapon, acierta, le inflige $damage daño)
-someone.hits.someone.numeric=$1 acierta a $2 con $weapon infligiéndole $damage puntos de daño...\n
-enemy.hits.you.numeric=$1 te acierta con $weapon infligiéndole $damage puntos de daño...\n
-you.hit.enemy.numeric=Aciertas a $2 con $weapon infligiéndole $damage puntos de daño...\n
+#Combat: weapon hit, numerical damage ($1 attacks $2 with $weapon, hits, inflicts $damage damage)
+someone.hits.someone.numeric=$1 strikes $2 with $weapon inflicting $damage damage...\n
+enemy.hits.you.numeric=$1 strikes you with $weapon inflicting $damage damage...\n
+you.hit.enemy.numeric=You strike $2 with $weapon inflicting $damage damage...\n
 
-#Combate: acierto con arma, daño subjetivo
-someone.hits.someone=$1 acierta a $2 con $weapon infligiéndole $damage...\n
-enemy.hits.you=$1 te acierta con $weapon infligiéndole $damage...\n
-you.hit.enemy=Aciertas a $2 con $weapon infligiéndole $damage...\n
+#Combat: weapon hit, subjective damage
+someone.hits.someone=$1 strikes $2 with $weapon inflicting $damage...\n
+enemy.hits.you=$1 strikes you with $weapon inflicting $damage...\n
+you.hit.enemy=You strike $2 with $weapon inflicting $damage...\n
 
-#Combate: acierto con arma, pero sin daños
-someone.hits.someone.nodamage=$1 acierta a $2 con $weapon pero no le hace daño...\n
-enemy.hits.you.nodamage=$1 te acierta con $weapon pero no te hace daño...\n
-you.hit.enemy.nodamage=Aciertas a $2 con $weapon pero no le haces daño...\n
+#Combat: weapon hit, but without damage
+someone.hits.someone.nodamage=$1 strikes $2 with $weapon but does no damage...\n
+enemy.hits.you.nodamage=$1 strikes you with $weapon but does not damage you...\n
+you.hit.enemy.nodamage=You strike $2 with $weapon but do no damage...\n
 
-#Combate: fallo con arma
-someone.misses.someone=El ataque de $1 falla a $2.\n
-enemy.misses.you=El ataque de $1 te falla.\n
-you.miss.enemy=Tu ataque falla a $2.\n
+#Combat: weapon miss
+someone.misses.someone=$1's attack misses $2.\n
+enemy.misses.you=$1's attack misses you.\n
+you.miss.enemy=Your attack misses $2.\n
 
