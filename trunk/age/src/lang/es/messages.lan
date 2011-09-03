@@ -370,3 +370,42 @@ you.try.to.block.enemy=Intentas defenderte de $2 con $weapon.\n
 someone.tries.to.dodge.someone=$1 intenta esquivar el ataque de $2.\n
 enemy.tries.to.dodge.you=$1 intenta esquivarte.\n
 you.try.to.dodge.enemy=Intentas esquivar el ataque de $2.\n
+
+#Intentar vestir un arma ($item)
+cant.wear.weapon=¿Vestir $item? Parece más apropiado blandirl$oa.\n
+
+#Intentar blandir una prenda ($item)
+cant.wield.wearable=¿Blandir $item? Parece más apropiado vestirl$oa.\n
+
+#Intentar vestir algo no vestible ($item)
+item.not.wearable=No parece que $item sea algo que se pueda vestir.\n
+
+#Intentar vestir algo cuando no tienes miembros
+cant.wear.without.limbs=No puedes ponerte ropa si no tienes ningún miembro.\n
+
+#Mostrar miembro libre
+you.have.free.limb=Tienes libre $limb.\n
+
+#Mostrar miembro ocupado por blandir $item
+you.use.limb.wielding=Estás blandiendo $item en $limb.\n
+
+#Mostrar miembro ocupado por vestir $item
+you.use.limb.wearing=Llevas puesto $item en $limb.\n
+
+#Cuando no se puede blandir un objeto por su peso
+cant.wield.item.weight=No puedes blandir $item, pesa demasiado.\n
+
+#Cuando no se puede vestir un objeto por su peso
+cant.wear.item.weight=No puedes vestir $item, pesa demasiado.\n
+
+#Cuando no se puede blandir un objeto por su volumen
+cant.wield.item.volume=No puedes blandir $item, ocupa demasiado.\n
+
+#Cuando no se puede vestir un objeto por su volumen
+cant.wear.item.volume=No puedes vestir $item, ocupa demasiado.\n
+
+#Cuando no se puede vestir algo porque los miembros están ocupados
+wear.busy.limbs=Tienes que quitarte algo para poder vestir $item.\n
+
+#Cuando no se puede blandir algo porque los miembros están ocupados
+wield.busy.limbs=Tienes que guardar algún arma para poder blandir $item.\n
