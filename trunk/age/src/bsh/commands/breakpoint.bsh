@@ -1,0 +1,16 @@
+/**
+	Ejecutar un breakpoint.
+*/
+
+bsh.help.source = "usage: breakpoint( String name )";
+
+void breakpoint ( )
+{
+	breakpoint("Unnamed Breakpoint");
+}
+
+void breakpoint ( String name )
+{
+	theThread = Thread.currentThread();
+	JDialog dial = new eu.irreality.age.debug.BshDebugDialog(name,theThread,this.interpreter);
+}
