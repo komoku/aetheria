@@ -350,3 +350,23 @@ you.hit.dodge.failed.enemy.nodamage=In spite of the attempt to avoid your attack
 someone.misses.dodged.someone=$1's attack missed $2.\n
 enemy.misses.dodged.you=$1's attack misses you.\n
 you.miss.dodged.enemy=Your attack misses $2.\n
+
+#Combat: $1's armor $armor totally absorbs impact
+someones.armor.absorbed=$armor absorbs the impact totally, protecting $1.\n
+your.armor.absorbed=$armor protects you, totally absorbing the impact.\n
+
+#Combat: launch attack with weapon 
+someone.attacks.someone=$1 attacks $2 with $weapon.\n
+enemy.attacks.you=$1 attacks you with $weapon.\n
+you.attack.enemy=You attack $2 with $weapon.\n
+
+#Combat: $1 tries to block $2 with $weapon
+someone.tries.to.block.someone=$1 tries to block $2 with $weapon.\n
+enemy.tries.to.block.you=$1 tries to block with $weapon.\n
+you.try.to.block.enemy=You try to block $2 with $weapon.\n
+
+#Combat: try to dodge
+someone.tries.to.dodge.someone=$1 tries to dodge $2's attack.\n
+enemy.tries.to.dodge.you=$1 tries to dodge your attack.\n
+you.try.to.dodge.enemy=You try to dodge $2's attack.\n
+

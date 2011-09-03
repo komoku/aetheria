@@ -3819,7 +3819,15 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 				//informar de que armadura absorbi� impacto
 
-				habitacionActual.reportAction ( this , null , armadura.constructName2OneItem() + " de $1 absorbe totalmente el impacto.\n" , null, "Tu armadura absorbe totalmente el impacto.\n"  , true );
+				habitacionActual.reportAction ( this , null , null ,
+						mundo.getMessages().getMessage("someones.armor.absorbed","$armor",armadura.constructName2OneItem(),new Object[]{this,armadura} ) , 
+						null,
+						mundo.getMessages().getMessage("your.armor.absorbed","$armor",armadura.constructName2OneItem(this),new Object[]{this,armadura} ) , 								
+						
+						//armadura.constructName2OneItem() + " de $1 absorbe totalmente el impacto.\n" , 
+						//null, 
+						//"Tu armadura absorbe totalmente el impacto.\n"  , 
+						true );
 
 
 			}
@@ -4166,10 +4174,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		}
 		if ( !ejec )
 		{
-			habitacionActual.reportAction ( this , target , 
-					"$1 ataca a $2 con " + w.constructName2OneItem() + ".\n" ,
-					"$1 te ataca con " + w.constructName2OneItem(target) + ".\n",
-					"Atacas a $2 con " + w.constructName2OneItem(this) + ".\n",
+			habitacionActual.reportAction ( this , target , null ,
+					mundo.getMessages().getMessage("someone.attacks.someone","$weapon",w.constructName2OneItem(),new Object[]{this,target,w} ) , 
+					mundo.getMessages().getMessage("enemy.attacks.you","$weapon",w.constructName2OneItem(target),new Object[]{this,target,w} ) , 
+					mundo.getMessages().getMessage("you.attack.enemy","$weapon",w.constructName2OneItem(this),new Object[]{this,target,w} ) , 					
+					//"$1 ataca a $2 con " + w.constructName2OneItem() + ".\n" ,
+					//"$1 te ataca con " + w.constructName2OneItem(target) + ".\n",
+					//"Atacas a $2 con " + w.constructName2OneItem(this) + ".\n",
 					true );
 		}	 
 
@@ -4198,10 +4209,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		if ( !ejec )
 		{		
 
-			habitacionActual.reportAction ( this , target ,
-					"$1 intenta defenderse de $2 con " + w.constructName2OneItem()  + ".\n",
-					"$1 intenta defenderse con " + w.constructName2OneItem(target) + ".\n" ,
-					"Intentas defenderte de $2 con " + w.constructName2OneItem(this) + ".\n" ,
+			habitacionActual.reportAction ( this , target , null ,
+					mundo.getMessages().getMessage("someone.tries.to.block.someone","$weapon",w.constructName2OneItem(),new Object[]{this,target,w} ) , 
+					mundo.getMessages().getMessage("enemy.tries.to.block.you","$weapon",w.constructName2OneItem(target),new Object[]{this,target,w} ) , 
+					mundo.getMessages().getMessage("you.try.to.block.enemy","$weapon",w.constructName2OneItem(this),new Object[]{this,target,w} ) , 					
+					//"$1 intenta defenderse de $2 con " + w.constructName2OneItem()  + ".\n",
+					//"$1 intenta defenderse con " + w.constructName2OneItem(target) + ".\n" ,
+					//"Intentas defenderte de $2 con " + w.constructName2OneItem(this) + ".\n" ,
 					true );
 
 		}
@@ -4242,10 +4256,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		if ( !ejec )
 		{	
 
-			habitacionActual.reportAction ( this , target ,
-					"$1 intenta esquivar el ataque de $2" + ".\n" ,
-					"$1 intenta esquivarte" + ".\n" ,
-					"Intentas esquivar el ataque de $2" + ".\n" ,
+			habitacionActual.reportAction ( this , target , null ,
+					mundo.getMessages().getMessage("someone.tries.to.dodge.someone",new Object[]{this,target} ) , 
+					mundo.getMessages().getMessage("enemy.tries.to.dodge.you",new Object[]{this,target} ) , 
+					mundo.getMessages().getMessage("you.try.to.dodge.enemy",new Object[]{this,target} ) , 					
+					//"$1 intenta esquivar el ataque de $2" + ".\n" ,
+					//"$1 intenta esquivarte" + ".\n" ,
+					//"Intentas esquivar el ataque de $2" + ".\n" ,
 					true );
 		}		
 	}
