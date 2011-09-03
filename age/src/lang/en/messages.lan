@@ -370,3 +370,41 @@ someone.tries.to.dodge.someone=$1 tries to dodge $2's attack.\n
 enemy.tries.to.dodge.you=$1 tries to dodge your attack.\n
 you.try.to.dodge.enemy=You try to dodge $2's attack.\n
 
+#Try to wear a weapon ($item)
+cant.wear.weapon=$item is a weapon, you could rather try to wield it.\n
+
+#Try to wield a wearable ($item)
+cant.wield.wearable=$item is a garment, you could rather try to wear it.\n
+
+#Try to wear an unwearable item $item
+item.not.wearable=$item doesn't look like something you can wear.\n
+
+#Try to wear something when you don't have limbs
+cant.wear.without.limbs=You can't wear any clothes if you have no limbs.\n
+
+#Show free limb
+you.have.free.limb=You have $limb free.\n
+
+#Show limb occupied by wielded $item
+you.use.limb.wielding=You are wielding $item on $limb.\n
+
+#Show limb occupied by worn $item
+you.use.limb.wearing=You are wearing $item on $limb.\n
+
+#When an item can't be wielded due to weight
+cant.wield.item.weight=You cannot wield $item, it's too heavy.\n
+
+#When an item can't be worn due to weight
+cant.wear.item.weight=You cannot wear $item, it's too heavy.\n
+
+#When an item can't be wielded due to volume
+cant.wield.item.volume=You cannot wield $item, it's too bulky.\n
+
+#When an item can't be worn due to volume
+cant.wear.item.volume=You cannot wear $item, it's too bulky.\n
+
+#When an item can't be worn because limbs are busy
+wear.busy.limbs=You need to take off something to be able to wear $item.\n
+
+#When an item can't be wielded because limbs are busy
+wield.busy.limbs=You need to unwield some weapon to be able to wield $item.\n

@@ -5079,19 +5079,26 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			if ( it instanceof Weapon )
 			{
-				write( io.getColorCode("denial") + "�Vestir " + it.constructName2OneItem(this) + "? Parece m�s adecuado blandir" + ((it.getGender())?"lo":"la") + ".\n" );
+				//write( io.getColorCode("denial") + "�Vestir " + it.constructName2OneItem(this) + "? Parece m�s adecuado blandir" + ((it.getGender())?"lo":"la") + ".\n" );
+				writeDenial(mundo.getMessages().getMessage("cant.wear.weapon","$item",it.constructName2OneItem(this),"$oa",((it.getGender())?"o":"a"),new Object[]{this,it}));
 			}
 			else
 			{
-				write( io.getColorCode("denial") + "No parece que " + it.constructName2OneItem(this) + " sea algo que se pueda vestir." + "\n" );
+				//write( io.getColorCode("denial") + "No parece que " + it.constructName2OneItem(this) + " sea algo que se pueda vestir." + "\n" );
+				writeDenial(mundo.getMessages().getMessage("item.not.wearable","$item",it.constructName2OneItem(this),"$oa",((it.getGender())?"o":"a"),new Object[]{this,it}));
 			}
 			return false;
 		}  
 
 		Inventory ourLimbs = getFlattenedPartsInventory();
 
-		if ( ourLimbs.size() < 1 ) write ( io.getColorCode("error") + "No puedes ponerte ropa si no tienes ning�n miembro." );
-
+		if ( ourLimbs.size() < 1 ) 
+		{
+			//write ( io.getColorCode("error") + "No puedes ponerte ropa si no tienes ning�n miembro." );
+			writeError(mundo.getMessages().getMessage("cant.wear.without.limbs","$item",it.constructName2OneItem(this),"$oa",((it.getGender())?"o":"a"),new Object[]{this,it}));
+			
+		}
+			
 		//ver si ya estamos blandiendo el item
 		for ( int i = 0 ; i < ourLimbs.size() ; i++ )
 		{
@@ -5175,11 +5182,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						if ( vestidos.size() > 0 )
 						{
 							Item vestido = ( Item ) vestidos.get(0);
-							write( io.getColorCode("information") + "Llevas puesto " + vestido.constructName2OneItem(this)  + " en " + current.constructName2OneItem(this) + "." + io.getColorCode("reset")  + "\n"  );			
+							//write( io.getColorCode("information") + "Llevas puesto " + vestido.constructName2OneItem(this)  + " en " + current.constructName2OneItem(this) + "." + io.getColorCode("reset")  + "\n"  );			
+							writeInformation(mundo.getMessages().getMessage("you.use.limb.wearing","$item",vestido.constructName2OneItem(this),"$limb",current.constructName2OneItem(this),new Object[]{this,vestido,current.constructName2OneItem(this)}));
 						}
 						else
 						{
-							write( io.getColorCode("information") + "Tienes libre " + current.constructName2OneItem(this) + "." + io.getColorCode("reset")  + "\n" );
+							//write( io.getColorCode("information") + "Tienes libre " + current.constructName2OneItem(this) + "." + io.getColorCode("reset")  + "\n" );
+							writeInformation(mundo.getMessages().getMessage("you.have.free.limb","$limb",current.constructName2OneItem(this),new Object[]{this,current}));
 						}
 
 					}
@@ -5225,12 +5234,14 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		}
 		catch ( WeightLimitExceededException wlee )
 		{
-			write( io.getColorCode("denial") + "No puedes vestir eso, pesa demasiado." + ".\n" + io.getColorCode("reset") );	
+			writeDenial(mundo.getMessages().getMessage("cant.wear.item.weight","$item",it.constructName2OneItem(this),new Object[]{this,it}));
+			//write( io.getColorCode("denial") + "No puedes vestir eso, pesa demasiado." + ".\n" + io.getColorCode("reset") );	
 			return false;
 		}
 		catch ( VolumeLimitExceededException vlee )
 		{
-			write( io.getColorCode("denial") + "No puedes blandir eso, pesa demasiado." + ".\n" + io.getColorCode("reset") );
+			writeDenial(mundo.getMessages().getMessage("cant.wear.item.volume","$item",it.constructName2OneItem(this),new Object[]{this,it}));
+			//write( io.getColorCode("denial") + "No puedes blandir eso, pesa demasiado." + ".\n" + io.getColorCode("reset") );
 			return false;
 		}
 		
@@ -5263,7 +5274,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			if ( it instanceof Wearable )
 			{
-				write( io.getColorCode("denial") + "�Blandir " + it.constructName2OneItem(this) + "? Parece m�s adecuado vestir" + ((it.getGender())?"lo":"la") + ".\n" );
+				writeDenial(mundo.getMessages().getMessage("cant.wield.wearable","$item",it.constructName2OneItem(this),"$oa",((it.getGender())?"o":"a"),new Object[]{this,it}));
+				//write( io.getColorCode("denial") + "�Blandir " + it.constructName2OneItem(this) + "? Parece m�s adecuado vestir" + ((it.getGender())?"lo":"la") + ".\n" );
 			}
 			else
 			{
@@ -5358,15 +5370,18 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						if ( vestidos.size() > 0 )
 						{
 							Item vestido = ( Item ) vestidos.get(0);
-							write( io.getColorCode("information") + "Est�s blandiendo " + vestido.constructName2OneItem(this)  + " en " + current.constructName2OneItem(this) + "." + io.getColorCode("reset")  + "\n"  );			
+							//write( io.getColorCode("information") + "Est�s blandiendo " + vestido.constructName2OneItem(this)  + " en " + current.constructName2OneItem(this) + "." + io.getColorCode("reset")  + "\n"  );			
+							writeInformation(mundo.getMessages().getMessage("you.use.limb.wielding","$item",vestido.constructName2OneItem(this),"$limb",current.constructName2OneItem(this),new Object[]{this,vestido,current.constructName2OneItem(this)}));
 						}
 						else
 						{
-							write( io.getColorCode("information") + "Tienes libre " + current.constructName2OneItem(this) + "." + io.getColorCode("reset")  + "\n" );
+							//write( io.getColorCode("information") + "Tienes libre " + current.constructName2OneItem(this) + "." + io.getColorCode("reset")  + "\n" );
+							writeInformation(mundo.getMessages().getMessage("you.have.free.limb","$limb",current.constructName2OneItem(this),new Object[]{this,current}));
 						}
 
 					}
-					write( io.getColorCode("denial") + "Tienes que guardar alg�n arma para poder blandir " + it.constructName2OneItem(this) + "." + io.getColorCode("reset")  + "\n"  );
+					//write( io.getColorCode("denial") + "Tienes que guardar alg�n arma para poder blandir " + it.constructName2OneItem(this) + "." + io.getColorCode("reset")  + "\n"  );
+					writeDenial(mundo.getMessages().getMessage("wield.busy.limbs","$item",it.constructName2OneItem(this),new Object[]{this,it}));
 					return false;
 
 				}
@@ -5413,11 +5428,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		}
 		catch ( WeightLimitExceededException wlee )
 		{
-			write( io.getColorCode("denial") + "No puedes blandir eso, pesa demasiado." + ".\n" + io.getColorCode("reset") );	
+			//write( io.getColorCode("denial") + "No puedes blandir eso, pesa demasiado." + ".\n" + io.getColorCode("reset") );	
+			writeDenial(mundo.getMessages().getMessage("cant.wield.item.weight","$item",it.constructName2OneItem(this),new Object[]{this,it}));
 		}
 		catch ( VolumeLimitExceededException vlee )
 		{
-			write( io.getColorCode("denial") + "No puedes blandir eso, pesa demasiado." + ".\n" + io.getColorCode("reset") );
+			//write( io.getColorCode("denial") + "No puedes blandir eso, pesa demasiado." + ".\n" + io.getColorCode("reset") );
+			writeDenial(mundo.getMessages().getMessage("cant.wield.item.volume","$item",it.constructName2OneItem(this),new Object[]{this,it}));
 		}
 
 		return true;
