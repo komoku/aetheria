@@ -276,3 +276,78 @@ someone.clashes.someone=Las armas de $1 y $2 chocan en el aire...\n
 enemy.clashes.you=Tu arma y la de $1 chocan en el aire...\n
 you.clash.enemy="Tu arma y la de $2 chocan en el aire...\n
 
+#Combate: A $2 no le da tiempo a bloquear el ataque de $1
+you.fail.block.time.someone=No te da tiempo a bloquear el ataque de $1...\n
+someone.fails.block.time.you=A $2 no le da tiempo a bloquear tu ataque...\n
+
+#Combate: A $2 no le da tiempo a esquivar el ataque de $1
+you.fail.dodge.time.someone=No te da tiempo a esquivar el ataque de $1...\n
+someone.fails.dodge.time.you=A $2 no le da tiempo a esquivar tu ataque...\n
+
+#Combate: $1 estaba atacando a $2, que estaba bloqueando el ataque. Pero $1 falla así que ahora $2 tiene la iniciativa.
+someone.fails.blocking.you=Tienes la iniciativa...\n
+you.fail.blocking.someone=Viendo tu ataque fallido, $2 interrumpe su movimiento defensivo...\n
+
+#Combate: $1 estaba atacando a $2, que estaba esquivando el ataque. Pero $1 falla así que ahora $2 tiene la iniciativa.
+someone.fails.dodging.you=Tienes la iniciativa...\n
+you.fail.dodging.someone=Viendo tu ataque fallido, $2 interrumpe su esquivada...\n
+
+#Combate: bloqueo con arma, daño numérico ($1 ataca a $2 con $weapon, $2 bloquea, pero aun así $1 le inflige $damage daño)
+someone.hits.blocked.someone.numeric=$2 se defiende de $1 con $weapon recibiendo $damage puntos de daño...\n
+enemy.hits.blocked.you.numeric=Te defiendes de $1 con $weapon recibiendo $damage puntos de daño...\n
+you.hit.blocked.enemy.numeric=$2 se defiende con $weapon recibiendo $damage puntos de daño...\n
+
+#Combate: bloqueo con arma, daño subjetivo
+someone.hits.blocked.someone=$2 se defiende de $1 con $weapon recibiendo $damage...\n
+enemy.hits.blocked.you=Te defiendes de $1 con $weapon recibiendo $damage...\n
+you.hit.blocked.enemy=$2 se defiende con $weapon recibiendo $damage...\n
+
+#Combate: bloqueo con arma, sin daños
+someone.hits.blocked.someone.nodamage=$2 se defiende de $1 con $weapon, desviando el ataque...\n
+enemy.hits.blocked.you.nodamage=Te defiendes de $1 con $weapon, desviando su ataque...\n
+you.hit.blocked.enemy.nodamage=$2 se defiende con $weapon, desviando tu ataque...\n
+
+#Combate: acierto con arma frente a bloqueo fallido, daño numérico ($1 ataca a $2 con $weapon, $2 no consigue bloquear, $1 acierta, le inflige $damage daño)
+someone.hits.block.failed.someone.numeric=$2 no consigue parar el ataque de $1, que le acierta con $weapon infligiéndole $damage puntos de daño...\n
+enemy.hits.block.failed.you.numeric=No consigues parar el ataque de $1, que te acierta con $weapon infligiéndote $damage puntos de daño...\n
+you.hit.block.failed.enemy.numeric=$2 no consigue parar tu ataque, le aciertas con $weapon infligiéndole $damage puntos de daño...\n
+
+#Combate: acierto con arma frente a bloqueo fallido, daño subjetivo
+someone.hits.block.failed.someone=$2 no consigue parar el ataque de $1, que le acierta con $weapon infligiéndole $damage...\n
+enemy.hits.block.failed.you=No consigues parar el ataque de $1, que te acierta con $weapon infligiéndote $damage...\n
+you.hit.block.failed.enemy=$2 no consigue parar tu ataque, le aciertas con $weapon infligiéndole $damage...\n
+
+#Combate: acierto con arma frente a bloqueo fallido, pero sin daños
+someone.hits.block.failed.someone.nodamage=$2 no consigue parar el ataque de $1, que le acierta con $weapon pero no le hace daño...\n
+enemy.hits.block.failed.you.nodamage=No consigues parar el ataque de $1, que te acierta con $weapon pero no te hace daño...\n
+you.hit.block.failed.enemy.nodamage=$2 no consigue parar tu ataque, le aciertas con $weapon pero no le haces daño...\n
+
+#Combate: fallo con arma frente a bloqueo (ya no se determina si el bloqueo tiene éxito o no)
+someone.misses.blocked.someone=El ataque de $1 falla a $2.\n
+enemy.misses.blocked.you=El ataque de $1 te falla.\n
+you.miss.blocked.enemy=Tu ataque falla a $2.\n
+
+#Combate: $2 esquiva a $1 con éxito
+someone.dodged.by.someone=$2 esquiva hábilmente el ataque de $1.\n
+enemy.dodged.by.you=Esquivas el ataque de $1.\n
+you.dodged.by.enemy=$2 esquiva tu ataque.\n
+
+#Combate: acierto con arma frente a esquivada fallida, daño numérico ($1 ataca a $2 con $weapon, $2 no consigue esquivar, $1 acierta, le inflige $damage daño)
+someone.hits.dodge.failed.someone.numeric=$2 intenta esquivar el golpe de $1; pero no lo consigue, $1 le acierta con $weapon infligiéndole $damage puntos de daño...\n
+enemy.hits.dodge.failed.you.numeric=Tu intento de esquivar falla, y $1 te acierta con $weapon infligiéndote $damage puntos de daño...\n
+you.hit.dodge.failed.enemy.numeric=A pesar de su intento de esquivar el ataque, aciertas a $2 con $weapon, infligiéndole $damage puntos de daño...\n
+
+#Combate: acierto con arma frente a esquivada fallida, daño subjetivo
+someone.hits.dodge.failed.someone=$2 intenta esquivar el golpe de $1; pero no lo consigue, $1 le acierta con $weapon infligiéndole " $damage...\n
+enemy.hits.dodge.failed.you=Tu intento de esquivar falla, y $1 te acierta con $weapon infligiéndote $damage...\n
+you.hit.dodge.failed.enemy=A pesar de su intento de esquivar el ataque, aciertas a $2 con $weapon, infligiéndole $damage...\n
+
+#Combate: acierto con arma frente a esquivada fallida, pero sin daños
+someone.hits.dodge.failed.someone.nodamage=$2 intenta esquivar el golpe de $1; pero no lo consigue, $1 le acierta con $weapon pero no le hace daño.\n\n
+enemy.hits.dodge.failed.you.nodamage=Tu intento de esquivar falla, y $1 te acierta con $weapon pero no te hace daño.\n
+you.hit.dodge.failed.enemy.nodamage=A pesar de su intento de esquivar el ataque, aciertas a $2 con $weapon; pero no le haces daño.\n
+
+#Combate: fallo con arma frente a esquivada (ya no se determina si la esquivada tiene éxito o no)
+someone.misses.dodged.someone=El ataque de $1 falla a $2.\n
+enemy.misses.dodged.you=El ataque de $1 te falla. Tienes la iniciativa...\n
+you.miss.dodged.enemy=Tu ataque falla a $2. Te desequilibras...\n

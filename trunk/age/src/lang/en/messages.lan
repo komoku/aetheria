@@ -274,3 +274,79 @@ you.attack.absent=You were going to attack, but you hesitate seeing the absence 
 someone.clashes.someone=$1 and $2's weapons clash in the air...\n
 enemy.clashes.you=Your weapon and $1's clash in the air...\n
 you.clash.enemy="Your weapon and $2's clash in the air...\n
+
+#Combat: $2 fails to block $1's attack in time
+you.fail.block.time.someone=You fail to block $1's attack in time...\n
+someone.fails.block.time.you=$2 fais to block your attack in time...\n
+
+#Combat: $2 fails to dodge $1's attack in time
+you.fail.dodge.time.someone=You fail to dodge $1's attack in time...\n
+someone.fails.dodge.time.you=$2 fails to dodge your attack in time...\n
+
+#Combat: $1 was attacking $2, who was trying to get in position to block the attack. But $1 misses so now $2 has the initiative.
+someone.fails.blocking.you=You take the initiative...\n
+you.fail.blocking.someone=Seeing your attack miss, $2 interrupts the attempt to block...\n
+
+#Combat: $1 was attacking $2, who was trying to get in position to dodge the attack. But $1 misses so now $2 has the initiative.
+someone.fails.dodging.you=You take the initiative...\n
+you.fail.dodging.someone=Seeing your attack miss, $2 interrupts the attempt to dodge...\n
+
+#Combat: block with weapon, numeric damage ($1 attacks $2 with $weapon, $2 blocks, but despite that $1 inflicts $damage damage)
+someone.hits.blocked.someone.numeric=$2 blocks $1 with $weapon receiving $damage points of damage...\n
+enemy.hits.blocked.you.numeric=You block $1 with $weapon receiving $damage points of damage...\n
+you.hit.blocked.enemy.numeric=$2 blocks with $weapon receiving $damage points of damage...\n
+
+#Combat: block with weapon, subjective damage
+someone.hits.blocked.someone=$2 blocks $1's attack with $weapon receiving $damage...\n
+enemy.hits.blocked.you=You block $1's attack with $weapon receiving $damage...\n
+you.hit.blocked.enemy=$2 blocks your attack with $weapon receiving $damage...\n
+
+#Combat: block with weapon, no damage
+someone.hits.blocked.someone.nodamage=$2 blocks $1 with $weapon, fending off the attack...\n
+enemy.hits.blocked.you.nodamage=You block $1 with $weapon, fending off the attack...\n
+you.hit.blocked.enemy.nodamage=$2 blocks with $weapon, fending off your attack...\n
+
+#Combat: hit with weapon in front of failed block, numeric damage ($1 attacks $2 with $weapon, $2 tries to block, fails, $1 hits, inflicts $damage damage)
+someone.hits.block.failed.someone.numeric=$2 fails to block the attack by $1, which hits with $weapon inflicting $damage damage...\n
+enemy.hits.block.failed.you.numeric=You fail to block the attack by $1, which hits with $weapon inflicting you $damage damage...\n
+you.hit.block.failed.enemy.numeric=$2 fails to block your attack, you hit with $weapon inflicting $damage damage...\n
+
+#Combat: hit with weapon in front of failed block, subjective damage
+someone.hits.block.failed.someone=$2 fails to block the attack by $1, which hits with $weapon inflicting $damage...\n
+enemy.hits.block.failed.you=You fail to block the attack by $1, which hits with $weapon inflicting you $damage...\n
+you.hit.block.failed.enemy=$2 fails to block your attack, you hit with $weapon inflicting $damage...\n
+
+#Combat: hit with weapon in front of failed block, no damage
+someone.hits.block.failed.someone.nodamage=$2 fails to block the attack by $1, who hits with $weapon but does no damage...\n
+enemy.hits.block.failed.you.nodamage=You fail to block the attack by $1, which hits with $weapon but does no damage...\n
+you.hit.block.failed.enemy.nodamage=$2 fails to block your attack, you hit with $weapon but inflict no damage...\n
+
+#Combat: miss with weapon in front of block. As always $1 attacking (missing), $2 blocking. Block success or failure doesn't need to be determined.
+someone.misses.blocked.someone=$1's attack missed $2.\n
+enemy.misses.blocked.you=$1's attack misses you.\n
+you.miss.blocked.enemy=Your attack misses $2.\n
+
+#Combat: $2 successfully dodges $1's attack
+someone.dodged.by.someone=$2 aptly dodges $1's attack.\n
+enemy.dodged.by.you=You dodge $1's attack.\n
+you.dodged.by.enemy=$2 dodges your attack.\n
+
+#Combat: hit with weapon in front of missed dodge, numerical damage ($1 attacks $2 with $weapon, $2 fails to dodge, $1 hits, inflicts $damage damage)
+someone.hits.dodge.failed.someone.numeric=$2 tries to dodge $1's strike, but fails, $1 hits with $weapon inflicting $damage damage points...\n
+enemy.hits.dodge.failed.you.numeric=Your attempt to dodge fails, and $1 hits you with $weapon inflicting $damage damage points...\n
+you.hit.dodge.failed.enemy.numeric=In spite of the attempt to dodge your attack, you strike $2 with $weapon, inflicting $damage points of damage...\n
+
+#Combat: hit with weapon in front of missed dodge, subjective damage
+someone.hits.dodge.failed.someone=$2 tries to dodge $1's strike, but fails, $1 hits with $weapon inflicting $damage...\n
+enemy.hits.dodge.failed.you=Your attempt to dodge fails, and $1 hits you with $weapon inflicting $damage...\n
+you.hit.dodge.failed.enemy=In spite of the attempt to dodge your attack, you strike $2 with $weapon, inflicting $damage...\n
+
+#Combat: hit with weapon in front of missed dodge, but no damage
+someone.hits.dodge.failed.someone.nodamage=$2 tries to dodge $1's strike; but fails, $1 hits with $weapon but does no damage.\n\n
+enemy.hits.dodge.failed.you.nodamage=Your attempt to dodge fails, and $1 hits you with $weapon but does no damage.\n
+you.hit.dodge.failed.enemy.nodamage=In spite of the attempt to avoid your attack, you strike $2 with $weapon; but do no damage.\n
+
+#Combat: miss with weapon in front of dodge. As always $1 attacking (missing), $2 blocking. Dodged success or failure doesn't need to be determined.
+someone.misses.dodged.someone=$1's attack missed $2.\n
+enemy.misses.dodged.you=$1's attack misses you.\n
+you.miss.dodged.enemy=Your attack misses $2.\n
