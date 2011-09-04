@@ -136,7 +136,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 									}
 								}
 									
-								write("Aetheria Game Engine v 1.1.6\n");
+								write("Aetheria Game Engine v 1.1.6b\n");
 
 								//areaTexto.setText("Aetheria Game Engine v 0.4.7b Beta Distribution\n");
 								write("© 1999-2011 Carlos Gómez (solrac888@yahoo.com)\n");
