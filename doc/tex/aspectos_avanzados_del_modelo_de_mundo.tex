@@ -605,7 +605,201 @@ Sirve para comprobar si la criatura sobre la que se invoca lleva o no
 puesta la prenda dada como parámetro. Devuelve \textsf{true} si la lleva
 puesta (en cualquiera de sus miembros) y \textsf{false} de lo contrario.
 
-\section {Combate y armas}
+\section {Estados de las criaturas}
+
+Las criaturas (objetos de la clase \textsf{Mobile}) tienen una propiedad
+especialmente importante llamada ``state'' (estado). La importancia de la
+propiedad ``state'' radica en que esta propiedad es la que define qué cosa
+está haciendo una criatura en cada momento, y su temporizador es el que
+indica cuánto tiempo tardará en hacerlo.
+
+Asociada a la propiedad ``state'' aparece a veces otra propiedad, llamada
+``target'', que nos proporciona información extendida sobre el estado. Así,
+por ejemplo, si en un instante dado del juego la criatura Pepito está yendo
+de la sala sur a la sala norte, su propiedad ``state'' en ese momento valdrá
+\textsf{Mobile.MOVING} (valor que indica que se está moviendo) y su
+propiedad ``target'' contendrá un identificador de la sala norte.\footnote{Por
+motivos puramente históricos, el identificador contenido en ``target'' es
+un número entero en lugar del nombre único de la sala. Sin embargo, se puede
+utilizar igual que si fuera el nombre único (es decir, funcionarán cosas
+como \textsf{room(fulano.get("target"))}. Probablemente la propiedad
+``target'' pase a contener nombres únicos, en lugar de dichos identifiadores
+enteros, en futuras versiones de AGE.}
+
+El manejo de las propiedades ``state'' y ``target'' ha de considerarse un
+tema avanzado, pues en la mayoría de los juegos no hace falta manipularlas.
+Sólo debería ser necesario en aventuras en las que se quiera tener un
+control fino del combate o de la temporización de eventos.
+
+En la siguiente tabla se muestran los valores que puede tomar, para
+cualquier criatura, la propiedad ``state'', así como su significado y el uso
+de la propiedad ``target'' para ese estado. Nótese que gran parte de los
+estados, aunque no todos, están relacionados con el combate y se tratarán
+en más detalle en la sección \ref{sec:CombateArmas} Combate y armas de esta
+documentación.
+\\
+{\footnotesize\begin{tabular}{|l|p{6cm}|p{2.5cm}|}
+\hline
+\textbf{Valor de ``state''} & \textbf{Significado de ``state''} & \textbf{Significado de ``target''} \\
+\hline
+\hline
+\textsf{Mobile.IDLE} & Estado por defecto. Ojo: el nombre (\textsf{IDLE},
+												ocioso) está mal puesto, pues no tiene por qué
+												significar que la criatura esté ociosa. Se puede
+												utilizar para denotar que la criatura está llevando
+												a cabo cualquier acción no contemplada en los otros
+												estados. Por ejemplo, es el estado que tiene una
+												criatura que está cogiendo o dejando un objeto.  &  \\
+\hline
+\textsf{Mobile.MOVING } & La criatura está moviendose de una habitación a
+													otra. El temporizador de ``state'' indica cuántas
+													unidades de tiempo quedan hasta que se complete el
+													movimiento. En el momento en que se completa es
+													cuando la criatura cambia realmente de habitación,
+													y se imprimen los mensajes como ``Fulano se va al
+													norte'' o ``Fulano llega desde el sur''. & Habitación destino \\
+\hline
+\textsf{Mobile.ATTACKING} & La criatura está lanzando un ataque contra otra
+														criatura. Cuando el temporizador llegue a cero,
+														el ataque impactará al enemigo (si no ha
+														sucedido antes algo que lo impida, como que la
+														criatura reciba un golpe). & Criatura que recibirá el ataque \\
+\hline
+\textsf{Mobile.BLOCKING} & La criatura está preparando un bloqueo. Cuando el
+														temporizador llegue a cero, la criatura pasará
+														a estar ``en guardia'' (\textsf{Mobile.READY\_TO\_BLOCK})
+														y si le llega un ataque, será bloqueado. & \\
+\hline
+\textsf{Mobile.READY\_TO\_BLOCK} & La criatura está bloqueándose, con un
+														escudo o arma alzada para parar un ataque enemigo. & \\
+\hline
+\textsf{Mobile.DODGING} & La criatura está echándose a un lado para intentar
+														esquivar un ataque. Si el temporizador llega a
+														cero antes de que se reciba el ataque, se
+														considerará que le ha dado tiempo a esquivar. & \\
+\hline
+\textsf{Mobile.READY\_TO\_DODGE} & La criatura está echándose a un lado para
+														intentar esquivar un ataque, y ha pasado el
+														tiempo suficiente para considerar que le da
+														tiempo a esquivar, sin que el ataque haya
+														llegado. & \\
+\hline
+\textsf{Mobile.ATTACK\_RECOVER} & La criatura está recuperándose después de
+														haber lanzado una estocada o golpe. Hasta que el
+														temporizador del ``state'' llegue a cero, no
+														podrá emprender otra acción. & \\
+\hline
+\textsf{Mobile.BLOCK\_RECOVER} & La criatura está recuperándose después de
+														haber parado un golpe. Hasta que el temporizador
+														del ``state'' llegue a cero, no podrá emprender
+														otra acción. & \\
+\hline
+\textsf{Mobile.DAMAGE\_RECOVER} & La criatura está recuperándose después de
+														haber recibido un golpe. Hasta que el
+														temporizador del ``state'' llegue a cero, no
+														podrá emprender otra acción. & \\
+\hline
+\end{tabular}}
+
+{\footnotesize\begin{tabular}{|l|p{6cm}|p{2.5cm}|}
+\hline
+\textbf{Valor de ``state''} & \textbf{Significado de ``state''} & \textbf{Significado de ``target''} \\
+\hline
+\hline
+\textsf{Mobile.DODGE\_RECOVER} & La criatura está recuperándose después de
+														haber llevado a cabo una esquivada con éxito.
+														Hasta que el temporizador del ``state'' llegue a
+														cero, no podrá emprender otra acción. & \\
+\hline
+\textsf{Mobile.DYING} & La criatura está cayendo muerta. Este estado siempre
+														dura una unidad de tiempo nada más, y luego se
+														pasa al estado \textsf{Mobile.DEAD}. & \\
+\hline
+\textsf{Mobile.DEAD} & La criatura está muerta. & \\
+\hline
+\textsf{Mobile.SURPRISE\_RECOVER} & La criatura está recuperándose de una
+														sorpresa o interrupción. & \\
+\hline
+\textsf{Mobile.DISABLED} & La criatura está desactivada y no reaccionará
+														ante nada, ni recibirá entradas si es un jugador.
+														Este estado se usa, por ejemplo, cuando el
+														jugador que controlaba un personaje en una
+														aventura multijugador se ha caído o desconectado. & \\
+\hline
+\textsf{Mobile.CASTING} & La criatura está lanzando un conjuro. & Entidad a la que se le lanza el hechizo, si la hay \\
+\hline
+\end{tabular}}
+
+\subsection{Cambios de estado}
+
+He aquí lo que sucede por defecto en AGE cuando el temporizador del estado
+de una criatura llega a cero, a no ser que nosotros como programadores
+redefinamos el método update para que haga algo distinto con la propiedad
+``state'': 
+
+{\footnotesize\begin{tabular}{|l|p{8cm}|}
+\hline
+\textbf{Valor de ``state''} & \textbf{Reacción de las criaturas} \\
+\hline
+\hline
+\textsf{Mobile.IDLE} & Tomar decisión \\
+\hline
+\textsf{Mobile.MOVING} & Tomar decisión \\
+\hline
+\textsf{Mobile.ATTACKING} & Se lleva a cabo el ataque y se pasa a \textsf{Mobile.ATTACK\_RECOVER} \\
+\hline
+\textsf{Mobile.BLOCKING} & Se pasa a \textsf{Mobile.READY\_TO\_BLOCK} \\
+\hline
+\textsf{Mobile.READY\_TO\_BLOCK} & Se refresca el estado hasta que llegue el ataque enemigo, y en ese momento se pasa a \textsf{BLOCK\_RECOVER} o \textsf{DAMAGE\_RECOVER} según el resultado \\
+\hline
+\textsf{Mobile.DODGING} & Se pasa a \textsf{Mobile.READY\_TO\_DODGE} \\
+\hline
+\textsf{Mobile.READY\_TO\_DODGE} & Se refresca el estado hasta que llegue el ataque enemigo, y en ese momento se pasa a \textsf{DODGE\_RECOVER} o \textsf{DAMAGE\_RECOVER} según el resultado \\
+\hline
+\textsf{Mobile.ATTACK\_RECOVER} & Tomar decisión \\
+\hline
+\textsf{Mobile.BLOCK\_RECOVER} & Tomar decisión \\
+\hline
+\textsf{Mobile.DAMAGE\_RECOVER} & Tomar decisión \\
+\hline
+\textsf{Mobile.DODGE\_RECOVER} & Tomar decisión \\
+\hline
+\textsf{Mobile.DYING} & Se pasa a \textsf{Mobile.DEAD} \\
+\hline
+\textsf{Mobile.DEAD} & Se mantiene el estado \\
+\hline
+\textsf{Mobile.SURPRISE\_RECOVER} & Tomar decisión \\
+\hline
+\textsf{Mobile.DISABLED} & Se mantiene el estado \\
+\hline
+\textsf{Mobile.CASTING} & Se pasa a \textsf{IDLE} \\
+\hline
+\end{tabular}}
+
+Los casos en los que esta tabla dice ``Tomar decisión'' quiere decir que la
+criatura tiene la iniciativa y puede en ese momento emprender una nueva
+acción. Esto tiene un significado distinto según si la criatura es un
+jugador o no:
+
+\begin{itemize}
+\item {Si se trata de un jugador, cuando llegue el momento de ``Tomar
+decisión'' se esperará una orden por parte del cliente del jugador, y se
+procesará dicha orden, ejecutando los comportamientos correspondientes.}
+\item {Si se trata de una criatura que no es jugador, cuando llegue el
+momento de ``Tomar decisión'' se hará lo siguiente:
+	\begin{itemize}
+	\item {Si tiene enemigos presentes, se llama a la IA de combate que decide
+	qué acción de combate tomará la criatura (atacar, bloquear, etc.)}
+	\item {Si no tiene enemigos presentes, la criatura simplemente no hará
+	nada, quedando indefinidamente en estado \textsf{Mobile.IDLE}.}
+	\end{itemize}}
+\end{itemize}
+
+Por supuesto, podemos sobreescribir el método update de los personajes no
+jugadores definiendo comportamientos más complejos, y así obtener criaturas
+que se muevan, sigan rutas, cojan objetos, desempeñen tareas, etc.
+
+\section {Combate y armas} \label{sec:CombateArmas}
 
 \section {Entidades abstractas}
 

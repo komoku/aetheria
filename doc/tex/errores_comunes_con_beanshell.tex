@@ -365,3 +365,50 @@ eval mobile("goblin").hasItem(item("espada"))
 \end{lstlisting}
 
 y nos aparecerá por pantalla el valor de esas expresiones en ese momento.
+
+\subsubsection{Breakpoints}
+
+Si queremos hacer una depuración de grano más fino, evaluando expresiones no
+sólo en los momentos en los que podemos introducir un comando sino en medio
+de la ejecución del código, podemos utilizar la funcionalidad de
+``breakpoints'' que proporciona AGE desde su versión 1.1.6b.
+
+Un breakpoint es un punto donde la ejecución de código (en este caso el
+código BeanShell) se pausa hasta que nosotros le indiquemos que continúe.
+Mientras la ejecución está pausada, podemos evaluar expresiones y ver qué
+valores toman las variables en ese punto de la ejecución.
+
+Para poner un breakpoint en nuestro código, sólo tenemos que ejecutar la
+función BeanShell
+
+\begin{lstlisting}
+breakpoint();
+\end{lstlisting}
+
+O bien, si queremos darle un nombre al breakpoint para distinguirlo de otros,
+
+\begin{lstlisting}
+breakpoint("Nombre del breakpoint");
+\end{lstlisting}
+
+Cuando la ejecución del código llegue a ese punto, se nos mostrará una
+ventana donde podremos ver:
+
+\begin{itemize}
+\item {El nombre del breakpoint en la barra de título (de este modo, si
+tenemos varios, podemos ver en cuál estamos parados en ese momento).}
+\item {Un campo de texto donde podemos introducir una expresión o una
+sentencia o serie de sentencias BeanShell y evaluarlas como si se ejecutaran
+en ese punto del código, obteniendo debajo su valor. Nótese que si las
+sentencias cambian valores de variables o propiedades, estos cambios tendrán
+efecto en el código (es decir, si ponemos $i=1$, aparte de obtener el valor
+de esa expresión --que es 1-- también estaremos cambiando el valor de la
+variable en la ejecución).}
+\item {Una lista de las variables locales que hay declaradas y sus valores.
+Nótese que, por un problema con BeanShell, en esta lista no se muestran los
+contadores declarados en la cabecera de los bucles for. Esto no debería ser
+un problema, ya que se pueden declarar dichos contadores como variables
+externas al bucle y entonces sí se mostrarán.}
+\item {Un botón que nos permite continuar la ejecución, saliendo del
+breakpoint.}
+\end{itemize}
