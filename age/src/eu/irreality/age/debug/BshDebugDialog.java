@@ -9,13 +9,15 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -24,6 +26,7 @@ import javax.swing.JTextField;
 import bsh.EvalError;
 import bsh.Interpreter;
 import bsh.NameSpace;
+import bsh.UtilEvalError;
 
 /**
  * @author carlos
@@ -31,6 +34,26 @@ import bsh.NameSpace;
  */
 public class BshDebugDialog extends JFrame /*JFrame appears on taskbar, JDialog doesn't*/ 
 {
+	
+	private JList listOfVariables = new JList();
+	
+	void refreshVariableList( Interpreter interpreter , NameSpace namespace )
+	{
+		String[] varNames = namespace.getVariableNames();
+		for ( int i = 0 ; i < varNames.length ; i++ )
+		{
+			String realVarName = varNames[i];
+			varNames[i] += " = ";
+				try {
+					varNames[i] += interpreter.eval(realVarName,namespace);
+				} catch (EvalError e) {
+					e.printStackTrace();
+				}
+		}
+		listOfVariables.setListData(varNames);
+		pack();
+		repaint();
+	}
 
 	public BshDebugDialog ( String name , final Thread theThread , final Interpreter interpreter , final NameSpace namespace )
 	{
@@ -62,6 +85,18 @@ public class BshDebugDialog extends JFrame /*JFrame appears on taskbar, JDialog 
 		evalResultPanel.add(Box.createHorizontalStrut(10));
 		getContentPane().add(evalResultPanel);
 		getContentPane().add(Box.createRigidArea(new Dimension(0,10)));
+		listOfVariables = new JList();
+		JPanel variablesPanel = new JPanel();
+		JLabel variablesLabel = new JLabel("Variables locales: ");
+		variablesPanel.setLayout(new BoxLayout(variablesPanel,BoxLayout.LINE_AXIS));
+		variablesPanel.add(Box.createHorizontalStrut(10));
+		variablesPanel.add(variablesLabel);
+		variablesPanel.add(Box.createHorizontalStrut(10));
+		JScrollPane variablesScrollPane = new JScrollPane(listOfVariables);
+		variablesPanel.add(variablesScrollPane);
+		variablesPanel.add(Box.createHorizontalStrut(10));
+		getContentPane().add(variablesPanel);
+		getContentPane().add(Box.createRigidArea(new Dimension(0,10)));
 		JButton continueButton = new JButton("Continuar ejecución");
 		JPanel bottomPanel = new JPanel();
 		bottomPanel.setLayout(new BoxLayout(bottomPanel,BoxLayout.LINE_AXIS));
@@ -70,6 +105,7 @@ public class BshDebugDialog extends JFrame /*JFrame appears on taskbar, JDialog 
 		bottomPanel.add(Box.createHorizontalStrut(10));
 		getContentPane().add(bottomPanel);
 		getContentPane().add(Box.createRigidArea(new Dimension(0,10)));
+		refreshVariableList(interpreter,namespace);
 		pack();
 		setLocationRelativeTo(null); //center on screen
 		setVisible(true);
@@ -77,6 +113,19 @@ public class BshDebugDialog extends JFrame /*JFrame appears on taskbar, JDialog 
 		continueButton.addActionListener( new ActionListener()
 		{
 			public void actionPerformed ( ActionEvent evt )
+			{
+				synchronized(theThread)
+				{
+					theThread.notify();
+				}
+				dispose();
+			}
+		}
+		);
+		
+		addWindowListener ( new WindowAdapter() //closing window is same as pressing continue
+		{
+			public void windowClosing ( WindowEvent evt )
 			{
 				synchronized(theThread)
 				{
@@ -96,6 +145,7 @@ public class BshDebugDialog extends JFrame /*JFrame appears on taskbar, JDialog 
 				try
 				{
 					Object returnValue = interpreter.eval(evalTextField.getText(),namespace);
+					refreshVariableList(interpreter,namespace);
 					evalResultTextArea.append("Result: " + returnValue + "\n");
 				}
 				catch ( EvalError ee )
