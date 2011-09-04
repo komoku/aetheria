@@ -2,6 +2,193 @@
 
 \section {Manipulación del modelo de mundo}
 
+\section {Obtención de nombres de cosas y criaturas}
+
+\subsection {Obtención de nombres para mostrar}
+
+Al escribir mensajes por pantalla, son comunes las situaciones en las que
+queremos mostrar el nombre de alguna cosa o criatura. Por ejemplo,
+recordemos el mendigo que habíamos definido en la sección \ref{sec:ManipEntidades}
+sobre manipulación básica de entidades. Este mendigo aceptaba que le
+entregásemos una moneda:
+
+\begin{lstlisting}
+void parseCommandObj2 ( Mobile aCreature , String verb , String args1 , String args2 , Entity obj1  )
+{
+  if ( equals(verb,"dar") && equals(obj1,item("moneda")) )
+  {
+     aCreature.write("Ofreces la moneda al mendigo.\n"); 
+     aCreature.write("El mendigo acepta la moneda y se la mete en el bolsillo.\n"); 
+     aCreature.removeItem( obj1 );
+     self.addItem( obj1 );  
+     self.say("¡Muchas gracias, extranjero! Eres muy amable.");
+     end(); 
+  }
+}
+\end{lstlisting}
+
+Podríamos querer que, aparte de aceptar la moneda, el mendigo rechazara
+cualquier otra cosa que le diésemos, respondiendo que no la quiere: 
+
+\begin{lstlisting}
+void parseCommandObj2 ( Mobile aCreature , String verb , String args1 , String args2 , Entity obj1  )
+{
+  if ( equals(verb,"dar") )
+  { 
+    if ( equals(obj1,item("moneda")) )
+    {
+      aCreature.write("Ofreces la moneda al mendigo.\n"); 
+      aCreature.write("El mendigo acepta la moneda y se la mete en el bolsillo.\n"); 
+      aCreature.removeItem( obj1 );
+      self.addItem( obj1 );  
+      self.say("¡Muchas gracias, extranjero! Eres muy amable.");
+      end(); 
+    }
+    else if ( obj1 instanceof Item )
+    {
+      aCreature.write("El mendigo rechaza lo que le ofreces, moviendo la cabeza.\n");  
+      self.say("No necesito eso, lo que necesito es dinero..."); 
+      end(); 
+    }   
+  }
+}
+\end{lstlisting}
+
+Con este código, conseguimos que el mendigo acepte la moneda y rechace todo
+lo demás, respondiendo así:
+
+\begin{verbatim}
+> dar chorizo a mendigo
+El mendigo rechaza lo que le ofreces, moviendo la cabeza.
+El mendigo dice: "No necesito esto, lo que necesito es dinero..."
+> dar cuchara a mendigo
+El mendigo rechaza lo que le ofreces, moviendo la cabeza.
+El mendigo dice: "No necesito esto, lo que necesito es dinero..."
+> dar moneda a mendigo
+Ofreces la moneda al mendigo.
+El mendigo acepta la moneda y se la mete en el bolsillo.
+El mendigo dice: "¡Muchas gracias, extanjero! Eres muy amable.
+\end{verbatim}
+
+Dependiendo de cómo queramos que responda nuestro juego, tal vez esto nos
+resulte suficiente. Pero también puede ser que queramos una respuesta más
+personalizada, en la que el mendigo se refiera a lo que le hemos dado, como
+en este ejemplo:
+
+\begin{verbatim}
+> dar chorizo a mendigo
+Ofreces el chorizo al mendigo.
+El mendigo rechaza el chorizo, moviendo la cabeza.
+El mendigo dice: "No necesito un chorizo, lo que necesito es dinero..."
+> dar cuchara a mendigo
+Ofreces la cuchara al mendigo.
+El mendigo rechaza la cuchara, moviendo la cabeza.
+El mendigo dice: "No necesito una cuchara, lo que necesito es dinero..."
+> dar moneda a mendigo
+Ofreces la moneda al mendigo.
+El mendigo acepta la moneda y se la mete en el bolsillo.
+El mendigo dice: "¡Muchas gracias, extanjero! Eres muy amable."
+\end{verbatim}
+
+Para conseguir esto, necesitaremos obtener de alguna manera el nombre para
+mostrar de la cosa que le damos al mendigo (en este caso, \textsf{obj1}).
+Asimismo, también necesitaremos conseguir que se muestre el artículo
+adecuado al género que tenga la cosa (EL chorizo, masculino, frente a LA
+cuchara, femenino). Por suerte, existen métodos en AGE que se encargan de
+proporcionar esta información de manera muy sencilla.
+
+Estos métodos, presentes tanto en la clase \textsf{Item} como en la clase
+\textsf{Mobile}, son los siguientes:
+
+\begin{lstlisting}
+String getOutputNameOnly()
+String getOutputNameThe()
+String getOutputNameA()
+String getOutputNameOnly(int nItems)
+String getOutputNameThe(int nItems)
+String getOutputNameA(int nItems)
+String getOutputNameOnly(int nItems,Entity viewer)
+String getOutputNameThe(int nItems,Entity viewer)
+String getOutputNameA(int nItems,Entity viewer)
+\end{lstlisting}
+
+Los métodos \textsf{getOutputNameOnly()}, \textsf{getOutputNameThe()} y
+\textsf{getOutputNameA()} sin parámetros son los más sencillos; pero
+bastarán en la mayoría de los casos. Lo que hacen es devolver el nombre
+singular para mostrar actual de la cosa o criatura sobre la que los
+llamamos. Recuérdese que los nombres para mostrar son dinámicos, con lo
+cual devolver el nombre actual quiere decir evaluar las condiciones
+BeanShell de dichos nombres (si las hay) para determinar cuál es y
+obtenerlo. Nótese que si utilizamos este método, la variable \textsf{viewer}
+en dichas condiciones BeanShell valdrá \textsf{null} (es decir, estos
+métodos no nos permiten parametrizar los nombres según la entidad que los
+ve).
+
+La diferencia entre \textsf{getOutputNameOnly()}, \textsf{getOutputNameThe()}
+y \textsf{getOutputNameA()} es que el primero devuelve sólo el nombre (por
+ejemplo, ``chorizo''), el segundo lo prefija con el artículo determinado
+correspondiente (``el chorizo'', ``la cuchara'') y el tercero usa en su
+lugar el artículo indeterminado (``un chorizo'', ``una cuchara''). La
+excepción a esta regla se da cuando el nombre en cuestión está marcado como
+nombre propio, en cuyo caso nunca se añadirá ningún artículo sea cual sea el
+método que utilicemos. Por ejemplo, \textsf{item("excalibur").getOutputNameThe()}
+devolverá ``Excalibur'' a secas, si ése es su nombre para mostrar y está
+marcado como propio, mientras que si no fuese un nombre propio devolvería
+``el Excalibur'', si la cosa es masculina, o ``la Excalibur'' si es
+femenina.
+
+Los métodos \textsf{getOutputNameOnly(int nItems)},
+\textsf{getOutputNameThe(int nItems)} y \textsf{getOutputNameA(int nItems)}
+funcionan como los anteriores, pero además nos permiten especificar un
+número de criaturas o cosas para mostrar. Es decir, si tenemos una cosa
+moneda, y hacemos \textsf{moneda.getOutputNameOnly(3)}, se nos devolverá la
+cadena ``tres monedas''. Si pasamos como parámetro 1, estos métodos se
+comportarán como los anteriores sin parámetro, mostrando el nombre en
+singular (para una sola cosa) con los artículos correspondientes según la
+versión que usemos.
+
+Por último, los métodos \textsf{getOutputNameOnly(int nItems,Entity viewer)},
+\textsf{getOutputNameThe(int nItems,Entity viewer)} y
+\textsf{getOutputNameA(int nItems,Entity viewer)} funcionan como los
+anteriores pero nos permiten especificar la entidad que va a ver el mensaje,
+y serán los que tendremos que utilizar en el caso de que tengamos nombres
+para mostrar dinámicos cuyas condiciones utilicen la variable
+\textsf{viewer}. En caso contrario, los métodos anteriores serán
+suficientes.
+
+Como ejemplo de uso de estos métodos, el comportamiento del mendigo puesto
+antes como ejemplo se podría conseguir de esta forma:
+
+\begin{lstlisting}
+void parseCommandObj2 ( Mobile aCreature , String verb , String args1 , String args2 , Entity obj1  )
+{
+  if ( equals(verb,"dar") )
+  { 
+    if ( equals(obj1,item("moneda")) )
+    {
+      aCreature.write("Ofreces la moneda al mendigo.\n"); 
+      aCreature.write("El mendigo acepta la moneda y se la mete en el bolsillo.\n"); 
+      aCreature.removeItem( obj1 );
+      self.addItem( obj1 );  
+      self.say("¡Muchas gracias, extranjero! Eres muy amable.");
+      end(); 
+    }
+    else if ( obj1 instanceof Item )
+    {
+      aCreature.write("Ofreces " + obj1.getOutputNameThe() + " al mendigo.\n"); 
+      aCreature.write("El mendigo rechaza " + obj1.getOutputNameThe() + ", moviendo la cabeza.\n");  
+      self.say("No necesito " + obj1.getOutputNameA() + ", lo que necesito es dinero..."); 
+      end(); 
+    }
+  }
+}
+\end{lstlisting}
+
+Nótese en el ejemplo cómo se utilizan los métodos
+\textsf{obj1.getOutputNameThe()} y \textsf{obj1.getOutputNameA()} según si
+se quiere utilizar el artículo determinado (el/la) o indeterminado (un/una),
+respectivamente.
+
 \section {Notificación de acciones y sucesos}
 
 \subsection {Notificar sobre algo que ha ocurrido en una habitación}
