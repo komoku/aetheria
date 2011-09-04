@@ -470,7 +470,7 @@ de la ventana hasta acabar de cargar.
 												}
 											}
 											
-											write("Aetheria Game Engine v 1.1.5\n");
+											write("Aetheria Game Engine v 1.1.6\n");
 
 											//areaTexto.setText("Aetheria Game Engine v 0.4.7b Beta Distribution\n");
 											write("© 1999-2011 Carlos Gómez (solrac888@yahoo.com)\n");
