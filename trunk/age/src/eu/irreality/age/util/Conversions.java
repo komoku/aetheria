@@ -25,6 +25,7 @@ public class Conversions
 	public static List getReferenceNameList( String legacyList )
 	{
 		List result = new ArrayList();
+		if ( legacyList == null ) return result;
 		StringTokenizer st = new StringTokenizer ( legacyList , "$" );
 		while ( st.hasMoreTokens() ) 
 		{
