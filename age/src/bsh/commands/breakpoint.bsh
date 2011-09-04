@@ -6,11 +6,13 @@ bsh.help.source = "usage: breakpoint( String name )";
 
 void breakpoint ( )
 {
-	breakpoint("Unnamed Breakpoint");
+	//cannot reuse code due to this.caller
+	theThread = Thread.currentThread();
+	new eu.irreality.age.debug.BshDebugDialog("Unnamed Breakpoint",theThread,this.interpreter,this.caller.namespace);
 }
 
 void breakpoint ( String name )
 {
 	theThread = Thread.currentThread();
-	new eu.irreality.age.debug.BshDebugDialog(name,theThread,this.interpreter);
+	new eu.irreality.age.debug.BshDebugDialog(name,theThread,this.interpreter,this.caller.namespace);
 }
