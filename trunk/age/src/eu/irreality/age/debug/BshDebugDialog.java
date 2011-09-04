@@ -6,14 +6,18 @@
 package eu.irreality.age.debug;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -24,7 +28,7 @@ import bsh.Interpreter;
  * @author carlos
  *
  */
-public class BshDebugDialog extends JDialog 
+public class BshDebugDialog extends JFrame /*JFrame appears on taskbar, JDialog doesn't*/ 
 {
 
 	public BshDebugDialog ( String name , final Thread theThread , final Interpreter interpreter )
@@ -32,23 +36,41 @@ public class BshDebugDialog extends JDialog
 		super();
 		setTitle(name);
 		getContentPane().setLayout(new BoxLayout(getContentPane(),BoxLayout.PAGE_AXIS));
+		getContentPane().add(Box.createRigidArea(new Dimension(0,10)));
 		final JTextField evalTextField = new JTextField();
 		JButton evalButton = new JButton("Evaluar");
-		JPanel evalPanel = new JPanel(new BorderLayout());
+		JPanel evalPanel = new JPanel();
+		evalPanel.setLayout(new BoxLayout(evalPanel,BoxLayout.LINE_AXIS));
+		evalPanel.add(Box.createHorizontalStrut(10));
 		evalPanel.add(evalTextField,BorderLayout.CENTER);
+		evalPanel.add(Box.createHorizontalStrut(10));
 		evalPanel.add(evalButton,BorderLayout.EAST);
+		evalPanel.add(Box.createHorizontalStrut(10));
 		getContentPane().add(evalPanel);
-		JPanel evalResultPanel = new JPanel(new BorderLayout());
+		getContentPane().add(Box.createRigidArea(new Dimension(0,10)));
+		JPanel evalResultPanel = new JPanel();
+		evalResultPanel.setLayout(new BoxLayout(evalResultPanel,BoxLayout.LINE_AXIS));
 		JLabel evalResultLabel = new JLabel("Resultado: ");
-		final JTextArea evalResultTextArea = new JTextArea();
-		evalResultPanel.add(evalResultLabel,BorderLayout.WEST);
-		evalResultPanel.add(evalResultTextArea,BorderLayout.CENTER);
+		final JTextArea evalResultTextArea = new JTextArea(8,60);
+		evalResultTextArea.setEditable(false);
+		JScrollPane evalResultScroll = new JScrollPane(evalResultTextArea);
+		evalResultPanel.add(Box.createHorizontalStrut(10));
+		evalResultPanel.add(evalResultLabel);
+		evalResultPanel.add(Box.createHorizontalStrut(10));
+		evalResultPanel.add(evalResultScroll);
+		evalResultPanel.add(Box.createHorizontalStrut(10));
 		getContentPane().add(evalResultPanel);
+		getContentPane().add(Box.createRigidArea(new Dimension(0,10)));
 		JButton continueButton = new JButton("Continuar ejecución");
-		JPanel bottomPanel = new JPanel(new BorderLayout());
-		bottomPanel.add(continueButton,BorderLayout.EAST);
+		JPanel bottomPanel = new JPanel();
+		bottomPanel.setLayout(new BoxLayout(bottomPanel,BoxLayout.LINE_AXIS));
+		bottomPanel.add(Box.createHorizontalGlue());
+		bottomPanel.add(continueButton);
+		bottomPanel.add(Box.createHorizontalStrut(10));
 		getContentPane().add(bottomPanel);
+		getContentPane().add(Box.createRigidArea(new Dimension(0,10)));
 		pack();
+		setLocationRelativeTo(null); //center on screen
 		setVisible(true);
 		
 		continueButton.addActionListener( new ActionListener()
@@ -69,15 +91,17 @@ public class BshDebugDialog extends JDialog
 			public void actionPerformed ( ActionEvent evt )
 			{
 				evalResultTextArea.setText("");
+				evalResultTextArea.setText("Expression evaluation: " + evalTextField.getText() + "\n");
 				try
 				{
 					Object returnValue = interpreter.eval(evalTextField.getText());
-					evalResultTextArea.setText("Return value: " + returnValue);
+					evalResultTextArea.append("Result: " + returnValue + "\n");
 				}
 				catch ( EvalError ee )
 				{
 					ee.printStackTrace();
-					evalResultTextArea.setText(ee.toString());
+					evalResultTextArea.append("Exception:\n");
+					evalResultTextArea.append(ee.toString());
 				}
 				evalTextField.setText("");
 			}
