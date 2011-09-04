@@ -5707,7 +5707,144 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	{
 		return constructName2True ( 1 , viewer ) ;
 	}
+	
+	//convert numbers to their word representation
+	public String numberToWord ( int number )
+	{
+		switch ( number )
+		{
+			case 1: return "uno";
+			case 2: return "dos";
+			case 3: return "tres";
+			case 4: return "cuatro";
+			case 5: return "cinco";
+			case 6: return "seis";
+			case 7: return "siete";
+			case 8: return "ocho";
+			case 9: return "nueve";
+			default: return String.valueOf(number);
+		}
+	}
 
+	//master method for getting output names
+	/**
+	 * Gets the output name of this entity, given
+	 * @param nItems The number of copies of this entity that are being shown.
+	 * @viewer The entity who is viewing this entity, if any.
+	 * @mascArt Article to be used for showing a single instance if the item is masculine.
+	 * @femArt Article to be used for showing a single instance if the item is feminine.
+	 * @evenIfInvisible If true, return a nonempty string even if the entity is invisible for the viewer (fallback to getTitle()).
+	 * @numberToWord If nItems > 1, show the number of items in word form (eight) rather than numerical form (8).
+	 */
+	public String getOutputName ( int nItems , Entity viewer , String mascArt , String femArt , boolean evenIfInvisible , boolean numberToWord )
+	{
+		if ( nItems == 1 )
+		{
+			String baseName;
+			if ( evenIfInvisible ) baseName = getSingNameTrue(viewer);
+			else baseName = getSingName(viewer);
+			return presentName ( baseName , mascArt , femArt );
+		}
+		else
+		{
+			String baseName;
+			if ( evenIfInvisible ) baseName = getPlurNameTrue(viewer);
+			else baseName = getPlurName(viewer);
+			if ( numberToWord ) return presentName ( baseName , numberToWord(nItems) , numberToWord(nItems) );
+			else return presentName ( baseName , String.valueOf(nItems) , String.valueOf(nItems) );
+		}
+	}
+	
+	/**
+	 * Gets the output name to show nItems copies of this entity to viewer, without any article.
+	 * @param nItems The number of copies of this entity that are being showed.
+	 * @param viewer The entity who is viewing this entity.
+	 * @return String with the output name to show to viewer.
+	 */
+	public String getOutputNameOnly ( int nItems , Entity viewer )
+	{
+		return getOutputName ( nItems , viewer , "" , "" , false , true );
+	}
+	
+	/**
+	 * Gets the output name to show nItems copies of this entity, without parameterising it for any viewer in particular, without any article.
+	 * @param nItems The number of copies of this entity that are being showed.
+	 * @return String with the output name to show to viewer, without using any article for a single item.
+	 */
+	public String getOutputNameOnly ( int nItems )
+	{
+		return getOutputName ( nItems , null , "" , "" , true , true );
+	}
+	
+	/**
+	 * Gets the output name to show one instance of this entity, without parameterising the name for any viewer in particular, without any article.
+	 * @return String with the output name to show to viewer, without using any article.
+	 */
+	public String getOutputNameOnly ( )
+	{
+		return getOutputName ( 1 , null , "" , "" , true , true );
+	}
+	
+	/**
+	 * Gets the output name to show nItems copies of this entity to viewer, with a definite article if applicable.
+	 * @param nItems The number of copies of this entity that are being showed.
+	 * @param viewer The entity who is viewing this entity.
+	 * @return String with the output name to show to viewer, with a definite article or the number of items.
+	 */
+	public String getOutputNameThe ( int nItems , Entity viewer )
+	{
+		return getOutputName ( nItems , viewer , "el" , "la" , false , true );
+	}
+	
+	/**
+	 * Gets the output name to show nItems copies of this entity, without parameterising them for any viewer in particular, with a definite article if applicable.
+	 * @param nItems The number of copies of this entity that are being showed.
+	 * @return String with the output name to show to viewer, with a definite article or the number of items.
+	 */
+	public String getOutputNameThe ( int nItems )
+	{
+		return getOutputName ( nItems , null , "el" , "la" , true , true );
+	}
+	
+	/**
+	 * Gets the output name to show one instance of this entity, without parameterising the name for any viewer in particular, using a definite article.
+	 * @return String with the output name to show to viewer, using a definite article
+	 */
+	public String getOutputNameThe ( )
+	{
+		return getOutputName ( 1 , null , "el" , "la" , true , true );
+	}
+	
+	/**
+	 * Gets the output name to show nItems copies of this entity to viewer, with an indefinite article if applicable.
+	 * @param nItems The number of copies of this entity that are being showed.
+	 * @param viewer The entity who is viewing this entity.
+	 * @return String with the output name to show to viewer, with an indefinite article or the number of items.
+	 */
+	public String getOutputNameA ( int nItems , Entity viewer )
+	{
+		return getOutputName ( nItems , viewer , "un" , "una" , false , true );
+	}
+	
+	/**
+	 * Gets the output name to show nItems copies of this entity, without parameterising them for any viewer in particular, with an indefinite article if applicable.
+	 * @param nItems The number of copies of this entity that are being showed.
+	 * @return String with the output name to show to viewer, with an indefinite article or the number of items.
+	 */
+	public String getOutputNameA ( int nItems )
+	{
+		return getOutputName ( nItems , null , "un" , "una" , true , true );
+	}
+	
+	/**
+	 * Gets the output name to show one instance of this entity, without parameterising the name for any viewer in particular, using an indefinite article.
+	 * @return String with the output name to show to viewer, using an indefinite article.
+	 */
+	public String getOutputNameA ( )
+	{
+		return getOutputName ( 1 , null , "un" , "una" , true , true );
+	}
+	
 
 	//devuelve un miembro al azar para ser golpeado por un arma, teniendo en cuenta el volumen de los diferentes miembros.
 	//los de volumen cero no seran golpeados (dedos, etc.)
