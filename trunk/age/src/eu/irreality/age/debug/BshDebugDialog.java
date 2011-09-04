@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 
 import bsh.EvalError;
 import bsh.Interpreter;
+import bsh.NameSpace;
 
 /**
  * @author carlos
@@ -31,7 +32,7 @@ import bsh.Interpreter;
 public class BshDebugDialog extends JFrame /*JFrame appears on taskbar, JDialog doesn't*/ 
 {
 
-	public BshDebugDialog ( String name , final Thread theThread , final Interpreter interpreter )
+	public BshDebugDialog ( String name , final Thread theThread , final Interpreter interpreter , final NameSpace namespace )
 	{
 		super();
 		setTitle(name);
@@ -94,7 +95,7 @@ public class BshDebugDialog extends JFrame /*JFrame appears on taskbar, JDialog 
 				evalResultTextArea.setText("Expression evaluation: " + evalTextField.getText() + "\n");
 				try
 				{
-					Object returnValue = interpreter.eval(evalTextField.getText());
+					Object returnValue = interpreter.eval(evalTextField.getText(),namespace);
 					evalResultTextArea.append("Result: " + returnValue + "\n");
 				}
 				catch ( EvalError ee )
