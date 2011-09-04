@@ -12,5 +12,5 @@ void breakpoint ( )
 void breakpoint ( String name )
 {
 	theThread = Thread.currentThread();
-	JDialog dial = new eu.irreality.age.debug.BshDebugDialog(name,theThread,this.interpreter);
+	new eu.irreality.age.debug.BshDebugDialog(name,theThread,this.interpreter);
 }
