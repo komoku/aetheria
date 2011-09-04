@@ -1,4 +1,4 @@
-frame.title=PUCK - Playable Universe Construction Kit, v1.1.6
+frame.title=PUCK - Playable Universe Construction Kit, v1.1.6b
 tool.addroom=Añadir Habitación
 tool.additem=Añadir Cosa
 tool.addchar=Añadir Personaje
