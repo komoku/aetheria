@@ -8,6 +8,7 @@ import java.io.*;
 import java.util.*;
 
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.language.English;
 import eu.irreality.age.language.LanguageUtils;
 import eu.irreality.age.language.Mentions;
 import eu.irreality.age.language.Spanish;
@@ -153,6 +154,8 @@ public class NaturalLanguage
 	{
 		if ( languageCode.equals("es") )
 			return new Spanish();
+		else if ( languageCode.equals("en") )
+			return new English();
 		else
 			return new NaturalLanguage(languageCode);
 	}
