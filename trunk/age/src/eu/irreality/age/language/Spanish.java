@@ -156,14 +156,7 @@ public class Spanish extends NaturalLanguage
 	
 	
 	
-	
-	/**
-	 * @deprecated Use {@link #correctMorphology(String)} instead
-	 */
-	public String gramaticalizar ( String s )
-	{
-		return correctMorphology(s);
-	}
+
 
 
 	public String correctMorphology ( String s )
@@ -173,13 +166,6 @@ public class Spanish extends NaturalLanguage
 		return StringMethods.textualSubstitution ( StringMethods.textualSubstitution ( niceString , " a el" , " al" ) , " de el" , " del" );
 	}
 	
-	/**
-	 * @deprecated Use {@link #correctMorphologyWithoutTrimming(String)} instead
-	 */
-	public String gramaticalizarSinTrimear ( String s )
-	{
-		return correctMorphologyWithoutTrimming(s);
-	}
 
 
 	public String correctMorphologyWithoutTrimming ( String s )
