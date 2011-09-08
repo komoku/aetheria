@@ -11,7 +11,7 @@ public class English extends NaturalLanguage
 	
 	public English()
 	{
-		super("es");
+		super("en");
 	}
 	
 	//TODO: custom obtain verb, args from sentence - for phrasal verbs?

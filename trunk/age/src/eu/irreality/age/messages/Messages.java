@@ -22,7 +22,7 @@ import eu.irreality.age.filemanagement.Paths;
 public class Messages 
 {
 	
-	private static Messages defaultInstance;
+	private static Map defaultInstances = new HashMap(); //String (language code) -> Messages
 	
 	private Properties properties;
 	
@@ -124,9 +124,13 @@ public class Messages
 	 */
 	public static Messages getDefaultInstance(String languageCode)
 	{
-		if ( defaultInstance == null )
-			defaultInstance = new Messages(getPathForLanguage(languageCode));
-		return defaultInstance;
+		Messages cached = (Messages) defaultInstances.get(languageCode);
+		if ( cached == null )
+		{
+			cached = new Messages(getPathForLanguage(languageCode));
+			defaultInstances.put(languageCode,cached);
+		}
+		return cached;
 	}
 	
 	/**
