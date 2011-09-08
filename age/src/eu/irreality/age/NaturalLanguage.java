@@ -456,10 +456,26 @@ public class NaturalLanguage
 		return (String) terceraASegunda.get ( verbo.toLowerCase() );
 	}
 	
+	/**
+	 * By default, do nothing language-specific. Will be overridden by concrete languages.
+	 * @param s
+	 * @return
+	 * @deprecated Use {@link #correctMorphology(String)} instead
+	 */
 	public String gramaticalizar ( String s )
 	{
+		return correctMorphology(s);
+	}
+
+	/**
+	 * By default, do nothing language-specific. Will be overridden by concrete languages.
+	 * @param s
+	 * @return
+	 */
+	public String correctMorphology ( String s )
+	{
 		if ( s == null ) return null;
-		String temp = StringMethods.textualSubstitution ( StringMethods.textualSubstitution ( s , " a el" , " al" ) , " de el" , " del" );
+		String temp = s;
 		temp = temp.trim();
 		if ( temp.length() > 0 )
 			temp = Character.toUpperCase(temp.charAt(0)) + temp.substring(1);
@@ -468,11 +484,26 @@ public class NaturalLanguage
 		return temp;
 	}
 	
+	/**
+	 * By default, do nothing language-specific. Will be overridden by concrete languages.
+	 * @param s
+	 * @return
+	 * @deprecated Use {@link #correctMorphologyWithoutTrimming(String)} instead
+	 */
 	public String gramaticalizarSinTrimear ( String s )
 	{
+		return correctMorphologyWithoutTrimming(s);
+	}
+
+	/**
+	 * By default, do nothing language-specific. Will be overridden by concrete languages.
+	 * @param s
+	 * @return
+	 */
+	public String correctMorphologyWithoutTrimming ( String s )
+	{
 		if ( s == null ) return null;
-		String temp = StringMethods.textualSubstitution ( StringMethods.textualSubstitution ( s , " a el" , " al" ) , " de el" , " del" );
-		//temp = temp.trim();
+		String temp = s;
 		if ( temp.length() > 0 )
 			temp = Character.toUpperCase(temp.charAt(0)) + temp.substring(1);
 		if ( temp.length() > 0 )

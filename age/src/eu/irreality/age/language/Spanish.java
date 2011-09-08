@@ -4,6 +4,7 @@ import java.util.StringTokenizer;
 
 import eu.irreality.age.NaturalLanguage;
 import eu.irreality.age.Player;
+import eu.irreality.age.StringMethods;
 
 public class Spanish extends NaturalLanguage
 {
@@ -153,6 +154,40 @@ public class Spanish extends NaturalLanguage
 		
 	}
 	
+	
+	
+	
+	/**
+	 * @deprecated Use {@link #correctMorphology(String)} instead
+	 */
+	public String gramaticalizar ( String s )
+	{
+		return correctMorphology(s);
+	}
+
+
+	public String correctMorphology ( String s )
+	{
+		if ( s == null ) return null;
+		String niceString = super.correctMorphology(s);
+		return StringMethods.textualSubstitution ( StringMethods.textualSubstitution ( niceString , " a el" , " al" ) , " de el" , " del" );
+	}
+	
+	/**
+	 * @deprecated Use {@link #correctMorphologyWithoutTrimming(String)} instead
+	 */
+	public String gramaticalizarSinTrimear ( String s )
+	{
+		return correctMorphologyWithoutTrimming(s);
+	}
+
+
+	public String correctMorphologyWithoutTrimming ( String s )
+	{
+		if ( s == null ) return null;
+		String niceString = super.correctMorphologyWithoutTrimming(s);
+		return StringMethods.textualSubstitution ( StringMethods.textualSubstitution ( niceString , " a el" , " al" ) , " de el" , " del" );
+	}
 	
 
 }

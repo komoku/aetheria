@@ -134,6 +134,13 @@
 				<include name="svgSalamander.jar"/>
 			</fileset>
 		</copy>
+		<!--
+		<signjar jar="${dist}/${corejar}" alias="Carlos" storepass="dummypass"/>
+		<signjar alias="Carlos" storepass="dummypass" lazy="true">
+		  <path>
+		    <fileset dir="${dist}/lib" includes="**/*.jar" />
+		  </path>
+		</signjar>-->
 	</target>
 	
 	<target name="onejar" depends="corejar" description="generate one-jar jar file">

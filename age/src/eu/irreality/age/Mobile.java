@@ -6228,9 +6228,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 			//write( io.getColorCode("action")  + lenguaje.gramaticalizar (  "Coges " + ourItem.constructName2True(1,this) + toAppend + "." ) + "\n" + io.getColorCode("reset") );
 			if ( toAppend == null || toAppend.length() < 1 )
-				write( io.getColorCode("action")  + lenguaje.gramaticalizar ( mundo.getMessages().getMessage("you.get.item","$item",ourItem.constructName2True(1,this)+toAppend,new Object[]{this,ourItem})) + "\n" + io.getColorCode("reset") );
+				write( io.getColorCode("action")  + lenguaje.correctMorphology ( mundo.getMessages().getMessage("you.get.item","$item",ourItem.constructName2True(1,this)+toAppend,new Object[]{this,ourItem})) + "\n" + io.getColorCode("reset") );
 			else
-				write( io.getColorCode("action")  + lenguaje.gramaticalizar ( mundo.getMessages().getMessage("you.get.item.from.location","$item",ourItem.constructName2True(1,this),"$location",toAppend.trim(),new Object[]{this,ourItem,toAppend})) + "\n" + io.getColorCode("reset") );
+				write( io.getColorCode("action")  + lenguaje.correctMorphology ( mundo.getMessages().getMessage("you.get.item.from.location","$item",ourItem.constructName2True(1,this),"$location",toAppend.trim(),new Object[]{this,ourItem,toAppend})) + "\n" + io.getColorCode("reset") );
 			
 			//habitacionActual.informActionAuto ( this , null , "$1 coge " + ourItem.constructName2OneItem() + toAppend + ".\n" , false );
 			if ( toAppend == null || toAppend.length() < 1 )

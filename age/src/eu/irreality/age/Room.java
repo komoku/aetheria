@@ -1267,7 +1267,7 @@ public class Room extends Entity implements Descriptible , SupportingCode
 				s = StringMethods.textualSubstitution ( s , "$" + (i+1) , nombre );
 			}
 		}
-		return lenguaje.gramaticalizarSinTrimear(s);
+		return lenguaje.correctMorphologyWithoutTrimming(s);
 	}
 	
 	//the new, subjective inform action
