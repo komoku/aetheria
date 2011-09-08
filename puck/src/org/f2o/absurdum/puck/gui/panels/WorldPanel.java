@@ -31,6 +31,7 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -155,6 +156,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 	
 	private JTextField tfShortName = new EnhancedJTextField(20);
 	private JTextField tfLongName = new EnhancedJTextField(20);
+	private JComboBox cbLanguage = new JComboBox();
 	private JTextField tfAuthor = new EnhancedJTextField(20);
 	private JTextField tfVersion = new EnhancedJTextField(20);
 	private JTextField tfAgeVersion = new EnhancedJTextField(20);
@@ -201,6 +203,12 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		longNamePanel.add(new JLabel(Messages.getInstance().getMessage("world.longname")));
 		longNamePanel.add(tfLongName);
 		firstTab.add(longNamePanel);
+		
+		JPanel languagePanel = new JPanel();
+		cbLanguage = new JComboBox( new String[] { Messages.getInstance().getMessage("language.es") , Messages.getInstance().getMessage("language.en") } );
+		languagePanel.add(new JLabel(Messages.getInstance().getMessage("language")));
+		languagePanel.add(cbLanguage);
+		firstTab.add(languagePanel);
 		
 		JPanel authorPanel = new JPanel();
 		authorPanel.add(new JLabel(Messages.getInstance().getMessage("world.author")));
@@ -337,12 +345,20 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		org.w3c.dom.Element result = d.createElement("World");
 		result.setAttribute("worldName",tfShortName.getText());
 		result.setAttribute("moduleName",tfLongName.getText());
+		
+		String languageString = (String) cbLanguage.getSelectedItem();
+		if (languageString.equals(Messages.getInstance().getMessage("language.en")))
+			result.setAttribute("language","en");
+		else
+			result.setAttribute("language","es");
+		
 		result.setAttribute("worldDir",".");
 		result.setAttribute("author",tfAuthor.getText());
 		result.setAttribute("version",tfVersion.getText());
 		result.setAttribute("parserVersion",tfAgeVersion.getText());
 		result.setAttribute("date",tfDate.getText());
 		result.setAttribute("type",tfType.getText());
+		
 		
 		/*check for duplicate unique names and change them if needed*/
 		Set usedNames = new LinkedHashSet();
@@ -806,6 +822,13 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		Debug.println("[init world] Loading general world info...");
 		tfShortName.setText(e.getAttribute("worldName"));
 		tfLongName.setText(e.getAttribute("moduleName"));
+		
+		//languages combo box
+		if ( e.hasAttribute("language") && e.getAttribute("language").equals("en") )
+			cbLanguage.setSelectedIndex(1);
+		else
+			cbLanguage.setSelectedIndex(0);
+		
 		tfAuthor.setText(e.getAttribute("author"));
 		tfVersion.setText(e.getAttribute("version"));
 		tfAgeVersion.setText(e.getAttribute("parserVersion"));

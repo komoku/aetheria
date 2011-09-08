@@ -287,3 +287,6 @@ bsh.code.ok=<html><p>The world's BeanShell code is syntactically correct.</p></h
 bsh.errors.explanation=<html><p>The following syntax errors have been found in BeanShell code:</p></html>
 bsh.errors.dialogtitle=BeanShell syntax errors
 bsh.errors.ok=Close
+language=Language
+language.es=Spanish
+language.en=English
