@@ -1,6 +1,8 @@
 package eu.irreality.age.language;
 
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import eu.irreality.age.NaturalLanguage;
 import eu.irreality.age.Player;
@@ -70,11 +72,29 @@ public class English extends NaturalLanguage
 	{
 		if ( s == null ) return null;
 		String niceString = super.correctMorphology(s);
-		return niceString.replaceAll("\\A[\\W]a\\Wa","\\A[\\W]an\\Wa")
-						.replaceAll("\\A[\\W]a\\We","\\A[\\W]an\\We")
-						.replaceAll("\\A[\\W]a\\Wi","\\A[\\W]an\\Wi")
-						.replaceAll("\\A[\\W]a\\Wo","\\A[\\W]an\\Wo");
-						//.replaceAll("\\A[\\W]a\\Wu","\\A[\\W]an\\Wu");
+		
+		String patternStr = "\\b([Aa])\\b\\s*\\b([aeioAEIO])";
+		String replaceStr = "$1n $2";
+		Pattern pattern = Pattern.compile(patternStr);
+		Matcher matcher = pattern.matcher(niceString);
+		return matcher.replaceAll(replaceStr);
+		// a (b c) d <ef> g
+		
+		
+		//return niceString.replaceAll("\\ba\\b\\s*\\ba","an a");
+	}
+	
+	//change a to an when needed
+	public String correctMorphologyWithoutTrimming ( String s )
+	{
+		if ( s == null ) return null;
+		String niceString = super.correctMorphologyWithoutTrimming(s);
+
+		String patternStr = "\\b([Aa])\\b\\s*\\b([aeioAEIO])";
+		String replaceStr = "$1n $2";
+		Pattern pattern = Pattern.compile(patternStr);
+		Matcher matcher = pattern.matcher(niceString);
+		return matcher.replaceAll(replaceStr);
 	}
 
 }
