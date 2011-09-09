@@ -27,7 +27,15 @@ public class Path extends Entity implements Descriptible
 		NORTH=NORTE,SOUTH=SUR,WEST=OESTE,EAST=ESTE,
 		NORTHWEST=NOROESTE,NORTHEAST=NORDESTE,SOUTHWEST=SUROESTE,
 		SOUTHEAST=SUDESTE,UP=ARRIBA,DOWN=ABAJO;
+	
+	private World mundo;
 
+	/**
+	 * This method is only used to save Path objects to XML, and NOT to parse direction names or output them to
+	 * the player. Therefore, it is not a multilanguage method and must not be used as such.
+	 * @param dir
+	 * @return
+	 */
 	public static final String directionName ( int dir )
 	{
 		String s;
@@ -47,6 +55,12 @@ public class Path extends Entity implements Descriptible
 		return s;
 	}
 	
+	/**
+	 * This method is only used to build Path objects from XML, and NOT to parse direction names or output them to
+	 * the player. Therefore, it is not a multilanguage method and must not be used as such.
+	 * @param dir
+	 * @return
+	 */
 	public static final int nameToDirection ( String nombre )
 	{
 		String name = nombre.toLowerCase();
@@ -97,6 +111,7 @@ public class Path extends Entity implements Descriptible
 	{
 
 		Path p = new Path ();
+		p.mundo = this.mundo;
 		p.exitTime = this.exitTime;
 		p.descriptionList = new Description[ this.descriptionList.length ];
 		p.isStandard = this.isStandard;
@@ -135,13 +150,14 @@ public class Path extends Entity implements Descriptible
 	
 	//CONSTRUCTORS
 	
-	Path()
+	private Path()
 	{
 		;
 	}
 	
 	Path ( World mundo , boolean isStandard , String curToken )
 	{	
+		this.mundo = mundo;
 		byte ntokens = (byte) StringMethods.numToks( curToken , '$' );
 		this.isStandard = isStandard;
 		try
@@ -444,7 +460,7 @@ public class Path extends Entity implements Descriptible
 	
 	public Path ( World mundo , org.w3c.dom.Node n ) throws XMLtoWorldException
 	{
-	
+		this.mundo=mundo;
 	
 		if ( ! ( n instanceof org.w3c.dom.Element ) )
 		{

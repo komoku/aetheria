@@ -424,3 +424,15 @@ art.ind.f=a
 
 #Coordinating conjunction
 coord.conj=and
+
+#Directions
+direction.n=north
+direction.s=south
+direction.w=west
+direction.e=east
+direction.nw=northwest
+direction.ne=northeast
+direction.sw=southwest
+direction.se=southeast
+direction.u=up
+direction.d=down

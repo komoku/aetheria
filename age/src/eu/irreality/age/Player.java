@@ -949,7 +949,7 @@ public class Player extends Mobile implements Informador
 				return false;
 			}	
 
-			else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("norte")
+			else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase(mundo.getMessages().getMessage("direction.n"))
 					|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("n") )
 			{
 				mentions.setLastMentionedVerb(command);
@@ -958,22 +958,22 @@ public class Player extends Mobile implements Informador
 				actionArgs[0] = habitacionActual.getExit ( true , Path.NORTE );
 
 			}
-			else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("sur")
+			else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase(mundo.getMessages().getMessage("direction.s"))
 					|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("s") )
 			{
 				mentions.setLastMentionedVerb(command);
 				//return go (habitacionActual.getExit( true,Path.SUR ));
 				actionArgs[0] = habitacionActual.getExit ( true , Path.SUR );
 			}
-			else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("oeste")
-					|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("e") )
+			else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase(mundo.getMessages().getMessage("direction.w"))
+					|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("o") )
 			{
 				mentions.setLastMentionedVerb(command);
 				//return go (habitacionActual.getExit( true,Path.OESTE ));
 				actionArgs[0] = habitacionActual.getExit ( true , Path.OESTE );
 			}
-			else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("este")
-					|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("o") )
+			else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase(mundo.getMessages().getMessage("direction.e"))
+					|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("e") )
 			{
 				mentions.setLastMentionedVerb(command);
 				//return go (habitacionActual.getExit( true,Path.ESTE ));

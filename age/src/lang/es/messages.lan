@@ -425,3 +425,15 @@ art.ind.f=una
 
 #Coordinating conjunction
 coord.conj=y
+
+#Directions
+direction.n=norte
+direction.s=sur
+direction.w=oeste
+direction.e=este
+direction.nw=noroeste
+direction.ne=nordeste
+direction.sw=suroeste
+direction.se=sudeste
+direction.u=arriba
+direction.d=abajo
