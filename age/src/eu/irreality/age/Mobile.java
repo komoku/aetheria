@@ -5607,7 +5607,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 		if ( nItems == 1 )
 		{
-			return presentName ( getSingName(viewer) , "un" , "una" );
+			return presentName ( getSingName(viewer) , mundo.getMessages().getMessage("art.ind.m") , mundo.getMessages().getMessage("art.ind.f") );
 		}
 		else if ( nItems < 10 )
 		{
@@ -5637,7 +5637,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 		if ( nItems == 1 )
 		{
-			return presentName ( getSingNameTrue(viewer) , "el" , "la" );	
+			return presentName ( getSingNameTrue(viewer) , mundo.getMessages().getMessage("art.def.m") , mundo.getMessages().getMessage("art.def.f") );	
 		}	
 		else
 		{
@@ -5676,7 +5676,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		if ( nItems == 1 )
 		{
 
-			return presentName ( getSingNameTrue(viewer) , "el" , "la" );
+			return presentName ( getSingNameTrue(viewer) , mundo.getMessages().getMessage("art.def.m") , mundo.getMessages().getMessage("art.def.f") );
 			/*
 			String baseName = getSingNameTrue( viewer );
 
@@ -5793,7 +5793,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	 */
 	public String getOutputNameThe ( int nItems , Entity viewer )
 	{
-		return getOutputName ( nItems , viewer , "el" , "la" , false , true );
+		return getOutputName ( nItems , viewer , mundo.getMessages().getMessage("art.def.m") , mundo.getMessages().getMessage("art.def.f") , false , true );
 	}
 	
 	/**
@@ -5803,7 +5803,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	 */
 	public String getOutputNameThe ( int nItems )
 	{
-		return getOutputName ( nItems , null , "el" , "la" , true , true );
+		return getOutputName ( nItems , null , mundo.getMessages().getMessage("art.def.m") , mundo.getMessages().getMessage("art.def.f") , true , true );
 	}
 	
 	/**
@@ -5812,7 +5812,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	 */
 	public String getOutputNameThe ( )
 	{
-		return getOutputName ( 1 , null , "el" , "la" , true , true );
+		return getOutputName ( 1 , null , mundo.getMessages().getMessage("art.def.m") , mundo.getMessages().getMessage("art.def.f") , true , true );
 	}
 	
 	/**
@@ -5823,7 +5823,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	 */
 	public String getOutputNameA ( int nItems , Entity viewer )
 	{
-		return getOutputName ( nItems , viewer , "un" , "una" , false , true );
+		return getOutputName ( nItems , viewer , mundo.getMessages().getMessage("art.ind.m") , mundo.getMessages().getMessage("art.ind.f") , false , true );
 	}
 	
 	/**
@@ -5833,7 +5833,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	 */
 	public String getOutputNameA ( int nItems )
 	{
-		return getOutputName ( nItems , null , "un" , "una" , true , true );
+		return getOutputName ( nItems , null , mundo.getMessages().getMessage("art.ind.m") , mundo.getMessages().getMessage("art.ind.f") , true , true );
 	}
 	
 	/**
@@ -5842,7 +5842,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	 */
 	public String getOutputNameA ( )
 	{
-		return getOutputName ( 1 , null , "un" , "una" , true , true );
+		return getOutputName ( 1 , null , mundo.getMessages().getMessage("art.ind.m") , mundo.getMessages().getMessage("art.ind.f") , true , true );
 	}
 	
 

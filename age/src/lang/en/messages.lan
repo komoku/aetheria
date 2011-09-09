@@ -415,3 +415,9 @@ no.suicide.weapon=You have no weapons suitable for suicide.\n
 #$1 suicides with weapon $3
 someone.suicides=$1 suicides with $3.\n
 you.suicide=You suicide with $3.\n
+
+#Articles: definite masc/fem, indefinite masc/fem
+art.def.m=the
+art.def.f=the
+art.ind.m=a
+art.ind.f=a

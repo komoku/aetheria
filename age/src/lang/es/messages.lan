@@ -417,3 +417,8 @@ no.suicide.weapon=No estás blandiendo ningún arma útil para suicidarte.\n
 someone.suicides=$1 se suicida con $3.\n
 you.suicide=Te suicidas con $3.\n
 
+#Artículos: definido masculino/femenino, indefinido masculino/femenino
+art.def.m=el
+art.def.f=la
+art.ind.m=un
+art.ind.f=una
