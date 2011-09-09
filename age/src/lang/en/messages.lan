@@ -421,3 +421,6 @@ art.def.m=the
 art.def.f=the
 art.ind.m=a
 art.ind.f=a
+
+#Coordinating conjunction
+coord.conj=and

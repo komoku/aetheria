@@ -422,3 +422,6 @@ art.def.m=el
 art.def.f=la
 art.ind.m=un
 art.ind.f=una
+
+#Coordinating conjunction
+coord.conj=y

@@ -93,14 +93,23 @@ public class Inventory extends EntityList
 	
 	public String toString ( )
 	{
-		return toString ( null );
+		return toString ( null , null );
 	}
 	
-	public String toString ( /*nullable*/ Entity viewer )
+	public String toString ( World w )
+	{
+		return toString ( null , w );
+	}
+	
+	public String toString ( /*nullable*/ Entity viewer , World w )
 	{
 		/*luego hay que hacer el constructname con mas items si hay duplicados.*/
 		int i = 0;
 		String cadena = "";
+		
+		String conjunction;
+		if ( w == null ) conjunction="y";
+		else conjunction = w.getMessages().getMessage("coord.conj");
 		
 		boolean [] considerados = new boolean [ size ( ) ];
 		boolean vacio = true; //si el inventario esta vacio a efectos de 
@@ -211,7 +220,7 @@ public class Inventory extends EntityList
 					cadena += ", ";
 				
 				else		
-					cadena += " y ";	
+					cadena += ( " " + conjunction + " " );	
 				//if ( viewer == null )	
 				//	cadena += elementAt(i).constructName(numeroitems,elementAt(i).getState());
 				//else
