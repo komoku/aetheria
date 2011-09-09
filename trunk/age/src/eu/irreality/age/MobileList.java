@@ -50,14 +50,23 @@ public class MobileList extends EntityList
 	
 	public String toString ( )
 	{
-		return toString ( null );
+		return toString ( null , null );
+	}
+
+	public String toString ( World w )
+	{
+		return toString ( null , w );
 	}
 	
-	public String toString ( Entity viewer )
+	public String toString ( /*nullable*/ Entity viewer , World w  )
 	{
 		/*luego hay que hacer el constructname con mas items si hay duplicados.*/
 		int i = 0;
 		String cadena = "";
+		
+		String conjunction;
+		if ( w == null ) conjunction="y";
+		else conjunction = w.getMessages().getMessage("coord.conj");
 		
 		boolean [] considerados = new boolean [ size ( ) ];
 		boolean vacio = true; //si el inventario esta vacio a efectos de 
@@ -138,7 +147,7 @@ public class MobileList extends EntityList
 					cadena += ", ";
 				
 				else		
-					cadena += " y ";	
+					cadena += (" " + conjunction + " ");	
 				cadena += elementAt(i).constructName(numeroitems,viewer);
 				
 				j++; //j sólo se incrementa con los que se muestran en el string

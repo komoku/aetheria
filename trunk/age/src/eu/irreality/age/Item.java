@@ -1075,7 +1075,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		}
 		else
 		{
-			return StringMethods.textualSubstitution ( desString , "%INVENTORY" , inventory.toString() );
+			return StringMethods.textualSubstitution ( desString , "%INVENTORY" , inventory.toString(mundo) );
 		}
 	}
 	
@@ -1144,7 +1144,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		}
 		else
 		{
-			return StringMethods.textualSubstitution ( desString , "%INVENTORY" , inventory.toString() );
+			return StringMethods.textualSubstitution ( desString , "%INVENTORY" , inventory.toString(mundo) );
 		}
 	}
 	
