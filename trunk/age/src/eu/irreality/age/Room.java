@@ -895,14 +895,14 @@ public class Room extends Entity implements Descriptible , SupportingCode
 		String itemsString = itemsInRoom.toString( viewer );
 		String rawString = itemsString.substring(0,itemsString.length()-1);
 		if ( customMessage != null )
-			return Messages.buildMessage(customMessage, 
+			return mundo.getLanguage().correctMorphology(Messages.buildMessage(customMessage, 
 					"$dotinventory", itemsString,
-					"$inventory", rawString);
+					"$inventory", rawString));
 		else
-			return mundo.getMessages().getMessage("items.here",
+			return mundo.getLanguage().correctMorphology(mundo.getMessages().getMessage("items.here",
 					"$dotinventory",itemsString,
 					"$inventory", rawString,
-					new Object[]{this});
+					new Object[]{this}));
 	}
 	
 	//returns string to describe a mobile on a room (like "Aquí está Juan.")
