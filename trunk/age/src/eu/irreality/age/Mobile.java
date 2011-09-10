@@ -3860,6 +3860,14 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	{
 		mp = amt;
 	}
+	public void setMaxHP ( int maxHP )
+	{
+		maxhp = maxHP;
+	}
+	public void setMaxMP ( int maxMP )
+	{
+		maxmp = maxMP;
+	}
 
 	public void prepareToDie ( )
 	{
