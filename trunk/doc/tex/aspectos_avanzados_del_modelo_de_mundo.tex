@@ -607,6 +607,46 @@ puesta (en cualquiera de sus miembros) y \textsf{false} de lo contrario.
 
 \section {Estados de las criaturas}
 
+En la sección \ref{sec:Temporizacion} sobre temporización vimos cómo
+funcionaba el modelo de tiempo de AGE, basado en unidades de tiempo y en
+propiedades cuyo método update se activa cuando su contador de tiempo llega
+a cero. En esa sección, vimos algunos ejemplos de cómo usar ese mecanismo
+para definir entidades con comportamientos que dependieran del tiempo. Pero,
+además de los que nosotros añadamos, en AGE ya existen comportamientos
+definidos por defecto que dependen del tiempo, que son los asociados a las
+acciones de las criatura, como coger un objeto o moverse en una dirección.
+Todas las acciones que llevan a cabo las criaturas consumen un tiempo, y la
+cuenta de este tiempo se lleva en el temporizador de una propiedad llamada
+``state''.
+
+Por ejemplo, como jugadores, cuando AGE nos acepta una orden de entrada, es
+porque ha llegado a cero el temporizador de ``state'' de nuestro personaje
+jugador. Si tecleamos ``ir norte'', AGE cambiará el valor de ``state'' a un
+valor de estado (que se verá más adelante) que indica que nos estamos
+moviendo, y fijará el temporizador al número de unidades de tiempo que nos
+consuma ir hacia el norte. Una vez llegado el temporizador a cero, esto
+significa que ya hemos terminado de ir hacia el norte y AGE esperará otra
+orden de entrada, que de nuevo cambiará el valor y temporizador de ``state'',
+y así sucesivamente.
+
+Por lo tanto, el método \textsf{update} que define AGE por defecto para la
+propiedad ``state'' de los jugadores es muy importante, porque es nada menos
+que el que consigue que al ejecutar una aventura monojugador, ésta nos vaya
+pidiendo órdenes y ejecutándolas una por una. En una aventura multijugador
+o que cuente con personajes complejos que realicen acciones, el temporizador
+de esta propiedad será el que se encargue de entrelazar correctamente las
+acciones: por ejemplo, si ir al norte desde una localidad a otra consume
+tres unidades de tiempo y coger un objeto consume una unidad de tiempo, el
+jugador A podrá coger tres objetos en el tiempo en el que el jugador B va al
+norte (la manera concreta en la que los jugadores perciben esto en los modos
+síncrono y de tiempo real se trató en la sección de temporización).
+
+En la presente sección veremos en detalle cómo funciona esta propiedad
+especial ``state'' (y otra asociada, llamada ``target'') y qué podemos hacer
+con ellas.
+
+\subsection{Las propiedades ``state'' y ``target''}
+
 Las criaturas (objetos de la clase \textsf{Mobile}) tienen una propiedad
 especialmente importante llamada ``state'' (estado). La importancia de la
 propiedad ``state'' radica en que esta propiedad es la que define qué cosa
@@ -798,6 +838,38 @@ momento de ``Tomar decisión'' se hará lo siguiente:
 Por supuesto, podemos sobreescribir el método update de los personajes no
 jugadores definiendo comportamientos más complejos, y así obtener criaturas
 que se muevan, sigan rutas, cojan objetos, desempeñen tareas, etc.
+
+\subsection {Programación con estados}
+
+Como programadores de aventuras, el uso más evidente de la propiedad ``state''
+es el de comprobar lo que está haciendo una criatura. Por ejemplo, si
+queremos saber si un personaje llamado Manolo que está en nuestra habitación
+ha empezado a irse hacia otra, podríamos hacer algo como:
+
+\begin{lstlisting}
+if ( equals ( get(mobile("Manolo"),"state") , Mobile.MOVING ) )
+{
+  self.say("¡No te vayas aún, Manolo, que todavía me quedan cosas que contarte!\n");
+}
+\end{lstlisting}
+
+Además, con \textsf{room(get(mobile("Manolo"),"target"))} podemos obtener la
+habitación a la que se está moviendo Manolo, y con
+\textsf{getTime(mobile("Manolo"),"state")} tendremos el número de unidades
+de tiempo que le faltan para llegar a ella (véase la sección
+\ref{sec:Temporizacion} sobre temporización).
+
+Aparte de utilizar la propiedad ``state'' para comprobar el estado de una
+criatura, los programadores más osados pueden querer redefinir lo que sucede
+en el método update para la propiedad ``state'' y de ese modo cambiar la
+manera en la que se comporta una criatura en los cambios de estado. Estos
+cambios pueden potencialmente ir desde modificaciones puntuales hasta
+cambios radicales que, por ejemplo, modifiquen totalmente la manera en la
+que se resuelven los cambios de estado tipo ``Tomar decisión'' cambiando
+todo el sistema de parseado de AGE por otro sistema totalmente distinto.
+Por supuesto, sólo los programadores avanzados o con mucha práctica en AGE
+y con interés en personalizarlo deberían utilizar estas características,
+que no son para nada necesarias para hacer un buen juego con AGE.
 
 \section {Combate y armas} \label{sec:CombateArmas}
 
