@@ -3,21 +3,18 @@
 \catcode`<\active
 \catcode`>\active
 \@nameuse{es@quoting}
-\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
-\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
-\global\let\oldcontentsline\contentsline
-\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
-\global\let\oldnewlabel\newlabel
-\gdef\newlabel#1#2{\newlabelxx{#1}#2}
-\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
-\AtEndDocument{\ifx\hyper@anchor\@undefined
-\let\contentsline\oldcontentsline
-\let\newlabel\oldnewlabel
-\fi}
-\fi}
-\global\let\hyper@last\relax 
-\gdef\HyperFirstAtBeginDocument#1{#1}
-\providecommand\HyField@AuxAddToFields[1]{}
+\ifx\hyper@anchor\@undefined
+\global \let \oldcontentsline\contentsline
+\gdef \contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
+\global \let \oldnewlabel\newlabel
+\gdef \newlabel#1#2{\newlabelxx{#1}#2}
+\gdef \newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
+\AtEndDocument{\let \contentsline\oldcontentsline
+\let \newlabel\oldnewlabel}
+\else
+\global \let \hyper@last\relax 
+\fi
+
 \select@language{spanish}
 \@writefile{toc}{\select@language{spanish}}
 \@writefile{lof}{\select@language{spanish}}
@@ -89,87 +86,95 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.5.3}Funcionalidad de depuraci\'on}{75}{subsection.2.5.3}}
 \@writefile{toc}{\contentsline {subsubsection}{Impresi\'on de informaci\'on de depuraci\'on en los parseCommand}{75}{section*.23}}
 \@writefile{toc}{\contentsline {subsubsection}{Debugger din\'amico}{76}{section*.24}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {3}Aspectos avanzados del modelo de mundo}{77}{chapter.3}}
+\@writefile{toc}{\contentsline {subsubsection}{Breakpoints}{76}{section*.25}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}Aspectos avanzados del modelo de mundo}{78}{chapter.3}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {3.1}Descripciones y nombres din\'amicos}{77}{section.3.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Descripciones din\'amicas}{78}{subsection.3.1.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.2}Nombres din\'amicos}{79}{subsection.3.1.2}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.2}Cosas abribles y cerrables}{80}{section.3.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Definiendo cosas abribles y cerrables}{80}{subsection.3.2.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}Llaves}{82}{subsection.3.2.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.3}Puertas}{83}{subsection.3.2.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.4}Contenedores abribles y cerrables}{84}{subsection.3.2.4}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.3}Miembros, prendas y armaduras}{84}{section.3.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}Miembros}{85}{subsection.3.3.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Prendas}{86}{subsection.3.3.2}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.4}Combate y armas}{87}{section.3.4}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.5}Entidades abstractas}{87}{section.3.5}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.6}Conjuros}{89}{section.3.6}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.7}Mensajes por defecto}{89}{section.3.7}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.7.1}Cambiar los mensajes por defecto}{89}{subsection.3.7.1}}
-\@writefile{toc}{\contentsline {subsubsection}{Cambiar mensaje por mensaje}{90}{section*.25}}
-\@writefile{toc}{\contentsline {subsubsection}{Cambiar todos los mensajes de una sola vez}{90}{section*.26}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.7.2}Generar din\'amicamente los mensajes por defecto}{91}{subsection.3.7.2}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}M\'etodos redefinibles}{92}{chapter.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}Descripciones y nombres din\'amicos}{78}{section.3.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Descripciones din\'amicas}{79}{subsection.3.1.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.2}Nombres din\'amicos}{80}{subsection.3.1.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}Cosas abribles y cerrables}{81}{section.3.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Definiendo cosas abribles y cerrables}{81}{subsection.3.2.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}Llaves}{83}{subsection.3.2.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.3}Puertas}{84}{subsection.3.2.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.4}Contenedores abribles y cerrables}{85}{subsection.3.2.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Miembros, prendas y armaduras}{85}{section.3.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}Miembros}{86}{subsection.3.3.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Prendas}{87}{subsection.3.3.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.4}Estados de las criaturas}{88}{section.3.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Las propiedades ``state'' y ``target''}{89}{subsection.3.4.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.2}Cambios de estado}{91}{subsection.3.4.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.3}Programaci\'on con estados}{92}{subsection.3.4.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.5}Combate y armas}{92}{section.3.5}}
+\newlabel{sec:CombateArmas}{{3.5}{92}{Combate y armas\relax }{section.3.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.6}Entidades abstractas}{92}{section.3.6}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.7}Conjuros}{94}{section.3.7}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.8}Mensajes por defecto}{94}{section.3.8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.8.1}Cambiar los mensajes por defecto}{94}{subsection.3.8.1}}
+\@writefile{toc}{\contentsline {subsubsection}{Cambiar mensaje por mensaje}{95}{section*.26}}
+\@writefile{toc}{\contentsline {subsubsection}{Cambiar todos los mensajes de una sola vez}{95}{section*.27}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.8.2}Generar din\'amicamente los mensajes por defecto}{96}{subsection.3.8.2}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}M\'etodos redefinibles}{97}{chapter.4}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {4.1}Eventos}{92}{section.4.1}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.2}Otros m\'etodos redefinibles}{92}{section.4.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}M\'etodos de Mobile (para PSIs)}{92}{subsection.4.2.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}Ejemplo de uso}{93}{subsection.4.2.2}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}El an\'alisis de la entrada}{94}{chapter.5}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Eventos}{97}{section.4.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Otros m\'etodos redefinibles}{97}{section.4.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}M\'etodos de Mobile (para PSIs)}{97}{subsection.4.2.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}Ejemplo de uso}{98}{subsection.4.2.2}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}El an\'alisis de la entrada}{99}{chapter.5}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {5.1}M\'etodos de an\'alisis de la entrada (\textsf  {parseCommand})}{94}{section.5.1}}
-\newlabel{sec:parseCommand}{{5.1}{94}{Métodos de análisis de la entrada (\textsf {parseCommand})\relax }{section.5.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.1}Los m\'etodos de an\'alisis de la entrada}{94}{subsection.5.1.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.2}Ejemplo de uso}{95}{subsection.5.1.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.3}Tipos de m\'etodos de an\'alisis de la entrada}{95}{subsection.5.1.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.4}El proceso de an\'alisis de AGE}{97}{subsection.5.1.4}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.2}Preprocesado de la entrada}{99}{section.5.2}}
-\newlabel{sec:PreprocesadoEntrada}{{5.2}{99}{Preprocesado de la entrada\relax }{section.5.2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.3}Gesti\'on de verbos}{100}{section.5.3}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {6}Presentaci\'on del mundo}{101}{chapter.6}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}M\'etodos de an\'alisis de la entrada (\textsf  {parseCommand})}{99}{section.5.1}}
+\newlabel{sec:parseCommand}{{5.1}{99}{Métodos de análisis de la entrada (\textsf {parseCommand})\relax }{section.5.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.1}Los m\'etodos de an\'alisis de la entrada}{99}{subsection.5.1.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.2}Ejemplo de uso}{100}{subsection.5.1.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.3}Tipos de m\'etodos de an\'alisis de la entrada}{100}{subsection.5.1.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.4}El proceso de an\'alisis de AGE}{102}{subsection.5.1.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Preprocesado de la entrada}{104}{section.5.2}}
+\newlabel{sec:PreprocesadoEntrada}{{5.2}{104}{Preprocesado de la entrada\relax }{section.5.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}Gesti\'on de verbos}{105}{section.5.3}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}Presentaci\'on del mundo}{106}{chapter.6}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {6.1}Estilos de texto}{102}{section.6.1}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.2}Prompt}{102}{section.6.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.1}M\'etodos de manipulaci\'on del prompt}{102}{subsection.6.2.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.2}Ejemplos de c\'odigo}{102}{subsection.6.2.2}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.3}Tipograf\IeC {\'\i }as en AGE}{103}{section.6.3}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.1}Control b\'asico de la tipograf\IeC {\'\i }a}{103}{subsection.6.3.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.2}Control avanzado de la tipograf\IeC {\'\i }a}{104}{subsection.6.3.2}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.4}M\'etodos gr\'aficos}{105}{section.6.4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.4.1}Im\'agenes}{105}{subsection.6.4.1}}
-\newlabel{sec:imagenes}{{6.4.1}{105}{Imágenes\relax }{subsection.6.4.1}{}}
-\@writefile{toc}{\contentsline {subsubsection}{M\'etodos para im\'agenes}{105}{section*.27}}
-\@writefile{toc}{\contentsline {subsubsection}{Ejemplos de c\'odigo}{106}{section*.28}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.4.2}Frames}{106}{subsection.6.4.2}}
-\@writefile{toc}{\contentsline {subsubsection}{Utilidad de los frames}{106}{section*.29}}
-\@writefile{toc}{\contentsline {subsubsection}{M\'etodos para crear y borrar frames}{107}{section*.30}}
-\@writefile{toc}{\contentsline {subsubsection}{M\'etodos para mostrar im\'agenes en frames}{107}{section*.31}}
-\@writefile{toc}{\contentsline {subsubsection}{Ejemplos de c\'odigo}{107}{section*.32}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.5}sonido}{107}{section.6.5}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.5.1}Audio}{108}{subsection.6.5.1}}
-\@writefile{toc}{\contentsline {subsubsection}{Reproducir un sonido}{108}{section*.33}}
-\@writefile{toc}{\contentsline {subsubsection}{Detener un sonido}{109}{section*.34}}
-\@writefile{toc}{\contentsline {subsubsection}{Cambiar el volumen de un sonido}{109}{section*.35}}
-\@writefile{toc}{\contentsline {subsubsection}{Ejemplo}{110}{section*.36}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.5.2}M\'usica MIDI}{110}{subsection.6.5.2}}
-\@writefile{toc}{\contentsline {subsubsection}{Reproducir un fichero MIDI}{111}{section*.37}}
-\@writefile{toc}{\contentsline {subsubsection}{Detener un fichero MIDI}{112}{section*.38}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.6}Otros aspectos de la presentaci\'on}{112}{section.6.6}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {7}Referencia de m\'etodos invocables}{113}{chapter.7}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.1}Estilos de texto}{107}{section.6.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.2}Prompt}{107}{section.6.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.1}M\'etodos de manipulaci\'on del prompt}{107}{subsection.6.2.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.2}Ejemplos de c\'odigo}{107}{subsection.6.2.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.3}Tipograf\IeC {\'\i }as en AGE}{108}{section.6.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.1}Control b\'asico de la tipograf\IeC {\'\i }a}{108}{subsection.6.3.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.2}Control avanzado de la tipograf\IeC {\'\i }a}{109}{subsection.6.3.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.4}M\'etodos gr\'aficos}{110}{section.6.4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4.1}Im\'agenes}{110}{subsection.6.4.1}}
+\newlabel{sec:imagenes}{{6.4.1}{110}{Imágenes\relax }{subsection.6.4.1}{}}
+\@writefile{toc}{\contentsline {subsubsection}{M\'etodos para im\'agenes}{110}{section*.28}}
+\@writefile{toc}{\contentsline {subsubsection}{Ejemplos de c\'odigo}{111}{section*.29}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4.2}Frames}{111}{subsection.6.4.2}}
+\@writefile{toc}{\contentsline {subsubsection}{Utilidad de los frames}{111}{section*.30}}
+\@writefile{toc}{\contentsline {subsubsection}{M\'etodos para crear y borrar frames}{112}{section*.31}}
+\@writefile{toc}{\contentsline {subsubsection}{M\'etodos para mostrar im\'agenes en frames}{112}{section*.32}}
+\@writefile{toc}{\contentsline {subsubsection}{Ejemplos de c\'odigo}{112}{section*.33}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.5}sonido}{112}{section.6.5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.5.1}Audio}{113}{subsection.6.5.1}}
+\@writefile{toc}{\contentsline {subsubsection}{Reproducir un sonido}{113}{section*.34}}
+\@writefile{toc}{\contentsline {subsubsection}{Detener un sonido}{114}{section*.35}}
+\@writefile{toc}{\contentsline {subsubsection}{Cambiar el volumen de un sonido}{114}{section*.36}}
+\@writefile{toc}{\contentsline {subsubsection}{Ejemplo}{115}{section*.37}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.5.2}M\'usica MIDI}{115}{subsection.6.5.2}}
+\@writefile{toc}{\contentsline {subsubsection}{Reproducir un fichero MIDI}{116}{section*.38}}
+\@writefile{toc}{\contentsline {subsubsection}{Detener un fichero MIDI}{117}{section*.39}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.6}Otros aspectos de la presentaci\'on}{117}{section.6.6}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {7}Referencia de m\'etodos invocables}{118}{chapter.7}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {7.1}Manipulaci\'on del modelo de mundo}{113}{section.7.1}}
-\@writefile{toc}{\contentsline {section}{\numberline {7.2}Notificaci\'on de acciones y sucesos}{113}{section.7.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.1}Notificar sobre algo que ha ocurrido en una habitaci\'on}{113}{subsection.7.2.1}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.2}Notificar sobre algo que ha ocurrido con una cosa}{114}{subsection.7.2.2}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.3}Notificar sobre algo que ha ocurrido con una criatura}{114}{subsection.7.2.3}}
-\@writefile{toc}{\contentsline {section}{\numberline {7.3}Presentaci\'on general}{115}{section.7.3}}
-\@writefile{toc}{\contentsline {section}{\numberline {7.4}M\'etodos \'utiles de la API de Java}{115}{section.7.4}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {8}Distribuci\'on como juego online}{116}{chapter.8}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.1}Manipulaci\'on del modelo de mundo}{118}{section.7.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.2}Obtenci\'on de nombres de cosas y criaturas}{118}{section.7.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.1}Obtenci\'on de nombres para mostrar}{118}{subsection.7.2.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.3}Notificaci\'on de acciones y sucesos}{121}{section.7.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3.1}Notificar sobre algo que ha ocurrido en una habitaci\'on}{121}{subsection.7.3.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3.2}Notificar sobre algo que ha ocurrido con una cosa}{122}{subsection.7.3.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3.3}Notificar sobre algo que ha ocurrido con una criatura}{123}{subsection.7.3.3}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.4}Presentaci\'on general}{123}{section.7.4}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.5}M\'etodos \'utiles de la API de Java}{123}{section.7.5}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {8}Distribuci\'on como juego online}{124}{chapter.8}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
