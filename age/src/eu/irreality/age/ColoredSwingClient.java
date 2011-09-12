@@ -1220,7 +1220,12 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		refreshFocus();
 	}
 	
-	private ImagePanel getFrame ( int position )
+	/**
+	 * Obtains the image frame at a given position.
+	 * @param position
+	 * @return
+	 */
+	public ImagePanel getFrame ( int position )
 	{
 		switch ( position )
 		{
