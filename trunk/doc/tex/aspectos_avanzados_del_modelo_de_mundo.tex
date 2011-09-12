@@ -421,7 +421,7 @@ contenedor, y AGE se encargará automáticamente de que sólo se pueda acceder
 a los objetos que contiene cuando esté abierta. En la siguiente sección,
 contenedores, veremos cómo se define una cosa como contenedor.
 
-\section{Miembros, prendas y armaduras}
+\section{Miembros y prendas} \label{sec:MiembrosPrendas}
 
 Una \textit{prenda} es una cosa que los jugadores y criaturas pueden vestir
 en alguna parte de su cuerpo. Las prendas pueden tener propósito de
@@ -518,7 +518,7 @@ brazo como la mano.
 Al contrario que los anteriores, este inventario es de ``sólo lectura''. Si
 se modifica, no tendrá el efecto de añadir ni quitar miembros a la criatura.
 
-\subsection {Prendas}
+\subsection {Prendas} \label{sec:Prendas}
 
 Como se explicó anteriormente, una prenda es una cosa que los jugadores
 pueden vestir en alguna parte de su cuerpo. Para crear una prenda en PUCK,
@@ -605,7 +605,7 @@ Sirve para comprobar si la criatura sobre la que se invoca lleva o no
 puesta la prenda dada como parámetro. Devuelve \textsf{true} si la lleva
 puesta (en cualquiera de sus miembros) y \textsf{false} de lo contrario.
 
-\section {Estados de las criaturas}
+\section {Estados de las criaturas} \label{sec:EstadosCriaturas}
 
 En la sección \ref{sec:Temporizacion} sobre temporización vimos cómo
 funcionaba el modelo de tiempo de AGE, basado en unidades de tiempo y en
@@ -645,7 +645,7 @@ En la presente sección veremos en detalle cómo funciona esta propiedad
 especial ``state'' (y otra asociada, llamada ``target'') y qué podemos hacer
 con ellas.
 
-\subsection{Las propiedades ``state'' y ``target''}
+\subsection{Las propiedades ``state'' y ``target''} \label{sec:StateTarget}
 
 Las criaturas (objetos de la clase \textsf{Mobile}) tienen una propiedad
 especialmente importante llamada ``state'' (estado). La importancia de la
@@ -872,6 +872,733 @@ y con interés en personalizarlo deberían utilizar estas características,
 que no son para nada necesarias para hacer un buen juego con AGE.
 
 \section {Combate y armas} \label{sec:CombateArmas}
+
+Aetheria Game Engine fue pensado inicialmente como sistema para crear juegos
+de rol de texto mono y multijugador, y por ello cuenta con un completo
+sistema para simular combates. Por supuesto, este sistema se puede obviar y
+no utilizar, de ahí que AGE también sirva perfectamente para crear juegos de
+aventura sin elementos de rol y que, de hecho, la mayoría de los juegos
+creados hasta hoy en AGE sean de este último tipo. Sin embargo, para quien
+esté interesado en hacer que su mundo permita emocionantes duelos a espada
+contra orcos, será interesante leer esta sección.
+
+El sistema de combate de AGE está pensado fundamentalmente para combate
+estilo medieval y de fantasía, con armas cuerpo a cuerpo y magia. Sin
+embargo, al tratarse de un sistema muy genérico, también es posible
+adaptarlo a otras situaciones como pueden ser tiroteos con armas de fuego.
+
+El combate en AGE está fuertemente basado en el sistema de temporización (ver
+sección \ref{sec:Temporizacion}), así como en los estados de las criaturas
+(ver sección \ref{sec:EstadosCriaturas}). Si no recuerdas bien el contenido
+de esas dos secciones, es recomendable echarles un vistazo antes de seguir
+con ésta.
+
+\subsection {Elementos de rol básicos}
+
+\subsubsection {Puntos de vida y daño}
+
+Como la inmensa mayoría de los juegos de rol por ordenador (CRPG's), el
+sistema de combate de AGE utiliza el modelo de recuento del daño por el cual
+una criatura cuenta con un determinado número de \textit{puntos de golpe} o
+\textit{puntos de vida} (abreviados como HP, del inglés ``hit points'').
+Cuando la criatura recibe daño, por ejemplo por ser golpeada con un arma,
+pierde puntos de vida (y a los puntos de vida que se restan de su cifra
+total se les llama \textit{puntos de daño}). Los puntos de vida, pues, miden
+el nivel de salud que le queda a una criatura, y si en algún momento llegan
+a cero o menos, la criatura muere.
+
+Por ejemplo, supongamos que un jugador tiene diez puntos de vida. Si un orco
+le ataca con un hacha infligiéndole seis puntos de daño, estos puntos de
+daño se restan de sus diez puntos de vida, y por lo tanto el jugador se
+queda con sólo cuatro puntos de vida. Si a continuación el orco vuelve a
+atacarle y esta vez le inflige siete puntos de daño, el jugador se queda con
+$4-7=-3$ puntos de vida. Como esta cantidad de puntos de vida es menor o
+igual (en este caso menor) que cero, el jugador muere.
+
+En AGE, podemos definir cuántos puntos de vida tiene una criatura mediante
+el panel de criatura de PUCK:
+
+\begin{itemize}
+\item {Si hacemos click en una criatura en el mapa de PUCK, en la pestaña
+``General'' hay un campo del formulario etiquetado ``HP''. Este campo nos
+permite definir la cantidad de puntos de vida con la que empieza la
+criatura.}
+\item {El campo etiquetado ``HP máx'', situado al lado de ``HP'', nos
+permite definir la cantidad de puntos de vida máximos de la criatura (es
+decir, la cantidad de puntos de vida que tiene la criatura cuando está
+saludable y no ha recibido ningún daño).}
+\end{itemize}
+
+Así pues, si ponemos la misma cifra en el campo ``HP'' que en el campo
+``HP máx'', esto significará que la criatura está inicialmente saludable. Si
+ponemos una cifra menor en ``HP'' que en ``HP máx'', significará que la
+criatura ya comienza con algún daño.
+
+Tanto ``HP'' como ``HP máx'' deben tener inicialmente un valor mayor que
+cero. No hay límite superior (al menos mientras no te pases de un par de
+miles de millones), así que puedes usar distintas escalas: puedes preferir
+un mundo donde las criaturas tengan pocos puntos de vida (que un hombre
+fuerte tenga diez, y un golpe impresionante haga cinco puntos de daño) o
+donde tengan muchos (que un hombre tenga mil puntos de vida, y un golpe
+pueda hacer fácilmente doscientos de daño). Lo importante para el
+programador será equilibrar su juego de forma que el combate resulte
+realista, es decir, que el daño que hacen las armas guarde una buena
+proporción con la vida que tienen las criaturas.
+
+Los puntos de vida también se pueden obtener y modificar dinámicamente
+mediante código BeanShell:
+
+\begin{lstlisting}
+/*clase Mobile*/ int getHP ( )
+\end{lstlisting}
+
+Devuelve la cantidad de puntos de vida que tiene actualmente la criatura
+sobre la que se invoca.
+
+\begin{lstlisting}
+/*clase Mobile*/ void setHP ( int newHP )
+\end{lstlisting}
+
+Cambia la cantidad de puntos de vida que tiene la criatura sobre la que se
+invoca a la cantidad newHP.
+
+\begin{lstlisting}
+/*clase Mobile*/ int getMaxHP ( )
+\end{lstlisting}
+
+Devuelve la cantidad de puntos de vida máximos de la criatura sobre la que
+se invoca.
+
+\begin{lstlisting}
+/*clase Mobile*/ void setMaxHP ( int newMaxHP )
+\end{lstlisting}
+
+Cambia la cantidad de puntos de vida máximos que tiene la criatura sobre la
+que se invoca a la cantidad \textsf{newMaxHP}. Esto se puede utilizar, por
+ejemplo, para implementar subidas de nivel en juegos de rol basados en
+niveles. Este método estará disponible a partir de la versión 1.1.7 de AGE.
+
+\subsubsection {Atributos y habilidades}
+
+Otro elemento típico en muchos juegos de rol son los \textit{atributos} y las
+\textit{habilidades}.
+
+Los atributos son valores numéricos que describen características físicas e
+intelectuales genéricas de un personaje. Por ejemplo, atributos que se
+suelen utilizar a menudo en juegos de rol son ``fuerza'', ``constitución'',
+``destreza'', ``inteligencia'' o ``carisma''.
+
+Las habilidades, por otra parte, son valores numéricos que describen la
+práctica o el talento que un personaje tiene para realizar alguna actividad
+específica. Ejemplos de posibles habilidades serían ``espada'', ``trepar'',
+``pescar'', ``violín'' o ``diplomacia''.
+
+AGE proporciona, por un lado, un sistema genérico para gestionar los valores
+de los atributos y habilidades, que es muy sencillo y prácticamente no hace
+nada más que almacenar los valores y permitirnos cambiarlos. Por otra parte,
+AGE también proporciona mecánicas específicas asociadas a habilidades de
+combate y magia.
+
+Esto quiere decir que AGE nos proporciona toda la infraestructura necesaria
+para utilizar las habilidades y atributos en el combate: por ejemplo, el
+hecho de que la probabilidad de acertar en un ataque con un arma y el tiempo
+que nos consume el ataque dependan de nuestra habilidad con esa arma, o el
+hecho de que el utilizar repetidamente el arma haga que nuestra habilidad
+con ella aumente con el tiempo. Veremos más detalles sobre esto en las
+siguientes secciones.
+
+Por otra parte, si queremos utilizar las habilidades y atributos para
+funcionalidad no relacionada con el combate (como podría ser usar una
+habilidad de ``violín'' para determinar si un personaje cautiva a su
+audiencia en un concierto o no); AGE sólo nos proporciona la infraestructura
+básica para almacenar y obtener los valores de esas habilidades y atributos,
+el resto (por ejemplo, el código para decidir si el personaje consigue tocar
+una pieza determinada o no según su habilidad con el violín) tendremos que
+ponerlo nosotros como programadores de aventuras.
+
+La mencionada infraestructura básica para almacenar y obtener valores de
+habilidades y atributos consiste en un formulario de PUCK y una serie de
+métodos invocables desde código BeanShell.
+
+El formulario es la ficha de ``Características'' del panel asociado a un
+personaje, y nos permite fijar los valores iniciales de habilidades y
+atributos para ese personaje. Para ello, escribimos el nombre de la
+habilidad o atributo (por ejemplo, ``violín'') en el campo ``Nombre'' y su
+valor numérico (por ejemplo, 30) en el campo ``Valor'', y pulsamos el botón
+``Añadir''. Si queremos rectificar el nombre y valor de un atributo, podemos
+hacerlo seleccionándolo en la lista, modificando los datos en los campos
+``Nombre'' y ``Valor'', y pulsando ``Cambiar''.
+
+Adicionalmente, AGE proporciona los siguientes métodos en la clase Mobile
+para manipular atributos y habilidades:
+
+\begin{lstlisting}
+/*clase Mobile*/ int getStat ( String name )
+\end{lstlisting}
+
+Devuelve el valor numérico del atributo de nombre dado, por ejemplo
+\textsf{mobile("manolo").getStat("inteligencia")} devolverá la inteligencia
+de Manolo. Nótese que, si no hemos asignado ningún valor a un atributo, este
+método devolverá por defecto un valor de 12 (el tradicional valor por
+defecto de los atributos en juegos basados en Dungeons \& Dragons).
+
+\begin{lstlisting}
+/*clase Mobile*/ void setStat ( String name , int value )
+\end{lstlisting}
+
+Cambia el valor numérico del atributo de nombre \textsf{name} por el nuevo
+valor \textsf{value}.
+
+\begin{lstlisting}
+/*clase Mobile*/ long getSkill ( String name )
+\end{lstlisting}
+
+Devuelve el valor numérico de la habilidad de nombre dado, por ejemplo
+\textsf{mobile("manolo").getStat("violín")} devolverá la habilidad de
+Manolo para tocar el violín. En este caso, si no se había fijado el valor de
+esa habilidad, el valor devuelto por defecto será 0 (¡nadie sabe tocar el
+violín sin aprender!)
+
+\begin{lstlisting}
+/*clase Mobile*/ void setSkill ( String name , long value )
+\end{lstlisting}
+
+Cambia el valor numérico de la habilidad de nombre \textsf{name} por el
+nuevo valor \textsf{value}.
+
+Nótese que, aunque los atributos y habilidades no están implementados como
+propiedades, se comportan de manera muy similar a éstas. De hecho, para
+implementar una habilidad que afecte a alguna actividad externa al combate,
+se podría implementar igualmente con una propiedad. Para las relacionadas
+con el combate, sin embargo, es necesario emplear este sistema de
+habilidades y atributos si se quiere aprovechar toda la funcionalidad de
+combate que se describirá más abajo.
+
+\subsection {Mecánica de combate}
+
+El sistema de combate en AGE funciona, grosso modo, de la siguiente manera:
+
+\begin{itemize}
+\item {Por defecto, existen tres acciones de combate en AGE: ataques,
+bloqueos y esquivadas. Por supuesto, esto no excluye que durante un combate
+se puedan perfectamente llevar a cabo otras acciones, como coger cosas, usar
+objetos, lanzar hechizos, hablar con el adversario, o cualquier otra cosa
+que esté definida en la aventura.}
+\item {En un ataque, un personaje A ataca con un arma a un personaje B que
+está en su misma habitación. Nótese que cada ataque es, pues, individual de
+un personaje a otro, pero eso no quiere decir que los combates tengan que
+ser uno contra uno (podría haber dos personajes A y C atacando a B a la vez,
+por ejemplo). El ataque consume una cantidad de unidades de tiempo (durante
+las cuales el arma está moviéndose para golpear al personaje B), y cuando
+transcurren esas unidades de tiempo, se resuelve.}
+\item {En un bloqueo, un personaje B intenta defenderse con un arma (nótese
+que los escudos cuentan como armas) de un personaje A que lo está atacando.
+Para ello, es necesario que A esté lanzando un ataque que todavía no se haya
+resuelto (el arma está moviéndose para golpear a B). El bloqueo también
+consume una determinada cantidad de unidades de tiempo (la que tarda B en
+poner su arma en posición de bloquear el arma de A). Si B es capaz de hacer
+esto antes de que llegue el arma de A, se resolverá el ataque con bloqueo,
+dando oportunidad a B de defenderse (según su habilidad para hacerlo). Por
+otra parte, si el arma de A llega antes de que B sea capaz de colocarse en
+posición de bloqueo, el ataque de A se resolverá como si B no hubiera
+bloqueado en absoluto.}
+\item {En una esquivada, un personaje B intenta quitarse del medio ante un
+ataque de un personaje A. De nuevo, es necesario que A esté lanzando un
+ataque que todavía no se haya resuelto; y la esquivada consumirá una
+determinada cantidad de unidades de tiempo (la que tarda B en apartarse del
+paso). Si B es capaz de esquivar antes de que llegue el ataque de A, se
+resolverá el ataque con esquivada, dando oportunidad a B de esquivar (según
+su habilidad para ello). Por otra parte, si el arma de A llega antes, el
+ataque de A se resolverá como si B no hubiera esquivado en absoluto.}
+\item {Así, cuando se resuelve un ataque pueden pasar las siguientes cosas:
+	\begin{enumerate}
+	\item {Que el golpe de A sea fallido, y por lo tanto no impacte a B.}
+	\item {Que el golpe de A sea bueno, pero B llegue a tiempo para esquivar y
+	esquive con éxito, por lo tanto el ataque no impactará a B y éste no
+	recibirá daño.}
+	\item {Que el golpe de A sea bueno, y B llegue a tiempo para esquivar pero
+	su esquivada sea fallida (se lanzó hacia el lado equivocado o lo hizo
+	mal), con lo cual el ataque le impactará igual y B recibirá daño.}
+	\item {Que el golpe de A sea bueno, pero B llegue a tiempo para bloquear y
+	bloquee con éxito, con lo cual el ataque le impacta pero el bloqueo
+	absorbe todo o parte del daño.}
+	\item {Que el golpe de A sea bueno, y B llegue a tiempo para bloquear,
+	pero su bloqueo sea fallido (no colocó el arma o escudo bien para detener
+	el golpe de A), con lo cual el ataque le impactará como si no hubiera
+	bloqueado y recibirá todo el daño.}
+	\end{enumerate}}
+\item {Todas estas acciones tienen además un ``tiempo de recuperación''
+después de que se produzcan: por ejemplo, después de lanzar un ataque, el
+personaje que ha atacado estará unos instantes sin poder hacer otra cosa,
+porque lógicamente volver a posicionar el brazo y el arma para lanzar otra
+estocada o bloqueo consume un tiempo. Asimismo, el bloqueo y la esquivada
+tienen un tiempo de recuperación, y también existe otro tiempo de
+recuperación (que normalmente será mayor) al recibir un golpe, ya que lo
+normal es que alguien que sufre un ataque en combate quede aturdido durante
+unos instantes hasta que pueda reaccionar de nuevo.}
+\end{itemize}
+
+A la luz de esta descripción, si quieres (aunque no es realmente necesario
+para implementar combates, si no quieres hacer cosas avanzadas) puedes
+volver a mirar los estados relacionados con el combate presentes en la tabla
+de la sección \ref{sec:StateTarget} sobre Las propiedades ``state'' y
+``target'' de las criaturas. Como comprobarás, dichos estados se usan para
+implementar lo que acabamos de describir:
+
+\begin{itemize}
+\item {Cuando el personaje A lanza su ataque con un arma, se pone en estado
+\textsf{Mobile.ATTACKING}, y su propiedad ``target'' apunta al personaje B.}
+\item {Si el personaje B decide bloquear, se pondrá en estado
+\textsf{Mobile.BLOCKING}.}
+\item {Si B consigue ponerse en posición de bloqueo antes de que llegue el
+ataque de A, se pondrá en estado \textsf{Mobile.READY\_TO\_BLOCK}.}
+\item {Si el personaje B decide esquivar, se pondrá en estado
+\textsf{Mobile.DODGING}.}
+\item {Si a B le da tiempo a eludir el golpe antes de que llegue el ataque
+de A, se pondrá en estado \textsf{Mobile.READY\_TO\_DODGE}.}
+\item {Cuando se resuelva el ataque de A (es decir, el temporizador de su
+propiedad ``state'' llegue a 0), se resolverá de forma diferente si el
+estado de B es \textsf{Mobile.READY\_TO\_BLOCK}, \textsf{Mobile.READY\_TO\_DODGE}
+u otra cosa. En los dos primeros casos, habrá que hacer ``tiradas de dados''
+con las habilidades para ver si el personaje B es capaz de bloquear o
+esquivar. En el tercer caso, sólo se resolverá el ataque de A sin ningún
+movimiento mitigador por parte de B.}
+\item {Los estados \textsf{Mobile.ATTACK\_RECOVER}, \textsf{Mobile.BLOCK\_RECOVER},
+\textsf{Mobile.DODGE\_RECOVER} y \textsf{Mobile.DAMAGE\_RECOVER}
+corresponden a los tiempos de recuperación descritos anteriormente para
+después de atacar, bloquear, esquivar y recibir un golpe, respectivamente.
+Hasta que terminen estos estados, los personajes no podrán ejecutar una
+nueva acción.}
+\end{itemize}
+
+Pero en esta descripción todavía faltan varios cabos sueltos por explicar,
+concretamente:
+
+\begin{itemize}
+\item {Cómo funciona eso de las armas,}
+\item {Cómo se decide cuántas unidades de tiempo exactamente consume cada
+acción (ataques, bloqueos, esquivadas) así como cuántas unidades de tiempo
+consumen los tiempos de recuperación,}
+\item {Cómo se decide cuándo un ataque, un bloqueo y una esquivada tienen
+éxito y cuándo no,}
+\item {Cómo se decide cuánto daño se hace, y cuánto absorbe un bloqueo.}
+\end{itemize}
+
+Una respuesta rápida y resumida a los tres últimos cabos sueltos es que AGE
+calcula estos tres resultados usando una combinación de tres tipos de
+factores: factores dados por el arma, factores dados por las habilidades y
+atributos del jugador que maneja el arma, y por último factores aleatorios
+que sirven para dotar de un cierto grado de incertidumbre e
+imprevisibilidad al combate. Todos estos factores se explican en la
+siguiente sección, que trata de las armas.
+
+\subsection {Armas}
+
+Un \textit{arma} es cualquier cosa (de la clase \textsf{Item}) que un
+personaje puede utilizar para lanzar y/o bloquear ataques. Para crear un
+arma en PUCK, empezaremos creando una cosa de forma normal, con sus nombres,
+descripciones y demás valores que ya conocemos. Para indicar que se trata de
+un arma, seleccionaremos la pestaña ``Arma'' de su panel de entidad, y
+activaremos la casilla etiquetada ``Es arma'', que indica que la cosa es un
+arma. El resto del formulario de la pestaña ``Arma'' nos permitirá
+configurar en detalle el arma, como explicaremos en el resto de esta
+sección.
+
+\subsubsection {Usar y blandir armas}
+
+Una primera cosa a tener en cuenta es que existen dos tipos de armas según
+la manera en que funcionan: armas naturales y armas externas. Las armas
+naturales son partes del cuerpo de una criatura que ésta puede usar como
+arma (como por ejemplo un puño, que sirve para dar puñetazos). Las armas
+externas, las más comunes, son objetos o herramientas que se usan como
+armas, como puede ser una espada, un hacha o un escudo.
+
+Para que una cosa funcione como arma natural, necesitaremos definirla como
+miembro de una criatura (véase la sección sobre miembros para recordar cómo
+se hacía esto). AGE interpreta automáticamente que cualquier cosa que esté
+marcada como arma (casilla ``Es arma'') y sea un miembro de una criatura es
+un arma natural. Por otra parte, cualquier cosa que esté marcada como arma
+pero no sea un miembro de una criatura funcionará como arma externa.
+
+Para utilizar un arma externa, un personaje debe blandirla, cosa que ocupará
+uno o varios de sus miembros: por ejemplo, una daga se puede blandir en una
+mano, mientras que una espada de dos manos se podrá blandir --como su nombre
+indica-- ocupando ambas manos. El sistema para blandir y enfundar armas es
+totalmente análogo al sistema visto en la sección \ref{sec:Prendas} de
+prendas para vestir y desvestir prendas, es decir:
+
+\begin{itemize}
+\item {Las armas se blanden y enfundan con las órdenes \textsf{blandir arma}
+y \textsf{enfundar arma}, que funcionan de manera análoga a
+\textsf{vestir prenda} y \textsf{desvestir prenda}.}
+\item {Al igual que las prendas, las armas ocupan miembros, de forma que no
+puede haber varias armas ocupando a la vez el mismo miembro (si blandimos
+una espada en la mano derecha, no podemos blandir a la vez un hacha en la
+misma mano).}
+\item {El formulario ``Miembros requeridos'' de la pestaña Arma de PUCK
+funciona exactamente igual que el de la pestaña Prenda, sólo que en este
+caso se refiere a miembros requeridos para blandir un arma en lugar de para
+vestir una prenda. Por supuesto, esto incluye la posibilidad de que un arma
+ocupe varios miembros, y la de que un arma pueda ocupar distintos tipos de
+miembros.}
+\item {Si queremos que una criatura comience el juego blandiendo un arma,
+se hace de forma análoga a cuando hacíamos que comenzara con una prenda
+puesta, pero en este caso utilizamos una relación ``wields'' en vez de
+``wears''. Es decir, debemos crear una relación ``wields'' que vaya del
+miembro en el que se blande el arma al arma en sí, con valor \textsf{true} y
+temporizador $-1$ (además de meter el arma en el inventario).}
+\item {Podemos comprobar si una criatura está blandiendo algo en un miembro
+comprobando el valor de esta relación ``wields'', y hacer que blanda o deje
+de blandir un arma modificándolo con los métodos de AGE para manipular
+relaciones. Como en el caso de las prendas, AGE también nos proporciona una
+serie de métodos que podemos invocar desde BeanShell para saber qué está
+blandiendo una criatura de una forma más directa que usando relaciones:}
+\end{itemize}
+
+\begin{lstlisting}
+/*clase Mobile*/ Inventory getWieldedWeapons()
+\end{lstlisting}
+
+Este método devuelve una lista de todas las armas que está blandiendo la
+criatura sobre la que se invoca. El inventario devuelto es de sólo lectura,
+es decir, quitarle y ponerle cosas no tendrá ningún efecto sobre lo que
+lleva puesta la criatura (para esto, debemos usar las relaciones).
+
+\begin{lstlisting}
+/*clase Mobile*/ Item getWieldedItem( Item limb )
+\end{lstlisting}
+
+Devuelve el arma que lleva blandida la criatura sobre la que se invoca en el
+miembro dado por \textsf{limb} o, si no lleva ningún arma ahí, devuelve
+\textsf{null}.
+
+\begin{lstlisting}
+/*clase Mobile*/ boolean wieldsItem( Item item )
+\end{lstlisting}
+
+Sirve para comprobar si la criatura sobre la que se invoca está blandiendo
+el arma dada como parámetro. Devuelve \textsf{true} si la lleva blandida (en
+cualquiera de sus miembros) y \textsf{false} de lo contrario.
+
+Hasta aquí, hemos visto cómo hacer que los jugadores y criaturas puedan
+blandir y enfundar armas. Pero, por supuesto, lo más importante de las armas
+es... ¡combatir con ellas!
+
+\subsubsection {Parámetros de combate de las armas}
+
+Los parámetros de combate de las armas se definen en la mitad inferior de la
+pestaña ``Arma'', donde hay un formulario dividido a su vez en pestañas
+``Ataque'' y ``Bloqueo''. Como su nombre indica, la pestaña ``Ataque'' sirve
+para definir cómo se comportará el arma al lanzar ataques, mientras que en
+la pestaña ``Bloqueo'' se puede definir su comportamiento al bloquear con
+ella.
+
+A continuación se explica brevemente lo que significa cada campo del formulario
+de ``Ataque'':
+
+\begin{itemize}
+\item {Uso mínimo: número entero que representa el valor mínimo de habilidad
+con el arma que debe de tener el personaje para ser capaz de usarla con un
+mínimo de éxito. Un arma con un valor de ``uso mínimo'' de cero puede
+utilizarla cualquier personaje o criatura que pueda blandirla (otra cosa es
+que la utilice bien o falle la mayoría de los ataques). Un arma con un valor
+de ``uso mínimo'' mayor que cero no podrá ser usada en absoluto por
+personajes cuya habilidad con el arma sea menor que ese valor (véase más
+abajo para saber a qué nos referimos exactamente al decir ``habilidad con el
+arma'').}
+\item {Pendiente de probabilidad: valor numérico (tipo double, es decir,
+con decimales) que define la dificultad de la curva de aprendizaje de usar
+el arma con éxito, es decir, lo rápido o lento que se aprende a lanzar
+ataques certeros. Un valor de $0$ correspondería a una dificultad media o
+moderada, valores positivos hacen el aprendizaje más fácil, y negativos más
+difícil. Más abajo se explicará con más detalle cómo funcionan estos
+valores; pero si no quieres complicarte, puedes poner siempre $0$, o usar
+siempre los valores $-1$, $0$ y $1$ para difícil/normal/fácil.}
+\item {Tiempo de ataque base: número entero que indica el tiempo (expresado
+en unidades de tiempo) que tardará en lanzar un ataque alguien que tiene
+justo el nivel de habilidad mínimo para utilizar el arma.}
+\item {Pendiente del tiempo de ataque: valor numérico (tipo double) que
+define la dificultad de la curva de aprendizaje del arma en cuanto a tiempo,
+es decir, lo rápido o lento que se aprende a utilizarla para atacar con más
+rapidez a medida que se va usando. De nuevo, $0$ es el valor normal, valores
+positivos significan fácil y negativos difícil.}
+\item {Tiempo de recuperación en ataque (base y pendiente): como los
+anteriores, pero afectando al tiempo que se tarda en recuperarse de un
+ataque con el arma (reposicionar el arma después de lanzar una estocada o
+golpe).}
+\item {Daño de ataque (tipo de daño y fórmula): tipo de daño que inflige el
+arma (por ejemplo daño de golpe, cortante, de fuego, etc.) y fórmula que se
+utiliza para calcular el daño.
+
+El tipo de daño puede ser cualquier cadena que nosotros usemos en el juego
+para identificar una forma de hacer daño, y su propósito es que podamos
+hacer que distintas armas o armaduras sean mejores o peores para defenderse
+de diferentes tipos de ataque (por ejemplo, un traje ignífugo puede ser muy
+bueno para defenderse del daño de fuego hecho con un lanzallamas, pero muy
+malo para defenderse del daño físico hecho por una maza). Si no queremos
+llegar a este nivel de detalle en el modelado sino que queremos tratar todo
+el daño de la misma manera, simplemente podemos poner la misma cadena en el
+campo ``tipo de daño'' de todas las armas y armaduras.
+
+La fórmula se utiliza para determinar cuánto daño de cada tipo se hace, y es
+una cadena de sumas y restas cuyos términos pueden contener:
+
+	\begin{itemize}
+  \item {Un número entero, por ejemplo, 16.}
+  \item {Una cantidad multiplicada por un atributo que puede ser FUE, CON,
+	INT, SAB, DES, CHA o POD (fuerza, constitución, inteligencia, sabiduría,
+	destreza, carisma o poder), por ejemplo, 2FUE.\footnote{Esto es poco
+	genérico, porque AGE permite definir los atributos que se quiera pero sólo
+	permite incluir estos atributos específicos en las fórmulas de daño. Es
+	algo a mejorar en versiones futuras de AGE.}}
+  \item {Una tirada de dados, formada por dos números separados por una
+	letra D. Por ejemplo, 4D6 significa ``tirar cuatro dados de seis caras y
+	sumar su valor''. Esto añade un factor aleatorio al daño.}
+	\end{itemize}
+
+Así, por ejemplo, una fórmula de daño válida podría ser: 6+2D4+2FUE,
+significando ``seis, más dos dados de cuatro, más dos veces la fuerza del
+personaje''.}
+\item {Habilidades: conjunto de habilidades que condicionan lo bien que un
+personaje utilizará el arma, lo que antes denominábamos ``habilidad con el
+arma''. El ``valor'' en este caso es tipo double e indica en qué medida
+influye cada una de las habilidades, de forma que la habilidad de un
+personaje para usar el arma será la suma del producto de la puntuación que
+tiene en cada una de estas habilidades por el campo ``valor''.
+
+Así, a modo de ejemplo, supongamos que tenemos una espada de dos manos, y en
+el formulario ``Habilidades'' de la pestaña ``Ataque'' de la pestaña ``Arma''
+de esa espada hemos puesto: ``espadas'', con un valor de 2.0, y ``armas de
+dos manos'', con un valor de 1.0. Esto tiene las siguientes consecuencias:
+
+	\begin{itemize}
+  \item {La habilidad del personaje para manejar esa espada se calcula
+	sumando dos veces su habilidad en ``espadas'' y una vez su habilidad en
+	``armas de dos manos''. Por ejemplo, si el personaje tiene una habilidad
+	en espadas de 100, y una habilidad en armas de dos manos de 50, su
+	habilidad para manejar esta espada en particular sería 250 (pero otras
+	espadas podrían requerir una combinación distinta de habilidades). Esta
+	cantidad de 250 es la que se utiliza para determinar si el personaje llega
+	al uso mínimo para poder utilizar esa espada, y además para calcular
+	(según los valores de ``base'' y ``pendiente'' comentados) la probabilidad
+	de éxito de los ataques con la espada y los tiempos de ataque y
+	recuperación.}
+  \item {Cada vez que el personaje lance un ataque con la espada, su
+	habilidad con ``espadas'' se incrementará en 2, y su habilidad con ``armas
+	de dos manos'' se incrementará en 1. Nótese que, por lo tanto, en AGE el
+	valor de las habilidades de combate es un contador de uso que crece
+	linealmente (si usas la espada el doble de veces, tendrás el doble de
+	habilidad). Por supuesto, esto no quiere decir que la probabilidad de
+	éxito al usar la espada o el tiempo de ataque evolucionen linealmente, ya
+	que eso no sería realista. A continuación veremos con más detalle cómo
+	evolucionan, para los interesados en las matemáticas del combate.}
+	\end{itemize}}
+\end{itemize}
+
+El formulario de bloqueo permite definir los mismos valores que el de
+ataque, sólo que referidos a la acción de bloquear con el arma. Así, el
+``uso mínimo'' y la ``pendiente de probabilidad'' del bloqueo determinarán
+la probabilidad de bloquear con éxito. El ``tiempo de bloqueo'' y ``tiempo
+de recuperación del bloqueo'' definen el tiempo que se tarda en preparar un
+bloqueo y en volver a tomar la iniciativa tras llevarlo a cabo. El ``daño
+bloqueado'' nos permite especificar fórmulas para el daño que absorbemos con
+el bloqueo (que se resta al del ataque que nos hayan hecho, quedando en cero
+si el daño absorbido es mayor que el daño que ha hecho el ataque). Por
+último, el formulario de ``habilidades'' nos permite definir qué habilidades
+son relevantes para (y se entrenan al) bloquear con el arma, que podrían o
+no ser las mismas que las correspondientes al ataque.
+
+\subsection{Matemática de las armas}
+
+Si bien con lo dicho en la sección anterior es suficiente para definir armas
+que se puedan usar en aventuras con combates, sin duda algunos usuarios
+estarán interesados en los detalles de las fórmulas matemáticas que AGE
+utiliza para calcular tiempos de acciones de combate y probabilidades de
+éxito.
+
+Como se ha dicho anteriormente, se supone que el valor de una habilidad es
+una estimación lineal del tiempo de experiencia que tiene el personaje
+utilizando esa habilidad. Para obtener estimaciones realistas de tiempos y
+probabilidades de éxito de ataques a partir de ese valor, necesitaremos
+aplicar una función creciente pero de derivada negativa, de acuerdo con el
+concepto intuitivo de ``ganancias decrecientes'' que tenemos en la vida
+real: inicialmente el aprendizaje de una nueva habilidad suele ser muy
+rápido; pero con el tiempo el perfeccionamiento es mucho más lento y
+laborioso.
+
+La fórmula que utiliza AGE para esto en el caso de los tiempos de ataque,
+bloqueo y otras acciones de combate es la siguiente:
+
+\begin{equation}
+tiempo = \frac {tiempobase} {{(\frac {habilidad - uso~minimo} {100} + 1)}^{e^{pendiente}}}
+\end{equation}
+
+que, para hacerse una idea, tiene la forma que se ve en la figura
+\ref{fig:armas1} (para tiempos base de 25 y 50, y pendientes de -1, 0 y 1).
+
+\begin{figure}
+\centering
+\includegraphics[width=1.2\textwidth]{imagenes/armas1.png}
+\caption[Relación tiempo ataque y Habilidad]{Relación entre el tiempo de
+ataque/bloqueo y la habilidad con el arma menos el uso mínimo.} \label{fig:armas1}
+\end{figure}
+
+Como vemos, el jugador no tardará en cogerle el truco al arma y reducir
+significativamente el tiempo que le lleva usarla, pero más adelante el
+aprendizaje irá siendo cada vez más paulatino.
+
+Sin embargo, esa fórmula no lo es todo: para introducir un cierto grado de
+variabilidad e incertidumbre en el combate, al tiempo obtenido de la fórmula
+se le aplica cada vez una variación aleatoria, sacada de una distribución
+gaussiana de media 0 y desviación típica 1/3 t, siendo t el tiempo obtenido
+de la fórmula. Con lo cual, el realidad, el comportamiento tendría más bien
+este aspecto que muestra la figura \ref{fig:armas4}.
+
+\begin{figure}
+\centering
+\includegraphics[width=1.2\textwidth]{imagenes/armas4.png}
+\caption[Relación tiempo ataque y Habilidad (real)]{Relación entre el tiempo
+de ataque/bloqueo y la habilidad con el arma menos el uso mínimo con factores
+aleatorios.} \label{fig:armas4}
+\end{figure}
+
+Como podemos ver, la incertidumbre que añade la variación gaussiana hace
+que, aunque los combatientes experimentados de un arma ataquen más rápido en
+general, puede haber casos en los que por una cuestión de suerte un novato
+consiga un ataque más rápido que un veterano. Esto añade imprevisibilidad al
+combate.
+
+Para la probabilidad de éxito de los ataques y bloqueos se utiliza una
+fórmula basada en el mismo principio, que es:
+
+\begin{equation}
+probabilidad = 1 - \frac {1} {{(\frac {habilidad - uso~minimo} {100} + 1)}^{e^{pendiente}}}
+\end{equation}
+
+Dándonos unas gráficas como las de la figura \ref{fig:armas2} (para
+pendientes de $-1$, $-0.5$, $0$, $0.5$ y $1$).
+
+\begin{figure}
+\centering
+\includegraphics[width=1.2\textwidth]{imagenes/armas2.png}
+\caption[Probabilidad de éxito en el combate]{Probabilidad de éxito en el
+combate con armas.} \label{fig:armas2}
+\end{figure}
+
+Como vemos, la probabilidad tiende rápidamente a $1$ (tener éxito siempre)
+en el caso de pendiente $1$, pero no tan rápido con pendientes más
+difíciles.
+
+En el caso de la probabilidad, ya que ella misma funciona como factor para
+añadir aleatoriedad e incertidumbre, no añadimos ninguna variación
+gaussiana.
+
+\subsection {Esquivadas}
+
+Con lo visto en la sección sobre armas, ya sabemos cómo se calculan las
+probabilidades de éxito y tiempos de realización de ataques y bloqueos; pero
+no hemos visto cómo se calculan estos parámetros para las esquivadas.
+
+Por el momento, la implementación de las esquivadas en AGE aún no está muy
+perfeccionada, así que es sencillo: la probabilidad de realizar una
+esquivada con éxito es siempre del 20\%, y esquivar consume siempre 15
+unidades de tiempo.
+
+En futuras versiones, es posible que esto se complique un poco más.
+
+\subsection {Armaduras}
+
+Las armaduras no son más que prendas que tienen la capacidad especial de
+reducir el daño que quien las viste recibe de ataques dirigidos al miembro
+donde las lleva.
+
+Para crear una armadura en PUCK, no tenemos más que hacer lo siguiente:
+
+\begin{itemize}
+\item {Crear una prenda, tal como hemos visto anteriormente en la sección
+sobre prendas.}
+\item {En la pestaña ``Prenda'', cubrir el formulario etiquetado como
+``Valor de protección''. Este formulario funciona exactamente igual que
+aquéllos en los que introducimos las fórmulas de daño de las armas, es
+decir: tendremos que poner tipos de daño de los que nos protegerá la
+armadura, y fórmulas para calcular cuánto daño absorberá, en el mismo
+formato que en el caso de las armas (por ejemplo, 2+2D6).}
+\end{itemize}
+
+Una armadura entra en acción cuando un ataque impacta en el miembro donde el
+personaje la lleva. Si bien en AGE no existen por defecto comandos
+específicos para atacar a un miembro dado (``golpea a Fulano en la cabeza'',
+etc.); se supone que cada ataque se dirige a un miembro determinado. Este
+miembro se escoge de forma aleatoria, pero de modo que la probabilidad de
+elegir cada uno de los miembros de un personaje es proporcional al volumen
+del miembro. Se pueden definir miembros de volumen $0$ si se quiere que
+nunca reciban ataques (por ejemplo, si queremos poder llevar un anillo en el
+dedo, pero que nunca nos lancen un ataque al dedo, cosa que sonaría bastante
+rara).
+
+Esto quiere decir que, por ejemplo, si en un personaje definimos los
+miembros ``cabeza'' con volumen $10$, ``cuerpo'' con volumen $15$, ``brazo
+izquierdo'' con volumen $5$ y ``brazo derecho'' con volumen $5$, entonces de
+cada $35$ ataques que reciba el personaje irán como promedio $10$ dirigidos
+a la cabeza, $15$ dirigidos al cuerpo, $5$ al brazo izquierdo y $5$ al brazo
+derecho. Si ese personaje lleva un casco puesto en la cabeza, ese casco le
+protegerá de esa proporción de ataques que van dirigidos a la cabeza.
+
+La reducción de daño otorgada por una armadura se añade a la reducción
+otorgada por el bloqueo, si el personaje ha bloqueado.
+
+\subsection{Entrando en combate}
+
+Ahora que sabemos cómo funciona exactamente el combate, vamos a ver cómo
+podemos utilizarlo, es decir, cómo hacemos que un personaje de un juego en
+AGE luche contra malvados monstruos.
+
+Cuando esté en la misma habitación que otra criatura, un personaje jugador
+siempre puede poner el comando \textsf{atacar criatura} para lanzar un
+ataque. Por defecto, las criaturas de AGE están hechas de manera que, si
+tienen medios para defenderse (algún arma), siempre entrarán en combate si
+las atacan, lanzando ataques, bloqueando o esquivando según consideren
+oportuno.
+
+Nótese que las órdenes por defecto para bloquear y esquivar son
+\textsf{bloquear criatura y esquivar} (no hace falta especificar una
+criatura concreta para esquivar, porque se supone que nos apartamos de
+cualquier ataque que nos estén lanzando en ese momento).
+
+Si queremos que sea una criatura no jugadora la que empiece la pelea,
+podemos hacerlo agregándole enemigos. Toda criatura en AGE tiene una lista
+de enemigos con los que entrará en combate si los ve. Podemos manipular esta
+lista mediante los siguientes métodos:
+
+\begin{lstlisting}
+/*clase Mobile*/ void addEnemy ( Mobile nuevo )
+\end{lstlisting}
+
+Añade a \textsf{nuevo} como enemigo del \textsf{Mobile} sobre el que
+invocamos este método.
+
+\begin{lstlisting}
+/*clase Mobile*/ boolean removeEnemy ( Mobile viejo )
+\end{lstlisting}
+
+Quita \textsf{viejo} de la lista de enemigos del \textsf{Mobile} sobre el
+que invocamos este método y devuelve \textsf{true}, si estaba en la lista.
+En caso de que no estuviese en la lista, este método no hace nada y devuelve
+\textsf{false}.
+
+Así, por ejemplo, si tenemos un orco y hacemos
+
+\begin{lstlisting}
+mobile("orco").addEnemy(mobile("manolo"));
+\end{lstlisting}
+
+el orco atacará automáticamente a Manolo cuando éste aparezca en su
+localidad.
+
+Por supuesto, utilizando los métodos asociados a las criaturas y los métodos
+update en conjunto con la propiedad ``state'', es posible definir
+comportamientos más complejos de los monstruos, como que persigan a su
+enemigo o patrullen una zona buscándolo.
 
 \section {Entidades abstractas}
 
