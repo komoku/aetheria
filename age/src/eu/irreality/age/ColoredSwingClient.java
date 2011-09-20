@@ -1425,6 +1425,27 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		}
 	}
 	
+	public void setScrollBarBackground ( final Color color )
+	{
+		final JScrollBar jsb = elScrolling.getVerticalScrollBar();
+		if ( SwingUtilities.isEventDispatchThread() )
+		{
+			jsb.setBackground(color);
+		}
+		else
+		{
+			try
+			{
+				SwingUtilities.invokeLater(new Runnable() { public void run() { jsb.setBackground(color); } });
+			}
+			catch ( Exception ie )
+			{
+				ie.printStackTrace();
+			}
+		}
+	}
+	
+	
 	/**
 	 * Changes the font to use for the output area.
 	 * @param f New font to use for the output area.
@@ -1619,6 +1640,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	public void setOutputAreaBackground ( String s ) { setOutputAreaBackground(parseColor(s)); }
 	//public void setOutputAreaForeground ( String s ) { setOutputAreaForeground(parseColor(s)); }
 
+	public void setScrollBarBackground ( String s ) { setScrollBarBackground(parseColor(s)); }
+	
 	
 	
 	private boolean processingLog = false;
