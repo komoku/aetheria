@@ -845,7 +845,20 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		//System.out.println(elAreaTexto.getText());
 		
 		//elAreaTexto.moveCaretPosition(elAreaTexto.getText().length());
-		elAreaTexto.setCaretPosition(elAreaTexto.getText().length()); //this doesn't select
+		
+		//the old scrolling - worked until 2011-09-20, but had some problems with margins
+		//elAreaTexto.setCaretPosition(elAreaTexto.getText().length()); //this doesn't select
+		
+		//better scrolling
+		elScrolling.revalidate();
+		SwingUtilities.invokeLater( new Runnable()
+		{
+			public void run()
+			{
+				elAreaTexto.scrollRectToVisible(new Rectangle(0,(int)elAreaTexto.getPreferredSize().getHeight(),10,10));
+			}
+		});
+		
 		elAreaTexto.setVisible(true);
 		
 		elAreaTexto.repaint();
