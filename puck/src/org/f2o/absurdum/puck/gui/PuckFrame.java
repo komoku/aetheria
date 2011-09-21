@@ -424,7 +424,9 @@ public class PuckFrame extends JFrame
 		refreshTitle();
 		left = new JPanel();
 		right = new JPanel();
-		split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,left,new JScrollPane(right))
+		JScrollPane rightScroll = new JScrollPane(right);
+		rightScroll.getVerticalScrollBar().setUnitIncrement(16); //faster scrollbar (by default it was very slow, maybe because component inside is not text component!)
+		split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,left,rightScroll)
 		{
 			//dynamic resizing of right panel
 			/*
