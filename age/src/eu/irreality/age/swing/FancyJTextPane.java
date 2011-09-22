@@ -27,19 +27,39 @@ public class FancyJTextPane extends JTextPane implements ImageConstants
 		private SVGIcon vectorBackgroundImage;
 		
 		//for the top margin (issue 200 avoidance)
-		private BufferedImage subImage;
+		private BufferedImage upperSubImage;
+		//for the bottom margin
+		private BufferedImage lowerSubImage;
+		
+		//if true, top-bottom margins act on viewable area instead of on whole document/text area contents
+		private boolean marginsOnViewableArea = false; //however, setMargins() in ColoredSwingClient will set it to true by default
+		
+		
+		public void setMarginsOnViewableArea ( boolean value )
+		{
+			marginsOnViewableArea = value;
+		}
 		
 		public ImageIcon getRasterBackgroundImage() { return rasterBackgroundImage; }
 		public SVGIcon getVectorBackgroundImage() { return vectorBackgroundImage; }
 		
 		//private int scalingMode = FIT_BOTH;
 
-		public void refreshSubImage()
+		private void refreshUpperSubImage()
 		{
 			Rectangle rect = getVisibleRect();
-			subImage = new BufferedImage(rect.width,getMargin().top,BufferedImage.TYPE_INT_ARGB);
-			Graphics tempG = subImage.createGraphics();
+			upperSubImage = new BufferedImage(rect.width,getMargin().top,BufferedImage.TYPE_INT_ARGB);
+			Graphics tempG = upperSubImage.createGraphics();
 			tempG.drawImage(rasterBackgroundImage.getImage(),0,0,rect.width,rect.height,this);
+			tempG.dispose();
+		}
+		
+		private void refreshLowerSubImage()
+		{
+			Rectangle rect = getVisibleRect();
+			lowerSubImage = new BufferedImage(rect.width,getMargin().bottom,BufferedImage.TYPE_INT_ARGB);
+			Graphics tempG = lowerSubImage.createGraphics();
+			tempG.drawImage(rasterBackgroundImage.getImage(),0,-rect.height+getMargin().bottom,rect.width,rect.height,this);
 			tempG.dispose();
 		}
 		
@@ -52,8 +72,11 @@ public class FancyJTextPane extends JTextPane implements ImageConstants
 				setOpaque(true);
 			
 			if ( rasterBackgroundImage != null )
-				refreshSubImage();
-						
+			{
+				refreshUpperSubImage();
+				refreshLowerSubImage();
+			}
+				
 		    //repaint so that change takes place
 		    javax.swing.SwingUtilities.invokeLater(new Runnable()
 		    {
@@ -179,18 +202,30 @@ public class FancyJTextPane extends JTextPane implements ImageConstants
 			//g.setXORMode(Color.white);
 			Rectangle rect = null;
 			
-			
+			rect = getVisibleRect();
 			if ( rasterBackgroundImage != null )
 			{
-				rect = getVisibleRect();
+				//rect = getVisibleRect();
 				g.drawImage(rasterBackgroundImage.getImage(),rect.x,rect.y,rect.width,rect.height,this);
 			}
 			if ( vectorBackgroundImage != null )
 			{
-				rect = getVisibleRect();
+				//rect = getVisibleRect();
 				vectorBackgroundImage.setPreferredSize(new Dimension(rect.width,rect.height));
 				vectorBackgroundImage.setScaleToFit(true);
 				vectorBackgroundImage.paintIcon(this, g, rect.x, rect.y);
+			}
+			
+			if ( rasterBackgroundImage == null && vectorBackgroundImage == null && marginsOnViewableArea && (getMargin().top > 0 || getMargin().bottom > 0) )
+			{
+				//in this case, we must repaint the background, or java will reuse our margin rectangles when scrolling, creating a mess!
+				//(1) -> we need the component to be non-opaque so that java does not resuse our stuff
+				setOpaque(false);
+				Color oldColor = g.getColor();
+				g.setColor(getBackground());
+				//g.setColor(Color.ORANGE);
+				g.fillRect(rect.x,rect.y,rect.width,rect.height);
+				g.setColor(oldColor);
 			}
 		
 			//g.drawImage(backgroundImage,0, 0, this);
@@ -199,23 +234,51 @@ public class FancyJTextPane extends JTextPane implements ImageConstants
 				super.paintComponent(g);
 				
 			//esto si queremos que el margen superior sea "non-scrolling":
-			if ( rasterBackgroundImage != null )
+			if ( marginsOnViewableArea && (getMargin().top > 0 || getMargin().bottom > 0) )
 			{
-				//Rectangle oldArea = g.getClipBounds();
-				//g.setClip(rect.x,rect.y,rect.width,getMargin().top);
-				//System.err.println("Clipping rectangle: " + rect.x + " " + rect.y + " " + rect.width + " " + getMargin().top);
-				//g.drawImage(rasterBackgroundImage.getImage(),rect.x,rect.y,rect.width,rect.height,this);
-				//g.setClip(oldArea);
-				//g.fillRect(rect.x, rect.y, rect.width, getMargin().top);
-				if ( lastWidth != rect.width || lastHeight != rect.height ) refreshSubImage();
-				lastWidth = rect.width; lastHeight = rect.height;
-				g.drawImage(subImage,rect.x,rect.y,rect.width,getMargin().top,this);
-			}
-			if ( vectorBackgroundImage != null )
-			{
-				g.setClip(rect.x,rect.y,rect.width,getMargin().top);
-				vectorBackgroundImage.setPreferredSize(new Dimension(rect.width,rect.height));
-				vectorBackgroundImage.paintIcon(this, g, rect.x, rect.y);
+				if ( rasterBackgroundImage != null )
+				{
+					//Rectangle oldArea = g.getClipBounds();
+					//g.setClip(rect.x,rect.y,rect.width,getMargin().top);
+					//System.err.println("Clipping rectangle: " + rect.x + " " + rect.y + " " + rect.width + " " + getMargin().top);
+					//g.drawImage(rasterBackgroundImage.getImage(),rect.x,rect.y,rect.width,rect.height,this);
+					//g.setClip(oldArea);
+					//g.fillRect(rect.x, rect.y, rect.width, getMargin().top);
+					if ( lastWidth != rect.width || lastHeight != rect.height ) 
+					{
+						if ( getMargin().top > 0 ) refreshUpperSubImage();
+						if ( getMargin().bottom > 0 ) refreshLowerSubImage();
+					}
+					lastWidth = rect.width; lastHeight = rect.height;
+					if ( getMargin().top > 0 ) g.drawImage(upperSubImage,rect.x,rect.y,rect.width,getMargin().top,this);
+					if ( getMargin().bottom > 0 ) g.drawImage(lowerSubImage,rect.x,rect.y+rect.height-getMargin().bottom,rect.width,getMargin().bottom,this);
+				}
+				if ( vectorBackgroundImage != null )
+				{
+					if ( getMargin().top > 0 )
+					{
+						g.setClip(rect.x,rect.y,rect.width,getMargin().top);
+						vectorBackgroundImage.setPreferredSize(new Dimension(rect.width,rect.height));
+						vectorBackgroundImage.paintIcon(this, g, rect.x, rect.y);
+					}
+					if ( getMargin().bottom > 0 )
+					{
+						g.setClip(rect.x,rect.y+rect.height-getMargin().bottom,rect.width,getMargin().bottom);
+						vectorBackgroundImage.setPreferredSize(new Dimension(rect.width,rect.height));
+						vectorBackgroundImage.paintIcon(this, g, rect.x, rect.y);
+					}
+				}
+				if ( rasterBackgroundImage == null && vectorBackgroundImage == null )
+				{
+					//draw rectangles of background colour on margin areas. This needs the component to be non-opaque, see (1)
+					Color oldColor = g.getColor();
+					g.setColor(getBackground());
+					//g.setColor(Color.RED);
+					g.fillRect(rect.x,rect.y,rect.width,getMargin().top);
+					//g.setColor(Color.RED);
+					g.fillRect(rect.x,rect.y+rect.height-getMargin().bottom,rect.width,getMargin().bottom);
+					g.setColor(oldColor);
+				}
 			}
 			
 		}

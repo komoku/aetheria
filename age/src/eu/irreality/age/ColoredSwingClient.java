@@ -850,18 +850,18 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		//elAreaTexto.setCaretPosition(elAreaTexto.getText().length()); //this doesn't select
 		
 		//better scrolling
-		elScrolling.revalidate();
+		//elScrolling.revalidate();
 		SwingUtilities.invokeLater( new Runnable()
 		{
 			public void run()
 			{
 				elAreaTexto.scrollRectToVisible(new Rectangle(0,(int)elAreaTexto.getPreferredSize().getHeight(),10,10));
+				//elAreaTexto.setVisible(true);
+				elAreaTexto.repaint();
 			}
 		});
 		
-		elAreaTexto.setVisible(true);
-		
-		elAreaTexto.repaint();
+
 		
 		//System.err.println("Selectionan gaems " + elAreaTexto.getSelectionStart() + " " + elAreaTexto.getSelectionEnd() );
 	
@@ -1621,9 +1621,21 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		}
 	}
 	
+	public void setMargins ( final int top , final int left , final int bottom , final int right , final boolean marginsOnView )
+	{
+		execInDispatchThread(new Runnable() 
+		{ 
+			public void run() 
+			{ 
+				elAreaTexto.setMargin(new Insets(top,left,bottom,right)); /*elCampoTexto.setMargin(new Insets(0,left,0,right));*/ 
+				elAreaTexto.setMarginsOnViewableArea(marginsOnView);
+			} 
+		});
+	}
+	
 	public void setMargins ( final int top , final int left , final int bottom , final int right )
 	{
-		execInDispatchThread(new Runnable() { public void run() { elAreaTexto.setMargin(new Insets(top,left,bottom,right)); /*elCampoTexto.setMargin(new Insets(0,left,0,right));*/ } });
+		setMargins ( top , left , bottom , right , true );
 	}
 	
 	
