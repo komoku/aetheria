@@ -10,7 +10,7 @@ import java.io.*;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
 import eu.irreality.age.messages.Messages;
-public class Room extends Entity implements Descriptible , SupportingCode
+public class Room extends Entity implements Descriptible , SupportingCode, UniqueNamed
 {
 
 	//al final claudicamos
@@ -740,7 +740,15 @@ public class Room extends Entity implements Descriptible , SupportingCode
 		return idnumber;
 	}
 		
+	/**
+	 * @deprecated Use {@link #getUniqueName()} instead
+	 */
 	public String getTitle ( )
+	{
+		return getUniqueName();
+	}
+
+	public String getUniqueName ( )
 	{
 		return title;	
 	}
@@ -1417,7 +1425,7 @@ public class Room extends Entity implements Descriptible , SupportingCode
 	{
 	
 		
-		Debug.println("Autoinforming " + thirdPersonDes + " at roome " + getID() + ":" + getTitle());
+		Debug.println("Autoinforming " + thirdPersonDes + " at roome " + getID() + ":" + getUniqueName());
 		
 		//intentar obtener automáticamente execdes
 		StringTokenizer st = new StringTokenizer ( thirdPersonDes , " " , true );

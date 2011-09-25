@@ -1754,7 +1754,7 @@ public class Player extends Mobile implements Informador
 				for ( int i = 0 ; i < spellRefs.size() ; i++ )
 				{
 					Spell current = (Spell)spellRefs.get(i);
-					write( io.getColorCode("information") + current.getTitle() + io.getColorCode("reset") + "\n" );
+					write( io.getColorCode("information") + current.getUniqueName() + io.getColorCode("reset") + "\n" );
 				}
 
 			}

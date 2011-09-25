@@ -16,7 +16,7 @@ import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
 import eu.irreality.age.messages.Messages;
 import eu.irreality.age.util.Conversions;
-public class Mobile extends Entity implements Descriptible , SupportingCode , Nameable
+public class Mobile extends Entity implements Descriptible , SupportingCode , Nameable, UniqueNamed
 {
 
 
@@ -999,7 +999,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		}
 		catch ( Exception exc )
 		{
-			System.err.println("[Warning] Mobile " + this.getTitle() + " carrying items too heavy or big for its strength of " + strength);
+			System.err.println("[Warning] Mobile " + this.getUniqueName() + " carrying items too heavy or big for its strength of " + strength);
 		}
 
 		//relationship-states: not at the moment
@@ -1097,7 +1097,15 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		return idnumber;	
 	}
 
+	/**
+	 * @deprecated Use {@link #getUniqueName()} instead
+	 */
 	public String getTitle ( )
+	{
+		return getUniqueName();
+	}
+
+	public String getUniqueName ( )
 	{
 		return title;	
 	}
@@ -1407,8 +1415,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		
 		//new
 		return ( 
-				this.getTitle().equals(other.getInstanceOf()) 
-			||	other.getTitle().equals(this.getInstanceOf())
+				this.getUniqueName().equals(other.getInstanceOf()) 
+			||	other.getUniqueName().equals(this.getInstanceOf())
 			||  (
 					this.getInstanceOf() != null &&
 					this.getInstanceOf().equals(other.getInstanceOf()) &&
@@ -4073,7 +4081,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 		Inventory usableWeapons = getUsableWeapons();
 
-		Debug.println("Usable weapons for " + getTitle() + ": " + usableWeapons );
+		Debug.println("Usable weapons for " + getUniqueName() + ": " + usableWeapons );
 
 		if ( getEnemies() == null || usableWeapons == null ) return null;
 
@@ -6003,7 +6011,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			//Debug.println("Mana Cost Flubbed!");
 			//write("No tienes suficiente man� para ejecutar ese hechizo.\n");
-			writeDenial(mundo.getMessages().getMessage("not.enough.mana","$spell",s.getTitle(),new Object[]{this,s,target}));
+			writeDenial(mundo.getMessages().getMessage("not.enough.mana","$spell",s.getUniqueName(),new Object[]{this,s,target}));
 			return;
 		}  
 		else

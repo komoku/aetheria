@@ -1179,10 +1179,18 @@ public abstract class Entity
 	{
 	
 		String s = ("[ " + getClass().getName() + ":" + getID() );
+		//changed 2011-09-25
+		/*
 		if ( this instanceof Nameable )
 		{
 			s += ":";
 			s += ((Nameable)this).constructName2(1,null);
+		}
+		*/
+		if ( this instanceof UniqueNamed )
+		{
+			s += ":";
+			s += ((UniqueNamed)this).getUniqueName();
 		}
 		s+=" ]";
 		return s;

@@ -8,7 +8,7 @@ import java.util.*;
 import eu.irreality.age.debug.Debug;
 
 
-public class Spell extends Entity implements SupportingCode
+public class Spell extends Entity implements SupportingCode, UniqueNamed
 {
 
 
@@ -242,7 +242,15 @@ public class Spell extends Entity implements SupportingCode
 		return idnumber;	
 	}
 	
+	/**
+	 * @deprecated Use {@link #getUniqueName()} instead
+	 */
 	public String getTitle ( )
+	{
+		return getUniqueName();
+	}
+
+	public String getUniqueName ( )
 	{
 		return title;	
 	}
@@ -826,7 +834,7 @@ public class Spell extends Entity implements SupportingCode
 	*/
 	public int matchesCommand ( String commandArgs , boolean pluralOrSingular )
 	{
-		return commandArgs.trim().equalsIgnoreCase(getTitle())?1:0;
+		return commandArgs.trim().equalsIgnoreCase(getUniqueName())?1:0;
 	}
 	
 

@@ -8,7 +8,7 @@ import java.util.*;
 
 import eu.irreality.age.debug.Debug;
 
-public class AbstractEntity extends Entity implements SupportingCode
+public class AbstractEntity extends Entity implements SupportingCode, UniqueNamed
 {
 
 
@@ -63,7 +63,16 @@ public class AbstractEntity extends Entity implements SupportingCode
 		return idnumber;	
 	}
 	
+	/**
+	 * @deprecated Use {@link #getUniqueName()} instead
+	 */
 	public String getTitle ( )
+	{
+		return getUniqueName();
+	}
+
+
+	public String getUniqueName ( )
 	{
 		return title;	
 	}
@@ -373,7 +382,7 @@ public class AbstractEntity extends Entity implements SupportingCode
 		//if ( this instanceof Nameable )
 		{
 			s += ":";
-			s += this.getTitle();
+			s += this.getUniqueName();
 		}
 		s+=" ]";
 		return s;

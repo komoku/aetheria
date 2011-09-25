@@ -2268,8 +2268,8 @@ public class World implements Informador , SupportingCode
 		for ( int i = 0 ; i < playerList.size() ; i++ )
 		{
 			org.w3c.dom.Element playerElement = doc.createElement ( "Player" );
-			if ( ((Player)playerList.get(i)).getTitle() != null )
-				playerElement.setAttribute("id",String.valueOf(((Player)playerList.get(i)).getTitle()));
+			if ( ((Player)playerList.get(i)).getUniqueName() != null )
+				playerElement.setAttribute("id",String.valueOf(((Player)playerList.get(i)).getUniqueName()));
 			else
 				playerElement.setAttribute("id",String.valueOf(((Player)playerList.get(i)).getID()));
 			playerListElement.appendChild(playerElement);
