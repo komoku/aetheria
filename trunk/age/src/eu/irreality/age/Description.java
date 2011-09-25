@@ -377,7 +377,7 @@ public class Description
 			for ( int i = 0 ; i < nl.getLength() ; i++ )
 			{
 				
-				ObjectCode oc = new ObjectCode ( w, (org.w3c.dom.Element)nl.item(i) ); 
+				ObjectCode oc = new ObjectCode ( w, (org.w3c.dom.Element)nl.item(i) , true ); 
 				
 				if ( conditions == null )
 					conditions = new java.util.ArrayList();
