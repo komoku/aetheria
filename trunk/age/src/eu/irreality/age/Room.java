@@ -1196,7 +1196,6 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 	{
 		if ( mobsInRoom == null ) mobsInRoom = new MobileList();
 		mobsInRoom.addElement(nuevo);
-		Debug.println("Mobs In Roome After Addendum " + mobsInRoom);
 	}
 	
 	public boolean removeMob ( Mobile viejo )
