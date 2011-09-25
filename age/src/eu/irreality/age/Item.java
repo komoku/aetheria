@@ -10,7 +10,7 @@ import java.io.*;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
 import eu.irreality.age.util.Conversions;
-public class Item extends Entity implements Descriptible , SupportingCode , Nameable
+public class Item extends Entity implements Descriptible , SupportingCode , Nameable, UniqueNamed
 {
 	
 	//////////////////////
@@ -1027,7 +1027,15 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		return idnumber;	
 	}
 	
+	/**
+	 * @deprecated Use {@link #getUniqueName()} instead
+	 */
 	public String getTitle ( )
+	{
+		return getUniqueName();
+	}
+	
+	public String getUniqueName ( )
 	{
 		return title;	
 	}
@@ -1740,7 +1748,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	public boolean isSame ( Item other )
 	{
 	
-		Debug.print ( "isSame " + this + "("+this.getTitle()+","+this.idnumber+", cloning "+this.getInstanceOf()+")" + " " + other + "("+other.getTitle()+","+other.idnumber+", cloning "+other.getInstanceOf()+")? "); 
+		Debug.print ( "isSame " + this + "("+this.getUniqueName()+","+this.idnumber+", cloning "+this.getInstanceOf()+")" + " " + other + "("+other.getUniqueName()+","+other.idnumber+", cloning "+other.getInstanceOf()+")? "); 
 	
 		/*
 		Debug.println ( "" + (  ( idnumber % 10000000 == other.getInstanceOf () % 10000000 ) 
@@ -1766,8 +1774,8 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 				 || ( isInstanceOf % 10000000 == other.getInstanceOf() % 10000000 && isInstanceOf % 10000000 != 0 )  );
 		*/
 		return ( 
-				this.getTitle().equals(other.getInstanceOf()) 
-			||	other.getTitle().equals(this.getInstanceOf())
+				this.getUniqueName().equals(other.getInstanceOf()) 
+			||	other.getUniqueName().equals(this.getInstanceOf())
 			||  (
 					this.getInstanceOf() != null &&
 					this.getInstanceOf().equals(other.getInstanceOf()) &&
@@ -2114,7 +2122,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 				
 				if ( descriptionText.equals("") )
 				{
-					descriptionText = "No consigues abrir " + this.getTitle(); //TODO temp, modify
+					descriptionText = "No consigues abrir " + this.getUniqueName(); //TODO temp, modify
 				}
 				
 			}

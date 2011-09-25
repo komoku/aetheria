@@ -869,7 +869,7 @@ public class Weapon extends Item
 			if ( result.length() > 0 )
 				result = result.substring ( 0 , result.length() - 1 );
 		
-		Debug.println(getTitle() + " drawing damage from " + damage_formula + " resulted " + result);
+		Debug.println(getUniqueName() + " drawing damage from " + damage_formula + " resulted " + result);
 		
 		
 		return result;
