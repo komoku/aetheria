@@ -27,6 +27,7 @@ public class ObjectCode
 		ObjectCode oc = new ObjectCode ( theCode , codeVersion , theWorld );
 		oc.permanent = this.permanent;
 		oc.permanentInterpreter = null;
+		oc.isConditionCode = this.isConditionCode;
 		return oc;
 	}	
 	
@@ -42,6 +43,8 @@ public class ObjectCode
 	private String theCode;
 	private World theWorld;
 	
+	private boolean isConditionCode = false; //if it is a dynamic condition
+	
 	
 	boolean permanent = true;
 	ExtendedBSHInterpreter permanentInterpreter = null;
@@ -51,6 +54,8 @@ public class ObjectCode
 	* Version may be [string literal]:
 	* - "EVA" (Ensamblador Virtual de Aetheria)
 	* - "BeanShell"
+	* 
+	* This constructor is apparently only used by legacy code and by clone()
 	*/
 	public ObjectCode ( String code , String version , World world )
 	{
@@ -514,7 +519,9 @@ public class ObjectCode
 	
 	void reportEvalError ( EvalError pe , String aroutine , Object theCaller , Object[] theArguments )
 	{
-		ExceptionPrinter.reportEvalError(pe, theWorld, aroutine, theCaller, theArguments);
+		String methodInfo = aroutine;
+		if ( methodInfo == null && isConditionCode ) methodInfo = "(dynamic name or description condition code)";
+		ExceptionPrinter.reportEvalError(pe, theWorld, methodInfo, theCaller, theArguments);
 		/*
 		theWorld.writeError("Error de sintaxis en el código BeanShell.\n");
 		//theWorld.writeError("En concreto: " + pe + "\n"); 
@@ -555,9 +562,15 @@ public class ObjectCode
 
 	}
 
-	
 	public ObjectCode ( World mundo , org.w3c.dom.Node n ) throws XMLtoWorldException
 	{
+		this ( mundo , n , false );
+	}
+	
+	public ObjectCode ( World mundo , org.w3c.dom.Node n , boolean isConditionCode ) throws XMLtoWorldException
+	{
+		
+		this.isConditionCode = isConditionCode;
 		
 		if ( ! ( n instanceof org.w3c.dom.Element ) )
 		{
