@@ -792,8 +792,8 @@ public class Player extends Mobile implements Informador
 		}
 
 		//ejecutar parseCommand sobre una entidad, if possible
-		//if ( !matchedTwoEntitiesPermissive ) //TODO: add possibility of setting property so that parseCommands for one entity will also be executed when two are matched. 
-			ejecutado = resolveParseCommandForOneEntity ( posiblesObjetivos , arguments , arguments , false );
+		if ( !matchedTwoEntitiesPermissive ) //TODO: add possibility of setting property so that parseCommands for one entity will also be executed when two are matched. 
+			ejecutado = resolveParseCommandForOneEntity ( posiblesObjetivos , arguments , arguments , false , true );
 		if ( ejecutado ) //código hizo end()
 		{
 			setNewState( 1 , 1 );
@@ -893,8 +893,8 @@ public class Player extends Mobile implements Informador
 			return true;
 		}
 		
-		//if ( !matchedTwoEntitiesPermissive ) //TODO: add possibility of setting property so that parseCommands for one entity will also be executed when two are matched. 
-			ejecutado = resolveParseCommandForOneEntity ( posiblesObjetivos , arguments , arguments , true );
+		if ( !matchedTwoEntitiesPermissive ) //TODO: add possibility of setting property so that parseCommands for one entity will also be executed when two are matched. 
+			ejecutado = resolveParseCommandForOneEntity ( posiblesObjetivos , arguments , arguments , true , true );
 		if ( ejecutado ) //código hizo end()
 		{
 			setNewState( 1 , 1 );
@@ -2254,6 +2254,11 @@ public class Player extends Mobile implements Informador
 
 		matchedTwoEntitiesPermissive = ( allMatches.size() > 0 );
 
+		//we store the viable "args" partitions here, so that if two entities are matched but no parseCommand is defined for them, the (non-generic)
+		//parseCommands for one entity are invoked.
+		TreeSet oneEntArgs1 = new TreeSet();
+		TreeSet oneEntArgs2 = new TreeSet();
+		
 		for ( int i = 0 ; i < allMatches.size() ; i++ )
 		{
 			SentenceInfo si = (SentenceInfo) allMatches.get(i);
@@ -2263,6 +2268,9 @@ public class Player extends Mobile implements Informador
 			Entity obj2 = si.getObj2();
 			List path1 = si.getPath1();
 			List path2 = si.getPath2();
+			
+			oneEntArgs1.add(args1);
+			oneEntArgs2.add(args2);
 
 
 			for ( int ip1 = path1.size()-1 ; ip1 >= 0 ; ip1-- )
@@ -2528,7 +2536,32 @@ public class Player extends Mobile implements Informador
 
 		} //end for each possible match
 
-		//no end() has been hit
+		//no end() has been hit: try parseCommands for one entity!
+		while ( !ejecutado && ( !oneEntArgs1.isEmpty() || !oneEntArgs2.isEmpty() ) )
+		{
+			if ( !oneEntArgs1.isEmpty() )
+			{
+				String partialArgs = (String) oneEntArgs1.first();
+				ejecutado = resolveParseCommandForOneEntity ( posiblesObjetivos , partialArgs , fullArguments , onWorld , false );
+				oneEntArgs1.remove(partialArgs);
+			}
+			if ( !ejecutado && !oneEntArgs2.isEmpty() )
+			{
+				String partialArgs = (String) oneEntArgs2.first();
+				ejecutado = resolveParseCommandForOneEntity ( posiblesObjetivos , partialArgs , fullArguments , onWorld , false );
+				oneEntArgs2.remove(partialArgs);
+			}
+			
+			if ( ejecutado ) //código hizo end()
+			{
+				//luego esto lo hara el codigo
+				setNewState( 1 , 1 );
+				mentions.setLastMentionedVerb(command);
+				return true;
+			}
+		}
+		
+		
 		return false;
 
 	}
@@ -2581,9 +2614,10 @@ public class Player extends Mobile implements Informador
 	 * @param objetivos_p
 	 * @param arguments
 	 * @param onWorld -> true if it's the world parsecommands for one entity, false if it's the entity parsecommands
+	 * @param enableGenerics -> if true, parseCommand*Generic methods are also executed. If false, they aren't.
 	 * @return true if an end() has been hit, false otherwise
 	 */
-	public boolean resolveParseCommandForOneEntity ( EntityList posiblesObjetivos , String arguments , String fullArguments , boolean onWorld )
+	public boolean resolveParseCommandForOneEntity ( EntityList posiblesObjetivos , String arguments , String fullArguments , boolean onWorld , boolean enableGenerics )
 	{
 
 
@@ -2633,7 +2667,7 @@ public class Player extends Mobile implements Informador
 						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContents(), command was " + command + fullArguments + ", entity " + currentObject + ", error was " + te + io.getColorCode("reset") );
 						writeError(ExceptionPrinter.getExceptionReport(te));
 					}
-					if ( !ejecutado )
+					if ( !ejecutado && enableGenerics )
 					{
 						try
 						{
@@ -2659,7 +2693,7 @@ public class Player extends Mobile implements Informador
 				    	write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContents() executed from world, command was " + command + fullArguments + ", entity " + currentObject + ", error was " + te + io.getColorCode("reset") );
 				    	writeError(ExceptionPrinter.getExceptionReport(te));
 				    }
-				    if ( !ejecutado )
+				    if ( !ejecutado && enableGenerics )
 					{
 						try
 						{
@@ -2732,7 +2766,7 @@ public class Player extends Mobile implements Informador
 							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 					}
-					if ( !ejecutado )
+					if ( !ejecutado && enableGenerics )
 					{
 						try
 						{
@@ -2761,17 +2795,17 @@ public class Player extends Mobile implements Informador
         			    	writeError(ExceptionPrinter.getExceptionReport(te));
         			    }
 			    }
-			    if ( !ejecutado )
+			    if ( !ejecutado && enableGenerics )
 			    {
-				try
-				{
-					ejecutado = ejecutado || mundo.execCode ( "parseCommandGeneric" , new Object[] { this , command , fullArguments , "" , objetivo , null  } );
-				}
-				catch ( bsh.TargetError te )
-				{
-					write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric() executed from world, command was " + command + fullArguments + ", entity number " + objetivo + ", second object was " + objetivo + ", error was " + te + io.getColorCode("reset") );
-					writeError(ExceptionPrinter.getExceptionReport(te));
-				}
+					try
+					{
+						ejecutado = ejecutado || mundo.execCode ( "parseCommandGeneric" , new Object[] { this , command , fullArguments , "" , objetivo , null  } );
+					}
+					catch ( bsh.TargetError te )
+					{
+						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric() executed from world, command was " + command + fullArguments + ", entity number " + objetivo + ", second object was " + objetivo + ", error was " + te + io.getColorCode("reset") );
+						writeError(ExceptionPrinter.getExceptionReport(te));
+					}
 			    }
 			}
 
@@ -2819,7 +2853,7 @@ public class Player extends Mobile implements Informador
 									writeError(ExceptionPrinter.getExceptionReport(te));
 								}
 							}
-							if ( !ejecutado )
+							if ( !ejecutado && enableGenerics )
 							{
 								try
 								{
@@ -2846,7 +2880,7 @@ public class Player extends Mobile implements Informador
 									writeError(ExceptionPrinter.getExceptionReport(te));
 								}
 						    }
-						    if ( !ejecutado )
+						    if ( !ejecutado && enableGenerics )
 						    {
 							try
 							{
@@ -2911,7 +2945,7 @@ public class Player extends Mobile implements Informador
 							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 					}
-					if ( !ejecutado )
+					if ( !ejecutado && enableGenerics )
 					{
 						try
 						{
@@ -2935,6 +2969,18 @@ public class Player extends Mobile implements Informador
 						catch ( bsh.TargetError te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommand() executed from world, command was " + command + fullArguments + ", item number " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
+						}
+				    }
+				    if ( !ejecutado && enableGenerics ) //this one was added 2011-10-04 - apparently missing before!
+				    {
+						try
+						{
+							ejecutado = ejecutado || mundo.execCode ( "parseCommandGeneric" , new Object[] { this , command , fullArguments , "" , objetivo , null  } );
+						}
+						catch ( bsh.TargetError te )
+						{
+							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric() executed from world, command was " + command + fullArguments + ", entity number " + objetivo + ", second object was " + objetivo + ", error was " + te + io.getColorCode("reset") );
 							writeError(ExceptionPrinter.getExceptionReport(te));
 						}
 				    }
