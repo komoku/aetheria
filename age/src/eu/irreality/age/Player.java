@@ -2829,8 +2829,10 @@ public class Player extends Mobile implements Informador
 				//begin copy-pasted from singular
 				Vector objetivoVector = (Vector) objetivos_p.get(w);
 
-				if ( objetivoVector.size() > 1 )
-				{
+				//removed so that onContents is also executed on object itself.
+				//Replace this if if it is to be executed strictly on contents only.
+				//if ( objetivoVector.size() > 1 )
+				//{
 
 					Entity currentObject;
 					for ( int i = objetivoVector.size()-1; i >= 0 ; i-- )
@@ -2896,7 +2898,7 @@ public class Player extends Mobile implements Informador
 
 					}
 
-				}
+				//}
 
 
 				objetivo = (Entity) objetivoVector.get(0);
