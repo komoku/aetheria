@@ -110,7 +110,7 @@ Otras operaciones con listas variarán según el tipo de lista con el que
 estemos tratando. A continuación veremos diferentes tipos de listas que nos
 serán útiles:
 
-\subsubsection{Inventario (\textsf{Inventory})}
+\subsubsection{Inventario (\textsf{Inventory})} \label{sec:Inventario}
 
 La clase \textsf{Inventory} se utiliza para definir inventarios (conjuntos
 de cosas) en AGE. Esto comprende tanto el inventario de una criatura (el
@@ -162,19 +162,19 @@ mediante los siguientes métodos:
 
 El primero devuelve una descripción genérica, mientras que el segundo
 devuelve una descripción adaptada a una criatura determinada que se supone
-que es la que ``ve´ el inventario (\textsf{viewer}). Esto último es porque,
+que es la que \comillas{ve} el inventario (\textsf{viewer}). Esto último es porque,
 como se verá más adelante, AGE permite definir descripciones dinámicas que
 cambien según quién las ve (por ejemplo, para un monje sabio, un libro
-podría verse como ``El Códice de Antelys'' mientras que para un bárbaro
-inculto el mismo libro podría ser ``un gran tomo''). Por lo tanto, siempre
+podría verse como \comillas{El Códice de Antelys} mientras que para un bárbaro
+inculto el mismo libro podría ser \comillas{un gran tomo}). Por lo tanto, siempre
 será mejor utilizar el segundo método para mostrarle un inventario a una
 criatura, por si utilizamos descripciones dinámicas de este tipo o en algún
 momento futuro queremos utilizarlas.
 
 La cadena que devuelven los métodos \textsf{toString()} es una enumeración
-de la siguiente forma: si el inventario está vacío, la cadena es ``nada.'',
-mientras que si tiene cosas, es de la forma ``una espada, una moneda y un
-escudo.'', por ejemplo. Esta cadena es parte de lo que se muestra a los
+de la siguiente forma: si el inventario está vacío, la cadena es \comillas{nada.},
+mientras que si tiene cosas, es de la forma \comillas{una espada, una moneda y un
+escudo.}, por ejemplo. Esta cadena es parte de lo que se muestra a los
 jugadores cuando miran una habitación que contiene cosas.
 
 Además de los métodos que hemos visto, la clase \textsf{Inventory} también
@@ -225,7 +225,7 @@ pueden hacer de forma fácil con \textsf{hasItem}.
 
 Por ejemplo, imaginemos que no queremos dejar al jugador internarse en el
 desierto si no tiene bebida, y hay distintos objetos en nuestro mundo que
-pueden servir como bebida (usamos una propiedad ``bebida'' para marcar esos
+pueden servir como bebida (usamos una propiedad \comillas{bebida} para marcar esos
 objetos). En lugar de usar \textsf{hasItem} uno por uno con todos esos
 objetos para comprobar si el jugador los tiene, cosa que sería bastante
 farragosa y poco escalable, podemos hacerlo más fácilmente poniendo el
@@ -319,8 +319,8 @@ Todavía hay una forma más sencilla de implementar un comportamiento como
 un hecho determinado en el mundo, como por ejemplo que un jugador quiera
 moverse). Esto nos permite definir un comportamiento asociado a un hecho
 independientemente de la orden que pueda provocar ese hecho (o sea,
-definiríamos el comportamiento ``cuando el jugador va hacia el desierto'',
-en lugar de ``cuando el jugador teclea ir norte en la habitación X'').
+definiríamos el comportamiento \comillas{cuando el jugador va hacia el desierto},
+en lugar de \comillas{cuando el jugador teclea ir norte en la habitación X}).
 Veremos cómo hacer este tipo de cosas más adelante, en la sección sobre
 eventos. %%% XXX colocar enlace a la sección de eventos
 
@@ -345,7 +345,7 @@ for ( int i = inv.size()-1 ; i >= 0 ; i-- )
 En este ejemplo hay algo que nos puede llamar la atención: hemos recorrido
 los elementos del inventario del último a primero, y no del primero al
 último. Esto tiene un motivo, y es el siguiente: cuando quitamos una cosa
-del inventario, todas las otras cosas se ``corren'' una posición hacia la
+del inventario, todas las otras cosas se \comillas{corren} una posición hacia la
 izquierda. Es decir, si nuestro inventario tiene el siguiente contenido:
 
 \begin{verbatim}

@@ -19,7 +19,7 @@ más en ésta y las siguientes secciones.
 En la presente sección cubriremos algunos aspectos más avanzados del modelo
 de mundo que no hemos visto por anterioridad, y que sirven sobre todo para
 facilitar la inclusión de objetos y comportamientos que son comunes en las
-aventuras y que; aunque se podrían programar ``a mano'' con lo que hemos
+aventuras y que; aunque se podrían programar \comillas{a mano} con lo que hemos
 visto hasta ahora, resulta mucho más cómodo y rápido tener predefinidos:
 por ejemplo, el soporte para puertas y objetos abribles y cerrables,
 descripciones dinámicas, armas, etc.
@@ -45,13 +45,13 @@ alegre para otro podría ser un día horrible),}
 misma espada a lo largo de una aventura puede estar limpia o manchada de
 sangre, o tal vez oxidada),}
 \item {Que el nombre de un personaje se muestre distinta según si un
-jugador lo conoce o no (el jugador podría ver a un personaje como ``un
-hombre de mediana edad'' cuando no sabe quién es, y una vez que se lo han
-presentado verlo como ``Benito''),}
+jugador lo conoce o no (el jugador podría ver a un personaje como \comillas{un
+hombre de mediana edad} cuando no sabe quién es, y una vez que se lo han
+presentado verlo como \comillas{Benito}),}
 \item {Que el nombre o descripción de una cosa se muestre distinto según
-los conocimientos de un jugador (lo que para un bárbaro iletrado es ``un
-libro muy grande'', para un mago podría ser ``un tomo sobre magia de
-combate'').}
+los conocimientos de un jugador (lo que para un bárbaro iletrado es \comillas{un
+libro muy grande}, para un mago podría ser \comillas{un tomo sobre magia de
+combate}).}
 \end{itemize}
 
 Todo esto se consigue de forma sencilla especificando condiciones en las
@@ -61,11 +61,11 @@ Todo esto se consigue de forma sencilla especificando condiciones en las
 
 Las descripciones dinámicas se pueden definir tanto para habitaciones como
 para cosas y personajes. Esto se hace introduciendo una lista de
-condiciones y descripciones en el cuadro ``Descripciones'' de la ficha
-``General'' de estas entidades. Para añadir un elemento a esta lista,
-introducimos una condición en el campo ``Condición'', la descripción
-asociada en el campo ``Descripción'', y pulsamos Añadir. La condición que
-introduzcamos en el campo ``Condición'' es un pedazo de código BeanShell
+condiciones y descripciones en el cuadro \comillas{Descripciones} de la ficha
+\comillas{General} de estas entidades. Para añadir un elemento a esta lista,
+introducimos una condición en el campo \comillas{Condición}, la descripción
+asociada en el campo \comillas{Descripción}, y pulsamos Añadir. La condición que
+introduzcamos en el campo \comillas{Condición} es un pedazo de código BeanShell
 con las siguientes características:
 
 \begin{itemize}
@@ -97,7 +97,7 @@ no está oxidada.
 
 \textsf{get(viewer,"conoce",self)} -- descripción que se muestra sólo si el
 jugador que está mirando al personaje que describimos ya lo conoce (hecho
-descrito por una relación ``conoce'').
+descrito por una relación \comillas{conoce}).
 
 \textsf{get(viewer,"humor") > 5} -- mostrar esa descripción sólo si el humor
 del jugador que mira es mayor que 5 (si hemos definido el humor como una
@@ -108,10 +108,10 @@ Cuando un jugador mire la entidad cuya descripción dinámica hemos definido
 de esta manera, la descripción que se mostrará al jugador será la
 concatenación de todas aquellas descripciones de la lista cuyas condiciones
 asociadas se cumplan. Nótese que esto quiere decir que podemos construir
-descripciones dinámicas ``a trozos'', dividiéndolas en partes con distintas
+descripciones dinámicas \comillas{a trozos}, dividiéndolas en partes con distintas
 condiciones. Un ejemplo de esto sería el siguiente, en una habitación:
 
-Condición: en blanco (``siempre''), descripción: Te encuentras en una
+Condición: en blanco (\comillas{siempre}), descripción: Te encuentras en una
 habitación de hotel.
 
 Condición: \textsf{get(self,"luzEncendida")}, descripción: Es una habitación
@@ -154,7 +154,7 @@ descripciones, incluida la posibilidad de utilizar la variable especial
 \textsf{viewer}.
 
 Hay, sin embargo, una diferencia: los nombres dinámicos que se muestran a
-los jugadores no se construyen ``a trozos'' como las descripciones, ya que
+los jugadores no se construyen \comillas{a trozos} como las descripciones, ya que
 eso no tendría mucha utilidad, sino que simplemente se muestra el primer
 nombre cuya condición se cumpla. Si hay más de un nombre cuya condición se
 cumple, el resto se ignorarán.
@@ -196,16 +196,16 @@ cuando esté cerrada.}
 manipular lo que haya en su interior hasta que se abra.}
 \end{itemize}
 
-\subsection{Definiendo cosas abribles y cerrables}
+\subsection{Definiendo cosas abribles y cerrables} \label{sec:CosasAbribles}
 
 Para definir una cosa abrible y/o cerrable en nuestro mundo de AGE, creamos
 una cosa en el PUCK de forma normal (rellenando su nombre único, nombres de
 referencia y demás campos útiles como de costumbre) y a continuación vamos
-a la ficha llamada ``Abrir/Cerrar'' de su panel de objeto.
+a la ficha llamada \comillas{Abrir/Cerrar} de su panel de objeto.
 
 Lo primero que vemos en esta ficha son cuatro cuadros que podemos marcar
-para determinar si la cosa es ``Abrible'', ``Cerrable'', ``Cerrable con
-llave'' y ``Abrible con llave'', respectivamente. Así, por ejemplo, si
+para determinar si la cosa es \comillas{Abrible}, \comillas{Cerrable}, \comillas{Cerrable con
+llave} y \comillas{Abrible con llave}, respectivamente. Así, por ejemplo, si
 queremos crear una caja que se pueda abrir y cerrar pero que no necesite
 una llave para ello, marcaremos los dos primeros cuadros. Si lo que
 queremos es una puerta que además tenga una llave que tenga una cerradura
@@ -224,29 +224,29 @@ cuadros anteriores (por ejemplo, a abrir y cerrar en el caso de la caja).
 El formulario de estos textos dinámicos es análogo al de las descripciones
 y nombres dinámicos; pero con un añadido: además de especificar una
 condición y un texto asociado, también tenemos la posibilidad de marcar o
-no una casilla llamada ``Con éxito''. Esta casilla determina si la acción
+no una casilla llamada \comillas{Con éxito}. Esta casilla determina si la acción
 correspondiente (abrir, cerrar, etc.) se llevará a cabo con éxito o no, en
 el caso de que la condición asociada sea cierta. De este modo, en el
-formulario de ``Texto al abrir'' no sólo estamos definiendo el texto en sí,
+formulario de \comillas{Texto al abrir} no sólo estamos definiendo el texto en sí,
 sino también las condiciones que son necesarias para que la cosa se pueda
-abrir; y lo análogo para ``Texto al cerrar'' y el resto de formularios
+abrir; y lo análogo para \comillas{Texto al cerrar} y el resto de formularios
 similares.
 
 Más en detalle, cuando un jugador teclea una orden abrir sobre una cosa,
 AGE hace lo siguiente:
 
 \begin{enumerate}
-\item {Si la cosa no está marcada como ``Abrible'', se le dice al jugador
+\item {Si la cosa no está marcada como \comillas{Abrible}, se le dice al jugador
 que no tiene sentido abrir eso.}
-\item {Si la cosa sí está marcada como ``Abrible'', se recorren las entradas
-del formulario ``Texto al abrir'' comprobando si se cumple la condición de
+\item {Si la cosa sí está marcada como \comillas{Abrible}, se recorren las entradas
+del formulario \comillas{Texto al abrir} comprobando si se cumple la condición de
 alguna de ellas. En el caso de que se cumpla la condición de una de ellas:
 	\begin{enumerate}
-	\item {Si esa entrada del formulario era de ``Éxito'' (se marcó la
-	casilla ``Con éxito''), entonces se muestra el mensaje correspondiente, y
+	\item {Si esa entrada del formulario era de \comillas{Éxito} (se marcó la
+	casilla \comillas{Con éxito}), entonces se muestra el mensaje correspondiente, y
 	la cosa se abre.}
 	\item {Si esa entrada del formulario era sin éxito (no se marcó la casilla
-	``Con éxito''), entonces se muestra el mensaje correspondiente; pero no
+	\comillas{Con éxito}), entonces se muestra el mensaje correspondiente; pero no
 	se hace ningún cambio en el estado de la cosa.}
 	\end{enumerate}
 }
@@ -313,7 +313,7 @@ condiciones también nos da la posibilidad de crear cosas abribles y
 cerrables que funcionen de maneras más extrañas, si es necesario.
 
 Para definir el estado inicial de un objeto abrible/cerrable, podemos
-utilizar la propiedad closed: si vamos a la ficha ``Propiedades'' del panel
+utilizar la propiedad closed: si vamos a la ficha \comillas{Propiedades} del panel
 de nuestra caja y añadimos una propiedad closed con valor \textsf{true} y
 tiempo restante $-1$ (infinito), la caja comenzará estando cerrada. De lo
 contrario, empezará abierta hasta que alguien la cierre.
@@ -331,7 +331,7 @@ u objetos $Y$ son los que sirven para abrir $X$.
 
 Para hacer esto, creamos una relación (flecha) que vaya de $X$ (el objeto
 que se abre) a $Y$ (su llave asociada), y en el panel de la relación, donde
-se nos pregunta ``Relación estructural'', marcamos ``Se abre con'' para
+se nos pregunta \comillas{Relación estructural}, marcamos \comillas{Se abre con} para
 expresar que $X$ se abre con $Y$. Es posible definir de esta manera varias
 llaves que abran una misma puerta, o varias puertas que se abran con una
 misma llave, creando varias flechas.
@@ -341,16 +341,16 @@ $X$ e $Y$ son cosas válidas y que están al alcance del jugador, AGE hace lo
 siguiente:
 
 \begin{enumerate}
-\item {Si la cosa $X$ no está marcada como ``Abrible con llave'', se le dice
+\item {Si la cosa $X$ no está marcada como \comillas{Abrible con llave}, se le dice
 al jugador que no tiene sentido abrir eso con llave.}
-\item {Si la cosa $X$ está marcada como ``Abrible con llave'', se recorren
-las descripciones del formulario ``Texto al abrir con llave'', procediendo
-de forma análoga a como se hacía para el formulario ``Texto al abrir'';
+\item {Si la cosa $X$ está marcada como \comillas{Abrible con llave}, se recorren
+las descripciones del formulario \comillas{Texto al abrir con llave}, procediendo
+de forma análoga a como se hacía para el formulario \comillas{Texto al abrir};
 pero con una diferencia, que es la siguiente: si el objeto $Y$ no es una
-llave válida para abrir $X$, sólo se considerarán las descripciones ``Sin
-éxito''; mientras que si el objeto $Y$ sí es una de las llaves válidas para
-abrir $X$, se considerarán tanto las descripciones ``Sin éxito'' como
-aquellas ``Con éxito''.}
+llave válida para abrir $X$, sólo se considerarán las descripciones \comillas{Sin
+éxito}; mientras que si el objeto $Y$ sí es una de las llaves válidas para
+abrir $X$, se considerarán tanto las descripciones \comillas{Sin éxito} como
+aquellas \comillas{Con éxito}.}
 \end{enumerate}
 
 De esta manera, AGE nos comprueba automáticamente que el jugador lleva la
@@ -365,20 +365,20 @@ acción cerrar con llave, pero usando los formularios correspondientes.
 
 La propiedad 'locked' nos permite definir inicialmente si una cosa va a
 estar cerrada con llave o no: poniendo dicha propiedad a 'true' y con
-temporizador $-1$ en la ficha de ``Propiedades'' de una cosa, nos
+temporizador $-1$ en la ficha de \comillas{Propiedades} de una cosa, nos
 aseguraremos de que empiece cerrada con llave al principio del juego.
 
 Nótese que con el sistema de apertura y cierre con llave aquí descrito se
 implementa por defecto el manejo de llaves típico de los juegos americanos
-clásicos, en los que para abrir una puerta primero hay que ``abrirla con
-llave'' (unlock), que corresponde sólo a girar la llave, y después
-``abrirla'' realmente (open). En el mundo hispanohablante, muchos autores
-actuales prefieren un sistema más simple en el que al poner ``abrir puerta''
+clásicos, en los que para abrir una puerta primero hay que \comillas{abrirla con
+llave} (unlock), que corresponde sólo a girar la llave, y después
+\comillas{abrirla} realmente (open). En el mundo hispanohablante, muchos autores
+actuales prefieren un sistema más simple en el que al poner \comillas{abrir puerta}
 ya se abra con llave automáticamente (incluyendo las acciones unlock+open)
 en el caso de que el jugador tenga la llave. Este sistema de apertura y
 cierre fácil de conseguir en AGE, simplemente ignorando las casillas y
-formularios de ``Abrible con llave'' y ``Cerrable con llave'' y definiendo
-las condiciones del ``abrir'' y ``cerrar'' normales para que miren si el
+formularios de \comillas{Abrible con llave} y \comillas{Cerrable con llave} y definiendo
+las condiciones del \comillas{abrir} y \comillas{cerrar} normales para que miren si el
 jugador tiene la llave. Otras variantes se pueden definir de forma similar.
 
 \subsection {Puertas}
@@ -395,8 +395,8 @@ hacerlo de forma similar a la caja vista en el ejemplo anterior, o podemos
 hacer cambios (como añadir la funcionalidad de abrir/cerrar con llave)
 según cómo queramos que funcione la puerta.}
 \item {Hacemos click en el camino o caminos entre las dos localidades y, en
-la ficha ``Relación estructural'' de su panel de relación, vamos a donde
-pone ``Puerta:'' y seleccionamos nuestra entidad puerta. Lo que hace esto
+la ficha \comillas{Relación estructural} de su panel de relación, vamos a donde
+pone \comillas{Puerta:} y seleccionamos nuestra entidad puerta. Lo que hace esto
 es vincular el camino con la puerta de forma que si el jugador intenta andar
 por ese camino y la puerta está cerrada, fracasará en su empeño.}
 \item {Añadimos la puerta a las dos localidades (mediante flechas de cada
@@ -408,7 +408,7 @@ de manera que no podríamos abrirla o cerrarla, por ejemplo.}
 Aunque no es necesario para que la puerta funcione, muchas veces será
 conveniente no ponerle nombres para mostrar. Esto hace que no se muestre
 tras la descripción de las habitaciones (o sea, que no aparezcan cosas como
-``Aquí hay una espada, un escudo y una puerta roja'', cosa que suele ser
+\comillas{Aquí hay una espada, un escudo y una puerta roja}, cosa que suele ser
 antinatural). Por supuesto, sí que es necesario que la puerta tenga algún
 nombre de referencia para poder manipularla.
 
@@ -420,6 +420,251 @@ cerrable (como la caja vista anteriormente) y definirlo a la vez como
 contenedor, y AGE se encargará automáticamente de que sólo se pueda acceder
 a los objetos que contiene cuando esté abierta. En la siguiente sección,
 contenedores, veremos cómo se define una cosa como contenedor.
+
+\section{Contenedores}
+
+Los \emph{contenedores} son cosas que pueden contener otras cosas, y en donde es
+posible poner nuevas cosas o quitar las que ya hay.
+
+Así, los contenedores se pueden utilizar para modelar objetos que pueden tener a
+otros en su interior, como un baúl o una maleta; o también para objetos que
+pueden tener otros encima, como una mesa.
+
+\subsection{Definición y uso de contenedores}
+Definir un contenedor con PUCK no podría ser más sencillo: simplemente creamos
+una cosa y, en la ficha \comillas{General} de su panel de entidad, marcamos la
+casilla que pone \comillas{Contenedor}. Con eso, la cosa queda marcada como
+contenedor y se podrán meter otras cosas en ella.
+
+Para que el contenedor empiece el juego conteniendo alguna cosa, no tenemos más
+que usar PUCK para crear una relación estructural de tipo \comillas{contiene}
+que vaya del contenedor a la cosa contenida. Éste es el tipo de relación que se
+crea por defecto cuando creamos una flecha que va de una cosa a otra, así que no
+necesitaremos ir a ningún panel sino que con crear la flecha será suficiente.
+
+Por defecto, los usuarios pueden usar las órdenes \textsf{poner/meter cosa en
+contenedor} y \textsf{coger/sacar/quitar cosa de contenedor} para poner y quitar
+cosas de los contenedores. En el caso de que un contenedor sea cerrable, esto
+sólo se podrá hacer cuando está abierto.
+
+A la hora de capturar estas acciones en métodos de análisis de la entrada, es
+útil saber que los verbos \comillas{quitar} y \comillas{sacar} se traducen
+automáticamente a \comillas{coger}, con lo cual con capturar el verbo
+\comillas{coger} es suficiente. Del mismo modo, el verbo \comillas{meter} se
+traduce automáticamente a \comillas{poner}, así que capturar este último es
+suficiente.
+
+A la hora de definir la descripción de un contenedor, a menudo interesará que en
+ella se muestren los objetos que contiene. Por ejemplo, puede interesar que la
+descripción de un baúl abierto sea \comillas{Es un bonito baúl. Está abierto. En
+su interior hay una espada y un escudo.} Para conseguir este efecto, lo más
+sencillo es utilizar en las descripciones del contenedor la palabra clave
+\textsf{\%INVENTORY}, que se sustituirá por la descripción de su inventario. Así, una
+descripción como la anterior se conseguiría poniendo como descripción
+\comillas{Es un bonito baúl. Está abierto. En su interior hay \textsf{\%INVENTORY}}.
+Jugando con las descripciones dinámicas y el método \textsf{isClosed()} visto en
+la sección \ref{sec:CosasAbribles} sobre cosas abribles y cerrables, podemos
+conseguir que los objetos que hay dentro del baúl sólo se muestren cuando está
+abierto. Pero el mecanismo es muy flexible: si en su lugar tuviésemos una caja
+transparente, podríamos poner la palabra clave \textsf{\%INVENTORY} tanto en la
+descripción que se muestra cuando está abierta como en la correspondiente a
+cuando está cerrada, para que se puedan ver los objetos que contiene a través
+del cristal.
+
+En aventuras que utilicen contenedores, a menudo nos interesará consultar y
+manipular su contenido mediante código BeanShell: igual que en la sección sobre
+manipulación básica de entidades veíamos cómo enterarnos de qué cosas había en
+una habitación o en el inventario de una criatura, así como ponerlas y
+quitarlas; lo mismo se puede hacer con los contenedores. El siguiente método
+BeanShell es útil para ello:
+
+\begin{lstlisting}
+/*clase Item*/ Inventory getContents ( )
+\end{lstlisting}
+
+Invocado sobre un contenedor c, este método nos devuelve un inventario de su
+contenido. Este inventario se representa mediante un objeto de la clase
+\textsf{Inventory} (véase \ref{sec:Inventario} Inventario (Inventory)), y
+podemos utilizar los métodos de dicha clase no sólo para comprobar si una cosa
+dada está dentro del contenedor, sino también para añadirle y quitarle cosas.
+
+Nótese que esto contrasta con añadir y quitar cosas de los inventarios de
+habitaciones y criaturas, donde vimos que era mejor hacerlo mediante métodos
+específicos en lugar de trabajar con la clase \textsf{Inventory}.
+
+Con esto tenemos todo lo necesario para crear juegos que trabajen con
+contenedores. Sin embargo, es recomendable tener en cuenta una advertencia: no
+es recomendable abusar de este recurso. Aunque los contenedores son interesantes
+cuando se integran de forma natural en el argumento de un juego o en los
+acertijos que plantea (por ejemplo, si es necesario encontrar la llave de un
+baúl para obtener una poderosa arma); usados en exceso para modelar en el mundo
+cosas que no los necesitan tiende a hacer que los juegos resulten menos
+naturales y más incómodos para los jugadores.
+
+Por ejemplo, si tienes un mundo donde para cortar un chorizo es necesario
+\comillas{coger cuchillo de mesa}, \comillas{coger tabla de cajón},
+\comillas{poner tabla en mesa}, \comillas{poner chorizo en tabla} y
+\comillas{cortar chorizo con cuchillo}; en la mayoría de los casos ese nivel de
+detalle no va a aportar nada al argumento o a los acertijos salvo aburrir al
+jugador. Sería un mejor diseño no usar contenedores en absoluto y que se pudiese
+\comillas{cortar chorizo con cuchillo} directamente, poniendo si se quiere un
+texto descriptivo que diga que el jugador ha usado una tabla.
+
+Este sobreuso de contenedores es, en la opinión personal del autor, uno de los
+vicios de diseño más comunes que se cometen al crear juegos basados en texto (e
+incluso otros tipos de juego); y debería evitarse utilizando los contenedores
+sólo cuando sean estrictamente necesarios y aporten algo al argumento del juego
+que no sería posible sin ellos. Es decir, hablando en plata, casi nunca.
+
+\subsection{Acciones sobre objetos contenidos}
+
+Por defecto, sobre una cosa que está dentro de un contenedor no se puede hacer
+nada sin sacarla antes del contenedor, excepto mirarla: por ejemplo, si hay un
+libro dentro de un baúl, el jugador tendrá que primero coger libro o sacar libro
+de baúl para a continuación poder leerlo, no podrá hacerlo directamente.
+
+Esto quiere decir que, por defecto, las únicas acciones que se pueden llevar a
+cabo sobre objetos dentro de contenedores son las acciones coger y mirar por
+defecto de AGE, el resto no funcionarán. Esto incluye también a las acciones que
+se definan o redefinan mediante los métodos de análisis de la entrada vistos en
+capítulos anteriores.
+
+Sin embargo, si se quieren definir acciones que sí funcionen sobre objetos que
+estén dentro de contenedores, también se puede hacer. Aunque no se recomienda
+utilizar esta funcionalidad en general porque suele ser síntoma de un diseño con
+contenedores innecesarios como se explicaba en la sección anterior, existe la
+posibilidad de hacerlo. Para ello, en los menús del PUCK, cada uno de los
+métodos de análisis de la entrada que hemos visto en los capítulos anteriores
+tiene una versión que pone entre paréntesis (para contenedores y objetos
+contenidos). Ésta es la versión que debemos seleccionar para definir acciones
+que actúen directamente sobre cosas que estén dentro de contenedores.
+
+Por ejemplo, supongamos que queremos que se pueda \comillas{cortar chorizo con
+cuchillo} a pesar de que el chorizo esté en un contenedor (por ejemplo, una
+tabla de cortar). Para ello, si queremos definir la acción en el chorizo
+(también podríamos alternativamente hacerlo en el cuchillo), vamos a su campo de
+código y, en los menús, seleccionamos Insertar código -- Redefinir métodos de
+cosa -- Método de análisis de la entrada (para contenedores y objetos
+contenidos) -- Referente a ésta y otra cosa, en ese orden. Obtenemos la
+siguiente plantilla:
+
+\begin{lstlisting}
+/*Método de análisis sintáctico de la entrada referida a dos cosas, que pueden o no estar dentro de otras*/
+/*Este método se ejecuta:
+  - Cuando el jugador invoca una orden sobre dos objetos, el primero de los cuales es éste (estén o no estos objetos dentro de un contenedor).
+  - Cuando el jugador invoca una orden sobre dos objetos, el primero de los cuales está contenido en éste.
+*/
+void parseCommandOnContentsObj1 ( Mobile aCreature , String verb , String args1 , String args2 , List path1 , List path2 ,  Entity obj2  )
+{
+ 
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "afilar"
+	//args1: parte de la orden que se refiere a un primer objeto, por ejemplo "el cuchillo". Ese primer objeto es éste o está contenido
+		//en éste.
+	//args2: parte de la orden que se refiere a un segundo objeto, por ejemplo "con el afilador"
+	//path1: camino de contenedores desde el primer objeto al que referencia la orden. Por ejemplo, si introdujo "afilar el cuchillo con el
+		//afilador" y el cuchillo está en una caja, será [cuchillo, caja].
+	//path2: camino de contenedores desde el segundo objeto al que referencia la orden. Por ejemplo, si introdujo "afilar el cuchillo con el
+		//afilador" y el afilador no está dentro de nada, será [afilador].
+	//obj2: segundo objeto al que se refiere la acción del jugador (en el ejemplo, el objeto afilador).
+ 
+ 
+	//terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
+	//por defecto ante ella
+	//terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
+	//comando y ejecución de la acción correspondiente
+ 
+}
+\end{lstlisting}
+
+Los métodos de análisis de la entrada para contenedores y objetos contenidos se
+parecen a sus análogos estándar vistos anteriormente, pero son más complejos. En
+concreto, las diferencias son éstas:
+
+\begin{enumerate}
+\item {La primera es la diferencia obvia: el método no sólo se ejecutará cuando
+el jugador teclee una acción referente al objeto en que lo definimos y éste esté
+en el inventario del jugador o en el de la habitación en la que está éste; sino
+también cuando el objeto esté en un contenedor que a esté en estos inventarios
+(o bien en un contenedor que a su vez esté en otro contenedor que esté en estos
+inventarios, etc.)}
+\item {Además, el método se nos ejecutará tanto cuando el jugador teclee una
+acción referente al objeto en que lo definimos (siempre que esté en uno de los
+lugares dichos anteriormente) como cuando teclee una acción referente a un
+objeto contenido en aquél en que lo definimos. Esto nos da la flexibilidad de
+permitir capturar acciones sobre todo lo que esté contenido en un contenedor
+(por ejemplo, que al coger cualquier objeto que esté dentro de un baúl, salte
+una trampa en dicho baúl).}
+\item {Los métodos de análisis para contenedores y objetos contenidos nos pasan
+unos parámetros path que nos dan el camino completo de contenedores que va desde
+el objeto al que se refirió el jugador hasta el contenedor más externo. Por
+ejemplo, si el jugador ha puesto \comillas{cortar chorizo con cuchillo} y el
+chorizo está en una caja que a su vez está dentro de un baúl, \textsf{path1}
+sería una lista de longitud 3 tal que \textsf{path1.get(0)} sería el
+\textsf{Item} chorizo, \textsf{path1.get(1)} sería la caja y
+\textsf{path1.get(2)} sería el baúl. En ese mismo ejemplo, \textsf{path2} sería
+una lista de longitud 1 que sólo contendría el cuchillo (si no está contenido en
+nada).}
+\item{Para obtener las entidades a las que realmente se refirió el jugador,
+podemos utilizar \textsf{path1.get(0)} y \textsf{path2.get(0)}. Nótese que
+\textsf{path1.get(0)} no necesariamente coincide con self (puede ser en su lugar
+un objeto contenido en \textsf{self}, por razón de lo explicado en el punto 2).
+Así pues, si queremos asegurarnos de definir una acción que afecte sólo al
+objeto en el que se define y no a los que puedan estar contenidos en él,
+tendríamos que hacer una comprobación tipo \textsf{equals(path1.get(0),self}).}
+\end{enumerate}
+
+El resto de métodos de análisis de la entrada para contenedores y objetos
+contenidos se comportan análogamente a éste, teniendo dos parámetros tipo
+\textsf{List} en el caso de métodos para dos entidades, o uno en el caso de
+métodos para una entidad.
+
+De este modo, podríamos definir la acción de cortar el chorizo con el cuchillo
+de la siguiente manera (IMPORTANTE: no debe tomarse este ejemplo como
+recomendación del autor de cómo hacer un juego, ya que el autor es de la opinión
+de que este tipo de usos barrocos de los contenedores no se debería utilizar
+nunca; pero lo incluye en esta documentación por completitud):
+
+\begin{lstlisting}
+void parseCommandOnContentsObj1 ( Mobile aCreature , String verb , String args1 , String args2 , List path1 , List path2 ,  Entity obj2  )
+{
+ 
+  if ( equals ( self , path1.get(0) ) ) //acción referida al chorizo
+  {
+    if ( equals ( path1.size() , 1 ) || !equals ( item("tabla") , path1.get(1) ) ) //si el chorizo no está en la tabla
+    {
+      aCreature.writeDenial("Para cortar el chorizo, deberías ponerlo en una tabla primero.\n");
+      end(); 
+    }   
+    else if ( equals ( path2.get(0) , item("cuchillo") ) ) //si está en la tabla y cortamos con el cuchillo
+    {
+      if ( equals ( path2.size() , 1 ) ) //el cuchillo no está dentro de nada
+      { 
+        aCreature.writeAction("Cortas el chorizo con el cuchillo limpiamente sobre la tabla.\n");
+        item("tabla").getInventory().removeItem(item("chorizo"));
+        item("tabla").getInventory().addItem(item("chorizo troceado"));
+        set ( item("tabla") , "manchadaDeChorizo" , true );
+        end(); 
+      } 
+      else //el cuchillo está dentro de algo
+      {
+        aCreature.writeDenial("Primero tendrías que sacar el cuchillo de " + path2.get(1).getSingName(aCreature));
+        end();  
+      }   
+    }
+    else //si está en la tabla y no cortamos con el cuchillo
+    {
+      aCreature.writeDenial("Para cortar el chorizo, necesitarías un cuchillo.\n");
+      end(); 
+    }   
+  } 
+ 
+}
+\end{lstlisting}
+
+Si además quisiéramos mirar si la tabla está en una mesa, tendríamos que irnos
+a mirar si el tamaño de \textsf{path1} es al menos 3 y si \textsf{path1.get(2)}
+es la mesa, complicando más el código así como la vida del sufrido jugador.
 
 \section{Miembros y prendas} \label{sec:MiembrosPrendas}
 
@@ -459,15 +704,15 @@ Para definir un miembro, como por ejemplo la cabeza del jugador, la añadimos
 en el PUCK como una cosa cualquiera, rellenando los campos (nombre único,
 nombre de referencia, género, etc.) que sean necesarios. A continuación,
 creamos una relación estructural que vaya del jugador a la cabeza. Por
-defecto, la flecha resultante está etiquetada con la palabra ``tiene'', que
+defecto, la flecha resultante está etiquetada con la palabra \comillas{tiene}, que
 quiere decir que la cabeza está en el inventario del jugador (como si éste
 llevase una cabeza cortada consigo). Para ponerla como miembro, hacemos
-click en la flecha de la relación, y en la ficha ``Relación estructural''
-del panel asociado cambiamos ``tiene'' por ``se compone de''. De este modo,
+click en la flecha de la relación, y en la ficha \comillas{Relación estructural}
+del panel asociado cambiamos \comillas{tiene} por \comillas{se compone de}. De este modo,
 la cabeza pasa a ser un miembro del jugador, tal y como queremos.
 
 Es posible hacer que un miembro se componga de otros miembros (por ejemplo,
-que una mano tenga varios dedos) creando relaciones ``se compone de'' entre
+que una mano tenga varios dedos) creando relaciones \comillas{se compone de} entre
 unos y otros. Sin embargo, esto no es necesario, al menos con la
 funcionalidad por defecto del AGE. Si queremos tener anillos que se pongan
 en los dedos, en la práctica es igualmente válido poner éstos como partes
@@ -476,7 +721,7 @@ del modelado pueda querer hacer lo segundo.
 
 Cada criatura puede llevar a cabo acciones sobre sus propios miembros (por
 ejemplo, vendarse el brazo izquierdo, suponiendo que definamos la respuesta
-al verbo ``vendar'' adecuadamente en el brazo); pero por defecto no puede
+al verbo \comillas{vendar} adecuadamente en el brazo); pero por defecto no puede
 llevar a cabo acciones sobre los miembros de los demás.
 
 Si queremos trabajar con los miembros de alguna criatura desde código
@@ -515,7 +760,7 @@ directos e indirectos de la criatura sobre la que se invoca. Es decir, en
 el ejemplo anterior, este método devolvería una lista conteniendo tanto el
 brazo como la mano.
 
-Al contrario que los anteriores, este inventario es de ``sólo lectura''. Si
+Al contrario que los anteriores, este inventario es de \comillas{sólo lectura}. Si
 se modifica, no tendrá el efecto de añadir ni quitar miembros a la criatura.
 
 \subsection {Prendas} \label{sec:Prendas}
@@ -527,39 +772,39 @@ lo hacemos de la siguiente manera:
 \begin{itemize}
 \item {Creamos una cosa en PUCK, rellenando todos los campos estándar de
 nombres, género, descripción, etc.}
-\item {Vamos a la ficha ``Prenda'' del panel de entidad de la cosa, y
-marcamos la casilla ``Es prenda'', indicando que efectivamente se trata de
+\item {Vamos a la ficha \comillas{Prenda} del panel de entidad de la cosa, y
+marcamos la casilla \comillas{Es prenda}, indicando que efectivamente se trata de
 una prenda.}
 \item {A continuación, tenemos que especificar en qué miembro o miembros de
 las criaturas se podrá llevar esa prenda. Por ejemplo, un casco se podrá
 llevar en la cabeza. Para hacer esto, utilizamos el formulario llamado
-``Miembros requeridos'' de la ficha ``Prenda'':}
-\item {Pulsamos el botón ``Añadir miembro''. Esto hace que nos aparezca un
-nuevo panel de ``Miembro'', que nos da la opción de añadir una serie de
-nombres. Introducimos ``cabeza'', y con esto, el casco ya tiene la
+\comillas{Miembros requeridos} de la ficha \comillas{Prenda}:}
+\item {Pulsamos el botón \comillas{Añadir miembro}. Esto hace que nos aparezca un
+nuevo panel de \comillas{Miembro}, que nos da la opción de añadir una serie de
+nombres. Introducimos \comillas{cabeza}, y con esto, el casco ya tiene la
 información de que puede ponerse en la cabeza.}
 \end{itemize}
 
 Si en lugar de un solo miembro, una prenda necesita ocupar varios (por
 ejemplo, unas botas podrían ocupar el pie izquierdo y el pie derecho, si
 los modelamos como objetos distintos); entonces le daremos varias veces al
-botón ``Añadir miembro'', y en cada uno de los paneles que aparezcan
-introduciremos el nombre de uno de los miembros (por ejemplo, ``pie
-izquierdo'' en uno, y ``pie derecho'' en el otro).
+botón \comillas{Añadir miembro}, y en cada uno de los paneles que aparezcan
+introduciremos el nombre de uno de los miembros (por ejemplo, \comillas{pie
+izquierdo} en uno, y \comillas{pie derecho} en el otro).
 
 Por otra parte, si una misma prenda se puede poner en distintos tipos de
 miembros (pero sólo en uno de cada vez), lo que haremos será darle a
-``Añadir miembro'' una sola vez; pero añadirle varios nombres: por ejemplo,
+\comillas{Añadir miembro} una sola vez; pero añadirle varios nombres: por ejemplo,
 si un guante es reversible y puede encajar tanto en la mano derecha como en
-la izquierda, podríamos poner ``mano derecha'' y ``mano izquierda'' como
+la izquierda, podríamos poner \comillas{mano derecha} y \comillas{mano izquierda} como
 nombres en su miembro requerido. Estos nombres siempre se procesan en orden,
-es decir, si ponemos primero ``mano derecha'' y después ``mano izquierda''
+es decir, si ponemos primero \comillas{mano derecha} y después \comillas{mano izquierda}
 y el jugador teclea \textsf{vestir guante}, se colocará éste en la mano
 derecha si la tiene libre, y sólo en el caso de que no la tenga libre se lo
 pondrá en la izquierda.
 
 Si queremos que una criatura comience el juego con una prenda puesta, lo
-haremos creando en PUCK una relación llamada ``wears'' con valor
+haremos creando en PUCK una relación llamada \comillas{wears} con valor
 \textsf{true} que vaya del miembro correspondiente a la criatura. Por
 ejemplo, si queremos que un jugador comience con un casco puesto en su
 cabeza:
@@ -567,14 +812,14 @@ cabeza:
 \begin{itemize}
 \item {Creamos una relación (flecha) de la cabeza al casco,}
 \item {Clickeamos en ella,}
-\item {Vamos a la ficha ``Otras relaciones'' del panel de la relación,}
-\item {Introducimos nombre ``wears'', valor \textsf{true}, y tiempo restante
+\item {Vamos a la ficha \comillas{Otras relaciones} del panel de la relación,}
+\item {Introducimos nombre \comillas{wears}, valor \textsf{true}, y tiempo restante
 $-1$ (infinito).}
 \end{itemize}
 
 Si queremos modificar desde el código BeanShell las prendas que lleva
 puestas o deja de llevar una criatura, basta con poner el valor de la
-relación ``wears'' entre cada miembro y la correspondiente prenda a
+relación \comillas{wears} entre cada miembro y la correspondiente prenda a
 \textsf{true} o \textsf{false} (véase cómo hacerlo en la sección de
 relaciones). También podemos utilizar el mecanismo de relaciones para
 consultar qué prendas lleva puesta una criatura y en qué miembros; pero
@@ -617,20 +862,20 @@ definidos por defecto que dependen del tiempo, que son los asociados a las
 acciones de las criatura, como coger un objeto o moverse en una dirección.
 Todas las acciones que llevan a cabo las criaturas consumen un tiempo, y la
 cuenta de este tiempo se lleva en el temporizador de una propiedad llamada
-``state''.
+\comillas{state}.
 
 Por ejemplo, como jugadores, cuando AGE nos acepta una orden de entrada, es
-porque ha llegado a cero el temporizador de ``state'' de nuestro personaje
-jugador. Si tecleamos ``ir norte'', AGE cambiará el valor de ``state'' a un
+porque ha llegado a cero el temporizador de \comillas{state} de nuestro personaje
+jugador. Si tecleamos \comillas{ir norte}, AGE cambiará el valor de \comillas{state} a un
 valor de estado (que se verá más adelante) que indica que nos estamos
 moviendo, y fijará el temporizador al número de unidades de tiempo que nos
 consuma ir hacia el norte. Una vez llegado el temporizador a cero, esto
 significa que ya hemos terminado de ir hacia el norte y AGE esperará otra
-orden de entrada, que de nuevo cambiará el valor y temporizador de ``state'',
+orden de entrada, que de nuevo cambiará el valor y temporizador de \comillas{state},
 y así sucesivamente.
 
 Por lo tanto, el método \textsf{update} que define AGE por defecto para la
-propiedad ``state'' de los jugadores es muy importante, porque es nada menos
+propiedad \comillas{state} de los jugadores es muy importante, porque es nada menos
 que el que consigue que al ejecutar una aventura monojugador, ésta nos vaya
 pidiendo órdenes y ejecutándolas una por una. En una aventura multijugador
 o que cuente con personajes complejos que realicen acciones, el temporizador
@@ -642,45 +887,45 @@ norte (la manera concreta en la que los jugadores perciben esto en los modos
 síncrono y de tiempo real se trató en la sección de temporización).
 
 En la presente sección veremos en detalle cómo funciona esta propiedad
-especial ``state'' (y otra asociada, llamada ``target'') y qué podemos hacer
+especial \comillas{state} (y otra asociada, llamada \comillas{target}) y qué podemos hacer
 con ellas.
 
-\subsection{Las propiedades ``state'' y ``target''} \label{sec:StateTarget}
+\subsection{Las propiedades \comillas{state} y \comillas{target}} \label{sec:StateTarget}
 
 Las criaturas (objetos de la clase \textsf{Mobile}) tienen una propiedad
-especialmente importante llamada ``state'' (estado). La importancia de la
-propiedad ``state'' radica en que esta propiedad es la que define qué cosa
+especialmente importante llamada \comillas{state} (estado). La importancia de la
+propiedad \comillas{state} radica en que esta propiedad es la que define qué cosa
 está haciendo una criatura en cada momento, y su temporizador es el que
 indica cuánto tiempo tardará en hacerlo.
 
-Asociada a la propiedad ``state'' aparece a veces otra propiedad, llamada
-``target'', que nos proporciona información extendida sobre el estado. Así,
+Asociada a la propiedad \comillas{state} aparece a veces otra propiedad, llamada
+\comillas{target}, que nos proporciona información extendida sobre el estado. Así,
 por ejemplo, si en un instante dado del juego la criatura Pepito está yendo
-de la sala sur a la sala norte, su propiedad ``state'' en ese momento valdrá
+de la sala sur a la sala norte, su propiedad \comillas{state} en ese momento valdrá
 \textsf{Mobile.MOVING} (valor que indica que se está moviendo) y su
-propiedad ``target'' contendrá un identificador de la sala norte.\footnote{Por
-motivos puramente históricos, el identificador contenido en ``target'' es
+propiedad \comillas{target} contendrá un identificador de la sala norte.\footnote{Por
+motivos puramente históricos, el identificador contenido en \comillas{target} es
 un número entero en lugar del nombre único de la sala. Sin embargo, se puede
 utilizar igual que si fuera el nombre único (es decir, funcionarán cosas
 como \textsf{room(fulano.get("target"))}. Probablemente la propiedad
-``target'' pase a contener nombres únicos, en lugar de dichos identifiadores
+\comillas{target} pase a contener nombres únicos, en lugar de dichos identifiadores
 enteros, en futuras versiones de AGE.}
 
-El manejo de las propiedades ``state'' y ``target'' ha de considerarse un
+El manejo de las propiedades \comillas{state} y \comillas{target} ha de considerarse un
 tema avanzado, pues en la mayoría de los juegos no hace falta manipularlas.
 Sólo debería ser necesario en aventuras en las que se quiera tener un
 control fino del combate o de la temporización de eventos.
 
 En la siguiente tabla se muestran los valores que puede tomar, para
-cualquier criatura, la propiedad ``state'', así como su significado y el uso
-de la propiedad ``target'' para ese estado. Nótese que gran parte de los
+cualquier criatura, la propiedad \comillas{state}, así como su significado y el uso
+de la propiedad \comillas{target} para ese estado. Nótese que gran parte de los
 estados, aunque no todos, están relacionados con el combate y se tratarán
 en más detalle en la sección \ref{sec:CombateArmas} Combate y armas de esta
 documentación.
 \\
 {\footnotesize\begin{tabular}{|l|p{6cm}|p{2.5cm}|}
 \hline
-\textbf{Valor de ``state''} & \textbf{Significado de ``state''} & \textbf{Significado de ``target''} \\
+\textbf{Valor de \comillas{state}} & \textbf{Significado de \comillas{state}} & \textbf{Significado de \comillas{target}} \\
 \hline
 \hline
 \textsf{Mobile.IDLE} & Estado por defecto. Ojo: el nombre (\textsf{IDLE},
@@ -692,12 +937,12 @@ documentación.
 												criatura que está cogiendo o dejando un objeto.  &  \\
 \hline
 \textsf{Mobile.MOVING } & La criatura está moviendose de una habitación a
-													otra. El temporizador de ``state'' indica cuántas
+													otra. El temporizador de \comillas{state} indica cuántas
 													unidades de tiempo quedan hasta que se complete el
 													movimiento. En el momento en que se completa es
 													cuando la criatura cambia realmente de habitación,
-													y se imprimen los mensajes como ``Fulano se va al
-													norte'' o ``Fulano llega desde el sur''. & Habitación destino \\
+													y se imprimen los mensajes como \comillas{Fulano se va al
+													norte} o \comillas{Fulano llega desde el sur}. & Habitación destino \\
 \hline
 \textsf{Mobile.ATTACKING} & La criatura está lanzando un ataque contra otra
 														criatura. Cuando el temporizador llegue a cero,
@@ -707,7 +952,7 @@ documentación.
 \hline
 \textsf{Mobile.BLOCKING} & La criatura está preparando un bloqueo. Cuando el
 														temporizador llegue a cero, la criatura pasará
-														a estar ``en guardia'' (\textsf{Mobile.READY\_TO\_BLOCK})
+														a estar \comillas{en guardia} (\textsf{Mobile.READY\_TO\_BLOCK})
 														y si le llega un ataque, será bloqueado. & \\
 \hline
 \textsf{Mobile.READY\_TO\_BLOCK} & La criatura está bloqueándose, con un
@@ -726,29 +971,29 @@ documentación.
 \hline
 \textsf{Mobile.ATTACK\_RECOVER} & La criatura está recuperándose después de
 														haber lanzado una estocada o golpe. Hasta que el
-														temporizador del ``state'' llegue a cero, no
+														temporizador del \comillas{state} llegue a cero, no
 														podrá emprender otra acción. & \\
 \hline
 \textsf{Mobile.BLOCK\_RECOVER} & La criatura está recuperándose después de
 														haber parado un golpe. Hasta que el temporizador
-														del ``state'' llegue a cero, no podrá emprender
+														del \comillas{state} llegue a cero, no podrá emprender
 														otra acción. & \\
 \hline
 \textsf{Mobile.DAMAGE\_RECOVER} & La criatura está recuperándose después de
 														haber recibido un golpe. Hasta que el
-														temporizador del ``state'' llegue a cero, no
+														temporizador del \comillas{state} llegue a cero, no
 														podrá emprender otra acción. & \\
 \hline
 \end{tabular}}
 
 {\footnotesize\begin{tabular}{|l|p{6cm}|p{2.5cm}|}
 \hline
-\textbf{Valor de ``state''} & \textbf{Significado de ``state''} & \textbf{Significado de ``target''} \\
+\textbf{Valor de \comillas{state}} & \textbf{Significado de \comillas{state}} & \textbf{Significado de \comillas{target}} \\
 \hline
 \hline
 \textsf{Mobile.DODGE\_RECOVER} & La criatura está recuperándose después de
 														haber llevado a cabo una esquivada con éxito.
-														Hasta que el temporizador del ``state'' llegue a
+														Hasta que el temporizador del \comillas{state} llegue a
 														cero, no podrá emprender otra acción. & \\
 \hline
 \textsf{Mobile.DYING} & La criatura está cayendo muerta. Este estado siempre
@@ -775,11 +1020,11 @@ documentación.
 He aquí lo que sucede por defecto en AGE cuando el temporizador del estado
 de una criatura llega a cero, a no ser que nosotros como programadores
 redefinamos el método update para que haga algo distinto con la propiedad
-``state'': 
+\comillas{state}: 
 
 {\footnotesize\begin{tabular}{|l|p{8cm}|}
 \hline
-\textbf{Valor de ``state''} & \textbf{Reacción de las criaturas} \\
+\textbf{Valor de \comillas{state}} & \textbf{Reacción de las criaturas} \\
 \hline
 \hline
 \textsf{Mobile.IDLE} & Tomar decisión \\
@@ -816,17 +1061,17 @@ redefinamos el método update para que haga algo distinto con la propiedad
 \hline
 \end{tabular}}
 
-Los casos en los que esta tabla dice ``Tomar decisión'' quiere decir que la
+Los casos en los que esta tabla dice \comillas{Tomar decisión} quiere decir que la
 criatura tiene la iniciativa y puede en ese momento emprender una nueva
 acción. Esto tiene un significado distinto según si la criatura es un
 jugador o no:
 
 \begin{itemize}
-\item {Si se trata de un jugador, cuando llegue el momento de ``Tomar
-decisión'' se esperará una orden por parte del cliente del jugador, y se
+\item {Si se trata de un jugador, cuando llegue el momento de \comillas{Tomar
+decisión} se esperará una orden por parte del cliente del jugador, y se
 procesará dicha orden, ejecutando los comportamientos correspondientes.}
 \item {Si se trata de una criatura que no es jugador, cuando llegue el
-momento de ``Tomar decisión'' se hará lo siguiente:
+momento de \comillas{Tomar decisión} se hará lo siguiente:
 	\begin{itemize}
 	\item {Si tiene enemigos presentes, se llama a la IA de combate que decide
 	qué acción de combate tomará la criatura (atacar, bloquear, etc.)}
@@ -841,7 +1086,7 @@ que se muevan, sigan rutas, cojan objetos, desempeñen tareas, etc.
 
 \subsection {Programación con estados}
 
-Como programadores de aventuras, el uso más evidente de la propiedad ``state''
+Como programadores de aventuras, el uso más evidente de la propiedad \comillas{state}
 es el de comprobar lo que está haciendo una criatura. Por ejemplo, si
 queremos saber si un personaje llamado Manolo que está en nuestra habitación
 ha empezado a irse hacia otra, podríamos hacer algo como:
@@ -859,13 +1104,13 @@ habitación a la que se está moviendo Manolo, y con
 de tiempo que le faltan para llegar a ella (véase la sección
 \ref{sec:Temporizacion} sobre temporización).
 
-Aparte de utilizar la propiedad ``state'' para comprobar el estado de una
+Aparte de utilizar la propiedad \comillas{state} para comprobar el estado de una
 criatura, los programadores más osados pueden querer redefinir lo que sucede
-en el método update para la propiedad ``state'' y de ese modo cambiar la
+en el método update para la propiedad \comillas{state} y de ese modo cambiar la
 manera en la que se comporta una criatura en los cambios de estado. Estos
 cambios pueden potencialmente ir desde modificaciones puntuales hasta
 cambios radicales que, por ejemplo, modifiquen totalmente la manera en la
-que se resuelven los cambios de estado tipo ``Tomar decisión'' cambiando
+que se resuelven los cambios de estado tipo \comillas{Tomar decisión} cambiando
 todo el sistema de parseado de AGE por otro sistema totalmente distinto.
 Por supuesto, sólo los programadores avanzados o con mucha práctica en AGE
 y con interés en personalizarlo deberían utilizar estas características,
@@ -900,7 +1145,7 @@ con ésta.
 Como la inmensa mayoría de los juegos de rol por ordenador (CRPG's), el
 sistema de combate de AGE utiliza el modelo de recuento del daño por el cual
 una criatura cuenta con un determinado número de \textit{puntos de golpe} o
-\textit{puntos de vida} (abreviados como HP, del inglés ``hit points'').
+\textit{puntos de vida} (abreviados como HP, del inglés \comillas{hit points}).
 Cuando la criatura recibe daño, por ejemplo por ser golpeada con un arma,
 pierde puntos de vida (y a los puntos de vida que se restan de su cifra
 total se les llama \textit{puntos de daño}). Los puntos de vida, pues, miden
@@ -920,21 +1165,21 @@ el panel de criatura de PUCK:
 
 \begin{itemize}
 \item {Si hacemos click en una criatura en el mapa de PUCK, en la pestaña
-``General'' hay un campo del formulario etiquetado ``HP''. Este campo nos
+\comillas{General} hay un campo del formulario etiquetado \comillas{HP}. Este campo nos
 permite definir la cantidad de puntos de vida con la que empieza la
 criatura.}
-\item {El campo etiquetado ``HP máx'', situado al lado de ``HP'', nos
+\item {El campo etiquetado \comillas{HP máx}, situado al lado de \comillas{HP}, nos
 permite definir la cantidad de puntos de vida máximos de la criatura (es
 decir, la cantidad de puntos de vida que tiene la criatura cuando está
 saludable y no ha recibido ningún daño).}
 \end{itemize}
 
-Así pues, si ponemos la misma cifra en el campo ``HP'' que en el campo
-``HP máx'', esto significará que la criatura está inicialmente saludable. Si
-ponemos una cifra menor en ``HP'' que en ``HP máx'', significará que la
+Así pues, si ponemos la misma cifra en el campo \comillas{HP} que en el campo
+\comillas{HP máx}, esto significará que la criatura está inicialmente saludable. Si
+ponemos una cifra menor en \comillas{HP} que en \comillas{HP máx}, significará que la
 criatura ya comienza con algún daño.
 
-Tanto ``HP'' como ``HP máx'' deben tener inicialmente un valor mayor que
+Tanto \comillas{HP} como \comillas{HP máx} deben tener inicialmente un valor mayor que
 cero. No hay límite superior (al menos mientras no te pases de un par de
 miles de millones), así que puedes usar distintas escalas: puedes preferir
 un mundo donde las criaturas tengan pocos puntos de vida (que un hombre
@@ -985,13 +1230,13 @@ Otro elemento típico en muchos juegos de rol son los \textit{atributos} y las
 
 Los atributos son valores numéricos que describen características físicas e
 intelectuales genéricas de un personaje. Por ejemplo, atributos que se
-suelen utilizar a menudo en juegos de rol son ``fuerza'', ``constitución'',
-``destreza'', ``inteligencia'' o ``carisma''.
+suelen utilizar a menudo en juegos de rol son \comillas{fuerza}, \comillas{constitución},
+\comillas{destreza}, \comillas{inteligencia} o \comillas{carisma}.
 
 Las habilidades, por otra parte, son valores numéricos que describen la
 práctica o el talento que un personaje tiene para realizar alguna actividad
-específica. Ejemplos de posibles habilidades serían ``espada'', ``trepar'',
-``pescar'', ``violín'' o ``diplomacia''.
+específica. Ejemplos de posibles habilidades serían \comillas{espada}, \comillas{trepar},
+\comillas{pescar}, \comillas{violín} o \comillas{diplomacia}.
 
 AGE proporciona, por un lado, un sistema genérico para gestionar los valores
 de los atributos y habilidades, que es muy sencillo y prácticamente no hace
@@ -1009,7 +1254,7 @@ siguientes secciones.
 
 Por otra parte, si queremos utilizar las habilidades y atributos para
 funcionalidad no relacionada con el combate (como podría ser usar una
-habilidad de ``violín'' para determinar si un personaje cautiva a su
+habilidad de \comillas{violín} para determinar si un personaje cautiva a su
 audiencia en un concierto o no); AGE sólo nos proporciona la infraestructura
 básica para almacenar y obtener los valores de esas habilidades y atributos,
 el resto (por ejemplo, el código para decidir si el personaje consigue tocar
@@ -1020,14 +1265,14 @@ La mencionada infraestructura básica para almacenar y obtener valores de
 habilidades y atributos consiste en un formulario de PUCK y una serie de
 métodos invocables desde código BeanShell.
 
-El formulario es la ficha de ``Características'' del panel asociado a un
+El formulario es la ficha de \comillas{Características} del panel asociado a un
 personaje, y nos permite fijar los valores iniciales de habilidades y
 atributos para ese personaje. Para ello, escribimos el nombre de la
-habilidad o atributo (por ejemplo, ``violín'') en el campo ``Nombre'' y su
-valor numérico (por ejemplo, 30) en el campo ``Valor'', y pulsamos el botón
-``Añadir''. Si queremos rectificar el nombre y valor de un atributo, podemos
+habilidad o atributo (por ejemplo, \comillas{violín}) en el campo \comillas{Nombre} y su
+valor numérico (por ejemplo, 30) en el campo \comillas{Valor}, y pulsamos el botón
+\comillas{Añadir}. Si queremos rectificar el nombre y valor de un atributo, podemos
 hacerlo seleccionándolo en la lista, modificando los datos en los campos
-``Nombre'' y ``Valor'', y pulsando ``Cambiar''.
+\comillas{Nombre} y \comillas{Valor}, y pulsando \comillas{Cambiar}.
 
 Adicionalmente, AGE proporciona los siguientes métodos en la clase Mobile
 para manipular atributos y habilidades:
@@ -1127,7 +1372,7 @@ ataque de A se resolverá como si B no hubiera esquivado en absoluto.}
 	el golpe de A), con lo cual el ataque le impactará como si no hubiera
 	bloqueado y recibirá todo el daño.}
 	\end{enumerate}}
-\item {Todas estas acciones tienen además un ``tiempo de recuperación''
+\item {Todas estas acciones tienen además un \comillas{tiempo de recuperación}
 después de que se produzcan: por ejemplo, después de lanzar un ataque, el
 personaje que ha atacado estará unos instantes sin poder hacer otra cosa,
 porque lógicamente volver a posicionar el brazo y el arma para lanzar otra
@@ -1141,13 +1386,13 @@ unos instantes hasta que pueda reaccionar de nuevo.}
 A la luz de esta descripción, si quieres (aunque no es realmente necesario
 para implementar combates, si no quieres hacer cosas avanzadas) puedes
 volver a mirar los estados relacionados con el combate presentes en la tabla
-de la sección \ref{sec:StateTarget} sobre Las propiedades ``state'' y
-``target'' de las criaturas. Como comprobarás, dichos estados se usan para
+de la sección \ref{sec:StateTarget} sobre Las propiedades \comillas{state} y
+\comillas{target} de las criaturas. Como comprobarás, dichos estados se usan para
 implementar lo que acabamos de describir:
 
 \begin{itemize}
 \item {Cuando el personaje A lanza su ataque con un arma, se pone en estado
-\textsf{Mobile.ATTACKING}, y su propiedad ``target'' apunta al personaje B.}
+\textsf{Mobile.ATTACKING}, y su propiedad \comillas{target} apunta al personaje B.}
 \item {Si el personaje B decide bloquear, se pondrá en estado
 \textsf{Mobile.BLOCKING}.}
 \item {Si B consigue ponerse en posición de bloqueo antes de que llegue el
@@ -1157,9 +1402,9 @@ ataque de A, se pondrá en estado \textsf{Mobile.READY\_TO\_BLOCK}.}
 \item {Si a B le da tiempo a eludir el golpe antes de que llegue el ataque
 de A, se pondrá en estado \textsf{Mobile.READY\_TO\_DODGE}.}
 \item {Cuando se resuelva el ataque de A (es decir, el temporizador de su
-propiedad ``state'' llegue a 0), se resolverá de forma diferente si el
+propiedad \comillas{state} llegue a 0), se resolverá de forma diferente si el
 estado de B es \textsf{Mobile.READY\_TO\_BLOCK}, \textsf{Mobile.READY\_TO\_DODGE}
-u otra cosa. En los dos primeros casos, habrá que hacer ``tiradas de dados''
+u otra cosa. En los dos primeros casos, habrá que hacer \comillas{tiradas de dados}
 con las habilidades para ver si el personaje B es capaz de bloquear o
 esquivar. En el tercer caso, sólo se resolverá el ataque de A sin ningún
 movimiento mitigador por parte de B.}
@@ -1198,9 +1443,9 @@ Un \textit{arma} es cualquier cosa (de la clase \textsf{Item}) que un
 personaje puede utilizar para lanzar y/o bloquear ataques. Para crear un
 arma en PUCK, empezaremos creando una cosa de forma normal, con sus nombres,
 descripciones y demás valores que ya conocemos. Para indicar que se trata de
-un arma, seleccionaremos la pestaña ``Arma'' de su panel de entidad, y
-activaremos la casilla etiquetada ``Es arma'', que indica que la cosa es un
-arma. El resto del formulario de la pestaña ``Arma'' nos permitirá
+un arma, seleccionaremos la pestaña \comillas{Arma} de su panel de entidad, y
+activaremos la casilla etiquetada \comillas{Es arma}, que indica que la cosa es un
+arma. El resto del formulario de la pestaña \comillas{Arma} nos permitirá
 configurar en detalle el arma, como explicaremos en el resto de esta
 sección.
 
@@ -1216,7 +1461,7 @@ armas, como puede ser una espada, un hacha o un escudo.
 Para que una cosa funcione como arma natural, necesitaremos definirla como
 miembro de una criatura (véase la sección sobre miembros para recordar cómo
 se hacía esto). AGE interpreta automáticamente que cualquier cosa que esté
-marcada como arma (casilla ``Es arma'') y sea un miembro de una criatura es
+marcada como arma (casilla \comillas{Es arma}) y sea un miembro de una criatura es
 un arma natural. Por otra parte, cualquier cosa que esté marcada como arma
 pero no sea un miembro de una criatura funcionará como arma externa.
 
@@ -1235,7 +1480,7 @@ y \textsf{enfundar arma}, que funcionan de manera análoga a
 puede haber varias armas ocupando a la vez el mismo miembro (si blandimos
 una espada en la mano derecha, no podemos blandir a la vez un hacha en la
 misma mano).}
-\item {El formulario ``Miembros requeridos'' de la pestaña Arma de PUCK
+\item {El formulario \comillas{Miembros requeridos} de la pestaña Arma de PUCK
 funciona exactamente igual que el de la pestaña Prenda, sólo que en este
 caso se refiere a miembros requeridos para blandir un arma en lugar de para
 vestir una prenda. Por supuesto, esto incluye la posibilidad de que un arma
@@ -1243,12 +1488,12 @@ ocupe varios miembros, y la de que un arma pueda ocupar distintos tipos de
 miembros.}
 \item {Si queremos que una criatura comience el juego blandiendo un arma,
 se hace de forma análoga a cuando hacíamos que comenzara con una prenda
-puesta, pero en este caso utilizamos una relación ``wields'' en vez de
-``wears''. Es decir, debemos crear una relación ``wields'' que vaya del
+puesta, pero en este caso utilizamos una relación \comillas{wields} en vez de
+\comillas{wears}. Es decir, debemos crear una relación \comillas{wields} que vaya del
 miembro en el que se blande el arma al arma en sí, con valor \textsf{true} y
 temporizador $-1$ (además de meter el arma en el inventario).}
 \item {Podemos comprobar si una criatura está blandiendo algo en un miembro
-comprobando el valor de esta relación ``wields'', y hacer que blanda o deje
+comprobando el valor de esta relación \comillas{wields}, y hacer que blanda o deje
 de blandir un arma modificándolo con los métodos de AGE para manipular
 relaciones. Como en el caso de las prendas, AGE también nos proporciona una
 serie de métodos que podemos invocar desde BeanShell para saber qué está
@@ -1287,25 +1532,25 @@ es... ¡combatir con ellas!
 \subsubsection {Parámetros de combate de las armas}
 
 Los parámetros de combate de las armas se definen en la mitad inferior de la
-pestaña ``Arma'', donde hay un formulario dividido a su vez en pestañas
-``Ataque'' y ``Bloqueo''. Como su nombre indica, la pestaña ``Ataque'' sirve
+pestaña \comillas{Arma}, donde hay un formulario dividido a su vez en pestañas
+\comillas{Ataque} y \comillas{Bloqueo}. Como su nombre indica, la pestaña \comillas{Ataque} sirve
 para definir cómo se comportará el arma al lanzar ataques, mientras que en
-la pestaña ``Bloqueo'' se puede definir su comportamiento al bloquear con
+la pestaña \comillas{Bloqueo} se puede definir su comportamiento al bloquear con
 ella.
 
 A continuación se explica brevemente lo que significa cada campo del formulario
-de ``Ataque'':
+de \comillas{Ataque}:
 
 \begin{itemize}
 \item {Uso mínimo: número entero que representa el valor mínimo de habilidad
 con el arma que debe de tener el personaje para ser capaz de usarla con un
-mínimo de éxito. Un arma con un valor de ``uso mínimo'' de cero puede
+mínimo de éxito. Un arma con un valor de \comillas{uso mínimo} de cero puede
 utilizarla cualquier personaje o criatura que pueda blandirla (otra cosa es
 que la utilice bien o falle la mayoría de los ataques). Un arma con un valor
-de ``uso mínimo'' mayor que cero no podrá ser usada en absoluto por
+de \comillas{uso mínimo} mayor que cero no podrá ser usada en absoluto por
 personajes cuya habilidad con el arma sea menor que ese valor (véase más
-abajo para saber a qué nos referimos exactamente al decir ``habilidad con el
-arma'').}
+abajo para saber a qué nos referimos exactamente al decir \comillas{habilidad con el
+arma}).}
 \item {Pendiente de probabilidad: valor numérico (tipo double, es decir,
 con decimales) que define la dificultad de la curva de aprendizaje de usar
 el arma con éxito, es decir, lo rápido o lento que se aprende a lanzar
@@ -1338,7 +1583,7 @@ bueno para defenderse del daño de fuego hecho con un lanzallamas, pero muy
 malo para defenderse del daño físico hecho por una maza). Si no queremos
 llegar a este nivel de detalle en el modelado sino que queremos tratar todo
 el daño de la misma manera, simplemente podemos poner la misma cadena en el
-campo ``tipo de daño'' de todas las armas y armaduras.
+campo \comillas{tipo de daño} de todas las armas y armaduras.
 
 La fórmula se utiliza para determinar cuánto daño de cada tipo se hace, y es
 una cadena de sumas y restas cuyos términos pueden contener:
@@ -1352,40 +1597,40 @@ una cadena de sumas y restas cuyos términos pueden contener:
 	permite incluir estos atributos específicos en las fórmulas de daño. Es
 	algo a mejorar en versiones futuras de AGE.}}
   \item {Una tirada de dados, formada por dos números separados por una
-	letra D. Por ejemplo, 4D6 significa ``tirar cuatro dados de seis caras y
-	sumar su valor''. Esto añade un factor aleatorio al daño.}
+	letra D. Por ejemplo, 4D6 significa \comillas{tirar cuatro dados de seis caras y
+	sumar su valor}. Esto añade un factor aleatorio al daño.}
 	\end{itemize}
 
 Así, por ejemplo, una fórmula de daño válida podría ser: 6+2D4+2FUE,
-significando ``seis, más dos dados de cuatro, más dos veces la fuerza del
-personaje''.}
+significando \comillas{seis, más dos dados de cuatro, más dos veces la fuerza del
+personaje}.}
 \item {Habilidades: conjunto de habilidades que condicionan lo bien que un
-personaje utilizará el arma, lo que antes denominábamos ``habilidad con el
-arma''. El ``valor'' en este caso es tipo double e indica en qué medida
+personaje utilizará el arma, lo que antes denominábamos \comillas{habilidad con el
+arma}. El \comillas{valor} en este caso es tipo double e indica en qué medida
 influye cada una de las habilidades, de forma que la habilidad de un
 personaje para usar el arma será la suma del producto de la puntuación que
-tiene en cada una de estas habilidades por el campo ``valor''.
+tiene en cada una de estas habilidades por el campo \comillas{valor}.
 
 Así, a modo de ejemplo, supongamos que tenemos una espada de dos manos, y en
-el formulario ``Habilidades'' de la pestaña ``Ataque'' de la pestaña ``Arma''
-de esa espada hemos puesto: ``espadas'', con un valor de 2.0, y ``armas de
-dos manos'', con un valor de 1.0. Esto tiene las siguientes consecuencias:
+el formulario \comillas{Habilidades} de la pestaña \comillas{Ataque} de la pestaña \comillas{Arma}
+de esa espada hemos puesto: \comillas{espadas}, con un valor de 2.0, y \comillas{armas de
+dos manos}, con un valor de 1.0. Esto tiene las siguientes consecuencias:
 
 	\begin{itemize}
   \item {La habilidad del personaje para manejar esa espada se calcula
-	sumando dos veces su habilidad en ``espadas'' y una vez su habilidad en
-	``armas de dos manos''. Por ejemplo, si el personaje tiene una habilidad
+	sumando dos veces su habilidad en \comillas{espadas} y una vez su habilidad en
+	\comillas{armas de dos manos}. Por ejemplo, si el personaje tiene una habilidad
 	en espadas de 100, y una habilidad en armas de dos manos de 50, su
 	habilidad para manejar esta espada en particular sería 250 (pero otras
 	espadas podrían requerir una combinación distinta de habilidades). Esta
 	cantidad de 250 es la que se utiliza para determinar si el personaje llega
 	al uso mínimo para poder utilizar esa espada, y además para calcular
-	(según los valores de ``base'' y ``pendiente'' comentados) la probabilidad
+	(según los valores de \comillas{base} y \comillas{pendiente} comentados) la probabilidad
 	de éxito de los ataques con la espada y los tiempos de ataque y
 	recuperación.}
   \item {Cada vez que el personaje lance un ataque con la espada, su
-	habilidad con ``espadas'' se incrementará en 2, y su habilidad con ``armas
-	de dos manos'' se incrementará en 1. Nótese que, por lo tanto, en AGE el
+	habilidad con \comillas{espadas} se incrementará en 2, y su habilidad con \comillas{armas
+	de dos manos} se incrementará en 1. Nótese que, por lo tanto, en AGE el
 	valor de las habilidades de combate es un contador de uso que crece
 	linealmente (si usas la espada el doble de veces, tendrás el doble de
 	habilidad). Por supuesto, esto no quiere decir que la probabilidad de
@@ -1397,14 +1642,14 @@ dos manos'', con un valor de 1.0. Esto tiene las siguientes consecuencias:
 
 El formulario de bloqueo permite definir los mismos valores que el de
 ataque, sólo que referidos a la acción de bloquear con el arma. Así, el
-``uso mínimo'' y la ``pendiente de probabilidad'' del bloqueo determinarán
-la probabilidad de bloquear con éxito. El ``tiempo de bloqueo'' y ``tiempo
-de recuperación del bloqueo'' definen el tiempo que se tarda en preparar un
-bloqueo y en volver a tomar la iniciativa tras llevarlo a cabo. El ``daño
-bloqueado'' nos permite especificar fórmulas para el daño que absorbemos con
+\comillas{uso mínimo} y la \comillas{pendiente de probabilidad} del bloqueo determinarán
+la probabilidad de bloquear con éxito. El \comillas{tiempo de bloqueo} y \comillas{tiempo
+de recuperación del bloqueo} definen el tiempo que se tarda en preparar un
+bloqueo y en volver a tomar la iniciativa tras llevarlo a cabo. El \comillas{daño
+bloqueado} nos permite especificar fórmulas para el daño que absorbemos con
 el bloqueo (que se resta al del ataque que nos hayan hecho, quedando en cero
 si el daño absorbido es mayor que el daño que ha hecho el ataque). Por
-último, el formulario de ``habilidades'' nos permite definir qué habilidades
+último, el formulario de \comillas{habilidades} nos permite definir qué habilidades
 son relevantes para (y se entrenan al) bloquear con el arma, que podrían o
 no ser las mismas que las correspondientes al ataque.
 
@@ -1421,7 +1666,7 @@ una estimación lineal del tiempo de experiencia que tiene el personaje
 utilizando esa habilidad. Para obtener estimaciones realistas de tiempos y
 probabilidades de éxito de ataques a partir de ese valor, necesitaremos
 aplicar una función creciente pero de derivada negativa, de acuerdo con el
-concepto intuitivo de ``ganancias decrecientes'' que tenemos en la vida
+concepto intuitivo de \comillas{ganancias decrecientes} que tenemos en la vida
 real: inicialmente el aprendizaje de una nueva habilidad suele ser muy
 rápido; pero con el tiempo el perfeccionamiento es mucho más lento y
 laborioso.
@@ -1517,8 +1762,8 @@ Para crear una armadura en PUCK, no tenemos más que hacer lo siguiente:
 \begin{itemize}
 \item {Crear una prenda, tal como hemos visto anteriormente en la sección
 sobre prendas.}
-\item {En la pestaña ``Prenda'', cubrir el formulario etiquetado como
-``Valor de protección''. Este formulario funciona exactamente igual que
+\item {En la pestaña \comillas{Prenda}, cubrir el formulario etiquetado como
+\comillas{Valor de protección}. Este formulario funciona exactamente igual que
 aquéllos en los que introducimos las fórmulas de daño de las armas, es
 decir: tendremos que poner tipos de daño de los que nos protegerá la
 armadura, y fórmulas para calcular cuánto daño absorberá, en el mismo
@@ -1527,7 +1772,7 @@ formato que en el caso de las armas (por ejemplo, 2+2D6).}
 
 Una armadura entra en acción cuando un ataque impacta en el miembro donde el
 personaje la lleva. Si bien en AGE no existen por defecto comandos
-específicos para atacar a un miembro dado (``golpea a Fulano en la cabeza'',
+específicos para atacar a un miembro dado (\comillas{golpea a Fulano en la cabeza},
 etc.); se supone que cada ataque se dirige a un miembro determinado. Este
 miembro se escoge de forma aleatoria, pero de modo que la probabilidad de
 elegir cada uno de los miembros de un personaje es proporcional al volumen
@@ -1537,8 +1782,8 @@ dedo, pero que nunca nos lancen un ataque al dedo, cosa que sonaría bastante
 rara).
 
 Esto quiere decir que, por ejemplo, si en un personaje definimos los
-miembros ``cabeza'' con volumen $10$, ``cuerpo'' con volumen $15$, ``brazo
-izquierdo'' con volumen $5$ y ``brazo derecho'' con volumen $5$, entonces de
+miembros \comillas{cabeza} con volumen $10$, \comillas{cuerpo} con volumen $15$, \comillas{brazo
+izquierdo} con volumen $5$ y \comillas{brazo derecho} con volumen $5$, entonces de
 cada $35$ ataques que reciba el personaje irán como promedio $10$ dirigidos
 a la cabeza, $15$ dirigidos al cuerpo, $5$ al brazo izquierdo y $5$ al brazo
 derecho. Si ese personaje lleva un casco puesto en la cabeza, ese casco le
@@ -1596,7 +1841,7 @@ el orco atacará automáticamente a Manolo cuando éste aparezca en su
 localidad.
 
 Por supuesto, utilizando los métodos asociados a las criaturas y los métodos
-update en conjunto con la propiedad ``state'', es posible definir
+update en conjunto con la propiedad \comillas{state}, es posible definir
 comportamientos más complejos de los monstruos, como que persigan a su
 enemigo o patrullen una zona buscándolo.
 
@@ -1629,21 +1874,21 @@ temporizador). El sistema AGE decrementa los temporizadores de cada
 propiedad cada vez que pasa una unidad de tiempo, y cuando uno de estos
 temporizadores llega a cero, llama a un método de actualización (\textsf{update}) si
 lo hemos definido en BeanShell, que podemos usar para definir lo que sucede
-al ``expirar'' la propiedad.}
+al \comillas{expirar} la propiedad.}
 \end{enumerate}
 
 Hasta ahora, hemos utilizado todas estas características en entidades como
 las habitaciones, cosas o criaturas; que además representan objetos
-``palpables'' en el mundo con los que se puede interactuar. Pero en
+\comillas{palpables} en el mundo con los que se puede interactuar. Pero en
 ocasiones, nos puede interesar tener un objeto que también soporte estas
 características (código BeanShell, propiedades, relaciones y temporizadores)
-pero que no represente ningún objeto concreto o ``palpable'' del mundo. Ésta
+pero que no represente ningún objeto concreto o \comillas{palpable} del mundo. Ésta
 es la función que tienen en AGE las entidades abstractas.
 
 Una entidad abstracta es un objeto de la clase \textsf{AbstractEntity}, la
 cual, al igual que \textsf{Room} o \textsf{Item}, es una subclase de la
 clase \textsf{Entity}. Podemos agregar entidades abstractas al mapa desde
-PUCK mediante el botón ``Añadir entidad abstracta'', estas entidades tienen
+PUCK mediante el botón \comillas{Añadir entidad abstracta}, estas entidades tienen
 un icono y se pueden colocar en el mapa como el resto, y también cuentan
 con formularios en PUCK al igual que el resto. Sin embargo, el formulario
 de una entidad abstracta es más sencillo que el de otros tipos de entidad,
@@ -1663,17 +1908,17 @@ Algunos ejemplos de comportamientos que se han implementado con entidades
 abstractas son los siguientes:
 
 \begin {enumerate}
-\item {Una entidad abstracta ``tiempo atmosférico'' que controle cómo va
+\item {Una entidad abstracta \comillas{tiempo atmosférico} que controle cómo va
 cambiando el tiempo en las distintas habitaciones del mundo, propagando los
 cambios de unas a otras mediante cambios de una propiedad en esas
 habitaciones. Esos cambios de tiempo atmosférico se reflejan en las
 correspondientes descripciones dinámicas.}
-\item {Una entidad abstracta ``incendio'' que haga que las llamas de un
+\item {Una entidad abstracta \comillas{incendio} que haga que las llamas de un
 incendio se vayan propagando por las habitaciones, esto se utilizó en la
-aventura ``Fuego''.}
-\item {Una entidad abstracta ``guión'' que haga que ciertos eventos de una
+aventura \comillas{Fuego}.}
+\item {Una entidad abstracta \comillas{guión} que haga que ciertos eventos de una
 historia vayan sucediendo en momentos prefijados en distintas partes del
-mundo, esto se utilizó en la aventura ``15 meses y un día''.}
+mundo, esto se utilizó en la aventura \comillas{15 meses y un día}.}
 \end{enumerate}
 
 Éstos son sólo ejemplos; pero los comportamientos que se pueden implementar
@@ -1699,13 +1944,13 @@ Coges la piedra.
 \end{verbatim}
 
 Los tres mensajes que muestra como salida el AGE son mensajes por defecto.
-En el caso de los dos primeros, todo el texto que se muestra (``¿Qué
-pretendes coger?'' y ``No tienes nada.'') es texto puesto por el sistema
+En el caso de los dos primeros, todo el texto que se muestra (\comillas{¿Qué
+pretendes coger?} y \comillas{No tienes nada.}) es texto puesto por el sistema
 sin necesidad de que el jugador lo especifique en ninguna parte. En el
-tercer caso, el texto ``Coges'' proviene asimismo del sistema, mientras que
-el sintagma ``la piedra'' se genera dinámicamente porque le hemos dado a
-esa entidad el nombre para mostrar ``piedra'' y el género femenino que
-implica el artículo ``la''.
+tercer caso, el texto \comillas{Coges} proviene asimismo del sistema, mientras que
+el sintagma \comillas{la piedra} se genera dinámicamente porque le hemos dado a
+esa entidad el nombre para mostrar \comillas{piedra} y el género femenino que
+implica el artículo \comillas{la}.
 
 \subsection {Cambiar los mensajes por defecto}
 
@@ -1713,12 +1958,12 @@ En ciertos mundos puede resultar conveniente cambiar los mensajes por
 defecto, si es que los que vienen de base con el AGE no nos gustan por
 algún motivo. Por ejemplo, en un juego de ambientación medieval podríamos
 querer que el sistema se dirigiera al jugador con un tratamiento más
-arcaico: ``¿Qué pretende coger vuesa merced?'' o ``Cogéis la piedra.'' Por
+arcaico: \comillas{¿Qué pretende coger vuesa merced?} o \comillas{Cogéis la piedra.} Por
 supuesto, el AGE proporciona la posibilidad de hacer esto, para lo cual
 existen varias maneras.
 
-En primer lugar, observemos el fichero ``lang/messages.lan'' que está dentro
-de ``AgeCore.jar'' (este fichero .jar se puede abrir como si fuera un .zip
+En primer lugar, observemos el fichero \comillas{lang/messages.lan} que está dentro
+de \comillas{AgeCore.jar} (este fichero .jar se puede abrir como si fuera un .zip
 para ver dicho fichero .lan). En él, podemos ver entradas como:
 
 \begin{verbatim}
@@ -1733,9 +1978,9 @@ you.get.item=Coges $item.\n
 Estas entradas describen mensajes por defecto de AGE, en concreto, los
 vistos en el ejemplo anterior. La línea que empieza con \verb|#| en cada
 entrada es simplemente un comentario que explica de qué trata el mensaje.
-El texto anterior al signo ``$=$'' en cada línea sin comentario es el
+El texto anterior al signo \comillas{$=$} en cada línea sin comentario es el
 nombre que identifica ese mensaje por defecto. Lo que hay a la derecha del
-signo ``$=$'' es el mensaje en sí, donde los identificadores que tienen el
+signo \comillas{$=$} es el mensaje en sí, donde los identificadores que tienen el
 símbolo del dólar se van a sustituir por nombres de entidades (normalmente
 debería ser obvio por el contexto cuáles: por ejemplo, en el último de los
 mensajes de ejemplo, el identificador \verb|$item| se sustituye por el
@@ -1745,7 +1990,7 @@ correspondiente).
 Si cambiásemos los mensajes de este fichero, estaríamos modificando los
 mensajes por defecto de AGE. Pero no es esto lo que queremos hacer, sino
 modificarlos para un mundo en particular. Sin embargo, abrir el fichero
-``messages.lan'' es útil para esta tarea porque para cambiar mensajes para
+\comillas{messages.lan} es útil para esta tarea porque para cambiar mensajes para
 un mundo concreto necesitaremos saber el nombre de los mensajes que
 queremos redefinir (lo que viene antes del signo $=$, como
 \textsf{you.get.item}) así como los parámetros que soportan (en este caso,
@@ -1754,7 +1999,7 @@ queremos redefinir (lo que viene antes del signo $=$, como
 \subsubsection {Cambiar mensaje por mensaje}
 
 Para cambiar un mensaje individual, por ejemplo, si quisiéramos que el
-parser nos tratara de ``vos'' al coger una cosa, hacemos lo siguiente:
+parser nos tratara de \comillas{vos} al coger una cosa, hacemos lo siguiente:
 
 \begin{lstlisting}
 world.getMessages().setMessage( "you.get.item" , "Cogéis $item" );
@@ -1766,13 +2011,13 @@ defecto, y el método \textsf{setMessage} nos permite cambiar cada uno de
 ellos.
 
 Este cambio de mensaje será permanente, es decir, a partir de la llamada a
-este método se imprimirá ``Cogéis ...'' cada vez que un jugador coja una
+este método se imprimirá \comillas{Cogéis ...} cada vez que un jugador coja una
 cosa. Sin embargo, en ocasiones también querremos que se imprima un mensaje
 por defecto en particular sólo en una ocasión. Para ello, también existe la
 posibilidad de cambiar el mensaje sólo para la próxima vez que se imprima.
 Así, si por ejemplo quisiéramos que al coger un cubito de hielo se nos
 mostrara un mensaje diciendo que está frío, podríamos poner en el código
-para la orden ``coger'' sobre el cubito se hiciese algo como:
+para la orden \comillas{coger} sobre el cubito se hiciese algo como:
 
 \begin{lstlisting}
 world.getMessages().setNextMessage( "you.get.item" , "Coges $item. ¡Buf, qué frío está!" );
