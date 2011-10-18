@@ -157,6 +157,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 			}
 			catch ( Exception e )
 			{
+				((ColoredSwingClient)io).showAfterLogLoad();
 				e.printStackTrace();
 			}
 
@@ -188,6 +189,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 			}
 			catch ( Exception e )
 			{
+				((ColoredSwingClient)io).showAfterLogLoad();
 				e.printStackTrace();
 			}
 
@@ -274,9 +276,15 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 			}
 			catch ( Exception e )
 			{
+				((ColoredSwingClient)io).showAfterLogLoad();
 				write ( "Exception on loading world: " + e );
+				e.printStackTrace();
 			}
-			if ( theWorld == null ) return;
+			if ( theWorld == null ) 
+			{
+				((ColoredSwingClient)io).showAfterLogLoad();
+				return;
+			}
 			mundo = theWorld;
 
 			//{theWorld NOT null}
@@ -308,6 +316,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 			}
 			catch ( Exception e )
 			{
+				((ColoredSwingClient)io).showAfterLogLoad();
 				e.printStackTrace();
 			}
 			
@@ -342,6 +351,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 				}
 				catch ( Exception exc )
 				{
+					((ColoredSwingClient)io).showAfterLogLoad();
 					write("¡No se ha podido cargar el estado!\n");
 					write(exc.toString());
 					exc.printStackTrace();
@@ -358,6 +368,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 				}
 				catch ( Exception exc )
 				{
+					((ColoredSwingClient)io).showAfterLogLoad();
 					write("Excepción al leer el fichero de log: " + exc + "\n");
 					exc.printStackTrace();
 					return;
