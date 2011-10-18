@@ -3077,5 +3077,27 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		}
 		else return false;
 	}
+	
+	
+	
+	/**
+	 * Builds a list with all the extra description names and returns it.
+	 * Careful, each call to this method builds the list!
+	 * @return
+	 */
+	public List getExtraDescriptionNames()
+	{
+		List result = new ArrayList();
+		for ( int i = 0 ; i < extraDescriptionNameArrays.size() ; i++ )
+		{
+			String[] ar = (String[]) extraDescriptionNameArrays.get(i);
+			for ( int j = 0 ; j < ar.length ; j++ )
+			{
+				result.add(ar[j]);
+			}
+		}
+		return result;
+	}
+	
 
 } //end class item

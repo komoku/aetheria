@@ -5,6 +5,8 @@
  */
 package eu.irreality.age.spell;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.StringTokenizer;
 import eu.irreality.age.EntityList;
 import eu.irreality.age.Item;
 import eu.irreality.age.Mobile;
+import eu.irreality.age.Path;
+import eu.irreality.age.Room;
 import eu.irreality.age.World;
 
 /**
@@ -58,18 +62,41 @@ public class ReferenceNameCorrector implements SpellingCorrector
 		theCorrector = c;
 		EntityList items = w.getAllItems();
 		EntityList mobiles = w.getAllMobiles();
+		EntityList rooms = w.getAllRooms();
 		Set words = new LinkedHashSet();
 		for ( int i = 0 ; i < items.size() ; i++ )
 		{
 			Item it = (Item) items.get(i);
 			words.addAll( extractRelevantWords(it.getSingularReferenceNames()));
 			words.addAll( extractRelevantWords(it.getPluralReferenceNames()));
+			words.addAll( extractRelevantWords(it.getExtraDescriptionNames()));
 		}
 		for ( int i = 0 ; i < mobiles.size() ; i++ )
 		{
 			Mobile mob = (Mobile) mobiles.get(i);
 			words.addAll( extractRelevantWords(mob.getSingularReferenceNames()));
 			words.addAll( extractRelevantWords(mob.getPluralReferenceNames()));
+			words.addAll( extractRelevantWords(mob.getExtraDescriptionNames()));
+		}
+		for ( int i = 0 ; i < rooms.size() ; i++ )
+		{
+			Room r = (Room) rooms.get(i);
+			words.addAll( extractRelevantWords(r.getExtraDescriptionNames()));
+			Path[] exits = r.getNonStandardExits();
+			for ( int j = 0 ; j < exits.length ; j++ )
+			{
+				List names = r.getExitNames(exits[j]); 
+				words.addAll( extractRelevantWords(names) );
+			}
+			exits = r.getStandardExits();
+			for ( int j = 0 ; j < exits.length ; j++ )
+			{
+				if ( r.isValidExit(true,j))
+				{
+					List names = r.getExitNames(exits[j]); 
+					words.addAll( extractRelevantWords(names) );
+				}
+			}
 		}
 		init(words);
 	}
