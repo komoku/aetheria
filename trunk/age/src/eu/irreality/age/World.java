@@ -1836,6 +1836,17 @@ public class World implements Informador , SupportingCode
 		return el;
 	}
 	
+	public EntityList getAllRooms ( )
+	{
+		EntityList el = new EntityList();
+		for ( int i = 0 ; i < maxroom ; i++ )
+		{
+			if ( room[i] != null ) //purely defensive check
+				el.addEntity(room[i]);
+		}
+		return el;
+	}
+	
 	
 	/**
 	* Devuelve el abstract entity del mundo con la ID dada.
