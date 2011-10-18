@@ -123,7 +123,7 @@ public class MobileList extends EntityList
 					Debug.println("Result: " + elementAt(k).isSame( elementAt(i) ) );
 					Debug.println("-------");
 				*/
-					if ( elementAt(k).isSame( elementAt(i) ) )
+					if ( elementAt(k).isIndistinguishableFrom( elementAt(i) , viewer ) )
 					{
 						considerados[k] = true;
 						nconsiderados++;

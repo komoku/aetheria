@@ -1745,21 +1745,40 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		isInstanceOf = newid;
 	}
 	
+	
+	/**
+	 * Returns true if viewer cannot distinguish this item from other.
+	 * This is used to collapse descriptions, e.g. to show "two stones" rather than "a stone and a stone".
+	 * @param other The item that we want to know whether it is indistinguishable or not from this one.
+	 * @param viewer The viewer for which we want to know if items are indistinguishable.
+	 * @return
+	 */
+	public boolean isIndistinguishableFrom ( Item other , Entity viewer )
+	{
+		String plurName1 = this.getPlurName(viewer);
+		String plurName2 = other.getPlurName(viewer);
+		if ( plurName1 != null && plurName1.trim().length() > 0 
+			&& plurName2 != null && plurName2.trim().length() > 0 )
+			return plurName1.equals(plurName2);
+		else
+			return isSame ( other );
+	}
+	
+	/**
+	 * Returns true if this item is the same as the one passed by parameter, or if they are copies of the same item.
+	 * @param other
+	 * @return
+	 */
 	public boolean isSame ( Item other )
 	{
 	
-		Debug.print ( "isSame " + this + "("+this.getUniqueName()+","+this.idnumber+", cloning "+this.getInstanceOf()+")" + " " + other + "("+other.getUniqueName()+","+other.idnumber+", cloning "+other.getInstanceOf()+")? "); 
+		//Debug.print ( "isSame " + this + "("+this.getUniqueName()+","+this.idnumber+", cloning "+this.getInstanceOf()+")" + " " + other + "("+other.getUniqueName()+","+other.idnumber+", cloning "+other.getInstanceOf()+")? "); 
 	
 		/*
 		Debug.println ( "" + (  ( idnumber % 10000000 == other.getInstanceOf () % 10000000 ) 
 		         || ( isInstanceOf % 10000000 == other.getID () % 10000000 )
 				 || ( isInstanceOf % 10000000 == other.getInstanceOf() % 10000000 && isInstanceOf % 10000000 != 0 )  ) );
 		*/
-	
-		//Debug.print("this.getInstanceOf = " + isInstanceOf);
-		//Debug.print(" other.getInstanceOf = " + other.getInstanceOf());
-		//Debug.print(" this.getID = " + idnumber);
-		//Debug.println(" other.getID = " + other.getID());
 		
 		//fix for problem with first item, which always seems same as everything because
 		//items which aren't instance of anything have instanceof 0, and that item
