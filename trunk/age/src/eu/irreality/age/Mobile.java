@@ -1402,6 +1402,25 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		return isInstanceOf;
 	}
 
+	
+	/**
+	 * Returns true if viewer cannot distinguish this mobile from other.
+	 * This is used to collapse descriptions, e.g. to show "two dogs" rather than "a dog and a dog".
+	 * @param other The mobile that we want to know whether it is indistinguishable or not from this one.
+	 * @param viewer The viewer for which we want to know if mobiles are indistinguishable.
+	 * @return
+	 */
+	public boolean isIndistinguishableFrom ( Mobile other , Entity viewer )
+	{
+		String plurName1 = this.getPlurName(viewer);
+		String plurName2 = other.getPlurName(viewer);
+		if ( plurName1 != null && plurName1.trim().length() > 0 
+			&& plurName2 != null && plurName2.trim().length() > 0 )
+			return plurName1.equals(plurName2);
+		else
+			return isSame ( other );
+	}
+	
 	public boolean isSame ( Mobile other )
 	{
 		//old
