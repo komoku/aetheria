@@ -2272,6 +2272,7 @@ public class Player extends Mobile implements Informador
 			oneEntArgs1.add(args1);
 			oneEntArgs2.add(args2);
 
+			//BEGIN factor this into executeParseCommands(...)
 
 			for ( int ip1 = path1.size()-1 ; ip1 >= 0 ; ip1-- )
 			{
@@ -2532,9 +2533,12 @@ public class Player extends Mobile implements Informador
 				mentions.setLastMentionedVerb(command);
 				return true;
 			}
+			
+			//END factor this into executeParseCommands(...)
 
 
 		} //end for each possible match
+		
 
 		//no end() has been hit: try parseCommands for one entity!
 		while ( !ejecutado && ( !oneEntArgs1.isEmpty() || !oneEntArgs2.isEmpty() ) )
