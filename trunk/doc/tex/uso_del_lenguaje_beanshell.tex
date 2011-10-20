@@ -13,14 +13,14 @@ Para estas definiciones de comportamientos complejos que requieren
 programación, AGE utiliza el lenguaje BeanShell. BeanShell es un lenguaje de
 scripting muy parecido a Java. De hecho, la sintaxis de Java se puede
 utilizar tal cual en BeanShell; pero éste además permite usar variables con
-tipado dinámico y tiene otras características donde ``relaja'' los requisitos
+tipado dinámico y tiene otras características donde \comillas{relaja} los requisitos
 de Java.
 
 Para añadir código BeanShell a un mundo con PUCK, se puede ir a la pestaña
-``Código y Propiedades'' de cualquier entidad (las entidades son los objetos
+\comillas{Código y Propiedades} de cualquier entidad (las entidades son los objetos
 del mundo representados por iconos que añadimos en el mapa de PUCK, como
 habitaciones, cosas y criaturas) o bien del propio mundo, y nos aparecerá un
-área de texto (con un botón ``Ampliar'' que la convierte en una ventana
+área de texto (con un botón \comillas{Ampliar} que la convierte en una ventana
 independiente) para introducir el código. AGE es un sistema orientado a
 objetos, de modo que el código que modifique el comportamiento de una
 entidad determinada deberá introducirse en el campo de código de esa
@@ -47,7 +47,7 @@ web \url{http://www.beanshell.org}.
 
 \subsection {Los formularios de código}
 
-En los formularios de ``Código y propiedades'' de PUCK se puede escribir
+En los formularios de \comillas{Código y propiedades} de PUCK se puede escribir
 código BeanShell. Este código puede estar asociado a una entidad concreta
 del mundo (una habitación, cosa, etc.), en el caso de que lo escribamos en
 el formulario de una entidad; o al mundo en su conjunto, si lo escribimos en
@@ -55,7 +55,7 @@ el panel del mundo. La idea es que el comportamiento de cada entidad se
 especifique dentro de esa entidad, de modo que las entidades sean unidades
 autocontenidas que se puedan llevar fácilmente de un mundo a otro. Por
 ejemplo, si definimos una máquina de coser, querremos que el código que
-usamos para que cosa esté definido en la entidad ``máquina de coser': de
+usamos para que cosa esté definido en la entidad \comillas{máquina de coser}: de
 este modo no sólo queda más claro dónde buscar el código de cada cosa, sino
 que además nos podríamos llevar esa entidad a otra aventura y seguiría
 cosiendo. El panel de código del mundo, por lo tanto, se utilizará para
@@ -163,8 +163,8 @@ parámetros de los métodos que invoca AGE, ya que el PUCK nos generará
 automáticamente una plantilla de los mismos desde los menús contextuales de
 los formularios de código. Por ejemplo, si en el PUCK abrimos el área en que
 se introduce el código del mundo y vamos a su menú contextual con el botón
-derecho, seleccionando la opción ``Insertar código -- Método de análisis de
-la entrada (estándar)'' se nos generará automáticamente una plantilla que
+derecho, seleccionando la opción \comillas{Insertar código -- Método de análisis de
+la entrada (estándar)} se nos generará automáticamente una plantilla que
 contendrá la cabecera del método y unos comentarios sobre para qué sirve el
 método y la función de cada parámetro. Eso sí, el cuerpo del método que
 aparece automáticamente estará vacío y por lo tanto no hará nada, tendremos
@@ -197,8 +197,8 @@ El cuerpo del método del ejemplo anterior es el código entre llaves:
 \end{lstlisting}
 
 Y lo que hace es que, si la cadena (verbo) que nos han pasado como segundo
-parámetro corresponde a la palabra ``saludar'' (sin comillas), entonces
-escribimos una línea que dice ``Hola.'' en la salida asociada a la criatura
+parámetro corresponde a la palabra \comillas{saludar} (sin comillas), entonces
+escribimos una línea que dice \comillas{Hola.} en la salida asociada a la criatura
 que viene dada como primer parámetro.
 
 \subsection {Variables y entrada/salida sencilla}
@@ -208,17 +208,17 @@ a ver qué tipo de cosas podemos poner en los cuerpos de los métodos para
 ejecutar código útil.
 Para ello, por el momento siempre partiremos del método
 \textsf{void parseCommand(Mobile aCreature, String verb, String args)} cuya
-cabecera se genera automáticamente en la opción ``Insertar código -- Método
-de análisis de la entrada (estándar)'' del menú contextual del campo de
+cabecera se genera automáticamente en la opción \comillas{Insertar código -- Método
+de análisis de la entrada (estándar)} del menú contextual del campo de
 código de mundo. Ese método lo invoca AGE cuando un jugador introduce una
 entrada, y los parámetros que recibe son, por orden: el objeto que representa
 al jugador que ha escrito esa entrada (de momento el único jugador, ya que
 nos centraremos en aventuras para un solo jugador), el verbo que ha puesto
 (o primera palabra de la cadena que ha tecleado en la entrada), y el resto
-de la cadena de entrada. Por ejemplo, si el jugador teclea ``comer el plátano
-de Canarias'', entonces el parámetro aCreature corresponderá a ese jugador,
-el parámetro verb a la cadena ``comer'', y args a la cadena ``el plátano de
-Canarias''.
+de la cadena de entrada. Por ejemplo, si el jugador teclea \comillas{comer el plátano
+de Canarias}, entonces el parámetro aCreature corresponderá a ese jugador,
+el parámetro verb a la cadena \comillas{comer}, y args a la cadena \comillas{el plátano de
+Canarias}.
 
 \subsubsection {Mostrándole texto al jugador}
 Una de las primeras cosas que podemos hacer es probar a mostrar un texto al
@@ -233,7 +233,7 @@ void parseCommand(Mobile aCreature, String verb, String args)
 \end{lstlisting}
 
 Si ponemos este código en el mundo, cada vez que el jugador escriba algo,
-AGE le dirá ``Hola''. La sintaxis \verb|aCreature.write("Hola.\n")|
+AGE le dirá \comillas{Hola}. La sintaxis \verb|aCreature.write("Hola.\n")|
 significa que queremos al método write del objeto \textsf{aCreature}, y
 pasarle como parámetro la cadena \verb|"Hola.\n"|. Para ello, tiene que
 haber definido en la clase a la que pertenece aCreature (o sea, la clase
@@ -254,8 +254,8 @@ void parseCommand(Mobile aCreature, String verb, String args)
 \end{lstlisting}
 
 La secuencia de caracteres \verb|\n| dentro de una cadena significa un salto
-de línea. Por lo tanto, este código escribirá dos líneas, una que dirá ``Esta
-línea se escribe primero.'' y otra que dirá ``Y ésta se escribe después.''.
+de línea. Por lo tanto, este código escribirá dos líneas, una que dirá \comillas{Esta
+línea se escribe primero.} y otra que dirá \comillas{Y ésta se escribe después.}.
 
 \subsubsection{La función \textsf{end()}}
 Si probamos a ejecutar nuestra aventura de ejemplo con el código que hemos
@@ -275,7 +275,7 @@ No entiendo...
 Es decir, nuestra aventura está diciéndole escribiéndole al jugador el texto
 cada vez que escribe algo, pero después está siguiendo el procesado normal
 que hace AGE (por ejemplo, mostrar el inventario si lo que escribió fue
-``inventario'').
+\comillas{inventario}).
 
 Si en lugar de esto se quiere que el método que hemos definido sustituya al
 procesado por defecto de AGE, es decir, que cuando un jugador escriba algo
@@ -363,7 +363,7 @@ Con este código estamos haciendo que la variable entera \textsf{index} tome
 como valor el número entero 0. Es importante tener en cuenta que cada
 variable sólo puede tomar valores legales según su tipo de datos. Por
 ejemplo, a una variable entera le podemos dar el valor $0$; pero no le
-podemos dar el valor ``Hola'' o $3.5$, porque éstos no son números enteros.
+podemos dar el valor \comillas{Hola} o $3.5$, porque éstos no son números enteros.
 
 Aquí vemos cómo podemos asignar valores a variables de distintos tipos:
 
@@ -542,7 +542,7 @@ Para conseguir estos comportamientos diferentes según las circunstancias,
 podemos utilizar la estructura condicional, llamada \textit{if}. La
 estructura condicional nos permite definir un código que sólo se ejecuta si
 se cumple una determinada condición (por ejemplo, que el jugador esté en la
-habitación ``cocina''), y, opcionalmente, otro código que sólo se ejecuta si
+habitación \comillas{cocina}), y, opcionalmente, otro código que sólo se ejecuta si
 no se cumple la condición:
 
 \begin{lstlisting}
@@ -612,8 +612,8 @@ else
   jugador.write("No estás en la cocina.\n");
 \end{lstlisting}
 
-Una estructura ``if--else'' se puede combinar con otras estructuras
-``if--else'' para dar una estructura ``if--else if--else if...--else'', como
+Una estructura \comillas{if--else} se puede combinar con otras estructuras
+\comillas{if--else} para dar una estructura \comillas{if--else if--else if...--else}, como
 ésta:
 
 \begin{lstlisting}
@@ -707,10 +707,10 @@ Nótese que el \textsf{end()} está dentro del cuerpo del \textsf{if}, con lo
 cual sólo se impide que AGE ejecute sus comportamientos estándar si
 realmente se usa el verbo comer. Si hubiésemos puesto el \textsf{end()} fuera
 del cuerpo del \textsf{if}, haríamos que dejara de funcionar el comando
-``inventario'' (y cualquier otro) porque el \textsf{end()} se ejecutaría
+\comillas{inventario} (y cualquier otro) porque el \textsf{end()} se ejecutaría
 siempre e impediría que AGE ejecutase sus comportamientos por defecto. Si no
 hubiésemos puesto un \textsf{end()} en absoluto, ni siquiera dentro del
-\textsf{if}, entonces al usar el verbo ``comer'' se imprimiría nuestro
+\textsf{if}, entonces al usar el verbo \comillas{comer} se imprimiría nuestro
 mensaje pero después se seguiría procesando la entrada como si tal cosa,
 cosa que provocaría efectos no deseados:
 
@@ -728,9 +728,9 @@ los \textsf{end()} en los momentos en que se necesitan.
 Si en lugar de comprobar si dos cosas son iguales queremos comprobar si son
 distintas, podemos utilizar el operador \textsf{!} visto antes, que niega
 un valor booleano. Así, \verb|equals(verb,"comer")| devuelve \textsf{true}
-si y sólo si el parámetro \textsf{verb} tiene como valor ``comer''; mientras
+si y sólo si el parámetro \textsf{verb} tiene como valor \comillas{comer}; mientras
 que \verb|!equals(verb,"comer")| devuelve true sólo si el valor del
-parámetro no es ``comer''.
+parámetro no es \comillas{comer}.
 
 En el caso de trabajar con números (sean \textsf{int} o \textsf{double}), a
 menudo nos interesará hacer comparaciones de superioridad y de inferioridad,
@@ -785,11 +785,11 @@ el código haya escrito el texto cien veces la variable llegará a cien, y
 saldremos del bucle.}
 \item {Ejecutar un código mientras no suceda algo que sabemos que al final
 tiene que ocurrir. Por ejemplo, si el jugador quiere entrar en una cueva y
-nosotros le pedimos que confirme poniendo ``sí'' o ``no'', podemos querer
+nosotros le pedimos que confirme poniendo \comillas{sí} o \comillas{no}, podemos querer
 pedirle esa confirmación mientras no dé una respuesta clara. Es decir, si le
-preguntamos ``¿De verdad que quieres entrar en la cueva?'' y contesta
-``Cachifú'', queremos volver a preguntarle. Esto sería un bucle que se
-repetiría mientras la respuesta dada no sea ``sí'' ni ``no''.}
+preguntamos \comillas{¿De verdad que quieres entrar en la cueva?} y contesta
+\comillas{Cachifú}, queremos volver a preguntarle. Esto sería un bucle que se
+repetiría mientras la respuesta dada no sea \comillas{sí} ni \comillas{no}.}
 \item {Ejecutar un código sobre una serie de objetos. Por ejemplo, para
 mostrar el inventario del jugador, podemos querer escribir un código (si no
 estuviese ya hecho por defecto en AGE) que fuese sacando por pantalla el
@@ -828,7 +828,7 @@ ejecutar el cuerpo del bucle (y así sucesivamente), mientras que si es
 falsa, se sale del bucle.
 
 Así, por ejemplo, el siguiente código hace que cuando el jugador ponga el
-verbo ``saludar'', el juego muestre la palabra ``Hola'' cinco veces:
+verbo \comillas{saludar}, el juego muestre la palabra \comillas{Hola} cinco veces:
 
 \begin{lstlisting}
 void parseCommand ( Mobile aCreature , String verb , String args )
@@ -960,7 +960,7 @@ BeanShell.
 \subsubsection{\textsf{break} y \textsf{continue}}
 
 Existen dos instrucciones especiales, llamadas \textsf{break} y
-\textsf{continue}, que permiten que nuestro código ``haga trampa'' en un
+\textsf{continue}, que permiten que nuestro código \comillas{haga trampa} en un
 bucle, rompiendo el flujo de ejecución normal del mismo. Concretamente, la
 instrucción \textsf{break} hace que salgamos del bucle inmediatamente en el
 momento en que se ejecuta, sin comprobar la condición del bucle, y sin
@@ -989,7 +989,7 @@ void parseCommand ( Mobile aCreature , String verb , String args )
 }
 \end{lstlisting}
 
-Que sería otra manera de imprimir ``Hola'' cinco veces; aunque menos clara
+Que sería otra manera de imprimir \comillas{Hola} cinco veces; aunque menos clara
 que las anteriores ya que hay que mirar el cuerpo del bucle para saber
 realmente cuál es su sentido y cúando terminará. Así pues, esto es un
 ejemplo para ver lo que hace la instrucción \textsf{break} pero no es un

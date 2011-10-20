@@ -46,7 +46,7 @@ necesariamente en orden):
 \item {Crear las relaciones entre ellos (por ejemplo, un camino es una
 relación entre dos habitaciones. O, si un personaje lleva un objeto,
 entonces el personaje y el objeto están relacionados mediante una relación
-``leva''),}
+\comillas{leva}),}
 \item {Dar a los objetos nombres y descripciones para que se muestren en el
 juego,}
 \item {Dotar a los objetos de comportamiento, es decir, que puedan
@@ -83,7 +83,7 @@ podremos modificarla.}
 \textit{paneles de objeto}. Ésta es la parte de la creación de un mundo en
 la que entra en juego la programación, para lo cual se utiliza el lenguaje
 de scripting BeanShell. El código para cada objeto se modifica en la ficha
-``Código y Propiedades'' de su panel de objeto correspondiente.}
+\comillas{Código y Propiedades} de su panel de objeto correspondiente.}
 \end{itemize}
 
 \begin{figure}
@@ -121,7 +121,7 @@ otra orilla.}
 \textsf{Te encuentras al este del gran río Pecos. Hay muchos árboles bajos
 a tu alrededor. Un precario puente de madera lo atraviesa, hacia el oeste.\\}
 
-Para ello, lo primero que debemos hacer es ir al menú ``Archivo -- Nuevo'',
+Para ello, lo primero que debemos hacer es ir al menú \comillas{Archivo -- Nuevo},
 que nos creará un nuevo mundo en blanco para trabajar.
 
 Al hacer esto veremos a la izquierda el editor gráfico en blanco, que es
@@ -145,7 +145,7 @@ situadas una al oeste de otra y separadas por un camino (puente). Para ello
 hacemos lo siguiente:
 
 \begin {itemize}
-\item {Hacemos click en icono de la herramienta ``añadir habitación'' de la
+\item {Hacemos click en icono de la herramienta \comillas{añadir habitación} de la
 barra de herramientas. \includegraphics{imagenes/addroom.png}}
 \item {Movemos el cursor por el editor gráfico. Veremos que aparece un
 cuadrado (la habitación que estamos creando) que se mueve junto a nuestro
@@ -154,15 +154,15 @@ derecha podremos ver su panel de objeto.}
 \item {Hagamos que esta habitación represente la orilla oeste del gran río
 Pecos. Para ello, cubrimos los campos del panel de objeto:}
 	\begin{itemize}
-	\item {Donde pone ``Nombre único'', pondremos un nombre corto como por
-	ejemplo ``Oeste Pecos''. Este nombre no se mostrará al jugador, se utiliza
+	\item {Donde pone \comillas{Nombre único}, pondremos un nombre corto como por
+	ejemplo \comillas{Oeste Pecos}. Este nombre no se mostrará al jugador, se utiliza
 	para identificar internamente la habitación en el juego y distinguirla de
 	las demás. Nosotros también lo utilizaremos cuando nos queramos referir a
 	esta habitación en el futuro.}
-	\item {Donde pone ``Descripciones'' irán las descripciones de la
-	habitación, que son lo que se muestra al jugador cuando teclea ``mirar'' o
+	\item {Donde pone \comillas{Descripciones} irán las descripciones de la
+	habitación, que son lo que se muestra al jugador cuando teclea \comillas{mirar} o
 	cuando entra en la misma. Puede extrañarte que no haya una sola
-	``Descripción'', sino un campo para ``Descripciones''. Esto es porque las
+	\comillas{Descripción}, sino un campo para \comillas{Descripciones}. Esto es porque las
 	descripciones en AGE no son un texto estático, sino algo que puede variar
 	según distintas condiciones (por ejemplo, la descripción de una localidad
 	puede ser distinta según si es de día o de noche). El sistema que se
@@ -171,14 +171,14 @@ Pecos. Para ello, cubrimos los campos del panel de objeto:}
 	dependiendo de las condiciones que se den. En este caso, nos conformaremos
 	con una descripción estática, con lo cual sólo necesitaremos uno de estos
 	trozos, y sin ninguna condición asociada. Para ello, donde pone
-	``Descripción'' teclearemos la descripción completa de la habitación:
+	\comillas{Descripción} teclearemos la descripción completa de la habitación:
 	
 	\textsf{Te encuentras al oeste del gran río Pecos. Hay unos cuantos árboles
 	altos a tu alrededor. Un tosco puente de madera lo atraviesa, hacia el este.}
 	
-	Y pulsamos el botón ``Añadir''. Vemos que la descripción introducida
-	aparecerá en el cuadro ``Descripciones'', precedida de la palabra
-	``Siempre''. Esto último quiere decir que esta descripción se mostrará
+	Y pulsamos el botón \comillas{Añadir}. Vemos que la descripción introducida
+	aparecerá en el cuadro \comillas{Descripciones}, precedida de la palabra
+	\comillas{Siempre}. Esto último quiere decir que esta descripción se mostrará
 	siempre que un jugador mire la habitación, es decir, no está sujeta a
 	condición alguna.}
 	\end{itemize}
@@ -188,7 +188,7 @@ click sobre su representación en el editor gráfico (cuando no estemos usando
 ninguna herramienta) para poder ver y modificar de nuevo su panel de objeto.}
 \item {Del mismo modo que creamos la habitación anterior, creamos una nueva
 para representar la orilla este del río. Para ello, tenemos que volver a
-hacer click en la herramienta ``añadir habitación'', ya que cada uso de la
+hacer click en la herramienta \comillas{añadir habitación}, ya que cada uso de la
 herramienta sirve para añadir una sola vez. Colocaremos la nueva habitación
 a la derecha de la anterior, dado que se encuentra al este. Si no hemos
 dejado espacio suficiente en el editor gráfico para colocarla, podemos
@@ -218,8 +218,8 @@ incómodo para casos simples, hace el sistema más poderoso, porque se puede
 dar tratamiento distinto a cada sentido del camino, incluyendo permitir el
 paso en un solo sentido, tener descripciones distintas para ambos, hacer que
 suceda algo al cruzar en un sentido dado, etc.}
-\item {Para crear los caminos, utilizaremos la herramienta ``añadir relación
-estructural'' de la barra de herramientas, que está identificada por este
+\item {Para crear los caminos, utilizaremos la herramienta \comillas{añadir relación
+estructural} de la barra de herramientas, que está identificada por este
 icono: \includegraphics{imagenes/addstruct.png}}
 \item {Las relaciones en AGE son formas de expresar cualquier tipo de
 relación, permanente o temporal, entre dos objetos. Existen dos tipos de
@@ -234,8 +234,8 @@ aspectos de las interacciones entre objetos.}
 habitación y otra, de ahí que se cree con esta herramienta. Para crear un
 camino entre las dos habitaciones, seguimos los siguientes pasos:}
 	\begin{itemize}
-	\item {Hacemos click sobre la herramienta ``añadir relación
-	estructural'' \includegraphics{imagenes/addstruct.png}}
+	\item {Hacemos click sobre la herramienta \comillas{añadir relación
+	estructural} \includegraphics{imagenes/addstruct.png}}
 	\item {Hacemos click sobre la habitación que representa el Oeste del
 	Pecos.}
 	\item {Hacemos click sobre la otra habitación. Veremos que aparece una
@@ -248,25 +248,25 @@ tiene algunos campos ya cubiertos, como son las habitaciones origen y destino
 (que son las que marcamos en el mapa) y la dirección estándar, que es un
 punto cardinal asociado al camino. Como habíamos colocado una habitación a
 la derecha de la otra, el camino aparecerá automáticamente marcado con la
-dirección estándar ``este''. Esto implica que se podrá utilizar con comandos
-como ``ir al este''. Si a pesar de haber colocado las habitaciones de esa
+dirección estándar \comillas{este}. Esto implica que se podrá utilizar con comandos
+como \comillas{ir al este}. Si a pesar de haber colocado las habitaciones de esa
 manera éste no era el comportamiento que queríamos, podemos cambiar la
 dirección estándar (o quitarla para no tener ninguna) en el panel de objeto
 correspondiente al camino. Del mismo modo podríamos cambiar en cualquier
 momento las habitaciones origen y destino, podemos ver que para esto se
-utiliza el ``nombre único'' que hace referencia a cada habitación.}
+utiliza el \comillas{nombre único} que hace referencia a cada habitación.}
 \item {Debajo de estos campos podemos ver una lista, inicialmente vacía, de
 \textit{comandos personalizados}. En esta lista podemos introducir todas
 aquellas palabras que el jugador pueda usar para referirse a este camino
 además del punto cardinal dado por la dirección estándar. Como queremos que
-el jugador pueda teclear cosas como ``ir puente'' o ``ir por el puente'',
-añadimos ``puente'': para ello, introducimos la palabra donde pone
-``Comando'' y pulsamos el botón ``Añadir''.}
+el jugador pueda teclear cosas como \comillas{ir puente} o \comillas{ir por el puente},
+añadimos \comillas{puente}: para ello, introducimos la palabra donde pone
+\comillas{Comando} y pulsamos el botón \comillas{Añadir}.}
 \item {A continuación podemos ver un área para descripciones, que ya debería
 resultarnos familiar. Las descripciones para los caminos funcionan
 exactamente igual que para las habitaciones; pero se muestran cuando el
 jugador cruza el camino correspondiente. Así, para obtener el comportamiento
-que buscamos para este camino, debemos teclear en el campo ``Descripción'':
+que buscamos para este camino, debemos teclear en el campo \comillas{Descripción}:
 
 \textsf{Atraviesas el puente hacia el este con sumo cuidado. Las tablas que
 lo componen emiten crujidos inquietantes; pero llegas sin incidencias a la
@@ -291,7 +291,7 @@ habitan en el mundo e interactúan con él (aunque también pueden crearse
 personajes que no sean jugadores). Por lo tanto, incluso en un juego para
 un solo jugador deberemos poner al menos un personaje que represente a ese
 jugador para que se pueda jugar. Para ello, utilizaremos la herramienta
-``añadir personaje'' de la barra de herramientas:
+\comillas{añadir personaje} de la barra de herramientas:
 
 \includegraphics{imagenes/addchar.png}
 
@@ -315,16 +315,16 @@ la habitación (que puede ser la oeste o la este, dependiendo de dónde
 queréis que empiece el personaje: lo que creamos con PUCK es siempre el
 estado inicial del mundo, que luego podrá cambiar durante el juego cuando
 los personajes se muevan y manipulen los objetos) y el personaje. Para ello,
-utilizamos la herramienta ``crear relación estructural'' que ya conocemos:
+utilizamos la herramienta \comillas{crear relación estructural} que ya conocemos:
 \includegraphics{imagenes/addstruct.png}
 y hacemos click primero sobre la habitación y luego sobre el personaje (el
 orden es importante). Esto nos creará una relación estructural de tipo
-``contiene'' que significa que la habitación contiene al personaje, y que,
-al contrario que la relación ``camino'' que veíamos antes, no tiene nada que
+\comillas{contiene} que significa que la habitación contiene al personaje, y que,
+al contrario que la relación \comillas{camino} que veíamos antes, no tiene nada que
 configurar.}
 \item {Para que todo funcione, sólo falta una cosa: especificar que el
 personaje que hemos creado es un jugador. Para ello, hacemos click sobre él
-para obtener su panel de objeto, y marcamos la casilla que dice ``jugador''.
+para obtener su panel de objeto, y marcamos la casilla que dice \comillas{jugador}.
 Esto hace que, cuando alguien arranque la aventura, el AGE lo ponga en la
 piel de este personaje (en juegos multijugador las cosas son algo más
 complicadas; pero ya las veremos).}
@@ -379,7 +379,7 @@ tu alrededor. Un precario puente de madera lo atraviesa, hacia el oeste.}
 Parece que una primera característica deseable para mejorar la interacción
 del jugador con el mundo sería que se pudiesen mirar los objetos que
 aparecen mencionados en las descripciones. Así, nos gustaría que cuando el
-jugador pusiese ``mirar los árboles'', apareciese una descripción de los
+jugador pusiese \comillas{mirar los árboles}, apareciese una descripción de los
 mismos para dar ambientación. La forma más sencilla de conseguir esto en AGE
 mediante las llamadas \textit{descripciones de componentes} o descripciones
 extra. Las descripciones de componentes pueden añadirse a casi cualquier
@@ -393,28 +393,28 @@ asociada una condición (que por el momento habíamos dejado en blanco para
 que se mostraran siempre) y un texto; las descripciones extra también serán
 listas de descripciones; pero cada una tendrá asociada una serie de
 \textit{nombres}, una condición y un texto. Si añadimos una descripción
-extra a una localidad y el jugador teclea ``mirar <algo>'' (o alguna frase
-sinónima) en ella, entonces se mostrará la descripción si ese <algo>
+extra a una localidad y el jugador teclea \comillas{mirar `algo'} (o alguna frase
+sinónima) en ella, entonces se mostrará la descripción si ese `algo'
 coincide con uno de los nombres y además la condición asociada se cumple.
 
 Vamos a hacer que el jugador pueda mirar los árboles y el puente desde la
 localidad oeste. Para ello, hacemos click sobre esta localidad en el editor
 gráfico, y nos aparece su panel de objetos. Debajo de la sección de
 descripciones convencionales que ya tenemos cubierta, vemos la sección
-``Descripciones de componente''. En el campo ``Nombres de ref. sep. por
-comas'' tecleamos, sin las comillas: ``árbol,árboles''; y en el campo
-``Descripción'' ponemos lo que queremos que le aparezca al jugador cuando
-mire los árboles, como puede ser ``Son unos árboles muy verdes y muy
-bonitos.'' Como en ocasiones anteriores, dejamos el campo ``Condición''
+\comillas{Descripciones de componente}. En el campo \comillas{Nombres de ref. sep. por
+comas} tecleamos, sin las comillas: \comillas{árbol,árboles}; y en el campo
+\comillas{Descripción} ponemos lo que queremos que le aparezca al jugador cuando
+mire los árboles, como puede ser \comillas{Son unos árboles muy verdes y muy
+bonitos.} Como en ocasiones anteriores, dejamos el campo \comillas{Condición}
 vacío, ya que esta descripción no dependerá de ninguna condición externa, y
-pulsamos el botón ``Añadir''. En la lista de descripciones extra veremos
-algo como ``árbol,árboles: Siempre: Son unos árboles muy verdes y muy
-bonitos'', donde se muestran los nombres y la descripción; y la palabra
-``Siempre'' indica que la descripción va a mostrarse siempre que el jugador
+pulsamos el botón \comillas{Añadir}. En la lista de descripciones extra veremos
+algo como \comillas{árbol,árboles: Siempre: Son unos árboles muy verdes y muy
+bonitos}, donde se muestran los nombres y la descripción; y la palabra
+\comillas{Siempre} indica que la descripción va a mostrarse siempre que el jugador
 mire, sin depender de ningún otro factor.
 
 Lo mismo podemos hacer con el puente si añadimos una descripción extra con
-nombre ``puente'' y descripción ``Es un precario puente de madera.'' o
+nombre \comillas{puente} y descripción \comillas{Es un precario puente de madera.} o
 cualquier texto similar. Si queremos que el puente se vea desde las dos
 localidades, como sería lógico, tenemos que poner su descripción extra en
 ambas.
@@ -431,7 +431,7 @@ A la hora de crear un juego decente, esto seguramente no sea suficiente.
 Nos interesan objetos físicos con los que los jugadores puedan interactuar
 de más maneras: cogerlos, llevarlos en su inventario, dejarlos en alguna
 otra parte, y seguramente hacer más cosas dependiendo del tipo de objeto que
-sea. Este tipo de objetos físicos son lo que en AGE denominamos ``cosas''.
+sea. Este tipo de objetos físicos son lo que en AGE denominamos \comillas{cosas}.
 
 Para probar las cosas, vamos a crear una piedra que el jugador pueda al
 menos coger, llevar y dejar. En capítulos posteriores del tutorial veremos
@@ -443,23 +443,23 @@ básico.
 
 Al contrario que las descripciones extra, las cosas son objetos de pleno
 derecho en AGE, y tienen una representación gráfica en el editor del PUCK.
-Para añadir una cosa, utilizamos la herramienta ``añadir cosa'':
+Para añadir una cosa, utilizamos la herramienta \comillas{añadir cosa}:
 
 \includegraphics{imagenes/additem.png}
 
 A la hora de utilizar esta herramienta, procedemos de manera análoga a
 cuando habíamos añadido un personaje al mundo: hacemos click sobre el icono
-de ``añadir cosa'', movemos el cursor por el editor gráfico hasta dejarlo
+de \comillas{añadir cosa}, movemos el cursor por el editor gráfico hasta dejarlo
 en la ubicación deseada para el objeto (que no debe coincidir con la
 habitación en la que queremos ponerlo; aunque sí es conveniente que esté
 cerca), y hacemos click sobre esa ubicación. Para colocar la cosa en una
 localidad, igual que habíamos hecho con el personaje, creamos una relación
-estructural: hacemos click en la herramienta ``crear relación estructural''
+estructural: hacemos click en la herramienta \comillas{crear relación estructural}
 
 \includegraphics{imagenes/addstruct.png}
 
 y a continuación en la habitación y en la cosa, por ese orden. Esto creará
-una relación ``contiene'' entre habitación y cosa que indica que la cosa
+una relación \comillas{contiene} entre habitación y cosa que indica que la cosa
 está situada en dicha habitación.
 
 \subsubsection {Características básicas de cosas}
@@ -477,18 +477,18 @@ ser realmente únicos, es decir, no debe haber en un mundo dos objetos con el
 mismo nombre único, ni siquiera si son objetos de tipos completamente
 distintos. Esto quiere decir que no debes ponerle a una cosa un nombre que
 hayas utilizado para, por ejemplo, una habitación. A nuestro objeto podemos
-llamarle ``Piedra''.
+llamarle \comillas{Piedra}.
 
-Bajo el nombre único, debajo de unos campos ``Heredar de:'' y ``Ejemplo de:''
-que no veremos por el momento, podemos ver un campo de ``Género'', que nos
+Bajo el nombre único, debajo de unos campos \comillas{Heredar de:} y \comillas{Ejemplo de:}
+que no veremos por el momento, podemos ver un campo de \comillas{Género}, que nos
 da a elegir entre masculino y femenino. El género de una cosa es el género
 que tiene en castellano el nombre de esa cosa, y se utiliza para construir
-los textos del juego. Si pusiésemos que la piedra es ``Masculino'', podríamos
-obtener textos en el juego como ``aquí hay un piedra'' o ``coges el piedra
-del suelo'', así que es importante cubrir bien este campo si queremos un
+los textos del juego. Si pusiésemos que la piedra es \comillas{Masculino}, podríamos
+obtener textos en el juego como \comillas{aquí hay un piedra} o \comillas{coges el piedra
+del suelo}, así que es importante cubrir bien este campo si queremos un
 mundo que hable decentemente el idioma.
 
-Debajo del género, podemos ver unos campos para el ``Peso'' y el ``Volumen''
+Debajo del género, podemos ver unos campos para el \comillas{Peso} y el \comillas{Volumen}
 de la cosa que, como es imaginable, representan el peso y el volumen que
 tiene el objeto en el mundo virtual que estamos creando. Aunque se pueden
 utilizar para más cosas, la consecuencia más inmediata de estos valores es
@@ -498,15 +498,15 @@ esos detalles, simplemente puedes dejar el peso y el volumen de todos los
 objetos a cero. En este caso podemos poner, por ejemplo, peso y volumen 5.
 
 Después de los campos correspondientes al peso y el volumen, hay en el
-formulario dos opciones llamadas ``Contenedor'' y ``Fijo en el sitio''. La
-opción ``Contenedor'' puede marcarse para representar cosas que puedan tener
+formulario dos opciones llamadas \comillas{Contenedor} y \comillas{Fijo en el sitio}. La
+opción \comillas{Contenedor} puede marcarse para representar cosas que puedan tener
 otras cosas dentro, como una bolsa o un baúl.\footnote{El autor de AGE
 recomienda a título personal no usar los contenedores en juegos más de lo
 estrictamente necesario, pues tienden a complicar innecesariamente la vida
 al jugador al tener que preocuparse de sacar y meter objetos de dentro de
 otros, cosa que puede ser interesante cuando es parte del argumento de la
 aventura (encontrar la llave de un antiguo baúl, etc.) pero no aporta mucho
-si se usa como elemento de ambientación.} La opción ``Fijo en el sitio''
+si se usa como elemento de ambientación.} La opción \comillas{Fijo en el sitio}
 denota un objeto que no se puede coger, como una farola o una montaña; todas
 las cosas que no tengan esta opción marcada serán por defecto susceptibles
 de ser cogidas por los jugadores. En el caso de la piedra, lo lógico será no
@@ -515,94 +515,94 @@ otras cosas en su interior, y queremos que el jugador la pueda coger.
 
 A continuación están las descripciones y las descripciones de componentes,
 que se rellenan de la misma manera que en las habitaciones. Las descripciones
-en este caso aparecerán cuando un jugador ponga ``mirar <nuestra cosa>'', y
+en este caso aparecerán cuando un jugador ponga \comillas{mirar `nuestra cosa'}, y
 funcionarán tanto si el jugador lleva consigo la cosa como si simplemente
 está en la misma localidad. Las descripciones de componentes se pueden usar
 para describir partes o características de los objetos: por ejemplo, si
 nuestro objeto es una linterna, podemos usar una descripción extra para
 describir el botón de encendido de la linterna. Si ponemos como nombre para
-la descripción de componente ``botón'', y nuestra linterna respondía al
-nombre ``linterna'', el jugador podrá ver la descripción extra tecleando
-``mirar el botón de la linterna''. Nosotros nos limitaremos a añadir una
-descripción convencional para la piedra, algo como: ``Es una piedra estándar,
-de las de toda la vida. Podrías abrir cabezas con ella.''
+la descripción de componente \comillas{botón}, y nuestra linterna respondía al
+nombre \comillas{linterna}, el jugador podrá ver la descripción extra tecleando
+\comillas{mirar el botón de la linterna}. Nosotros nos limitaremos a añadir una
+descripción convencional para la piedra, algo como: \comillas{Es una piedra estándar,
+de las de toda la vida. Podrías abrir cabezas con ella.}
 
 \subsubsection{Nombres para mostrar y nombres de referencia}
 
-Todo lo mencionado está en la ficha ``General'' del panel de objeto, que es
+Todo lo mencionado está en la ficha \comillas{General} del panel de objeto, que es
 la que hemos visto hasta ahora en todos los objetos que hemos creado. Sin
 embargo, puede que ya te hayas fijado en que algunos de ellos tienen más
 fichas aparte de ésta, y es el caso de nuestra recién creada piedra. Ahora
-vamos a ir a la segunda ficha, llamada ``Nombres''. Cubrir esta ficha es
+vamos a ir a la segunda ficha, llamada \comillas{Nombres}. Cubrir esta ficha es
 esencial para crear una cosa, porque nos permite definir el nombre o nombres
 de dicha cosa.
 
-Hasta ahora, en la ficha ``General'' del panel habíamos visto el ``Nombre
-único'' de la cosa, que nos servía para identificarla. Pero, como ya
+Hasta ahora, en la ficha \comillas{General} del panel habíamos visto el \comillas{Nombre
+único} de la cosa, que nos servía para identificarla. Pero, como ya
 mencionamos al hablar de habitaciones, los nombres únicos de los objetos
 sólo se usan para que los distinga el creador del juego y el propio juego;
 sin que se muestren en ningún caso al jugador. Por lo tanto, tendremos que
 definir otros nombres (que pueden coincidir o no con el nombre único) para
 mostrar al jugador y para que el jugador pueda interactuar con la piedra.
 
-En la ficha ``Nombres'' podemos ver espacio para poner cuatro tipos de
-nombres: ``Nombres singulares para mostrar'', ``Nombres plurales para
-mostrar'', ``Nombres singulares de referencia'' y ``Nombres plurales de
-referencia''.
+En la ficha \comillas{Nombres} podemos ver espacio para poner cuatro tipos de
+nombres: \comillas{Nombres singulares para mostrar}, \comillas{Nombres plurales para
+mostrar}, \comillas{Nombres singulares de referencia} y \comillas{Nombres plurales de
+referencia}.
 
 Los dos primeros tipos son los nombres que se mostrarán al jugador, y
 funcionan exactamente igual que las descripciones. Si queremos que el objeto
 se llame siempre de una manera determinada y ya está, basta con que
-tecleemos su nombre en el campo ``Nombre:'' de ``Nombres singulares para
-mostrar'' y pulsemos ``Añadir''. En nuestro caso, si añadimos de esta manera
-el nombre ``piedra'', esto se traducirá en el juego a textos como ``aquí
-puedes ver una piedra'', ``coges la piedra'' ``dejas la piedra'', ``llevas
-una piedra''... Si quisiésemos que el nombre de un objeto cambiase según
+tecleemos su nombre en el campo \comillas{Nombre:} de \comillas{Nombres singulares para
+mostrar} y pulsemos \comillas{Añadir}. En nuestro caso, si añadimos de esta manera
+el nombre \comillas{piedra}, esto se traducirá en el juego a textos como \comillas{aquí
+puedes ver una piedra}, \comillas{coges la piedra} \comillas{dejas la piedra}, \comillas{llevas
+una piedra}... Si quisiésemos que el nombre de un objeto cambiase según
 circunstancias del juego (por ejemplo, la piedra podría convertirse en una
-``piedra mojada'' si le echásemos agua por encima), tendríamos que añadirle
+\comillas{piedra mojada} si le echásemos agua por encima), tendríamos que añadirle
 más nombres singulares y asociarles diferentes condiciones. Nosotros nos
-conformaremos con un nombre estático, así que añadimos ``piedra'' sin
+conformaremos con un nombre estático, así que añadimos \comillas{piedra} sin
 especificar condición alguna.
 
-Los ``Nombres plurales para mostrar'' se utilizan para mostrar al jugador si
+Los \comillas{Nombres plurales para mostrar} se utilizan para mostrar al jugador si
 hay varios objetos iguales en un mismo sitio. Por ejemplo, para que el juego
-pudiese construir frases como ``llevas dos piedras'' o ``aquí hay tres
-piedras'', tendríamos que añadir ``piedras'' como nombre plural. Si no va a
+pudiese construir frases como \comillas{llevas dos piedras} o \comillas{aquí hay tres
+piedras}, tendríamos que añadir \comillas{piedras} como nombre plural. Si no va a
 haber varios objetos iguales en el juego que se puedan agrupar de esta
 manera, como es nuestro caso, podemos dejar los nombres plurales en blanco.
 Más adelante veremos cómo se pueden crear varios objetos idénticos que se
 puedan agrupar, y utilizaremos estos nombres plurales.
 
-Los ``Nombres singulares de referencia'' son aquellos nombres por los cuales
+Los \comillas{Nombres singulares de referencia} son aquellos nombres por los cuales
 el jugador se puede referir al objeto. Estos nombres no se muestran en la
 aventura; pero serán los que el sistema utilice para saber que el jugador se
 ha referido en su orden a un objeto dado. Como al jugador puede ocurrírsele
 referirse a una cosa usando una palabra que no sea el nombre que se le
 muestra en pantalla, suele ser recomendable incluir sinónimos en los nombres
 de referencia. Por ejemplo, en este caso podemos añadir los siguientes
-nombres de referencia para la piedra: ``piedra'', ``roca'' y ``pedrusco''.
-Después de teclear cada nombre en el campo ``Nombre'', pulsamos el botón
-``Añadir'' para colocarlos en la lista, o podemos pulsar ``Cambiar'' para
+nombres de referencia para la piedra: \comillas{piedra}, \comillas{roca} y \comillas{pedrusco}.
+Después de teclear cada nombre en el campo \comillas{Nombre}, pulsamos el botón
+\comillas{Añadir} para colocarlos en la lista, o podemos pulsar \comillas{Cambiar} para
 modificar alguno si nos hemos equivocado. De este modo, el jugador podrá
-referirse a la piedra mediante comandos como ``coger piedra'', ``dejar roca''
-o ``mirar pedrusco'', y todos serán entendidos como referidos a nuestro
+referirse a la piedra mediante comandos como \comillas{coger piedra}, \comillas{dejar roca}
+o \comillas{mirar pedrusco}, y todos serán entendidos como referidos a nuestro
 objeto piedra.
 
-En los ``Nombres plurales de referencia'' pondremos los nombres por los
+En los \comillas{Nombres plurales de referencia} pondremos los nombres por los
 cuales el jugador se puede referir a un conjunto de objetos que incluya
 éste. Normalmente, tendremos aquí las versiones de los nombres singulares
-de referencia: en este caso ``piedras'', ``rocas'' y ``pedruscos''. De esta
+de referencia: en este caso \comillas{piedras}, \comillas{rocas} y \comillas{pedruscos}. De esta
 forma, si hay varias piedras (todas con esos nombres de referencia) y el
-jugador pone ``coger las piedras'' o ``coger todas las rocas'', su orden se
+jugador pone \comillas{coger las piedras} o \comillas{coger todas las rocas}, su orden se
 ejecutará sobre todas ellas. Un truco que suele venir bien, y podemos hacer
-en este caso, es poner como último nombre plural de referencia ``todo''. De
-esta manera, cuando el jugador ponga ``coger todo'', su orden actuará sobre
+en este caso, es poner como último nombre plural de referencia \comillas{todo}. De
+esta manera, cuando el jugador ponga \comillas{coger todo}, su orden actuará sobre
 todos los objetos que tengan ese nombre plural de referencia.
 
 \subsubsection {Interacciones básicas con las cosas}
 
 Una vez rellenados de este modo los nombres para mostrar y de referencia de
-nuestra piedra, podemos utilizar la herramienta ``Ejecutar mundo'' para
+nuestra piedra, podemos utilizar la herramienta \comillas{Ejecutar mundo} para
 probar el objeto que hemos creado. Deberíamos ser capaces de hacer estas
 cosas:
 
@@ -643,3 +643,122 @@ cosas:
 \textsf{Te encuentras al este del gran río Pecos. Hay muchos árboles bajos a tu alrededor. Un precario puente de madera lo atraviesa, hacia el oeste.}
 
 \textsf{Aquí hay una piedra.}
+
+\subsubsection {Cosas con el mismo nombre de referencia}
+
+Como hemos visto, los nombres de referencia nos determinan cómo el jugador
+se puede referir a una cosa. Pero a veces podría darse el caso de que varias
+cosas compartan un mismo nombre de referencia. Por ejemplo, supongamos que
+hemos definido las siguientes dos cosas:
+
+\begin{itemize}
+\item {Una piedra blanca, que tiene como nombre para mostrar
+\comillas{piedra blanca}, y como nombres de referencia
+\comillas{piedra blanca}, \comillas{pedrusco blanco}, \comillas{piedra},
+\comillas{pedrusco}.}
+\item {Una piedra negra, que tiene como nombre para mostrar \comillas{piedra
+negra}, y como nombres de referencia \comillas{piedra negra},
+\comillas{pedrusco negro}, \comillas{piedra}, \comillas{pedrusco}.}
+\end{itemize}
+
+En este ejemplo, hemos puesto \comillas{piedra} como nombre de referencia de
+ambas piedras para que cuando el jugador encuentre una de ellas pueda
+simplemente teclear comandos como \comillas{coger piedra} y funcionen, sin
+especificar el color:
+
+\textsf{Aquí hay una piedra blanca.}
+
+\textsf{> \textit{coger la piedra}}
+
+\textsf{Coges la piedra blanca.}
+
+Sin embargo, ¿qué pasará si el jugador teclea \comillas{coger la piedra} en
+una habitación donde está tanto la piedra blanca como la negra? ¿Cuál de
+ellas cogerá?
+
+La respuesta es que los nombres de referencia tienen una prioridad
+correspondiente a la posición que ocupan en la lista de nombres de
+referencia de PUCK (posición más alta quiere decir mayor prioridad). Cuando
+un jugador teclea una orden, las palabras que siguen al verbo se comparan
+con los nombres de referencia de los objetos que están al alcance del
+jugador, seleccionándose aquellos nombres de referencia que aparezcan
+mencionados en las palabras tecleadas. En el caso de que haya un único
+nombre de referencia seleccionado de este modo (o varios, pero todos
+pertenecientes a la misma cosa), la acción se ejecuta sobre la cosa que
+tiene ese nombre. En el caso de que se seleccionen nombres de referencia de
+diferentes cosas, la acción se ejecuta sobre aquélla a la que perteneza el
+nombre de referencia de \textit{mayor prioridad} (es decir, el que aparece
+más arriba en la lista) de entre los seleccionados. En el caso de que haya
+un empate a prioridades, se ejecuta sobre un objeto cualquiera.
+
+Por ejemplo, si en el caso de las piedras blanca y negra hemos introducido
+los nombres de referencia en el orden especificado arriba, las prioridades
+para la piedra blanca serían:
+
+\begin{itemize}
+\item {Prioridad 1. piedra blanca}
+\item {Prioridad 2. pedrusco blanco}
+\item {Prioridad 3. piedra}
+\item {Prioridad 4. pedrusco}
+\end{itemize}
+
+Y para la piedra negra serían:
+
+\begin{itemize}
+\item {Prioridad 1. piedra negra}
+\item {Prioridad 2. pedrusco negro}
+\item {Prioridad 3. piedra}
+\item {Prioridad 4. pedrusco}
+\end{itemize}
+
+Si el jugador teclea \comillas{coger la piedra blanca}, en la orden tecleada
+aparecen nombres de prioridad 1 y 3 de la piedra blanca (aparece
+\comillas{piedra blanca}, de prioridad 1, pero también aparece
+\comillas{piedra}, de prioridad 3, como parte de la cadena). Sin embargo,
+de la piedra negra, sólo aparece un nombre de prioridad 3
+(\comillas{piedra}). Como la prioridad 1 le gana a la prioridad 3, el
+jugador cogerá la piedra blanca.
+
+Si el jugador teclea \comillas{coger el pedrusco negro}, en la orden aparece
+un nombre de prioridad 4 de la piedra blanca (\comillas{pedrusco}) y nombres
+de prioridad 2 y 4 de la piedra negra (\comillas{pedrusco negro} y
+\comillas{pedrusco}). Como la prioridad 2 es mayor que la prioridad 4, el
+jugador cogerá la piedra negra.
+
+¿Qué pasa si el jugador teclea simplemente \comillas{coger una piedra}? En
+este caso para ambos objetos se seleccionaría un nombre de prioridad 3
+(\comillas{piedra}). Como hay empate a prioridades, el jugador cogería una
+piedra cualquiera: se supone que ambas se ajustan por igual a la orden dada
+por el jugador, así que si sólo ha especificado \comillas{coger una piedra},
+debería servirle cualquiera de los dos. Si por algún motivo quisiéramos
+asegurarnos de que con esta orden el jugador siempre cogiese una piedra dada
+(por ejemplo, la blanca); tendríamos que hacer que el nombre de referencia
+\comillas{piedra} tuviese más prioridad en esa piedra que en la otra.
+
+En general, para que este sistema de prioridades para los nombres de
+referencia nos conduzca a una interpretación natural de las órdenes de los
+jugadores, lo único que tendremos que hacer es poner los nombres más
+específicos por encima de los más genéricos (tal y como hemos hecho en el
+ejemplo de la piedra). Entrando más en detalle, lo que necesitamos es que
+si un nombre de referencia es específico de un objeto, tenga más prioridad
+que los nombres más genéricos de otros objetos que puedan entrar en
+conflicto con ese nombre específico. Por ejemplo, si el nombre específico
+\comillas{piedra blanca} tuviera prioridad 3 en la piedra blanca y el nombre
+genérico \comillas{piedra} tuviera prioridad 1 en la piedra negra,
+tendríamos problemas, porque al \comillas{coger la piedra blanca} ganaría
+la piedra negra al tener el nombre genérico \comillas{piedra} con más
+prioridad que el nombre específico \comillas{piedra blanca} de la piedra
+blanca. Sin embargo, casos como éste prácticamente nunca se podrán dar si
+seguimos la norma general de que, dentro de cada cosa, los nombres
+específicos aparecen antes que los genéricos. Siguiendo esta simple regla,
+normalmente no hará falta acordarse de cómo funciona el sistema de
+prioridades salvo para casos avanzados en los que se quiera tener un
+control muy detallado de las maneras de referirse a cada objeto.
+
+Nótese que, si en lugar de nombres singulares de referencia hablamos de
+nombres plurales de referencia, con estos últimos la acción no se ejecutará
+sobre un solo objeto, sino con todos los que tengan un nombre plural de
+referencia seleccionado. Es decir, si las dos piedras del ejemplo tienen
+como nombre plural de referencia la palabra \comillas{piedras}, entonces la
+orden \comillas{coger las piedras} hará que el jugador coja ambas,
+independientemente de las prioridades.

@@ -110,14 +110,14 @@ if ( aPlayer.getIO() instanceof ColoredSwingClient )
 }
 \end{lstlisting}
 
-Cambiar el texto del prompt al clásico ``>''.
+Cambiar el texto del prompt al clásico `>'.
 
 \begin{lstlisting}
 aPlayer.getIO().setPrompts(">","");
 \end{lstlisting}
 
-Cambiar el texto del prompt: Si el jugador teclea ``hola'', en el prompt
-aparecería ``Tu texto aquí: (hola)''.
+Cambiar el texto del prompt: Si el jugador teclea \comillas{hola}, en el prompt
+aparecería \comillas{Tu texto aquí: (hola)}.
 
 \begin{lstlisting}
 aPlayer.getIO().setPrompts("Tu texto aquí: (", ")");
@@ -136,26 +136,26 @@ general de una aventura de forma sencilla y sin tocar una línea de código,
 mediante formularios. Para ello, hacemos click en alguna parte del mapa que
 esté vacía (es decir, que no contenga ninguna entidad ni relación) para
 seleccionar el objeto mundo. Hecho esto, tendremos el panel de mundo a mano
-derecha. Seleccionando la pestaña ``Presentación'', en la parte de abajo
-del panel hay una sección de ``Tipografía'' con tres campos de formulario,
-que nos permiten especificar ``Fuente'', ``Fichero'' o ``Tamaño''. Estos
+derecha. Seleccionando la pestaña \comillas{Presentación}, en la parte de abajo
+del panel hay una sección de \comillas{Tipografía} con tres campos de formulario,
+que nos permiten especificar \comillas{Fuente}, \comillas{Fichero} o \comillas{Tamaño}. Estos
 campos se utilizan para cambiar la fuente por defecto en la que se
 mostrarán todos los textos de la aventura (también se puede cambiar la
 fuente puntualmente para mostrar textos con diferentes tipografías en la
 misma aventura; pero esto no se puede hacer mediante formularios sino sólo
-programando, véase ``Control avanzado de la tipografía'').
+programando, véase \comillas{Control avanzado de la tipografía}).
 
-El campo ``Fuente'' se utiliza para especificar el nombre de una fuente que
+El campo \comillas{Fuente} se utiliza para especificar el nombre de una fuente que
 se suponga instalada en el sistema operativo del jugador. Por ejemplo,
 podemos teclear Courier New y, si el usuario tiene instalada una fuente con
 ese nombre, los textos de la aventura se le mostrarán con dicha fuente. En
 el caso de que el usuario no tenga instalada la fuente, este campo no
 tendrá efecto, y simplemente se utilizará la fuente por defecto de AGE.
 
-El campo ``Fichero'' se usa si, en lugar de llamar a una fuente instalada
+El campo \comillas{Fichero} se usa si, en lugar de llamar a una fuente instalada
 en el sistema, se quiere incluir un fichero de fuente TrueType con la
 aventura. Por ejemplo, podemos incluir un fichero de fuente TrueType
-``Biergarten.ttf'' en el directorio de mundo, y en este campo teclearíamos
+\comillas{Biergarten.ttf} en el directorio de mundo, y en este campo teclearíamos
 Biergarten.ttf para utilizar esa fuente.
 
 \textbf{Nota}: Los tipos de fuentes soportados con Java pueden variar un
@@ -167,14 +167,14 @@ motivo u otro la fuente especificada en el fichero no funciona, no se
 producirá ningún error desagradable sino que simplemente el cambio de
 fuente no tendrá efecto.
 
-Por último, el campo ``Tamaño'' se utiliza para especificar el tamaño de la
-letra, tanto en las fuentes dadas mediante el campo ``Fuente'' como en las
-dadas mediante el campo ``Fichero''.
+Por último, el campo \comillas{Tamaño} se utiliza para especificar el tamaño de la
+letra, tanto en las fuentes dadas mediante el campo \comillas{Fuente} como en las
+dadas mediante el campo \comillas{Fichero}.
 
-En el caso de que se teclee algo tanto en el campo ``Fichero'' como en el
-campo ``Fuente'', tomará prioridad el campo ``Fichero''. Si no se puede
+En el caso de que se teclee algo tanto en el campo \comillas{Fichero} como en el
+campo \comillas{Fuente}, tomará prioridad el campo \comillas{Fichero}. Si no se puede
 obtener una fuente a partir del fichero (sea porque éste no existe o porque
-su formato no es válido), se utilizará el campo ``Fuente''. Si éste tampoco
+su formato no es válido), se utilizará el campo \comillas{Fuente}. Si éste tampoco
 funciona, se usará la fuente por defecto de AGE.
 
 \subsection {Control avanzado de la tipografía}
@@ -226,7 +226,7 @@ podemos hacer:
 client.setCurrentOutputFont(world.getResource("fuente3.ttf"),16);
 \end{lstlisting}
 
-Y se usará un fichero de fuente ``fuente3.ttf'' almacenado en el directorio
+Y se usará un fichero de fuente \comillas{fuente3.ttf} almacenado en el directorio
 del mundo.
 
 Las otras dos variantes, más complejas, son:
@@ -385,7 +385,7 @@ Para mostrar una imagen en un frame, puede utilizarse el método
 \subsubsection{Ejemplos de código}
 
 Creamos un frame en la parte superior de la pantalla de 300 píxeles de alto,
-y que incluye la imagen ``titulo.png'' sin escalar.
+y que incluye la imagen \comillas{titulo.png} sin escalar.
 
 \begin{lstlisting}
 if ( jugador.getIO() instanceof MultimediaInputOutputClient && jugador.getIO().isGraphicsEnabled() )
@@ -456,7 +456,7 @@ audio reconocidos por AGE.}
 Cabe recordar que para obtener el objeto de la clase URL que apunta a un
 fichero que incluimos con el mundo, podemos utilizar el método
 \textsf{getResource()} de la clase \textsf{World}. Así, para reproducir un
-sonido llamado ``musica.ogg'' que incluimos con el mundo, haríamos:
+sonido llamado \comillas{musica.ogg} que incluimos con el mundo, haríamos:
 
 \begin{lstlisting}
 jugador.playAudioIfAvailable( world.getResource("musica.ogg") );
@@ -494,7 +494,7 @@ más abajo).}
 Este método hace lo mismo que \textsf{boolean playAudioIfAvailable ( URL sound , int loopTimes );}
 pero nos permite especificar un parámetro booleano adicional \textsf{fade}.
 Si este parámetro se pone a \textsf{true}, el sonido se reproducirá con un
-``fade in'' (transición de inicio). Si se pone a \textsf{false}, el método
+\comillas{fade in} (transición de inicio). Si se pone a \textsf{false}, el método
 se comportará igual que la versión sin este parámetro.
 
 \subsubsection {Detener un sonido}
@@ -520,7 +520,7 @@ efecto y devuelve \textsf{false}.
 Este método hace lo mismo que boolean \textsf{stopAudioIfAvailable ( URL sound );}
 pero nos permite especificar un parámetro booleano adicional \textsf{fade}.
 Si este parámetro se pone a \textsf{true}, el sonido se reproducirá con un
-``fade out'' (transición de final). Si se pone a \textsf{false}, el método
+\comillas{fade out} (transición de final). Si se pone a \textsf{false}, el método
 se comportará igual que la versión sin este parámetro.
 
 \subsubsection {Cambiar el volumen de un sonido}
@@ -548,7 +548,7 @@ jugador.setAudioGainIfAvailable( world.getResource("musica.ogg") , 0.2 );
 \end{lstlisting}
 
 Como nada más lanzar el sonido ya llamamos al cambio de volumen, el efecto
-de este código será que el audio ``musica.ogg'' se reproduzca con volumen
+de este código será que el audio \comillas{musica.ogg} se reproduzca con volumen
 0.2.
 
 Si en lugar de llamar a \textsf{setAudioGainIfAvailable} inmediatamente lo
@@ -593,7 +593,7 @@ Los métodos para reproducir y detener música MIDI en AGE son similares a los
 correspondientes al audio, aunque proporcionan menos funcionalidad:
 
 \begin{itemize}
-\item {No se soportan funciones como los ``fade--in'' y ``fade--out'' porque
+\item {No se soportan funciones como los \comillas{fade--in} y \comillas{fade--out} porque
 el volumen de los ficheros MIDI se comporta de una manera muy distinta en
 cada sistema operativo y configuración y es difícil garantizar un
 comportamiento fidedigno de ese tipo de funciones.}

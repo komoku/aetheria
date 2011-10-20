@@ -9,7 +9,7 @@ apagado, un cuchillo puede estar afilado o romo). También puede ser
 interesante guardar valores relacionados con alguna entidad (como un número
 que mida la cantidad de batería de un teléfono móvil que se puede utilizar
 durante un tiempo limitado); o incluso a veces valores relacionados con dos
-entidades (como un valor de ``simpatía'' que mida cómo de simpático le cae
+entidades (como un valor de \comillas{simpatía} que mida cómo de simpático le cae
 Fulanito a Menganito). Esta funcionalidad se puede conseguir en AGE mediante
 las \textit{propiedades} y \textit{relaciones}.
 
@@ -67,8 +67,8 @@ Mobile elPropietario = mobile ( get ( televisor , "propietario" ) ); //devuelve 
 \end{lstlisting}
 
 Con lo cual a efectos prácticos es como si el valor de la propiedad fuese
-una entidad (aunque para relacionar entre sí dos entidades, como en ``el
-propietario del televisor es Manolo'', puede ser más adecuado usar la
+una entidad (aunque para relacionar entre sí dos entidades, como en \comillas{el
+propietario del televisor es Manolo}, puede ser más adecuado usar la
 funcionalidad de relaciones, que veremos más tarde).
 
 Las propiedades son útiles para tener en nuestras aventuras entidades que
@@ -107,18 +107,18 @@ void parseCommand ( Mobile aCreature , String verb , String args )
 Con esto, implementamos un televisor que se puede encender y apagar, y que
 si está encendido, al mirarlo muestra un documental sobre bacterias.
 Añadiendo más propiedades podríamos hacerlo más complejo: por ejemplo,
-podríamos tener una propiedad ``canal'' a la que asignáramos un valor de
+podríamos tener una propiedad \comillas{canal} a la que asignáramos un valor de
 tipo \textsf{int}, de forma que el televisor nos mostrara programas
 distintos al cambiar de canal.
 
 \textbf{Nota importante}: Este código no funciona por sí solo, porque para
-que funcione es necesario darle un valor inicial a la propiedad ``encendido''
+que funcione es necesario darle un valor inicial a la propiedad \comillas{encendido}
 del televisor, es decir, establecer si al principio de la aventura el
 televisor va a estar encendido o apagado. Esto es muy sencillo de hacer,
 para ver cómo, sigue leyendo hasta la subsección de inicialización de
 propiedades un poco más abajo.
 
-\subsection {Temporización y método \textsf{update}}
+\subsection {Temporización y método \textsf{update}} \label{sec:Temporizacion}
 
 En el ejemplo anterior, utilizamos una propiedad para poner una entidad en
 uno u otro estado según lo que hiciese con ella el jugador. Otra posibilidad
@@ -136,17 +136,17 @@ cosa o moverse de una localidad a otra, puede consumir una unidad de tiempo
 o puede llevar más. Por ejemplo, las acciones de coger y dejar objetos
 consumen una unidad de tiempo, al igual que las de mirar o consultar el
 inventario. Por otra parte, las acciones de moverse a una localidad contigua
-consumen un número de unidades de tiempo que depende de la ``longitud del
-camino'' (que se fija en el PUCK); y las acciones de combate consumen una
+consumen un número de unidades de tiempo que depende de la \comillas{longitud del
+camino} (que se fija en el PUCK); y las acciones de combate consumen una
 cantidad de unidades de tiempo que dependerán de las características del
 arma que usemos, nuestra pericia con ellas y otros factores relacionados.
 
 Cualquier mundo de AGE tiene dos modos de juego, que puede seleccionar el
 jugador aunque también se pueden cambiar desde BeanShell: el modo síncrono
-(``turnos'' aparentes) y el modo de tiempo real. En el modo síncrono, cada
+(\comillas{turnos} aparentes) y el modo de tiempo real. En el modo síncrono, cada
 vez que el jugador teclea una orden se simulan del tirón todas las unidades
 de tiempo que correspondan hasta la siguiente orden. Esto puede dar la
-impresión de que se juega ``por turnos''; pero no es exactamente así: por
+impresión de que se juega \comillas{por turnos}; pero no es exactamente así: por
 ejemplo, si un jugador se mueve de una habitación a otra y esto le consume
 diez unidades de tiempo, tal vez en esas diez unidades de tiempo un goblin
 que está en otra habitación pueda estar cogiendo y dejando un objeto cinco
@@ -165,13 +165,13 @@ propiedad, podemos ponerle asimismo un contador de tiempo que indica el
 número de unidades de tiempo que tardará en actualizarse esa propiedad. A
 partir de ese momento, el contador de tiempo irá decrementándose en una
 unidad cada vez que pase una unidad de tiempo, hasta que al llegar a cero
-la propiedad se actualizará. ``Actualizarse'' consiste en llamar a un método
+la propiedad se actualizará. \comillas{Actualizarse} consiste en llamar a un método
 \textsf{update} que definimos nosotros, y donde podemos programar una actualización
 de la propiedad o cualquier otra cosa que nos venga bien que suceda en ese
 tiempo: las propiedades con contador de tiempo no sólo van bien para poner
 en los objetos estados que duren una determinada cantidad de tiempo, sino
 también como herramienta para temporizar en general (podemos utilizar una
-propiedad con contador de tiempo como un ``reloj'' para lanzar eventos que
+propiedad con contador de tiempo como un \comillas{reloj} para lanzar eventos que
 deban suceder en un momento dado).
 
 Para fijar el valor de una propiedad junto con su temporizador, utilizamos
@@ -283,7 +283,7 @@ principio de la aventura) para que funcione (enseguida veremos cómo se hace).
 La segunda puntualización es que, debido a que todavía no conocemos a fondo
 todo lo que se puede hacer con el AGE, la forma de notificar al jugador en
 este ejemplo es bastante chapucera: sirve para aventuras para un solo jugador
-(donde hemos puesto a la entidad del jugador el nombre único ``jugador''),
+(donde hemos puesto a la entidad del jugador el nombre único \comillas{jugador}),
 pero, ¿qué pasa en aventuras multijugador?
 
 Para hacer estas cosas de forma más genérica y que funcionen bien (por
@@ -297,7 +297,7 @@ menos en el caso de aventuras monojugador nos servirá.
 
 Es útil saber que, si no queremos que una propiedad llame nunca a su método
 update, podemos conseguirlo poniendo su temporizador al valor $-1$. El valor
-$-1$ significa ``infinito'', es decir, la propiedad tardará infinito en
+$-1$ significa \comillas{infinito}, es decir, la propiedad tardará infinito en
 actualizarse (no se actualizará nunca).
 
 En el ejemplo de esta sección, hemos visto un posible uso de las propiedades
@@ -337,7 +337,7 @@ a un tipo básico: es decir, por ejemplo,
 boolean b = get ( item("televisor") , "encendido" )
 \end{lstlisting}
 
-nos dará un error si antes no hemos fijado el valor de ``encendido'', porque
+nos dará un error si antes no hemos fijado el valor de \comillas{encendido}, porque
 no podemos asignar a una variable boolean el valor \textsf{null}.
 
 Por lo tanto, en general suele ser altamente recomendable dar un valor
@@ -348,30 +348,30 @@ BeanShell.
 \subsubsection{Inicialización desde PUCK}
 
 Para inicializar las propiedades de una entidad desde PUCK, basta con ir al
-panel de formularios de esa entidad y seleccionar la pestaña ``Código y
-propiedades''. En la parte inferior, debajo del área de código, hay un
-formulario que dice ``Propiedades''. Para dar un valor inicial a una
+panel de formularios de esa entidad y seleccionar la pestaña \comillas{Código y
+propiedades}. En la parte inferior, debajo del área de código, hay un
+formulario que dice \comillas{Propiedades}. Para dar un valor inicial a una
 propiedad de la entidad, tecleamos el nombre de la propiedad (sin comillas)
-en el campo ``nombre'', su valor inicial en el campo ``valor'', y el valor
-del temporizador en ``tiempo restante''. Si no queremos usar el temporizador
+en el campo \comillas{nombre}, su valor inicial en el campo \comillas{valor}, y el valor
+del temporizador en \comillas{tiempo restante}. Si no queremos usar el temporizador
 (es decir, si queremos que la propiedad no se actualice nunca), usamos $-1$
 como valor del temporizador. Tras teclear en los tres campos, le damos al
-botón ``Añadir'' y veremos en la lista cómo el valor inicial de nuestra
+botón \comillas{Añadir} y veremos en la lista cómo el valor inicial de nuestra
 propiedad queda guardado.
 
 Si nos hemos equivocado al introducir algún valor inicial de propiedades o
 queremos cambiarlo, podemos seleccionar dicha propiedad en la lista, editar
-los campos ``nombre'', ``valor'' y ``temporizador'' en el formulario, y
-darle al botón ``cambiar'' para guardar los cambios. El botón ``borrar'' nos
+los campos \comillas{nombre}, \comillas{valor} y \comillas{temporizador} en el formulario, y
+darle al botón \comillas{cambiar} para guardar los cambios. El botón \comillas{borrar} nos
 permite borrar una fila de la lista, es decir, borrar el valor inicial de la
 propiedad que seleccionemos.
 
 Los valores de las propiedades que especificamos aquí serán los que tomen
 dichas propiedades al principio de la aventura, que luego podrán cambiar
 durante las partidas. Así, por ejemplo, podemos rellenar los campos poniendo
-el nombre ``encendido'', el valor ``false'' y el temporizador ``$-1$'' para
+el nombre \comillas{encendido}, el valor \comillas{false} y el temporizador \comillas{$-1$} para
 que funcione el ejemplo del televisor que veíamos con anterioridad, y el
-televisor comience apagado. Poniendo el valor ``true'', comenzaría encendido.
+televisor comience apagado. Poniendo el valor \comillas{true}, comenzaría encendido.
 
 \subsubsection{Inicialización desde BeanShell}
 
@@ -420,16 +420,16 @@ Algunos ejemplos en los que se pueden utilizar relaciones son los siguientes:
 
 \begin{itemize}
 \item{Queremos saber si Fulanito conoce o no a Menganito. Entonces,
-utilizamos una relación ``conoce'' de Fulanito a Menganito, que tomará valor
+utilizamos una relación \comillas{conoce} de Fulanito a Menganito, que tomará valor
 \textsf{true} si Fulanito conoce a Menganito, y \textsf{false} de lo
 contrario.}
 \item{En una aventura romántica, queremos saber el grado de atracción que
-Juan siente por María. Para eso, utilizamos una relación ``gusta'' de Juan a
+Juan siente por María. Para eso, utilizamos una relación \comillas{gusta} de Juan a
 María, que tomará valores \textsf{int} de $0$ a $10$ según ese grado de
 atracción.}
 \item{En un juego de rol, tenemos que sobornar a un troll dándole un objeto
 que le guste. Para marcar qué objetos le gustan, usamos una relación
-``gusta'' del troll a cada uno de los objetos que le gusten, que tomará
+\comillas{gusta} del troll a cada uno de los objetos que le gusten, que tomará
 valor true para esos objetos.}
 \item{...}
 \end{itemize}
@@ -491,8 +491,8 @@ get ( mobile("troll") , "gusta" , item("pera") ); //esto devuelve null (no false
 Al igual que las propiedades, las relaciones también se pueden inicializar
 directamente usando PUCK. Para ello, creamos una flecha entre las dos
 entidades que queramos relacionar. Seleccionando la flecha en el mapa de
-PUCK, nos aparecerá un panel asociado a la flecha. En su ficha ``Otras
-relaciones'', nos aparecerá una lista de ``Relaciones personalizadas'' que
+PUCK, nos aparecerá un panel asociado a la flecha. En su ficha \comillas{Otras
+relaciones}, nos aparecerá una lista de \comillas{Relaciones personalizadas} que
 funciona de la misma manera que la lista de propiedades de los objetos:
 podemos añadir relaciones aportando su nombre, valor y temporizador.
 
@@ -501,12 +501,12 @@ por defecto lo que se llama una relación estructural, que es una relación
 especial que usa AGE para determinar dónde están los objetos y no es lo
 mismo que las relaciones personalizadas que aquí estamos creando: por
 ejemplo, si los objetos son dos habitaciones se crea por defecto un camino,
-si son una habitación y una cosa se crea una relación ``contiene'' que
+si son una habitación y una cosa se crea una relación \comillas{contiene} que
 significa que la cosa está dentro de la habitación. Si lo único que queremos
 es crear relaciones personalizadas, nos interesará desactivar estas
-relaciones estructurales: esto se hace desmarcando el botón ``hay camino'',
-entre habitaciones, o poniendo el campo ``Relación estructural'' a ``Ninguna''
-en la ficha ``Relación estructural'' del panel de la flecha, en el resto de
+relaciones estructurales: esto se hace desmarcando el botón \comillas{hay camino},
+entre habitaciones, o poniendo el campo \comillas{Relación estructural} a \comillas{Ninguna}
+en la ficha \comillas{Relación estructural} del panel de la flecha, en el resto de
 los casos. Si queremos tener tanto una relación estructural como
 personalizada a la vez entre dos objetos, no necesitaremos desactivar la
 estructural de esta manera.
@@ -535,7 +535,7 @@ mobile("troll").getRelatedEntities("gusta")
 
 nos devuelve todas las cosas de la aventura para las cuales hemos
 especificado si le gustan al troll o no (es decir, tales que hemos fijado la
-relación ``gusta'' del troll hacia esas cosas, sea a true o a false). Nótese
+relación \comillas{gusta} del troll hacia esas cosas, sea a true o a false). Nótese
 que el método va en una dirección, es decir, no nos devolvería cosas que
 estén relacionadas en sentido inverso (de la cosa al troll).
 
@@ -545,7 +545,7 @@ mobile("troll").getRelatedEntities("gusta",true)
 
 nos devuelve todas las cosas de la aventura para las cuales hemos
 especificado que le gustan al troll (es decir, hemos fijado la relación
-``gusta'' del troll hacia esas cosas, y concretamente la hemos puesto a
+\comillas{gusta} del troll hacia esas cosas, y concretamente la hemos puesto a
 true).
 
 Estos métodos nos permiten extraer todo el potencial de las relaciones, al

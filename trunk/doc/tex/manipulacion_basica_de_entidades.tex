@@ -8,10 +8,10 @@ nuestros mundos de AGE. Pero para eso, primero debemos ver cómo se puede
 utilizar el código BeanShell para manejar las entidades del mundo.
 
 Por ejemplo, supongamos que queremos programar la siguiente situación:
-tenemos un plátano que puede ser comido. Cuando el jugador teclea ``comer el
-plátano'', queremos que éste desaparezca de su inventario, y que en su lugar
+tenemos un plátano que puede ser comido. Cuando el jugador teclea \comillas{comer el
+plátano}, queremos que éste desaparezca de su inventario, y que en su lugar
 quede una piel de plátano. Una forma sencilla de conseguirlo detectar cuándo
-el jugador ha tecleado el verbo ``comer'' referido a esa entidad plátano, y
+el jugador ha tecleado el verbo \comillas{comer} referido a esa entidad plátano, y
 a continuación deberemos quitarlo de su inventario y meter una entidad
 representando la piel. En esta sección veremos cómo hacer cosas como ésta.
 
@@ -20,26 +20,26 @@ representando la piel. En esta sección veremos cómo hacer cosas como ésta.
 Para los ejemplos de código de la sección anterior, utilizábamos el método
 de análisis de la entrada del mundo, que nos permitía interceptar todas las
 entradas que un jugador pusiese en un mundo dado. Para programar acciones
-que actúen sobre una entidad dada, como ``comer el plátano'', será más
+que actúen sobre una entidad dada, como \comillas{comer el plátano}, será más
 cómodo utilizar un método de análisis de la entrada referida a esa entidad.
 Los métodos de análisis de la entrada referida a una entidad sólo se llaman
 cuando un jugador teclea un verbo que actúe sobre esa entidad (nombrándola
 por uno de sus nombres de referencia). De este modo, no tenemos que
 comprobar nosotros a mano si el jugador se ha referido al plátano
-comprobando cosas como si ha tecleado la palabra ``plátano'' como parte de
+comprobando cosas como si ha tecleado la palabra \comillas{plátano} como parte de
 la entrada: AGE comprueba por nosotros a qué entidades se está refiriendo el
 jugador y lanza por nosotros sus métodos de análisis de la entrada, que sólo
 tenemos que redefinir para programar las acciones correspondientes.
 
 Por ejemplo, creemos en el PUCK una entidad plátano. Para ello, usamos la
-herramienta ``Crear cosa'' para crear una cosa con las siguientes
+herramienta \comillas{Crear cosa} para crear una cosa con las siguientes
 características:
 
 \begin{itemize}
 \item{Nombre único: plátano}
 \item{Género: masculino}
-\item{Descripción: cualquier cosa que se nos ocurra (como por ejemplo ``Un
-bonito plátano.'')}
+\item{Descripción: cualquier cosa que se nos ocurra (como por ejemplo \comillas{Un
+bonito plátano.})}
 \item{Nombre singular para mostrar: plátano}
 \item{Nombres singulares de referencia: plátano, platano, fruta}
 \item{Nombres plurales de referencia: plátanos, platanos, frutas, comida,
@@ -48,10 +48,10 @@ todo}
 
 Añadimos el plátano a la habitación donde esté el jugador, creando una
 flecha desde la habitación hasta él, y a continuación vamos a la pestaña
-``Código y propiedades'' del plátano. Agrandamos el campo de código y, en el
-menú contextual (botón derecho), seleccionamos ``Insertar código -- Redefinir
+\comillas{Código y propiedades} del plátano. Agrandamos el campo de código y, en el
+menú contextual (botón derecho), seleccionamos \comillas{Insertar código -- Redefinir
 métodos de cosa -- Método de análisis de la entrada (estándar) -- Referente
-a esta cosa''. Se nos generará el siguiente código:
+a esta cosa}. Se nos generará el siguiente código:
 
 \begin{lstlisting}
 /*Método de análisis sintáctico de la entrada referida a una cosa*/
@@ -78,10 +78,10 @@ mundo, el método del plátano sólo será invocado cuando una entrada se
 refiera al plátano.
 
 Concretamente, este método del plátano se ejecutará cuando el jugador ponga
-un comando en el que mencione ``plátano'' (u otro nombre de referencia) y
+un comando en el que mencione \comillas{plátano} (u otro nombre de referencia) y
 además cuente con el plátano a su alcance (es decir, en el inventario o
 bien en la habitación en la que está). El método no se ejecutará, por
-ejemplo, si el jugador escribe ``comer el plátano'' en una habitación cuando
+ejemplo, si el jugador escribe \comillas{comer el plátano} en una habitación cuando
 el plátano está en otra, que es lo que normalmente interesa.
 
 Los parámetros del método son tal y como vienen descritos en la plantilla,
@@ -90,12 +90,12 @@ es decir:
 \begin{itemize}
 \item{aCreature es la criatura (jugador) que ha introducido el comando (que
 quiere hacer algo con el plátano).}
-\item{verb es el verbo que ha introducido esa criatura, por ejemplo ``comer''.}
+\item{verb es el verbo que ha introducido esa criatura, por ejemplo \comillas{comer}.}
 \item{args es el resto del texto que ha introducido la criatura, como por
-ejemplo ``el plátano''.}
+ejemplo \comillas{el plátano}.}
 \end{itemize}
 
-Así, por ejemplo, si queremos que cuando el jugador ponga ``comer el plátano''
+Así, por ejemplo, si queremos que cuando el jugador ponga \comillas{comer el plátano}
 el juego le diga que no puede, podemos hacerlo así:
 
 \begin{lstlisting}
@@ -124,12 +124,12 @@ No puedes comer plátano: tu religión te impide morder cosas alargadas y amarilla
 No puedes comer plátano: tu religión te impide morder cosas alargadas y amarillas.
 \end{verbatim}
 
-El motivo de que funcione tanto cuando ponemos ``plátano'' como ``platano''
-o ``fruta'' es porque hemos puesto todas esas palabras como nombres de
+El motivo de que funcione tanto cuando ponemos \comillas{plátano} como \comillas{platano}
+o \comillas{fruta} es porque hemos puesto todas esas palabras como nombres de
 referencia. Pero algo un poco más misterioso puede ser ¿por qué funciona
-tanto ``come'' como ``como'' o ``comer'', si en la condición del if hemos
+tanto \comillas{come} como \comillas{como} o \comillas{comer}, si en la condición del if hemos
 puesto \verb|equals( verb , "comer" )|, que debería comprobar si el verbo
-que ha puesto el jugador es textualmente ``comer''?
+que ha puesto el jugador es textualmente \comillas{comer}?
 
 La razón de esto es porque la entrada del jugador se preprcesa antes de ser
 pasada a parseCommand. Es decir, la entrada que recibimos como parámetro del
@@ -141,7 +141,7 @@ preprocesado en la sección \ref{sec:parseCommand} de Métodos de análisis de
 la entrada (parseCommand).
 
 \subsection{Métodos para quitar, poner y mover entidades}
-Con el código que acabamos de ver, podemos proporcionar una ``excusa'' al
+Con el código que acabamos de ver, podemos proporcionar una \comillas{excusa} al
 jugador para no dejarle que se coma el plátano. Pero lo que realmente
 queríamos hacer es que se lo coma de verdad. Para ello, tendremos que quitar
 el plátano del inventario del jugador y, si queremos darle un mayor
@@ -322,8 +322,8 @@ Para mejorar esto, tenemos dos opciones:
 
 \begin{enumerate}
 \item{Comprobar si el jugador lleva el plátano en su inventario, y si no lo
-lleva, no dejar que se lo coma (diciendo algo así como ``Primero tienes que
-cogerlo'').}
+lleva, no dejar que se lo coma (diciendo algo así como \comillas{Primero tienes que
+cogerlo}).}
 \item{Dejar que el jugador se coma el plátano incluso si no lo lleva, pero
 en este caso, borrar el plátano de la habitación, en lugar de del inventario
 del jugador.}
@@ -432,11 +432,11 @@ interior y quede la piel; o bien que la misma entidad plátano pase de estar
 intacta a conservar sólo la piel, cambiándole las descripciones); para un
 comportamiento como este eso tendría una complejidad excesiva. Una solución
 mucho más sencilla, y que funcionará igual, es que tengamos un objeto
-``piel de plátano'' creado de antemano pero no enlazado con el mundo, y que
-cuando el jugador ponga el plátano demos el ``cambiazo'' quitando la entidad
+\comillas{piel de plátano} creado de antemano pero no enlazado con el mundo, y que
+cuando el jugador ponga el plátano demos el \comillas{cambiazo} quitando la entidad
 plátano y sustituyéndola por la piel.
 
-Así, creamos un objeto ``piel de plátano'' con las siguientes
+Así, creamos un objeto \comillas{piel de plátano} con las siguientes
 características:
 
 \begin{itemize}
@@ -488,35 +488,35 @@ comportamientos habituales en puzzles de aventuras, como por ejemplo
 \item{Quitarle una cosa cuando hace una determinada acción,}
 \item{Darle una cosa, o poner en la habitación una cosa o criatura,}
 \item{Mover entidades por el mapa,}
-\item{``Teletransportar'' al jugador de una habitación a otra,}
+\item{\comillas{Teletransportar} al jugador de una habitación a otra,}
 \item{Transformar una cosa en otra, como el plátano en piel de plátano.}
 \end{itemize}
 
 Con esto se puede implementar una parte significativa de los puzzles que
-aparecen en aventuras sencillas, tipo ``Vampiro''. Pero tenemos una
+aparecen en aventuras sencillas, tipo \comillas{Vampiro}. Pero tenemos una
 limitación: por el momento, sólo sabemos implementar acciones que se
 refieren como mucho a una entidad\footnote{También sabemos implementar
 acciones que no se refieren a ninguna entidad, con el método de análisis de
 la entrada del mundo que utilizábamos al principio}: podemos responder a
-``comer el plátano'', ``encender la tele'', ``pulsar el botón'' o ``frotar
-la lámpara mágica''; pero no a ``abrir el barril con la palanca'', ``atar al
-perro al tronco'', ``echar sal al guiso'' o ``dar una moneda al mendigo'':
+\comillas{comer el plátano}, \comillas{encender la tele}, \comillas{pulsar el botón} o \comillas{frotar
+la lámpara mágica}; pero no a \comillas{abrir el barril con la palanca}, \comillas{atar al
+perro al tronco}, \comillas{echar sal al guiso} o \comillas{dar una moneda al mendigo}:
 estas últimas acciones se refieren a dos entidades, no a una.
 
 Para implementar acciones como éstas con facilidad, existen métodos de
 análisis de la entrada específicos que AGE ejecuta sólo cuando el jugador
 se ha referido en una misma orden a dos entidades, y que nos proporcionan
 dichas entidades como parámetro. Por ejemplo, supongamos que tenemos un
-objeto ``moneda de oro'' que le podemos dar a diversos personajes de
-nuestra aventura mediante la orden ``dar moneda a Fulanito''. Para
+objeto \comillas{moneda de oro} que le podemos dar a diversos personajes de
+nuestra aventura mediante la orden \comillas{dar moneda a Fulanito}. Para
 implementarlo, haremos lo siguiente:
 
 \begin{itemize}
-\item{Creamos la cosa ``moneda de oro'', con los nombres, descripciones y
+\item{Creamos la cosa \comillas{moneda de oro}, con los nombres, descripciones y
 características correspondientes.}
 \item{Creamos los personajes a los que les podremos dar la moneda. Para
-ello, usaremos la herramienta ``Añadir personaje'' (pero sin marcarlos como
-jugador) y rellenaremos las fichas ``General'' y ``Nombres'' del formulario
+ello, usaremos la herramienta \comillas{Añadir personaje} (pero sin marcarlos como
+jugador) y rellenaremos las fichas \comillas{General} y \comillas{Nombres} del formulario
 exactamente igual que al crear cosas. Por ejemplo, un personaje podría ser
 así:
 	\begin{itemize}
@@ -526,15 +526,15 @@ así:
 	(éstos son campos para utilizar en juegos tipo rol, con puntos de vida y
 	magia)}
 	\item{Jugador: no}
-	\item{Descripción: lo que queramos, por ejemplo ``Un hombre triste y
-	sucio, con pinta de haber sido vapuleado por la vida.''}
+	\item{Descripción: lo que queramos, por ejemplo \comillas{Un hombre triste y
+	sucio, con pinta de haber sido vapuleado por la vida.}}
 	\item{Nombre singular para mostrar: mendigo}
 	\item{Nombres singulares de referencia: mendigo, pedigüeño, hombre}
 	\end{itemize}}
 \item{Vamos al formulario de código de la moneda de oro, abrimos el menú
-contextual, y seleccionamos: ``Insertar código -- Redefinir métodos de cosa --~
+contextual, y seleccionamos: \comillas{Insertar código -- Redefinir métodos de cosa --~
 Método de análisis de la entrada (estándar) -- Referente a ésta y otra cosa (en
-ese orden)''. Con lo cual se nos generará la siguiente plantilla:
+ese orden)}. Con lo cual se nos generará la siguiente plantilla:
 
 \begin{lstlisting}
 /*Método de análisis sintáctico de la entrada referida a dos cosas, que no están dentro de otras*/
@@ -566,8 +566,8 @@ parámetros, que ya debería ayudarnos a entender lo que hace. En concreto,
 este método que hemos definido sirve para capturar acciones sobre dos
 entidades, de las cuales aquélla en que se define es la primera mencionada
 (es decir, si lo definimos en la moneda, podemos usarlo para responder a
-verbos como ``dar la moneda a Fulano'' pero no a otros como ``forzar la
-cerradura con la moneda'', donde la moneda aparece en segundo lugar (hay
+verbos como \comillas{dar la moneda a Fulano} pero no a otros como \comillas{forzar la
+cerradura con la moneda}, donde la moneda aparece en segundo lugar (hay
 otro método, que veremos después, que es independiente del orden).
 
 Los primeros dos parámetros hacen la misma función que en el método de
@@ -575,15 +575,15 @@ análisis de la entrada referida a una entidad, proporcionándonos el objeto
 que representa al jugador que ha tecleado la orden así como el verbo que ha
 introducido. Los siguientes dos parámetros, que aparecen como \textsf{args1}
 y \textsf{args2}, nos dan el resto de la orden introducida dividida en dos
-partes, una con cada entidad a la que se refiere: así, en ``dar la moneda de
-oro al mendigo'', \textsf{args1} será la cadena ``la moneda de oro'', y
-\textsf{args2} será ``al mendigo''.
+partes, una con cada entidad a la que se refiere: así, en \comillas{dar la moneda de
+oro al mendigo}, \textsf{args1} será la cadena \comillas{la moneda de oro}, y
+\textsf{args2} será \comillas{al mendigo}.
 
 Por último, el quinto y último parámetro (que aparece con el nombre
 \textsf{obj2}) nos proporciona la segunda entidad (clase \textsf{Entity}) a
-la que se ha referido el jugador. Así, si éste teclea ``dar moneda al
-mendigo'', \textsf{obj2} será la entidad mendigo (\verb|mobile("mendigo")|);
-mientras que si teclea ``dar moneda al embajador'', sería el objeto
+la que se ha referido el jugador. Así, si éste teclea \comillas{dar moneda al
+mendigo}, \textsf{obj2} será la entidad mendigo (\verb|mobile("mendigo")|);
+mientras que si teclea \comillas{dar moneda al embajador}, sería el objeto
 embajador. Nótese que en este ejemplo \textsf{obj2} se refiere a criaturas,
 pero podría referirse a cosas también: tanto \textsf{Item} (cosas) como
 \textsf{Mobile} (criaturas) son subtipos de la clase \textsf{Entity}
@@ -630,7 +630,7 @@ void parseCommandObj1 ( Mobile aCreature , String verb , String args1 , String a
 }
 \end{lstlisting}
 
-Como vemos, en el caso de que el verbo sea ``dar'', comparamos \textsf{obj2}
+Como vemos, en el caso de que el verbo sea \comillas{dar}, comparamos \textsf{obj2}
 con distintas criaturas para programar sus reacciones. Hemos usado un método
 que no habíamos visto antes, el método
 
@@ -673,8 +673,8 @@ Sin embargo, muchas veces es más conveniente hacerlo al revés: definir el
 método en la segunda entidad, y obtener la primera como parámetro. Imaginemos
 que en nuestra aventura sólo hay un personaje al que podemos intentar darle
 diferentes cosas, y según la cosa que le demos reaccionará de una u otra
-manera: está claro que en este caso será más cómodo definir el comando ``dar
-X a personaje'' en el personaje, y programar allí la reacción a todas las
+manera: está claro que en este caso será más cómodo definir el comando \comillas{dar
+X a personaje} en el personaje, y programar allí la reacción a todas las
 posibles cosas X, en lugar de tener que definir el método una vez en cada
 cosa.
 
@@ -695,9 +695,9 @@ situación; pero el caso es que AGE nos permite definir los métodos de
 análisis de la entrada para dos entidades tanto en la primera entidad a la
 que se refieren las acciones como en la segunda. Para definirlo en la
 segunda, vamos al formulario de código de esa entidad (el mendigo, en este
-caso), abrimos el menú contextual, y seleccionamos: ``Insertar código --~
+caso), abrimos el menú contextual, y seleccionamos: \comillas{Insertar código --~
 Redefinir métodos de cosa -- Método de análisis de la entrada (estándar) --~
-Referente a otra entidad y ésta (en ese orden)''. Con lo cual se nos
+Referente a otra entidad y ésta (en ese orden)}. Con lo cual se nos
 generará la siguiente plantilla:
 
 \begin{lstlisting}
@@ -725,7 +725,7 @@ Como vemos, el funcionamiento del método es igual que el del anterior, salvo
 que lo definimos en la segunda entidad a la que hace referencia el jugador
 (mendigo) y se nos pasa un parámetro, llamado en la plantilla \textsf{obj1},
 que representa la primera (moneda). Así, podríamos implementar el
-comportamiento para ``dar la moneda al mendigo'' de la siguiente manera:
+comportamiento para \comillas{dar la moneda al mendigo} de la siguiente manera:
 
 \begin{lstlisting}
 void parseCommandObj2 ( Mobile aCreature , String verb , String args1 , String args2 , Entity obj1  )
@@ -749,19 +749,19 @@ que producirá el mismo efecto que el código visto anteriormente.
 Otra situación que se produce con cierta frecuencia en castellano es que a
 veces una orden significa lo mismo independientemente del orden en que se
 digan las entidades. De hecho, el caso que estamos tratando es un ejemplo:
-se puede decir ``dar la moneda al mendigo'', pero también podría
-interesarnos que la aventura entendiese ``dar al mendigo la moneda'',
+se puede decir \comillas{dar la moneda al mendigo}, pero también podría
+interesarnos que la aventura entendiese \comillas{dar al mendigo la moneda},
 aunque sea menos común.
 
 Por supuesto, podríamos hacer esto con los métodos anteriores, definiendo
-por separado respuestas a ``dar la moneda al mendigo'' y a ``dar al mendigo
-la moneda''; pero existe una forma más cómoda de implementar el soporte de
+por separado respuestas a \comillas{dar la moneda al mendigo} y a \comillas{dar al mendigo
+la moneda}; pero existe una forma más cómoda de implementar el soporte de
 ambas cosas a la vez, sin trabajar el doble. Para ello, vamos al campo de
 código de la entidad en la que queremos definir el código (que puede ser
 cualquiera de las dos, supongamos por ejemplo que es el mendigo) y, en el
-menú contextual, seleccionamos ``Insertar código -- Redefinir métodos de
+menú contextual, seleccionamos \comillas{Insertar código -- Redefinir métodos de
 cosa/personaje -- Método de análisis de la entrada (estándar) -- Referente a
-esta y otra entidad, en cualquier orden''.
+esta y otra entidad, en cualquier orden}.
 
 En este caso, la plantilla que se nos genera es algo como esto:
 
@@ -797,8 +797,8 @@ otra entidad, es decir, aquélla donde no definimos el método (pues la
 entidad donde definimos el método se puede acceder mediante \textsf{self}).
 Otra forma de verlo es que este método funciona igual los otros dos métodos
 de análisis de la entrada para dos entidades que hemos visto; pero con la
-diferencia de que si el jugador teclea las entidades ``al revés'' de como
-las esperamos, el método les ``da la vuelta'' automáticamente.
+diferencia de que si el jugador teclea las entidades \comillas{al revés} de como
+las esperamos, el método les \comillas{da la vuelta} automáticamente.
 
 De esta forma, podemos implementar nuestro comportamiento por defecto como
 sigue, en el código para la entidad mendigo:
@@ -820,8 +820,8 @@ void parseCommandTwoObjects ( Mobile aCreature , String verb , String args1 , St
 }
 \end{lstlisting}
 
-Y este código funcionará exactamente igual para ``dar la moneda al mendigo''
-que para ``dar al mendigo la moneda''.
+Y este código funcionará exactamente igual para \comillas{dar la moneda al mendigo}
+que para \comillas{dar al mendigo la moneda}.
 
 Con las versiones que hemos visto del método de análisis de la entrada
 referida a dos entidades, y los métodos anteriores que vimos, podemos cubrir

@@ -1,5 +1,44 @@
 \chapter{El análisis de la entrada}
 
+Un componente clave de todo sistema de creación y ejecución de aventuras de
+texto es el \textit{analizador sintáctico} que permite interpretar las
+órdenes introducidas por los jugadores.
+
+El analizador sintáctico de AGE funciona de una forma muy sencilla,
+basándose en el principio de que menos es más. Se trata de un analizador
+diseñado para ser robusto: el analizador de AGE no utiliza un modelo
+estricto de cómo deben ser las oraciones de entrada ni intenta encajar el
+sentido de cada una de las palabras que introduce el jugador; sino que se
+basa en las palabras que conoce e ignora las que no conoce. Esto hace que
+sea posible conseguir juegos que reconozcan una amplia gama de órdenes y de
+posibles variaciones en la manera de expresarla, sin necesidad de que el
+creador del juego invierta tiempo en construir una complicada gramática que
+de todos modos se quedaría corta ante la complejidad de las órdenes que
+podrían llegar a teclear los jugadores.
+
+De hecho, el analizador de AGE es tan sencillo para el programador de juegos
+que realmente ni siquiera es necesario saber nada de cómo funciona para
+programar una aventura. En realidad, con saber usar los métodos
+\textsf{parseCommand} que hemos descrito en la sección \ref{sec:ManipEntidades} manipulación básica
+de entidades bastará para que nuestra aventura pueda comprender y ejecutar
+órdenes complejas, pues el analizador se encarga automáticamente de traducir
+cosas como \comillas{coge el plátano y cómetelo} a \comillas{coger el plátano} por un lado
+y \comillas{comer plátano} por otro. Sin embargo, avanzados ya en nuestro
+conocimiento de AGE, siempre vendrá bien saber cómo funciona el analizador
+para saber exactamente qué podemos esperar y qué no.
+
+A continuación describiremos cómo AGE lleva a cabo el análisis de la
+entrada, y cómo se puede modificar ese comportamiento. En particular, en la
+sección sobre métodos de análisis de la entrada (\textsf{parseCommand})
+haremos una descripción detallada de la manera en que se ejecutan estos
+métodos que ya llevamos utilizando desde las secciones introductorias, y
+además, una descripción paso a paso del análisis sintáctico de AGE en
+general. Más adelante, en la sección sobre preprocesado de la entrada,
+veremos cómo podemos analizar nosotros directamente la entrada si queremos
+saltarnos el análisis que hace AGE. Por último, en la sección sobre gestión
+de verbos veremos detalles avanzados sobre cómo manipular la lista de verbos
+que el analizador de AGE reconoce como tales.
+
 \section{Métodos de análisis de la entrada (\textsf{parseCommand})} \label{sec:parseCommand}
 
 \subsection {Los métodos de análisis de la entrada}
@@ -43,10 +82,10 @@ sustituyendo todos los comportamientos por defecto por código propio.
 Como es habitual en los sistemas de creación de juegos basados en texto,
 Aetheria Game Engine es capaz de interpretar y procesar por defecto las
 órdenes más comunes. Por ejemplo, si un jugador está en una habitación que
-contiene un plátano y teclea ``cojo el plátano'', el AGE se encargará de
+contiene un plátano y teclea \comillas{cojo el plátano}, el AGE se encargará de
 hacer que la sabrosa fruta pase a las pertenencias del jugador, mostrándole
 además el mensaje de texto correspondiente. Esto es porque la acción
-``coger'' es algo común a la mayoría de los juegos de texto: lo normal es
+\comillas{coger} es algo común a la mayoría de los juegos de texto: lo normal es
 que si una cosa no pesa demasiado, y no está fija en el sitio (como lo
 estaría un adoquín del suelo), se pueda coger.
 
@@ -143,7 +182,7 @@ Orden & Objeto & Signatura del método & Nomenclatura en menús de PUCK \\
 \hline
 \end{tabular}}
 
-* Los métodos de tipo ``generic'' se muestran con dos órdenes de ejecución
+* Los métodos de tipo \comillas{generic} se muestran con dos órdenes de ejecución
 porque pueden ejecutarse tanto para procesar comandos que se refieren a dos
 entidades del mundo como para los que se refieren a uno solo. Para el caso
 de dos entidades, se ejecutan junto a los métodos análogos que procesan
@@ -158,14 +197,14 @@ interpretar las frases que introduce el jugador, sino sólo de definir qué
 cosas puede hacer su juego; el AGE lleva a cabo por sí solo un análisis
 sintáctico de la entrada, pasándole al creador de aventuras (a través de
 los métodos \textsf{parseCommand}) una entrada ya preprocesada. Por ejemplo,
-si el jugador teclease ``coge el plátano y cómelo'', AGE rompería el
+si el jugador teclease \comillas{coge el plátano y cómelo}, AGE rompería el
 comando en sus dos partes y se encargaría de los pronombres y los tiempos
-verbales, traduciéndolo como ``coger el plátano'', por un lado, y ``comer el
-plátano'', por otro. De este modo, el método \textsf{parseCommand} que vimos
-en el ejemplo anterior funcionará para ``coge el plátano y cómelo''; aunque
+verbales, traduciéndolo como \comillas{coger el plátano}, por un lado, y \comillas{comer el
+plátano}, por otro. De este modo, el método \textsf{parseCommand} que vimos
+en el ejemplo anterior funcionará para \comillas{coge el plátano y cómelo}; aunque
 el verbo no esté en infinitivo como aparece en el código, y aunque el
-jugador haya tecleado ``cómelo'' en lugar de poner explícitamente ``comer el
-plátano''.
+jugador haya tecleado \comillas{cómelo} en lugar de poner explícitamente \comillas{comer el
+plátano}.
 
 \textbf{Nota}: Si en algún caso se hace necesario analizar toda la entrada
 a mano, sin que AGE lleve a cabo este preprocesado, también es posible; pero
@@ -178,38 +217,38 @@ siguientes (no debería ser necesario saber esto salvo para usos muy
 avanzados):
 
 \begin{enumerate}
-\item {Si la orden es compuesta, romperla en órdenes simples: así, ``coge el
-plátano y cómelo'' se romperá en las dos órdenes ``coge el plátano'' y
-``cómelo''. Cada una de ellas se tratará como una orden independiente de
+\item {Si la orden es compuesta, romperla en órdenes simples: así, \comillas{coge el
+plátano y cómelo} se romperá en las dos órdenes \comillas{coge el plátano} y
+\comillas{cómelo}. Cada una de ellas se tratará como una orden independiente de
 cara a todos los métodos \textsf{parseCommand}.}
 \item {Sustituir los pronombres: cada uno de los pronombres enclíticos se
 sustituye por el nombre que referencia, que se supone que es el último
-nombre referenciado que coincide en género con el pronombre. Así, el ``lo''
-de ``cómelo'' se sustituiría por ``plátano'', dando lugar a ``cóme plátano''
+nombre referenciado que coincide en género con el pronombre. Así, el \comillas{lo}
+de \comillas{cómelo} se sustituiría por \comillas{plátano}, dando lugar a \comillas{cóme plátano}
 (sic). Nótese que la sustitución de pronombres funciona también entre
-distintas órdenes, es decir, si el jugador primero teclea ``coge el plátano'',
-y más tarde en una línea separada teclea ``cómelo'', el pronombre será
+distintas órdenes, es decir, si el jugador primero teclea \comillas{coge el plátano},
+y más tarde en una línea separada teclea \comillas{cómelo}, el pronombre será
 sustituido igualmente.}
 \item {Corregir automáticamente (sólo desde versión 1.0.2): desde la versión
 1.0.2 de AGE, si la primera palabra de la orden es algo que se parece mucho
-a un verbo conocido pero no lo es (por ejemplo, ``cgoer''), se cambia por
+a un verbo conocido pero no lo es (por ejemplo, \comillas{cgoer}), se cambia por
 dicho verbo. A partir de la versión 1.0.3, las siguientes palabras también
 se corrigen si se parecen mucho a un nombre de referencia de un objeto del
-mundo pero no lo son (por ejemplo, ``trajje'' por ``traje''). Estas
+mundo pero no lo son (por ejemplo, \comillas{trajje} por \comillas{traje}). Estas
 funcionalidades se pueden desactivar poniendo la propiedad booleana
-``\textsf{noVerbSpellChecking}'' del jugador a \textsf{true}.}
+\comillas{\textsf{noVerbSpellChecking}} del jugador a \textsf{true}.}
 \item {Sustituir las formas verbales por infinitivos: las formas que
 aparezcan en imperativo o segunda persona son cambiadas por infinitivos,
 para evitar al programador de juegos el tener que reconocer distintas
-formas. Así, las órdenes del ejemplo quedarían cambiadas por ``coger el
-plátano'' y ``comer plátano''.}
+formas. Así, las órdenes del ejemplo quedarían cambiadas por \comillas{coger el
+plátano} y \comillas{comer plátano}.}
 \item {Sustituir alias: hay algunos verbos que están definidos como
 sinónimos de otros, para que el programador de aventuras no tenga que tratar
-individualmente con cada sinónimo. Por ejemplo, ``subir'' se sustituye por
-``ir arriba'', y ``tomar'' se sustituye por ``coger'', de modo que el código
+individualmente con cada sinónimo. Por ejemplo, \comillas{subir} se sustituye por
+\comillas{ir arriba}, y \comillas{tomar} se sustituye por \comillas{coger}, de modo que el código
 definido antes para el \textsf{parseCommand} funcionaría también para
-``toma el plátano''.}
-\item {Detectar a qué objetos se refiere la orden: la palabra ``plátano'' no
+\comillas{toma el plátano}.}
+\item {Detectar a qué objetos se refiere la orden: la palabra \comillas{plátano} no
 es un sustantivo cualquiera, es un sustantivo que se refiere a una entidad
 del mundo (siempre que la hayamos puesto como nombre de referencia del
 plátano, claro). El AGE detecta nombres de referencia en las órdenes y toma
@@ -218,7 +257,7 @@ nota de a qué entidad hacen referencia.}
 métodos \textsf{parseCommand}, en el orden que se muestra en la tabla de
 más arriba. Los \textsf{parseCommand} en concreto que se ejecuten dependerán
 de las entidades a las que haga referencia la orden: por ejemplo, como
-``comer plátano'' se refiere a una entidad (el plátano), se ejecutará el
+\comillas{comer plátano} se refiere a una entidad (el plátano), se ejecutará el
 método \textsf{parseCommand ( Mobile aCreature, String verb , String args )}
 de la entidad plátano; pero no se ejecutarán los métodos para órdenes que
 se refieren a dos entidades (como \textsf{parseCommandTwoObjects}) ya que
@@ -228,17 +267,17 @@ item {Llevar a cabo el comportamiento por defecto, si es posible: si en los
 \textsf{end()}, hay dos posibilidades:
 	\begin{enumerate}
 	\item {Que la frase empiece por un verbo: en cuyo caso, si hay un
-	comportamiento por defecto para ese verbo (como sucede con ``coger'') se
-	ejecuta; mientras que si no lo hay (como en ``comer'') se muestra un
+	comportamiento por defecto para ese verbo (como sucede con \comillas{coger}) se
+	ejecuta; mientras que si no lo hay (como en \comillas{comer}) se muestra un
 	mensaje para indicar al jugador que la aventura no entiende lo que quiere
 	hacer.}
 	\item {Que la frase no empice por un verbo: en este caso, se repite todo
 	el procesado de la entrada suponiendo que la frase va precedida del
-	último verbo que se ha utilizado; esto es el llamado modo ``second chance''.
+	último verbo que se ha utilizado; esto es el llamado modo \comillas{second chance}.
 	Esto puede servir para interpretar algunos comandos donde se omite el
-	verbo: por ejemplo, si el jugador teclea ``comer el plátano'' y después
-	sigue con ``ahora la manzana'', refiriéndose a que quiere comer la
-	manzana. Si después del modo ``second chance'' se llega al punto 7.a; es
+	verbo: por ejemplo, si el jugador teclea \comillas{comer el plátano} y después
+	sigue con \comillas{ahora la manzana}, refiriéndose a que quiere comer la
+	manzana. Si después del modo \comillas{second chance} se llega al punto 7.a; es
 	señal de que la frase introducida no era inteligible en absoluto y se
 	muestra el mensaje de que no se ha entendido.}
 	\end{enumerate}
@@ -330,16 +369,16 @@ String preprocessCommand ( Mobile aCreature , String inputText )
 }
 \end{lstlisting}
 
-En este ejemplo, si la entrada que nos ponen no empieza por ``por favor'',
+En este ejemplo, si la entrada que nos ponen no empieza por \comillas{por favor},
 mostramos un mensaje de protesta interrumpimos el procesado con \textsf{end()},
 que funciona de la misma forma que en los métodos \textsf{parseCommand},
 interrumpiendo el procesado de la orden. Nótese que si se interrumpe una
 orden a este nivel, nunca llegará a ser procesada por los métodos
 \textsf{parseCommand}, ya que \textsf{preprocessCommand} va antes.
 
-En el caso de que la entrada sí empiece por ``por favor'', le quitamos el
-``por favor'' del principio dejando que AGE procese el resto de la oración
-de forma normal. Así pues, será la oración sin ``por favor'', que es lo que
+En el caso de que la entrada sí empiece por \comillas{por favor}, le quitamos el
+\comillas{por favor} del principio dejando que AGE procese el resto de la oración
+de forma normal. Así pues, será la oración sin \comillas{por favor}, que es lo que
 devolvemos, la que sea procesada por los métodos \textsf{parseCommand}.
 
 Produciendo salidas como ésta:
@@ -360,3 +399,260 @@ querer hacer ningún cambio a la cadena de entrada antes de que AGE la
 procese, simplemente devolveríamos el propio parámetro \textsf{inputText}.
 
 \section {Gestión de verbos}
+
+Para analizar correctamente las órdenes introducidas por el jugador, AGE
+necesita identificar los verbos que se utilizan en los juegos,
+distinguiéndolos de palabras que no sean verbos. Esto es necesario por dos
+motivos:
+
+\begin{itemize}
+\item {Para que funcione correctamente la corrección automática de verbos
+que se describió en la sección \ref{sec:parseCommand} sobre métodos de
+análisis de la entrada. Por ejemplo, si AGE no supiese que \comillas{comer} es un
+verbo, podría confundirlo con el verbo \comillas{coger} mal escrito e intentar
+corregirlo.}
+\item {Para que funcione correctamente el modo \comillas{second chance}, también
+descrito en la sección \ref{sec:parseCommand} sobre métodos de análisis de
+la entrada. El funcionamiento de este modo se basa en suponer que, si la
+primera palabra de la orden no es un verbo, será porque el jugador quiere
+aplicar el verbo anterior. Así, por ejemplo, la oración \comillas{comer manzana y
+plátano} se divide en dos órdenes: \comillas{comer manzana} por un lado, y
+\comillas{plátano} por el otro. La primera orden se ejecuta sin problemas, mientras
+que en la segunda orden entra en juego el modo second chance, se inserta el
+verbo anterior y de ese modo se ejecuta \comillas{comer plátano}. Pero para que
+esto funcione, necesitamos saber que \comillas{plátano} no es un verbo,
+distinguiéndolo de palabras que sí lo sean (si la oración fuese \comillas{comer
+manzana y saludar}, el modo second chance no entraría en acción, porque
+saludar es un verbo).}
+\item {Para que funcione correctamente la conversión de imperativos y formas
+en primera persona a infinitivo, y así se pueda usar indistintamente en las
+órdenes cualquiera de esas tres formas verbales.}
+\end{itemize}
+
+En la gran mayoría de los casos, el programador de aventuras no se tiene
+por qué preocupar de estas cuestiones, dado que AGE cuenta con una lista de
+verbos que le permiten distinguir las palabras que pueden ser verbos de las
+que no lo son. Sin embargo, en algunos casos específicos puede ser útil
+manipular esta lista de verbos:
+
+\begin{itemize}
+\item {Si por algún motivo la lista está incompleta y falta algún verbo que
+se quiere utilizar en alguna aventura. Esto debería pasar muy rara vez
+porque se ha intentado que la lista (al menos para idioma español) sea muy
+completa, pero al fin y al cabo el idioma es algo muy grande y además
+dinámico, con palabras creándose todos los días, así que nunca se puede
+descartar que falte algún verbo.}
+\item {Si el creador de una aventura quiere que se utilice como posible
+orden una palabra que normalmente no sería un verbo en el habla común (por
+ejemplo \comillas{estado} para comprobar el estado del personaje, o cosas
+similares).}
+\item {Si se quieren aceptar formas verbales que AGE no reconoce por
+defecto: por ejemplo, si se quiere que una aventura pueda aceptar órdenes
+dadas en pasado (\comillas{fui hacia el norte}, \comillas{cogí la manzana}).}
+\end{itemize}
+
+En esta sección veremos cómo se puede consultar la lista de verbos de AGE,
+así como editarla para una aventura concreta si nos encontramos en uno de
+estos casos.
+
+\subsection {Visualización de la lista de verbos por defecto}
+
+La lista de verbos por defecto de AGE se puede ver accediendo a la opción
+\comillas{Ver lista de verbos} que se encuentra en el menú \comillas{Herramientas} de
+PUCK. Nótese que esta ventana de PUCK no permite modificar la lista, sino
+sólo verla a efectos informativos. En ella podemos comprobar, por ejemplo,
+si falta algún verbo que necesitemos, para así añadirlo a la aventura
+mediante código BeanShell.
+
+Utilizando esta opción, podremos comprobar que las entradas de la lista de
+verbos contienen dos formas verbales: una es un imperativo o primera
+persona, y la otra es el infinitivo al que corresponde. El motivo es que
+AGE puede comprender órdenes tanto en infinitivo como en imperativo o
+primera persona, y (como se vio en la sección \ref{sec:parseCommand} sobre
+métodos de análisis de la entrada) lo hace convirtiendo todas esas formas
+al infinitivo. La lista de verbos es lo que usa AGE para hacer dicha
+conversión.
+
+Por este motivo, si añadimos un nuevo verbo a la lista, deberíamos añadir
+dos entradas: una que indique cómo pasar de imperativo a infinitivo, y otra
+que indique cómo pasar de primera persona a infinitivo.
+
+\subsection {Añadir y quitar verbos}
+
+Para añadir un verbo a la lista de verbos de nuestro mundo, podemos utilizar
+el siguiente código BeanShell:
+
+\begin{lstlisting}
+world.getLanguage().addVerbEntry("enladrilla","enladrillar"); //formas imperativo e infinitivo
+world.getLanguage().addVerbEntry("enladrillo","enladrillar"); //formas primera persona e infinitivo
+\end{lstlisting}
+
+El método \textsf{getLanguage()} de la clase \textsf{World} nos proporciona
+un objeto de la clase \textsf{NaturalLanguage} que representa el idioma en
+el que acepta órdenes el mundo, y que contiene métodos que trabajan con ese
+idioma como es en este caso el método \textsf{addVerbEntry()} para añadir
+formas verbales.
+
+Las dos líneas del ejemplo actúan como si se añadieran dos filas a la tabla
+que hemos visto más arriba: una diciendo que \comillas{enladrilla} es el imperativo
+del verbo \comillas{enladrillar}, y otra diciendo que \comillas{enladrillo} es su primera
+persona (en realidad AGE no distingue entre imperativos y primeras personas,
+simplemente le estamos diciendo que ambas son formas verbales aceptadas para
+el verbo \comillas{enladrillar}. La propia forma \comillas{enladrillar}, al aparecer como
+infinitivo, también será aceptada automáticamente).
+
+Nótese que el verbo se añadirá de forma dinámica al ejecutarse el código
+BeanShell, así que no se verá en la ventana de PUCK de la lista de verbos,
+que muestra siempre la lista que hay por defecto al comenzar el juego.
+
+Para quitar un verbo de la lista de verbos, se utiliza un método
+\textsf{removeVerbEntry()} que hace lo opuesto al método
+\textsf{addVerbEntry()}:
+
+\begin{lstlisting}
+world.getLanguage().removeVerbEntry("enladrilla","enladrillar"); //formas imperativo e infinitivo
+world.getLanguage().removeVerbEntry("enladrillo","enladrillar"); //formas primera persona e infinitivo
+\end{lstlisting}
+
+Las ejecuciones de \textsf{removeVerbEntry()} del este ejemplo quitarán los
+verbos añadidos por las ejecuciones de \textsf{addVerbEntry()} del ejemplo
+anterior. Por supuesto, mediante este método también se pueden quitar de la
+aventura verbos que no hayamos añadido nosotros, sino que estén en la lista
+por defecto que muestra PUCK.
+
+\subsection {Verbos adivinables y no adivinables}
+
+NOTA: En opinión del creador de AGE, el contenido de esta subsección no es
+necesario, y de hecho no debería utilizarse nunca porque no se gana nada con
+ello y en cambio sí hay posibilidades de perder o degradar funcionalidad.
+Sin embargo, se incluye en esta documentación por completitud, dado que es
+funcionalidad que existe y que algunos autores han utilizado.
+
+Por defecto, todos los verbos de la lista pueden ser \comillas{adivinados}
+por AGE en el modo \comillas{second chance} descrito en la sección de
+métodos de análisis de la entrada. Sin embargo, AGE también proporciona la
+opción de desactivar este modo para todos los verbos o para algún verbo en
+concreto.
+
+Desactivar el modo \comillas{second chance} para todos los verbos no está
+recomendado bajo ningún concepto, dado que es un componente fundamental para
+que AGE analice correctamente las órdenes del jugador. Sin embargo, en
+alguna ocasión podría interesar a algunos autores desactivar este modo para
+algún verbo concreto. En particular, puede interesar desactivarlo para
+verbos intransitivos que tengamos definidos de manera que se ignore toda
+palabra que se teclee después del verbo. Por ejemplo, si hemos definido un
+verbo \comillas{estornudar} con el parseCommand del jugador de esta manera:
+
+\begin{lstlisting}
+String parseCommand( String verb , String args )
+{
+  if ( equals(verb,"estornudar") )
+  { 
+    self.write("Estornudas con fuerza.\n"); 
+    end(); 
+  } 
+}
+\end{lstlisting}
+
+Este verbo nos aceptaría entradas como:
+
+\begin{lstlisting}
+> estornudar
+Estornudas con fuerza.
+> estornudar Pepito
+Estornudas con fuerza.
+> estornudar con muchísimo cuidado de no despertar a Juan
+Estornudas con fuerza.
+> estornudar adfaifjadf
+Estornudas con fuerza.
+\end{lstlisting}
+
+Pero si utilizáramos una oración compuesta en la que la segunda orden no
+tuviese un verbo reconocido ni una palabra que se le pareciese, como
+
+\begin{lstlisting}
+> estornudar y asdfadf
+\end{lstlisting}
+
+Veríamos como salida
+
+\begin{lstlisting}
+Estornudas con fuerza.
+Estornudas con fuerza.
+\end{lstlisting}
+
+debido a que después del primer estornudo, al procesarse la orden
+\comillas{asdfadf}, salta el modo \comillas{second chance} y adivina el
+verbo \comillas{estornudar} (la oración se interpretaría como dos órdenes:
+\comillas{estornudar} y \comillas{estornudar asdfadf}).
+
+Una situación así nunca se dará en una partida real, sino sólo en sesiones
+de testing dirigidas específicamente a abusar del parser. Sin embargo,
+algún autor podría querer evitarla. Esto se hace quitando el verbo
+\comillas{estornudar} de la lista de verbos \comillas{adivinables} con el
+modo \comillas{second chance}, de la siguiente manera:
+
+\begin{lstlisting}
+world.getLanguage().setUnguessable("estornudar");
+\end{lstlisting}
+
+Nótese que en este método \textsf{setUnguessable} sólo hace falta
+especificar el verbo en infinitivo para desactivar el modo \comillas{second
+chance} con ese verbo.
+
+También cabe destacar que si hubiésemos programado el verbo
+\comillas{estornudar} para que sólo funcionase si se introduce con
+argumentos, el modo \comillas{second chance} nunca tendría efecto con este
+verbo aunque no utilizásemos \textsf{setUnguessable()}:
+
+\begin{lstlisting}
+String parseCommand( String verb , String args )
+{
+  if ( equals(verb,"estornudar") && equals(args,"") )
+  { 
+    self.write("Estornudas con fuerza.\n"); 
+    end(); 
+  } 
+}
+\end{lstlisting}
+
+En el ejemplo de arriba, esto haría que \comillas{estornudar asdfadf} no
+respondiese:
+
+\begin{lstlisting}
+> estornudar y asdfadf
+Estornudas con fuerza.
+No entiendo...
+\end{lstlisting}
+
+Más en general, los siguientes métodos de la clase \textsf{NaturalLanguage}
+manipulan la lista de verbos que son adivinables y no adivinables con el
+modo \comillas{second chance}:
+
+\begin{lstlisting}
+/*clase NaturalLanguage*/ void setAllGuessable ( )
+\end{lstlisting}
+
+Activa el modo \comillas{second chance} para todos los verbos. Éste es el
+comportamiento por defecto de AGE.
+
+\begin{lstlisting}
+/*clase NaturalLanguage*/ void setAllUnguessable ( )
+\end{lstlisting}
+
+Desactiva el modo \comillas{second chance} para todos los verbos. Se
+recomienda no llamar a este método nunca, salvo tal vez en el caso especial
+en el que se quiera degradar a propósito la funcionalidad de análisis de AGE
+(tal vez para simular la respuesta de algún sistema retro).
+
+\begin{lstlisting}
+/*clase NaturalLanguage*/ void setGuessable ( String verb )
+\end{lstlisting}
+
+Desactiva el modo \comillas{second chance} para el verbo \textsf{verb}.
+
+\begin{lstlisting}
+/*clase NaturalLanguage*/ void setUnguessable ( String verb )
+\end{lstlisting}
+
+Activa el modo \comillas{second chance} para el verbo \textsf{verb}.
