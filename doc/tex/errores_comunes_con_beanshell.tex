@@ -13,11 +13,11 @@ largo en rojo. He aquí un ejemplo de un error de sintaxis:
 Syntax error in BeanShell code in object: [ eu.irreality.age.Player:20000000:el character #3 ]\\
 Loaded to call method onInit\\
 (with no arguments)\\
-File: inline evaluation of: ``void onInit() {    set ( "prop" , number + 3 );    };''\\
-Stack trace: Sourced file: inline evaluation of: ``onInit( );'' : illegal use of undefined variable, class, or 'void' literal : at\\ 
-Line: 3 : in file: inline evaluation of: ``void onInit() {    set ( "prop" , number + 3 );    };'' : ) ;\\
+File: inline evaluation of: \comillas{void onInit() {    set ( "prop" , number + 3 );    };}\\
+Stack trace: Sourced file: inline evaluation of: \comillas{onInit( );} : illegal use of undefined variable, class, or 'void' literal : at\\ 
+Line: 3 : in file: inline evaluation of: \comillas{void onInit() {    set ( "prop" , number + 3 );    };} : ) ;\\
 
-Called from method: onInit : at Line: 1 : in file: inline evaluation of: ``onInit( );'' : onInit ( )\\
+Called from method: onInit : at Line: 1 : in file: inline evaluation of: \comillas{onInit( );} : onInit ( )\\
 	at bsh.BSHBinaryExpression.eval(Unknown Source)\\
 	at bsh.BSHArguments.getArguments(Unknown Source)\\
 	at bsh.BSHMethodInvocation.eval(Unknown Source)\\
@@ -75,7 +75,7 @@ método \textsf{onInit()} del jugador. Se nos aclara también que el método
 no tiene argumentos (parámetros), si los tuviera aparecerían aquí.
 
 \begin{lstlisting}
-File: inline evaluation of: ``void onInit() {    set ( "prop" , number + 3 );    };
+File: inline evaluation of: \comillas{void onInit() {    set ( "prop" , number + 3 );    };
 \end{lstlisting}
 
 Esto nos proporciona todo el código que dio el error, o un resumen. No
@@ -83,17 +83,17 @@ suele ser muy útil porque el resto de información es más detallada, pero
 puede ayudarnos a hacernos una composición de lugar.
 
 \begin{lstlisting}
-Stack trace: Sourced file: inline evaluation of: ``onInit( );'' : illegal use of undefined variable, class, or 'void' literal : at Line: 3 : in file: inline evaluation of: ``void 
+Stack trace: Sourced file: inline evaluation of: \comillas{onInit( );} : illegal use of undefined variable, class, or 'void' literal : at Line: 3 : in file: inline evaluation of: \comillas{void 
 \end{lstlisting}
 
 Esto, en cambio, es muy útil: nos dice en qué línea del campo de código se
 ha encontrado el error (en este caso, en la línea 3); y qué es el error
-exactamente (en este caso, ``uso ilegal de variable, clase o literal void
-no definido''). Efectivamente, el error es que en la línea 3 hemos
+exactamente (en este caso, \comillas{uso ilegal de variable, clase o literal void
+no definido}). Efectivamente, el error es que en la línea 3 hemos
 utilizado una variable, \textsf{number}, que no habíamos declarado.
 
 \begin{lstlisting}
-Called from method: onInit : at Line: 1 : in file: inline evaluation of: ``onInit( );'' : onInit ( )\\
+Called from method: onInit : at Line: 1 : in file: inline evaluation of: \comillas{onInit( );} : onInit ( )\\
 	at bsh.BSHBinaryExpression.eval(Unknown Source)\\
 (...)
 \end{lstlisting}
@@ -111,19 +111,19 @@ Otras veces, en lugar de errores de sintaxis, nos podemos encontrar
 excepciones, como ésta:
 
 \begin{lstlisting}
-bsh.TargetError found at world's parseCommand, command was mirar, error was Sourced file: inline evaluation of: ``parseCommand( arg0, arg1, arg2);'' : at Line: 6 : in file: inline evaluation of: ``/*Método de análisis sintáctico de la entrada*/ void parseCommand( Mobile aCreat . . . '' : it .getWeight ( ) 
+bsh.TargetError found at world's parseCommand, command was mirar, error was Sourced file: inline evaluation of: \comillas{parseCommand( arg0, arg1, arg2);} : at Line: 6 : in file: inline evaluation of: \comillas{/*Método de análisis sintáctico de la entrada*/ void parseCommand( Mobile aCreat . . . } : it .getWeight ( ) 
 
-Called from method: parseCommand : at Line: 1 : in file: inline evaluation of: ``parseCommand( arg0, arg1, arg2);'' : parseCommand ( arg0 , arg1 , arg2 ) 
+Called from method: parseCommand : at Line: 1 : in file: inline evaluation of: \comillas{parseCommand( arg0, arg1, arg2);} : parseCommand ( arg0 , arg1 , arg2 ) 
 Target exception: java.lang.NullPointerException: Null Pointer in Method Invocation
 **
 Error: java.lang.NullPointerException: Null Pointer in Method Invocation
-Location: inline evaluation of: ``/*Método de análisis sintáctico de la entrada*/ void parseCommand( Mobile aCreat . . . ''
+Location: inline evaluation of: \comillas{/*Método de análisis sintáctico de la entrada*/ void parseCommand( Mobile aCreat . . . }
 Line: 6
 Offending text: it .getWeight ( ) 
-Message: Sourced file: inline evaluation of: ``parseCommand( arg0, arg1, arg2);''
-Detailed trace: Sourced file: inline evaluation of: ``parseCommand( arg0, arg1, arg2);'' : at Line: 6 : in file: inline evaluation of: ``/*Método de análisis sintáctico de la entrada*/ void parseCommand( Mobile aCreat . . . '' : it .getWeight ( ) 
+Message: Sourced file: inline evaluation of: \comillas{parseCommand( arg0, arg1, arg2);}
+Detailed trace: Sourced file: inline evaluation of: \comillas{parseCommand( arg0, arg1, arg2);} : at Line: 6 : in file: inline evaluation of: \comillas{/*Método de análisis sintáctico de la entrada*/ void parseCommand( Mobile aCreat . . . } : it .getWeight ( ) 
 
-Called from method: parseCommand : at Line: 1 : in file: inline evaluation of: ``parseCommand( arg0, arg1, arg2);'' : parseCommand ( arg0 , arg1 , arg2 ) 
+Called from method: parseCommand : at Line: 1 : in file: inline evaluation of: \comillas{parseCommand( arg0, arg1, arg2);} : parseCommand ( arg0 , arg1 , arg2 ) 
 Target exception: java.lang.NullPointerException: Null Pointer in Method Invocation
 
 	at bsh.UtilTargetError.toEvalError(Unknown Source)
@@ -192,7 +192,7 @@ Como vemos, la estructura del error es parecida, aunque se incluye algo más
 de información de depuración. La primera parte realmente importante es:
 
 \begin{lstlisting}
-bsh.TargetError found at world's parseCommand, command was mirar, error was Sourced file: inline evaluation of: ``parseCommand( arg0, arg1, arg2);'' : at Line: 6 : in 
+bsh.TargetError found at world's parseCommand, command was mirar, error was Sourced file: inline evaluation of: \comillas{parseCommand( arg0, arg1, arg2);} : at Line: 6 : in 
 \end{lstlisting}
 
 En primer lugar, se nos dice que se ha encontrado un
@@ -201,7 +201,7 @@ excepciones, cuando nos aparezca quiere decir que el error no está en la
 sintaxis del código, sino en lo que hace.
 
 A continuación, se dice que el error está en el \textsf{parseCommand} del
-mundo, y que el comando introducido fue ``mirar''. Después se aclara que el
+mundo, y que el comando introducido fue \comillas{mirar}. Después se aclara que el
 error estaba en la línea 6, que contenía el código \textsf{it.getWeight()}.
 
 La otra parte importante es la que nos dice qué tipo de excepción es la que
@@ -212,8 +212,8 @@ Target exception: java.lang.NullPointerException: Null Pointer in Method Invocat
 \end{lstlisting}
 
 Se nos dice que es una excepción de tipo \textsf{NullPointerException} y,
-más concretamente, el texto nos explica: ``puntero nulo en invocación a
-método''. Esto nos da la pista de lo que ha pasado: que en el código
+más concretamente, el texto nos explica: \comillas{puntero nulo en invocación a
+método}. Esto nos da la pista de lo que ha pasado: que en el código
 \textsf{it.getWeight()} que tiene el error, la variable it tiene valor
 \textsf{null}, y no podemos acceder al peso de una variable nula (que no
 está guardando realmente ningún objeto).
@@ -256,7 +256,7 @@ error. Por ejemplo, si nos hemos olvidado de abrir un paréntesis, es
 posible que el analizador sintáctico no se dé cuenta en el sitio donde
 tendríamos que abrirlo, sino más adelante, cuando se encuentre el cierre de
 paréntesis que le correspondía y ha quedado huérfano. Por lo tanto, la
-información de fila y columna es una orientación que a veces ``acertará''
+información de fila y columna es una orientación que a veces \comillas{acertará}
 dónde estaba el error, pero no podemos fiarnos ciegamente de ella.
 
 \begin{lstlisting}
@@ -345,7 +345,7 @@ y Mac, o en un log en el script de Windows).
 
 \subsubsection{Debugger dinámico}
 
-AGE dispone de un depurador o ``debugger'' que permite evaluar expresiones
+AGE dispone de un depurador o \comillas{debugger} que permite evaluar expresiones
 BeanShell durante la ejecución de las aventuras. Se puede activar
 ejecutando el código
 
@@ -353,7 +353,7 @@ ejecutando el código
 Debug.setEvalEnabled(true);
 \end{lstlisting}
 
-y una vez activado, podemos utilizar la orden especial ``eval'' en la
+y una vez activado, podemos utilizar la orden especial \comillas{eval} en la
 aventura para obtener el valor de una expresión BeanShell en cualquier
 momento del juego. Por ejemplo, podríamos hacer
 
@@ -371,7 +371,7 @@ y nos aparecerá por pantalla el valor de esas expresiones en ese momento.
 Si queremos hacer una depuración de grano más fino, evaluando expresiones no
 sólo en los momentos en los que podemos introducir un comando sino en medio
 de la ejecución del código, podemos utilizar la funcionalidad de
-``breakpoints'' que proporciona AGE desde su versión 1.1.6b.
+\comillas{breakpoints} que proporciona AGE desde su versión 1.1.6b.
 
 Un breakpoint es un punto donde la ejecución de código (en este caso el
 código BeanShell) se pausa hasta que nosotros le indiquemos que continúe.

@@ -126,15 +126,15 @@ ve).
 
 La diferencia entre \textsf{getOutputNameOnly()}, \textsf{getOutputNameThe()}
 y \textsf{getOutputNameA()} es que el primero devuelve sólo el nombre (por
-ejemplo, ``chorizo''), el segundo lo prefija con el artículo determinado
-correspondiente (``el chorizo'', ``la cuchara'') y el tercero usa en su
-lugar el artículo indeterminado (``un chorizo'', ``una cuchara''). La
+ejemplo, \comillas{chorizo}), el segundo lo prefija con el artículo determinado
+correspondiente (\comillas{el chorizo}, \comillas{la cuchara}) y el tercero usa en su
+lugar el artículo indeterminado (\comillas{un chorizo}, \comillas{una cuchara}). La
 excepción a esta regla se da cuando el nombre en cuestión está marcado como
 nombre propio, en cuyo caso nunca se añadirá ningún artículo sea cual sea el
 método que utilicemos. Por ejemplo, \textsf{item("excalibur").getOutputNameThe()}
-devolverá ``Excalibur'' a secas, si ése es su nombre para mostrar y está
+devolverá \comillas{Excalibur} a secas, si ése es su nombre para mostrar y está
 marcado como propio, mientras que si no fuese un nombre propio devolvería
-``el Excalibur'', si la cosa es masculina, o ``la Excalibur'' si es
+\comillas{el Excalibur}, si la cosa es masculina, o \comillas{la Excalibur} si es
 femenina.
 
 Los métodos \textsf{getOutputNameOnly(int nItems)},
@@ -142,7 +142,7 @@ Los métodos \textsf{getOutputNameOnly(int nItems)},
 funcionan como los anteriores, pero además nos permiten especificar un
 número de criaturas o cosas para mostrar. Es decir, si tenemos una cosa
 moneda, y hacemos \textsf{moneda.getOutputNameOnly(3)}, se nos devolverá la
-cadena ``tres monedas''. Si pasamos como parámetro 1, estos métodos se
+cadena \comillas{tres monedas}. Si pasamos como parámetro 1, estos métodos se
 comportarán como los anteriores sin parámetro, mostrando el nombre en
 singular (para una sola cosa) con los artículos correspondientes según la
 versión que usemos.
@@ -210,14 +210,14 @@ se ha producido, donde:
 suceso (por ejemplo, una espada),}
 \item {\textsf{thirdPersonDes} es la descripción en tercera persona con los
 objetos parametrizados con \textsf{\$1} (sujeto), \textsf{\$2} (objeto),
-\textsf{\$3}...\textsf{\$n} (resto). Por ejemplo: ``\$1 ataca a \$2 con
-\$3''.}
+\textsf{\$3}...\textsf{\$n} (resto). Por ejemplo: \comillas{\$1 ataca a \$2 con
+\$3}.}
 \item {\textsf{sufferDes} es la descripción que se mostrará al objeto del
-suceso (``\$1 te ataca con \$3'').}
+suceso (\comillas{\$1 te ataca con \$3}).}
 \item {\textsf{execDes} es la descripción que es mostrará al sujeto del
-suceso (``Atacas a \$1 con \$3'').}
+suceso (\comillas{Atacas a \$1 con \$3}).}
 \item {\textsf{style} permite especificar un estilo (color) para mostrar el
-texto a los jugadores (puede ser ``story'', ``description'', ``action'',
+texto a los jugadores (puede ser \comillas{story}, \comillas{description}, \comillas{action},
 etc.)}
 \item {\textsf{self\_included}: si es \textsf{true}, se muestra el texto
 también para el sujeto, si no, sólo para el resto de jugadores/criaturas.}
@@ -230,7 +230,7 @@ void reportActionAuto ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] o
 
 Hace lo mismo que \textsf{reportAction}; pero sólo proporcionamos la
 descripción en tercera persona y AGE intenta generar las otras dos mediante
-sus tablas de ``tercera a segunda''. Utilizar sólo en los dos casos
+sus tablas de \comillas{tercera a segunda}. Utilizar sólo en los dos casos
 siguientes:
 
 \begin{itemize}
