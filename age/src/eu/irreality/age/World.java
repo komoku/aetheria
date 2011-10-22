@@ -3026,4 +3026,8 @@ public class World implements Informador , SupportingCode
 		return itsCode;
 	}
 	
+	public String getParserVersion()
+	{
+		return parserVersion;
+	}
 }

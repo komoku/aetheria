@@ -14,6 +14,7 @@ import bsh.TargetError;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
 import eu.irreality.age.language.Mentions;
+import eu.irreality.age.util.VersionComparator;
 /**
  * Clase del personaje, jugador.
  *
@@ -99,6 +100,12 @@ public class Player extends Mobile implements Informador
 	}
 
 
+	void initDefaultProperties( World mundo )
+	{
+		//set multiple args matches which was default behaviour in versions [1.0,1.1.7]
+		if ( new VersionComparator().compare(mundo.getParserVersion(),"1.0") >= 0 && new VersionComparator().compare(mundo.getParserVersion(),"1.1.7") <= 0 )
+			setProperty("multipleArgsMatches",true);
+	}
 
 	/**Lista dinámica de objetos.*/
 	//protected Inventory inventory; -> heredado de Mobile
@@ -113,6 +120,7 @@ public class Player extends Mobile implements Informador
 		//setRoom ( mundo.getRoom(1) );
 		setNewState(1,1);
 		//mundo.setPlayer(this);
+		initDefaultProperties(mundo);
 	}
 
 	//TEMPORAL CONSTRUCTOR
@@ -138,6 +146,7 @@ public class Player extends Mobile implements Informador
 		//timeUnitsLeft = 1; //estado inicial.
 		setNewState(1,1);
 		//mundo.setPlayer(this);
+		initDefaultProperties(mundo);
 	}
 
 	//METHODS
@@ -2239,7 +2248,6 @@ public class Player extends Mobile implements Informador
 	public boolean executeParseCommandForTwoEntities ( Entity obj1 , Entity obj2 , String args1 , String args2 , List path1 , List path2 , boolean onWorld )
 	{
 		
-		System.err.println("exPaCoFoTwEn " + obj1 + "," + obj2 + "," + args1 + "," + args2 + "," + path1 + "," + path2 + "," + onWorld);
 		
 		boolean ejecutado = false;
 		String fullArguments = args1 + " " + args2;
@@ -2527,10 +2535,54 @@ public class Player extends Mobile implements Informador
 
 		matchedTwoEntitiesPermissive = ( allMatches.size() > 0 );
 
-		//we store the viable "args"+"obj" partitions here, so that if two entities are matched but no parseCommand is defined for them, the (non-generic)
-		//parseCommands for one entity are invoked.		
-		TreeSet oneEntArgs1 = new TreeSet();
-		TreeSet oneEntArgs2 = new TreeSet();
+		/**
+		 * Store calls to parseCommands on two entities to avoid doing repeated invocations
+		 * for (different args assignments of) the same entities. 
+		 */
+		class TwoEntityParseCommandAttempt
+		{
+			private Entity obj1;
+			private Entity obj2;
+			private List path1;
+			private List path2;
+			public TwoEntityParseCommandAttempt(Entity obj1,Entity obj2,List path1,List path2)
+			{
+				this.obj1 = obj1;
+				this.obj2 = obj2;
+				this.path1 = path1;
+				this.path2 = path2;
+			}
+			public int hashCode() 
+			{
+				final int prime = 31;
+				int result = 1;
+				result = prime * result
+						+ ((obj1 == null) ? 0 : obj1.hashCode());
+				result = prime * result
+						+ ((obj2 == null) ? 0 : obj2.hashCode());
+				result = prime * result
+						+ ((path1 == null) ? 0 : path1.hashCode());
+				result = prime * result
+						+ ((path2 == null) ? 0 : path2.hashCode());
+				return result;
+			}
+			public boolean equals(Object obj) 
+			{
+				if (this == obj)
+					return true;
+				if (obj == null)
+					return false;
+				if (!(obj instanceof TwoEntityParseCommandAttempt))
+					return false;
+				TwoEntityParseCommandAttempt other = (TwoEntityParseCommandAttempt) obj;
+				return this.obj1 == other.obj1
+				&& this.obj2 == other.obj2
+				&& this.path1.equals(other.path1)
+				&& this.path2.equals(other.path2);
+			}
+		}
+		Set attempts = new LinkedHashSet();
+		
 		
 		for ( int i = 0 ; i < allMatches.size() ; i++ )
 		{
@@ -2541,11 +2593,14 @@ public class Player extends Mobile implements Informador
 			Entity obj2 = si.getObj2();
 			List path1 = si.getPath1();
 			List path2 = si.getPath2();
-			
-			oneEntArgs1.add(args1);
-			oneEntArgs2.add(args2);
 
-			ejecutado = executeParseCommandForTwoEntities ( obj1 , obj2 , args1 , args2 , path1 , path2 , onWorld );
+			TwoEntityParseCommandAttempt attempt = new TwoEntityParseCommandAttempt(obj1,obj2,path1,path2);
+			if ( getPropertyValueAsBoolean("multipleArgsMatches") || !attempts.contains(attempt) )
+			{
+				ejecutado = executeParseCommandForTwoEntities ( obj1 , obj2 , args1 , args2 , path1 , path2 , onWorld );
+				if ( !getPropertyValueAsBoolean("multipleArgsMatches") )
+					attempts.add(attempt);
+			}
 			
 			if ( ejecutado ) //código hizo end()
 			{

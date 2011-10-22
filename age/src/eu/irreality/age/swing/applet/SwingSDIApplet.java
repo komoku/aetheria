@@ -110,7 +110,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 								io = new ColoredSwingClient(SwingSDIApplet.this,gameLog); //components are added 'ere.
 								//setVisible(true);
 
-								write("Aetheria Game Engine v 1.1.7\n");
+								write("Aetheria Game Engine v 1.1.8\n");
 
 								//areaTexto.setText("Aetheria Game Engine v 0.4.7b Beta Distribution\n");
 								write("© 1999-2011 Carlos Gómez (solrac888@yahoo.com)\n");
