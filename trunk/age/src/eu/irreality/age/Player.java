@@ -2236,7 +2236,280 @@ public class Player extends Mobile implements Informador
 	 */
 
 
+	public boolean executeParseCommandForTwoEntities ( Entity obj1 , Entity obj2 , String args1 , String args2 , List path1 , List path2 , boolean onWorld )
+	{
+		
+		System.err.println("exPaCoFoTwEn " + obj1 + "," + obj2 + "," + args1 + "," + args2 + "," + path1 + "," + path2 + "," + onWorld);
+		
+		boolean ejecutado = false;
+		String fullArguments = args1 + " " + args2;
+		
+		for ( int ip1 = path1.size()-1 ; ip1 >= 0 ; ip1-- )
+		{
+			for ( int jp1 = path2.size()-1 ; jp1 >= 0 ; jp1-- )
+			{
+				Entity currentObject1 = (Entity) path1.get(ip1);	   
+				Entity currentObject2 = (Entity) path2.get(jp1);
 
+
+				//ejecutar parseCommandOnContents() de objeto 1
+				if ( !onWorld && currentObject1 instanceof SupportingCode )
+				{
+					try
+					{
+						//parseCommandOnContents(Mobile,command,args,chain)
+						ejecutado = ejecutado || ((SupportingCode)currentObject1).execCode ( "parseCommandOnContentsObj1" , new Object[] { this , command , args1 , args2 , path1 , path2 , currentObject2 } );
+					}
+					catch ( bsh.TargetError te )
+					{
+						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsObj1(), command was " + command + fullArguments + ", entity " + currentObject1 + ", error was " + te + io.getColorCode("reset") );
+						writeError(ExceptionPrinter.getExceptionReport(te));
+					}
+
+					if ( !ejecutado )
+					{
+						try
+						{
+							ejecutado = ejecutado || ((SupportingCode)currentObject1).execCode ( "parseCommandOnContentsTwoObjects" , new Object[] { this , command , args1 , args2 , path1 , path2 , currentObject2 } );
+						}
+						catch ( bsh.TargetError te )
+						{
+							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsTwoObjects(), command was " + command + fullArguments + ", entity " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
+						}
+					}
+					if ( !ejecutado )
+					{
+						try
+						{
+							ejecutado = ejecutado || ((SupportingCode)currentObject1).execCode( "parseCommandOnContentsGeneric",  new Object[] { this , command, args1 , args2 , path1 , path2 , currentObject1 , currentObject2 , new Boolean(true) /*isFirst==true*/ } );
+						}
+						catch ( bsh.TargetError te )
+						{
+							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric(), command was " + command + fullArguments + ", entity " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
+						}
+					}
+				}
+
+
+				//ejecutar parseCommandOnContents() de objeto 2
+				if ( !onWorld && currentObject2 instanceof SupportingCode )
+				{
+					try
+					{
+						//parseCommandOnContents(Mobile,command,args,chain)
+						ejecutado = ejecutado || ((SupportingCode)currentObject2).execCode ( "parseCommandOnContentsObj2" , new Object[] { this , command , args1 , args2 , path1 , path2 , currentObject1 } );
+					}
+					catch ( bsh.TargetError te )
+					{
+						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsObj2(), command was " + command + fullArguments + ", entity " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
+						writeError(ExceptionPrinter.getExceptionReport(te));
+					}
+
+					if ( !ejecutado )
+					{
+						try
+						{
+							ejecutado = ejecutado || ((SupportingCode)currentObject2).execCode ( "parseCommandOnContentsTwoObjects" , new Object[] { this , command , args1 , args2 , path1 , path2 , currentObject1 } );
+						}
+						catch ( bsh.TargetError te )
+						{
+							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsTwoObjects(), command was " + command + fullArguments + ", entity " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
+						}
+					}
+					if ( !ejecutado )
+					{
+						try
+						{
+							ejecutado = ejecutado || ((SupportingCode)currentObject2).execCode( "parseCommandOnContentsGeneric",  new Object[] { this , command, args1 , args2 , path1 , path2 , currentObject1 , currentObject2 , new Boolean(false) /*isFirst==false*/ } );
+						}
+						catch ( bsh.TargetError te )
+						{
+							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric(), command was " + command + fullArguments + ", first object was " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
+						}
+					}
+				}
+				
+				
+				//ejecutar parseCommandOnContents() en mundo referido a objetos
+				if ( onWorld )
+				{
+					if ( !ejecutado )
+					{
+						try
+						{
+							ejecutado = ejecutado || mundo.execCode ( "parseCommandOnContentsTwoObjects" , new Object[] { this , command , args1 , args2 , path1 , path2 , currentObject1 , currentObject2 } );
+						}
+						catch ( bsh.TargetError te )
+						{
+							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsTwoObjects() executed from world, command was " + command + fullArguments + ", entity " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
+						}
+					}
+					if ( !ejecutado )
+					{
+						try
+						{
+							ejecutado = ejecutado || mundo.execCode( "parseCommandOnContentsGeneric",  new Object[] { this , command, args1 , args2 , path1 , path2 , currentObject1 , currentObject2  } );
+						}
+						catch ( bsh.TargetError te )
+						{
+							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric() executed from world, command was " + command + fullArguments + ", first object was " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
+							writeError(ExceptionPrinter.getExceptionReport(te));
+						}
+					}		  
+				}
+
+
+			}
+		}
+
+
+		//standard (not "onContents") parseCommands:
+		if ( (path1.size() == 1 && path2.size() == 1) || this.getPropertyValueAsBoolean("containedItemsInScope") ) 
+		//in default mode, regular parseCommands are executed only for things NOT contained in anything (hence the path size check) 
+		//in extended scope mode, also for contained items
+		{
+			//	    ejecutar parseCommand() de objeto 1
+			if ( !onWorld && obj1 instanceof SupportingCode )
+			{
+			    	if ( !ejecutado )
+			    	{
+    					try
+    					{
+    						ejecutado = ejecutado || ((SupportingCode)obj1).execCode ( "parseCommandObj1" , new Object[] { this , command , args1 , args2 , obj2 } );
+    					}
+    					catch ( bsh.TargetError te )
+    					{
+    						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandObj1(), command was " + command + args1 + args2 + ", entity number " + obj1.getID() + ", second object was " + obj2.getID() + ", error was " + te + io.getColorCode("reset") );
+    						writeError(ExceptionPrinter.getExceptionReport(te));
+    					}
+			    	}
+				if ( !ejecutado )
+				{
+					try
+					{
+						ejecutado = ejecutado || ((SupportingCode)obj1).execCode ( "parseCommandTwoObjects" , new Object[] { this , command , args1 , args2 , obj2 } );
+					}
+					catch ( bsh.TargetError te )
+					{
+						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandTwoObjects(), command was " + command + args1 + args2 + ", entity number " + obj1.getID() + ", second object was " + obj2.getID() + ", error was " + te + io.getColorCode("reset") );
+						writeError(ExceptionPrinter.getExceptionReport(te));
+					}
+				}
+				if ( !ejecutado )
+				{
+					try
+					{
+						//parseCommandGeneric ( Player aCreature , String verb , Sring args1 , Sring args2 , Entity obj1 , Entity obj2 , boolean isFirst )
+						ejecutado = ejecutado || ((SupportingCode)obj1).execCode ( "parseCommandGeneric" , new Object[] { this , command , args1 , args2 , obj1 , obj2 , new Boolean(true) } );
+					}
+					catch ( bsh.TargetError te )
+					{
+						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric(), command was " + command + args1 + args2 + ", entity number " + obj1 + ", second object was " + obj2 + ", error was " + te + io.getColorCode("reset") );
+						writeError(ExceptionPrinter.getExceptionReport(te));
+					}
+				}
+			} //obj1 instof suppcode
+			if ( ejecutado ) //código hizo end()
+			{
+				//luego esto lo hara el codigo
+				setNewState( 1 , 1 );
+				mentions.setLastMentionedVerb(command);
+				return true;
+			}
+
+			//	    ejecutar parseCommand() de objeto 2
+			if ( !onWorld && obj2 instanceof SupportingCode )
+			{
+			    	if ( !ejecutado )
+			    	{
+    					try
+    					{
+    						ejecutado = ejecutado || ((SupportingCode)obj2).execCode ( "parseCommandObj2" , new Object[] { this , command , args1 , args2 , obj1 } );
+    					}
+    					catch ( bsh.TargetError te )
+    					{
+    						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandObj2(), command was " + command + args1 + args2 + ", entity number " + obj2.getID() + ", first object was " + obj1.getID() + ", error was " + te + io.getColorCode("reset") );
+    						writeError(ExceptionPrinter.getExceptionReport(te));
+    					}
+			    	}
+				if ( !ejecutado )
+				{
+					try
+					{
+						ejecutado = ejecutado || ((SupportingCode)obj2).execCode ( "parseCommandTwoObjects" , new Object[] { this , command , args1 , args2 , obj1 } );
+					}
+					catch ( bsh.TargetError te )
+					{
+						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandTwoObjects(), command was " + command + args1 + args2 + ", entity number " + obj2.getID() + ", first object was " + obj1.getID() + ", error was " + te + io.getColorCode("reset") );
+						writeError(ExceptionPrinter.getExceptionReport(te));
+					}
+				}
+				if ( !ejecutado )
+				{
+					try
+					{
+						//parseCommandGeneric ( Player aCreature , String verb , Sring args1 , Sring args2 , Entity obj1 , Entity obj2 , boolean isFirst )
+						ejecutado = ejecutado || ((SupportingCode)obj2).execCode ( "parseCommandGeneric" , new Object[] { this , command , args1 , args2 , obj1 , obj2 , new Boolean(false) } );
+					}
+					catch ( bsh.TargetError te )
+					{
+						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric(), command was " + command + args1 + args2 + ", entity number " + obj1 + ", second object was " + obj2 + ", error was " + te + io.getColorCode("reset") );
+						writeError(ExceptionPrinter.getExceptionReport(te));
+					}
+				}
+			} //obj2 instof suppcode
+			
+			if ( onWorld )
+			{
+			    if ( !ejecutado )
+			    {
+					try
+					{
+						ejecutado = ejecutado || mundo.execCode ( "parseCommandTwoObjects" , new Object[] { this , command , args1 , args2 , obj1 , obj2 } );
+					}
+					catch ( bsh.TargetError te )
+					{
+						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandTwoObjects() executed from world, command was " + command + args1 + args2 + ", entity number " + obj2.getID() + ", first object was " + obj1.getID() + ", error was " + te + io.getColorCode("reset") );
+						writeError(ExceptionPrinter.getExceptionReport(te));
+					}
+				
+			    }
+			    if ( !ejecutado )
+			    {
+					try
+					{
+						//parseCommandGeneric ( Player aCreature , String verb , Sring args1 , Sring args2 , Entity obj1 , Entity obj2 , boolean isFirst )
+						ejecutado = ejecutado || mundo.execCode ( "parseCommandGeneric" , new Object[] { this , command , args1 , args2 , obj1 , obj2 } );
+					}
+					catch ( bsh.TargetError te )
+					{
+						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric() executed from world, command was " + command + args1 + args2 + ", entity number " + obj1 + ", second object was " + obj2 + ", error was " + te + io.getColorCode("reset") );
+						writeError(ExceptionPrinter.getExceptionReport(te));
+					}
+			    }
+			}
+
+		}
+		
+		return ejecutado;
+
+		
+	}
+	
+
+	/**
+	 * Note: in practice there seems to be no difference at all between arguments and fullArguments - remove one of them?
+	 * @param posiblesObjetivos
+	 * @param arguments
+	 * @param fullArguments
+	 * @param onWorld
+	 * @return
+	 */
 	public boolean resolveParseCommandForTwoEntities ( EntityList posiblesObjetivos , String arguments , String fullArguments , boolean onWorld )
 	{
 
@@ -2254,8 +2527,8 @@ public class Player extends Mobile implements Informador
 
 		matchedTwoEntitiesPermissive = ( allMatches.size() > 0 );
 
-		//we store the viable "args" partitions here, so that if two entities are matched but no parseCommand is defined for them, the (non-generic)
-		//parseCommands for one entity are invoked.
+		//we store the viable "args"+"obj" partitions here, so that if two entities are matched but no parseCommand is defined for them, the (non-generic)
+		//parseCommands for one entity are invoked.		
 		TreeSet oneEntArgs1 = new TreeSet();
 		TreeSet oneEntArgs2 = new TreeSet();
 		
@@ -2272,260 +2545,8 @@ public class Player extends Mobile implements Informador
 			oneEntArgs1.add(args1);
 			oneEntArgs2.add(args2);
 
-			//BEGIN factor this into executeParseCommands(...)
-
-			for ( int ip1 = path1.size()-1 ; ip1 >= 0 ; ip1-- )
-			{
-				for ( int jp1 = path2.size()-1 ; jp1 >= 0 ; jp1-- )
-				{
-					Entity currentObject1 = (Entity) path1.get(ip1);	   
-					Entity currentObject2 = (Entity) path2.get(jp1);
-
-
-					//ejecutar parseCommandOnContents() de objeto 1
-					if ( !onWorld && currentObject1 instanceof SupportingCode )
-					{
-						try
-						{
-							//parseCommandOnContents(Mobile,command,args,chain)
-							ejecutado = ejecutado || ((SupportingCode)currentObject1).execCode ( "parseCommandOnContentsObj1" , new Object[] { this , command , args1 , args2 , path1 , path2 , currentObject2 } );
-						}
-						catch ( bsh.TargetError te )
-						{
-							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsObj1(), command was " + command + fullArguments + ", entity " + currentObject1 + ", error was " + te + io.getColorCode("reset") );
-							writeError(ExceptionPrinter.getExceptionReport(te));
-						}
-
-						if ( !ejecutado )
-						{
-							try
-							{
-								ejecutado = ejecutado || ((SupportingCode)currentObject1).execCode ( "parseCommandOnContentsTwoObjects" , new Object[] { this , command , args1 , args2 , path1 , path2 , currentObject2 } );
-							}
-							catch ( bsh.TargetError te )
-							{
-								write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsTwoObjects(), command was " + command + fullArguments + ", entity " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
-								writeError(ExceptionPrinter.getExceptionReport(te));
-							}
-						}
-						if ( !ejecutado )
-						{
-							try
-							{
-								ejecutado = ejecutado || ((SupportingCode)currentObject1).execCode( "parseCommandOnContentsGeneric",  new Object[] { this , command, args1 , args2 , path1 , path2 , currentObject1 , currentObject2 , new Boolean(true) /*isFirst==true*/ } );
-							}
-							catch ( bsh.TargetError te )
-							{
-								write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric(), command was " + command + fullArguments + ", entity " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
-								writeError(ExceptionPrinter.getExceptionReport(te));
-							}
-						}
-					}
-
-
-					//ejecutar parseCommandOnContents() de objeto 2
-					if ( !onWorld && currentObject2 instanceof SupportingCode )
-					{
-						try
-						{
-							//parseCommandOnContents(Mobile,command,args,chain)
-							ejecutado = ejecutado || ((SupportingCode)currentObject2).execCode ( "parseCommandOnContentsObj2" , new Object[] { this , command , args1 , args2 , path1 , path2 , currentObject1 } );
-						}
-						catch ( bsh.TargetError te )
-						{
-							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsObj2(), command was " + command + fullArguments + ", entity " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
-							writeError(ExceptionPrinter.getExceptionReport(te));
-						}
-
-						if ( !ejecutado )
-						{
-							try
-							{
-								ejecutado = ejecutado || ((SupportingCode)currentObject2).execCode ( "parseCommandOnContentsTwoObjects" , new Object[] { this , command , args1 , args2 , path1 , path2 , currentObject1 } );
-							}
-							catch ( bsh.TargetError te )
-							{
-								write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsTwoObjects(), command was " + command + fullArguments + ", entity " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
-								writeError(ExceptionPrinter.getExceptionReport(te));
-							}
-						}
-						if ( !ejecutado )
-						{
-							try
-							{
-								ejecutado = ejecutado || ((SupportingCode)currentObject2).execCode( "parseCommandOnContentsGeneric",  new Object[] { this , command, args1 , args2 , path1 , path2 , currentObject1 , currentObject2 , new Boolean(false) /*isFirst==false*/ } );
-							}
-							catch ( bsh.TargetError te )
-							{
-								write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric(), command was " + command + fullArguments + ", first object was " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
-								writeError(ExceptionPrinter.getExceptionReport(te));
-							}
-						}
-					}
-					
-					
-					//ejecutar parseCommandOnContents() en mundo referido a objetos
-					if ( onWorld )
-					{
-						if ( !ejecutado )
-						{
-							try
-							{
-								ejecutado = ejecutado || mundo.execCode ( "parseCommandOnContentsTwoObjects" , new Object[] { this , command , args1 , args2 , path1 , path2 , currentObject1 , currentObject2 } );
-							}
-							catch ( bsh.TargetError te )
-							{
-								write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsTwoObjects() executed from world, command was " + command + fullArguments + ", entity " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
-								writeError(ExceptionPrinter.getExceptionReport(te));
-							}
-						}
-						if ( !ejecutado )
-						{
-							try
-							{
-								ejecutado = ejecutado || mundo.execCode( "parseCommandOnContentsGeneric",  new Object[] { this , command, args1 , args2 , path1 , path2 , currentObject1 , currentObject2  } );
-							}
-							catch ( bsh.TargetError te )
-							{
-								write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric() executed from world, command was " + command + fullArguments + ", first object was " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
-								writeError(ExceptionPrinter.getExceptionReport(te));
-							}
-						}		  
-					}
-
-
-				}
-			}
-
-
-			//standard (not "onContents") parseCommands:
-			if ( (path1.size() == 1 && path2.size() == 1) || this.getPropertyValueAsBoolean("containedItemsInScope") ) 
-			//in default mode, regular parseCommands are executed only for things NOT contained in anything (hence the path size check) 
-			//in extended scope mode, also for contained items
-			{
-				//	    ejecutar parseCommand() de objeto 1
-				if ( !onWorld && obj1 instanceof SupportingCode )
-				{
-				    	if ( !ejecutado )
-				    	{
-        					try
-        					{
-        						ejecutado = ejecutado || ((SupportingCode)obj1).execCode ( "parseCommandObj1" , new Object[] { this , command , args1 , args2 , obj2 } );
-        					}
-        					catch ( bsh.TargetError te )
-        					{
-        						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandObj1(), command was " + command + args1 + args2 + ", entity number " + obj1.getID() + ", second object was " + obj2.getID() + ", error was " + te + io.getColorCode("reset") );
-        						writeError(ExceptionPrinter.getExceptionReport(te));
-        					}
-				    	}
-					if ( !ejecutado )
-					{
-						try
-						{
-							ejecutado = ejecutado || ((SupportingCode)obj1).execCode ( "parseCommandTwoObjects" , new Object[] { this , command , args1 , args2 , obj2 } );
-						}
-						catch ( bsh.TargetError te )
-						{
-							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandTwoObjects(), command was " + command + args1 + args2 + ", entity number " + obj1.getID() + ", second object was " + obj2.getID() + ", error was " + te + io.getColorCode("reset") );
-							writeError(ExceptionPrinter.getExceptionReport(te));
-						}
-					}
-					if ( !ejecutado )
-					{
-						try
-						{
-							//parseCommandGeneric ( Player aCreature , String verb , Sring args1 , Sring args2 , Entity obj1 , Entity obj2 , boolean isFirst )
-							ejecutado = ejecutado || ((SupportingCode)obj1).execCode ( "parseCommandGeneric" , new Object[] { this , command , args1 , args2 , obj1 , obj2 , new Boolean(true) } );
-						}
-						catch ( bsh.TargetError te )
-						{
-							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric(), command was " + command + args1 + args2 + ", entity number " + obj1 + ", second object was " + obj2 + ", error was " + te + io.getColorCode("reset") );
-							writeError(ExceptionPrinter.getExceptionReport(te));
-						}
-					}
-				} //obj1 instof suppcode
-				if ( ejecutado ) //código hizo end()
-				{
-					//luego esto lo hara el codigo
-					setNewState( 1 , 1 );
-					mentions.setLastMentionedVerb(command);
-					return true;
-				}
-
-				//	    ejecutar parseCommand() de objeto 2
-				if ( !onWorld && obj2 instanceof SupportingCode )
-				{
-				    	if ( !ejecutado )
-				    	{
-        					try
-        					{
-        						ejecutado = ejecutado || ((SupportingCode)obj2).execCode ( "parseCommandObj2" , new Object[] { this , command , args1 , args2 , obj1 } );
-        					}
-        					catch ( bsh.TargetError te )
-        					{
-        						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandObj2(), command was " + command + args1 + args2 + ", entity number " + obj2.getID() + ", first object was " + obj1.getID() + ", error was " + te + io.getColorCode("reset") );
-        						writeError(ExceptionPrinter.getExceptionReport(te));
-        					}
-				    	}
-					if ( !ejecutado )
-					{
-						try
-						{
-							ejecutado = ejecutado || ((SupportingCode)obj2).execCode ( "parseCommandTwoObjects" , new Object[] { this , command , args1 , args2 , obj1 } );
-						}
-						catch ( bsh.TargetError te )
-						{
-							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandTwoObjects(), command was " + command + args1 + args2 + ", entity number " + obj2.getID() + ", first object was " + obj1.getID() + ", error was " + te + io.getColorCode("reset") );
-							writeError(ExceptionPrinter.getExceptionReport(te));
-						}
-					}
-					if ( !ejecutado )
-					{
-						try
-						{
-							//parseCommandGeneric ( Player aCreature , String verb , Sring args1 , Sring args2 , Entity obj1 , Entity obj2 , boolean isFirst )
-							ejecutado = ejecutado || ((SupportingCode)obj2).execCode ( "parseCommandGeneric" , new Object[] { this , command , args1 , args2 , obj1 , obj2 , new Boolean(false) } );
-						}
-						catch ( bsh.TargetError te )
-						{
-							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric(), command was " + command + args1 + args2 + ", entity number " + obj1 + ", second object was " + obj2 + ", error was " + te + io.getColorCode("reset") );
-							writeError(ExceptionPrinter.getExceptionReport(te));
-						}
-					}
-				} //obj2 instof suppcode
-				
-				if ( onWorld )
-				{
-				    if ( !ejecutado )
-				    {
-						try
-						{
-							ejecutado = ejecutado || mundo.execCode ( "parseCommandTwoObjects" , new Object[] { this , command , args1 , args2 , obj1 , obj2 } );
-						}
-						catch ( bsh.TargetError te )
-						{
-							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandTwoObjects() executed from world, command was " + command + args1 + args2 + ", entity number " + obj2.getID() + ", first object was " + obj1.getID() + ", error was " + te + io.getColorCode("reset") );
-							writeError(ExceptionPrinter.getExceptionReport(te));
-						}
-					
-				    }
-				    if ( !ejecutado )
-				    {
-						try
-						{
-							//parseCommandGeneric ( Player aCreature , String verb , Sring args1 , Sring args2 , Entity obj1 , Entity obj2 , boolean isFirst )
-							ejecutado = ejecutado || mundo.execCode ( "parseCommandGeneric" , new Object[] { this , command , args1 , args2 , obj1 , obj2 } );
-						}
-						catch ( bsh.TargetError te )
-						{
-							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric() executed from world, command was " + command + args1 + args2 + ", entity number " + obj1 + ", second object was " + obj2 + ", error was " + te + io.getColorCode("reset") );
-							writeError(ExceptionPrinter.getExceptionReport(te));
-						}
-				    }
-				}
-
-			}
-
+			ejecutado = executeParseCommandForTwoEntities ( obj1 , obj2 , args1 , args2 , path1 , path2 , onWorld );
+			
 			if ( ejecutado ) //código hizo end()
 			{
 				//luego esto lo hara el codigo
@@ -2534,26 +2555,32 @@ public class Player extends Mobile implements Informador
 				return true;
 			}
 			
-			//END factor this into executeParseCommands(...)
-
-
 		} //end for each possible match
 		
 
 		//no end() has been hit: try parseCommands for one entity!
-		while ( !ejecutado && ( !oneEntArgs1.isEmpty() || !oneEntArgs2.isEmpty() ) )
+		Set triedPaths = new LinkedHashSet();
+		for ( int i = 0 ; i < allMatches.size() ; i++ )
 		{
-			if ( !oneEntArgs1.isEmpty() )
+			SentenceInfo si = (SentenceInfo) allMatches.get(i);
+			String args1 = si.getArgs1();
+			List path1 = si.getPath1();
+			if ( !triedPaths.contains(path1) )
 			{
-				String partialArgs = (String) oneEntArgs1.first();
-				ejecutado = resolveParseCommandForOneEntity ( posiblesObjetivos , partialArgs , fullArguments , onWorld , false );
-				oneEntArgs1.remove(partialArgs);
+				ejecutado = resolveParseCommandForOneEntity ( posiblesObjetivos , args1 , fullArguments , onWorld , false );
+				triedPaths.add(path1);
 			}
-			if ( !ejecutado && !oneEntArgs2.isEmpty() )
+			
+			if ( !ejecutado )
 			{
-				String partialArgs = (String) oneEntArgs2.first();
-				ejecutado = resolveParseCommandForOneEntity ( posiblesObjetivos , partialArgs , fullArguments , onWorld , false );
-				oneEntArgs2.remove(partialArgs);
+				si = (SentenceInfo) allMatches.get(i);
+				String args2 = si.getArgs2();
+				List path2 = si.getPath2();
+				if ( !triedPaths.contains(path2) )
+				{
+					ejecutado = resolveParseCommandForOneEntity ( posiblesObjetivos , args2 , fullArguments , onWorld , false );
+					triedPaths.add(path2);
+				}
 			}
 			
 			if ( ejecutado ) //código hizo end()
@@ -2564,7 +2591,6 @@ public class Player extends Mobile implements Informador
 				return true;
 			}
 		}
-		
 		
 		return false;
 
@@ -2612,6 +2638,193 @@ public class Player extends Mobile implements Informador
 	}
 		
 
+	/**
+	 * Executes all the one-entity parseCommands applicable with the current command to the given arguments and path to a matching entity.
+	 * Note that the objects itself on which to call the parseCommands are taken from the path param.
+	 * @param currentObject
+	 * @param fullArguments
+	 * @param path
+	 * @return
+	 */
+	private boolean executeParseCommandForOneEntity ( String fullArguments , List path , boolean onWorld , boolean enableGenerics , boolean plural )
+	{
+		
+		boolean ejecutado = false;
+		
+		//TODO probably remove this if so onContents is executed always and not only for, well, contents
+		//removed. Replace this if if onContents is not to be executed on objects not contained in others
+		//if ( objetivoVector.size() > 1 )
+		//{
+		
+		Entity currentObject;
+
+		for ( int i = path.size()-1; i >= 0 ; i-- )
+		{
+			currentObject = (Entity) path.get(i);
+
+			//ejecutar parseCommandOnContents() de objeto
+			if ( !onWorld && currentObject instanceof SupportingCode )
+			{
+				try
+				{
+					//parseCommandOnContents(Mobile,command,args,chain)
+					ejecutado = ejecutado || ((SupportingCode)currentObject).execCode ( "parseCommandOnContents" , new Object[] { this , command , fullArguments , path } );
+				}
+				catch ( bsh.TargetError te )
+				{
+					write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContents(), command was " + command + fullArguments + ", entity " + currentObject + ", error was " + te + io.getColorCode("reset") );
+					writeError(ExceptionPrinter.getExceptionReport(te));
+				}
+				if ( !ejecutado && enableGenerics )
+				{
+					try
+					{
+
+						ejecutado = ejecutado || ((SupportingCode)currentObject).execCode ( "parseCommandOnContentsGeneric" , new Object[] { this , command , fullArguments , "" , path , null , currentObject , null , new Boolean(true) } );
+					}
+					catch ( bsh.TargetError te )
+					{
+						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric(), command was " + command + fullArguments + ", entity number " + currentObject + ", second object was " + null + ", error was " + te + io.getColorCode("reset") );
+						writeError(ExceptionPrinter.getExceptionReport(te));
+					}
+				}
+			}
+			//lo mismo de mundo
+			if ( onWorld )
+			{
+			    try
+			    {
+				ejecutado = ejecutado || mundo.execCode ( "parseCommandOnContents" , new Object[] { this , command , fullArguments  , path , currentObject } );
+			    }
+			    catch ( bsh.TargetError te )
+			    {
+			    	write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContents() executed from world, command was " + command + fullArguments + ", entity " + currentObject + ", error was " + te + io.getColorCode("reset") );
+			    	writeError(ExceptionPrinter.getExceptionReport(te));
+			    }
+			    if ( !ejecutado && enableGenerics )
+				{
+					try
+					{
+
+						ejecutado = ejecutado || mundo.execCode ( "parseCommandOnContentsGeneric" , new Object[] { this , command , fullArguments , "" , path , null , currentObject , null } );
+					}
+					catch ( bsh.TargetError te )
+					{
+						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric() executed from world, command was " + command + fullArguments + ", entity number " + currentObject + ", second object was " + null + ", error was " + te + io.getColorCode("reset") );
+						writeError(ExceptionPrinter.getExceptionReport(te));
+					}
+				}
+			}
+
+		}
+
+		//}
+
+
+		Entity objetivo = (Entity) path.get(0);
+
+		//éste será el objeto principal sobre el que ejecutemos el comando en singular (cualquiera, aunque no sea BSH) si hace referencia a un solo objeto
+		if ( objetivo instanceof Item )
+		{
+			if ( plural )
+				meterObjetoEnZRPlural((Item)objetivo);
+			else
+				meterObjetoEnZRSingular((Item)objetivo);
+		}
+
+
+
+		//THIS CHUNK OF CODE IS ABSOLUTE LEGACY
+		//"LOS INMORTALES" IS THE ONLY REASON TO KEEP IT
+		//para cada grupo de primeras palabras del string (dar, dar caña, dar caña al, dar caña al diábolo) intentamos ejecutar código EVA.
+		for ( int i = 0 ; i <= StringMethods.numToks (arguments,' ') && !ejecutado ; i++ )
+		{
+
+			Item ourItem;
+			if ( objetivo instanceof Item )
+				ourItem = (Item) objetivo;
+			else
+				continue;	
+
+			try
+			{
+				if ( i == 0 ) ejecutado = ejecutado || ourItem.execCode ( "command_" + command , "this: " + ourItem.getID() + "\n" + "room: " + habitacionActual.getID() + "\n" + "location: inventory" + "\n" + "player: " + getID() );
+				else ejecutado = ejecutado || ourItem.execCode ( ( "command_" + command + "_" + StringMethods.getToks( arguments , 1,  i , ' ' ) ).replace(' ','_') , "this: " + ourItem.getID() + "\n" + "room: " + habitacionActual.getID() + "\n" + "location: inventory" + "\n" + "player: " + getID()  );
+			}
+			catch ( EVASemanticException exc ) 
+			{
+				write(io.getColorCode("error") + "EVASemanticException found at command " + ( command + StringMethods.getToks( arguments , 1,  i , ' ' ) ).replace(' ','_') + ", item number " + ourItem.getID() + io.getColorCode("reset") );
+			}
+		}
+
+
+
+		//ejecutar parseCommand() de objeto
+		if ( !onWorld && objetivo instanceof SupportingCode )
+		{
+			//in default mode, the following if ensures that standard parseCommand's are not executed on objects that are inside containers.
+			//to define commands on those objects we have to define parseCommandOnContents.
+			//in extended scope mode, this check is bypassed.
+			if ( path.size() == 1 || this.getPropertyValueAsBoolean("containedItemsInScope") )
+			{
+				if ( !ejecutado )
+				{
+					try
+					{
+						ejecutado = ejecutado || ((SupportingCode)objetivo).execCode ( "parseCommand" , new Object[] { this , command , fullArguments } );
+					}
+					catch ( bsh.TargetError te )
+					{
+						write(io.getColorCode("error") + "bsh.TargetError found at parseCommand(), command was " + command + fullArguments + ", item number " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
+						writeError(ExceptionPrinter.getExceptionReport(te));
+					}
+				}
+				if ( !ejecutado && enableGenerics )
+				{
+					try
+					{
+						ejecutado = ejecutado || ((SupportingCode)objetivo).execCode ( "parseCommandGeneric" , new Object[] { this , command , fullArguments , "" , objetivo , null , new Boolean(true) } );
+					}
+					catch ( bsh.TargetError te )
+					{
+						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric(), command was " + command + fullArguments + ", entity number " + objetivo + ", second object was " + objetivo + ", error was " + te + io.getColorCode("reset") );
+						writeError(ExceptionPrinter.getExceptionReport(te));
+					}
+				}
+			}
+		}
+		//lo mismo de mundo
+		if ( onWorld )
+		{
+		    if ( !ejecutado )
+		    {
+    			    try
+    			    {
+    				ejecutado = ejecutado || mundo.execCode ( "parseCommand" , new Object[] { this , command , fullArguments , objetivo } );
+    			    }
+    			    catch ( bsh.TargetError te )
+    			    {
+    			    	write(io.getColorCode("error") + "bsh.TargetError found at parseCommand() executed from world, command was " + command + fullArguments + ", item number " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
+    			    	writeError(ExceptionPrinter.getExceptionReport(te));
+    			    }
+		    }
+		    if ( !ejecutado && enableGenerics )
+		    {
+				try
+				{
+					ejecutado = ejecutado || mundo.execCode ( "parseCommandGeneric" , new Object[] { this , command , fullArguments , "" , objetivo , null  } );
+				}
+				catch ( bsh.TargetError te )
+				{
+					write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric() executed from world, command was " + command + fullArguments + ", entity number " + objetivo + ", second object was " + objetivo + ", error was " + te + io.getColorCode("reset") );
+					writeError(ExceptionPrinter.getExceptionReport(te));
+				}
+		    }
+		}
+		
+		return ejecutado;
+				
+	}
 	
 	/**
 	 * @param objetivos_s
@@ -2642,177 +2855,14 @@ public class Player extends Mobile implements Informador
 		//[pearl,box,chest] vector
 		
 		matchedOneEntityPermissive = ( objetivos_s.size() + objetivos_p.size() > 0 );
-
+	
 		if ( objetivos_s.size() > 0 )
 		{
 
 			Vector objetivoVector = (Vector) objetivos_s.get(0);
 
-			//TODO probably remove this if so onContents is executed always and not only for, well, contents
-			//removed. Replace this if if onContents is not to be executed on objects not contained in others
-			//if ( objetivoVector.size() > 1 )
-			//{
-
-			Entity currentObject;
-			for ( int i = objetivoVector.size()-1; i >= 0 ; i-- )
-			{
-				currentObject = (Entity) objetivoVector.get(i);
-
-				//ejecutar parseCommandOnContents() de objeto
-				if ( !onWorld && currentObject instanceof SupportingCode )
-				{
-					try
-					{
-						//parseCommandOnContents(Mobile,command,args,chain)
-						ejecutado = ejecutado || ((SupportingCode)currentObject).execCode ( "parseCommandOnContents" , new Object[] { this , command , fullArguments , objetivoVector } );
-					}
-					catch ( bsh.TargetError te )
-					{
-						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContents(), command was " + command + fullArguments + ", entity " + currentObject + ", error was " + te + io.getColorCode("reset") );
-						writeError(ExceptionPrinter.getExceptionReport(te));
-					}
-					if ( !ejecutado && enableGenerics )
-					{
-						try
-						{
-
-							ejecutado = ejecutado || ((SupportingCode)currentObject).execCode ( "parseCommandOnContentsGeneric" , new Object[] { this , command , fullArguments , "" , objetivoVector , null , currentObject , null , new Boolean(true) } );
-						}
-						catch ( bsh.TargetError te )
-						{
-							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric(), command was " + command + fullArguments + ", entity number " + currentObject + ", second object was " + null + ", error was " + te + io.getColorCode("reset") );
-							writeError(ExceptionPrinter.getExceptionReport(te));
-						}
-					}
-				}
-				//lo mismo de mundo
-				if ( onWorld )
-				{
-				    try
-				    {
-					ejecutado = ejecutado || mundo.execCode ( "parseCommandOnContents" , new Object[] { this , command , fullArguments  , objetivoVector , currentObject } );
-				    }
-				    catch ( bsh.TargetError te )
-				    {
-				    	write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContents() executed from world, command was " + command + fullArguments + ", entity " + currentObject + ", error was " + te + io.getColorCode("reset") );
-				    	writeError(ExceptionPrinter.getExceptionReport(te));
-				    }
-				    if ( !ejecutado && enableGenerics )
-					{
-						try
-						{
-
-							ejecutado = ejecutado || mundo.execCode ( "parseCommandOnContentsGeneric" , new Object[] { this , command , fullArguments , "" , objetivoVector , null , currentObject , null } );
-						}
-						catch ( bsh.TargetError te )
-						{
-							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric() executed from world, command was " + command + fullArguments + ", entity number " + currentObject + ", second object was " + null + ", error was " + te + io.getColorCode("reset") );
-							writeError(ExceptionPrinter.getExceptionReport(te));
-						}
-					}
-				}
-
-			}
-
-			//}
-
-
-			Entity objetivo = (Entity) objetivoVector.get(0);
-
-			//éste será el objeto principal sobre el que ejecutemos el comando en singular (cualquiera, aunque no sea BSH) si hace referencia a un solo objeto
-			if ( objetivo instanceof Item )
-				meterObjetoEnZRSingular((Item)objetivo);
-
-
-
-			//THIS CHUNK OF CODE IS ABSOLUTE LEGACY
-			//"LOS INMORTALES" IS THE ONLY REASON TO KEEP IT
-			//para cada grupo de primeras palabras del string (dar, dar caña, dar caña al, dar caña al diábolo) intentamos ejecutar código EVA.
-			for ( int i = 0 ; i <= StringMethods.numToks (arguments,' ') && !ejecutado ; i++ )
-			{
-
-				Item ourItem;
-				if ( objetivo instanceof Item )
-					ourItem = (Item) objetivo;
-				else
-					continue;	
-
-				try
-				{
-					if ( i == 0 ) ejecutado = ejecutado || ourItem.execCode ( "command_" + command , "this: " + ourItem.getID() + "\n" + "room: " + habitacionActual.getID() + "\n" + "location: inventory" + "\n" + "player: " + getID() );
-					else ejecutado = ejecutado || ourItem.execCode ( ( "command_" + command + "_" + StringMethods.getToks( arguments , 1,  i , ' ' ) ).replace(' ','_') , "this: " + ourItem.getID() + "\n" + "room: " + habitacionActual.getID() + "\n" + "location: inventory" + "\n" + "player: " + getID()  );
-				}
-				catch ( EVASemanticException exc ) 
-				{
-					write(io.getColorCode("error") + "EVASemanticException found at command " + ( command + StringMethods.getToks( arguments , 1,  i , ' ' ) ).replace(' ','_') + ", item number " + ourItem.getID() + io.getColorCode("reset") );
-				}
-			}
-
-
-
-			//ejecutar parseCommand() de objeto
-			if ( !onWorld && objetivo instanceof SupportingCode )
-			{
-				//in default mode, the following if ensures that standard parseCommand's are not executed on objects that are inside containers.
-				//to define commands on those objects we have to define parseCommandOnContents.
-				//in extended scope mode, this check is bypassed.
-				if ( objetivoVector.size() == 1 || this.getPropertyValueAsBoolean("containedItemsInScope") )
-				{
-					if ( !ejecutado )
-					{
-						try
-						{
-							ejecutado = ejecutado || ((SupportingCode)objetivo).execCode ( "parseCommand" , new Object[] { this , command , fullArguments } );
-						}
-						catch ( bsh.TargetError te )
-						{
-							write(io.getColorCode("error") + "bsh.TargetError found at parseCommand(), command was " + command + fullArguments + ", item number " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
-							writeError(ExceptionPrinter.getExceptionReport(te));
-						}
-					}
-					if ( !ejecutado && enableGenerics )
-					{
-						try
-						{
-							ejecutado = ejecutado || ((SupportingCode)objetivo).execCode ( "parseCommandGeneric" , new Object[] { this , command , fullArguments , "" , objetivo , null , new Boolean(true) } );
-						}
-						catch ( bsh.TargetError te )
-						{
-							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric(), command was " + command + fullArguments + ", entity number " + objetivo + ", second object was " + objetivo + ", error was " + te + io.getColorCode("reset") );
-							writeError(ExceptionPrinter.getExceptionReport(te));
-						}
-					}
-				}
-			}
-			//lo mismo de mundo
-			if ( onWorld )
-			{
-			    if ( !ejecutado )
-			    {
-        			    try
-        			    {
-        				ejecutado = ejecutado || mundo.execCode ( "parseCommand" , new Object[] { this , command , fullArguments , objetivo } );
-        			    }
-        			    catch ( bsh.TargetError te )
-        			    {
-        			    	write(io.getColorCode("error") + "bsh.TargetError found at parseCommand() executed from world, command was " + command + fullArguments + ", item number " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
-        			    	writeError(ExceptionPrinter.getExceptionReport(te));
-        			    }
-			    }
-			    if ( !ejecutado && enableGenerics )
-			    {
-					try
-					{
-						ejecutado = ejecutado || mundo.execCode ( "parseCommandGeneric" , new Object[] { this , command , fullArguments , "" , objetivo , null  } );
-					}
-					catch ( bsh.TargetError te )
-					{
-						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric() executed from world, command was " + command + fullArguments + ", entity number " + objetivo + ", second object was " + objetivo + ", error was " + te + io.getColorCode("reset") );
-						writeError(ExceptionPrinter.getExceptionReport(te));
-					}
-			    }
-			}
-
+			ejecutado = executeParseCommandForOneEntity(fullArguments,objetivoVector,onWorld,enableGenerics,false);
+			
 			if ( ejecutado ) //código hizo end()
 			{
 				//luego esto lo hara el codigo
@@ -2832,7 +2882,18 @@ public class Player extends Mobile implements Informador
 
 				//begin copy-pasted from singular
 				Vector objetivoVector = (Vector) objetivos_p.get(w);
+				
+				ejecutado = executeParseCommandForOneEntity(fullArguments,objetivoVector,onWorld,enableGenerics,true);
+				
+				if ( ejecutado ) //código hizo end()
+				{
+					//luego esto lo hara el codigo
+					setNewState( 1 , 1 );
+					mentions.setLastMentionedVerb(command);
+					return true;
+				}
 
+				/*
 				//removed so that onContents is also executed on object itself.
 				//Replace this if if it is to be executed strictly on contents only.
 				//if ( objetivoVector.size() > 1 )
@@ -2991,8 +3052,10 @@ public class Player extends Mobile implements Informador
 						}
 				    }
 				}
+				*/
 
 			}
+			
 			if ( ejecutado )
 			{
 				//luego esto lo hara el codigo
@@ -3000,6 +3063,7 @@ public class Player extends Mobile implements Informador
 				mentions.setLastMentionedVerb(command);
 				return true;
 			}		
+			
 		} //end if pattern matching vector size not zero
 
 
