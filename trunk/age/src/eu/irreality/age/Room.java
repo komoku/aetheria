@@ -674,10 +674,16 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 		{
 			switch ( exitn )
 			{
-				case Path.NORTE: return "el norte";
-				case Path.SUR: return "el sur";
-				case Path.ESTE: return "el este";
-				case Path.OESTE: return "el oeste";
+				case Path.NORTE: return mundo.getMessages().getMessage("direction.full.n");
+				case Path.SUR: return mundo.getMessages().getMessage("direction.full.s");
+				case Path.ESTE: return mundo.getMessages().getMessage("direction.full.e");
+				case Path.OESTE: return mundo.getMessages().getMessage("direction.full.w");
+				case Path.NORDESTE: return mundo.getMessages().getMessage("direction.full.ne");
+				case Path.NOROESTE: return mundo.getMessages().getMessage("direction.full.no");
+				case Path.SUDESTE: return mundo.getMessages().getMessage("direction.full.se");
+				case Path.SUROESTE: return mundo.getMessages().getMessage("direction.full.so");
+				case Path.ARRIBA: return mundo.getMessages().getMessage("direction.full.u");
+				case Path.ABAJO: return mundo.getMessages().getMessage("direction.full.d");
 				//añadir resto
 				default: return "algún lado";
 			}

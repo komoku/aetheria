@@ -437,3 +437,15 @@ direction.sw=suroeste
 direction.se=sudeste
 direction.u=arriba
 direction.d=abajo
+
+#Directions (full name): creature comes from...
+direction.full.n=el norte
+direction.full.s=el sur
+direction.full.w=el oeste
+direction.full.e=el este
+direction.full.nw=el noroeste
+direction.full.ne=el nordeste
+direction.full.sw=el suroeste
+direction.full.se=el sudeste
+direction.full.u=arriba
+direction.full.d=abajo
