@@ -436,3 +436,15 @@ direction.sw=southwest
 direction.se=southeast
 direction.u=up
 direction.d=down
+
+#Directions (full name): creature comes from...
+direction.full.n=the north
+direction.full.s=the south
+direction.full.w=the west
+direction.full.e=the east
+direction.full.nw=the northwest
+direction.full.ne=the northeast
+direction.full.sw=the southwest
+direction.full.se=the southeast
+direction.full.u=up
+direction.full.d=down
