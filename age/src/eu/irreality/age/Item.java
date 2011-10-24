@@ -2756,14 +2756,18 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		it.itemType = "corpse";
 		it.inheritsFrom = 0;
 		it.isInstanceOf = "0";	
-		it.title = "cadáver de " + m.constructName(1);
+		it.title = "cadáver de " + //m.constructName(1);
+			m.getOutputNameA();
 	
 		it.descriptionList = new Description[1];
-		it.descriptionList[0] = ( new Description ( "Es un cadáver de " + m.constructName(1) + ", que lleva %INVENTORY" , 0 , 0 )  );
+		it.descriptionList[0] = ( new Description ( "Es un cadáver de " + m.getOutputNameA() + ", que lleva %INVENTORY" , 0 , 0 )  );
 		it.singNames = new Description[1];
 		it.singNames[0] = new Description ( it.title , 0 , 0 );
 		it.plurNames = new Description[1];
-		it.plurNames[0] = new Description ( "cadáveres de " + m.constructName(2) , 0 , 0 );
+		it.plurNames[0] = new Description ( "cadáveres de " 
+				//+ m.constructName(2) 
+				+ m.getOutputNameOnly(2)
+				, 0 , 0 );
 		
 		it.gender = true; //masculino
 	
