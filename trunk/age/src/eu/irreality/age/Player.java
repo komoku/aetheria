@@ -104,7 +104,10 @@ public class Player extends Mobile implements Informador
 	{
 		//set multiple args matches which was default behaviour in versions [1.0,1.1.7]
 		if ( new VersionComparator().compare(mundo.getParserVersion(),"1.0") >= 0 && new VersionComparator().compare(mundo.getParserVersion(),"1.1.7") <= 0 )
-			setProperty("multipleArgsMatches",true);
+		{
+			if ( this.getPropertyValueAsObject("multipleArgsMatches") == null )
+				setProperty("multipleArgsMatches",true);
+		}
 	}
 
 	/**Lista dinámica de objetos.*/
