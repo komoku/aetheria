@@ -2022,5 +2022,24 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 		return result;
 	}
 	
+	/**
+	 * Returns true if this room (directly) contains the specified item.
+	 * @param it
+	 * @return
+	 */
+	public boolean contains ( Item it )
+	{
+		return getContents().contains(it);
+	}
+	
+	/**
+	 * Returns true if this room (directly) contains the specified mobile.
+	 * @param it
+	 * @return
+	 */
+	public boolean contains ( Mobile m )
+	{
+		return getMobiles().contains(m);
+	}
 	
 }
