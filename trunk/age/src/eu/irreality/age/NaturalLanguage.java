@@ -14,6 +14,7 @@ import eu.irreality.age.language.Mentions;
 import eu.irreality.age.language.Spanish;
 import eu.irreality.age.language.Translation;
 import eu.irreality.age.spell.Correction;
+import eu.irreality.age.spell.ReferenceNameCorrector;
 import eu.irreality.age.spell.SimpleReverseCorrector;
 import eu.irreality.age.spell.SpellingCorrector;
 
@@ -543,6 +544,16 @@ public class NaturalLanguage
 			corrector.addDictionaryWord(nextWord);
 		}
 		//System.err.println(corrector);
+	}
+	
+	/**
+	 * Gets a corrector for the reference names of the given world.
+	 * @param w
+	 * @return
+	 */
+	public ReferenceNameCorrector initNameCorrector ( World w )
+	{
+		return new ReferenceNameCorrector ( w, new SimpleReverseCorrector() );
 	}
 	
 	private Correction getBestCorrection ( String tentativeVerb )
