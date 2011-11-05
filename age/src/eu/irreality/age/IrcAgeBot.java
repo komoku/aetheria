@@ -40,7 +40,7 @@ public class IrcAgeBot extends IrcBot
 			ircSocket.sendPrivate(sender,"Soy un servidor del Aetheria Game Engine.");
 			ircSocket.sendPrivate(sender,
 					"Para jugar una partida, ábreme un DCC chat.");
-			ircSocket.sendPrivate(sender,"Para más información, visita http://www.irreality.org/aetheria/conv.htm y http://absurdum.f2o.org/aetheria");
+			ircSocket.sendPrivate(sender,"Para más información, visita http://code.google.com/p/aetheria/");
 		}
 		 
 		System.out.println(sender+": "+message);
