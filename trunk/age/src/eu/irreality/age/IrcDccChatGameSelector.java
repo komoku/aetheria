@@ -45,7 +45,7 @@ public class IrcDccChatGameSelector extends IrcDccChatSynchronousHandler
 			write("* Como sólo se pueden mandar líneas no vacías, no hay interacción posible con el usuario del estilo de \"pulsa una tecla para continuar\". Donde el juego esté programado para tales interacciones, se te pedirá que introduzcas una línea no vacía.\n");
 			write("* Como sólo se pueden enviar líneas, cada instrucción de escritura del juego se hace corresponder con una línea, forzando saltos de línea donde no debería haberlos. Esto puede hacer más \"feo\" el formato del juego.\n");
 			write("* Falta la capacidad multimedia que se obtiene con el cliente de AGE, además de otras opciones como configuraciones de color, etc.\n");
-			write("Busca información sobre el cliente de AGE en http://www.irreality.org/aetheria/conv.htm\n");
+			write("Busca información sobre el cliente de AGE en http://www.irreality.eu/age/index.html?jtexto.htm o descárgatelo en http://code.google.com/p/aetheria/\n");
 			
 			write("==========\n");
 		
