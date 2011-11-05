@@ -5,6 +5,9 @@ import java.util.StringTokenizer;
 import eu.irreality.age.NaturalLanguage;
 import eu.irreality.age.Player;
 import eu.irreality.age.StringMethods;
+import eu.irreality.age.World;
+import eu.irreality.age.spell.ReferenceNameCorrector;
+import eu.irreality.age.spell.SimpleReverseCorrector;
 
 public class Spanish extends NaturalLanguage
 {
@@ -176,4 +179,21 @@ public class Spanish extends NaturalLanguage
 	}
 	
 
+	
+	/**
+	 * Gets a Spanish corrector for the reference names of the given world.
+	 * @param w
+	 * @return
+	 */
+	public ReferenceNameCorrector initNameCorrector ( World w )
+	{
+		ReferenceNameCorrector base = super.initNameCorrector(w);
+		//add common synonyms of cardinal directions 
+		base.addDictionaryWord("noreste");
+		base.addDictionaryWord("sureste");
+		base.addDictionaryWord("sudoeste");
+		return base;
+	}
+	
+	
 }

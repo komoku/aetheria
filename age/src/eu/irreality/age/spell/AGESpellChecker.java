@@ -32,7 +32,7 @@ public class AGESpellChecker
 		this.w = w;
 		this.lang = lang;
 		verbCorrector = lang.getVerbSpellingCorrector();
-		nameCorrector = new ReferenceNameCorrector ( w, new SimpleReverseCorrector() );
+		nameCorrector = lang.initNameCorrector(w);
 	}
 		
 	/**
