@@ -7594,5 +7594,40 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		}
 		return result;
 	}
+	
+	/**
+	 * Returns a list of all the locations this Mobile is in.
+	 * Since a Mobile can only be in one place at once, and that place must be a Room (not e.g.
+	 * a container or another Mobile), this method always returns a list containing that room.
+	 * @return
+	 */
+	public EntityList getLocations()
+	{
+		EntityList result = new EntityList();
+		result.addEntity(habitacionActual);
+		return result;
+	}
+	
+	/**
+	 * Returns the Room this Mobile is in.
+	 * This is equivalent to getRoom(), but is added for convenience, since a similar getLocation()
+	 * method also exists for Items (although in this latter case, the location need not be a Room).
+	 */
+	public Entity getLocation()
+	{
+		return habitacionActual;
+	}
+	
+	/**
+	 * Changes the Room this Mobile is in, doing all the necessary internal data structure updates.
+	 * This is equivalent to setRoom(r), but is added for convenience, since a similar moveTo()
+	 * method also exists for Items (although the latter can also take non-Room entities as
+	 * parameter).
+	 * @param r
+	 */
+	public void moveTo ( Room r )
+	{
+		setRoom(r);
+	}
 
 }
