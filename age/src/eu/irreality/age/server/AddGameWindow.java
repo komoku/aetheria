@@ -27,6 +27,7 @@ import javax.swing.event.ListSelectionListener;
 
 import eu.irreality.age.GameInfo;
 import eu.irreality.age.PartidaEntry;
+import eu.irreality.age.i18n.UIMessages;
 
 class AddGameWindow extends JDialog
 {
@@ -35,20 +36,20 @@ class AddGameWindow extends JDialog
 	private JList gamesList = new JList ( gamesVector );
 	private JTextPane gameInfoArea = new JTextPane();
 	
-	private JTextField gameNameTextField = new JTextField("Partida");
+	private JTextField gameNameTextField = new JTextField( UIMessages.getInstance().getMessage("server.addgame.game") );
 	private JTextField maxPlayersTextField = new JTextField("9999");
 	
 	//maybe login-pass thingies? password requirement?
 	
-	private JCheckBox passwordRequiredBox = new JCheckBox ("Contraseña de servidor:");
+	private JCheckBox passwordRequiredBox = new JCheckBox ( UIMessages.getInstance().getMessage("server.addgame.label.password") );
 	private JTextField passwordTextField = new JTextField ( "alohomora" );
 	
 	private JCheckBox cbAge = new JCheckBox("AGE");
 	private JCheckBox cbTelnet = new JCheckBox("Telnet");
 	private JCheckBox cbIrc = new JCheckBox("IRC");
 	
-	private JButton botonAceptar = new JButton("Aceptar");
-	private JButton botonCancelar = new JButton("Cancelar");
+	private JButton botonAceptar = new JButton( UIMessages.getInstance().getMessage("button.ok") );
+	private JButton botonCancelar = new JButton( UIMessages.getInstance().getMessage("button.can") );
 
 	private ServerConfigurationWindow madre;
 	
@@ -57,7 +58,8 @@ class AddGameWindow extends JDialog
 	private void updateGameInfoArea()
 	{
 		gameInfoArea.setText( informacionJuego.toLongString() );
-		gameNameTextField.setText("Partida de " + gamesList.getSelectedValue().toString() );
+		//gameNameTextField.setText("Partida de " + gamesList.getSelectedValue().toString() );
+		gameNameTextField.setText( UIMessages.getInstance().getMessage("server.addgame.gameinfo","$game",gamesList.getSelectedValue().toString()) );
 	}
 
 	public AddGameWindow ( final ServerConfigurationWindow madre )
@@ -67,7 +69,7 @@ class AddGameWindow extends JDialog
 		
 		this.madre = madre;
 	
-		setTitle("Partida dedicada");
+		setTitle( UIMessages.getInstance().getMessage("server.addgame.title") );
 		
 		setSize ( 600 , 400 );
 		
@@ -126,10 +128,10 @@ class AddGameWindow extends JDialog
 					subPan1.add ( new JScrollPane ( gameInfoArea , JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED ) );
 			JPanel subPan2 = new JPanel ( new GridLayout ( 3 , 1 ) );
 				JPanel subPan21 = new JPanel();
-					subPan21.add ( new JLabel("Nombre de la partida:") );
+					subPan21.add ( new JLabel( UIMessages.getInstance().getMessage("server.addgame.label.gamename") ) );
 					subPan21.add ( gameNameTextField );
 				JPanel subPan22 = new JPanel();
-					subPan22.add ( new JLabel("Máximo de jugadores:") );
+					subPan22.add ( new JLabel( UIMessages.getInstance().getMessage("server.addgame.label.maxplayers") ) );
 					subPan22.add ( maxPlayersTextField );
 				JPanel subPan23 = new JPanel();
 					subPan23.add ( passwordRequiredBox );
@@ -140,7 +142,7 @@ class AddGameWindow extends JDialog
 			JPanel subPan3 = new JPanel();
 				subPan3.setLayout ( new GridLayout( 2 , 1 ) );
 				JPanel subPan31 = new JPanel();
-				subPan3.setBorder ( BorderFactory.createTitledBorder("Servir por:") );
+				subPan3.setBorder ( BorderFactory.createTitledBorder( UIMessages.getInstance().getMessage("server.addgame.protocols") ) );
 				subPan31.add ( cbAge );
 				subPan31.add ( cbTelnet );
 				subPan31.add ( cbIrc );
@@ -148,7 +150,7 @@ class AddGameWindow extends JDialog
 					//jtp.setText("(nótese que, para que se sirva la partida, es necesario seleccionar AGE, telnet y/o IRC también en la ventana de configuración de servidor, junto con un puerto cuando corresponda)");
 					//subPan24.add ( jtp );
 				subPan3.add ( subPan31 );
-				subPan3.add ( new JLabel("(sólo si dichos servidores están activos)" , JLabel.CENTER ) );
+				subPan3.add ( new JLabel( UIMessages.getInstance().getMessage("server.addgame.onlyactive") , JLabel.CENTER ) );
 				//subPan2.add ( subPan24 );
 			panelPrincipal.add ( subPan1 );
 			panelPrincipal.add ( subPan2 );
@@ -203,7 +205,7 @@ class AddGameWindow extends JDialog
 	
 		editMode = true;
 	
-		setTitle("Partida dedicada");
+		setTitle( UIMessages.getInstance().getMessage("server.addgame.title") );
 		
 		setSize ( 600 , 400 );
 		
@@ -258,11 +260,11 @@ class AddGameWindow extends JDialog
 					subPan1.add ( new JScrollPane ( gameInfoArea , JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED , JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED ) );
 			JPanel subPan2 = new JPanel ( new GridLayout ( 3 , 1 ) );
 				JPanel subPan21 = new JPanel();
-					subPan21.add ( new JLabel("Nombre de la partida:") );
+					subPan21.add ( new JLabel( UIMessages.getInstance().getMessage("server.addgame.label.gamename") ) );
 					gameNameTextField.setText(aEditar.getName());
 					subPan21.add ( gameNameTextField );
 				JPanel subPan22 = new JPanel();
-					subPan22.add ( new JLabel("Máximo de jugadores:") );
+					subPan22.add ( new JLabel( UIMessages.getInstance().getMessage("server.addgame.label.maxplayers") ) );
 					maxPlayersTextField.setText(String.valueOf(aEditar.getMaxPlayers()));
 					subPan22.add ( maxPlayersTextField );
 				JPanel subPan23 = new JPanel();
@@ -286,7 +288,7 @@ class AddGameWindow extends JDialog
 					//jtp.setText("(nótese que, para que se sirva la partida, es necesario seleccionar AGE, telnet y/o IRC también en la ventana de configuración de servidor, junto con un puerto cuando corresponda)");
 					//subPan24.add ( jtp );
 				subPan3.add ( subPan31 );
-				subPan3.add ( new JLabel("(sólo si dichos servidores están activos)" , JLabel.CENTER ) );
+				subPan3.add ( new JLabel( UIMessages.getInstance().getMessage("server.addgame.onlyactive") , JLabel.CENTER ) );
 				//subPan2.add ( subPan24 );
 			panelPrincipal.add ( subPan1 );
 			panelPrincipal.add ( subPan2 );
