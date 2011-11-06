@@ -5,6 +5,9 @@
 package eu.irreality.age;
 import java.io.*;
 import javax.swing.*;
+
+import eu.irreality.age.i18n.UIMessages;
+
 import java.util.*;
 public class FiltroFicheroLog extends javax.swing.filechooser.FileFilter
 {
@@ -29,7 +32,8 @@ public class FiltroFicheroLog extends javax.swing.filechooser.FileFilter
 	
 	public String getDescription()
 	{
-		return "Ficheros de log de AGE (*.alf)";
+		return UIMessages.getInstance().getMessage("filter.logfile"); 
+		//"Ficheros de log de AGE (*.alf)";
 	}
 	
 }

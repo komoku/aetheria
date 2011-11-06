@@ -2,7 +2,7 @@
  * (c) 2000-2009 Carlos Gómez Rodríguez, todos los derechos reservados / all rights reserved.
  * Licencia en license/bsd.txt / License in license/bsd.txt
  */
-package eu.irreality.age;
+package eu.irreality.age.swing.mdi.gameloader;
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
@@ -16,7 +16,11 @@ import javax.xml.transform.*;
 import javax.xml.transform.stream.*;
 import org.xml.sax.*;
 
+import eu.irreality.age.GameInfo;
+import eu.irreality.age.PartidaEntry;
+import eu.irreality.age.SaveInfo;
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.server.ServerHandler;
 
 public class GameChoosingInternalFrame extends JInternalFrame
@@ -36,7 +40,7 @@ public class GameChoosingInternalFrame extends JInternalFrame
 	public GameChoosingInternalFrame ( JDesktopPane thePanel )
 	{
 	
-		super("Cargador de juegos",true,true,true,true);
+		super(UIMessages.getInstance().getMessage("gameloader.title"),true,true,true,true);
 	
 		try
 		{
@@ -54,9 +58,9 @@ public class GameChoosingInternalFrame extends JInternalFrame
 		setVisible(true);
 		//setTitle("Cargador de juegos");
 		getContentPane().add ( theTabbedPane );
-		theTabbedPane.addTab ( "Nuevo" , new GameChoosingPanel ( thePanel , this ) );
-		theTabbedPane.addTab ( "Salvados" , new SaveChoosingPanel ( thePanel , this ) );
-		theTabbedPane.addTab ( "Opciones" , opciones = new OptionChoosingPanel (  this ) );
+		theTabbedPane.addTab ( UIMessages.getInstance().getMessage("gameloader.new") , new GameChoosingPanel ( thePanel , this ) );
+		theTabbedPane.addTab ( UIMessages.getInstance().getMessage("gameloader.saved") , new SaveChoosingPanel ( thePanel , this ) );
+		theTabbedPane.addTab ( UIMessages.getInstance().getMessage("gameloader.options") , opciones = new OptionChoosingPanel (  this ) );
 		theTabbedPane.addChangeListener ( new ChangeListener() { public void stateChanged(ChangeEvent evt) { opciones.updateServersAndPorts(); } } );
 	}
 }
@@ -73,11 +77,11 @@ class OptionChoosingPanel extends JPanel
 	//JTextField tf1 = null;
 	//JTextField tf2 = null;
 	
-	JLabel ageLabel = new JLabel("Servidor de AGE");
-	JLabel telnetLabel = new JLabel("Servidor de telnet");
-	JLabel ircLabel = new JLabel("Servidor de IRC");
+	JLabel ageLabel = new JLabel( UIMessages.getInstance().getMessage("gameloader.options.ageserver") );
+	JLabel telnetLabel = new JLabel( UIMessages.getInstance().getMessage("gameloader.options.telnetserver") );
+	JLabel ircLabel = new JLabel( UIMessages.getInstance().getMessage("gameloader.options.ircserver") );
 	
-	JLabel infoLabel = new JLabel("<html><p>Nota: se pueden cambiar los puertos telnet y AGE en las opciones</p><p>del servidor dedicado (Servidor/Configuración...)</p></html>");
+	JLabel infoLabel = new JLabel( UIMessages.getInstance().getMessage("gameloader.options.info") );
 	
 	public boolean servirAGE()
 	{

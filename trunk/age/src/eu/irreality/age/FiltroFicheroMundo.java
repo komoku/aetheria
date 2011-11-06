@@ -2,6 +2,8 @@ package eu.irreality.age;
 
 import java.io.File;
 
+import eu.irreality.age.i18n.UIMessages;
+
 public class FiltroFicheroMundo extends javax.swing.filechooser.FileFilter
 {
 	
@@ -15,7 +17,8 @@ public class FiltroFicheroMundo extends javax.swing.filechooser.FileFilter
 	
 	public String getDescription()
 	{
-		return "Ficheros de mundo de AGE (world.xml,*.agz)";
+		return UIMessages.getInstance().getMessage("filter.worldfile");
+		//"Ficheros de mundo de AGE (world.xml,*.agz)";
 	}
 	
 }
