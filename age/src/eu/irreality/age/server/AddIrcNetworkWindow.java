@@ -20,6 +20,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import eu.irreality.age.i18n.UIMessages;
+
 
 class AddIrcNetworkWindow extends JDialog
 {
@@ -28,16 +30,16 @@ class AddIrcNetworkWindow extends JDialog
 	public JTextField portTextField = new JTextField("6667");
 	public JTextField nickTextField = new JTextField("AGEserver");
 	
-	public JCheckBox cbQuery = new JCheckBox("Privado");
-	public JCheckBox cbChannel = new JCheckBox("Canal");
+	public JCheckBox cbQuery = new JCheckBox( UIMessages.getInstance().getMessage("server.irc.label.query") );
+	public JCheckBox cbChannel = new JCheckBox( UIMessages.getInstance().getMessage("server.irc.label.channel") );
 	public JCheckBox cbDCC = new JCheckBox("DCC");
 
 	public Vector channelVector = new Vector();
 
 	public JList channelList = new JList(channelVector);
 
-	private JButton botonAceptar = new JButton("Aceptar");
-	private JButton botonCancelar = new JButton("Cancelar");
+	private JButton botonAceptar = new JButton( UIMessages.getInstance().getMessage("button.ok") );
+	private JButton botonCancelar = new JButton( UIMessages.getInstance().getMessage("button.can") );
 
 	private final ServerConfigurationWindow madre;
 	
@@ -58,13 +60,13 @@ class AddIrcNetworkWindow extends JDialog
 		JPanel panelPrincipal = new JPanel ( new GridLayout ( 2 , 1 ) );
 			JPanel subPan1 = new JPanel();
 				JPanel subPan11 = new JPanel();
-					subPan11.add ( new JLabel("Servidor IRC:") );
+					subPan11.add ( new JLabel( UIMessages.getInstance().getMessage("server.irc.label.server") ) );
 					subPan11.add ( serverTextField );
 				JPanel subPan12 = new JPanel();
-					subPan12.add ( new JLabel("Puerto:") );
+					subPan12.add ( new JLabel( UIMessages.getInstance().getMessage("server.irc.label.port") ) );
 					subPan12.add ( portTextField );
 				JPanel subPan13 = new JPanel();
-					subPan13.add ( new JLabel("Nick:") );
+					subPan13.add ( new JLabel( UIMessages.getInstance().getMessage("server.irc.label.nick") ) );
 					subPan13.add ( nickTextField ); 
 				subPan1.add ( subPan11 );
 				subPan1.add ( subPan12 );
@@ -135,7 +137,7 @@ class AddIrcNetworkWindow extends JDialog
 		this.madre = madre;
 		//this.aEditar = aEditar;
 	
-		setTitle("Servidor IRC");
+		setTitle( UIMessages.getInstance().getMessage("server.irc.title") );
 
 		editMode = true;
 
@@ -143,15 +145,15 @@ class AddIrcNetworkWindow extends JDialog
 		JPanel panelPrincipal = new JPanel ( new GridLayout ( 2 , 1 ) );
 			JPanel subPan1 = new JPanel();
 				JPanel subPan11 = new JPanel();
-					subPan11.add ( new JLabel("Servidor IRC:") );
+					subPan11.add ( new JLabel( UIMessages.getInstance().getMessage("server.irc.label.server") ) );
 					serverTextField.setText(aEditar.getServer());
 					subPan11.add ( serverTextField );
 				JPanel subPan12 = new JPanel();
-					subPan12.add ( new JLabel("Puerto:") );
+					subPan12.add ( new JLabel( UIMessages.getInstance().getMessage("server.irc.label.port") ) );
 					portTextField.setText(String.valueOf(aEditar.getPort()));
 					subPan12.add ( portTextField );
 				JPanel subPan13 = new JPanel();
-					subPan13.add ( new JLabel("Nick:") );
+					subPan13.add ( new JLabel( UIMessages.getInstance().getMessage("server.irc.label.nick") ) );
 					nickTextField.setText(aEditar.getNick());
 					subPan13.add ( nickTextField ); 
 				subPan1.add ( subPan11 );
