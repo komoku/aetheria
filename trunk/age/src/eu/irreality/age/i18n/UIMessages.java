@@ -62,9 +62,29 @@ public /*Singleton*/ class UIMessages
 		return messString.replace(placeholder,substitution);
 	}
 	
+	private static String buildMessage ( String messString , String p1 , String s1 , String p2 , String s2 )
+	{
+		return buildMessage ( buildMessage ( messString,p1,s1 ) , p2 , s2 );
+	}
+	
+	private static String buildMessage ( String messString , String p1 , String s1 , String p2 , String s2 , String p3 , String s3 )
+	{
+		return buildMessage ( buildMessage ( messString,p1,s1,p2,s2 ) , p3 , s3 );
+	}
+	
 	public String getMessage ( String key , String placeholder , String substitution )
 	{
 		return buildMessage ( getMessage(key) , placeholder , substitution );
+	}
+	
+	public String getMessage ( String key , String p1 , String s1 , String p2 , String s2 )
+	{
+		return buildMessage ( getMessage(key) , p1 , s1 , p2 , s2 );
+	}
+	
+	public String getMessage ( String key , String p1 , String s1 , String p2 , String s2 , String p3 , String s3 )
+	{
+		return buildMessage ( getMessage(key) , p1 , s1 , p2 , s2 , p3 , s3 );
 	}
 
 }
