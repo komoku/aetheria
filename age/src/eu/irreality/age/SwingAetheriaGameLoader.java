@@ -13,6 +13,7 @@ import javax.swing.event.*;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.filemanagement.WorldLoader;
+import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.swing.config.AGEConfiguration;
 import eu.irreality.age.util.VersionComparator;
 import eu.irreality.age.windowing.AGEClientWindow;
@@ -392,7 +393,6 @@ de la ventana hasta acabar de cargar.
 		{ 
 			public void internalFrameClosing ( InternalFrameEvent e )
 			{
-				System.out.println("Frame closed.");
 
 					saveWindowCoordinates();
 					exitNow(); //includes call to this.exitNow();
@@ -444,7 +444,8 @@ de la ventana hasta acabar de cargar.
 						//io = new SwingEntradaSalida(campoTexto,scrollAreaTexto,areaTexto,gameLog);
 						//io = new ColoredSwingClient(esto,campoTexto,scrollAreaTexto,areaTexto,gameLog);
 						
-						System.out.println("1");
+						
+						//System.out.println("1");
 						
 						
 						try
@@ -470,11 +471,10 @@ de la ventana hasta acabar de cargar.
 												}
 											}
 											
-											write("Aetheria Game Engine v 1.1.8\n");
+											write("Aetheria Game Engine v " + UIMessages.getInstance().getMessage("age.version") + "\n");
 
-											//areaTexto.setText("Aetheria Game Engine v 0.4.7b Beta Distribution\n");
-											write("© 1999-2011 Carlos Gómez (solrac888@yahoo.com)\n");
-											write("Véase license.txt para consultar la licencia de AGE y del software de terceros incluido.\n");
+											write( UIMessages.getInstance().getMessage("age.copyright") + "\n" );
+											write( UIMessages.getInstance().getMessage("intro.legal") + "\n" );
 											
 											write("\n=============================================================");
 											write("\n" + io.getColorCode("information") + "Engine-related Version Info:");
@@ -495,7 +495,7 @@ de la ventana hasta acabar de cargar.
 						}
 						
 						
-						System.out.println("2");
+						//System.out.println("2");
 					
 						
 						
@@ -525,7 +525,7 @@ de la ventana hasta acabar de cargar.
 						}
 						
 						
-						System.out.println("3");
+						//System.out.println("3");
 					
 						//doUpdate2 = new UpdatingThread( this , doUpdate );
 						//doUpdate2.start();
@@ -687,11 +687,17 @@ de la ventana hasta acabar de cargar.
 						
 						if ( new VersionComparator().compare(GameEngineThread.getVersionNumber(),theWorld.getRequiredAGEVersion()) < 0 )
 						{
+							String mess = UIMessages.getInstance().getMessage("age.version.warning",
+									"$curversion",GameEngineThread.getVersionNumber(),"$reqversion",theWorld.getRequiredAGEVersion(),
+									"$world",theWorld.getModuleName());
+							mess = mess + " " + UIMessages.getInstance().getMessage("age.download.url");
+							/*
 							String mess = "Estás usando la versión " +
 								GameEngineThread.getVersionNumber() + " de AGE; pero el mundo " + theWorld.getModuleName() +
 								" requiere la versión " + theWorld.getRequiredAGEVersion() + " como mínimo. Podría no funcionar " +
 								" si no te bajas una nueva versión de AGE en http://code.google.com/p/aetheria";
-							JOptionPane.showMessageDialog(SwingAetheriaGameLoader.this, mess, "Aviso", JOptionPane.WARNING_MESSAGE);
+							*/
+							JOptionPane.showMessageDialog(SwingAetheriaGameLoader.this, mess, UIMessages.getInstance().getMessage("age.version.warning.title"), JOptionPane.WARNING_MESSAGE);
 						}
 						
 						/*
@@ -784,7 +790,8 @@ de la ventana hasta acabar de cargar.
 							}
 							catch ( Exception exc )
 							{
-								write("¡No se ha podido cargar el estado!\n");
+								//write("¡No se ha podido cargar el estado!\n");
+								write(UIMessages.getInstance().getMessage("swing.cannot.read.state","$file",stateFile));
 								write(exc.toString());
 								exc.printStackTrace();
 							}
@@ -813,7 +820,8 @@ de la ventana hasta acabar de cargar.
 							}
 							catch ( Exception exc )
 							{
-								write("Excepción al leer el fichero de log: " + exc + "\n");
+								//write("Excepción al leer el fichero de log: " + exc + "\n");
+								write(UIMessages.getInstance().getMessage("swing.cannot.read.log","$exc",exc.toString()));
 								exc.printStackTrace();
 								return;
 							}
@@ -863,11 +871,11 @@ de la ventana hasta acabar de cargar.
 								theWorld,
 								esto , false );
 						
-						System.out.println("STARTING ENGINE THREAD");
+						//System.out.println("STARTING ENGINE THREAD");
 						
 						maquinaEstados.start();		
 					
-						System.out.println("ENGINE THREAD STARTED");
+						//System.out.println("ENGINE THREAD STARTED");
 						
 						System.out.println("noSerCliente = " + noSerCliente);
 						
