@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.i18n.UIMessages;
 
 public class CommandLineClient implements InputOutputClient 
 {
@@ -214,9 +215,11 @@ public class CommandLineClient implements InputOutputClient
 	public void waitKeyPress() 
 	{
 		if ( rebotFriendly )
-			writer.println("Escribe cualquier cosa para seguir...\n");
+			//writer.println("Escribe cualquier cosa para seguir...\n");
+			writer.println(UIMessages.getInstance().getMessage("clclient.keyrequest.rebot") + "\n");
 		else
-			writer.println("Pulsa [ENTER] para seguir...\n");
+			//writer.println("Pulsa [ENTER] para seguir...\n");
+			writer.println(UIMessages.getInstance().getMessage("clclient.keyrequest") + "\n");
 		try
 		{
 			reader.readLine();

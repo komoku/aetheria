@@ -20,6 +20,7 @@ import java.awt.*;
 
 import javax.swing.text.*;
 
+import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.swing.FancyAttributeSet;
 import eu.irreality.age.swing.FancyJTextField;
 import eu.irreality.age.swing.FancyJTextPane;
@@ -440,18 +441,18 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	//llamado por los constructores
 	public void doInitClientMenu ( final AGEClientWindow window )
 	{
-		JMenu colorConfigurationMenu = new JMenu("Temas de color");
-		final JCheckBoxMenuItem fullScreenOption = new JCheckBoxMenuItem("Pantalla completa",window.isFullScreenMode());
-		final JCheckBoxMenuItem soundOption = new JCheckBoxMenuItem("Sonido",true);
+		JMenu colorConfigurationMenu = new JMenu( UIMessages.getInstance().getMessage("csclient.pres.colorthemes") );
+		final JCheckBoxMenuItem fullScreenOption = new JCheckBoxMenuItem( UIMessages.getInstance().getMessage("csclient.pres.fullscreen") ,window.isFullScreenMode());
+		final JCheckBoxMenuItem soundOption = new JCheckBoxMenuItem( UIMessages.getInstance().getMessage("csclient.pres.sound") ,true);
 		JMenuBar mb = window.getTheJMenuBar();
 		window.setTheJMenuBar(mb); //nótese el "the", es para que la tenga como atributo. Si luego se quita para el modo fullscreen se puede volver a poner.
 		clientConfigurationMenu.add ( colorConfigurationMenu );
 		if ( window.supportsFullScreen() )
 			clientConfigurationMenu.add ( fullScreenOption );
 		clientConfigurationMenu.add(soundOption);
-		JRadioButtonMenuItem itemDefaultJuego = new JRadioButtonMenuItem("Por defecto (juego)",true);
-		JRadioButtonMenuItem itemDefault = new JRadioButtonMenuItem("Por defecto (AGE)",false);
-		JRadioButtonMenuItem itemPergamino = new JRadioButtonMenuItem("Pergamino",false);
+		JRadioButtonMenuItem itemDefaultJuego = new JRadioButtonMenuItem( UIMessages.getInstance().getMessage("csclient.theme.game") ,true);
+		JRadioButtonMenuItem itemDefault = new JRadioButtonMenuItem( UIMessages.getInstance().getMessage("csclient.theme.age") ,false);
+		JRadioButtonMenuItem itemPergamino = new JRadioButtonMenuItem( UIMessages.getInstance().getMessage("csclient.theme.parchment") ,false);
 		ButtonGroup bg = new ButtonGroup();
 		bg.add ( itemDefaultJuego );
 		bg.add ( itemDefault );
@@ -1086,7 +1087,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	}
 	
 	//key press text
-	private String keyRequestText = "Pulsa cualquier tecla...";
+	private String keyRequestText = UIMessages.getInstance().getMessage("csclient.keyrequest");
+		//"Pulsa cualquier tecla...";
 	
 	public String getKeyRequestText()
 	{
@@ -1689,7 +1691,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 			glass.removeAll();
 			glass.setLayout(new GridLayout(1,1));
 			glass.setBackground(Color.WHITE);
-			JLabel loadingLabel = new JLabel("Cargando log, un momento...",JLabel.CENTER);
+			JLabel loadingLabel = new JLabel( UIMessages.getInstance().getMessage("csclient.loadinglog") ,JLabel.CENTER);
 			loadingLabel.setBorder(BorderFactory.createLineBorder(Color.black,4));
 			loadingLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 			loadingLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
