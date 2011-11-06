@@ -10,7 +10,6 @@ import javax.swing.text.*;
 import eu.irreality.age.AGEClientHandler;
 import eu.irreality.age.GameEngineThread;
 import eu.irreality.age.InputOutputClient;
-import eu.irreality.age.IrcAgeBot;
 import eu.irreality.age.server.IrcServerEntry;
 import eu.irreality.age.NullInputOutputClient;
 import eu.irreality.age.PartidaEntry;
@@ -20,6 +19,7 @@ import eu.irreality.age.SimpleTelnetClientHandler;
 import eu.irreality.age.SwingAetheriaGameLoader;
 import eu.irreality.age.World;
 import eu.irreality.age.debug.Debug;
+import eu.irreality.age.irc.IrcAgeBot;
 import eu.irreality.age.windowing.AGELoggingWindow;
 
 import java.awt.*;

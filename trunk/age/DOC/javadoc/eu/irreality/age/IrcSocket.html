@@ -94,7 +94,7 @@ Class IrcSocket</H2>
 <PRE>
 java.lang.Object
   <IMG SRC="../../../resources/inherit.gif" ALT="extended by ">java.lang.Thread
-      <IMG SRC="../../../resources/inherit.gif" ALT="extended by "><B>eu.irreality.age.IrcSocket</B>
+      <IMG SRC="../../../resources/inherit.gif" ALT="extended by "><B>eu.irreality.age.irc.IrcSocket</B>
 </PRE>
 <DL>
 <DT><B>All Implemented Interfaces:</B> <DD>java.lang.Runnable</DD>
@@ -155,7 +155,7 @@ java.lang.Object
 <B>Constructor Summary</B></FONT></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../../../eu/irreality/age/IrcSocket.html#IrcSocket(java.lang.String, int, eu.irreality.age.IrcListener)">IrcSocket</A></B>(java.lang.String&nbsp;server,
+<TD><CODE><B><A HREF="../../../eu/irreality/age/IrcSocket.html#IrcSocket(java.lang.String, int, eu.irreality.age.irc.IrcListener)">IrcSocket</A></B>(java.lang.String&nbsp;server,
           int&nbsp;port,
           <A HREF="../../../eu/irreality/age/IrcListener.html" title="interface in eu.irreality.age">IrcListener</A>&nbsp;ircListener)</CODE>
 
@@ -175,7 +175,7 @@ java.lang.Object
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../eu/irreality/age/IrcDccChatSocket.html" title="class in eu.irreality.age">IrcDccChatSocket</A></CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../eu/irreality/age/IrcSocket.html#acceptDccChatRequest(java.lang.String, java.net.InetAddress, short, eu.irreality.age.IrcDccListener)">acceptDccChatRequest</A></B>(java.lang.String&nbsp;nick,
+<TD><CODE><B><A HREF="../../../eu/irreality/age/IrcSocket.html#acceptDccChatRequest(java.lang.String, java.net.InetAddress, short, eu.irreality.age.irc.IrcDccListener)">acceptDccChatRequest</A></B>(java.lang.String&nbsp;nick,
                      java.net.InetAddress&nbsp;addr,
                      short&nbsp;port,
                      <A HREF="../../../eu/irreality/age/IrcDccListener.html" title="interface in eu.irreality.age">IrcDccListener</A>&nbsp;idl)</CODE>
@@ -245,7 +245,7 @@ java.lang.Object
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;<A HREF="../../../eu/irreality/age/IrcDccChatSocket.html" title="class in eu.irreality.age">IrcDccChatSocket</A></CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../eu/irreality/age/IrcSocket.html#sendDccChatRequest(java.lang.String, short, eu.irreality.age.IrcDccListener)">sendDccChatRequest</A></B>(java.lang.String&nbsp;nick,
+<TD><CODE><B><A HREF="../../../eu/irreality/age/IrcSocket.html#sendDccChatRequest(java.lang.String, short, eu.irreality.age.irc.IrcDccListener)">sendDccChatRequest</A></B>(java.lang.String&nbsp;nick,
                    short&nbsp;port,
                    <A HREF="../../../eu/irreality/age/IrcDccListener.html" title="interface in eu.irreality.age">IrcDccListener</A>&nbsp;idl)</CODE>
 
@@ -344,7 +344,7 @@ java.lang.Object
 </TR>
 </TABLE>
 
-<A NAME="IrcSocket(java.lang.String, int, eu.irreality.age.IrcListener)"><!-- --></A><H3>
+<A NAME="IrcSocket(java.lang.String, int, eu.irreality.age.irc.IrcListener)"><!-- --></A><H3>
 IrcSocket</H3>
 <PRE>
 public <B>IrcSocket</B>(java.lang.String&nbsp;server,
@@ -518,7 +518,7 @@ public void <B>quit</B>(java.lang.String&nbsp;reason)</PRE>
 </DL>
 <HR>
 
-<A NAME="sendDccChatRequest(java.lang.String, short, eu.irreality.age.IrcDccListener)"><!-- --></A><H3>
+<A NAME="sendDccChatRequest(java.lang.String, short, eu.irreality.age.irc.IrcDccListener)"><!-- --></A><H3>
 sendDccChatRequest</H3>
 <PRE>
 public <A HREF="../../../eu/irreality/age/IrcDccChatSocket.html" title="class in eu.irreality.age">IrcDccChatSocket</A> <B>sendDccChatRequest</B>(java.lang.String&nbsp;nick,
@@ -534,7 +534,7 @@ public <A HREF="../../../eu/irreality/age/IrcDccChatSocket.html" title="class in
 </DL>
 <HR>
 
-<A NAME="acceptDccChatRequest(java.lang.String, java.net.InetAddress, short, eu.irreality.age.IrcDccListener)"><!-- --></A><H3>
+<A NAME="acceptDccChatRequest(java.lang.String, java.net.InetAddress, short, eu.irreality.age.irc.IrcDccListener)"><!-- --></A><H3>
 acceptDccChatRequest</H3>
 <PRE>
 public <A HREF="../../../eu/irreality/age/IrcDccChatSocket.html" title="class in eu.irreality.age">IrcDccChatSocket</A> <B>acceptDccChatRequest</B>(java.lang.String&nbsp;nick,

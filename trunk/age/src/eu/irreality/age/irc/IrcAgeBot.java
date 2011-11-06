@@ -2,8 +2,9 @@
  * (c) 2000-2009 Carlos Gómez Rodríguez, todos los derechos reservados / all rights reserved.
  * Licencia en license/bsd.txt / License in license/bsd.txt
  */
-package eu.irreality.age;
+package eu.irreality.age.irc;
 
+import eu.irreality.age.World;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.server.ServerHandler;
 
