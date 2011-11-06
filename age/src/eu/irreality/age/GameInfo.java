@@ -21,6 +21,7 @@ import org.xml.sax.SAXException;
 
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.filemanagement.URLUtils;
+import eu.irreality.age.i18n.UIMessages;
 
 public class GameInfo implements Serializable
 {
@@ -111,7 +112,18 @@ public class GameInfo implements Serializable
 	
 	public String toLongString()
 	{
-		return "Nombre: " + getName() + "\nAutor: " + getAuthor() + "\nFecha: " + getDate() + "\nVersión: " + getVersion() + "\nVersión AGE requerida: " + getAGEVersion() + "\nFichero: " + getFile();
+		return UIMessages.getInstance().getMessage("gameinfo.name")
+		+ " " + getName() + "\n" 
+		+ UIMessages.getInstance().getMessage("gameinfo.author")
+		+ " " + getAuthor() + "\n"  
+		+ UIMessages.getInstance().getMessage("gameinfo.date")
+		+ " " + getDate() + "\n" 
+		+ UIMessages.getInstance().getMessage("gameinfo.version") 
+		+ " " + getVersion() + "\n" 
+		+ UIMessages.getInstance().getMessage("gameinfo.required")
+		+ " " + getAGEVersion() + "\n" 
+		+ UIMessages.getInstance().getMessage("gameinfo.file")
+		+ " " + getFile();
 	}
 	
 	

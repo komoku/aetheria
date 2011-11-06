@@ -27,6 +27,7 @@ import javax.swing.text.SimpleAttributeSet;
 
 import eu.irreality.age.GameInfo;
 import eu.irreality.age.PartidaEntry;
+import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.server.ServerHandler;
 
 class GameChoosingPanel extends JPanel
@@ -81,7 +82,7 @@ class GameChoosingPanel extends JPanel
 		
 		/*getContentPane().*/setBackground ( GameChoosingInternalFrame.BACKGROUND_COLOR );
 		/*getContentPane().*/setLayout ( new GridLayout ( 1 , 2 ) );
-		lista.setBorder(BorderFactory.createTitledBorder("Selecciona un juego:"));		
+		lista.setBorder(BorderFactory.createTitledBorder( UIMessages.getInstance().getMessage("gameloader.selectgame") ));		
 		/*getContentPane().*/add(lista);
 		
 		lista.setBackground ( GameChoosingInternalFrame.BACKGROUND_COLOR );
@@ -90,8 +91,8 @@ class GameChoosingPanel extends JPanel
 		gameInfoArea.setForeground ( GameChoosingInternalFrame.FOREGROUND_COLOR );
 		
 		JPanel subp = new JPanel();
-		JButton botonJugar = new JButton("Jugar");
-		JButton botonCancelar = new JButton("Cerrar");
+		JButton botonJugar = new JButton( UIMessages.getInstance().getMessage("button.pla") );
+		JButton botonCancelar = new JButton( UIMessages.getInstance().getMessage("button.clo") );
 		subp.setLayout(new BorderLayout());
 		/*
 		subp.add ( etiquetas[0] );

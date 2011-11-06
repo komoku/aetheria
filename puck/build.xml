@@ -57,6 +57,7 @@
 	<copy todir="${build}">
 		<fileset dir="${src}">
 			<include name="**/Messages.*"/>
+			<include name="**/UIMessages.*"/> <!-- this is for future name change -->
 			<include name="**/codeAssist.xml"/>
 			<include name="**/*.tpl"/>
 		</fileset>
