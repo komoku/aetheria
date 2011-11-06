@@ -15,7 +15,6 @@ import eu.irreality.age.NullInputOutputClient;
 import eu.irreality.age.PartidaEntry;
 import eu.irreality.age.server.ServerConfigurationOptions;
 import eu.irreality.age.telnet.SimpleTelnetClientHandler;
-import eu.irreality.age.ServerConfigurationWindow;
 import eu.irreality.age.SwingAetheriaGameLoader;
 import eu.irreality.age.World;
 import eu.irreality.age.debug.Debug;

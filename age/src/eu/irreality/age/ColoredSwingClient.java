@@ -436,7 +436,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		mb.remove(clientConfigurationMenu);
 	}
 	
-	private JMenu clientConfigurationMenu = new JMenu("Ver");
+	private JMenu clientConfigurationMenu = new JMenu( UIMessages.getInstance().getMessage("csclient.pres") );
 	
 	//llamado por los constructores
 	public void doInitClientMenu ( final AGEClientWindow window )
