@@ -6,6 +6,7 @@ import java.util.Vector;
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.filemanagement.URLUtils;
 import eu.irreality.age.filemanagement.WorldLoader;
+import eu.irreality.age.i18n.UIMessages;
 
 public class CommandLineClientLauncher 
 {
@@ -143,7 +144,8 @@ public class CommandLineClientLauncher
 				}
 				catch ( java.io.IOException ioe )
 				{
-					io.write("No puedo leer el fichero del mundo: " + inputAsFile + "\n"); 
+					//io.write("No puedo leer el fichero del mundo: " + inputAsFile + "\n"); 
+					io.write(UIMessages.getInstance().getMessage("clclient.cannot.read.world","$file",inputAsFile.toString())+"\n");
 					ioe.printStackTrace();
 					return; 
 				}
@@ -189,7 +191,8 @@ public class CommandLineClientLauncher
 				}
 				catch ( Exception exc )
 				{
-					io.write("¡No se ha podido cargar el estado!\n");
+					//io.write("¡No se ha podido cargar el estado!\n");
+					io.write(UIMessages.getInstance().getMessage("clclient.cannot.read.state","$file",statePath)+"\n");
 					io.write(exc.toString());
 					exc.printStackTrace();
 				}
@@ -205,7 +208,8 @@ public class CommandLineClientLauncher
 				}
 				catch ( Exception exc )
 				{
-					io.write("Excepción al leer el fichero de log: " + exc + "\n");
+					//io.write("Excepción al leer el fichero de log: " + exc + "\n");
+					io.write(UIMessages.getInstance().getMessage("clclient.cannot.read.log","$file",logPath)+"\n");
 					exc.printStackTrace();
 					return;
 				}
@@ -224,6 +228,11 @@ public class CommandLineClientLauncher
 			
 			maquinaEstados.start();		
 			
+		}
+		
+		else
+		{
+			System.out.println( UIMessages.getInstance().getMessage("clclient.world.not.specified")  );
 		}
 		
 	}
