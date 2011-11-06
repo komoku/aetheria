@@ -15,12 +15,12 @@ import javax.swing.JTextPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
-import eu.irreality.age.GameChoosingInternalFrame;
 import eu.irreality.age.PluginMenu;
 import eu.irreality.age.ServerConfigurationWindow;
 import eu.irreality.age.SwingRemoteClientWindow;
 import eu.irreality.age.server.ServerHandler;
 import eu.irreality.age.server.ServerLogWindow;
+import eu.irreality.age.swing.mdi.gameloader.GameChoosingInternalFrame;
 
 public class MDIMenuBar extends JMenuBar 
 {

@@ -5,6 +5,9 @@
 package eu.irreality.age;
 import java.io.*;
 import javax.swing.*;
+
+import eu.irreality.age.i18n.UIMessages;
+
 import java.util.*;
 public class FiltroFicheroEstado extends javax.swing.filechooser.FileFilter
 {
@@ -29,7 +32,8 @@ public class FiltroFicheroEstado extends javax.swing.filechooser.FileFilter
 	
 	public String getDescription()
 	{
-		return "Ficheros de estado de AGE (*.asf)";
+		return UIMessages.getInstance().getMessage("filter.statefile"); 
+		//"Ficheros de estado de AGE (*.asf)";
 	}
 	
 }
