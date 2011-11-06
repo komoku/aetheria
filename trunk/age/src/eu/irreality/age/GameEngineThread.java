@@ -7,6 +7,7 @@ import javax.swing.*;
 
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
+import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.swing.applet.SwingSDIApplet;
 import eu.irreality.age.swing.sdi.SwingSDIInterface;
 import eu.irreality.age.windowing.AGEClientWindow;
@@ -23,7 +24,7 @@ public class GameEngineThread extends Thread
 	
 	public static String getVersionNumber()
 	{
-		return "1.1.8";
+		return UIMessages.getInstance().getMessage("age.version");
 	}
 
 	
@@ -131,7 +132,7 @@ public class GameEngineThread extends Thread
 	
 	public void doInitServerMenu ( final AGELoggingWindow window )
 	{
-		doInitServerMenu(window,"Opciones de juego");
+		doInitServerMenu( window, UIMessages.getInstance().getMessage("servermenu.gameoptions") );
 	}
 	
 	private JMenu serverConfigurationMenu;
@@ -167,13 +168,13 @@ public class GameEngineThread extends Thread
 	public void doInitServerMenu ( final AGELoggingWindow window , String menuName )
 	{
 		serverConfigurationMenu = new JMenu( menuName );
-		JMenu timeConfigurationMenu = new JMenu("Modo de juego");
+		JMenu timeConfigurationMenu = new JMenu( UIMessages.getInstance().getMessage("servermenu.gamemode") );
 		JMenuBar mb = getJMenuBarAsNeeded(window);
 		if ( mb == null )
 			setJMenuBarAsNeeded ( window , mb = new JMenuBar() );
 		serverConfigurationMenu.add ( timeConfigurationMenu );
-		JRadioButtonMenuItem itemTurns = new JRadioButtonMenuItem("Turnos",true);
-		JRadioButtonMenuItem itemRealTime = new JRadioButtonMenuItem("Tiempo real",false);
+		JRadioButtonMenuItem itemTurns = new JRadioButtonMenuItem(UIMessages.getInstance().getMessage("servermenu.gamemode.sync"),true);
+		JRadioButtonMenuItem itemRealTime = new JRadioButtonMenuItem(UIMessages.getInstance().getMessage("servermenu.gamemode.async"),false);
 		ButtonGroup bg = new ButtonGroup();
 		bg.add ( itemTurns );
 		bg.add ( itemRealTime );
@@ -197,7 +198,7 @@ public class GameEngineThread extends Thread
 		timeConfigurationMenu.add ( itemRealTime );
 		if ( window instanceof AGEClientWindow )
 		{
-			JMenuItem reinitItem = new JMenuItem("Reiniciar juego");
+			JMenuItem reinitItem = new JMenuItem( UIMessages.getInstance().getMessage("servermenu.restart") );
 			reinitItem.addActionListener ( new ActionListener()
 			{
 				public void actionPerformed ( ActionEvent evt )

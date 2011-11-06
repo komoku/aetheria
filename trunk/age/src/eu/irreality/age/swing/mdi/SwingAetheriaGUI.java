@@ -19,10 +19,10 @@ import javax.swing.JInternalFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
-import eu.irreality.age.ServerConfigurationWindow;
 import eu.irreality.age.SwingAetheriaGameLoader;
 import eu.irreality.age.SwingAetheriaGameLoaderInterface;
 import eu.irreality.age.SwingImageDrawingThread;
+import eu.irreality.age.server.ServerConfigurationWindow;
 import eu.irreality.age.server.ServerHandler;
 import eu.irreality.age.swing.config.AGEConfiguration;
 import eu.irreality.age.swing.mdi.gameloader.GameChoosingInternalFrame;

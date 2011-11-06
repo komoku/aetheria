@@ -8,6 +8,7 @@ import java.io.*;
 import java.util.*;
 
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.language.English;
 import eu.irreality.age.language.LanguageUtils;
 import eu.irreality.age.language.Mentions;
@@ -180,7 +181,8 @@ public class NaturalLanguage
 		}
 		catch ( Exception exc )
 		{
-			System.err.println("Aviso: no se ha encontrado fichero de verbos, la tabla de verbos estará vacía.");
+			//System.err.println("Aviso: no se ha encontrado fichero de verbos, la tabla de verbos estará vacía.");
+			System.err.println(UIMessages.getInstance().getMessage("warning.no.verb.file"));
 			exc.printStackTrace();
 			imperativoAInfinitivo = new Hashtable(1);
 		}
@@ -191,7 +193,8 @@ public class NaturalLanguage
 		}
 		catch ( Exception exc )
 		{
-			System.err.println("Aviso: no se ha encontrado fichero de sinónimos, la tabla de sinónimos estará vacía.");
+			//System.err.println("Aviso: no se ha encontrado fichero de sinónimos, la tabla de sinónimos estará vacía.");
+			System.err.println(UIMessages.getInstance().getMessage("warning.no.syn.file"));
 			sinonimos = new Hashtable(1);
 		}
 		try
@@ -200,7 +203,8 @@ public class NaturalLanguage
 		}
 		catch ( Exception exc )
 		{
-			System.err.println("Aviso: no se ha encontrado fichero de alias, la tabla de alias estará vacía.");
+			//System.err.println("Aviso: no se ha encontrado fichero de alias, la tabla de alias estará vacía.");
+			System.err.println(UIMessages.getInstance().getMessage("warning.no.alias.file"));
 			alias = new Hashtable(1);
 		}
 		try
@@ -209,7 +213,8 @@ public class NaturalLanguage
 		}
 		catch ( Exception exc )
 		{
-			System.err.println("Aviso: no se ha encontrado fichero de conjugación en 2ª persona, la tabla estará vacía.");
+			//System.err.println("Aviso: no se ha encontrado fichero de conjugación en 2ª persona, la tabla estará vacía.");
+			System.err.println(UIMessages.getInstance().getMessage("warning.no.2p.file"));
 			terceraASegunda = new Hashtable(1);
 		}
 	}
