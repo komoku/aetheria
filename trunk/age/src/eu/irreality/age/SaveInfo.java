@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.i18n.UIMessages;
 
 public class SaveInfo
 {
@@ -62,10 +63,13 @@ public class SaveInfo
 	
 	public String toLongString (  )
 	{
+		String nameMsg = UIMessages.getInstance().getMessage("save.name");
+		String dateMsg = UIMessages.getInstance().getMessage("save.date");
+		String gameMsg = UIMessages.getInstance().getMessage("save.game");
 		if ( infoJuego == null )
-			return "Nombre: " + getName() + "\nFecha: " + getDate(); //
+			return nameMsg + " " + getName() + "\n" + dateMsg + " " + getDate(); //
 		else
-			return "Nombre: " + getName() + "\nFecha: " + getDate() + "\nJuego: " + infoJuego.toString();
+			return nameMsg + " " + getName() + "\n" + dateMsg + " " + getDate() + "\n" + gameMsg + " " + infoJuego.toString();
 	}
 	
 	public static SaveInfo getSaveInfo ( File savefile ) throws FileNotFoundException, IOException

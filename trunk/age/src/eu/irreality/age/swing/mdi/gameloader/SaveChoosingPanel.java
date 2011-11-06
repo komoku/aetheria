@@ -26,6 +26,7 @@ import javax.swing.text.SimpleAttributeSet;
 
 import eu.irreality.age.PartidaEntry;
 import eu.irreality.age.SaveInfo;
+import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.server.ServerHandler;
 
 class SaveChoosingPanel extends JPanel
@@ -81,8 +82,8 @@ class SaveChoosingPanel extends JPanel
 		saveInfoArea.setForeground ( GameChoosingInternalFrame.FOREGROUND_COLOR );
 		
 		JPanel subp = new JPanel();
-		JButton botonJugar = new JButton("Jugar");
-		JButton botonCancelar = new JButton("Cerrar");
+		JButton botonJugar = new JButton( UIMessages.getInstance().getMessage("button.pla") );
+		JButton botonCancelar = new JButton( UIMessages.getInstance().getMessage("button.clo") );
 		subp.setLayout(new BorderLayout());
 		/*
 		subp.add ( etiquetas[0] );

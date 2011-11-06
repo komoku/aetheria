@@ -43,13 +43,11 @@
   		<exclude name="**/conf/**"/>
     	<!--exclude does not seem to work-->
   	</javac>
-  	<!--
 	<copy todir="${build}">
 		<fileset dir="${src}">
-			<include name="**/Messages.*"/>
+			<include name="**/UIMessages.*"/>
 		</fileset>
 	</copy>
-	-->
   	
 	<!--
 	<copy todir="${build}">

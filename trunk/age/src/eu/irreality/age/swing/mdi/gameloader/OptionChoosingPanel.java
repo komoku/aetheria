@@ -26,11 +26,11 @@ class OptionChoosingPanel extends JPanel
 	//JTextField tf1 = null;
 	//JTextField tf2 = null;
 	
-	JLabel ageLabel = new JLabel( UIMessages.getInstance().getMessage("gameloader.options.ageserver") );
-	JLabel telnetLabel = new JLabel( UIMessages.getInstance().getMessage("gameloader.options.telnetserver") );
-	JLabel ircLabel = new JLabel( UIMessages.getInstance().getMessage("gameloader.options.ircserver") );
+	JLabel ageLabel = new JLabel( UIMessages.getInstance().getMessage("gameloader.option.ageserver") );
+	JLabel telnetLabel = new JLabel( UIMessages.getInstance().getMessage("gameloader.option.telnetserver") );
+	JLabel ircLabel = new JLabel( UIMessages.getInstance().getMessage("gameloader.option.ircserver") );
 	
-	JLabel infoLabel = new JLabel( UIMessages.getInstance().getMessage("gameloader.options.info") );
+	JLabel infoLabel = new JLabel( UIMessages.getInstance().getMessage("gameloader.option.info") );
 	
 	public boolean servirAGE()
 	{
@@ -49,8 +49,8 @@ class OptionChoosingPanel extends JPanel
 	{
 		String agePort = String.valueOf(ServerHandler.getInstance().getServerConfigurationOptions().getPuertoAge());
 		String telnetPort = String.valueOf(ServerHandler.getInstance().getServerConfigurationOptions().getPuertoTelnet());
-		ageLabel.setText("Servidor de AGE (puerto " + agePort + ")");
-		telnetLabel.setText("Servidor de telnet (puerto " + telnetPort + ")");
+		ageLabel.setText( UIMessages.getInstance().getMessage("gameloader.option.ageserverwithport","$port",agePort) );
+		telnetLabel.setText( UIMessages.getInstance().getMessage("gameloader.option.telnetserverwithport","$port",telnetPort) );
 		//tf1.setText(agePort);
 		//tf2.setText(telnetPort);
 		boolean age = ServerHandler.getInstance().getServerConfigurationOptions().sirveAge();
@@ -83,23 +83,34 @@ class OptionChoosingPanel extends JPanel
 			if ( (!age && !telnet) || (!age && !irc) || (!telnet && !irc) ) plur = true;
 			if ( plur ) 
 			{
-				sb.append("Los servidores de ");
+				sb.append( UIMessages.getInstance().getMessage("gameloader.serversdisabled.1p") );
+				//sb.append("Los servidores de ");
 			}
 			else
 			{
-				sb.append("El servidor de ");
+				sb.append( UIMessages.getInstance().getMessage("gameloader.serversdisabled.1s") );
+				//sb.append("El servidor de ");
 			}
+			sb.append(" ");
 			sb.append(getDisabledServerList(age,telnet,irc));
+			sb.append(" ");
 			if ( plur )
-				sb.append("	están deshabilitados.</p><p>Para utilizarlos, ");
+				sb.append( UIMessages.getInstance().getMessage("gameloader.serversdisabled.2p") );
+				//sb.append("	están deshabilitados.</p><p>Para utilizarlos, ");
 			else
-				sb.append(" está deshabilitado.</p><p>Para utilizarlo, ");
-			sb.append("deben habilitarse primero</p><p>en las opciones de servidor (Servidor/Configuración...).</p>");
-			sb.append("<p>En dichas opciones también se pueden</p><p>configurar los correspondientes puertos.</p>");
+				sb.append( UIMessages.getInstance().getMessage("gameloader.serversdisabled.2s") );
+				//sb.append(" está deshabilitado.</p><p>Para utilizarlo, ");
+			
+			sb.append(" ");
+			
+			//sb.append("deben habilitarse primero</p><p>en las opciones de servidor (Servidor/Configuración...).</p>");
+			//sb.append("<p>En dichas opciones también se pueden</p><p>configurar los correspondientes puertos.</p>");
+			sb.append( UIMessages.getInstance().getMessage("gameloader.serversdisabled.3") );
 		}
 		else
 		{
-			sb.append("<p>Se pueden cambiar los puertos telnet y AGE</p><p>en las opciones de servidor (Servidor/Configuración...).</p>");
+			//sb.append("<p>Se pueden cambiar los puertos telnet y AGE</p><p>en las opciones de servidor (Servidor/Configuración...).</p>");
+			sb.append( UIMessages.getInstance().getMessage("gameloader.canchangeports") );
 		}
 		sb.append("</html>");
 		return sb.toString();
@@ -133,7 +144,7 @@ class OptionChoosingPanel extends JPanel
 		JPanel pan2 = new JPanel();
 		JPanel pan3 = new JPanel();
 		JPanel pan4 = new JPanel();
-		JLabel l0 = new JLabel("<html><p>Las partidas lanzadas desde esta ventana</p><p>serán accesibles remotamente a través de:</p>");
+		JLabel l0 = new JLabel( UIMessages.getInstance().getMessage("gameloader.option.header") );
 		JLabel l1 = ageLabel;
 		JLabel l2 = telnetLabel;
 		JLabel l3 = ircLabel;
