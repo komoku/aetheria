@@ -2,11 +2,13 @@
  * (c) 2000-2009 Carlos Gómez Rodríguez, todos los derechos reservados / all rights reserved.
  * Licencia en license/bsd.txt / License in license/bsd.txt
  */
-package eu.irreality.age;
+package eu.irreality.age.telnet;
 import java.util.*;
 import java.net.*;
 import java.io.*;
 
+import eu.irreality.age.StringMethods;
+import eu.irreality.age.World;
 import eu.irreality.age.server.PartidaEnCurso;
 
 public class SimpleTelnetClientHandler extends Thread {

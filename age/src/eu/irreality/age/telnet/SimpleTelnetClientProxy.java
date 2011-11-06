@@ -2,10 +2,16 @@
  * (c) 2000-2009 Carlos Gómez Rodríguez, todos los derechos reservados / all rights reserved.
  * Licencia en license/bsd.txt / License in license/bsd.txt
  */
-package eu.irreality.age;
+package eu.irreality.age.telnet;
 import java.util.*;
 import java.io.*;
 import java.net.*;
+
+import eu.irreality.age.InputOutputClient;
+import eu.irreality.age.Player;
+import eu.irreality.age.StringMethods;
+import eu.irreality.age.World;
+import eu.irreality.age.XMLtoWorldException;
 
 public class SimpleTelnetClientProxy implements InputOutputClient , TelnetConstants
 {
