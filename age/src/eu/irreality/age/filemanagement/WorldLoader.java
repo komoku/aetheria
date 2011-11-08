@@ -9,6 +9,7 @@ import java.util.Vector;
 
 import eu.irreality.age.InputOutputClient;
 import eu.irreality.age.World;
+import eu.irreality.age.i18n.UIMessages;
 
 public class WorldLoader 
 {
@@ -45,7 +46,8 @@ public class WorldLoader
 			}
 			catch ( java.io.IOException ioe )
 			{
-				io.write("No puedo leer el fichero del mundo: " + inputAsFile + "\n"); 
+				//io.write("No puedo leer el fichero del mundo: " + inputAsFile + "\n"); 
+				io.write( UIMessages.getInstance().getMessage("load.world.cannot.read.world") + " " + inputAsFile + "\n"); 
 				ioe.printStackTrace();
 				return null; 
 			}
@@ -74,9 +76,11 @@ public class WorldLoader
 			catch ( java.io.IOException e )
 			{
 
+				io.write( UIMessages.getInstance().getMessage("load.world.cannot.read.world.ondir") + " " + moduledir + "\n");
 				System.out.println(e);
-				io.write("No puedo encontrar el mundo en el directorio " + moduledir + "\n");
+				//io.write("No puedo encontrar el mundo en el directorio " + moduledir + "\n");
 
+				
 				//buscar a ver si el mundo es un world.dat? no en este cliente.
 			}
 
@@ -84,7 +88,8 @@ public class WorldLoader
 
 		if ( theWorld == null )
 		{
-			io.write("No encontrado el fichero del mundo. Tal vez el directorio seleccionado [" + moduledir + "] no sea un directorio de mundo AGE válido.\n"); 
+			io.write( UIMessages.getInstance().getMessage("load.world.invalid.dir","$dir",moduledir) ); 
+			//io.write("No encontrado el fichero del mundo. Tal vez el directorio seleccionado [" + moduledir + "] no sea un directorio de mundo AGE válido.\n"); 
 			return null; 
 		}
 		
@@ -203,7 +208,7 @@ public class WorldLoader
 		}
 		catch ( IOException ioe )
 		{
-			io.write("No puedo leer el fichero del mundo: " + pathnameOrUrl + "\n"); 
+			io.write( UIMessages.getInstance().getMessage("load.world.cannot.read.word") + " " + pathnameOrUrl + "\n"); 
 			ioe.printStackTrace();
 			return null; 
 		}
