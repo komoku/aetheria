@@ -17,12 +17,13 @@ public class IrcSocket extends Thread
 	BufferedReader	fromServer;
 	PrintStream		toServer;
 	IrcListener		ircListener;
+	Socket socket;
 
 	static final char X_DELIM = (char) 1; //extended content delimiter
 
 	public IrcSocket(String server, int port, IrcListener ircListener) throws Exception
 	{
-		Socket socket = new Socket(InetAddress.getByName(server),port);
+		socket = new Socket(InetAddress.getByName(server),port);
 		toServer = new PrintStream(socket.getOutputStream());
 		fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		this.ircListener = ircListener;
@@ -91,7 +92,10 @@ public class IrcSocket extends Thread
 		//System.out.println("Socket created at port " + dccSocket.getLocalPort() + "\n"); 
 		
 		//InetAddress ia = /*dccSocket.getInetAddress();*/InetAddress.getLocalHost();
-		InetAddress ia = LocalIPObtainer.getLocalHost(); //testing as of 2011-11-08
+		
+		//InetAddress ia = LocalIPObtainer.getLocalHost(); //testing as of 2011-11-08
+		
+		InetAddress ia = socket.getLocalAddress();  //testing as of 2011-11-08
 		
 		byte[] b = ia.getAddress();
 		//System.out.println("Converting address " + ia + "(" + b + ")" + "\n");
