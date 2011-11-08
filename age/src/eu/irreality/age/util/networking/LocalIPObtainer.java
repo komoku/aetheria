@@ -6,6 +6,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.StringTokenizer;
 
 /**
  * Workaround for http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4665037
@@ -15,6 +16,53 @@ import java.util.Enumeration;
  */
 public class LocalIPObtainer {
 
+	
+		
+	
+	
+	  public static String longToIpV4(long longIp) {
+		    int octet3 = (int) ((longIp >> 24) % 256);
+		    int octet2 = (int) ((longIp >> 16) % 256);
+		    int octet1 = (int) ((longIp >> 8) % 256);
+		    int octet0 = (int) ((longIp) % 256);
+		    return octet3 + "." + octet2 + "." + octet1 + "." + octet0;
+		  }
+		  public static long ipV4ToLong(String ip) {
+		    String[] octets = ip.split("\\.");
+		    return (Long.parseLong(octets[0]) << 24) + (Integer.parseInt(octets[1]) << 16) +
+		        (Integer.parseInt(octets[2]) << 8) + Integer.parseInt(octets[3]);
+		  }
+	
+	public static boolean isIPv4Private(String ip)
+	  {
+	    long longIp = ipV4ToLong(ip);
+	    return (longIp >= ipV4ToLong("10.0.0.0") && longIp <= ipV4ToLong("10.255.255.255")) ||
+	        (longIp >= ipV4ToLong("172.16.0.0") && longIp <= ipV4ToLong("172.31.255.255")) ||
+	        longIp >= ipV4ToLong("192.168.0.0") && longIp <= ipV4ToLong("192.168.255.255");
+	  }
+	
+	public static boolean isIPv4Private ( InetAddress ip )
+	{
+		StringTokenizer st = new StringTokenizer(ip.toString(),"/");
+		System.err.println("Analysing " + ip);
+		if ( !ip.toString().startsWith("/") && st.hasMoreTokens() ) st.nextToken();
+		if ( st.hasMoreTokens() ) 
+		{
+			try
+			{
+				String candidate = st.nextToken();
+				System.err.println("Cand: " + candidate + ": " + isIPv4Private ( candidate ));
+				return isIPv4Private ( candidate );
+			}
+			catch ( Exception exc )
+			{
+				exc.printStackTrace();
+				return false;
+			}
+		}
+		else return false;
+	}
+	
 	/**
 	 * Returns an InetAddress representing the address 
 of the localhost.  
@@ -32,12 +80,13 @@ problem determing the address
 	UnknownHostException {
 		InetAddress localHost = 
 			InetAddress.getLocalHost();
-		if(!localHost.isLoopbackAddress()) return 
+		if(!localHost.isLoopbackAddress() && !localHost.isLinkLocalAddress() &&  !isIPv4Private(localHost)) return 
 		localHost;
 		InetAddress[] addrs = 
 			getAllLocalUsingNetworkInterface();
 		for(int i=0; i<addrs.length; i++) {
-			if(!addrs[i].isLoopbackAddress()) 
+			System.err.println("Obtained " + addrs[i]);
+			if( !addrs[i].isLoopbackAddress() && !addrs[i].isLinkLocalAddress() && !isIPv4Private(addrs[i]) )  //modified so it doesn't return lan addresses (192.168...) either.
 				return addrs[i];
 		}
 		return localHost;	

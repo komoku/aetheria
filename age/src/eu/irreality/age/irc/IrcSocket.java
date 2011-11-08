@@ -95,8 +95,17 @@ public class IrcSocket extends Thread
 		
 		//InetAddress ia = LocalIPObtainer.getLocalHost(); //testing as of 2011-11-08
 		
+		//TODO: Let the user select the external IP address to receive DCC's on
 		InetAddress ia = socket.getLocalAddress();  //testing as of 2011-11-08
-		
+		/*
+		System.err.println("Addr: " + ia);
+		if ( ia.isLoopbackAddress() || ia.isLinkLocalAddress() || LocalIPObtainer.isIPv4Private(ia) )
+		{
+			ia = LocalIPObtainer.getLocalHost();
+			System.err.println("Correction: " + ia);
+		}
+		*/
+			
 		byte[] b = ia.getAddress();
 		//System.out.println("Converting address " + ia + "(" + b + ")" + "\n");
 		//System.out.println("Host addr: " + ia.getHostAddress() );

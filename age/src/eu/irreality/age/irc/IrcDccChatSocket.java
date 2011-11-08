@@ -137,7 +137,7 @@ public class IrcDccChatSocket extends Thread //analogo a IrcSocket pero para DCC
 				il.dccConnection(nick);
 				br = new BufferedReader ( new InputStreamReader ( s.getInputStream() ) );
 				pw = new PrintWriter ( new OutputStreamWriter ( s.getOutputStream() ) );
-			
+				
 					synchronized(connectionWaitSemaphore)
 					{
 						connectionWaitSemaphore.notifyAll();
