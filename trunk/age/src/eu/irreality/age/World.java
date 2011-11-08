@@ -26,6 +26,7 @@ import org.w3c.dom.*;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.messages.Messages;
 import eu.irreality.age.spell.AGESpellChecker;
 import eu.irreality.age.util.VersionComparator;
@@ -269,7 +270,7 @@ public class World implements Informador , SupportingCode
 		//En el futuro, tal vez pasar un array de InputOutputClient, en vez de un
 		//InputOutputClient a secas, para ir asignando clientes a los jugadores. O... algo.
 		
-		write( io.getColorCode("information") +  "Obteniendo información de mundo...\n" + io.getColorCode("reset") );
+		write( io.getColorCode("information") +  UIMessages.getInstance().getMessage("load.world.info") + "\n" + io.getColorCode("reset") );
 	
 		if ( ! ( n instanceof org.w3c.dom.Element ) )
 		{
@@ -279,16 +280,16 @@ public class World implements Informador , SupportingCode
 		org.w3c.dom.Element e = (org.w3c.dom.Element) n;
 	
 		//default values
-		worldname = "Mundo Sin Nombre";
-		version = "Desconocida";
-		parserVersion = "No especificada";
-		modulename = "Sin Nombre";
+		worldname = UIMessages.getInstance().getMessage("load.world.default.name");
+		version = UIMessages.getInstance().getMessage("load.world.default.version");
+		parserVersion = UIMessages.getInstance().getMessage("load.world.default.required");
+		modulename = UIMessages.getInstance().getMessage("load.world.default.modulename");
 		maxroom = 0 ; maxitem = 0 ; maxmob = 0;
 		
 		//player: have to get player's ID
-		author = "Don Nadie";
-		date = "El año de Maricastaña";
-		type = "Quién sabe";
+		author = UIMessages.getInstance().getMessage("load.world.default.author");
+		date = UIMessages.getInstance().getMessage("load.world.default.date");
+		type = UIMessages.getInstance().getMessage("load.world.default.type");
 		
 		//si hay un worldDir explícito, estaremos en un fichero de estado, así que fijamos worldDir.
 		if ( e.hasAttribute("worldDir") && !e.getAttribute("worldDir").equals(".") )
@@ -513,7 +514,7 @@ public class World implements Informador , SupportingCode
 			}
 		}
 		
-		write( io.getColorCode("information") + "Cargando datos lingüísticos...\n" + io.getColorCode("reset") );
+		write( io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.language") + "\n" + io.getColorCode("reset") );
 		//language configuration
 		if ( e.hasAttribute("language") )
 			languageCode = e.getAttribute("language");
@@ -648,7 +649,7 @@ public class World implements Informador , SupportingCode
 		
 		//create nametable and init roomNode, itemNode, mobNode parallel arrays
 		
-		write( io.getColorCode("information") + "Creando tabla de nombres...\n" + io.getColorCode("reset") );
+		write( io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.nametable") + "\n" + io.getColorCode("reset") );
 		
 		int nameTableSize = maxroom + maxitem + maxmob + maxabsent + maxspell;
 		nameTable = new Hashtable ( nameTableSize > 100 ? nameTableSize : 100 );
@@ -759,7 +760,7 @@ public class World implements Informador , SupportingCode
 		}
 		
 		//abstract entities actual load
-		write( io.getColorCode("information") + "Inicializando entidades abstractas...\n" + io.getColorCode("reset") );
+		write( io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.abstract") + "\n" + io.getColorCode("reset") );
 		absent = new AbstractEntity[absentNode.length];
 		for ( int i = 0 ; i < absentNode.length ; i++ )	
 		{
@@ -772,7 +773,7 @@ public class World implements Informador , SupportingCode
 		}
 		
 		//spells actual load
-		write( io.getColorCode("information") + "Inicializando hechizos...\n" + io.getColorCode("reset") );
+		write( io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.spell") + "\n" + io.getColorCode("reset") );
 		spell = new Spell[spellNode.length];
 		for ( int i = 0 ; i < spellNode.length ; i++ )	
 		{
@@ -785,7 +786,7 @@ public class World implements Informador , SupportingCode
 		}
 		
 		//items actual load
-		write( io.getColorCode("information") + "Inicializando items...\n" + io.getColorCode("reset") );
+		write( io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.item") + "\n" + io.getColorCode("reset") );
 		item = new Item[itemNode.length];
 		for ( int i = 0 ; i < itemNode.length ; i++ )	
 		{
@@ -799,7 +800,7 @@ public class World implements Informador , SupportingCode
 		}
 		
 		//mobiles actual load
-		write( io.getColorCode("information") + "Inicializando bichos...\n" + io.getColorCode("reset") );
+		write( io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.mob") + "\n" + io.getColorCode("reset") );
 		mob = new Mobile[mobNode.length];
 		for ( int i = 0 ; i < mobNode.length ; i++ )	
 		{
@@ -886,7 +887,7 @@ public class World implements Informador , SupportingCode
 		}
 		
 		//rooms actual load
-		write( io.getColorCode("information") + "Inicializando habitaciones...\n" + io.getColorCode("reset") );
+		write( io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.room") + "\n" + io.getColorCode("reset") );
 		room = new Room[roomNode.length];
 		for ( int i = 0 ; i < roomNode.length ; i++ )	
 		{
@@ -897,10 +898,15 @@ public class World implements Informador , SupportingCode
 			}
 		}
 		
-		write( io.getColorCode("information") + ( maxroom + maxitem + maxmob + maxspell + maxabsent ) + " entidades cargadas.\n"  + io.getColorCode("reset"));
+		//write( io.getColorCode("information") + ( maxroom + maxitem + maxmob + maxspell + maxabsent ) + " entidades cargadas.\n"  + io.getColorCode("reset"));
 			
+		write( io.getColorCode("information") + 
+				UIMessages.getInstance().getMessage("load.world.stats","$number",String.valueOf( maxroom + maxitem + maxmob + maxspell + maxabsent )) 
+				+ "\n"  + io.getColorCode("reset"));
+	 
+		
 		//cargas diferidas	
-		write( io.getColorCode("information") + "Completando cargas diferidas..." + io.getColorCode("reset") + "\n" );
+		write( io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.deferred") + "\n" + io.getColorCode("reset") + "\n" );
 		for ( int i = 0 ; i < maxitem ; i++ )
 		{
 			item[i].loadInventoryFromXML(this);
@@ -924,22 +930,28 @@ public class World implements Informador , SupportingCode
 		}
 		
 		
-		write( io.getColorCode("information") + "\nMundo inicializado." + io.getColorCode("reset") + "\n" );
+		write( io.getColorCode("information") + "\n" + UIMessages.getInstance().getMessage("load.world.done") + io.getColorCode("reset") + "\n" );
 		
 		write("\n=============================================================");
 		write("\n" + io.getColorCode("information") + "Información de Juego:");
 		if ( modulename != null )
-			write("\n" + io.getColorCode("information") + "[Nombre]           " + modulename + io.getColorCode("reset"));
+			write("\n" + io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.info.name") + modulename + io.getColorCode("reset"));
+			//write("\n" + io.getColorCode("information") + "[Nombre]           " + modulename + io.getColorCode("reset"));
 		if ( type != null )
-			write("\n" + io.getColorCode("information") + "[Tipo]             " + type + io.getColorCode("reset"));
+			write("\n" + io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.info.type") + type + io.getColorCode("reset"));
+			//write("\n" + io.getColorCode("information") + "[Tipo]             " + type + io.getColorCode("reset"));
 		if ( author != null )
-			write("\n" + io.getColorCode("information") + "[Autor]            " + author + io.getColorCode("reset"));
+			write("\n" + io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.info.author") + author + io.getColorCode("reset"));
+			//write("\n" + io.getColorCode("information") + "[Autor]            " + author + io.getColorCode("reset"));
 		if ( version != null )
-			write("\n" + io.getColorCode("information") + "[Versión]          " + version + io.getColorCode("reset"));
+			write("\n" + io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.info.version") + version + io.getColorCode("reset"));
+			//write("\n" + io.getColorCode("information") + "[Versión]          " + version + io.getColorCode("reset"));
 		if ( date != null )
-			write("\n" + io.getColorCode("information") + "[Fecha]            " + date + io.getColorCode("reset"));
+			write("\n" + io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.info.date") + date + io.getColorCode("reset"));
+			//write("\n" + io.getColorCode("information") + "[Fecha]            " + date + io.getColorCode("reset"));
 		if ( parserVersion != null )
-			write("\n" + io.getColorCode("information") + "[Versión engine]   " + parserVersion + io.getColorCode("reset"));
+			write("\n" + io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.info.required") + parserVersion + io.getColorCode("reset"));
+			//write("\n" + io.getColorCode("information") + "[Versión engine]   " + parserVersion + io.getColorCode("reset"));
 		write("\n=============================================================\n");
 		
 		//warnVersionIfNeeded(null);
@@ -1471,7 +1483,7 @@ public class World implements Informador , SupportingCode
 	{
 		org.w3c.dom.Document d = null;
 		DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-		io.write(io.getColorCode("information") + "Obteniendo árbol DOM de los datos XML...\n" + io.getColorCode("reset") );
+		io.write(io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.tree") + "\n" + io.getColorCode("reset") );
 		d = db.parse( is );
 		org.w3c.dom.Element n = d.getDocumentElement();
 		loadWorldFromXML ( n , io , noSerCliente );
@@ -1528,7 +1540,7 @@ public class World implements Informador , SupportingCode
 		}
 		catch ( XMLtoWorldException x2we )
 		{
-			write("Excepción al leer el mundo de XML: " + x2we.getMessage() );
+			write( UIMessages.getInstance().getMessage("load.world.xml.exception") + " " + x2we.getMessage() );
 			//throw ( new IOException ( "Excepción al leer mundo de XML: " + x2we.getMessage() ) );
 		}
 	}
@@ -1552,7 +1564,7 @@ public class World implements Informador , SupportingCode
 		System.err.println("Url " + new File(modulefile).getParentFile().toURI().toURL());
 		*/
 		
-		io.write( io.getColorCode("information") + "Leyendo datos XML...\n" + io.getColorCode("reset") );
+		io.write( io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.xml") + "\n" + io.getColorCode("reset") );
 
 		try
 		{
@@ -1582,7 +1594,7 @@ public class World implements Informador , SupportingCode
 		}
 		catch ( XMLtoWorldException x2we )
 		{
-			write("Excepción al leer el mundo de XML: " + x2we.getMessage() );
+			write( UIMessages.getInstance().getMessage("load.world.xml.exception") + " " + x2we.getMessage() );
 			//throw ( new IOException ( "Excepción al leer mundo de XML: " + x2we.getMessage() ) );
 		}
 
@@ -2772,7 +2784,7 @@ public class World implements Informador , SupportingCode
 */
 
 		DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-		io.write(io.getColorCode("information") + "Obteniendo árbol DOM de los datos XML [estado]...\n" + io.getColorCode("reset") );
+		io.write(io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.tree.state") + "\n" + io.getColorCode("reset") );
 		
 		FileInputStream fis = null; 
 		try
@@ -2971,15 +2983,28 @@ public class World implements Informador , SupportingCode
 		{
 			if ( p == null )
 			{
+				/*
 				writeError("\n\nAVISO IMPORTANTE:\n");
 				writeError("Estás usando la versión " + GameEngineThread.getVersionNumber() + " de AGE, y este mundo ha sido pensado para la versión " + parserVersion + " y superiores.\n");
 				writeError("El mundo puede no funcionar, descárgate la última versión de AGE en http://code.google/com/p/aetheria para jugarlo.\n\n");
+				*/
+				writeError( UIMessages.getInstance().getMessage("age.version.warning.header") + "\n" );
+				writeError( UIMessages.getInstance().getMessage("age.version.warning.2","$curversion",GameEngineThread.getVersionNumber(),"$reqversion",parserVersion) );
+				writeError( " " );
+				writeError( UIMessages.getInstance().getMessage("age.download.url") + "\n\n" );
 			}
 			else
 			{
+				/*
 				p.writeError("\n\nAVISO IMPORTANTE:\n");
 				p.writeError("Estás usando la versión " + GameEngineThread.getVersionNumber() + " de AGE, y este mundo ha sido pensado para la versión " + parserVersion + " y superiores.\n");
 				p.writeError("El mundo puede no funcionar, descárgate la última versión de AGE en http://code.google/com/p/aetheria para jugarlo.\n\n");
+				p.waitKeyPress();
+				*/
+				p.writeError( UIMessages.getInstance().getMessage("age.version.warning.header") + "\n" );
+				p.writeError( UIMessages.getInstance().getMessage("age.version.warning.2","$curversion",GameEngineThread.getVersionNumber(),"$reqversion",parserVersion) );
+				p.writeError( " " );
+				p.writeError( UIMessages.getInstance().getMessage("age.download.url") + "\n\n" );
 				p.waitKeyPress();
 			}
 		}

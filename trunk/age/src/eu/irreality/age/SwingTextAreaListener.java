@@ -6,6 +6,8 @@ import java.util.Vector;
 
 import javax.swing.JTextPane;
 
+import eu.irreality.age.i18n.UIMessages;
+
 public class SwingTextAreaListener implements KeyListener
 {
 
@@ -109,7 +111,7 @@ public class SwingTextAreaListener implements KeyListener
 			//elCampoJTexto.setText("Pulsa cualquier tecla...");
 			//elCampoJTexto.setEditable(false);
 			//elCampoJTexto.grabFocus();
-			cl.write("Pulsa cualquier tecla...");
+			cl.write( UIMessages.getInstance().getMessage("csclient.keyrequest") );
 			elAreaTexto.grabFocus();
 			elAreaTexto.setSelectionStart(elAreaTexto.getText().length());
 			elAreaTexto.setSelectionEnd(elAreaTexto.getText().length());

@@ -11,6 +11,8 @@ package eu.irreality.age;
 */
 import java.io.*;
 import java.util.*;
+
+import eu.irreality.age.i18n.UIMessages;
 public class Utility
 {
 
@@ -50,7 +52,7 @@ public class Utility
 		}
 		catch ( UnsupportedEncodingException uee )
 		{
-			System.out.println("PELIGRO: Codificación de caracteres ISO-8859-1 no soportada por la VM. Pueden verse mal algunos caracteres.\n");
+			System.out.println(UIMessages.getInstance().getMessage("iso.encoding.warning") + "\n");
 			isr = new InputStreamReader ( is );
 		}
 		return isr;
@@ -68,7 +70,7 @@ public class Utility
 		}
 		catch ( UnsupportedEncodingException uee )
 		{
-			System.out.println("PELIGRO: Codificación de caracteres ISO-8859-1 no soportada por la VM. Pueden verse mal algunos caracteres.\n");
+			System.out.println(UIMessages.getInstance().getMessage("iso.encoding.warning") + "\n");
 			osw = new OutputStreamWriter ( os );
 		}
 		return osw;
