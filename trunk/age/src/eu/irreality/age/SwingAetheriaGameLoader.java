@@ -14,6 +14,7 @@ import eu.irreality.age.debug.Debug;
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.filemanagement.WorldLoader;
 import eu.irreality.age.i18n.UIMessages;
+import eu.irreality.age.swing.SwingMenuAetheria;
 import eu.irreality.age.swing.config.AGEConfiguration;
 import eu.irreality.age.util.VersionComparator;
 import eu.irreality.age.windowing.AGEClientWindow;
@@ -307,7 +308,7 @@ de la ventana hasta acabar de cargar.
 	public World waitForMundoToLoad() throws InterruptedException
 	{
 
-		System.out.println("Called waitForEtc");
+		//System.out.println("Called waitForEtc");
 		synchronized ( mundoSemaphore )
 		{
 			if ( mundo != null ) return mundo;
@@ -317,7 +318,7 @@ de la ventana hasta acabar de cargar.
 			}
 		}	
 		
-		System.out.println("Semaphore return.");
+		//System.out.println("Semaphore return.");
 		
 		//mundo != null
 		return mundo;
@@ -760,7 +761,7 @@ de la ventana hasta acabar de cargar.
 							
 								javax.xml.transform.Source s = new javax.xml.transform.dom.DOMSource ( d );
 							
-								Debug.println("Nodo:" + ((javax.xml.transform.dom.DOMSource)s).getNode());
+								//Debug.println("Nodo:" + ((javax.xml.transform.dom.DOMSource)s).getNode());
 							
 								tr.transform(s,sr); //si esto tira un NullPointerException, la experiencia indica que puede ser por dejar algún atributo a null, y esto puede pasar en código descuidado si no se ponen todos los atributos posibles en un tag XML.
 								//nota: también puede ser porque falte un elemento.
@@ -1017,11 +1018,11 @@ de la ventana hasta acabar de cargar.
 		setSize(500,400);
 		if ( moduledir.equalsIgnoreCase("") )
 		{
-			setTitle("Aetheria Game Engine. Módulo: aetherworld");
+			setTitle("Aetheria Game Engine. " + UIMessages.getInstance().getMessage("swing.default.title.module") + " (sin nombre)");
 		}
 		else
 		{
-			setTitle("Aetheria Game Engine. Módulo: " + moduledir);
+			setTitle("Aetheria Game Engine. " + UIMessages.getInstance().getMessage("swing.default.title.module") + " " + moduledir);
 		}
 		//getContentPane().setLayout( new BorderLayout() );
 		
@@ -1209,17 +1210,17 @@ de la ventana hasta acabar de cargar.
 	public void saveAndFreeResources ( )
 	{
 		//autosave
-		io.write ("Guardando la partida...\n");
+		io.write ( UIMessages.getInstance().getMessage("swing.saving") + "\n");
 		try
 		{
 			CommonClientUtilities.guardarLog ( new File ( "autosave.alf" ) , gameLog );
 		}
 		catch (Exception exc)
 		{
-			io.write("¡No se ha podido guardar la partida!\n");
+			io.write( UIMessages.getInstance().getMessage("swing.cannot.save.log") + "\n");
 		}
-		io.write ("Tiempo del juego: " + timeCount + "\n" );
-		io.write ("¡Hasta la próxima!\n");
+		//io.write ("Tiempo del juego: " + timeCount + "\n" );
+		io.write ( UIMessages.getInstance().getMessage("swing.bye") + "\n");
 		//wait(2);
 		//System.exit(0);
 		if ( fullScreenMode )
@@ -1360,7 +1361,7 @@ de la ventana hasta acabar de cargar.
 			}
 			catch ( Exception exc )
 			{
-				write("No se ha podido guardar la partida...");
+				write( UIMessages.getInstance().getMessage("swing.cannot.save.log") + "\n" );
 				write(exc.toString());
 			}
 		}		
@@ -1388,7 +1389,7 @@ de la ventana hasta acabar de cargar.
 			}
 			catch ( Exception exc )
 			{
-				write("No se ha podido guardar la partida...");
+				write( UIMessages.getInstance().getMessage("swing.cannot.save.state") + "\n" );
 				write(exc.toString());
 			}
 		}		

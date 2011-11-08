@@ -2,12 +2,13 @@
  * (c) 2000-2009 Carlos Gómez Rodríguez, todos los derechos reservados / all rights reserved.
  * Licencia en license/bsd.txt / License in license/bsd.txt
  */
-package eu.irreality.age;
+package eu.irreality.age.swing;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
 import eu.irreality.age.windowing.AGEClientWindow;
+import eu.irreality.age.windowing.SwingCerrarInterna;
 public class SwingMenuAetheria extends JMenuBar
 {
 
