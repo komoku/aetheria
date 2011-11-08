@@ -18,6 +18,7 @@ import eu.irreality.age.telnet.SimpleTelnetClientHandler;
 import eu.irreality.age.SwingAetheriaGameLoader;
 import eu.irreality.age.World;
 import eu.irreality.age.debug.Debug;
+import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.irc.IrcAgeBot;
 import eu.irreality.age.windowing.AGELoggingWindow;
 
@@ -390,7 +391,8 @@ public class ServerHandler //Singleton!
 						}
 						catch ( Exception exc )
 						{
-							worldIO.write("¡No se ha podido cargar el estado!\n");
+							//worldIO.write("¡No se ha podido cargar el estado!\n");
+							worldIO.write(UIMessages.getInstance().getMessage("swing.cannot.read.state","$file",stateFile));
 							worldIO.write(exc.toString());
 							exc.printStackTrace();
 						}
@@ -415,7 +417,8 @@ public class ServerHandler //Singleton!
 						}
 						catch ( Exception exc )
 						{
-							worldIO.write("Excepción al leer el fichero de log (ServerHandler).\n");
+							//worldIO.write("Excepción al leer el fichero de log (ServerHandler).\n");
+							worldIO.write(UIMessages.getInstance().getMessage("swing.cannot.read.log","$exc",exc.toString()));
 							return null;
 						}
 					}

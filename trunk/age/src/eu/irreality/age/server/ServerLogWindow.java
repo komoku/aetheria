@@ -17,6 +17,7 @@ import javax.swing.text.StyleConstants;
 import eu.irreality.age.InputOutputClient;
 import eu.irreality.age.NullInputOutputClient;
 import eu.irreality.age.debug.Debug;
+import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.windowing.AGELoggingWindow;
 
 public class ServerLogWindow extends JInternalFrame implements AGELoggingWindow
@@ -31,7 +32,7 @@ public class ServerLogWindow extends JInternalFrame implements AGELoggingWindow
 	public ServerLogWindow()
 	{
 	
-		super("Logs del servidor",true,true,true,true);
+		super(UIMessages.getInstance().getMessage("serverlog.title"),true,true,true,true);
 		
 		this.setDefaultCloseOperation(HIDE_ON_CLOSE);
 	
@@ -42,7 +43,7 @@ public class ServerLogWindow extends JInternalFrame implements AGELoggingWindow
 		tpGeneral.setBackground(java.awt.Color.black);
 		tpGeneral.setForeground(java.awt.Color.white);
 		tabGeneral.add(new JScrollPane(tpGeneral));
-		tpGeneral.setText("Log Global:");
+		tpGeneral.setText(UIMessages.getInstance().getMessage("serverlog.globallog")); //Log global:
 	
 		tabbed.addTab ( "General" , tabGeneral );
 	
@@ -103,7 +104,7 @@ public class ServerLogWindow extends JInternalFrame implements AGELoggingWindow
 		JPanel tabPartida = new JPanel();
 		tabPartida.setLayout ( new java.awt.GridLayout(1,1) );
 		tabPartida.add ( new JScrollPane(panePartida) );
-		tabbed.add ( "Partida " + panesPartidas.size() , tabPartida );
+		tabbed.add ( UIMessages.getInstance().getMessage("server.addgame.game") /*Partida*/ + " " + panesPartidas.size() , tabPartida );
 		
 		return ( new NullInputOutputClient()
 		{
