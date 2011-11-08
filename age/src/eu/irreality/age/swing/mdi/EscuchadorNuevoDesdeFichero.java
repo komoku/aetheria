@@ -9,6 +9,7 @@ import javax.swing.JFileChooser;
 import eu.irreality.age.FiltroFicheroMundo;
 import eu.irreality.age.SwingAetheriaGameLoader;
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.i18n.UIMessages;
 
 public class EscuchadorNuevoDesdeFichero implements ActionListener
 {
@@ -23,7 +24,7 @@ public class EscuchadorNuevoDesdeFichero implements ActionListener
 	{
 		JFileChooser selector = new JFileChooser( Paths.WORLD_PATH );
 		selector.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		selector.setDialogTitle("Selecciona el directorio del juego o el fichero world.dat");
+		selector.setDialogTitle( UIMessages.getInstance().getMessage("dialog.new.title") );
 		selector.setFileFilter ( new FiltroFicheroMundo() );
 
 		int returnVal = selector.showOpenDialog(thePanel);

@@ -17,6 +17,7 @@ import eu.irreality.age.FiltroFicheroEstado;
 import eu.irreality.age.GameInfo;
 import eu.irreality.age.PartidaEntry;
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.server.ServerHandler;
 
 public class EscuchadorCargarDesdeEstado implements ActionListener
@@ -32,7 +33,7 @@ public class EscuchadorCargarDesdeEstado implements ActionListener
 	{
 		final JFileChooser selector = new JFileChooser( Paths.SAVE_PATH );
 		selector.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		selector.setDialogTitle("Selecciona el fichero de estado");
+		selector.setDialogTitle( UIMessages.getInstance().getMessage("dialog.state.title") );
 		selector.setFileFilter ( new FiltroFicheroEstado() ); 
 
 		int returnVal = selector.showOpenDialog(thePanel);
