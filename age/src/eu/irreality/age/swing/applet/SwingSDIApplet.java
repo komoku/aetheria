@@ -35,6 +35,7 @@ import eu.irreality.age.World;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.filemanagement.WorldLoader;
+import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.swing.SwingMenuAetheria;
 import eu.irreality.age.swing.sdi.NewFromFileListener;
 import eu.irreality.age.swing.sdi.SwingSDIInterface;
@@ -110,11 +111,11 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 								io = new ColoredSwingClient(SwingSDIApplet.this,gameLog); //components are added 'ere.
 								//setVisible(true);
 
-								write("Aetheria Game Engine v 1.1.8\n");
-
+								write("Aetheria Game Engine v " + UIMessages.getInstance().getMessage("age.version") + "\n");
 								//areaTexto.setText("Aetheria Game Engine v 0.4.7b Beta Distribution\n");
-								write("© 1999-2011 Carlos Gómez (solrac888@yahoo.com)\n");
-								write("Véase license.txt para consultar la licencia de AGE y del software de terceros incluido.\n");
+
+								write( UIMessages.getInstance().getMessage("age.copyright") + "\n" );
+								write( UIMessages.getInstance().getMessage("intro.legal") + "\n" );
 
 
 								write("\n=============================================================");
@@ -226,7 +227,8 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 				}
 				catch ( Exception exc )
 				{
-					write("¡No se ha podido cargar el estado!\n");
+					//write("¡No se ha podido cargar el estado!\n");
+					write(UIMessages.getInstance().getMessage("swing.cannot.read.state","$file",stateFile));
 					write(exc.toString());
 					exc.printStackTrace();
 				}
@@ -244,7 +246,8 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 				}
 				catch ( Exception exc )
 				{
-					write("Excepción al leer el fichero de log: " + exc + "\n");
+					//write("Excepción al leer el fichero de log: " + exc + "\n");
+					write(UIMessages.getInstance().getMessage("swing.cannot.read.log","$exc",exc.toString()));
 					exc.printStackTrace();
 					return;
 				}
@@ -268,13 +271,13 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 						theWorld,
 						SwingSDIApplet.this , false );
 
-			System.out.println("STARTING ENGINE THREAD");
+			//System.out.println("STARTING ENGINE THREAD");
 
 			maquinaEstados.start();		
 
-			System.out.println("ENGINE THREAD STARTED");
+			//System.out.println("ENGINE THREAD STARTED");
 
-			System.out.println("noSerCliente = " + false);
+			//System.out.println("noSerCliente = " + false);
 
 			//Esto engaña con los estados, lo quitamos.
 			/*
@@ -332,7 +335,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 
 	public void exitNow()
 	{
-		write("Para salir de este applet, simplemente cierra la pestaña del navegador :)\n");
+		write( UIMessages.getInstance().getMessage("applet.exit") + "\n" );
 		//stopGameSaveAndUnlink();
 		//this.destroy();
 
@@ -360,7 +363,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 			io.write("¡No se ha podido guardar la partida!\n");
 		}
 		*/
-		io.write ("¡Hasta la próxima!\n");
+		io.write ( UIMessages.getInstance().getMessage("swing.bye") + "\n" );
 		//wait(2);
 		//System.exit(0);
 		//if ( fullScreenMode )
@@ -442,7 +445,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 		//menuArchivo.add(itemNuevo,0);
 		//itemNuevo.addActionListener(new NewFromFileListener(this));
 
-		JMenuItem itemLoadLog = new JMenuItem("Cargar partida...");
+		JMenuItem itemLoadLog = new JMenuItem( UIMessages.getInstance().getMessage("menu.load.log") );
 		menuArchivo.add(itemLoadLog,1);
 		itemLoadLog.addActionListener(new ActionListener()
 		{
@@ -501,11 +504,11 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 		//setSize(500,400);
 		if ( moduledir.equalsIgnoreCase("") )
 		{
-			setTitle("Aetheria Game Engine. Módulo: aetherworld");
+			setTitle("Aetheria Game Engine. " + UIMessages.getInstance().getMessage("swing.default.title.module") + " (sin nombre)");
 		}
 		else
 		{
-			setTitle("Aetheria Game Engine. Módulo: " + moduledir);
+			setTitle("Aetheria Game Engine. " + UIMessages.getInstance().getMessage("swing.default.title.module") + " " + moduledir);
 		}
 
 		setVisible(true);
@@ -577,8 +580,9 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 	
 	public void guardarLog()
 	{
-		write("AVISO: La funcionalidad de guardar partidas es EXPERIMENTAL y es posible que tenga errores. Además, sólo se puede guardar una partida a la vez, requiere que tu navegador acepte cookies, y el juego salvado no es permanente sino que podía borrarse si tu navegador elimina las cookies cada cierto tiempo.\n");
-		write("Puedes guardar partidas de forma totalmente fiable (y tener guardadas múltiples partidas a la vez) si te descargas el Aetheria Game Engine, que permite jugar a aventuras como ésta con plena funcionalidad. Bájalo en http://code.google.com/p/aetheria/downloads/list\n");
+		//write("AVISO: La funcionalidad de guardar partidas es EXPERIMENTAL y es posible que tenga errores. Además, sólo se puede guardar una partida a la vez, requiere que tu navegador acepte cookies, y el juego salvado no es permanente sino que podía borrarse si tu navegador elimina las cookies cada cierto tiempo.\n");
+		//write("Puedes guardar partidas de forma totalmente fiable (y tener guardadas múltiples partidas a la vez) si te descargas el Aetheria Game Engine, que permite jugar a aventuras como ésta con plena funcionalidad. Bájalo en http://code.google.com/p/aetheria/downloads/list\n");
+		write(UIMessages.getInstance().getMessage("applet.save.warning"));
 		
 		String logToString = "";
 		
@@ -593,7 +597,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 		CookieUtils.eraseCookie(this,"log");
 		CookieUtils.createCookie(this,"log",logToString,100);
 		
-		write("La partida ha sido guardada.\n");
+		write(UIMessages.getInstance().getMessage("applet.save.done") + "\n");
 		
 		/*
 		File elFichero = null;
@@ -629,7 +633,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 	public void guardarEstado()
 	{
 		//write("AVISO: Desde el navegador no se pueden guardar partidas. Pero puedes guardar partidas si te descargas el Aetheria Game Engine, que permite jugar a aventuras como ésta con plena funcionalidad. Bájalo en http://code.google.com/p/aetheria/downloads/list\n");
-		write("AVISO: Desde el navegador no se puede guardar estado, pero se guardará la partida en su lugar.\n");
+		write(UIMessages.getInstance().getMessage("applet.state.warning") + "\n");
 		guardarEstado();
 		
 		/*
@@ -665,7 +669,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 	{
 
 
-		System.err.println(this.getClass().getResource("worlds/Vampiro/world.xml"));
+		//System.err.println(this.getClass().getResource("worlds/Vampiro/world.xml"));
 		System.err.println(this.getClass().getResource("libinvoke.bsh"));
 		SwingAetheriaGameLoaderInterface.loadFont();
 		startGame ( this.getParameter("worldUrl") , usarLog , logStream , stateFile );
