@@ -155,8 +155,16 @@ public class PropertiesPanel extends JPanel
 						try{Integer.parseInt(tuTextField.getText());}
 						catch(NumberFormatException nfe)
 						{
-							SwingComponentHighlighter.temporalRedBackground(tuTextField);
-							return;
+							if ( tuTextField.getText() == null || tuTextField.getText().length() == 0 )
+							{
+								//timer defaults to -1 (representing infinity) if no value is explicitly set when adding a property
+								tuTextField.setText("-1");
+							}
+							else
+							{
+								SwingComponentHighlighter.temporalRedBackground(tuTextField);
+								return;
+							}
 						}
 						
 						//check if property is already present
