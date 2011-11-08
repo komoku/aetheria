@@ -56,7 +56,7 @@ public class IrcAgeBot extends IrcBot
 		{
 			IrcDccChatSocket idcs = ircSocket.acceptDccChatRequest ( nick , ip , port , idcsh );
 			idcs.setPriority(Thread.MIN_PRIORITY);
-			ircSocket.sendPrivate ( nick , "Aceptando la conexión DCC Chat (si la conexión no se establece correctamente, pruebe a ponerme en privado la palabra DCC" );
+			ircSocket.sendPrivate ( nick , "Aceptando la conexión DCC Chat (si la conexión no se establece correctamente, pruebe a ponerme en privado la palabra DCC)" );
 			idcsh.setSocket ( idcs );
 			launchGame ( idcsh );
 		}
