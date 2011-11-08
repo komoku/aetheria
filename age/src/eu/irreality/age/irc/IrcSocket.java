@@ -8,6 +8,8 @@ import java.net.*;
 import java.util.*;
 import java.io.*;
 
+import eu.irreality.age.util.networking.LocalIPObtainer;
+
 
 
 public class IrcSocket extends Thread
@@ -87,7 +89,10 @@ public class IrcSocket extends Thread
 		long addressAsLong = 0;
 		ServerSocket dccSocket = new ServerSocket ( port );
 		//System.out.println("Socket created at port " + dccSocket.getLocalPort() + "\n"); 
-		InetAddress ia = /*dccSocket.getInetAddress();*/InetAddress.getLocalHost();
+		
+		//InetAddress ia = /*dccSocket.getInetAddress();*/InetAddress.getLocalHost();
+		InetAddress ia = LocalIPObtainer.getLocalHost(); //testing as of 2011-11-08
+		
 		byte[] b = ia.getAddress();
 		//System.out.println("Converting address " + ia + "(" + b + ")" + "\n");
 		//System.out.println("Host addr: " + ia.getHostAddress() );
