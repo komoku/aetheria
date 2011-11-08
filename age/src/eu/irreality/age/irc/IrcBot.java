@@ -19,7 +19,7 @@ public class IrcBot implements IrcListener , IrcDccListener
 
 
 		Thread.sleep(2000);
-		ircSocket.setNick("AGEServer");
+		ircSocket.setNick(nick);
 		Thread.sleep(1000);
 
 		ircSocket.joinChannel("#aetheria"); 
