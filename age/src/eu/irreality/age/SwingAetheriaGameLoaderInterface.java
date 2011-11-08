@@ -85,11 +85,11 @@ public class SwingAetheriaGameLoaderInterface
 				linea = iniReader.readLine();
 				if ( linea != null )
 				{
-					System.out.println("Linea " + linea );
+					//System.out.println("Linea " + linea );
 					String codigo = StringMethods.getTok(linea,1,'=').trim().toLowerCase();
 					if ( codigo.equals("font name") )
 					{
-						System.out.println("Nombre: " + StringMethods.getTok(linea,2,'=').trim() );
+						//System.out.println("Nombre: " + StringMethods.getTok(linea,2,'=').trim() );
 						fontName = StringMethods.getTok(linea,2,'=').trim(); 
 					}
 					else if ( codigo.equals("font size" ) )

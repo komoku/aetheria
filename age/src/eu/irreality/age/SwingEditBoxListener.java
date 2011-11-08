@@ -241,31 +241,31 @@ class SwingEditBoxListener implements ActionListener , KeyListener
 		press_any_key = value;
 		if ( value )
 		{
-			System.out.println("Setting PAK");
+			//System.out.println("Setting PAK");
 			//esperamos por una tecla
 			elCampoJTexto.setForeground(Color.black);
-			System.out.println("Setting PAK 1");
+			//System.out.println("Setting PAK 1");
 			elCampoJTexto.setPromptsEnabled(false);
 			elCampoJTexto.setText(cl.getKeyRequestText());
-			System.out.println("Setting PAK 2");
+			//System.out.println("Setting PAK 2");
 			elCampoJTexto.setEditable(false);
 			//workaround for java bug http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6223733 :
 			elCampoJTexto.getCaret().setVisible(false);
-			System.out.println("Setting PAK 3");
+			//System.out.println("Setting PAK 3");
 			elCampoJTexto.grabFocus();
-			System.out.println("Set PAK");
+			//System.out.println("Set PAK");
 		}		
 		else
 		{
 			//ejecución normal
-			System.out.println("Setting UNPAK 1");
+			//System.out.println("Setting UNPAK 1");
 			elCampoJTexto.setPromptsEnabled(true);
 			elCampoJTexto.setText("");
-			System.out.println("Setting UNPAK 2");
+			//System.out.println("Setting UNPAK 2");
 			elCampoJTexto.setEditable(true);
 			//workaround for java bug http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6223733 :
 			elCampoJTexto.getCaret().setVisible(true);
-			System.out.println("Setting UNPAK 3");
+			//System.out.println("Setting UNPAK 3");
 			elCampoJTexto.setForeground(Color.red); //until getInput() is called.
 		}
 		inTransitoryState = false;

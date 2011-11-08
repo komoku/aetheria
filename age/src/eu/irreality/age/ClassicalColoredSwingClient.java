@@ -16,6 +16,8 @@ import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
+import eu.irreality.age.swing.SwingMenuAetheria;
+
 
 public class ClassicalColoredSwingClient implements InputOutputClient
 {
