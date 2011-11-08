@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.windowing.AGEClientWindow;
 import eu.irreality.age.windowing.SwingCerrarInterna;
 public class SwingMenuAetheria extends JMenuBar
@@ -29,10 +30,10 @@ public class SwingMenuAetheria extends JMenuBar
 	public SwingMenuAetheria ( AGEClientWindow nwin )
 	{
 		this.win = nwin;
-		JMenu menuArchivo = new JMenu( "Archivo" );
-		itemSalir = new JMenuItem( "Salir" );
-		itemGuardar = new JMenuItem( "Guardar partida..." );
-		itemGuardar2 = new JMenuItem( "Guardar estado..." );
+		JMenu menuArchivo = new JMenu( UIMessages.getInstance().getMessage("menu.file") );
+		itemSalir = new JMenuItem( UIMessages.getInstance().getMessage("menu.exit") );
+		itemGuardar = new JMenuItem( UIMessages.getInstance().getMessage("menu.save.log") ); //Guardar partida...
+		itemGuardar2 = new JMenuItem( UIMessages.getInstance().getMessage("menu.save.state") ); //Guardar estado....
 		
 		addToMenu(menuArchivo);
 		
@@ -68,11 +69,11 @@ public class SwingMenuAetheria extends JMenuBar
 			JMenuBar targetBar = laVentana.getTheJMenuBar();
 			JMenu targetMenu;
 			JMenu theMenuToAdd = source.getMenu(0);
-			if ( targetBar.getMenu(0).getText().equals("Archivo") )
+			if ( targetBar.getMenu(0).getText().equals( UIMessages.getInstance().getMessage("menu.file") ) )
 				targetMenu = targetBar.getMenu(0);
 			else
 			{
-				targetMenu = new JMenu("Archivo");
+				targetMenu = new JMenu( UIMessages.getInstance().getMessage("menu.file") );
 				targetBar.add(targetMenu);
 			}
 			source.addToMenu(targetMenu);

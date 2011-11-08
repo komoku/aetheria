@@ -5,6 +5,9 @@
 package eu.irreality.age;
 import javax.swing.*;
 import javax.swing.border.*;
+
+import eu.irreality.age.i18n.UIMessages;
+
 import java.net.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -17,10 +20,10 @@ public class SwingRemoteClientWindow extends JInternalFrame
 
 	private JTextField tfIp = new JTextField("127.0.0.1");
 	private JTextField tfPuerto = new JTextField("8009");
-	private JButton botonConectar = new JButton("Conectar");
+	private JButton botonConectar = new JButton( UIMessages.getInstance().getMessage("remote.connect") ); //Conectar
 	private JTextPane logPane;
 	private JList partidasList;
-	private JButton botonJoinear = new JButton("Unirse");
+	private JButton botonJoinear = new JButton( UIMessages.getInstance().getMessage("remote.join") ); //Unirse
 	private JPanel curGamesTab;
 	
 	private ARSPSocket arsps;
@@ -39,7 +42,7 @@ public class SwingRemoteClientWindow extends JInternalFrame
 		partidasList.setListData(partidas);
 		if ( partidas.size() > 0 )
 			partidasList.setSelectedIndex(0);
-		panelFichas.addTab ( "Partidas" , curGamesTab );
+		panelFichas.addTab ( UIMessages.getInstance().getMessage("remote.games") , curGamesTab ); //Partidas
 		if ( servicios.contains ( "gamejoin" ) )
 		{
 			botonJoinear.setEnabled(true);
@@ -55,7 +58,7 @@ public class SwingRemoteClientWindow extends JInternalFrame
 	public SwingRemoteClientWindow ( JDesktopPane escritorio )
 	{
 	
-		super ( "Partida remota" , true , true , true , true );
+		super ( UIMessages.getInstance().getMessage("remote.frame.title") , true , true , true , true ); //Partida remota
 		
 		this.escritorio = escritorio;
 		
@@ -73,9 +76,9 @@ public class SwingRemoteClientWindow extends JInternalFrame
 		JPanel con1 = new JPanel();
 		JPanel con2 = new JPanel();
 		JPanel con3 = new JPanel(new GridLayout(1,3));
-		con1.add ( new JLabel("Dirección IP:") );
+		con1.add ( new JLabel( UIMessages.getInstance().getMessage("remote.ip.address") ) );
 		con1.add ( tfIp );
-		con2.add ( new JLabel("Puerto:") );
+		con2.add ( new JLabel( UIMessages.getInstance().getMessage("remote.port") ) );
 		con2.add ( tfPuerto );
 		con3.add ( new JPanel() );	con3.add ( new JPanel() );	
 		con3.add ( botonConectar );	
@@ -83,7 +86,7 @@ public class SwingRemoteClientWindow extends JInternalFrame
 		connectSubPanel.add ( con1 );
 		connectSubPanel.add ( con2 );
 		connectSubPanel.add ( con3 );
-		connectSubPanel.setBorder ( BorderFactory.createTitledBorder("Conectar") );
+		connectSubPanel.setBorder ( BorderFactory.createTitledBorder( UIMessages.getInstance().getMessage("remote.connect") ) );
 		statusTab.add(connectSubPanel);
 		
 		JPanel logSubPanel = new JPanel( new GridLayout(1,1) );
@@ -91,7 +94,7 @@ public class SwingRemoteClientWindow extends JInternalFrame
 		logSubPanel.add(new JScrollPane(logPane));
 		statusTab.add(logSubPanel);
 		
-		panelFichas.addTab("Servidor",statusTab);
+		panelFichas.addTab( UIMessages.getInstance().getMessage("remote.server") ,statusTab); //Servidor
 	
 		//tab de partidas. En principio, not visible, not added.
 	
@@ -394,7 +397,7 @@ class ARSPSocket extends Thread implements ARSPConstants
 	public void joinGame ( final int id )
 	{
 		writeSocket ( CALL_SERVICE + " gamejoin " + id );
-		SwingAetheriaGameLoader sagl = new SwingAetheriaGameLoader ( "Partida remota", ventana.getEscritorio() );
+		SwingAetheriaGameLoader sagl = new SwingAetheriaGameLoader ( UIMessages.getInstance().getMessage("remote.frame.title") , ventana.getEscritorio() ); //Partida remota
 		ServerProxy sp = new ServerProxy ( socket , (MultimediaInputOutputClient) sagl.getClient() );
 		sp.start();
 	}
