@@ -1,8 +1,11 @@
 package eu.irreality.age.util.networking;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -18,6 +21,25 @@ public class LocalIPObtainer {
 
 	
 		
+	public static InetAddress askForIpAbroad()
+	{
+		try
+		{
+		URL whatismyip = new URL("http://automation.whatismyip.com/n09230945.asp");
+		BufferedReader in = new BufferedReader(new InputStreamReader(
+				whatismyip.openStream()));
+
+		String ip = in.readLine(); //you get the IP as a String
+		//System.out.println(ip);
+		return InetAddress.getByName(ip);
+		}
+		catch ( Exception e )
+		{
+			System.err.println("Could not ask for external IP address.\n");
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 	
 	  public static String longToIpV4(long longIp) {

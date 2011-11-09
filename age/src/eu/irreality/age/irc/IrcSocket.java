@@ -97,7 +97,10 @@ public class IrcSocket extends Thread
 		
 		//TODO: Let the user select the external IP address to receive DCC's on
 		//Or maybe we'll need to use whatismyip because the machine doesn't know its external ip!
-		InetAddress ia = socket.getLocalAddress();  //testing as of 2011-11-08
+		InetAddress ia;
+		ia = LocalIPObtainer.askForIpAbroad();
+		if ( ia == null ) //whatismyip failed.
+			ia = socket.getLocalAddress();  //testing as of 2011-11-08
 		/*
 		System.err.println("Addr: " + ia);
 		if ( ia.isLoopbackAddress() || ia.isLinkLocalAddress() || LocalIPObtainer.isIPv4Private(ia) )
