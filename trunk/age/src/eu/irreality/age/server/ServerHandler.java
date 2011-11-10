@@ -116,7 +116,7 @@ public class ServerHandler //Singleton!
 							
 							try
 							{
-								IrcAgeBot iab = new IrcAgeBot ( ise.getServer() , ise.getPort() , ise.getNick() );
+								IrcAgeBot iab = new IrcAgeBot ( ise.getServer() , ise.getPort() , ise.getNick() , ise.getChannels() );
 						 
 								synchronized (theInstance) 
 								{
