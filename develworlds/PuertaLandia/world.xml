@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<World author="" date="" moduleName="" parserVersion="1.1.1" type="" version="" worldDir="." worldName="">
+<World author="Carlos Gómez (Al-Khwarizmi)" date="2011-10-01" language="es" moduleName="PuertaLandia" parserVersion="1.1.1" type="Prueba de puertas" version="0.1" worldDir="." worldName="PuertaLandia">
 <IdeMetaInf>
-<View xoffset="-2.0" yoffset="-2.0" zoom="2.0"/>
+<View xoffset="25.0" yoffset="-24.0" zoom="2.0"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Room #9" x="300" y="240"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Room #8" x="100" y="240"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Room #1" x="200" y="240"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.CharacterNode" name="Joe Abrepuertas" x="160" y="340"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="puerta americana" x="160" y="180"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="llave americana" x="220" y="140"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Llave" x="280" y="140"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="puerta española" x="280" y="200"/>
-<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Room #1" x="200" y="240"/>
 </IdeMetaInf>
 <Code language="BeanShell"><![CDATA[/*Introducción del juego para un jugador*/
 void intro( Player aPlayer )
