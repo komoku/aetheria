@@ -17,6 +17,7 @@ import javax.swing.event.HyperlinkListener;
 
 import eu.irreality.age.PluginMenu;
 import eu.irreality.age.SwingRemoteClientWindow;
+import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.server.ServerConfigurationWindow;
 import eu.irreality.age.server.ServerHandler;
 import eu.irreality.age.server.ServerLogWindow;
@@ -32,21 +33,21 @@ public class MDIMenuBar extends JMenuBar
 	{
 		thePanel = p;
 		window = w;
-		JMenu menuArchivo = new JMenu("Archivo");
-		JMenuItem itemNuevo = new JMenuItem("Nuevo");
-		JMenuItem itemNuevo2 = new JMenuItem("Nuevo juego...");
-		JMenuItem itemRemota = new JMenuItem("Conectar a partida remota...");
-		JMenuItem itemNuevoLog = new JMenuItem("Cargar partida...");
-		JMenuItem itemNuevoEstado = new JMenuItem("Cargar estado...");
-		JMenuItem itemLoader = new JMenuItem("Cargador de juegos...");
-		JMenuItem itemSalir = new JMenuItem("Salir");
-		JMenu menuPresentacion = new JMenu("Presentación");
-		JMenuItem itemIconificar = new JMenuItem("Iconificar todo");
-		JMenu menuServidor = new JMenu("Servidor");
-		JMenuItem itemConfigServidor = new JMenuItem("Configuración...");
-		JMenuItem itemShowLogs = new JMenuItem("Mostrar logs");
-		JMenu menuAyuda = new JMenu("Ayuda");
-		JMenuItem itemAbout = new JMenuItem("Acerca de AGE...");
+		JMenu menuArchivo = new JMenu(  UIMessages.getInstance().getMessage("menu.file") );
+		JMenuItem itemNuevo = new JMenuItem( UIMessages.getInstance().getMessage("menu.new") );
+		JMenuItem itemNuevo2 = new JMenuItem( UIMessages.getInstance().getMessage("menu.new.game") );
+		JMenuItem itemRemota = new JMenuItem( UIMessages.getInstance().getMessage("menu.connect.remote") );
+		JMenuItem itemNuevoLog = new JMenuItem( UIMessages.getInstance().getMessage("menu.load.game") );
+		JMenuItem itemNuevoEstado = new JMenuItem( UIMessages.getInstance().getMessage("menu.load.state") );
+		JMenuItem itemLoader = new JMenuItem( UIMessages.getInstance().getMessage("menu.game.loader") );
+		JMenuItem itemSalir = new JMenuItem( UIMessages.getInstance().getMessage("menu.exit") );
+		JMenu menuPresentacion = new JMenu( UIMessages.getInstance().getMessage("menu.presentation") );
+		JMenuItem itemIconificar = new JMenuItem( UIMessages.getInstance().getMessage("menu.iconify") );
+		JMenu menuServidor = new JMenu( UIMessages.getInstance().getMessage("menu.server") );
+		JMenuItem itemConfigServidor = new JMenuItem( UIMessages.getInstance().getMessage("menu.server.config") );
+		JMenuItem itemShowLogs = new JMenuItem( UIMessages.getInstance().getMessage("menu.show.logs") );
+		JMenu menuAyuda = new JMenu( UIMessages.getInstance().getMessage("menu.help") );
+		JMenuItem itemAbout = new JMenuItem( UIMessages.getInstance().getMessage("menu.help.about") );
 		EscuchadorMinimizarTodo escmin = new EscuchadorMinimizarTodo ( thePanel );
 		EscuchadorAgregarVentanas esc = new EscuchadorAgregarVentanas ( thePanel );
 		EscuchadorNuevoDesdeFichero esc2 = new EscuchadorNuevoDesdeFichero ( thePanel );
@@ -93,7 +94,7 @@ public class MDIMenuBar extends JMenuBar
 					public void actionPerformed ( ActionEvent evt )
 					{
 						JInternalFrame ventanaAbout;
-						ventanaAbout = new JInternalFrame("Acerca de AGE",true,true,true,true);
+						ventanaAbout = new JInternalFrame( UIMessages.getInstance().getMessage("about.title") ,true,true,true,true);
 						p.add(ventanaAbout);
 						ventanaAbout.setSize(500,500);
 						//ventanaAbout.getContentPane().add ( new JLabel("Aetheria Game Engine") );

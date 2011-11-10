@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import eu.irreality.age.SwingAetheriaGameLoader;
 import eu.irreality.age.SwingAetheriaGameLoaderInterface;
 import eu.irreality.age.SwingImageDrawingThread;
+import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.server.ServerConfigurationWindow;
 import eu.irreality.age.server.ServerHandler;
 import eu.irreality.age.swing.config.AGEConfiguration;
@@ -142,7 +143,7 @@ public class SwingAetheriaGUI extends JFrame
 		}
 		 */
 
-		super("Aetheria Game Engine, v 1.1.8");
+		super("Aetheria Game Engine, v " + UIMessages.getInstance().getMessage("age.version") );
 		instance = this;
 		
 		//obsolete
