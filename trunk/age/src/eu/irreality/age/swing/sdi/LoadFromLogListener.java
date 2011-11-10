@@ -20,6 +20,7 @@ import eu.irreality.age.GameInfo;
 import eu.irreality.age.PartidaEntry;
 import eu.irreality.age.Utility;
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.server.ServerHandler;
 
 class LoadFromLogListener implements ActionListener
@@ -35,7 +36,7 @@ class LoadFromLogListener implements ActionListener
 	{
 		final JFileChooser selector = new JFileChooser( Paths.SAVE_PATH );
 		selector.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		selector.setDialogTitle("Selecciona el fichero de log");
+		selector.setDialogTitle( UIMessages.getInstance().getMessage("dialog.log.title") );
 		selector.setFileFilter ( new FiltroFicheroLog() ); 
 
 		int returnVal = selector.showOpenDialog(window);

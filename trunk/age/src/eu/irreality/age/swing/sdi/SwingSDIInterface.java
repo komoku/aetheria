@@ -47,6 +47,7 @@ import eu.irreality.age.World;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.filemanagement.WorldLoader;
+import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.swing.SwingMenuAetheria;
 import eu.irreality.age.swing.config.AGEConfiguration;
 import eu.irreality.age.swing.mdi.SwingAetheriaGUI;
@@ -135,12 +136,11 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 										asc.deactivate(); //will be activated on log end (player:endOfLog()
 									}
 								}
-									
-								write("Aetheria Game Engine v 1.1.8\n");
+								
+								write("Aetheria Game Engine v " + UIMessages.getInstance().getMessage("age.version") + "\n");
 
-								//areaTexto.setText("Aetheria Game Engine v 0.4.7b Beta Distribution\n");
-								write("© 1999-2011 Carlos Gómez (solrac888@yahoo.com)\n");
-								write("Véase license.txt para consultar la licencia de AGE y del software de terceros incluido.\n");
+								write( UIMessages.getInstance().getMessage("age.copyright") + "\n" );
+								write( UIMessages.getInstance().getMessage("intro.legal") + "\n" );
 
 								write("\n=============================================================");
 								write("\n" + io.getColorCode("information") + "Engine-related Version Info:");
@@ -162,7 +162,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 			}
 
 
-			System.out.println("2");
+			//System.out.println("2");
 
 			//areaTexto.setText(areaTexto.getText() + "Running on Aetheria Multiple Game Interface v 1.0 / swing-based MDI interface" );
 
@@ -194,7 +194,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 			}
 
 
-			System.out.println("3");
+			//System.out.println("3");
 
 			//doUpdate2 = new UpdatingThread( this , doUpdate );
 			//doUpdate2.start();
@@ -322,11 +322,11 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 			
 			if ( new VersionComparator().compare(GameEngineThread.getVersionNumber(),theWorld.getRequiredAGEVersion()) < 0 )
 			{
-				String mess = "Estás usando la versión " +
-					GameEngineThread.getVersionNumber() + " de AGE; pero el mundo " + theWorld.getModuleName() +
-					" requiere la versión " + theWorld.getRequiredAGEVersion() + " como mínimo. Podría no funcionar " +
-					" si no te bajas una nueva versión de AGE en http://code.google.com/p/aetheria";
-				JOptionPane.showMessageDialog(SwingSDIInterface.this, mess, "Aviso", JOptionPane.WARNING_MESSAGE);
+				String mess = UIMessages.getInstance().getMessage("age.version.warning",
+						"$curversion",GameEngineThread.getVersionNumber(),"$reqversion",theWorld.getRequiredAGEVersion(),
+						"$world",theWorld.getModuleName());
+				mess = mess + " " + UIMessages.getInstance().getMessage("age.download.url");
+				JOptionPane.showMessageDialog(SwingSDIInterface.this, mess, UIMessages.getInstance().getMessage("age.version.warning.title"), JOptionPane.WARNING_MESSAGE);
 			}
 
 			/*
@@ -352,7 +352,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 				catch ( Exception exc )
 				{
 					((ColoredSwingClient)io).showAfterLogLoad();
-					write("¡No se ha podido cargar el estado!\n");
+					write(UIMessages.getInstance().getMessage("swing.cannot.read.state","$file",stateFile));
 					write(exc.toString());
 					exc.printStackTrace();
 				}
@@ -369,7 +369,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 				catch ( Exception exc )
 				{
 					((ColoredSwingClient)io).showAfterLogLoad();
-					write("Excepción al leer el fichero de log: " + exc + "\n");
+					write(UIMessages.getInstance().getMessage("swing.cannot.read.log","$exc",exc.toString()));
 					exc.printStackTrace();
 					return;
 				}
@@ -393,11 +393,11 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 						theWorld,
 						SwingSDIInterface.this , false );
 
-			System.out.println("STARTING ENGINE THREAD");
+			//System.out.println("STARTING ENGINE THREAD");
 
 			maquinaEstados.start();		
 
-			System.out.println("ENGINE THREAD STARTED");
+			//System.out.println("ENGINE THREAD STARTED");
 
 			System.out.println("noSerCliente = " + false);
 
@@ -496,16 +496,16 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 	public void saveAndFreeResources ( )
 	{
 		//autosave
-		io.write ("Guardando la partida...\n");
+		io.write ( UIMessages.getInstance().getMessage("swing.saving") + "\n");
 		try
 		{
 			CommonClientUtilities.guardarLog ( new File ( "autosave.alf" ) , gameLog );
 		}
 		catch (Exception exc)
 		{
-			io.write("¡No se ha podido guardar la partida!\n");
+			io.write( UIMessages.getInstance().getMessage("swing.cannot.save.log") + "\n");
 		}
-		io.write ("¡Hasta la próxima!\n");
+		io.write ( UIMessages.getInstance().getMessage("swing.bye") + "\n");
 		//wait(2);
 		//System.exit(0);
 		//if ( fullScreenMode )
@@ -681,15 +681,15 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 		
 		JMenu menuArchivo = getTheJMenuBar().getMenu(0);
 		
-		JMenuItem itemNuevo = new JMenuItem("Nuevo juego...");
+		JMenuItem itemNuevo = new JMenuItem( UIMessages.getInstance().getMessage("menu.new.game") );
 		menuArchivo.add(itemNuevo,0);
 		itemNuevo.addActionListener(new NewFromFileListener(this));
 		
-		JMenuItem itemLoadLog = new JMenuItem("Cargar partida...");
+		JMenuItem itemLoadLog = new JMenuItem( UIMessages.getInstance().getMessage("menu.load.game") );
 		menuArchivo.add(itemLoadLog,1);
 		itemLoadLog.addActionListener(new LoadFromLogListener(this));
 		
-		JMenuItem itemLoadState = new JMenuItem("Cargar estado...");
+		JMenuItem itemLoadState = new JMenuItem( UIMessages.getInstance().getMessage("menu.load.state") );
 		menuArchivo.add(itemLoadState,2);
 		itemLoadState.addActionListener(new LoadFromStateListener(this));
 		
@@ -719,11 +719,11 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 		//setSize(500,400);
 		if ( moduledir.equalsIgnoreCase("") )
 		{
-			setTitle("Aetheria Game Engine. Módulo: aetherworld");
+			setTitle("Aetheria Game Engine. " + UIMessages.getInstance().getMessage("swing.default.title.module") + " (sin nombre)");
 		}
 		else
 		{
-			setTitle("Aetheria Game Engine. Módulo: " + moduledir);
+			setTitle("Aetheria Game Engine. " + UIMessages.getInstance().getMessage("swing.default.title.module") + " " + moduledir);
 		}
 
 		setVisible(true);
@@ -816,7 +816,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 			}
 			catch ( Exception exc )
 			{
-				write("No se ha podido guardar la partida...");
+				write( UIMessages.getInstance().getMessage("swing.cannot.save.log") + "\n" );
 				write(exc.toString());
 			}
 		}		
@@ -844,7 +844,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 			}
 			catch ( Exception exc )
 			{
-				write("No se ha podido guardar la partida...");
+				write( UIMessages.getInstance().getMessage("swing.cannot.save.state") + "\n" );
 				write(exc.toString());
 			}
 		}		
@@ -856,14 +856,14 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 		SwingAetheriaGameLoaderInterface.loadFont();
 		JFileChooser selector = new JFileChooser( Paths.WORLD_PATH );
 		selector.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		selector.setDialogTitle("Selecciona el directorio del juego o el fichero world.dat");
+		selector.setDialogTitle( UIMessages.getInstance().getMessage("dialog.new.title") );
 		selector.setFileFilter ( new FiltroFicheroMundo() );
 
 
 		int returnVal = selector.showOpenDialog(null);
 		if(returnVal == JFileChooser.APPROVE_OPTION) 
 		{
-			System.out.println("Nombre: " + selector.getSelectedFile().getAbsolutePath() );
+			//System.out.println("Nombre: " + selector.getSelectedFile().getAbsolutePath() );
 
 			//if ( selector.getSelectedFile().isFile() )
 			//{
