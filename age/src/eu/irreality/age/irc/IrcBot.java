@@ -6,13 +6,15 @@ package eu.irreality.age.irc;
 import java.util.*;
 //import irc.*;
 
+import eu.irreality.age.i18n.UIMessages;
+
 public class IrcBot implements IrcListener , IrcDccListener
 	{
 		protected IrcSocket	ircSocket;
 	
 	private final boolean ACCEPT_DCC_CHAT = true;
 
-	public IrcBot(String server, int port, String nick, String name) throws Exception
+	public IrcBot( String server, int port, String nick, String name , Vector channels ) throws Exception
 		{
 
 			ircSocket = new IrcSocket(server,port,this); ircSocket.login(nick,name);
@@ -22,11 +24,18 @@ public class IrcBot implements IrcListener , IrcDccListener
 		ircSocket.setNick(nick);
 		Thread.sleep(1000);
 
-		ircSocket.joinChannel("#aetheria"); 
-
-		ircSocket.setChannelTopic("#aetheria","buenas"); 
-		ircSocket.setMode("#p","[\\AxMan\\]","+o");
-		ircSocket.sendChannel("#aetheria","Buenas. Soy un servidor del Aetheria Game Engine. Podéis hacerme DCC chats."); 
+		for ( int i = 0 ; i < channels.size() ; i++ )
+		{
+			String channel = (String) channels.get(i);
+			
+			//ircSocket.joinChannel("#aetheria"); 
+			//ircSocket.setChannelTopic("#aetheria","buenas"); 
+			//ircSocket.setMode("#p","[\\AxMan\\]","+o");
+			//ircSocket.sendChannel("#aetheria", UIMessages.getInstance().getMessage("irc.bot.intro.channel") ); 
+			
+			ircSocket.joinChannel(channel);
+			ircSocket.sendChannel(channel, UIMessages.getInstance().getMessage("irc.bot.intro.channel") ); 
+		}
 		
 		//for ( ; ; )
 		{

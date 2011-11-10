@@ -4,17 +4,20 @@
  */
 package eu.irreality.age.irc;
 
+import java.util.Vector;
+
 import eu.irreality.age.World;
 import eu.irreality.age.debug.Debug;
+import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.server.ServerHandler;
 
 public class IrcAgeBot extends IrcBot
 {
 
-	public IrcAgeBot ( String server , int port , String nick ) throws Exception
+	public IrcAgeBot ( String server , int port , String nick , Vector channels ) throws Exception
 	{
 	
-		super ( server , port , nick, "Bot del Aetheria Game Engine" );
+		super ( server , port , nick, UIMessages.getInstance().getMessage("irc.bot.longname") , channels );
 	
 	}
 
@@ -38,10 +41,10 @@ public class IrcAgeBot extends IrcBot
 		}		
 		else if (!(sender.equals("NiCK")|sender.equals("agenda")|sender.equals("MeMo")|sender.equalsIgnoreCase("information")))
 		{	
-			ircSocket.sendPrivate(sender,"Soy un servidor del Aetheria Game Engine.");
+			ircSocket.sendPrivate(sender,UIMessages.getInstance().getMessage("irc.bot.intro.1"));
 			ircSocket.sendPrivate(sender,
-					"Para jugar una partida, ábreme un DCC chat.");
-			ircSocket.sendPrivate(sender,"Para más información, visita http://code.google.com/p/aetheria/");
+					UIMessages.getInstance().getMessage("irc.bot.intro.2"));
+			ircSocket.sendPrivate(sender,UIMessages.getInstance().getMessage("irc.bot.intro.3", "$url", "age.download.url"));
 		}
 		 
 		System.out.println(sender+": "+message);
@@ -56,13 +59,13 @@ public class IrcAgeBot extends IrcBot
 		{
 			IrcDccChatSocket idcs = ircSocket.acceptDccChatRequest ( nick , ip , port , idcsh );
 			idcs.setPriority(Thread.MIN_PRIORITY);
-			ircSocket.sendPrivate ( nick , "Aceptando la conexión DCC Chat (si la conexión no se establece correctamente, pruebe a ponerme en privado la palabra DCC)" );
+			ircSocket.sendPrivate ( nick , UIMessages.getInstance().getMessage("irc.accepting.dcc") );
 			idcsh.setSocket ( idcs );
 			launchGame ( idcsh );
 		}
 		catch ( Exception e )
 		{
-			ircSocket.sendPrivate ( nick , "No se ha podido aceptar la conexión DCC Chat. Pruebe a poner en este privado la palabra DCC.");
+			ircSocket.sendPrivate ( nick , UIMessages.getInstance().getMessage("irc.cannot.accept.dcc") );
 		}
 		
 	}

@@ -361,7 +361,7 @@ public class SimpleTelnetClientProxy implements InputOutputClient , TelnetConsta
 
 	public void clearScreen ( )
 	{
-		//write(UIMessages.getInstance().getMessage("irc.clear.placeholder")+"\n");
+		//write(UIMessages.getInstance().getMessage("telnet.clear.placeholder")+"\n");
 		write("\n\n");
 	}
 
