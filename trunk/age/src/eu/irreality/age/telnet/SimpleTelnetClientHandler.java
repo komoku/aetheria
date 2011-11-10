@@ -9,6 +9,7 @@ import java.io.*;
 
 import eu.irreality.age.StringMethods;
 import eu.irreality.age.World;
+import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.server.PartidaEnCurso;
 
 public class SimpleTelnetClientHandler extends Thread {
@@ -35,7 +36,7 @@ public class SimpleTelnetClientHandler extends Thread {
 		start();
 	}
 
-  	public SimpleTelnetClientHandler ( World w , int maxPlayers , short port )
+  	public SimpleTelnetClientHandler ( World w , int maxPlayers , short port ) //this seems to never be called as of 2011-11-10.
   	{
 		
 		System.out.println("SimpleTelnetClientHandler started.");
@@ -308,7 +309,7 @@ class SimpleTelnetClientSelector implements TelnetConstants
 		
 		if ( partidas.size() < 1 )
 		{
-			escribir("¡No hay partidas en curso!\n");
+			escribir(UIMessages.getInstance().getMessage("server.no.games")+"\n");
 			return null;
 		}
 		if ( partidas.size() == 1 )
@@ -332,7 +333,7 @@ class SimpleTelnetClientSelector implements TelnetConstants
 		while ( !done )
 		{
 
-			escribir("PARTIDAS EN CURSO:\n");
+			escribir(UIMessages.getInstance().getMessage("server.active.games")+"\n");
 
 			for ( int i = 0 ; i < partidas.size() ; i++ )
 			{
@@ -341,7 +342,7 @@ class SimpleTelnetClientSelector implements TelnetConstants
 				escribir ( "\n" );
 			}
 
-			escribir("Introduzca el número de la partida a la que desea jugar: ");
+			escribir(UIMessages.getInstance().getMessage("server.enter.game.number") + " ");
 
 			String linea = getInput();
 			if ( linea == null ) return null; //exc
@@ -360,7 +361,7 @@ class SimpleTelnetClientSelector implements TelnetConstants
 				if ( p.getPlayers() < p.getMaxPlayers() )
 					return p;
 				else
-					escribir("Esa partida ha alcanzado su número máximo de usuarios, no puedes entrar.\n");
+					escribir(UIMessages.getInstance().getMessage("server.player.limit.hit") + "\n");
 			}
 
 

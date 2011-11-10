@@ -12,6 +12,7 @@ import eu.irreality.age.Player;
 import eu.irreality.age.StringMethods;
 import eu.irreality.age.World;
 import eu.irreality.age.XMLtoWorldException;
+import eu.irreality.age.i18n.UIMessages;
 
 public class SimpleTelnetClientProxy implements InputOutputClient , TelnetConstants
 {
@@ -167,7 +168,7 @@ public class SimpleTelnetClientProxy implements InputOutputClient , TelnetConsta
 		try
 		{
 			boolean ANSIsupport = checkForANSISupport();
-			write("Welcome to denebola [port " + s.getLocalPort() + "] running the Aetheria Game Engine.\n");
+			write("Welcome to " +  s.getLocalAddress() + " [port " + s.getLocalPort() + "] running the Aetheria Game Engine.\n");
 			write("Your client ID is " + id + ".\n");
 			mundo.addNewPlayerASAP ( this );
 		}
@@ -360,7 +361,8 @@ public class SimpleTelnetClientProxy implements InputOutputClient , TelnetConsta
 
 	public void clearScreen ( )
 	{
-		write("Aquí se borraría la pantalla.\n");
+		//write(UIMessages.getInstance().getMessage("irc.clear.placeholder")+"\n");
+		write("\n\n");
 	}
 
 	
