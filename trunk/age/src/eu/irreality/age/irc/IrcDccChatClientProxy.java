@@ -4,6 +4,7 @@ import eu.irreality.age.InputOutputClient;
 import eu.irreality.age.Player;
 import eu.irreality.age.World;
 import eu.irreality.age.XMLtoWorldException;
+import eu.irreality.age.i18n.UIMessages;
 
 //(entradas síncronas y asíncronas, en este caso, extiende Synchronous por conveniencia,
 //no quiere decir que siga siendo Synchronous)
@@ -127,7 +128,7 @@ class IrcDccChatClientProxy extends IrcDccChatSynchronousHandler implements Inpu
 	//(al fin y al cabo, el método de notificación es igual)
 	public String getInput ( Player p )
 	{
-		write("[Tu turno]");
+		write(UIMessages.getInstance().getMessage("irc.yourturn"));
 		return super.getInput();
 	}
 	
@@ -171,7 +172,7 @@ class IrcDccChatClientProxy extends IrcDccChatSynchronousHandler implements Inpu
 	
 	public void waitKeyPress()
 	{
-		write("[Introduce algo para seguir]\n");
+		write( UIMessages.getInstance().getMessage("irc.keyrequest") + "\n" );
 		String str = getInput();
 		System.out.println("INPUT GOTTEN (line)\n");
 

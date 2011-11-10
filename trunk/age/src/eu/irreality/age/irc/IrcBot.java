@@ -83,10 +83,10 @@ public class IrcBot implements IrcListener , IrcDccListener
 		
 		if (!(sender.equals("NiCK")|sender.equals("agenda")|sender.equals("MeMo")))
 			{	
-			ircSocket.sendPrivate(sender,"Soy un servidor del Aetheria Game Engine.");
+			ircSocket.sendPrivate(sender,UIMessages.getInstance().getMessage("irc.bot.intro.1"));
 			ircSocket.sendPrivate(sender,
-					"Para jugar una partida, ábreme un DCC chat.");
-			ircSocket.sendPrivate(sender,"Para más información, visita http://www.irreality.org/aetheria/conv.htm y http://absurdum.f2o.org/aetheria");
+					UIMessages.getInstance().getMessage("irc.bot.intro.2"));
+			ircSocket.sendPrivate(sender,UIMessages.getInstance().getMessage("irc.bot.intro.3", "$url", "age.download.url"));
 			}
 		System.out.println(sender+": "+message);
 		};
@@ -174,11 +174,11 @@ public class IrcBot implements IrcListener , IrcDccListener
 			try
 			{
 				ircSocket.acceptDccChatRequest ( nick , ip , port , this );
-				ircSocket.sendPrivate ( nick , "Aceptando la conexión DCC Chat (si la conexión no se establece correctamente, pruebe a ponerme en privado la palabra DCC" );
+				ircSocket.sendPrivate ( nick , UIMessages.getInstance().getMessage("irc.accepting.dcc") );
 			}
 			catch ( Exception e )
 			{
-				ircSocket.sendPrivate ( nick , "No se ha podido aceptar la conexión DCC Chat. Pruebe a poner en este privado la palabra DCC.");
+				ircSocket.sendPrivate ( nick , UIMessages.getInstance().getMessage("irc.cannot.accept.dcc") );
 			}
 		}
 		
