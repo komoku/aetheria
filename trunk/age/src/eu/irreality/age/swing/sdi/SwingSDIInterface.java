@@ -49,6 +49,7 @@ import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.filemanagement.WorldLoader;
 import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.swing.SwingMenuAetheria;
+import eu.irreality.age.swing.UILanguageSelectionMenu;
 import eu.irreality.age.swing.config.AGEConfiguration;
 import eu.irreality.age.swing.mdi.SwingAetheriaGUI;
 import eu.irreality.age.util.VersionComparator;
@@ -696,6 +697,9 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 		menuArchivo.add(new JSeparator(),3);
 		
 		//setSize(600,440);
+		
+		getTheJMenuBar().add( new UILanguageSelectionMenu(this) );
+		
 	}
 
 

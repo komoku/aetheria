@@ -27,12 +27,12 @@ public /*Singleton*/ class UIMessages
 	private Properties properties;
 	
 	/**
-	 * Obtains the language code for the user's preferred language as configured in the AGE configuration file.
+	 * Obtains the language code for the user's preferred language as configured in the AGE configuration (gotten from file).
 	 * If no language is configured in the file, then if the JVM locale is Spanish or English, it returns that language.
 	 * In other case, it returns Spanish.
 	 * @return
 	 */
-	private String getPreferredLanguage()
+	public String getPreferredLanguage()
 	{
 		String configuredLanguage = AGEConfiguration.getInstance().getProperty("language");
 		if ( configuredLanguage != null ) return configuredLanguage;
@@ -50,6 +50,16 @@ public /*Singleton*/ class UIMessages
 		return "es";
 	}
 	
+	public void setPreferredLanguage ( String language )
+	{
+		String oldLanguage = getPreferredLanguage();
+		if ( !oldLanguage.equals(language) )
+		{
+			AGEConfiguration.getInstance().setProperty("language",language);
+			initForLanguage(language);
+		}
+	}
+	
 	private void init ( String pathToMessageFile )
 	{
 		properties = new Properties();
@@ -65,12 +75,17 @@ public /*Singleton*/ class UIMessages
 		}
 	}
 	
+	private void initForLanguage ( String lang )
+	{
+		init("eu/irreality/age/i18n/UIMessages." + lang);
+	}
+	
 	private UIMessages()
 	{	
 		String lang = getPreferredLanguage();
 		try
 		{
-			init("eu/irreality/age/i18n/UIMessages." + lang);
+			initForLanguage(lang);
 		}
 		catch (Exception exc)
 		{
