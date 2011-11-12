@@ -21,6 +21,7 @@ import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.server.ServerConfigurationWindow;
 import eu.irreality.age.server.ServerHandler;
 import eu.irreality.age.server.ServerLogWindow;
+import eu.irreality.age.swing.UILanguageSelectionMenu;
 import eu.irreality.age.swing.mdi.gameloader.GameChoosingInternalFrame;
 
 public class MDIMenuBar extends JMenuBar 
@@ -46,6 +47,7 @@ public class MDIMenuBar extends JMenuBar
 		JMenu menuServidor = new JMenu( UIMessages.getInstance().getMessage("menu.server") );
 		JMenuItem itemConfigServidor = new JMenuItem( UIMessages.getInstance().getMessage("menu.server.config") );
 		JMenuItem itemShowLogs = new JMenuItem( UIMessages.getInstance().getMessage("menu.show.logs") );
+		JMenu menuIdioma = new UILanguageSelectionMenu(w);
 		JMenu menuAyuda = new JMenu( UIMessages.getInstance().getMessage("menu.help") );
 		JMenuItem itemAbout = new JMenuItem( UIMessages.getInstance().getMessage("menu.help.about") );
 		EscuchadorMinimizarTodo escmin = new EscuchadorMinimizarTodo ( thePanel );
@@ -197,6 +199,7 @@ public class MDIMenuBar extends JMenuBar
 		this.add ( menuArchivo );	
 		this.add ( menuPresentacion );
 		this.add ( menuServidor );
+		this.add ( menuIdioma );
 		this.add ( menuAyuda );
 		this.add ( new PluginMenu(thePanel) );
 	}

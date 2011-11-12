@@ -49,8 +49,11 @@ public class UILanguageSelectionMenu extends JMenu
 		{	
 			public void actionPerformed ( ActionEvent evt )
 			{
-				UIMessages.getInstance().setPreferredLanguage("es");
-				showLanguageChangedDialog ( frame );
+				if ( !UIMessages.getInstance().getPreferredLanguage().equals("es") )
+				{
+					UIMessages.getInstance().setPreferredLanguage("es");
+					showLanguageChangedDialog ( frame );
+				}
 			}
 		}
 		);
@@ -59,8 +62,11 @@ public class UILanguageSelectionMenu extends JMenu
 		{	
 			public void actionPerformed ( ActionEvent evt )
 			{
-				UIMessages.getInstance().setPreferredLanguage("en");
-				showLanguageChangedDialog ( frame );
+				if ( !UIMessages.getInstance().getPreferredLanguage().equals("en") )
+				{
+					UIMessages.getInstance().setPreferredLanguage("en");
+					showLanguageChangedDialog ( frame );
+				}
 			}
 		}
 		);
