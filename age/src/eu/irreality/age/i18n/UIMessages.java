@@ -29,7 +29,7 @@ public /*Singleton*/ class UIMessages
 	/**
 	 * Obtains the language code for the user's preferred language as configured in the AGE configuration (gotten from file).
 	 * If no language is configured in the file, then if the JVM locale is Spanish or English, it returns that language.
-	 * In other case, it returns Spanish.
+	 * In other case, it returns English.
 	 * @return
 	 */
 	public String getPreferredLanguage()
@@ -47,7 +47,7 @@ public /*Singleton*/ class UIMessages
 			AGEConfiguration.getInstance().setProperty("language","en");
 			return "en";
 		}
-		return "es";
+		return "en";
 	}
 	
 	public void setPreferredLanguage ( String language )

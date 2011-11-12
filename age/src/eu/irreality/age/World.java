@@ -933,7 +933,7 @@ public class World implements Informador , SupportingCode
 		write( io.getColorCode("information") + "\n" + UIMessages.getInstance().getMessage("load.world.done") + io.getColorCode("reset") + "\n" );
 		
 		write("\n=============================================================");
-		write("\n" + io.getColorCode("information") + "Información de Juego:");
+		write("\n" + io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.info.intro"));
 		if ( modulename != null )
 			write("\n" + io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.info.name") + modulename + io.getColorCode("reset"));
 			//write("\n" + io.getColorCode("information") + "[Nombre]           " + modulename + io.getColorCode("reset"));
