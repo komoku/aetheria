@@ -9,7 +9,10 @@ package eu.irreality.age.i18n;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Locale;
 import java.util.Properties;
+
+import eu.irreality.age.swing.config.AGEConfiguration;
 
 /**
  * @author carlos
@@ -23,18 +26,56 @@ public /*Singleton*/ class UIMessages
 	
 	private Properties properties;
 	
-	private UIMessages()
-	{	
+	/**
+	 * Obtains the language code for the user's preferred language as configured in the AGE configuration file.
+	 * If no language is configured in the file, then if the JVM locale is Spanish or English, it returns that language.
+	 * In other case, it returns Spanish.
+	 * @return
+	 */
+	private String getPreferredLanguage()
+	{
+		String configuredLanguage = AGEConfiguration.getInstance().getProperty("language");
+		if ( configuredLanguage != null ) return configuredLanguage;
+		String sysLanguage = Locale.getDefault().getLanguage();
+		if ( sysLanguage.contains("es") )
+		{
+			AGEConfiguration.getInstance().setProperty("language","es");
+			return "es";
+		}
+		if ( sysLanguage.contains("en") )
+		{
+			AGEConfiguration.getInstance().setProperty("language","en");
+			return "en";
+		}
+		return "es";
+	}
+	
+	private void init ( String pathToMessageFile )
+	{
 		properties = new Properties();
 		try
 		{
-			InputStream is = this.getClass().getClassLoader().getResourceAsStream("eu/irreality/age/i18n/UIMessages.properties");
-			if ( is == null ) throw new IOException("getResourceAsStream returned null stream for UIMessages.properties");
+			InputStream is = this.getClass().getClassLoader().getResourceAsStream(pathToMessageFile);
+			if ( is == null ) throw new IOException("getResourceAsStream returned null stream for " + pathToMessageFile);
 			properties.load( is );
 		}
 		catch ( IOException ioe )
 		{
 			ioe.printStackTrace();
+		}
+	}
+	
+	private UIMessages()
+	{	
+		String lang = getPreferredLanguage();
+		try
+		{
+			init("eu/irreality/age/i18n/UIMessages." + lang);
+		}
+		catch (Exception exc)
+		{
+			System.err.println("Could not load AGE UI message file for language " + lang + ", will try with the default message file.\n");
+			init("eu/irreality/age/i18n/UIMessages.properties");
 		}
 	}
 	
