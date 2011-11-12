@@ -144,8 +144,8 @@ public class IrcBot implements IrcListener , IrcDccListener
 
 	public void channelJoin (String channel, String nick) 
 		{
-		if (channel.equals("#ia")&&nick.toLowerCase().equals("isotope"))
-				ircSocket.setMode(channel, nick,"+o");
+		//if (channel.equals("#ia")&&nick.toLowerCase().equals("isotope"))
+		//		ircSocket.setMode(channel, nick,"+o");
 		System.out.println(nick+" joins channel "+channel);
 		};
 

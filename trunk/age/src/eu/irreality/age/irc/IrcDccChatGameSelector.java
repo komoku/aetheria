@@ -5,6 +5,7 @@
 package eu.irreality.age.irc;
 import java.util.*;
 
+import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.server.PartidaEnCurso;
 
 //analogous to SimpleTelnetClientSelector. AgeIrcBot would be the SimpleTelnetClientHandler.
@@ -35,6 +36,19 @@ public class IrcDccChatGameSelector extends IrcDccChatSynchronousHandler
 		
 			System.out.println("The Socket is: " + s);
 		
+			
+			write(UIMessages.getInstance().getMessage("irc.note.1")+"\n");
+			write(UIMessages.getInstance().getMessage("irc.note.2")+"\n");
+			write(UIMessages.getInstance().getMessage("irc.note.3")+"\n");
+			write(UIMessages.getInstance().getMessage("irc.note.4")+"\n");
+			write(UIMessages.getInstance().getMessage("irc.note.5")+"\n");
+			write(UIMessages.getInstance().getMessage("irc.note.6")+"\n");
+			write(UIMessages.getInstance().getMessage("irc.note.7")+"\n");
+			write(UIMessages.getInstance().getMessage("irc.note.8")+"\n");
+			write(UIMessages.getInstance().getMessage("irc.note.9")+"\n");
+			write(UIMessages.getInstance().getMessage("irc.note.1")+"\n");
+			
+			/*
 			write("=========\n");
 			
 			write("Nota importante sobre el uso de IRC:\n");
@@ -48,12 +62,13 @@ public class IrcDccChatGameSelector extends IrcDccChatSynchronousHandler
 			write("Busca información sobre el cliente de AGE en http://www.irreality.eu/age/index.html?jtexto.htm o descárgatelo en http://code.google.com/p/aetheria/\n");
 			
 			write("==========\n");
+			*/
 		
 		//}
 		
 		if ( partidas.size() < 1 )
 		{
-			write("¡No hay partidas en curso!\n");
+			write(UIMessages.getInstance().getMessage("server.no.games")+"\n");
 			return null;
 		}
 		if ( partidas.size() == 1 )
@@ -78,7 +93,7 @@ public class IrcDccChatGameSelector extends IrcDccChatSynchronousHandler
 		while ( !done )
 		{
 
-			write("PARTIDAS EN CURSO:\n");
+			write(UIMessages.getInstance().getMessage("server.active.games")+"\n");
 
 			for ( int i = 0 ; i < partidas.size() ; i++ )
 			{
@@ -88,7 +103,7 @@ public class IrcDccChatGameSelector extends IrcDccChatSynchronousHandler
 				write ( (i+1) + ". " + pec.getNombre() + " " + "(" + pec.getPlayers() + "/" + pec.getMaxPlayers() + ")" + "\n" ); 
 			}
 
-			write("Introduzca el número de la partida a la que desea jugar: ");
+			write(UIMessages.getInstance().getMessage("server.enter.game.number")+" ");
 
 			String linea = getInput();
 			int part = -1;
@@ -109,7 +124,7 @@ public class IrcDccChatGameSelector extends IrcDccChatSynchronousHandler
 					return p;
 				}
 				else
-					write("Esa partida ha alcanzado su número máximo de usuarios, no puedes entrar.\n");
+					write(UIMessages.getInstance().getMessage("server.player.limit.hit")+"\n");
 			}
 
 
