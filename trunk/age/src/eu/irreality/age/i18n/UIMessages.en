@@ -145,6 +145,7 @@ load.world.room=Initializing rooms...
 load.world.deferred=Completing delayed loads...
 load.world.stats=$number entities loaded.
 load.world.done=World initialized.
+load.world.info.intro=Game Information:
 load.world.info.name=[Name]\ \ \ \ \ \ \ \ \ \ \ \ \  
 load.world.info.type=[Type]\ \ \ \ \ \ \ \ \ \ \ \ \ 
 load.world.info.author=[Author]\ \ \ \ \ \ \ \ \ \ \ 
