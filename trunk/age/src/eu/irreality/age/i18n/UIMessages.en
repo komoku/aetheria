@@ -203,3 +203,6 @@ language.es=Spanish
 language.en=English
 language.changed=AGE's interface language has been changed to English, but you will need to restart AGE for the change to totally take place.
 language.changed.title=Language change
+about.frame.title=About AGE
+about.frame.version=Version:
+about.frame.download=You can download new versions and find information about AGE at:
