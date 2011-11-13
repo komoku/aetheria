@@ -13,7 +13,7 @@ import org.f2o.absurdum.puck.gui.graph.GraphEditingPanel;
 import org.f2o.absurdum.puck.gui.graph.Node;
 import org.f2o.absurdum.puck.gui.panels.EntityPanel;
 import org.f2o.absurdum.puck.gui.panels.WorldPanel;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 
 import bsh.EvalError;
 import bsh.Interpreter;
@@ -51,7 +51,7 @@ public class BeanShellCodeValidator
 		}
 		catch ( ParseException pe )
 		{
-			errorText.append(Messages.getInstance().getMessage("bsh.parse.error.in") + source.toString() + "\n");
+			errorText.append(UIMessages.getInstance().getMessage("bsh.parse.error.in") + source.toString() + "\n");
 			errorText.append(pe.getMessage()+"\n");
 			return false;
 		}

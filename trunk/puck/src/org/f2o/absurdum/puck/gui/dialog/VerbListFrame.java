@@ -19,7 +19,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 
 /**
  * @author carlos
@@ -46,7 +46,7 @@ public class VerbListFrame extends JFrame
 	
 	private VerbListFrame()
 	{
-		super(Messages.getInstance().getMessage("verblist.frametitle"));
+		super(UIMessages.getInstance().getMessage("verblist.frametitle"));
 		setSize(600,600);
 		eu.irreality.age.NaturalLanguage lang = eu.irreality.age.NaturalLanguage.getInstance();
 		sourceForms.addAll ( lang.getVerbForms() ); //to sort them we add them to TreeSet.
@@ -61,8 +61,8 @@ public class VerbListFrame extends JFrame
 			i++;
 		}
 		columnNames = new Object[2];
-		columnNames[0] = Messages.getInstance().getMessage("verblist.source");
-		columnNames[1] = Messages.getInstance().getMessage("verblist.target");
+		columnNames[0] = UIMessages.getInstance().getMessage("verblist.source");
+		columnNames[1] = UIMessages.getInstance().getMessage("verblist.target");
 		
 		TableModel tm = new VerbListTableModel(tableData,columnNames);
 		
@@ -76,7 +76,7 @@ public class VerbListFrame extends JFrame
 		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout ( new BoxLayout(mainPanel,BoxLayout.PAGE_AXIS) );
-		mainPanel.add(new JLabel(Messages.getInstance().getMessage("verblist.explanation")));
+		mainPanel.add(new JLabel(UIMessages.getInstance().getMessage("verblist.explanation")));
 		mainPanel.add(Box.createVerticalStrut(10));
 		mainPanel.add ( tableScroll );
 		

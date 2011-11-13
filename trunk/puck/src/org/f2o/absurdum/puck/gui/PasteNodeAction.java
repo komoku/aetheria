@@ -27,7 +27,7 @@ import org.f2o.absurdum.puck.gui.graph.GraphEditingPanel;
 import org.f2o.absurdum.puck.gui.graph.Node;
 import org.f2o.absurdum.puck.gui.panels.EntityPanel;
 import org.f2o.absurdum.puck.gui.panels.WorldPanel;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.f2o.absurdum.puck.util.debug.Debug;
 import org.f2o.absurdum.puck.util.xml.DOMUtils;
 
@@ -45,7 +45,7 @@ public class PasteNodeAction extends AbstractAction
 	public PasteNodeAction ( GraphEditingPanel panel )
 	{
 		this.panel = panel;
-		this.putValue(Action.NAME,Messages.getInstance().getMessage("menuaction.paste"));
+		this.putValue(Action.NAME,UIMessages.getInstance().getMessage("menuaction.paste"));
 	}
 
 	public void actionPerformed(ActionEvent arg0) 
@@ -72,7 +72,7 @@ public class PasteNodeAction extends AbstractAction
 		}
 		catch ( Exception e )
 		{
-			JOptionPane.showMessageDialog(panel,Messages.getInstance().getMessage("error.clip.nonode"),"Whoops!",JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(panel,UIMessages.getInstance().getMessage("error.clip.nonode"),"Whoops!",JOptionPane.ERROR_MESSAGE);
 			Debug.println("The clipboard does not contain a valid node to paste.");
 			e.printStackTrace();
 		}

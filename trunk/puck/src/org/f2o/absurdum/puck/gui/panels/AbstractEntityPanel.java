@@ -37,7 +37,7 @@ import org.f2o.absurdum.puck.gui.graph.AbstractEntityNode;
 import org.f2o.absurdum.puck.gui.graph.Arrow;
 import org.f2o.absurdum.puck.gui.graph.ItemNode;
 import org.f2o.absurdum.puck.gui.graph.SpellNode;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
 import org.f2o.absurdum.puck.util.xml.DOMUtils;
 import org.w3c.dom.Document;
@@ -139,12 +139,12 @@ public class AbstractEntityPanel extends EntityPanel implements BeanShellCodeHol
 		firstTab.setLayout(new BoxLayout(firstTab, BoxLayout.PAGE_AXIS));
 		
 		JPanel namePanel = new JPanel();
-		namePanel.add(new JLabel(Messages.getInstance().getMessage("entity.uniquename")));
+		namePanel.add(new JLabel(UIMessages.getInstance().getMessage("entity.uniquename")));
 		namePanel.add(nameTextField);
 		firstTab.add(namePanel);
 		
 		JPanel typePanel = new JPanel();
-		typePanel.add(new JLabel(Messages.getInstance().getMessage("entity.type")));
+		typePanel.add(new JLabel(UIMessages.getInstance().getMessage("entity.type")));
 		typePanel.add(typeTextField);
 		firstTab.add(typePanel);
 		
@@ -161,11 +161,11 @@ public class AbstractEntityPanel extends EntityPanel implements BeanShellCodeHol
 		clonesComboBox = new JComboBox ( new DefaultComboBoxModel ( abstractEntityNodes ) );
 		
 		JPanel extendsPanel = new JPanel();
-		extendsPanel.add ( new JLabel(Messages.getInstance().getMessage("inherit.from")) );
+		extendsPanel.add ( new JLabel(UIMessages.getInstance().getMessage("inherit.from")) );
 		extendsPanel.add ( extendsComboBox );
 		firstTab.add(extendsPanel);
 		JPanel clonesPanel = new JPanel();
-		clonesPanel.add ( new JLabel(Messages.getInstance().getMessage("clone.from")) );
+		clonesPanel.add ( new JLabel(UIMessages.getInstance().getMessage("clone.from")) );
 		clonesPanel.add ( clonesComboBox );
 		firstTab.add(clonesPanel);
 		
@@ -234,7 +234,7 @@ public class AbstractEntityPanel extends EntityPanel implements BeanShellCodeHol
 		pp = new PropertiesPanel();
 		secondTab.add(pp);
 		
-		jtp.add(Messages.getInstance().getMessage("tab.codeprop"),secondTab);
+		jtp.add(UIMessages.getInstance().getMessage("tab.codeprop"),secondTab);
 		
 		
 		//openable-closeable support
@@ -316,9 +316,9 @@ public class AbstractEntityPanel extends EntityPanel implements BeanShellCodeHol
 			result.setAttribute("gender","0");
 		*/
 		
-		if ( !extendsComboBox.getSelectedItem().equals(Messages.getInstance().getMessage("none") ))
+		if ( !extendsComboBox.getSelectedItem().equals(UIMessages.getInstance().getMessage("none") ))
 			result.setAttribute("extends",extendsComboBox.getSelectedItem().toString());
-		if ( !clonesComboBox.getSelectedItem().equals(Messages.getInstance().getMessage("none") ))
+		if ( !clonesComboBox.getSelectedItem().equals(UIMessages.getInstance().getMessage("none") ))
 			result.setAttribute("clones",clonesComboBox.getSelectedItem().toString());
 		
 		/*

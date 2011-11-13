@@ -10,7 +10,7 @@ package org.f2o.absurdum.puck.gui.graph;
 import org.f2o.absurdum.puck.gui.panels.EntityPanel;
 import org.f2o.absurdum.puck.gui.panels.GraphElementPanel;
 import org.f2o.absurdum.puck.gui.panels.WorldPanel;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 
 /**
  * @author carlos

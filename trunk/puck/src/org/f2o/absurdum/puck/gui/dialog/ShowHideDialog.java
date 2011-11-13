@@ -24,32 +24,32 @@ import org.f2o.absurdum.puck.gui.graph.CharacterNode;
 import org.f2o.absurdum.puck.gui.graph.ItemNode;
 import org.f2o.absurdum.puck.gui.graph.RoomNode;
 import org.f2o.absurdum.puck.gui.graph.SpellNode;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 
 public class ShowHideDialog extends JDialog
 {
 
-	private JCheckBox cbRoomNames = new JCheckBox(Messages.getInstance().getMessage("cb.showhide.names.room"));
-	private JCheckBox cbItemNames = new JCheckBox(Messages.getInstance().getMessage("cb.showhide.names.item"));
-	private JCheckBox cbCharacterNames = new JCheckBox(Messages.getInstance().getMessage("cb.showhide.names.char"));
-	private JCheckBox cbSpellNames = new JCheckBox(Messages.getInstance().getMessage("cb.showhide.names.spell"));
-	private JCheckBox cbAbstractEntityNames = new JCheckBox(Messages.getInstance().getMessage("cb.showhide.names.abs"));
-	private JCheckBox cbArrowNames = new JCheckBox(Messages.getInstance().getMessage("cb.showhide.names.rel"));
+	private JCheckBox cbRoomNames = new JCheckBox(UIMessages.getInstance().getMessage("cb.showhide.names.room"));
+	private JCheckBox cbItemNames = new JCheckBox(UIMessages.getInstance().getMessage("cb.showhide.names.item"));
+	private JCheckBox cbCharacterNames = new JCheckBox(UIMessages.getInstance().getMessage("cb.showhide.names.char"));
+	private JCheckBox cbSpellNames = new JCheckBox(UIMessages.getInstance().getMessage("cb.showhide.names.spell"));
+	private JCheckBox cbAbstractEntityNames = new JCheckBox(UIMessages.getInstance().getMessage("cb.showhide.names.abs"));
+	private JCheckBox cbArrowNames = new JCheckBox(UIMessages.getInstance().getMessage("cb.showhide.names.rel"));
 	
-	private JCheckBox cbRoomNodes = new JCheckBox(Messages.getInstance().getMessage("cb.showhide.nodes.room"));
-	private JCheckBox cbItemNodes = new JCheckBox(Messages.getInstance().getMessage("cb.showhide.nodes.item"));
-	private JCheckBox cbCharacterNodes = new JCheckBox(Messages.getInstance().getMessage("cb.showhide.nodes.char"));
-	private JCheckBox cbSpellNodes = new JCheckBox(Messages.getInstance().getMessage("cb.showhide.nodes.spell"));
-	private JCheckBox cbAbstractEntityNodes = new JCheckBox(Messages.getInstance().getMessage("cb.showhide.nodes.abs"));
-	private JCheckBox cbArrows = new JCheckBox(Messages.getInstance().getMessage("cb.showhide.rel"));
+	private JCheckBox cbRoomNodes = new JCheckBox(UIMessages.getInstance().getMessage("cb.showhide.nodes.room"));
+	private JCheckBox cbItemNodes = new JCheckBox(UIMessages.getInstance().getMessage("cb.showhide.nodes.item"));
+	private JCheckBox cbCharacterNodes = new JCheckBox(UIMessages.getInstance().getMessage("cb.showhide.nodes.char"));
+	private JCheckBox cbSpellNodes = new JCheckBox(UIMessages.getInstance().getMessage("cb.showhide.nodes.spell"));
+	private JCheckBox cbAbstractEntityNodes = new JCheckBox(UIMessages.getInstance().getMessage("cb.showhide.nodes.abs"));
+	private JCheckBox cbArrows = new JCheckBox(UIMessages.getInstance().getMessage("cb.showhide.rel"));
 	
-	private JButton bClose = new JButton(Messages.getInstance().getMessage("button.clo"));
+	private JButton bClose = new JButton(UIMessages.getInstance().getMessage("button.clo"));
 	
 	public ShowHideDialog ( final PuckFrame parent , boolean modal )
 	{
 		
 		super(parent,modal);
-		this.setTitle(Messages.getInstance().getMessage("dialog.showhide"));
+		this.setTitle(UIMessages.getInstance().getMessage("dialog.showhide"));
 		
 		this.getContentPane().setLayout( new BorderLayout() );
 		JPanel mainPanel = new JPanel();

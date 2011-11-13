@@ -36,7 +36,7 @@ import org.f2o.absurdum.puck.bsh.BeanShellCodeHolder;
 import org.f2o.absurdum.puck.gui.graph.Arrow;
 import org.f2o.absurdum.puck.gui.graph.ItemNode;
 import org.f2o.absurdum.puck.gui.graph.SpellNode;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
 import org.f2o.absurdum.puck.util.xml.DOMUtils;
 import org.w3c.dom.Document;
@@ -149,7 +149,7 @@ public class SpellPanel extends EntityPanel implements BeanShellCodeHolder
 		firstTab.setLayout(new BoxLayout(firstTab, BoxLayout.PAGE_AXIS));
 		
 		JPanel namePanel = new JPanel();
-		namePanel.add(new JLabel(Messages.getInstance().getMessage("entity.uniquename")));
+		namePanel.add(new JLabel(UIMessages.getInstance().getMessage("entity.uniquename")));
 		namePanel.add(nameTextField);
 		firstTab.add(namePanel);
 		
@@ -161,54 +161,54 @@ public class SpellPanel extends EntityPanel implements BeanShellCodeHolder
 		
 		
 		JPanel extendsPanel = new JPanel();
-		extendsPanel.add ( new JLabel(Messages.getInstance().getMessage("inherit.from")) );
+		extendsPanel.add ( new JLabel(UIMessages.getInstance().getMessage("inherit.from")) );
 		extendsPanel.add ( extendsComboBox );
 		firstTab.add(extendsPanel);
 		JPanel clonesPanel = new JPanel();
-		clonesPanel.add ( new JLabel(Messages.getInstance().getMessage("clone.from")) );
+		clonesPanel.add ( new JLabel(UIMessages.getInstance().getMessage("clone.from")) );
 		clonesPanel.add ( clonesComboBox );
 		firstTab.add(clonesPanel);
 		
 		
 		
 		JPanel castProbPanel = new JPanel();
-		castProbPanel.add(new JLabel(Messages.getInstance().getMessage("spell.castprob.steepness")));
+		castProbPanel.add(new JLabel(UIMessages.getInstance().getMessage("spell.castprob.steepness")));
 		castProbPanel.add(tfCastProbSteepness);
 		firstTab.add(castProbPanel);
 
 		JPanel castTimePanel = new JPanel();
-		castTimePanel.setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("spell.casttime")));
-		castTimePanel.add(new JLabel(Messages.getInstance().getMessage("spell.casttime.starting")));
+		castTimePanel.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("spell.casttime")));
+		castTimePanel.add(new JLabel(UIMessages.getInstance().getMessage("spell.casttime.starting")));
 		castTimePanel.add(tfCastTimeStarting);
-		castTimePanel.add(new JLabel(Messages.getInstance().getMessage("spell.casttime.steepness")));
+		castTimePanel.add(new JLabel(UIMessages.getInstance().getMessage("spell.casttime.steepness")));
 		castTimePanel.add(tfCastTimeSteepness);
 		firstTab.add(castTimePanel);
 		
 		JPanel durationPanel = new JPanel();
-		durationPanel.setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("spell.duration")));
-		durationPanel.add(new JLabel(Messages.getInstance().getMessage("spell.duration.starting")));
+		durationPanel.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("spell.duration")));
+		durationPanel.add(new JLabel(UIMessages.getInstance().getMessage("spell.duration.starting")));
 		durationPanel.add(tfDurationStarting);
-		durationPanel.add(new JLabel(Messages.getInstance().getMessage("spell.duration.steepness")));
+		durationPanel.add(new JLabel(UIMessages.getInstance().getMessage("spell.duration.steepness")));
 		durationPanel.add(tfDurationSteepness);
 		firstTab.add(durationPanel);
 		
 		JPanel manaCostPanel = new JPanel();
-		manaCostPanel.setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("spell.manacost")));
-		manaCostPanel.add(new JLabel(Messages.getInstance().getMessage("spell.manacost.starting")));
+		manaCostPanel.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("spell.manacost")));
+		manaCostPanel.add(new JLabel(UIMessages.getInstance().getMessage("spell.manacost.starting")));
 		manaCostPanel.add(tfManaCostStarting);
-		manaCostPanel.add(new JLabel(Messages.getInstance().getMessage("spell.manacost.steepness")));
+		manaCostPanel.add(new JLabel(UIMessages.getInstance().getMessage("spell.manacost.steepness")));
 		manaCostPanel.add(tfManaCostSteepness);
 		firstTab.add(manaCostPanel);
 		
 		JPanel intensityPanel = new JPanel();
-		intensityPanel.setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("spell.intensity")));
-		intensityPanel.add(new JLabel(Messages.getInstance().getMessage("spell.intensity.starting")));
+		intensityPanel.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("spell.intensity")));
+		intensityPanel.add(new JLabel(UIMessages.getInstance().getMessage("spell.intensity.starting")));
 		intensityPanel.add(tfIntensityStarting);
-		intensityPanel.add(new JLabel(Messages.getInstance().getMessage("spell.intensity.steepness")));
+		intensityPanel.add(new JLabel(UIMessages.getInstance().getMessage("spell.intensity.steepness")));
 		intensityPanel.add(tfIntensitySteepness);
 		firstTab.add(intensityPanel);
 		
-		involvedSkillsPanel = new PathCommandsPanel(Messages.getInstance().getMessage("spell.involvedskills"),Messages.getInstance().getMessage("label.skill"),true);
+		involvedSkillsPanel = new PathCommandsPanel(UIMessages.getInstance().getMessage("spell.involvedskills"),UIMessages.getInstance().getMessage("label.skill"),true);
 		firstTab.add(involvedSkillsPanel);
 		
 		
@@ -265,15 +265,15 @@ public class SpellPanel extends EntityPanel implements BeanShellCodeHolder
 		 * But they should be implemented in the future, so I leave this panel here for when this functionality is added to AGE.
 		 */
 		
-		srn = new PathCommandsPanel(Messages.getInstance().getMessage("label.singrefnames"),Messages.getInstance().getMessage("label.name"),true);
+		srn = new PathCommandsPanel(UIMessages.getInstance().getMessage("label.singrefnames"),UIMessages.getInstance().getMessage("label.name"),true);
 		thirdTab.add(srn);
 		
-		prn = new PathCommandsPanel(Messages.getInstance().getMessage("label.plurrefnames"),Messages.getInstance().getMessage("label.name"),true);
+		prn = new PathCommandsPanel(UIMessages.getInstance().getMessage("label.plurrefnames"),UIMessages.getInstance().getMessage("label.name"),true);
 		thirdTab.add(prn);
 		
 		
 		
-		jtp.add(Messages.getInstance().getMessage("tab.names"),thirdTab);
+		jtp.add(UIMessages.getInstance().getMessage("tab.names"),thirdTab);
 		
 		JPanel secondTab = new JPanel();
 		
@@ -285,7 +285,7 @@ public class SpellPanel extends EntityPanel implements BeanShellCodeHolder
 		pp = new PropertiesPanel();
 		secondTab.add(pp);
 		
-		jtp.add(Messages.getInstance().getMessage("tab.codeprop"),secondTab);
+		jtp.add(UIMessages.getInstance().getMessage("tab.codeprop"),secondTab);
 		
 		
 		//openable-closeable support
@@ -363,9 +363,9 @@ public class SpellPanel extends EntityPanel implements BeanShellCodeHolder
 			result.setAttribute("gender","0");
 		*/
 		
-		if ( !extendsComboBox.getSelectedItem().equals(Messages.getInstance().getMessage("none") ))
+		if ( !extendsComboBox.getSelectedItem().equals(UIMessages.getInstance().getMessage("none") ))
 			result.setAttribute("extends",extendsComboBox.getSelectedItem().toString());
-		if ( !clonesComboBox.getSelectedItem().equals(Messages.getInstance().getMessage("none") ))
+		if ( !clonesComboBox.getSelectedItem().equals(UIMessages.getInstance().getMessage("none") ))
 			result.setAttribute("clones",clonesComboBox.getSelectedItem().toString());
 		
 		/*
@@ -462,7 +462,7 @@ public class SpellPanel extends EntityPanel implements BeanShellCodeHolder
 			{
 				SpellHasEffectPanel relPanel = (SpellHasEffectPanel) gep;
 				String relType = relPanel.getRelationshipType();
-				if ( relType.equals(Messages.getInstance().getMessage("structural.spell.abstractentity.haseffect")) ) //has-effect relationship
+				if ( relType.equals(UIMessages.getInstance().getMessage("structural.spell.abstractentity.haseffect")) ) //has-effect relationship
 				{
 					effList.appendChild( relPanel.getXML(d) );
 				}

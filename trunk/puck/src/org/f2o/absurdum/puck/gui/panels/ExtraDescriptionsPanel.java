@@ -36,7 +36,7 @@ import javax.swing.text.JTextComponent;
 
 import org.f2o.absurdum.puck.gui.SpacingPanel;
 import org.f2o.absurdum.puck.gui.util.GUIUtils;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJList;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextArea;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
@@ -62,10 +62,10 @@ public class ExtraDescriptionsPanel extends JPanel
 	//JTextField descTextField = new EnhancedJTextField(20);
 	private JTextField nameTextField = new EnhancedJTextField(20);
 	
-	private JButton delButton = new JButton(Messages.getInstance().getMessage("button.del"));
-	private JButton addButton = new JButton(Messages.getInstance().getMessage("button.add"));
-	private JButton modButton = new JButton(Messages.getInstance().getMessage("button.mod"));
-	private JButton topButton = new JButton(Messages.getInstance().getMessage("button.top"));
+	private JButton delButton = new JButton(UIMessages.getInstance().getMessage("button.del"));
+	private JButton addButton = new JButton(UIMessages.getInstance().getMessage("button.add"));
+	private JButton modButton = new JButton(UIMessages.getInstance().getMessage("button.mod"));
+	private JButton topButton = new JButton(UIMessages.getInstance().getMessage("button.top"));
 	
 	//privatize it
 	private DefaultListModel listContent = new DefaultListModel();
@@ -112,7 +112,7 @@ public class ExtraDescriptionsPanel extends JPanel
 		this.add(jp);
 		//this.add(theList);
 		
-		this.setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("label.extrades")));
+		this.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("label.extrades")));
 		
 		this.add(Box.createVerticalStrut(MED_SKIP));
 		
@@ -124,7 +124,7 @@ public class ExtraDescriptionsPanel extends JPanel
 		
 		JPanel p0 = new JPanel();
 		p0.setLayout(new BoxLayout(p0,BoxLayout.LINE_AXIS));
-		JLabel refNamesLabel = new JLabel(Messages.getInstance().getMessage("label.refnames"));
+		JLabel refNamesLabel = new JLabel(UIMessages.getInstance().getMessage("label.refnames"));
 		
 		//fix html setting maximum size to maxint
 		refNamesLabel.setMaximumSize(refNamesLabel.getPreferredSize());
@@ -136,7 +136,7 @@ public class ExtraDescriptionsPanel extends JPanel
 		
 		JPanel p1 = new JPanel();
 		p1.setLayout(new BoxLayout(p1,BoxLayout.LINE_AXIS));
-		p1.add ( new JLabel(Messages.getInstance().getMessage("label.condition")) );
+		p1.add ( new JLabel(UIMessages.getInstance().getMessage("label.condition")) );
 		p1.add(Box.createHorizontalStrut(MED_SKIP));
 		p1.add ( condTextField );
 		add(GUIUtils.limitVertically(new SpacingPanel(p1,true,true,true,true)));
@@ -145,7 +145,7 @@ public class ExtraDescriptionsPanel extends JPanel
 		
 		JPanel p2 = new JPanel();
 		p2.setLayout(new BoxLayout(p2,BoxLayout.LINE_AXIS));
-		p2.add ( new JLabel(Messages.getInstance().getMessage("label.description")) );
+		p2.add ( new JLabel(UIMessages.getInstance().getMessage("label.description")) );
 		
 		p2.add(Box.createHorizontalStrut(MED_SKIP));
 		

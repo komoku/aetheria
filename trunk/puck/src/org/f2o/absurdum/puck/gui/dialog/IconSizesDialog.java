@@ -38,7 +38,7 @@ import org.f2o.absurdum.puck.gui.graph.ItemNode;
 import org.f2o.absurdum.puck.gui.graph.Node;
 import org.f2o.absurdum.puck.gui.graph.RoomNode;
 import org.f2o.absurdum.puck.gui.graph.SpellNode;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 
 /**
  * @author carlos
@@ -59,13 +59,13 @@ public class IconSizesDialog extends JDialog
 	
 	//private JButton bApply = new JButton("button.app");
 	//private JButton bCancel = new JButton("button.can");
-	private JButton bClose = new JButton(Messages.getInstance().getMessage("button.clo"));
+	private JButton bClose = new JButton(UIMessages.getInstance().getMessage("button.clo"));
 	
 	public IconSizesDialog ( final PuckFrame parent , boolean modal )
 	{
 		
 		super(parent,modal);
-		this.setTitle(Messages.getInstance().getMessage("dialog.sizes"));
+		this.setTitle(UIMessages.getInstance().getMessage("dialog.sizes"));
 		
 		roomSlider.setValue(RoomNode.getDefaultSize());
 		itemSlider.setValue(ItemNode.getDefaultSize());
@@ -205,22 +205,22 @@ public class IconSizesDialog extends JDialog
 		
 		iconSizesPanel.setLayout ( new GridLayout(5,2)  );
 		
-		iconSizesPanel.add(new JLabel(Messages.getInstance().getMessage("sizes.room")));
+		iconSizesPanel.add(new JLabel(UIMessages.getInstance().getMessage("sizes.room")));
 		iconSizesPanel.add(roomSlider);
 		
-		iconSizesPanel.add(new JLabel(Messages.getInstance().getMessage("sizes.item")));
+		iconSizesPanel.add(new JLabel(UIMessages.getInstance().getMessage("sizes.item")));
 		iconSizesPanel.add(itemSlider);
 		
-		iconSizesPanel.add(new JLabel(Messages.getInstance().getMessage("sizes.character")));
+		iconSizesPanel.add(new JLabel(UIMessages.getInstance().getMessage("sizes.character")));
 		iconSizesPanel.add(charSlider);
 		
-		iconSizesPanel.add(new JLabel(Messages.getInstance().getMessage("sizes.spell")));
+		iconSizesPanel.add(new JLabel(UIMessages.getInstance().getMessage("sizes.spell")));
 		iconSizesPanel.add(spellSlider);
 		
-		iconSizesPanel.add(new JLabel(Messages.getInstance().getMessage("sizes.abstract")));
+		iconSizesPanel.add(new JLabel(UIMessages.getInstance().getMessage("sizes.abstract")));
 		iconSizesPanel.add(absSlider);
 		
-		iconSizesPanel.setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("sizes.icons")));
+		iconSizesPanel.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("sizes.icons")));
 		
 		mainPanel.add(iconSizesPanel);
 		
@@ -228,21 +228,21 @@ public class IconSizesDialog extends JDialog
 		
 		fontSizesPanel.setLayout( new GridLayout(2,2) );
 		
-		fontSizesPanel.add(new JLabel(Messages.getInstance().getMessage("sizes.font.node")));
+		fontSizesPanel.add(new JLabel(UIMessages.getInstance().getMessage("sizes.font.node")));
 		JPanel nodeFontSpinnerPanel = new JPanel();
 		nodeFontSpinnerPanel.setLayout(new BoxLayout(nodeFontSpinnerPanel,BoxLayout.LINE_AXIS));
 		nodeFontSpinnerPanel.add(Box.createHorizontalGlue());
 		nodeFontSpinnerPanel.add(nodeFontSpinner);
 		fontSizesPanel.add(nodeFontSpinnerPanel);
 		
-		fontSizesPanel.add(new JLabel(Messages.getInstance().getMessage("sizes.font.arrow")));
+		fontSizesPanel.add(new JLabel(UIMessages.getInstance().getMessage("sizes.font.arrow")));
 		JPanel arrowFontSpinnerPanel = new JPanel();
 		arrowFontSpinnerPanel.setLayout(new BoxLayout(arrowFontSpinnerPanel,BoxLayout.LINE_AXIS));
 		arrowFontSpinnerPanel.add(Box.createHorizontalGlue());
 		arrowFontSpinnerPanel.add(arrowFontSpinner);
 		fontSizesPanel.add(arrowFontSpinnerPanel);
 		
-		fontSizesPanel.setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("sizes.fonts")));
+		fontSizesPanel.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("sizes.fonts")));
 		
 		mainPanel.add(fontSizesPanel);
 		

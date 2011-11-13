@@ -20,7 +20,7 @@ import javax.swing.Action;
 
 import org.f2o.absurdum.puck.gui.graph.GraphEditingPanel;
 import org.f2o.absurdum.puck.gui.graph.Node;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.f2o.absurdum.puck.util.xml.DOMUtils;
 import org.w3c.dom.Element;
 
@@ -39,7 +39,7 @@ public class CutNodeAction extends AbstractAction
 	{
 		this.victim = victim;
 		this.panel = panel;
-		this.putValue(Action.NAME,Messages.getInstance().getMessage("menuaction.cut") + " " + victim.getName());		
+		this.putValue(Action.NAME,UIMessages.getInstance().getMessage("menuaction.cut") + " " + victim.getName());		
 		
 	}
 

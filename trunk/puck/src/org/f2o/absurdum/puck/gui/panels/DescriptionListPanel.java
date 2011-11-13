@@ -41,7 +41,7 @@ import javax.swing.text.JTextComponent;
 
 import org.f2o.absurdum.puck.gui.SpacingPanel;
 import org.f2o.absurdum.puck.gui.util.GUIUtils;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJList;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextArea;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
@@ -78,10 +78,10 @@ public class DescriptionListPanel extends JPanel
 	private JTextComponent descTextField;
 		
 	
-	private JButton delButton = new JButton(Messages.getInstance().getMessage("button.del"));
-	private JButton addButton = new JButton(Messages.getInstance().getMessage("button.add"));
-	private JButton modButton = new JButton(Messages.getInstance().getMessage("button.mod"));
-	private JButton topButton = new JButton(Messages.getInstance().getMessage("button.top"));
+	private JButton delButton = new JButton(UIMessages.getInstance().getMessage("button.del"));
+	private JButton addButton = new JButton(UIMessages.getInstance().getMessage("button.add"));
+	private JButton modButton = new JButton(UIMessages.getInstance().getMessage("button.mod"));
+	private JButton topButton = new JButton(UIMessages.getInstance().getMessage("button.top"));
 	
 	private JLabel descLabel;
 	private JLabel condLabel;
@@ -92,14 +92,14 @@ public class DescriptionListPanel extends JPanel
 	//support for SUCCESS: and FAIL: descriptions on openables, closeables, etc.
 	//added 2007-04-07
 	private boolean succFail = false;
-	private JCheckBox succCheckBox = new JCheckBox(Messages.getInstance().getMessage("checkbox.success"));
+	private JCheckBox succCheckBox = new JCheckBox(UIMessages.getInstance().getMessage("checkbox.success"));
 
 	
 	
 	//support for proper name
 	//beginning to add, as of 2009-01-31
 	private boolean propNamesEnabled = false;
-	private JCheckBox propCheckBox = new JCheckBox(Messages.getInstance().getMessage("checkbox.propername"));
+	private JCheckBox propCheckBox = new JCheckBox(UIMessages.getInstance().getMessage("checkbox.propername"));
 	private Vector /*of Boolean*/ propList = new Vector();
 	
 	private static int MED_SKIP = 10;
@@ -191,7 +191,7 @@ public class DescriptionListPanel extends JPanel
 				 		super.getListCellRendererComponent(list,value,index,isSelected,cellHasFocus);
 				 		if ( propNamesEnabled && propList.size() > index && ((Boolean)propList.get(index)).booleanValue() )
 				 		{
-				 			this.setText(this.getText() + " " + Messages.getInstance().getMessage("text.propname"));
+				 			this.setText(this.getText() + " " + UIMessages.getInstance().getMessage("text.propname"));
 				 		}
 				 		return this;
 				    }
@@ -219,7 +219,7 @@ public class DescriptionListPanel extends JPanel
 		this.add(new SpacingPanel(jsp));
 		//this.add(theList);
 		
-		this.setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("label.des")));
+		this.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("label.des")));
 		
 		this.add(Box.createVerticalStrut(MED_SKIP));
 		
@@ -227,8 +227,8 @@ public class DescriptionListPanel extends JPanel
 		//JPanel p1and2 = new JPanel();
 		//p1and2.setLayout(new BorderLayout());
 		
-		condLabel = new JLabel(Messages.getInstance().getMessage("label.condition"));
-		descLabel = new JLabel(Messages.getInstance().getMessage("label.description")); 
+		condLabel = new JLabel(UIMessages.getInstance().getMessage("label.condition"));
+		descLabel = new JLabel(UIMessages.getInstance().getMessage("label.description")); 
 		
 		JPanel p1 = new JPanel();
 		p1.setLayout (new BoxLayout(p1,BoxLayout.LINE_AXIS));

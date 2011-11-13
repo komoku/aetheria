@@ -28,7 +28,7 @@ import jsyntaxpane.components.Markers;
 import org.f2o.absurdum.puck.gui.codeassist.CodeAssistMenuHandler;
 import org.f2o.absurdum.puck.gui.codeassist.CodeInsertActionBuilder;
 import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 
 public class BSHCodeFrame extends JFrame
 {
@@ -42,8 +42,8 @@ public class BSHCodeFrame extends JFrame
 	//private JEditorPane externalJep;
 	private JEditorPane externalJep;
 	
-	private JButton savButton = new JButton(Messages.getInstance().getMessage("button.sav"));
-	private JButton canButton = new JButton(Messages.getInstance().getMessage("button.can"));
+	private JButton savButton = new JButton(UIMessages.getInstance().getMessage("button.sav"));
+	private JButton canButton = new JButton(UIMessages.getInstance().getMessage("button.can"));
 	
 	//context attribute: specifies which type of panel it is, used to know which code templates are available on menus
 	private String context;
@@ -231,9 +231,9 @@ public class BSHCodeFrame extends JFrame
 		jep.getComponentPopupMenu().add(new JSeparator(),1);
 		
 		
-		JMenuItem moreFontSize = new JMenuItem(Messages.getInstance().getMessage("menu.font.more"));
-		JMenuItem lessFontSize = new JMenuItem(Messages.getInstance().getMessage("menu.font.less"));
-		JMenu fontSize = new JMenu(Messages.getInstance().getMessage("menu.font.size"));
+		JMenuItem moreFontSize = new JMenuItem(UIMessages.getInstance().getMessage("menu.font.more"));
+		JMenuItem lessFontSize = new JMenuItem(UIMessages.getInstance().getMessage("menu.font.less"));
+		JMenu fontSize = new JMenu(UIMessages.getInstance().getMessage("menu.font.size"));
 		fontSize.add(moreFontSize);
 		fontSize.add(lessFontSize);
 		moreFontSize.addActionListener(new ActionListener(){

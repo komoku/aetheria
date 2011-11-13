@@ -64,7 +64,7 @@ import org.f2o.absurdum.puck.gui.panels.BSHCodeFrame;
 import org.f2o.absurdum.puck.gui.panels.GraphElementPanel;
 import org.f2o.absurdum.puck.gui.panels.WorldPanel;
 import org.f2o.absurdum.puck.gui.skin.ImageManager;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.w3c.dom.Document;
 
 import com.jstatcom.component.JHelpAction;
@@ -132,9 +132,9 @@ public class PuckFrame extends JFrame
 	private void refreshTitle()
 	{
 		if ( editingFileName != null )
-			setTitle(Messages.getInstance().getMessage("frame.title") + " ["+editingFileName+"]");
+			setTitle(UIMessages.getInstance().getMessage("frame.title") + " ["+editingFileName+"]");
 		else
-			setTitle(Messages.getInstance().getMessage("frame.title") + " [untitled file]");
+			setTitle(UIMessages.getInstance().getMessage("frame.title") + " [untitled file]");
 	}
 	
 	/**
@@ -300,7 +300,7 @@ public class PuckFrame extends JFrame
 	 */
 	public boolean askForSaveOrCancel ( )
 	{
-		int option = JOptionPane.showConfirmDialog(PuckFrame.this,Messages.getInstance().getMessage("confirm.save.text"),Messages.getInstance().getMessage("confirm.save.title"),JOptionPane.YES_NO_OPTION,JOptionPane.INFORMATION_MESSAGE);
+		int option = JOptionPane.showConfirmDialog(PuckFrame.this,UIMessages.getInstance().getMessage("confirm.save.text"),UIMessages.getInstance().getMessage("confirm.save.title"),JOptionPane.YES_NO_OPTION,JOptionPane.INFORMATION_MESSAGE);
 		if ( option == JOptionPane.YES_OPTION ) 
 		{
 		    return saveOrSaveAs();
@@ -326,7 +326,7 @@ public class PuckFrame extends JFrame
 	 */
 	public void askSaveExitCancel()
 	{
-		int option = JOptionPane.showConfirmDialog(PuckFrame.this,Messages.getInstance().getMessage("confirm.saveonexit.text"),Messages.getInstance().getMessage("confirm.saveonexit.title"),JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
+		int option = JOptionPane.showConfirmDialog(PuckFrame.this,UIMessages.getInstance().getMessage("confirm.saveonexit.text"),UIMessages.getInstance().getMessage("confirm.saveonexit.title"),JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
 		if ( option == JOptionPane.YES_OPTION ) 
 		{
 			try
@@ -552,9 +552,9 @@ public class PuckFrame extends JFrame
 		
 		
 		JMenuBar mainMenuBar = new JMenuBar();
-		JMenu fileMenu = new JMenu(Messages.getInstance().getMessage("menu.file"));
+		JMenu fileMenu = new JMenu(UIMessages.getInstance().getMessage("menu.file"));
 		fileMenu.setMnemonic(KeyEvent.VK_F);
-		saveMenuItem = new JMenuItem(Messages.getInstance().getMessage("menu.file.save"));
+		saveMenuItem = new JMenuItem(UIMessages.getInstance().getMessage("menu.file.save"));
 		saveMenuItem.setMnemonic(KeyEvent.VK_S);
 		saveMenuItem.addActionListener ( new ActionListener() 
 				{
@@ -592,7 +592,7 @@ public class PuckFrame extends JFrame
 					}
 				}
 				);
-		JMenuItem newMenuItem = new JMenuItem(Messages.getInstance().getMessage("menu.file.new"));
+		JMenuItem newMenuItem = new JMenuItem(UIMessages.getInstance().getMessage("menu.file.new"));
 		newMenuItem.setMnemonic(KeyEvent.VK_N);
 		newMenuItem.addActionListener ( new ActionListener() 
 				{
@@ -612,7 +612,7 @@ public class PuckFrame extends JFrame
 					}
 				}
 		);
-		JMenuItem saveAsMenuItem = new JMenuItem(Messages.getInstance().getMessage("menu.file.saveas"));
+		JMenuItem saveAsMenuItem = new JMenuItem(UIMessages.getInstance().getMessage("menu.file.saveas"));
 		saveAsMenuItem.addActionListener ( new ActionListener() 
 				{
 					public void actionPerformed ( ActionEvent evt )
@@ -656,7 +656,7 @@ public class PuckFrame extends JFrame
 					}
 				}
 				);
-		JMenuItem openMenuItem = new JMenuItem(Messages.getInstance().getMessage("menu.file.open"));
+		JMenuItem openMenuItem = new JMenuItem(UIMessages.getInstance().getMessage("menu.file.open"));
 		openMenuItem.addActionListener ( new ActionListener() 
 				{
 					public void actionPerformed ( ActionEvent evt )
@@ -686,8 +686,8 @@ public class PuckFrame extends JFrame
 					}
 				}
 				);
-		openRecentMenu = new JMenu(Messages.getInstance().getMessage("menu.file.recent"));
-		JMenuItem exitMenuItem = new JMenuItem(Messages.getInstance().getMessage("menu.file.exit"));
+		openRecentMenu = new JMenu(UIMessages.getInstance().getMessage("menu.file.recent"));
+		JMenuItem exitMenuItem = new JMenuItem(UIMessages.getInstance().getMessage("menu.file.exit"));
 		exitMenuItem.addActionListener ( new ActionListener() 
 				{
 					public void actionPerformed ( ActionEvent evt )
@@ -724,10 +724,10 @@ public class PuckFrame extends JFrame
 		
 
 
-	        JMenu editMenu = new JMenu(Messages.getInstance().getMessage("menu.edit"));
+	        JMenu editMenu = new JMenu(UIMessages.getInstance().getMessage("menu.edit"));
 	        editMenu.setMnemonic(KeyEvent.VK_E);
 	        
-	        JMenuItem findMenuItem = new JMenuItem(Messages.getInstance().getMessage("menu.find.entity"));
+	        JMenuItem findMenuItem = new JMenuItem(UIMessages.getInstance().getMessage("menu.find.entity"));
 	        findMenuItem.addActionListener(new ActionListener()
 	        {
 	        	public void actionPerformed ( ActionEvent e )
@@ -740,17 +740,17 @@ public class PuckFrame extends JFrame
 	        editMenu.add(new JSeparator());
 
 	        JMenuItem aMenuItem = new JMenuItem(new CutAction());
-	        aMenuItem.setText(Messages.getInstance().getMessage("menuaction.cut"));
+	        aMenuItem.setText(UIMessages.getInstance().getMessage("menuaction.cut"));
 	        aMenuItem.setMnemonic(KeyEvent.VK_T);
 	        editMenu.add(aMenuItem);
 
 	        aMenuItem = new JMenuItem(new CopyAction());
-	        aMenuItem.setText(Messages.getInstance().getMessage("menuaction.copy"));
+	        aMenuItem.setText(UIMessages.getInstance().getMessage("menuaction.copy"));
 	        aMenuItem.setMnemonic(KeyEvent.VK_C);
 	        editMenu.add(aMenuItem);
 
 	        aMenuItem = new JMenuItem(new PasteAction());
-	        aMenuItem.setText(Messages.getInstance().getMessage("menuaction.paste"));
+	        aMenuItem.setText(UIMessages.getInstance().getMessage("menuaction.paste"));
 	        aMenuItem.setMnemonic(KeyEvent.VK_P);
 	        editMenu.add(aMenuItem);
 
@@ -758,10 +758,10 @@ public class PuckFrame extends JFrame
 
 		
 		
-		JMenu optionsMenu = new JMenu(Messages.getInstance().getMessage("menu.options"));
-		JMenu gridMenu = new JMenu(Messages.getInstance().getMessage("menu.options.grid"));
+		JMenu optionsMenu = new JMenu(UIMessages.getInstance().getMessage("menu.options"));
+		JMenu gridMenu = new JMenu(UIMessages.getInstance().getMessage("menu.options.grid"));
 		optionsMenu.add(gridMenu);
-		final JCheckBoxMenuItem showGridItem = new JCheckBoxMenuItem(Messages.getInstance().getMessage("menu.options.grid.show"));
+		final JCheckBoxMenuItem showGridItem = new JCheckBoxMenuItem(UIMessages.getInstance().getMessage("menu.options.grid.show"));
 		showGridItem.setSelected(Boolean.valueOf(PuckConfiguration.getInstance().getProperty("showGrid")).booleanValue());
 		gridMenu.add(showGridItem);
 		showGridItem.addItemListener ( new ItemListener() 
@@ -781,7 +781,7 @@ public class PuckFrame extends JFrame
 						graphPanel.repaint();
 					}
 				});
-		final JCheckBoxMenuItem snapToGridItem = new JCheckBoxMenuItem(Messages.getInstance().getMessage("menu.options.grid.snap"));
+		final JCheckBoxMenuItem snapToGridItem = new JCheckBoxMenuItem(UIMessages.getInstance().getMessage("menu.options.grid.snap"));
 		snapToGridItem.setSelected(Boolean.valueOf(PuckConfiguration.getInstance().getProperty("snapToGrid")).booleanValue());
 		gridMenu.add(snapToGridItem);
 		snapToGridItem.addItemListener ( new ItemListener() 
@@ -802,10 +802,10 @@ public class PuckFrame extends JFrame
 					}
 				});
 		
-		JMenuItem translationModeMenu = new JMenu(Messages.getInstance().getMessage("menu.options.translation"));
+		JMenuItem translationModeMenu = new JMenu(UIMessages.getInstance().getMessage("menu.options.translation"));
 		ButtonGroup translationGroup = new ButtonGroup();
-		final JRadioButtonMenuItem holdMenuItem = new JRadioButtonMenuItem(Messages.getInstance().getMessage("menu.options.translation.hold"));
-		final JRadioButtonMenuItem pushMenuItem = new JRadioButtonMenuItem(Messages.getInstance().getMessage("menu.options.translation.push"));
+		final JRadioButtonMenuItem holdMenuItem = new JRadioButtonMenuItem(UIMessages.getInstance().getMessage("menu.options.translation.hold"));
+		final JRadioButtonMenuItem pushMenuItem = new JRadioButtonMenuItem(UIMessages.getInstance().getMessage("menu.options.translation.push"));
 		pushMenuItem.setSelected("push".equals(PuckConfiguration.getInstance().getProperty("translateMode")));
 		if (!pushMenuItem.isSelected()) holdMenuItem.setSelected(true);
 		translationGroup.add(holdMenuItem);
@@ -823,7 +823,7 @@ public class PuckFrame extends JFrame
 		translationModeMenu.add(pushMenuItem);
 		optionsMenu.add(translationModeMenu);
 		
-		JMenuItem sizesMenuItem = new JMenuItem(Messages.getInstance().getMessage("menu.options.iconsizes"));
+		JMenuItem sizesMenuItem = new JMenuItem(UIMessages.getInstance().getMessage("menu.options.iconsizes"));
 		sizesMenuItem.addActionListener( new ActionListener() 
 				{
 					public void actionPerformed ( ActionEvent e )
@@ -835,7 +835,7 @@ public class PuckFrame extends JFrame
 		);
 		optionsMenu.add(sizesMenuItem);
 		
-		JMenuItem showHideMenuItem = new JMenuItem(Messages.getInstance().getMessage("menu.options.showhide"));
+		JMenuItem showHideMenuItem = new JMenuItem(UIMessages.getInstance().getMessage("menu.options.showhide"));
 		showHideMenuItem.addActionListener( new ActionListener() 
 				{
 					public void actionPerformed ( ActionEvent e )
@@ -850,7 +850,7 @@ public class PuckFrame extends JFrame
 		String skinList = PuckConfiguration.getInstance().getProperty("availableSkins");
 		if ( skinList != null && skinList.trim().length() > 0 )
 		{
-			JMenu skinsMenu = new JMenu(Messages.getInstance().getMessage("menu.skins"));
+			JMenu skinsMenu = new JMenu(UIMessages.getInstance().getMessage("menu.skins"));
 			StringTokenizer st = new StringTokenizer(skinList,", ");
 			ButtonGroup skinButtons = new ButtonGroup();
 			while ( st.hasMoreTokens() )
@@ -873,12 +873,14 @@ public class PuckFrame extends JFrame
 			optionsMenu.add(skinsMenu);
 		}
 		
+		optionsMenu.add(new UILanguageSelectionMenu(this));
+		
 		mainMenuBar.add(optionsMenu);
 		
 		
-		JMenu toolsMenu = new JMenu(Messages.getInstance().getMessage("menu.tools"));
+		JMenu toolsMenu = new JMenu(UIMessages.getInstance().getMessage("menu.tools"));
 		
-		final JMenuItem verbListMenuItem = new JMenuItem(Messages.getInstance().getMessage("menu.tools.verblist"));
+		final JMenuItem verbListMenuItem = new JMenuItem(UIMessages.getInstance().getMessage("menu.tools.verblist"));
 		verbListMenuItem.addActionListener(new ActionListener()
 		{
 			public void actionPerformed ( ActionEvent e )
@@ -890,7 +892,7 @@ public class PuckFrame extends JFrame
 		);
 		toolsMenu.add(verbListMenuItem);
 		
-		final JMenuItem validateMenuItem = new JMenuItem(Messages.getInstance().getMessage("menu.tools.validatebsh"));
+		final JMenuItem validateMenuItem = new JMenuItem(UIMessages.getInstance().getMessage("menu.tools.validatebsh"));
 		validateMenuItem.addActionListener(new ActionListener()
 		{
 			public void actionPerformed ( ActionEvent e )
@@ -904,7 +906,7 @@ public class PuckFrame extends JFrame
 				}
 				else
 				{
-					JOptionPane.showMessageDialog(PuckFrame.this, Messages.getInstance().getMessage("bsh.code.ok"), "OK!", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(PuckFrame.this, UIMessages.getInstance().getMessage("bsh.code.ok"), "OK!", JOptionPane.INFORMATION_MESSAGE);
 					//JOptionPane.showMessageDialog(PuckFrame.this, bscv.getErrorText());
 				}
 			}
@@ -915,7 +917,7 @@ public class PuckFrame extends JFrame
 		mainMenuBar.add(toolsMenu);
 		
 		
-		JMenu helpMenu = new JMenu(Messages.getInstance().getMessage("menu.help"));
+		JMenu helpMenu = new JMenu(UIMessages.getInstance().getMessage("menu.help"));
 		//JHelpAction.startHelpWorker("help/PUCKHelp.hs");
 		//JHelpAction helpTocAction = JHelpAction.getShowHelpInstance(Messages.getInstance().getMessage("menu.help.toc"));
 		//JHelpAction helpContextSensitiveAction = JHelpAction.getTrackInstance(Messages.getInstance().getMessage("menu.help.context"));
@@ -924,7 +926,7 @@ public class PuckFrame extends JFrame
 		//helpMenu.add(helpTocMenuItem);
 		//helpMenu.add(helpContextSensitiveMenuItem);
 		
-		final JMenuItem helpMenuItem = new JMenuItem(Messages.getInstance().getMessage("menu.help.toc"));
+		final JMenuItem helpMenuItem = new JMenuItem(UIMessages.getInstance().getMessage("menu.help.toc"));
 		helpMenuItem.addActionListener(new ActionListener()
 		{
 			public void actionPerformed ( ActionEvent e )
@@ -981,7 +983,7 @@ public class PuckFrame extends JFrame
 	public void exitIfConfirmed ( )
 	{
 		
-		int opt = JOptionPane.showConfirmDialog(PuckFrame.this,Messages.getInstance().getMessage("exit.sure.text"),Messages.getInstance().getMessage("exit.sure.title"),JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+		int opt = JOptionPane.showConfirmDialog(PuckFrame.this,UIMessages.getInstance().getMessage("exit.sure.text"),UIMessages.getInstance().getMessage("exit.sure.title"),JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 		
 		if ( opt == JOptionPane.YES_OPTION )
 		{

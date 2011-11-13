@@ -24,7 +24,7 @@ import org.f2o.absurdum.puck.gui.panels.EntityPanel;
 import org.f2o.absurdum.puck.gui.panels.GraphElementPanel;
 import org.f2o.absurdum.puck.gui.panels.ItemPanel;
 import org.f2o.absurdum.puck.gui.skin.ImageManager;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 
 
 /**
@@ -187,7 +187,7 @@ public class ItemNode extends Node
 			EntityPanel ep = (EntityPanel) associatedPanel;
 			return ep.getName();
 		}
-		else return Messages.getInstance().getMessage("unnamed.item");
+		else return UIMessages.getInstance().getMessage("unnamed.item");
 	}
 	
 	public String toString()

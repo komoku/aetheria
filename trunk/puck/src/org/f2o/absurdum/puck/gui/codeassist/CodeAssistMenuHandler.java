@@ -25,7 +25,7 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -182,7 +182,7 @@ public class CodeAssistMenuHandler
 				result = new JMenu ( elt.getAttribute("name") );
 		}
 		else
-			result = new JMenu ( Messages.getInstance().getMessage("menu.codeassist") );
+			result = new JMenu ( UIMessages.getInstance().getMessage("menu.codeassist") );
 		
 		//System.out.println("result: " + result);
 		

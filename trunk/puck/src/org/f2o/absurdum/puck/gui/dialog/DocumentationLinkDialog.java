@@ -19,12 +19,12 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import org.f2o.absurdum.puck.gui.PuckFrame;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 
 public class DocumentationLinkDialog extends JDialog
 {
 	
-	private JButton bClose = new JButton(Messages.getInstance().getMessage("button.clo"));
+	private JButton bClose = new JButton(UIMessages.getInstance().getMessage("button.clo"));
 
 	
     private void open(URI uri) {
@@ -44,7 +44,7 @@ public class DocumentationLinkDialog extends JDialog
 	{
 		
 		super(parent,modal);
-		this.setTitle(Messages.getInstance().getMessage("menu.help.toc"));
+		this.setTitle(UIMessages.getInstance().getMessage("menu.help.toc"));
 		
 		this.getContentPane().setLayout( new BorderLayout() );
 		JPanel mainPanel = new JPanel();

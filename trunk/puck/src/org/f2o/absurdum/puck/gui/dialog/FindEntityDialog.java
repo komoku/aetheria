@@ -21,13 +21,13 @@ import org.f2o.absurdum.puck.gui.PuckFrame;
 import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
 import org.f2o.absurdum.puck.gui.graph.Node;
 import org.f2o.absurdum.puck.gui.panels.WorldPanel;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 
 public class FindEntityDialog extends JDialog
 {
 
-	private JButton findButton = new JButton(Messages.getInstance().getMessage("button.find"));
-	private JButton closeButton = new JButton(Messages.getInstance().getMessage("button.clo"));
+	private JButton findButton = new JButton(UIMessages.getInstance().getMessage("button.find"));
+	private JButton closeButton = new JButton(UIMessages.getInstance().getMessage("button.clo"));
 	private JTextField nameTextField = new JTextField(20);
 	private JLabel resultLabel = new JLabel();
 	
@@ -35,7 +35,7 @@ public class FindEntityDialog extends JDialog
 	{
 		
 		super(parent,modal);
-		this.setTitle(Messages.getInstance().getMessage("dialog.find.entity"));
+		this.setTitle(UIMessages.getInstance().getMessage("dialog.find.entity"));
 		
 		this.getContentPane().setLayout(new BorderLayout());
 		
@@ -43,7 +43,7 @@ public class FindEntityDialog extends JDialog
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setLayout(new BoxLayout(buttonsPanel,BoxLayout.LINE_AXIS));
 		
-		mainPanel.add(new JLabel(Messages.getInstance().getMessage("label.find.entity")));
+		mainPanel.add(new JLabel(UIMessages.getInstance().getMessage("label.find.entity")));
 		mainPanel.add(nameTextField);
 		getContentPane().add(mainPanel,BorderLayout.CENTER);
 		
@@ -70,10 +70,10 @@ public class FindEntityDialog extends JDialog
 				{
 					Node n = wp.nameToNode(nameTextField.getText());
 					if ( n == null )
-						resultLabel.setText(Messages.getInstance().getMessage("label.entity.notfound"));
+						resultLabel.setText(UIMessages.getInstance().getMessage("label.entity.notfound"));
 					else
 					{
-						resultLabel.setText(Messages.getInstance().getMessage("label.entity.found"));
+						resultLabel.setText(UIMessages.getInstance().getMessage("label.entity.found"));
 						/*
 						parent.getGraphEditingPanel().resetSelections();
 						parent.getGraphEditingPanel().selectNode(n);

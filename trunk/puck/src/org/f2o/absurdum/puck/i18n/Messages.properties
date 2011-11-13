@@ -289,3 +289,5 @@ bsh.errors.ok=Cerrar
 language=Idioma
 language.es=Español
 language.en=Inglés
+language.changed=El idioma de PUCK se ha cambiado a español; pero necesitarás cerrar y volver a abrir PUCK para ver toda la interfaz en español.
+language.changed.title=Cambio de idioma

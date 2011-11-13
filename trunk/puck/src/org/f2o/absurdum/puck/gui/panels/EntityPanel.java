@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.f2o.absurdum.puck.gui.graph.Arrow;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -46,7 +46,7 @@ public class EntityPanel extends GraphElementPanel
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		
 		JPanel namePanel = new JPanel();
-		namePanel.add(new JLabel(Messages.getInstance().getMessage("entity.uniquename")));
+		namePanel.add(new JLabel(UIMessages.getInstance().getMessage("entity.uniquename")));
 		namePanel.add(nameTextField);
 		this.add(namePanel);
 		

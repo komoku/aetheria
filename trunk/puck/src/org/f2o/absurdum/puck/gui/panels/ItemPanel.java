@@ -35,7 +35,7 @@ import javax.swing.JTextField;
 import org.f2o.absurdum.puck.bsh.BeanShellCodeHolder;
 import org.f2o.absurdum.puck.gui.graph.Arrow;
 import org.f2o.absurdum.puck.gui.graph.ItemNode;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
 import org.f2o.absurdum.puck.util.xml.DOMUtils;
 import org.w3c.dom.Document;
@@ -60,9 +60,9 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 	private JTextField tfWeight = new EnhancedJTextField("0",5);
 	private JTextField tfVolume = new EnhancedJTextField("0",5);
 	
-	private JCheckBox containerBox = new JCheckBox(Messages.getInstance().getMessage("checkbox.container"));
+	private JCheckBox containerBox = new JCheckBox(UIMessages.getInstance().getMessage("checkbox.container"));
 	
-	private JCheckBox ungettableBox = new JCheckBox(Messages.getInstance().getMessage("checkbox.ungettable"));
+	private JCheckBox ungettableBox = new JCheckBox(UIMessages.getInstance().getMessage("checkbox.ungettable"));
 	
 	//privatize
 	public DescriptionListPanel dlp;
@@ -82,20 +82,20 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 	private DescriptionListPanel cdp;
 	private DescriptionListPanel ldp;
 	private DescriptionListPanel udp;
-	private JCheckBox oBox = new JCheckBox(Messages.getInstance().getMessage("checkbox.openable"));
-	private JCheckBox cBox = new JCheckBox(Messages.getInstance().getMessage("checkbox.closeable"));
-	private JCheckBox lBox = new JCheckBox(Messages.getInstance().getMessage("checkbox.lockable"));
-	private JCheckBox uBox = new JCheckBox(Messages.getInstance().getMessage("checkbox.unlockable"));
+	private JCheckBox oBox = new JCheckBox(UIMessages.getInstance().getMessage("checkbox.openable"));
+	private JCheckBox cBox = new JCheckBox(UIMessages.getInstance().getMessage("checkbox.closeable"));
+	private JCheckBox lBox = new JCheckBox(UIMessages.getInstance().getMessage("checkbox.lockable"));
+	private JCheckBox uBox = new JCheckBox(UIMessages.getInstance().getMessage("checkbox.unlockable"));
 	
 	//wearable support
-	private JCheckBox wBox = new JCheckBox(Messages.getInstance().getMessage("checkbox.wearable"));
+	private JCheckBox wBox = new JCheckBox(UIMessages.getInstance().getMessage("checkbox.wearable"));
 	private List wearableLimbPanels = new ArrayList();
 	
 	private DamageListPanel damlp;
 	
 	
 	//weapon support
-	private JCheckBox weaponBox = new JCheckBox(Messages.getInstance().getMessage("checkbox.weapon"));
+	private JCheckBox weaponBox = new JCheckBox(UIMessages.getInstance().getMessage("checkbox.weapon"));
 	private List wieldableLimbPanels = new ArrayList();
 	
 	private AttDefSpecsPanel attackPanel;
@@ -170,7 +170,7 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 		firstTab.setLayout(new BoxLayout(firstTab, BoxLayout.PAGE_AXIS));
 		
 		JPanel namePanel = new JPanel();
-		namePanel.add(new JLabel(Messages.getInstance().getMessage("entity.uniquename")));
+		namePanel.add(new JLabel(UIMessages.getInstance().getMessage("entity.uniquename")));
 		namePanel.add(nameTextField);
 		firstTab.add(namePanel);
 		
@@ -180,24 +180,24 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 		clonesComboBox = new JComboBox ( new DefaultComboBoxModel ( itemNodes ) );
 		
 		JPanel extendsPanel = new JPanel();
-		extendsPanel.add ( new JLabel(Messages.getInstance().getMessage("inherit.from")) );
+		extendsPanel.add ( new JLabel(UIMessages.getInstance().getMessage("inherit.from")) );
 		extendsPanel.add ( extendsComboBox );
 		firstTab.add(extendsPanel);
 		JPanel clonesPanel = new JPanel();
-		clonesPanel.add ( new JLabel(Messages.getInstance().getMessage("clone.from")) );
+		clonesPanel.add ( new JLabel(UIMessages.getInstance().getMessage("clone.from")) );
 		clonesPanel.add ( clonesComboBox );
 		firstTab.add(clonesPanel);
 		
 		JPanel genderPanel = new JPanel();
-		genderComboBox = new JComboBox ( new String[] { Messages.getInstance().getMessage("gender.m") , Messages.getInstance().getMessage("gender.f") } );
-		genderPanel.add(new JLabel(Messages.getInstance().getMessage("gender")));
+		genderComboBox = new JComboBox ( new String[] { UIMessages.getInstance().getMessage("gender.m") , UIMessages.getInstance().getMessage("gender.f") } );
+		genderPanel.add(new JLabel(UIMessages.getInstance().getMessage("gender")));
 		genderPanel.add(genderComboBox);
 		firstTab.add(genderPanel);
 		
 		JPanel weightVolPanel = new JPanel();
-		weightVolPanel.add(new JLabel(Messages.getInstance().getMessage("item.weight")));
+		weightVolPanel.add(new JLabel(UIMessages.getInstance().getMessage("item.weight")));
 		weightVolPanel.add(tfWeight);
-		weightVolPanel.add(new JLabel(Messages.getInstance().getMessage("item.volume")));
+		weightVolPanel.add(new JLabel(UIMessages.getInstance().getMessage("item.volume")));
 		weightVolPanel.add(tfVolume);
 		firstTab.add(weightVolPanel);
 		
@@ -219,19 +219,19 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 		
 		thirdTab.setLayout(new BoxLayout(thirdTab, BoxLayout.PAGE_AXIS));
 		
-		snp = new DescriptionListPanel(Messages.getInstance().getMessage("label.singnames"),Messages.getInstance().getMessage("label.name"),false,true,1);
+		snp = new DescriptionListPanel(UIMessages.getInstance().getMessage("label.singnames"),UIMessages.getInstance().getMessage("label.name"),false,true,1);
 		thirdTab.add(snp);
 		
-		pnp = new DescriptionListPanel(Messages.getInstance().getMessage("label.plurnames"),Messages.getInstance().getMessage("label.name"),1);
+		pnp = new DescriptionListPanel(UIMessages.getInstance().getMessage("label.plurnames"),UIMessages.getInstance().getMessage("label.name"),1);
 		thirdTab.add(pnp);
 		
-		srn = new PathCommandsPanel(Messages.getInstance().getMessage("label.singrefnames"),Messages.getInstance().getMessage("label.name"),true);
+		srn = new PathCommandsPanel(UIMessages.getInstance().getMessage("label.singrefnames"),UIMessages.getInstance().getMessage("label.name"),true);
 		thirdTab.add(srn);
 		
-		prn = new PathCommandsPanel(Messages.getInstance().getMessage("label.plurrefnames"),Messages.getInstance().getMessage("label.name"),true);
+		prn = new PathCommandsPanel(UIMessages.getInstance().getMessage("label.plurrefnames"),UIMessages.getInstance().getMessage("label.name"),true);
 		thirdTab.add(prn);
 		
-		jtp.add(Messages.getInstance().getMessage("tab.names"),thirdTab);
+		jtp.add(UIMessages.getInstance().getMessage("tab.names"),thirdTab);
 		
 		
 		JPanel secondTab = new JPanel();
@@ -244,7 +244,7 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 		pp = new PropertiesPanel();
 		secondTab.add(pp);
 		
-		jtp.add(Messages.getInstance().getMessage("tab.codeprop"),secondTab);
+		jtp.add(UIMessages.getInstance().getMessage("tab.codeprop"),secondTab);
 		
 		
 		//openable-closeable support
@@ -256,7 +256,7 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 		fourthTabReal.setLayout(new BoxLayout(fourthTabReal, BoxLayout.PAGE_AXIS));
 		
 		JPanel openableFlagsPanel = new JPanel();
-		openableFlagsPanel.setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("flags.openable")));
+		openableFlagsPanel.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("flags.openable")));
 		
 		
 		
@@ -269,10 +269,10 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 		
 		fourthTabReal.add(openableFlagsPanel);
 				
-		odp = new DescriptionListPanel(Messages.getInstance().getMessage("label.opendes"),Messages.getInstance().getMessage("label.description"),true,2);
-		cdp = new DescriptionListPanel(Messages.getInstance().getMessage("label.closedes"),Messages.getInstance().getMessage("label.description"),true,2);
-		ldp = new DescriptionListPanel(Messages.getInstance().getMessage("label.lockdes"),Messages.getInstance().getMessage("label.description"),true,2);
-		udp = new DescriptionListPanel(Messages.getInstance().getMessage("label.unlockdes"),Messages.getInstance().getMessage("label.description"),true,2);
+		odp = new DescriptionListPanel(UIMessages.getInstance().getMessage("label.opendes"),UIMessages.getInstance().getMessage("label.description"),true,2);
+		cdp = new DescriptionListPanel(UIMessages.getInstance().getMessage("label.closedes"),UIMessages.getInstance().getMessage("label.description"),true,2);
+		ldp = new DescriptionListPanel(UIMessages.getInstance().getMessage("label.lockdes"),UIMessages.getInstance().getMessage("label.description"),true,2);
+		udp = new DescriptionListPanel(UIMessages.getInstance().getMessage("label.unlockdes"),UIMessages.getInstance().getMessage("label.description"),true,2);
 		
 		JScrollPane innerScroll = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		JPanel innerPanel = new JPanel();
@@ -300,7 +300,7 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 		//fourthTab.add(fourthTabScroll,BorderLayout.CENTER);
 		
 		//jtp.add(Messages.getInstance().getMessage("tab.openclose"),fourthTab);
-		jtp.add(Messages.getInstance().getMessage("tab.openclose"),fourthTabReal);
+		jtp.add(UIMessages.getInstance().getMessage("tab.openclose"),fourthTabReal);
 		
 		
 		
@@ -317,7 +317,7 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 		innerScrollFifth.setPreferredSize(new Dimension(0,400));
 		
 		final JPanel notSoInnerPanelFifth = new JPanel();
-		notSoInnerPanelFifth.setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("tab.wearable.requirements")));
+		notSoInnerPanelFifth.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("tab.wearable.requirements")));
 		notSoInnerPanelFifth.setLayout(new BorderLayout());
 		
 		notSoInnerPanelFifth.add(innerScrollFifth,BorderLayout.CENTER);
@@ -333,8 +333,8 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 		final JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setLayout( new BoxLayout(buttonsPanel , BoxLayout.LINE_AXIS) );
 		buttonsPanel.add(Box.createHorizontalGlue());
-		final JButton buttonMore = new JButton(Messages.getInstance().getMessage("tab.wearable.more"));
-		buttonLess = new JButton(Messages.getInstance().getMessage("tab.wearable.less"));
+		final JButton buttonMore = new JButton(UIMessages.getInstance().getMessage("tab.wearable.more"));
+		buttonLess = new JButton(UIMessages.getInstance().getMessage("tab.wearable.less"));
 		buttonLess.setEnabled(false);
 		buttonsPanel.add(buttonMore);
 		buttonsPanel.add(buttonLess);
@@ -342,7 +342,7 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 		buttonMore.addActionListener ( new ActionListener() {
 			public void actionPerformed ( ActionEvent evt )
 			{
-				PathCommandsPanel newPanel = new PathCommandsPanel(Messages.getInstance().getMessage("label.wearrequirement"),Messages.getInstance().getMessage("label.name"),true);
+				PathCommandsPanel newPanel = new PathCommandsPanel(UIMessages.getInstance().getMessage("label.wearrequirement"),UIMessages.getInstance().getMessage("label.name"),true);
 				addLimbRequirementPanel(newPanel);
 			}
 		});
@@ -355,13 +355,13 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 			}
 		});
 		
-		damlp = new DamageListPanel(Messages.getInstance().getMessage("tab.wearable.damage"));
+		damlp = new DamageListPanel(UIMessages.getInstance().getMessage("tab.wearable.damage"));
 	
 		notSoInnerPanelFifth.add(buttonsPanel,BorderLayout.SOUTH);
 		
 		fifthTab.add(damlp);
 
-		jtp.add(Messages.getInstance().getMessage("tab.wearable"),fifthTab);
+		jtp.add(UIMessages.getInstance().getMessage("tab.wearable"),fifthTab);
 		
 		
 		
@@ -381,7 +381,7 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 		innerScrollSixth.setPreferredSize(new Dimension(0,150));
 		
 		final JPanel notSoInnerPanelSixth = new JPanel();
-		notSoInnerPanelSixth.setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("tab.weapon.requirements")));
+		notSoInnerPanelSixth.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("tab.weapon.requirements")));
 		notSoInnerPanelSixth.setLayout(new BorderLayout());
 		
 		notSoInnerPanelSixth.add(innerScrollSixth,BorderLayout.CENTER);
@@ -397,8 +397,8 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 		final JPanel buttonsPanel2 = new JPanel();
 		buttonsPanel2.setLayout( new BoxLayout(buttonsPanel2 , BoxLayout.LINE_AXIS) );
 		buttonsPanel2.add(Box.createHorizontalGlue());
-		final JButton buttonMore2 = new JButton(Messages.getInstance().getMessage("tab.weapon.more"));
-		buttonLess2 = new JButton(Messages.getInstance().getMessage("tab.weapon.less"));
+		final JButton buttonMore2 = new JButton(UIMessages.getInstance().getMessage("tab.weapon.more"));
+		buttonLess2 = new JButton(UIMessages.getInstance().getMessage("tab.weapon.less"));
 		buttonLess2.setEnabled(false);
 		buttonsPanel2.add(buttonMore2);
 		buttonsPanel2.add(buttonLess2);
@@ -406,7 +406,7 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 		buttonMore2.addActionListener ( new ActionListener() {
 			public void actionPerformed ( ActionEvent evt )
 			{
-				PathCommandsPanel newPanel = new PathCommandsPanel(Messages.getInstance().getMessage("label.weaponrequirement"),Messages.getInstance().getMessage("label.name"),true);
+				PathCommandsPanel newPanel = new PathCommandsPanel(UIMessages.getInstance().getMessage("label.weaponrequirement"),UIMessages.getInstance().getMessage("label.name"),true);
 				addWeaponLimbRequirementPanel(newPanel);
 			}
 		});
@@ -430,15 +430,15 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 		//sixthTab.add(defensePanel);
 		
 		JTabbedPane subJtp = new JTabbedPane();
-		subJtp.add(attackPanel,Messages.getInstance().getMessage("weapon.attack"));
-		subJtp.add(defensePanel,Messages.getInstance().getMessage("weapon.defense"));
+		subJtp.add(attackPanel,UIMessages.getInstance().getMessage("weapon.attack"));
+		subJtp.add(defensePanel,UIMessages.getInstance().getMessage("weapon.defense"));
 		subJtp.setBorder(BorderFactory.createBevelBorder(2));
 		
 		//fifthTab.add(damlp);
 		
 		sixthTab.add(subJtp);
 
-		jtp.add(Messages.getInstance().getMessage("tab.weapon"),sixthTab);
+		jtp.add(UIMessages.getInstance().getMessage("tab.weapon"),sixthTab);
 		
 		
 		
@@ -514,9 +514,9 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 		if ( weaponBox.isSelected() )
 			result.setAttribute("type", "weapon");
 		
-		if ( !extendsComboBox.getSelectedItem().equals(Messages.getInstance().getMessage("none") ))
+		if ( !extendsComboBox.getSelectedItem().equals(UIMessages.getInstance().getMessage("none") ))
 			result.setAttribute("extends",extendsComboBox.getSelectedItem().toString());
-		if ( !clonesComboBox.getSelectedItem().equals(Messages.getInstance().getMessage("none") ))
+		if ( !clonesComboBox.getSelectedItem().equals(UIMessages.getInstance().getMessage("none") ))
 		{
 			result.setAttribute("clones",clonesComboBox.getSelectedItem().toString());
 			//identical clones can't have more features
@@ -534,7 +534,7 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 		
 		
 		String genderString = (String) genderComboBox.getSelectedItem();
-		if (genderString.equals(Messages.getInstance().getMessage("gender.m")))
+		if (genderString.equals(UIMessages.getInstance().getMessage("gender.m")))
 			result.setAttribute("gender","true");
 		else
 			result.setAttribute("gender","false");
@@ -644,17 +644,17 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 			{
 				ItemHasItemPanel relPanel = (ItemHasItemPanel) gep;
 				String relType = relPanel.getRelationshipType();
-				if ( relType.equals(Messages.getInstance().getMessage("structural.item.item.contain")) ) //containment relationship
+				if ( relType.equals(UIMessages.getInstance().getMessage("structural.item.item.contain")) ) //containment relationship
 				{
 					if ( invElt == null ) invElt = d.createElement("Inventory");
 					invElt.appendChild( relPanel.getXML(d) );
 				}
-				if ( relType.equals(Messages.getInstance().getMessage("structural.item.item.haspart")) ) //has-part relationship
+				if ( relType.equals(UIMessages.getInstance().getMessage("structural.item.item.haspart")) ) //has-part relationship
 				{
 					if ( partsElt == null ) partsElt = d.createElement("Inventory");
 					partsElt.appendChild( relPanel.getXML(d) );
 				}
-				if ( relType.equals(Messages.getInstance().getMessage("structural.item.item.haskey")) ) //has-key relationship
+				if ( relType.equals(UIMessages.getInstance().getMessage("structural.item.item.haskey")) ) //has-key relationship
 				{
 					if ( keysElt == null ) keysElt = d.createElement("Inventory");
 					keysElt.appendChild( relPanel.getXML(d) );
@@ -875,7 +875,7 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 					for ( int i = 0 ; i < requirements.getLength() ; i++ )
 					{
 						Element requirement = (Element)requirements.item(i);
-						PathCommandsPanel newPanel = new PathCommandsPanel(Messages.getInstance().getMessage("label.wearrequirement"),Messages.getInstance().getMessage("label.name"),true);
+						PathCommandsPanel newPanel = new PathCommandsPanel(UIMessages.getInstance().getMessage("label.wearrequirement"),UIMessages.getInstance().getMessage("label.name"),true);
 						newPanel.initFromXML(requirement);
 						addLimbRequirementPanel(newPanel);		
 					}
@@ -904,7 +904,7 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 					for ( int i = 0 ; i < requirements.getLength() ; i++ )
 					{
 						Element requirement = (Element)requirements.item(i);
-						PathCommandsPanel newPanel = new PathCommandsPanel(Messages.getInstance().getMessage("label.weaponrequirement"),Messages.getInstance().getMessage("label.name"),true);
+						PathCommandsPanel newPanel = new PathCommandsPanel(UIMessages.getInstance().getMessage("label.weaponrequirement"),UIMessages.getInstance().getMessage("label.name"),true);
 						newPanel.initFromXML(requirement);
 						addWeaponLimbRequirementPanel(newPanel);		
 					}

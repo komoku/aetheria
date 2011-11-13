@@ -24,7 +24,7 @@ import javax.swing.event.ListSelectionListener;
 
 import org.f2o.absurdum.puck.gui.graph.GraphEditingPanel;
 import org.f2o.absurdum.puck.gui.graph.Node;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 
 /**
  * @author carlos
@@ -38,14 +38,14 @@ public class EntityListPanel extends JPanel
 	
 	private JList listEntities = new JList();
 	private Vector sortedNodes;
-	private JButton focusButton = new JButton(Messages.getInstance().getMessage("button.focus"));
+	private JButton focusButton = new JButton(UIMessages.getInstance().getMessage("button.focus"));
 	
 	public EntityListPanel ( final GraphEditingPanel gep )
 	{
 		this.gep = gep;
 		
 		setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
-		setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("label.entities")));
+		setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("label.entities")));
 		//listEntities.setListData(gep.getNodes());
 		JScrollPane listScroll = new JScrollPane(listEntities);
 		listScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);

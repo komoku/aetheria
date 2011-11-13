@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 
 
 
@@ -46,9 +46,9 @@ class ThreeStringCellRenderer extends JLabel implements ListCellRenderer
     		
     		labelText = vals[0] + ": ";
     		if ( vals[1].length() == 0 )
-    			labelText += Messages.getInstance().getMessage("cond.always") + ": " + vals[2];
+    			labelText += UIMessages.getInstance().getMessage("cond.always") + ": " + vals[2];
     		else
-    			labelText += Messages.getInstance().getMessage("cond.cond") + " " + vals[1] + ": " + vals[2];
+    			labelText += UIMessages.getInstance().getMessage("cond.cond") + " " + vals[1] + ": " + vals[2];
     	}
     	else
     		labelText = value.toString();

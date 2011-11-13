@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 
 /**
  * @author carlos
@@ -30,19 +30,19 @@ import org.f2o.absurdum.puck.i18n.Messages;
 public class BeanShellErrorsDialog extends JDialog 
 {
 
-	 private JButton okButton = new JButton(Messages.getInstance().getMessage("bsh.errors.ok"));
+	 private JButton okButton = new JButton(UIMessages.getInstance().getMessage("bsh.errors.ok"));
 	
 	public BeanShellErrorsDialog ( Window owner , String text )
 	{
 		super(owner);
 		this.setModal(true);
 		this.setResizable(false);
-		setTitle(Messages.getInstance().getMessage("bsh.errors.dialogtitle"));
+		setTitle(UIMessages.getInstance().getMessage("bsh.errors.dialogtitle"));
 		
 		getContentPane().setLayout(new BoxLayout(getContentPane(),BoxLayout.PAGE_AXIS));
 		getContentPane().add(Box.createRigidArea(new Dimension(0,10)));
 		
-		JLabel jl = new JLabel(Messages.getInstance().getMessage("bsh.errors.explanation"));
+		JLabel jl = new JLabel(UIMessages.getInstance().getMessage("bsh.errors.explanation"));
 		JPanel labelPanel = new JPanel();
 		labelPanel.setLayout(new BoxLayout(labelPanel,BoxLayout.LINE_AXIS));
 		labelPanel.add(jl);

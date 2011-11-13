@@ -41,7 +41,7 @@ import jsyntaxpane.components.Markers;
 import org.f2o.absurdum.puck.gui.SpacingPanel;
 import org.f2o.absurdum.puck.gui.codeassist.CodeAssistMenuHandler;
 import org.f2o.absurdum.puck.gui.codeassist.CodeInsertActionBuilder;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJEditTextArea;
 import org.jedit.syntax.JEditTextArea;
 import org.jedit.syntax.JavaTokenMarker;
@@ -65,7 +65,7 @@ public class BSHCodePanel extends JPanel
 	//private JEditorPane jep;
 	//private EnhancedJEditTextArea jep;
 	private JEditorPane jep;
-	private JButton enlButton = new JButton(Messages.getInstance().getMessage("button.enl"));
+	private JButton enlButton = new JButton(UIMessages.getInstance().getMessage("button.enl"));
 	private BSHCodeFrame auxFrame;
 	
 	//context attribute: specifies which type of panel it is, used to know which code templates are available on menus
@@ -140,7 +140,7 @@ public class BSHCodePanel extends JPanel
 		this.context = context;
 		this.entityPanel = ep;
 		
-		setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("bsh.code")));
+		setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("bsh.code")));
 		//jep = new JEditorPane();
 		
 		TextAreaDefaults tad = new TextAreaDefaults();

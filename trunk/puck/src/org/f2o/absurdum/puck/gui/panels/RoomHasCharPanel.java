@@ -22,7 +22,7 @@ import javax.swing.JTextField;
 import org.f2o.absurdum.puck.gui.graph.Arrow;
 import org.f2o.absurdum.puck.gui.graph.Node;
 import org.f2o.absurdum.puck.gui.graph.StructuralArrow;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -43,11 +43,11 @@ public class RoomHasCharPanel extends ArrowPanel
 		
 		//possible structural relationship types
 		relTypes.clear();
-		relTypes.add(Messages.getInstance().getMessage("structural.room.char"));
+		relTypes.add(UIMessages.getInstance().getMessage("structural.room.char"));
 		relTypes.add(ArrowPanel.NO_STRUCTURAL_RELATIONSHIP);
 		
 		//default structural relationship type
-		this.relationshipType = Messages.getInstance().getMessage("structural.room.char"); //default relationship is this one (containment)
+		this.relationshipType = UIMessages.getInstance().getMessage("structural.room.char"); //default relationship is this one (containment)
 		
 		add(new JLabel("Room to Character Relationship"));
 		
@@ -77,23 +77,23 @@ public class RoomHasCharPanel extends ArrowPanel
 		mainTab.setLayout(new BoxLayout(mainTab,BoxLayout.PAGE_AXIS));
 		
 		JPanel srcPanel = new JPanel();
-		srcPanel.add ( new JLabel(Messages.getInstance().getMessage("roomchar.src")) );
+		srcPanel.add ( new JLabel(UIMessages.getInstance().getMessage("roomchar.src")) );
 		srcPanel.add ( srcComboBox );
 		mainTab.add(srcPanel);
 		
 		JPanel relTypePanel = new JPanel();
-		relTypePanel.add ( new JLabel(Messages.getInstance().getMessage("charitem.reltype")) );
+		relTypePanel.add ( new JLabel(UIMessages.getInstance().getMessage("charitem.reltype")) );
 		relTypePanel.add(relComboBox);
 		mainTab.add(relTypePanel);
 		
 		JPanel dstPanel = new JPanel();
-		dstPanel.add ( new JLabel(Messages.getInstance().getMessage("roomchar.dst")) );
+		dstPanel.add ( new JLabel(UIMessages.getInstance().getMessage("roomchar.dst")) );
 		dstPanel.add ( dstComboBox );
 		mainTab.add(dstPanel);
 		
 		//setVisible(true);
 		
-		jtp.add(mainTab,Messages.getInstance().getMessage("tab.structrel"),0);
+		jtp.add(mainTab,UIMessages.getInstance().getMessage("tab.structrel"),0);
 		jtp.setSelectedIndex(0);	
 		
 	}
