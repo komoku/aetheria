@@ -33,10 +33,10 @@ public class DocumentationLinkDialog extends JDialog
                 try {
                         desktop.browse(uri);
                 } catch (IOException e) {
-                	JOptionPane.showMessageDialog(this, "No puedo encontrar el navegador por defecto de tu sistema. Por favor, navega hasta http://www.caad.es/aetheria/doc a mano.");
+                	JOptionPane.showMessageDialog(this, UIMessages.getInstance().getMessage("online.documentation.browser.error")  );
                 }
         } else {
-        	JOptionPane.showMessageDialog(this, "No puedo encontrar el navegador por defecto de tu sistema. Por favor, navega hasta http://www.caad.es/aetheria/doc a mano.");
+        	JOptionPane.showMessageDialog(this, UIMessages.getInstance().getMessage("online.documentation.browser.error") );
         }
     }
 	
@@ -65,9 +65,11 @@ public class DocumentationLinkDialog extends JDialog
 			JButton button = new JButton();
 	        button
 	                        .setText(
-	                        "<html>" +
-	                        "<p>Puedes consultar información detallada sobre cómo construir mundos en PUCK en la documentación online: " +
-	                        "<FONT color=\"#000099\"><U>http://www.caad.es/aetheria/doc/</U></FONT>.</p></html>");
+	                        UIMessages.getInstance().getMessage("online.documentation")
+	                        //"<html>" +
+	                        //"<p>Puedes consultar información detallada sobre cómo construir mundos en PUCK en la documentación online: " +
+	                        //"<FONT color=\"#000099\"><U>http://www.caad.es/aetheria/doc/</U></FONT>.</p></html>"
+	                        );
 	        button.setHorizontalAlignment(SwingConstants.LEFT);
 	        button.setBorderPainted(false);
 	        button.setOpaque(false);
