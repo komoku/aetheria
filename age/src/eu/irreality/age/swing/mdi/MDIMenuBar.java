@@ -21,6 +21,7 @@ import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.server.ServerConfigurationWindow;
 import eu.irreality.age.server.ServerHandler;
 import eu.irreality.age.server.ServerLogWindow;
+import eu.irreality.age.swing.AboutDialog;
 import eu.irreality.age.swing.UILanguageSelectionMenu;
 import eu.irreality.age.swing.mdi.gameloader.GameChoosingInternalFrame;
 
@@ -95,6 +96,9 @@ public class MDIMenuBar extends JMenuBar
 				{
 					public void actionPerformed ( ActionEvent evt )
 					{
+						
+						new AboutDialog(window);
+						/*
 						JInternalFrame ventanaAbout;
 						ventanaAbout = new JInternalFrame( UIMessages.getInstance().getMessage("about.title") ,true,true,true,true);
 						p.add(ventanaAbout);
@@ -135,6 +139,7 @@ public class MDIMenuBar extends JMenuBar
 						ventanaAbout.getContentPane().add ( tpAbout );
 
 						ventanaAbout.setVisible(true);
+						*/
 					}
 				}
 		);
