@@ -18,7 +18,7 @@ import javax.swing.Action;
 import org.f2o.absurdum.puck.gui.graph.Arrow;
 import org.f2o.absurdum.puck.gui.graph.GraphEditingPanel;
 import org.f2o.absurdum.puck.gui.graph.Node;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 
 /**
  * @author carlos
@@ -35,7 +35,7 @@ public class DeleteArrowAction extends AbstractAction
 	{
 		this.victim = victim;
 		this.panel = panel;
-		this.putValue(Action.NAME,Messages.getInstance().getMessage("menuaction.deleterel") + " " + victim.getName());		
+		this.putValue(Action.NAME,UIMessages.getInstance().getMessage("menuaction.deleterel") + " " + victim.getName());		
 		
 	}
 

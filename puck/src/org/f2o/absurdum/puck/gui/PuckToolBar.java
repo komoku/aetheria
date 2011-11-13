@@ -23,7 +23,7 @@ import org.f2o.absurdum.puck.gui.graph.RoomNode;
 import org.f2o.absurdum.puck.gui.graph.SpellNode;
 import org.f2o.absurdum.puck.gui.graph.StructuralArrow;
 import org.f2o.absurdum.puck.gui.skin.ImageManager;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 
 /**
  * @author carlos
@@ -48,75 +48,75 @@ public class PuckToolBar extends JToolBar
 		associatedPropertiesPanel = right;
 		associatedFrame = frame;
 		Action a = new AddNodeTool(new RoomNode(0,0),associatedPanel);
-		a.putValue(Action.NAME,Messages.getInstance().getMessage("tool.addroom"));
+		a.putValue(Action.NAME,UIMessages.getInstance().getMessage("tool.addroom"));
 		//a.putValue(Action.SMALL_ICON,new ImageIcon(getClass().getClassLoader().getResource(ADD_ROOM_IMAGE)));
 		a.putValue(Action.SMALL_ICON,new ImageIcon(ImageManager.getInstance().getImage("addRoom")));
 		a.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_R));
-		a.putValue(Action.SHORT_DESCRIPTION,Messages.getInstance().getMessage("tool.addroom"));
+		a.putValue(Action.SHORT_DESCRIPTION,UIMessages.getInstance().getMessage("tool.addroom"));
 		add(a);
 		
 		a = new AddNodeTool(new ItemNode(0,0),associatedPanel);
-		a.putValue(Action.NAME,Messages.getInstance().getMessage("tool.additem"));
+		a.putValue(Action.NAME,UIMessages.getInstance().getMessage("tool.additem"));
 		//a.putValue(Action.SMALL_ICON,new ImageIcon(getClass().getClassLoader().getResource(ADD_ITEM_IMAGE)));
 		a.putValue(Action.SMALL_ICON,new ImageIcon(ImageManager.getInstance().getImage("addItem")));
 		a.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_I));
-		a.putValue(Action.SHORT_DESCRIPTION,Messages.getInstance().getMessage("tool.additem"));
+		a.putValue(Action.SHORT_DESCRIPTION,UIMessages.getInstance().getMessage("tool.additem"));
 		add(a);
 		
 		a = new AddNodeTool(new CharacterNode(0,0),associatedPanel);
-		a.putValue(Action.NAME,Messages.getInstance().getMessage("tool.addchar"));
+		a.putValue(Action.NAME,UIMessages.getInstance().getMessage("tool.addchar"));
 		//a.putValue(Action.SMALL_ICON,new ImageIcon(getClass().getClassLoader().getResource(ADD_CHAR_IMAGE)));
 		a.putValue(Action.SMALL_ICON,new ImageIcon(ImageManager.getInstance().getImage("addChar")));
 		a.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_C));
-		a.putValue(Action.SHORT_DESCRIPTION,Messages.getInstance().getMessage("tool.addchar"));
+		a.putValue(Action.SHORT_DESCRIPTION,UIMessages.getInstance().getMessage("tool.addchar"));
 		add(a);
 		
 		a = new AddNodeTool(new SpellNode(0,0),associatedPanel);
-		a.putValue(Action.NAME,Messages.getInstance().getMessage("tool.addspell"));
+		a.putValue(Action.NAME,UIMessages.getInstance().getMessage("tool.addspell"));
 		//a.putValue(Action.SMALL_ICON,new ImageIcon(getClass().getClassLoader().getResource(ADD_SPELL_IMAGE)));
 		a.putValue(Action.SMALL_ICON,new ImageIcon(ImageManager.getInstance().getImage("addSpell")));
 		a.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_P));
-		a.putValue(Action.SHORT_DESCRIPTION,Messages.getInstance().getMessage("tool.addspell"));
+		a.putValue(Action.SHORT_DESCRIPTION,UIMessages.getInstance().getMessage("tool.addspell"));
 		add(a);
 		
 		a = new AddNodeTool(new AbstractEntityNode(0,0),associatedPanel);
-		a.putValue(Action.NAME,Messages.getInstance().getMessage("tool.addabstract"));
+		a.putValue(Action.NAME,UIMessages.getInstance().getMessage("tool.addabstract"));
 		//a.putValue(Action.SMALL_ICON,new ImageIcon(getClass().getClassLoader().getResource(ADD_ABSTRACT_IMAGE)));
 		a.putValue(Action.SMALL_ICON,new ImageIcon(ImageManager.getInstance().getImage("addAbstract")));
 		a.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_A));
-		a.putValue(Action.SHORT_DESCRIPTION,Messages.getInstance().getMessage("tool.addabstract"));
+		a.putValue(Action.SHORT_DESCRIPTION,UIMessages.getInstance().getMessage("tool.addabstract"));
 		add(a);
 		
 		a = new AddArrowTool(new StructuralArrow(),associatedPanel);
-		a.putValue(Action.NAME,Messages.getInstance().getMessage("tool.addstarrow"));
+		a.putValue(Action.NAME,UIMessages.getInstance().getMessage("tool.addstarrow"));
 		//a.putValue(Action.SMALL_ICON,new ImageIcon(getClass().getClassLoader().getResource(ADD_STRUCT_ARROW_IMAGE)));
 		a.putValue(Action.SMALL_ICON,new ImageIcon(ImageManager.getInstance().getImage("addStruct")));
 		a.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_S));
-		a.putValue(Action.SHORT_DESCRIPTION,Messages.getInstance().getMessage("tool.addstarrow"));
+		a.putValue(Action.SHORT_DESCRIPTION,UIMessages.getInstance().getMessage("tool.addstarrow"));
 		add(a);
 		
 		a = new ZoomTool(associatedPanel);
-		a.putValue(Action.NAME,Messages.getInstance().getMessage("tool.zoom"));
+		a.putValue(Action.NAME,UIMessages.getInstance().getMessage("tool.zoom"));
 		//a.putValue(Action.SMALL_ICON,new ImageIcon(getClass().getClassLoader().getResource(ZOOM_IMAGE)));
 		a.putValue(Action.SMALL_ICON,new ImageIcon(ImageManager.getInstance().getImage("zoom")));
 		a.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_Z));
-		a.putValue(Action.SHORT_DESCRIPTION,Messages.getInstance().getMessage("tool.zoom"));
+		a.putValue(Action.SHORT_DESCRIPTION,UIMessages.getInstance().getMessage("tool.zoom"));
 		add(a);
 		
 		a = new TranslateTool(associatedPanel);
-		a.putValue(Action.NAME,Messages.getInstance().getMessage("tool.move"));
+		a.putValue(Action.NAME,UIMessages.getInstance().getMessage("tool.move"));
 		//a.putValue(Action.SMALL_ICON,new ImageIcon(getClass().getClassLoader().getResource(MOVE_IMAGE)));
 		a.putValue(Action.SMALL_ICON,new ImageIcon(ImageManager.getInstance().getImage("move")));
 		a.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_M));
-		a.putValue(Action.SHORT_DESCRIPTION,Messages.getInstance().getMessage("tool.move"));
+		a.putValue(Action.SHORT_DESCRIPTION,UIMessages.getInstance().getMessage("tool.move"));
 		add(a);
 		
 		a = new ExecAgeTool(associatedFrame);
-		a.putValue(Action.NAME,Messages.getInstance().getMessage("tool.go"));
+		a.putValue(Action.NAME,UIMessages.getInstance().getMessage("tool.go"));
 		//a.putValue(Action.SMALL_ICON,new ImageIcon(getClass().getClassLoader().getResource(GO_IMAGE)));
 		a.putValue(Action.SMALL_ICON,new ImageIcon(ImageManager.getInstance().getImage("goButton")));
 		a.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_G));
-		a.putValue(Action.SHORT_DESCRIPTION,Messages.getInstance().getMessage("tool.go"));
+		a.putValue(Action.SHORT_DESCRIPTION,UIMessages.getInstance().getMessage("tool.go"));
 		add(a);
 		
 	}

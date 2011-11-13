@@ -25,7 +25,7 @@ import org.f2o.absurdum.puck.gui.graph.Arrow;
 import org.f2o.absurdum.puck.gui.graph.ItemNode;
 import org.f2o.absurdum.puck.gui.graph.Node;
 import org.f2o.absurdum.puck.gui.graph.StructuralArrow;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -96,7 +96,7 @@ public class PathPanel extends ArrowPanel
 	public String getNameForElement()
 	{
 		String result;
-		if ( !getDirectionString().equals(Messages.getInstance().getMessage("dir.none")) )
+		if ( !getDirectionString().equals(UIMessages.getInstance().getMessage("dir.none")) )
 			result = getDirectionString();
 		else result = "";
 		
@@ -125,11 +125,11 @@ public class PathPanel extends ArrowPanel
 		
 //		possible structural relationship types
 		relTypes.clear();
-		relTypes.add(Messages.getInstance().getMessage("structural.room.room"));
+		relTypes.add(UIMessages.getInstance().getMessage("structural.room.room"));
 		relTypes.add(ArrowPanel.NO_STRUCTURAL_RELATIONSHIP);
 		
 		//default structural relationship type
-		this.relationshipType = Messages.getInstance().getMessage("structural.room.room"); //default relationship is this one (path)
+		this.relationshipType = UIMessages.getInstance().getMessage("structural.room.room"); //default relationship is this one (path)
 		
 		add(new JLabel("Path"));
 	}
@@ -153,17 +153,17 @@ public class PathPanel extends ArrowPanel
 		
 		//std. direction
 		Vector directions = new Vector();
-		directions.add(Messages.getInstance().getMessage("dir.none"));
-		directions.add(Messages.getInstance().getMessage("dir.n"));
-		directions.add(Messages.getInstance().getMessage("dir.s"));
-		directions.add(Messages.getInstance().getMessage("dir.e"));
-		directions.add(Messages.getInstance().getMessage("dir.w"));
-		directions.add(Messages.getInstance().getMessage("dir.u"));
-		directions.add(Messages.getInstance().getMessage("dir.d"));
-		directions.add(Messages.getInstance().getMessage("dir.nw"));
-		directions.add(Messages.getInstance().getMessage("dir.sw"));
-		directions.add(Messages.getInstance().getMessage("dir.ne"));
-		directions.add(Messages.getInstance().getMessage("dir.se"));
+		directions.add(UIMessages.getInstance().getMessage("dir.none"));
+		directions.add(UIMessages.getInstance().getMessage("dir.n"));
+		directions.add(UIMessages.getInstance().getMessage("dir.s"));
+		directions.add(UIMessages.getInstance().getMessage("dir.e"));
+		directions.add(UIMessages.getInstance().getMessage("dir.w"));
+		directions.add(UIMessages.getInstance().getMessage("dir.u"));
+		directions.add(UIMessages.getInstance().getMessage("dir.d"));
+		directions.add(UIMessages.getInstance().getMessage("dir.nw"));
+		directions.add(UIMessages.getInstance().getMessage("dir.sw"));
+		directions.add(UIMessages.getInstance().getMessage("dir.ne"));
+		directions.add(UIMessages.getInstance().getMessage("dir.se"));
 		
 		dirComboBox = new JComboBox ( new DefaultComboBoxModel ( directions ) );
 		dirComboBox.setSelectedItem( ((StructuralArrow)theArrow).getMostLikelyDirection() );
@@ -207,17 +207,17 @@ public class PathPanel extends ArrowPanel
 		mainTab.setLayout(new BoxLayout(mainTab,BoxLayout.PAGE_AXIS));
 		
 		JPanel srcPanel = new JPanel();
-		srcPanel.add ( new JLabel(Messages.getInstance().getMessage("path.src")) );
+		srcPanel.add ( new JLabel(UIMessages.getInstance().getMessage("path.src")) );
 		srcPanel.add ( srcComboBox );
 		mainTab.add(srcPanel);
 		
 		JPanel dstPanel = new JPanel();
-		dstPanel.add ( new JLabel(Messages.getInstance().getMessage("path.dst")) );
+		dstPanel.add ( new JLabel(UIMessages.getInstance().getMessage("path.dst")) );
 		dstPanel.add ( dstComboBox );
 		mainTab.add(dstPanel);
 		
 		JPanel enablePathPanel = new JPanel();
-		final JCheckBox enablePathCb = new JCheckBox(Messages.getInstance().getMessage("path.enable"));
+		final JCheckBox enablePathCb = new JCheckBox(UIMessages.getInstance().getMessage("path.enable"));
 		enablePathPanel.add(enablePathCb);
 		mainTab.add(enablePathPanel);
 		if ( relationshipType.equals ( ArrowPanel.NO_STRUCTURAL_RELATIONSHIP ) )
@@ -230,7 +230,7 @@ public class PathPanel extends ArrowPanel
 			public void actionPerformed ( ActionEvent evt )
 			{
 				if ( enablePathCb.isSelected() )
-					relationshipType = Messages.getInstance().getMessage("structural.room.room");
+					relationshipType = UIMessages.getInstance().getMessage("structural.room.room");
 				else
 					relationshipType = ArrowPanel.NO_STRUCTURAL_RELATIONSHIP;
 			}
@@ -242,17 +242,17 @@ public class PathPanel extends ArrowPanel
 		//initMinimal(); //direction //already done, not needed
 		
 		JPanel dirPanel = new JPanel();
-		dirPanel.add ( new JLabel(Messages.getInstance().getMessage("path.dir")) );
+		dirPanel.add ( new JLabel(UIMessages.getInstance().getMessage("path.dir")) );
 		dirPanel.add ( dirComboBox );
 		mainTab.add(dirPanel);
 		
 		JPanel doorPanel = new JPanel();
-		doorPanel.add( new JLabel(Messages.getInstance().getMessage("path.door")) );
+		doorPanel.add( new JLabel(UIMessages.getInstance().getMessage("path.door")) );
 		doorPanel.add( doorComboBox );
 		mainTab.add (doorPanel);
 		
 		JPanel lengthPanel = new JPanel();
-		lengthPanel.add( new JLabel(Messages.getInstance().getMessage("path.length")) );
+		lengthPanel.add( new JLabel(UIMessages.getInstance().getMessage("path.length")) );
 		lengthPanel.add( lengthTextField );
 		mainTab.add ( lengthPanel );
 		
@@ -270,7 +270,7 @@ public class PathPanel extends ArrowPanel
 		
 		//setVisible(true);
 		
-		jtp.add(mainTab,Messages.getInstance().getMessage("tab.structrel"),0);
+		jtp.add(mainTab,UIMessages.getInstance().getMessage("tab.structrel"),0);
 		jtp.setSelectedIndex(0);	
 		
 		
@@ -284,32 +284,32 @@ public class PathPanel extends ArrowPanel
 		
 		result.setAttribute("destination",dstComboBox.getSelectedItem().toString());
 		
-		if ( !dirComboBox.getSelectedItem().equals(Messages.getInstance().getMessage("none")) )
+		if ( !dirComboBox.getSelectedItem().equals(UIMessages.getInstance().getMessage("none")) )
 		{
 			result.setAttribute("standard","true");
 			
 			String directionString = "???";
-			if ( dirComboBox.getSelectedItem().equals(Messages.getInstance().getMessage("dir.n")) )
+			if ( dirComboBox.getSelectedItem().equals(UIMessages.getInstance().getMessage("dir.n")) )
 				directionString="norte";
-			if ( dirComboBox.getSelectedItem().equals(Messages.getInstance().getMessage("dir.s")) )
+			if ( dirComboBox.getSelectedItem().equals(UIMessages.getInstance().getMessage("dir.s")) )
 				directionString="sur";
-			if ( dirComboBox.getSelectedItem().equals(Messages.getInstance().getMessage("dir.e")) )
+			if ( dirComboBox.getSelectedItem().equals(UIMessages.getInstance().getMessage("dir.e")) )
 				directionString="este";
-			if ( dirComboBox.getSelectedItem().equals(Messages.getInstance().getMessage("dir.w")) )
+			if ( dirComboBox.getSelectedItem().equals(UIMessages.getInstance().getMessage("dir.w")) )
 				directionString="oeste";
-			if ( dirComboBox.getSelectedItem().equals(Messages.getInstance().getMessage("dir.n")) )
+			if ( dirComboBox.getSelectedItem().equals(UIMessages.getInstance().getMessage("dir.n")) )
 				directionString="norte";
-			if ( dirComboBox.getSelectedItem().equals(Messages.getInstance().getMessage("dir.nw")) )
+			if ( dirComboBox.getSelectedItem().equals(UIMessages.getInstance().getMessage("dir.nw")) )
 				directionString="noroeste";
-			if ( dirComboBox.getSelectedItem().equals(Messages.getInstance().getMessage("dir.sw")) )
+			if ( dirComboBox.getSelectedItem().equals(UIMessages.getInstance().getMessage("dir.sw")) )
 				directionString="suroeste";
-			if ( dirComboBox.getSelectedItem().equals(Messages.getInstance().getMessage("dir.ne")) )
+			if ( dirComboBox.getSelectedItem().equals(UIMessages.getInstance().getMessage("dir.ne")) )
 				directionString="nordeste";
-			if ( dirComboBox.getSelectedItem().equals(Messages.getInstance().getMessage("dir.se")) )
+			if ( dirComboBox.getSelectedItem().equals(UIMessages.getInstance().getMessage("dir.se")) )
 				directionString="sudeste";
-			if ( dirComboBox.getSelectedItem().equals(Messages.getInstance().getMessage("dir.u")) )
+			if ( dirComboBox.getSelectedItem().equals(UIMessages.getInstance().getMessage("dir.u")) )
 				directionString="arriba";
-			if ( dirComboBox.getSelectedItem().equals(Messages.getInstance().getMessage("dir.d")) )
+			if ( dirComboBox.getSelectedItem().equals(UIMessages.getInstance().getMessage("dir.d")) )
 				directionString="abajo";
 			
 			result.setAttribute("direction",directionString);
@@ -354,29 +354,29 @@ public class PathPanel extends ArrowPanel
 		{
 			String dirAttr = e.getAttribute("direction");
 			if ( "norte".equals(dirAttr) )
-				dirComboBox.setSelectedItem(Messages.getInstance().getMessage("dir.n"));
+				dirComboBox.setSelectedItem(UIMessages.getInstance().getMessage("dir.n"));
 			else if ( "sur".equals(dirAttr) )
-				dirComboBox.setSelectedItem(Messages.getInstance().getMessage("dir.s"));
+				dirComboBox.setSelectedItem(UIMessages.getInstance().getMessage("dir.s"));
 			else if ( "este".equals(dirAttr) )
-				dirComboBox.setSelectedItem(Messages.getInstance().getMessage("dir.e"));
+				dirComboBox.setSelectedItem(UIMessages.getInstance().getMessage("dir.e"));
 			else if ( "oeste".equals(dirAttr) )
-				dirComboBox.setSelectedItem(Messages.getInstance().getMessage("dir.w"));
+				dirComboBox.setSelectedItem(UIMessages.getInstance().getMessage("dir.w"));
 			else if ( "noroeste".equals(dirAttr) )
-				dirComboBox.setSelectedItem(Messages.getInstance().getMessage("dir.nw"));
+				dirComboBox.setSelectedItem(UIMessages.getInstance().getMessage("dir.nw"));
 			else if ( "suroeste".equals(dirAttr) )
-				dirComboBox.setSelectedItem(Messages.getInstance().getMessage("dir.sw"));
+				dirComboBox.setSelectedItem(UIMessages.getInstance().getMessage("dir.sw"));
 			else if ( "nordeste".equals(dirAttr) )
-				dirComboBox.setSelectedItem(Messages.getInstance().getMessage("dir.ne"));
+				dirComboBox.setSelectedItem(UIMessages.getInstance().getMessage("dir.ne"));
 			else if ( "sudeste".equals(dirAttr) )
-				dirComboBox.setSelectedItem(Messages.getInstance().getMessage("dir.se"));
+				dirComboBox.setSelectedItem(UIMessages.getInstance().getMessage("dir.se"));
 			else if ( "arriba".equals(dirAttr) )
-				dirComboBox.setSelectedItem(Messages.getInstance().getMessage("dir.u"));
+				dirComboBox.setSelectedItem(UIMessages.getInstance().getMessage("dir.u"));
 			else if ( "abajo".equals(dirAttr) )
-				dirComboBox.setSelectedItem(Messages.getInstance().getMessage("dir.d"));
+				dirComboBox.setSelectedItem(UIMessages.getInstance().getMessage("dir.d"));
 		}
 		else
 		{
-			dirComboBox.setSelectedItem(Messages.getInstance().getMessage("none"));
+			dirComboBox.setSelectedItem(UIMessages.getInstance().getMessage("none"));
 		}
 				
 		//description list panel init

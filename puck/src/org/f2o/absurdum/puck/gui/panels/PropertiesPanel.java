@@ -28,7 +28,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.f2o.absurdum.puck.gui.SpacingPanel;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJList;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
 import org.f2o.absurdum.puck.util.swing.SwingComponentHighlighter;
@@ -52,9 +52,9 @@ public class PropertiesPanel extends JPanel
 	private JTextField valTextField = new EnhancedJTextField(5);
 	private JTextField tuTextField = new EnhancedJTextField(2);
 	
-	private JButton delButton = new JButton(Messages.getInstance().getMessage("button.del"));
-	private JButton addButton = new JButton(Messages.getInstance().getMessage("button.add"));
-	private JButton modButton = new JButton(Messages.getInstance().getMessage("button.mod"));
+	private JButton delButton = new JButton(UIMessages.getInstance().getMessage("button.del"));
+	private JButton addButton = new JButton(UIMessages.getInstance().getMessage("button.add"));
+	private JButton modButton = new JButton(UIMessages.getInstance().getMessage("button.mod"));
 	//private JButton topButton = new JButton(Messages.getInstance().getMessage("button.top"));
 	
 	
@@ -92,7 +92,7 @@ public class PropertiesPanel extends JPanel
 	
 	public PropertiesPanel ( )
 	{
-		this ( Messages.getInstance().getMessage("label.properties") );
+		this ( UIMessages.getInstance().getMessage("label.properties") );
 	}
 	
 	public PropertiesPanel ( String title )
@@ -114,17 +114,17 @@ public class PropertiesPanel extends JPanel
 		this.setBorder(BorderFactory.createTitledBorder(title));
 		
 		JPanel p0 = new JPanel();
-		p0.add ( new JLabel(Messages.getInstance().getMessage("label.propname")) );
+		p0.add ( new JLabel(UIMessages.getInstance().getMessage("label.propname")) );
 		p0.add ( nameTextField );
 		add(p0);
 		
 		//JPanel p1 = new JPanel();
-		p0.add ( new JLabel(Messages.getInstance().getMessage("label.propval")) );
+		p0.add ( new JLabel(UIMessages.getInstance().getMessage("label.propval")) );
 		p0.add ( valTextField );
 		//add(p1);
 		
 		//JPanel p2 = new JPanel();
-		p0.add ( new JLabel(Messages.getInstance().getMessage("label.proptu")) );
+		p0.add ( new JLabel(UIMessages.getInstance().getMessage("label.proptu")) );
 		p0.add ( tuTextField );
 		//add(p2);
 		

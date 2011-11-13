@@ -24,7 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJList;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
 import org.w3c.dom.Document;
@@ -47,9 +47,9 @@ public class SkillsPanel extends JPanel
 	private JTextField nameTextField = new EnhancedJTextField(8);
 	private JTextField valueTextField = new EnhancedJTextField(5);
 	
-	private JButton delButton = new JButton(Messages.getInstance().getMessage("button.del"));
-	private JButton addButton = new JButton(Messages.getInstance().getMessage("button.add"));
-	private JButton modButton = new JButton(Messages.getInstance().getMessage("button.mod"));
+	private JButton delButton = new JButton(UIMessages.getInstance().getMessage("button.del"));
+	private JButton addButton = new JButton(UIMessages.getInstance().getMessage("button.add"));
+	private JButton modButton = new JButton(UIMessages.getInstance().getMessage("button.mod"));
 	
 	private DefaultListModel listContent = new DefaultListModel();
 	
@@ -68,7 +68,7 @@ public class SkillsPanel extends JPanel
 		theList = new EnhancedJList( listContent );
 		
 		//theList.setCellRenderer ( new PropertiesCellRenderer() );
-		theList.setCellRenderer ( new TwoStringCellRenderer(Messages.getInstance().getMessage("onlist.traitname"),Messages.getInstance().getMessage("onlist.traitval")) );
+		theList.setCellRenderer ( new TwoStringCellRenderer(UIMessages.getInstance().getMessage("onlist.traitname"),UIMessages.getInstance().getMessage("onlist.traitval")) );
 		
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		
@@ -80,14 +80,14 @@ public class SkillsPanel extends JPanel
 		jp.add(jsp,BorderLayout.CENTER);
 		this.add(jp);
 		
-		this.setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("label.skills")));
+		this.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("label.skills")));
 		
 		JPanel p0 = new JPanel();
-		p0.add ( new JLabel(Messages.getInstance().getMessage("label.traitname")) );
+		p0.add ( new JLabel(UIMessages.getInstance().getMessage("label.traitname")) );
 		p0.add ( nameTextField );
 		add(p0);
 		
-		p0.add ( new JLabel(Messages.getInstance().getMessage("label.traitval")) );
+		p0.add ( new JLabel(UIMessages.getInstance().getMessage("label.traitval")) );
 		p0.add ( valueTextField );
 		
 		JPanel buttonsPanel = new JPanel();

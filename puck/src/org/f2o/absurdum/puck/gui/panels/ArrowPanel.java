@@ -17,7 +17,7 @@ import javax.swing.JTabbedPane;
 
 import org.f2o.absurdum.puck.gui.graph.Arrow;
 import org.f2o.absurdum.puck.gui.graph.Node;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -54,7 +54,7 @@ public class ArrowPanel extends GraphElementPanel
 
 	
 	//String denoting that there is no structural relationship associated to an arrow (only, maybe, custom relationships)
-	public static final String NO_STRUCTURAL_RELATIONSHIP = Messages.getInstance().getMessage("structural.none");
+	public static final String NO_STRUCTURAL_RELATIONSHIP = UIMessages.getInstance().getMessage("structural.none");
 	
 	
 	public String getNameForElement()
@@ -201,11 +201,11 @@ public class ArrowPanel extends GraphElementPanel
 	public void addCustomRelationshipsTab()
 	{	
 		if ( customRelationshipsPanel == null ) //it could be != null and relevant if a save calls initMinimal and then the delayed load calls it too
-			customRelationshipsPanel = new PropertiesPanel( Messages.getInstance().getMessage("label.relationships"));	
+			customRelationshipsPanel = new PropertiesPanel( UIMessages.getInstance().getMessage("label.relationships"));	
 		JPanel customRelationshipsTab = new JPanel();
 		customRelationshipsTab.setLayout(new BoxLayout(customRelationshipsTab, BoxLayout.PAGE_AXIS));
 		customRelationshipsTab.add(customRelationshipsPanel);
-		jtp.add(customRelationshipsTab,Messages.getInstance().getMessage("tab.customrel"));
+		jtp.add(customRelationshipsTab,UIMessages.getInstance().getMessage("tab.customrel"));
 	}
 	
 	private String getDestinationName()

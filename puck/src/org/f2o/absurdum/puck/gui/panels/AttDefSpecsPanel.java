@@ -35,7 +35,7 @@ import javax.swing.JTextField;
 import org.f2o.absurdum.puck.gui.graph.Arrow;
 import org.f2o.absurdum.puck.gui.graph.ItemNode;
 import org.f2o.absurdum.puck.gui.graph.SpellNode;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
 import org.f2o.absurdum.puck.util.xml.DOMUtils;
 import org.w3c.dom.Document;
@@ -77,41 +77,41 @@ public class AttDefSpecsPanel extends JPanel
 		String type = (attack)?"attack":"defense";
 		
 		String title = (attack)?
-				Messages.getInstance().getMessage("weapon.attack")
+				UIMessages.getInstance().getMessage("weapon.attack")
 				: 
-				Messages.getInstance().getMessage("weapon.defense");
+				UIMessages.getInstance().getMessage("weapon.defense");
 		
 		setBorder(BorderFactory.createTitledBorder(title));		
 				
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		
 		JPanel minUsagePanel = new JPanel();
-		minUsagePanel.add(new JLabel(Messages.getInstance().getMessage("weapon."+type+".minusage")));
+		minUsagePanel.add(new JLabel(UIMessages.getInstance().getMessage("weapon."+type+".minusage")));
 		minUsagePanel.add(tfMinUsage);
 		this.add(minUsagePanel);
 		
 		JPanel probPanel = new JPanel();
-		probPanel.add(new JLabel(Messages.getInstance().getMessage("weapon."+type+".prob.steepness")));
+		probPanel.add(new JLabel(UIMessages.getInstance().getMessage("weapon."+type+".prob.steepness")));
 		probPanel.add(tfProbabilitySteepness);
 		this.add(probPanel);
 
 		JPanel timePanel = new JPanel();
-		timePanel.setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("weapon."+type+".time")));
-		timePanel.add(new JLabel(Messages.getInstance().getMessage("weapon."+type+".time.starting")));
+		timePanel.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("weapon."+type+".time")));
+		timePanel.add(new JLabel(UIMessages.getInstance().getMessage("weapon."+type+".time.starting")));
 		timePanel.add(tfTimeStarting);
-		timePanel.add(new JLabel(Messages.getInstance().getMessage("weapon."+type+".time.steepness")));
+		timePanel.add(new JLabel(UIMessages.getInstance().getMessage("weapon."+type+".time.steepness")));
 		timePanel.add(tfTimeSteepness);
 		this.add(timePanel);
 		
 		JPanel recoverPanel = new JPanel();
-		recoverPanel.setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("weapon."+type+".recovertime")));
-		recoverPanel.add(new JLabel(Messages.getInstance().getMessage("weapon."+type+".recovertime.starting")));
+		recoverPanel.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("weapon."+type+".recovertime")));
+		recoverPanel.add(new JLabel(UIMessages.getInstance().getMessage("weapon."+type+".recovertime.starting")));
 		recoverPanel.add(tfRecoverTimeStarting);
-		recoverPanel.add(new JLabel(Messages.getInstance().getMessage("weapon."+type+".recovertime.steepness")));
+		recoverPanel.add(new JLabel(UIMessages.getInstance().getMessage("weapon."+type+".recovertime.steepness")));
 		recoverPanel.add(tfRecoverTimeSteepness);
 		this.add(recoverPanel);
 		
-		damagePanel = new DamageListPanel(Messages.getInstance().getMessage("weapon."+type+".damage"));
+		damagePanel = new DamageListPanel(UIMessages.getInstance().getMessage("weapon."+type+".damage"));
 		this.add(damagePanel);
 		
 		skillsPanel = new SkillsPanel("relevance");

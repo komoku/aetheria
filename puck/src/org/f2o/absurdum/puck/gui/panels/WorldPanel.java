@@ -54,7 +54,7 @@ import org.f2o.absurdum.puck.gui.graph.Node;
 import org.f2o.absurdum.puck.gui.graph.RoomNode;
 import org.f2o.absurdum.puck.gui.graph.SpellNode;
 import org.f2o.absurdum.puck.gui.graph.StructuralArrow;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.f2o.absurdum.puck.util.UniqueNameEnforcer;
 import org.f2o.absurdum.puck.util.debug.Debug;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
@@ -188,50 +188,50 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		
 		firstTab.setLayout(new BoxLayout(firstTab, BoxLayout.PAGE_AXIS));
 		
-		JLabel header = new JLabel(Messages.getInstance().getMessage("worldpanel.header"));
+		JLabel header = new JLabel(UIMessages.getInstance().getMessage("worldpanel.header"));
 		header.setAlignmentX(JComponent.LEFT_ALIGNMENT); //does nothing
 		JPanel headerPanel = new JPanel();
 		headerPanel.add(header);
 		firstTab.add(headerPanel);
 		
 		JPanel shortNamePanel = new JPanel();
-		shortNamePanel.add(new JLabel(Messages.getInstance().getMessage("world.shortname")));
+		shortNamePanel.add(new JLabel(UIMessages.getInstance().getMessage("world.shortname")));
 		shortNamePanel.add(tfShortName);
 		firstTab.add(shortNamePanel);
 		
 		JPanel longNamePanel = new JPanel();
-		longNamePanel.add(new JLabel(Messages.getInstance().getMessage("world.longname")));
+		longNamePanel.add(new JLabel(UIMessages.getInstance().getMessage("world.longname")));
 		longNamePanel.add(tfLongName);
 		firstTab.add(longNamePanel);
 		
 		JPanel languagePanel = new JPanel();
-		cbLanguage = new JComboBox( new String[] { Messages.getInstance().getMessage("language.es") , Messages.getInstance().getMessage("language.en") } );
-		languagePanel.add(new JLabel(Messages.getInstance().getMessage("language")));
+		cbLanguage = new JComboBox( new String[] { UIMessages.getInstance().getMessage("language.es") , UIMessages.getInstance().getMessage("language.en") } );
+		languagePanel.add(new JLabel(UIMessages.getInstance().getMessage("language")));
 		languagePanel.add(cbLanguage);
 		firstTab.add(languagePanel);
 		
 		JPanel authorPanel = new JPanel();
-		authorPanel.add(new JLabel(Messages.getInstance().getMessage("world.author")));
+		authorPanel.add(new JLabel(UIMessages.getInstance().getMessage("world.author")));
 		authorPanel.add(tfAuthor);
 		firstTab.add(authorPanel);
 		
 		JPanel versionPanel = new JPanel();
-		versionPanel.add(new JLabel(Messages.getInstance().getMessage("world.version")));
+		versionPanel.add(new JLabel(UIMessages.getInstance().getMessage("world.version")));
 		versionPanel.add(tfVersion);
 		firstTab.add(versionPanel);
 		
 		JPanel ageVersionPanel = new JPanel();
-		ageVersionPanel.add(new JLabel(Messages.getInstance().getMessage("world.ageversion")));
+		ageVersionPanel.add(new JLabel(UIMessages.getInstance().getMessage("world.ageversion")));
 		ageVersionPanel.add(tfAgeVersion);
 		firstTab.add(ageVersionPanel);
 		
 		JPanel datePanel = new JPanel();
-		datePanel.add(new JLabel(Messages.getInstance().getMessage("world.date")));
+		datePanel.add(new JLabel(UIMessages.getInstance().getMessage("world.date")));
 		datePanel.add(tfDate);
 		firstTab.add(datePanel);
 		
 		JPanel typePanel = new JPanel();
-		typePanel.add(new JLabel(Messages.getInstance().getMessage("world.type")));
+		typePanel.add(new JLabel(UIMessages.getInstance().getMessage("world.type")));
 		typePanel.add(tfType);
 		firstTab.add(typePanel);
 		
@@ -244,7 +244,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		secondTab.setLayout(new BoxLayout(secondTab, BoxLayout.PAGE_AXIS));
 		
 		JPanel colorsPanel = new JPanel( new GridLayout(10,1) );
-		colorsPanel.setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("label.colors")));
+		colorsPanel.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("label.colors")));
 		
 
 		
@@ -283,21 +283,21 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		
 		JPanel fontPanel = new JPanel();
 		fontPanel.setLayout(new BoxLayout(fontPanel,BoxLayout.PAGE_AXIS));
-		fontPanel.setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("label.font")));
+		fontPanel.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("label.font")));
 
 		JPanel fontNamePanel = new JPanel();
-		fontNamePanel.add(new JLabel(Messages.getInstance().getMessage("label.font.name")));
+		fontNamePanel.add(new JLabel(UIMessages.getInstance().getMessage("label.font.name")));
 		fontNamePanel.add(tfFontName);
 		tfFontName.setText("Courier New");
 		fontPanel.add(fontNamePanel);
 		
 		JPanel fontFilenamePanel = new JPanel();
-		fontFilenamePanel.add(new JLabel(Messages.getInstance().getMessage("label.font.filename")));
+		fontFilenamePanel.add(new JLabel(UIMessages.getInstance().getMessage("label.font.filename")));
 		fontFilenamePanel.add(tfFontFile);
 		fontPanel.add(fontFilenamePanel);
 		
 		JPanel fontSizePanel = new JPanel();
-		fontSizePanel.add(new JLabel(Messages.getInstance().getMessage("label.font.size")));
+		fontSizePanel.add(new JLabel(UIMessages.getInstance().getMessage("label.font.size")));
 		fontSizePanel.add(tfFontSize);
 		tfFontSize.setText("15");
 		fontPanel.add(fontSizePanel);
@@ -305,7 +305,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		
 		secondTab.add(fontPanel);
 		
-		jtp.add(Messages.getInstance().getMessage("tab.visualconf"),secondTab);
+		jtp.add(UIMessages.getInstance().getMessage("tab.visualconf"),secondTab);
 		
 		
 		
@@ -313,7 +313,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		
 		thirdTab.setLayout(new BoxLayout(thirdTab, BoxLayout.PAGE_AXIS));
 		thirdTab.add(entitiesPanel);
-		jtp.add(Messages.getInstance().getMessage("tab.entities"),thirdTab);
+		jtp.add(UIMessages.getInstance().getMessage("tab.entities"),thirdTab);
 		
 		
 	}
@@ -347,7 +347,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		result.setAttribute("moduleName",tfLongName.getText());
 		
 		String languageString = (String) cbLanguage.getSelectedItem();
-		if (languageString.equals(Messages.getInstance().getMessage("language.en")))
+		if (languageString.equals(UIMessages.getInstance().getMessage("language.en")))
 			result.setAttribute("language","en");
 		else
 			result.setAttribute("language","es");
@@ -929,7 +929,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		
 		if ( metaInfNode == null )
 		{
-			JOptionPane.showMessageDialog(this,Messages.getInstance().getMessage("warning.nometa.text"),Messages.getInstance().getMessage("warning.nometa.title"),JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(this,UIMessages.getInstance().getMessage("warning.nometa.text"),UIMessages.getInstance().getMessage("warning.nometa.title"),JOptionPane.WARNING_MESSAGE);
 		}
 				
 		//add room nodes
@@ -1239,7 +1239,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 				
 				Element inventoryNode = (Element) inventoryNodes.item(0);
 				
-				initEntityToItemRelationships ( namesToNodes , src , inventoryNode , destNodeToArrow , Messages.getInstance().getMessage("structural.char.item.carry") );
+				initEntityToItemRelationships ( namesToNodes , src , inventoryNode , destNodeToArrow , UIMessages.getInstance().getMessage("structural.char.item.carry") );
 				
 			}
 			
@@ -1254,7 +1254,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 				if ( partsInventoryNodes.getLength() > 0 )
 				{
 					Element partsInventoryNode = (Element) partsInventoryNodes.item(0);
-					initEntityToItemRelationships ( namesToNodes , src , partsInventoryNode , destNodeToArrow , Messages.getInstance().getMessage("structural.char.item.haspart") );
+					initEntityToItemRelationships ( namesToNodes , src , partsInventoryNode , destNodeToArrow , UIMessages.getInstance().getMessage("structural.char.item.haspart") );
 				}
 			}
 			
@@ -1344,7 +1344,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 			
 				Element inventoryNode = (Element) inventoryNodes.item(0);
 				
-				initEntityToItemRelationships ( namesToNodes , src , inventoryNode , destNodeToArrow , Messages.getInstance().getMessage("structural.item.item.contain") );
+				initEntityToItemRelationships ( namesToNodes , src , inventoryNode , destNodeToArrow , UIMessages.getInstance().getMessage("structural.item.item.contain") );
 				
 				/*
 				NodeList itemRefNodes = inventoryNode.getElementsByTagName("ItemRef");
@@ -1387,7 +1387,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 				if ( partsInventoryNodes.getLength() > 0 )
 				{
 					Element partsInventoryNode = (Element) partsInventoryNodes.item(0);
-					initEntityToItemRelationships ( namesToNodes , src , partsInventoryNode , destNodeToArrow , Messages.getInstance().getMessage("structural.item.item.haspart") );
+					initEntityToItemRelationships ( namesToNodes , src , partsInventoryNode , destNodeToArrow , UIMessages.getInstance().getMessage("structural.item.item.haspart") );
 				}
 			}
 			
@@ -1402,7 +1402,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 				if ( keysInventoryNodes.getLength() > 0 )
 				{
 					Element keysInventoryNode = (Element) keysInventoryNodes.item(0);
-					initEntityToItemRelationships ( namesToNodes , src , keysInventoryNode , destNodeToArrow ,  Messages.getInstance().getMessage("structural.item.item.haskey") );
+					initEntityToItemRelationships ( namesToNodes , src , keysInventoryNode , destNodeToArrow ,  UIMessages.getInstance().getMessage("structural.item.item.haskey") );
 				}
 			}
 			

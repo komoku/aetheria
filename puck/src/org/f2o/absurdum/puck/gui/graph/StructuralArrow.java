@@ -25,7 +25,7 @@ import org.f2o.absurdum.puck.gui.panels.RoomHasCharPanel;
 import org.f2o.absurdum.puck.gui.panels.RoomHasItemPanel;
 import org.f2o.absurdum.puck.gui.panels.RoomPanel;
 import org.f2o.absurdum.puck.gui.panels.SpellHasEffectPanel;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 
 /**
  * @author carlos
@@ -103,17 +103,17 @@ public class StructuralArrow extends Arrow
 			angle += 2*Math.PI;
 	
 		if ( angle >= 0.0 && angle <= Math.PI/4 )
-			return Messages.getInstance().getMessage("dir.e");
+			return UIMessages.getInstance().getMessage("dir.e");
 		if ( angle >= Math.PI/4 && angle <= 3*Math.PI/4 )
-			return Messages.getInstance().getMessage("dir.s");
+			return UIMessages.getInstance().getMessage("dir.s");
 		if ( angle >= 3*Math.PI/4 && angle <= 5*Math.PI/4 )
-			return Messages.getInstance().getMessage("dir.w");
+			return UIMessages.getInstance().getMessage("dir.w");
 		if ( angle >= 5*Math.PI/4 && angle <= 7*Math.PI/4 )
-			return Messages.getInstance().getMessage("dir.n");
+			return UIMessages.getInstance().getMessage("dir.n");
 		if ( angle >= 7*Math.PI/4 && angle <= 8*Math.PI/4 )
-			return Messages.getInstance().getMessage("dir.e");
+			return UIMessages.getInstance().getMessage("dir.e");
 		else
-			return Messages.getInstance().getMessage("dir.u");
+			return UIMessages.getInstance().getMessage("dir.u");
 		
 	}
 	

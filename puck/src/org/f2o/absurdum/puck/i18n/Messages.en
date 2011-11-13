@@ -290,3 +290,5 @@ bsh.errors.ok=Close
 language=Language
 language.es=Spanish
 language.en=English
+language.changed=PUCK's interface language has been changed to English, but you will need to restart PUCK for the change to totally take place.
+language.changed.title=Language change

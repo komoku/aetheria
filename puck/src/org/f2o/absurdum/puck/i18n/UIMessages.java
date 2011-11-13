@@ -14,27 +14,26 @@ import java.util.Properties;
 
 import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
 
-import eu.irreality.age.swing.config.AGEConfiguration;
-
 /**
  * @author carlos
  *
  * Created at regulus, 19-jul-2005 19:38:28
  */
-public /*Singleton*/ class Messages 
+public /*Singleton*/ class UIMessages 
 {
 
-	private static Messages instance;
+	private static UIMessages instance;
 	
 	private Properties properties;
+	
 	
 	/**
 	 * Obtains the language code for the user's preferred language as configured in the AGE configuration file.
 	 * If no language is configured in the file, then if the JVM locale is Spanish or English, it returns that language.
-	 * In other case, it returns Spanish.
+	 * In other case, it returns English.
 	 * @return
 	 */
-	private String getPreferredLanguage()
+	public String getPreferredLanguage()
 	{
 		String configuredLanguage = PuckConfiguration.getInstance().getProperty("language");
 		if ( configuredLanguage != null ) return configuredLanguage;
@@ -49,21 +48,36 @@ public /*Singleton*/ class Messages
 			PuckConfiguration.getInstance().setProperty("language","en");
 			return "en";
 		}
-		return "es";
+		return "en";
 	}
 	
-	private Messages()
+	public void setPreferredLanguage ( String language )
+	{
+		String oldLanguage = getPreferredLanguage();
+		if ( !oldLanguage.equals(language) )
+		{
+			PuckConfiguration.getInstance().setProperty("language",language);
+			initForLanguage(language);
+		}
+	}
+	
+	private UIMessages()
 	{
 		String lang = getPreferredLanguage();
 		try
 		{
-			init("org/f2o/absurdum/puck/i18n/Messages."+lang);
+			initForLanguage(lang);
 		}
 		catch ( Exception exc )
 		{
 			System.err.println("Could not load PUCK UI message file for language " + lang + ", will try with the default message file.\n");
 			init("org/f2o/absurdum/puck/i18n/Messages.properties");
 		}
+	}
+	
+	private void initForLanguage ( String lang )
+	{
+		init("org/f2o/absurdum/puck/i18n/Messages." + lang);
 	}
 	
 	public void init ( String pathToMessageFile )
@@ -87,10 +101,10 @@ public /*Singleton*/ class Messages
 		return ( mess != null ? mess : "??" + key + "??" );
 	}
 	
-	public static Messages getInstance()
+	public static UIMessages getInstance()
 	{
 		if ( instance == null )
-			instance = new Messages();
+			instance = new UIMessages();
 		return instance;
 	}
 

@@ -26,7 +26,7 @@ import javax.swing.JTextField;
 import org.f2o.absurdum.puck.bsh.BeanShellCodeHolder;
 import org.f2o.absurdum.puck.gui.graph.Arrow;
 import org.f2o.absurdum.puck.gui.graph.RoomNode;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -92,7 +92,7 @@ public class RoomPanel extends EntityPanel implements BeanShellCodeHolder
 		firstTab.setLayout(new BoxLayout(firstTab, BoxLayout.PAGE_AXIS));
 		
 		JPanel namePanel = new JPanel();
-		namePanel.add(new JLabel(Messages.getInstance().getMessage("entity.uniquename")));
+		namePanel.add(new JLabel(UIMessages.getInstance().getMessage("entity.uniquename")));
 		namePanel.add(nameTextField);
 		firstTab.add(namePanel);
 		
@@ -101,7 +101,7 @@ public class RoomPanel extends EntityPanel implements BeanShellCodeHolder
 		extendsComboBox = new JComboBox ( new DefaultComboBoxModel ( roomNodes ) );
 		
 		JPanel extendsPanel = new JPanel();
-		extendsPanel.add ( new JLabel(Messages.getInstance().getMessage("inherit.from")) );
+		extendsPanel.add ( new JLabel(UIMessages.getInstance().getMessage("inherit.from")) );
 		extendsPanel.add( extendsComboBox );
 		firstTab.add(extendsPanel);
 		
@@ -124,7 +124,7 @@ public class RoomPanel extends EntityPanel implements BeanShellCodeHolder
 		pp = new PropertiesPanel();
 		secondTab.add(pp);
 		
-		jtp.add(Messages.getInstance().getMessage("tab.codeprop"),secondTab);
+		jtp.add(UIMessages.getInstance().getMessage("tab.codeprop"),secondTab);
 		
 	}
 	
@@ -136,7 +136,7 @@ public class RoomPanel extends EntityPanel implements BeanShellCodeHolder
 		
 		result.setAttribute("name",this.getName());
 		
-		if ( !extendsComboBox.getSelectedItem().equals(Messages.getInstance().getMessage("none") ))
+		if ( !extendsComboBox.getSelectedItem().equals(UIMessages.getInstance().getMessage("none") ))
 			result.setAttribute("extends",extendsComboBox.getSelectedItem().toString());
 		
 		result.appendChild((Element)dlp.getXML(d));
@@ -167,7 +167,7 @@ public class RoomPanel extends EntityPanel implements BeanShellCodeHolder
 			GraphElementPanel gep = ((Arrow)arrows.get(i)).getAssociatedPanel();
 			if ( gep instanceof PathPanel )
 			{
-				if ( ((PathPanel)gep).getRelationshipType().equals(Messages.getInstance().getMessage("structural.room.room")) ) //there is a path
+				if ( ((PathPanel)gep).getRelationshipType().equals(UIMessages.getInstance().getMessage("structural.room.room")) ) //there is a path
 				{
 					pathElt.appendChild(((PathPanel)gep).getXML(d));
 				}

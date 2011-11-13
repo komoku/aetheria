@@ -27,7 +27,7 @@ import javax.swing.JTextField;
 import org.f2o.absurdum.puck.bsh.BeanShellCodeHolder;
 import org.f2o.absurdum.puck.gui.graph.Arrow;
 import org.f2o.absurdum.puck.gui.graph.CharacterNode;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -73,7 +73,7 @@ public class CharPanel extends EntityPanel implements BeanShellCodeHolder
 	private JTextField tfMaxMP = new EnhancedJTextField("10",5);
 	private JComboBox genderComboBox = new JComboBox();
 	
-	private JCheckBox cbPlayer = new JCheckBox(Messages.getInstance().getMessage("char.isplayer"));
+	private JCheckBox cbPlayer = new JCheckBox(UIMessages.getInstance().getMessage("char.isplayer"));
 	
 	
 	public boolean isPlayer ( )
@@ -127,7 +127,7 @@ public class CharPanel extends EntityPanel implements BeanShellCodeHolder
 		firstTab.setLayout(new BoxLayout(firstTab, BoxLayout.PAGE_AXIS));
 		
 		JPanel namePanel = new JPanel();
-		namePanel.add(new JLabel(Messages.getInstance().getMessage("entity.uniquename")));
+		namePanel.add(new JLabel(UIMessages.getInstance().getMessage("entity.uniquename")));
 		namePanel.add(nameTextField);
 		firstTab.add(namePanel);
 		
@@ -137,31 +137,31 @@ public class CharPanel extends EntityPanel implements BeanShellCodeHolder
 		clonesComboBox = new JComboBox ( new DefaultComboBoxModel ( charNodes ) );
 		
 		JPanel extendsPanel = new JPanel();
-		extendsPanel.add ( new JLabel(Messages.getInstance().getMessage("inherit.from")) );
+		extendsPanel.add ( new JLabel(UIMessages.getInstance().getMessage("inherit.from")) );
 		extendsPanel.add ( extendsComboBox );
 		firstTab.add(extendsPanel);
 		JPanel clonesPanel = new JPanel();
-		clonesPanel.add ( new JLabel(Messages.getInstance().getMessage("clone.from")) );
+		clonesPanel.add ( new JLabel(UIMessages.getInstance().getMessage("clone.from")) );
 		clonesPanel.add ( clonesComboBox );
 		firstTab.add(clonesPanel);
 		
 		JPanel genderPanel = new JPanel();
-		genderComboBox = new JComboBox ( new String[] { Messages.getInstance().getMessage("gender.m") , Messages.getInstance().getMessage("gender.f") } );
-		genderPanel.add(new JLabel(Messages.getInstance().getMessage("gender")));
+		genderComboBox = new JComboBox ( new String[] { UIMessages.getInstance().getMessage("gender.m") , UIMessages.getInstance().getMessage("gender.f") } );
+		genderPanel.add(new JLabel(UIMessages.getInstance().getMessage("gender")));
 		genderPanel.add(genderComboBox);
 		firstTab.add(genderPanel);
 		
 		JPanel hpPanel = new JPanel();
-		hpPanel.add(new JLabel(Messages.getInstance().getMessage("char.hp")));
+		hpPanel.add(new JLabel(UIMessages.getInstance().getMessage("char.hp")));
 		hpPanel.add(tfHP);
-		hpPanel.add(new JLabel(Messages.getInstance().getMessage("char.hpmax")));
+		hpPanel.add(new JLabel(UIMessages.getInstance().getMessage("char.hpmax")));
 		hpPanel.add(tfMaxHP);
 		firstTab.add(hpPanel);
 		
 		JPanel mpPanel = new JPanel();
-		mpPanel.add(new JLabel(Messages.getInstance().getMessage("char.mp")));
+		mpPanel.add(new JLabel(UIMessages.getInstance().getMessage("char.mp")));
 		mpPanel.add(tfMP);
-		mpPanel.add(new JLabel(Messages.getInstance().getMessage("char.mpmax")));
+		mpPanel.add(new JLabel(UIMessages.getInstance().getMessage("char.mpmax")));
 		mpPanel.add(tfMaxMP);
 		firstTab.add(mpPanel);
 		
@@ -183,19 +183,19 @@ public class CharPanel extends EntityPanel implements BeanShellCodeHolder
 		
 		thirdTab.setLayout(new BoxLayout(thirdTab, BoxLayout.PAGE_AXIS));
 		
-		snp = new DescriptionListPanel(Messages.getInstance().getMessage("label.singnames"),Messages.getInstance().getMessage("label.name"),false,true,1);
+		snp = new DescriptionListPanel(UIMessages.getInstance().getMessage("label.singnames"),UIMessages.getInstance().getMessage("label.name"),false,true,1);
 		thirdTab.add(snp);
 		
-		pnp = new DescriptionListPanel(Messages.getInstance().getMessage("label.plurnames"),Messages.getInstance().getMessage("label.name"),1);
+		pnp = new DescriptionListPanel(UIMessages.getInstance().getMessage("label.plurnames"),UIMessages.getInstance().getMessage("label.name"),1);
 		thirdTab.add(pnp);
 		
-		srn = new PathCommandsPanel(Messages.getInstance().getMessage("label.singrefnames"),Messages.getInstance().getMessage("label.name"),true);
+		srn = new PathCommandsPanel(UIMessages.getInstance().getMessage("label.singrefnames"),UIMessages.getInstance().getMessage("label.name"),true);
 		thirdTab.add(srn);
 		
-		prn = new PathCommandsPanel(Messages.getInstance().getMessage("label.plurrefnames"),Messages.getInstance().getMessage("label.name"),true);
+		prn = new PathCommandsPanel(UIMessages.getInstance().getMessage("label.plurrefnames"),UIMessages.getInstance().getMessage("label.name"),true);
 		thirdTab.add(prn);
 		
-		jtp.add(Messages.getInstance().getMessage("tab.names"),thirdTab);
+		jtp.add(UIMessages.getInstance().getMessage("tab.names"),thirdTab);
 		
 		
 		JPanel secondTab = new JPanel();
@@ -208,7 +208,7 @@ public class CharPanel extends EntityPanel implements BeanShellCodeHolder
 		pp = new PropertiesPanel();
 		secondTab.add(pp);
 		
-		jtp.add(Messages.getInstance().getMessage("tab.codeprop"),secondTab);
+		jtp.add(UIMessages.getInstance().getMessage("tab.codeprop"),secondTab);
 		
 		
 		JPanel traitsTab = new JPanel();
@@ -218,7 +218,7 @@ public class CharPanel extends EntityPanel implements BeanShellCodeHolder
 		sp = new SkillsPanel();
 		traitsTab.add(sp);
 		
-		jtp.add(Messages.getInstance().getMessage("tab.traits"),traitsTab);
+		jtp.add(UIMessages.getInstance().getMessage("tab.traits"),traitsTab);
 
 		
 	}
@@ -244,14 +244,14 @@ public class CharPanel extends EntityPanel implements BeanShellCodeHolder
 		result.setAttribute("maxmp",String.valueOf(getIntegerFromField(tfMaxMP,20)));
 		
 		String genderString = (String) genderComboBox.getSelectedItem();
-		if (genderString.equals(Messages.getInstance().getMessage("gender.m")))
+		if (genderString.equals(UIMessages.getInstance().getMessage("gender.m")))
 			result.setAttribute("gender","true");
 		else
 			result.setAttribute("gender","false");
 		
-		if ( !extendsComboBox.getSelectedItem().equals(Messages.getInstance().getMessage("none") ))
+		if ( !extendsComboBox.getSelectedItem().equals(UIMessages.getInstance().getMessage("none") ))
 			result.setAttribute("extends",extendsComboBox.getSelectedItem().toString());
-		if ( !clonesComboBox.getSelectedItem().equals(Messages.getInstance().getMessage("none") ))
+		if ( !clonesComboBox.getSelectedItem().equals(UIMessages.getInstance().getMessage("none") ))
 			result.setAttribute("clones",clonesComboBox.getSelectedItem().toString());
 		
 		//names
@@ -294,12 +294,12 @@ public class CharPanel extends EntityPanel implements BeanShellCodeHolder
 			{
 				CharHasItemPanel relPanel = (CharHasItemPanel) gep;
 				String relType = relPanel.getRelationshipType();
-				if ( relType.equals(Messages.getInstance().getMessage("structural.char.item.carry")) ) //carry relationship
+				if ( relType.equals(UIMessages.getInstance().getMessage("structural.char.item.carry")) ) //carry relationship
 				{
 					if ( invElt == null ) invElt = d.createElement("Inventory");
 					invElt.appendChild( relPanel.getXML(d) );
 				}
-				if ( relType.equals(Messages.getInstance().getMessage("structural.char.item.haspart")) ) //has-part relationship
+				if ( relType.equals(UIMessages.getInstance().getMessage("structural.char.item.haspart")) ) //has-part relationship
 				{
 					if ( partsElt == null ) partsElt = d.createElement("Inventory");
 					partsElt.appendChild( relPanel.getXML(d) );
@@ -310,7 +310,7 @@ public class CharPanel extends EntityPanel implements BeanShellCodeHolder
 			{
 				CharHasSpellPanel relPanel = (CharHasSpellPanel) gep;
 				String relType = relPanel.getRelationshipType();
-				if ( relType.equals(Messages.getInstance().getMessage("structural.char.spell.know")) ) //know relationship
+				if ( relType.equals(UIMessages.getInstance().getMessage("structural.char.spell.know")) ) //know relationship
 				{
 					if ( spellsElt == null ) spellsElt = d.createElement("SpellList");
 					spellsElt.appendChild( relPanel.getXML(d) );

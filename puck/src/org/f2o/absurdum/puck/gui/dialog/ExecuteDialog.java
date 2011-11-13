@@ -31,7 +31,7 @@ import javax.swing.event.ChangeListener;
 
 import org.f2o.absurdum.puck.gui.PuckFrame;
 import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 
 import eu.irreality.age.FiltroFicheroLog;
 import eu.irreality.age.Utility;
@@ -41,13 +41,13 @@ import eu.irreality.age.server.ServerHandler;
 public class ExecuteDialog extends JDialog 
 {
 
-    private JRadioButton mdiButton = new JRadioButton(Messages.getInstance().getMessage("exec.mdi"));
-    private JRadioButton sdiButton = new JRadioButton(Messages.getInstance().getMessage("exec.sdi"));
-    private JCheckBox logCheckBox = new JCheckBox(Messages.getInstance().getMessage("exec.uselog"));
+    private JRadioButton mdiButton = new JRadioButton(UIMessages.getInstance().getMessage("exec.mdi"));
+    private JRadioButton sdiButton = new JRadioButton(UIMessages.getInstance().getMessage("exec.sdi"));
+    private JCheckBox logCheckBox = new JCheckBox(UIMessages.getInstance().getMessage("exec.uselog"));
     private JTextField logTextField = new JTextField(20);
-    private JButton logBrowseButton = new JButton(Messages.getInstance().getMessage("exec.browse"));
-    private JButton okButton = new JButton(Messages.getInstance().getMessage("exec.ok"));
-    private JButton cancelButton = new JButton(Messages.getInstance().getMessage("exec.cancel"));
+    private JButton logBrowseButton = new JButton(UIMessages.getInstance().getMessage("exec.browse"));
+    private JButton okButton = new JButton(UIMessages.getInstance().getMessage("exec.ok"));
+    private JButton cancelButton = new JButton(UIMessages.getInstance().getMessage("exec.cancel"));
     
     private PuckFrame frame;
     
@@ -58,7 +58,7 @@ public class ExecuteDialog extends JDialog
 	this.frame = pf;
 	this.setModal(true);
 	this.setResizable(false);
-	setTitle(Messages.getInstance().getMessage("exec.dialogtitle"));
+	setTitle(UIMessages.getInstance().getMessage("exec.dialogtitle"));
 	
 	//lay out the components
 	
@@ -74,7 +74,7 @@ public class ExecuteDialog extends JDialog
 		mdiButton.setSelected(true);
 	
 	getContentPane().setLayout(new BoxLayout(getContentPane(),BoxLayout.PAGE_AXIS));
-	getContentPane().add(new JLabel(Messages.getInstance().getMessage("exec.interface")));
+	getContentPane().add(new JLabel(UIMessages.getInstance().getMessage("exec.interface")));
 	getContentPane().add(mdiButton);
 	getContentPane().add(sdiButton);
 	
@@ -117,7 +117,7 @@ public class ExecuteDialog extends JDialog
 	getContentPane().add(new JSeparator());
 	getContentPane().add(Box.createRigidArea(new Dimension(0,10)));
 	
-	JLabel lConfirm = new JLabel(Messages.getInstance().getMessage("exec.wanttosave"));
+	JLabel lConfirm = new JLabel(UIMessages.getInstance().getMessage("exec.wanttosave"));
 	//lConfirm.setAlignmentX(JComponent.LEFT_ALIGNMENT);
 	getContentPane().add(Box.createRigidArea(new Dimension(0,10)));
 	getContentPane().add(lConfirm);

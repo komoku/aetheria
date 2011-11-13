@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.f2o.absurdum.puck.gui.graph.Arrow;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -71,7 +71,7 @@ public class GenericRelationshipPanel extends ArrowPanel
 		mainTab.setLayout(new BoxLayout(mainTab,BoxLayout.PAGE_AXIS));
 		
 		JPanel srcPanel = new JPanel();
-		srcPanel.add ( new JLabel(Messages.getInstance().getMessage("entityentity.src")) );
+		srcPanel.add ( new JLabel(UIMessages.getInstance().getMessage("entityentity.src")) );
 		srcPanel.add ( srcComboBox );
 		mainTab.add(srcPanel);
 		
@@ -84,13 +84,13 @@ public class GenericRelationshipPanel extends ArrowPanel
 		*/
 		
 		JPanel dstPanel = new JPanel();
-		dstPanel.add ( new JLabel(Messages.getInstance().getMessage("entityentity.dst")) );
+		dstPanel.add ( new JLabel(UIMessages.getInstance().getMessage("entityentity.dst")) );
 		dstPanel.add ( dstComboBox );
 		mainTab.add(dstPanel);
 		
 		//setVisible(true);
 		
-		jtp.add(mainTab,Messages.getInstance().getMessage("tab.structrel"),0);
+		jtp.add(mainTab,UIMessages.getInstance().getMessage("tab.structrel"),0);
 		jtp.setSelectedIndex(0);
 		
 	}

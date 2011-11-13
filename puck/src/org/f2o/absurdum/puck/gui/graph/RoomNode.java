@@ -22,7 +22,7 @@ import org.f2o.absurdum.puck.gui.panels.EntityPanel;
 import org.f2o.absurdum.puck.gui.panels.GraphElementPanel;
 import org.f2o.absurdum.puck.gui.panels.RoomPanel;
 import org.f2o.absurdum.puck.gui.skin.ImageManager;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 
 
 /**
@@ -226,7 +226,7 @@ public class RoomNode extends Node
 			//EntityPanel ep = (EntityPanel) associatedPanel;
 			return associatedPanel.getName();
 		}
-		else return Messages.getInstance().getMessage("unnamed.room");
+		else return UIMessages.getInstance().getMessage("unnamed.room");
 	}
 	
 	public String toString()

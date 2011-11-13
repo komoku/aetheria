@@ -25,7 +25,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJList;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
 import org.w3c.dom.Document;
@@ -51,10 +51,10 @@ public class DamageListPanel extends JPanel
 	private JTextField formulaTextField = new EnhancedJTextField(20);
 	
 	
-	private JButton delButton = new JButton(Messages.getInstance().getMessage("button.del"));
-	private JButton addButton = new JButton(Messages.getInstance().getMessage("button.add"));
-	private JButton modButton = new JButton(Messages.getInstance().getMessage("button.mod"));
-	private JButton topButton = new JButton(Messages.getInstance().getMessage("button.top"));
+	private JButton delButton = new JButton(UIMessages.getInstance().getMessage("button.del"));
+	private JButton addButton = new JButton(UIMessages.getInstance().getMessage("button.add"));
+	private JButton modButton = new JButton(UIMessages.getInstance().getMessage("button.mod"));
+	private JButton topButton = new JButton(UIMessages.getInstance().getMessage("button.top"));
 	
 	private JLabel formulaLabel;
 	private JLabel typeLabel;
@@ -63,8 +63,8 @@ public class DamageListPanel extends JPanel
 	public DefaultListModel listContent = new DefaultListModel();
 	
 	
-	private static String typeLabelText = Messages.getInstance().getMessage("label.damage.type");
-	private static String formulaLabelText = Messages.getInstance().getMessage("label.damage.formula");
+	private static String typeLabelText = UIMessages.getInstance().getMessage("label.damage.type");
+	private static String formulaLabelText = UIMessages.getInstance().getMessage("label.damage.formula");
 	
 	
 	public DamageListPanel ( String borderText )

@@ -34,7 +34,7 @@ import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJList;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
 import org.f2o.absurdum.puck.util.swing.SwingComponentHighlighter;
@@ -60,10 +60,10 @@ public class PathCommandsPanel extends JPanel
 	private JTextField commandTextField = new EnhancedJTextField(20);
 	
 	
-	private JButton delButton = new JButton(Messages.getInstance().getMessage("button.del"));
-	private JButton addButton = new JButton(Messages.getInstance().getMessage("button.add"));
-	private JButton modButton = new JButton(Messages.getInstance().getMessage("button.mod"));
-	private JButton topButton = new JButton(Messages.getInstance().getMessage("button.top"));
+	private JButton delButton = new JButton(UIMessages.getInstance().getMessage("button.del"));
+	private JButton addButton = new JButton(UIMessages.getInstance().getMessage("button.add"));
+	private JButton modButton = new JButton(UIMessages.getInstance().getMessage("button.mod"));
+	private JButton topButton = new JButton(UIMessages.getInstance().getMessage("button.top"));
 	
 	private JLabel cmdLabel;
 	private JPanel buttonsPanel;
@@ -119,7 +119,7 @@ public class PathCommandsPanel extends JPanel
 		theList.setCellRenderer ( new SingleStringCellRenderer() );
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		
-		this.setBorder(BorderFactory.createTitledBorder(Messages.getInstance().getMessage("path.commands")));
+		this.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("path.commands")));
 		
 		//this.add(new JScrollPane(theList));
 		jsp = new JScrollPane(theList);
@@ -132,7 +132,7 @@ public class PathCommandsPanel extends JPanel
 		//this.add(theList);
 		
 		JPanel p1 = new JPanel();
-		p1.add ( cmdLabel = new JLabel(Messages.getInstance().getMessage("label.command")) );
+		p1.add ( cmdLabel = new JLabel(UIMessages.getInstance().getMessage("label.command")) );
 		p1.add ( commandTextField );
 		add(p1);
 		

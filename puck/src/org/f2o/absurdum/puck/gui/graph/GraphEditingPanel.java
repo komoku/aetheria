@@ -52,7 +52,7 @@ import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
 import org.f2o.absurdum.puck.gui.panels.EntityPanel;
 import org.f2o.absurdum.puck.gui.panels.RoomPanel;
 import org.f2o.absurdum.puck.gui.panels.WorldPanel;
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.w3c.dom.Document;
 
 
@@ -133,19 +133,19 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 		//lists including null
 		nodeListsByClassN = new HashMap();
 		Vector roomVecN = new Vector();
-		roomVecN.add(Messages.getInstance().getMessage("none"));
+		roomVecN.add(UIMessages.getInstance().getMessage("none"));
 		nodeListsByClassN.put(RoomNode.class,roomVecN);
 		Vector itemVecN = new Vector();
-		itemVecN.add(Messages.getInstance().getMessage("none"));
+		itemVecN.add(UIMessages.getInstance().getMessage("none"));
 		nodeListsByClassN.put(ItemNode.class,itemVecN);
 		Vector charVecN = new Vector();
-		charVecN.add(Messages.getInstance().getMessage("none"));
+		charVecN.add(UIMessages.getInstance().getMessage("none"));
 		nodeListsByClassN.put(CharacterNode.class,charVecN);
 		Vector spellVecN = new Vector();
-		spellVecN.add(Messages.getInstance().getMessage("none"));
+		spellVecN.add(UIMessages.getInstance().getMessage("none"));
 		nodeListsByClassN.put(SpellNode.class,spellVecN);
 		Vector abstractVecN = new Vector();
-		abstractVecN.add(Messages.getInstance().getMessage("none"));
+		abstractVecN.add(UIMessages.getInstance().getMessage("none"));
 		nodeListsByClassN.put(AbstractEntityNode.class,abstractVecN);
 		
 		//lists not including null
@@ -299,14 +299,14 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 		if ( nodeVector == null )
 		{
 			nodeVector = new Vector();
-			nodeVector.add( Messages.getInstance().getMessage("none") );
+			nodeVector.add( UIMessages.getInstance().getMessage("none") );
 			nodeListsByClass.put(n.getClass(),nodeVector);
 		}
 		nodeVector.add(n);
 		if ( nodeVectorN == null )
 		{
 			nodeVectorN = new Vector();
-			nodeVectorN.add( Messages.getInstance().getMessage("none") );
+			nodeVectorN.add( UIMessages.getInstance().getMessage("none") );
 			nodeListsByClassN.put(n.getClass(),nodeVectorN);
 		}
 		nodeVectorN.add(n);
@@ -1094,7 +1094,7 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 	
 	public boolean confirmDeletion ( Object obj )
 	{
-		int option = JOptionPane.showConfirmDialog( null , Messages.getInstance().getMessage("confirm.delete.element.message") , Messages.getInstance().getMessage("confirm.delete.element.title") + " " + obj , JOptionPane.OK_CANCEL_OPTION , JOptionPane.QUESTION_MESSAGE  );
+		int option = JOptionPane.showConfirmDialog( null , UIMessages.getInstance().getMessage("confirm.delete.element.message") , UIMessages.getInstance().getMessage("confirm.delete.element.title") + " " + obj , JOptionPane.OK_CANCEL_OPTION , JOptionPane.QUESTION_MESSAGE  );
 		return ( option == JOptionPane.OK_OPTION );
 	}
 	
@@ -1142,9 +1142,9 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 		addKeyListener(this);
 		setVisible(true);
 		this.propP = propP;
-		roomNodes.add(Messages.getInstance().getMessage("none"));
-		itemNodes.add(Messages.getInstance().getMessage("none"));
-		charNodes.add(Messages.getInstance().getMessage("none"));
+		roomNodes.add(UIMessages.getInstance().getMessage("none"));
+		itemNodes.add(UIMessages.getInstance().getMessage("none"));
+		charNodes.add(UIMessages.getInstance().getMessage("none"));
 		resetNodeLists();
 	}
 	

@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-import org.f2o.absurdum.puck.i18n.Messages;
+import org.f2o.absurdum.puck.i18n.UIMessages;
 
 
 
@@ -54,9 +54,9 @@ class TwoStringCellRenderer extends JLabel implements ListCellRenderer
     		if ( labelDesc1 != null && labelDesc2 != null )
     			labelText = labelDesc1 + ": " + vals[0] + " # " + labelDesc2 + ": " + vals[1];
     		else if ( vals[0].length() == 0 )
-    			labelText = Messages.getInstance().getMessage("cond.always") + ": " + vals[1];
+    			labelText = UIMessages.getInstance().getMessage("cond.always") + ": " + vals[1];
     		else
-    			labelText = Messages.getInstance().getMessage("cond.cond") + " " + vals[0] + ": " + vals[1];
+    			labelText = UIMessages.getInstance().getMessage("cond.cond") + " " + vals[0] + ": " + vals[1];
     	}
     	else
     		labelText = value.toString();
