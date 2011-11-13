@@ -26,7 +26,6 @@ public class AboutDialog extends JDialog
 	public AboutDialog( Frame parent )
 	{
 		super(parent, UIMessages.getInstance().getMessage("about.frame.title"));
-		setLocationRelativeTo(parent);
 		
 		JPanel aboutPanel = new JPanel();
 		aboutPanel.setLayout(new BoxLayout(aboutPanel,BoxLayout.PAGE_AXIS));
@@ -50,6 +49,7 @@ public class AboutDialog extends JDialog
 		getContentPane().add(Box.createHorizontalStrut(20));
 		
 		pack();
+		setLocationRelativeTo(parent);
 		setVisible(true);
 	}
 	
