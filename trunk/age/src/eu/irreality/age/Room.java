@@ -300,7 +300,7 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 		org.w3c.dom.Element e = (org.w3c.dom.Element) n;
 		
 		//weak inheritance?
-		if ( e.hasAttribute("extends") && !e.getAttribute("extends").equals("0") && allowInheritance )
+		if ( e.hasAttribute("extends") && !e.getAttribute("extends").equals("0") && !e.getAttribute("extends").equals("null") && allowInheritance )
 		{
 			//item must extend from existing item.
 			//clonamos ese item y overrideamos lo overrideable
