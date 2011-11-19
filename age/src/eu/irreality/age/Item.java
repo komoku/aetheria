@@ -689,7 +689,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		//attribs
 		
 		//weak inheritance?
-		if ( e.hasAttribute("extends") && !e.getAttribute("extends").equals("0") && allowInheritance )
+		if ( e.hasAttribute("extends") && !e.getAttribute("extends").equals("0") && !e.getAttribute("extends").equals("null") && allowInheritance )
 		{
 			//item must extend from existing item.
 			//clonamos ese item y overrideamos lo overrideable
@@ -711,7 +711,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		}
 		
 		//strong inheritance?
-		if ( e.hasAttribute("clones") && !e.getAttribute("clones").equals("0") && allowInheritance )
+		if ( e.hasAttribute("clones") && !e.getAttribute("clones").equals("0") && !e.getAttribute("clones").equals("null") && allowInheritance )
 		{
 			//funciona igual que la weak inheritance a este nivel.
 			//no deberian aparecer los dos; pero si asi fuera esta herencia (la fuerte) tendria precedencia.
