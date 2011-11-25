@@ -1169,6 +1169,12 @@ public class Player extends Mobile implements Informador
 
 					if ( !mirado ) mirado = mirarContenido ( arguments , inventory );						
 
+					//intentar mirar extras de bichos de la habitación
+					
+					Debug.println("Mirado="+mirado);
+					
+					if ( !mirado ) mirado = mirarExtrasBichos ( arguments , this.getRoom().getMobiles() );
+					
 					//intentar mirar un bicho de la habitación
 
 					Debug.println("Mirado="+mirado);
@@ -1187,8 +1193,6 @@ public class Player extends Mobile implements Informador
 
 					MobileList yo = new MobileList();
 					yo.addElement(this);
-
-					if ( !mirado ) mirado = mirarExtrasBichos ( arguments , this.getRoom().getMobiles() );
 					
 					//if ( !mirado ) mirado = mirarExtrasBichos ( arguments , yo );
 
