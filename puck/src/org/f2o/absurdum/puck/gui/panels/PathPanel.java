@@ -199,7 +199,14 @@ public class PathPanel extends ArrowPanel
 		doorComboBox.addActionListener( new ActionListener() {
 			public void actionPerformed ( ActionEvent evt )
 			{
-				door = (ItemNode) doorComboBox.getSelectedItem();
+				if ( doorComboBox.getSelectedIndex() >= 0 )
+				{
+					int index = dstComboBox.getSelectedIndex();
+					if ( doorComboBox.getSelectedItem() instanceof ItemNode ) //user has selected an item
+						door = (ItemNode) doorComboBox.getSelectedItem();
+					else //user has selected the "none" option, which is a String and not an ItemNode
+						door = null;
+				}
 			}
 		});
 		
@@ -274,6 +281,18 @@ public class PathPanel extends ArrowPanel
 		jtp.setSelectedIndex(0);	
 		
 		
+	}
+	
+	public void refresh()
+	{
+		super.refresh();
+		Vector itemNodes = this.getGraphEditingPanel().getItemNodes(true);
+		doorComboBox.setModel(new DefaultComboBoxModel ( itemNodes ) );
+		
+		if ( door != null )
+			doorComboBox.setSelectedIndex( indexOf(itemNodes,door.getName()) );
+		else
+			doorComboBox.setSelectedIndex(0);
 	}
 	
 	
