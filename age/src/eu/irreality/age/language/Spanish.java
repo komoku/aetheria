@@ -188,10 +188,18 @@ public class Spanish extends NaturalLanguage
 	public ReferenceNameCorrector initNameCorrector ( World w )
 	{
 		ReferenceNameCorrector base = super.initNameCorrector(w);
+		
 		//add common synonyms of cardinal directions 
 		base.addDictionaryWord("noreste");
 		base.addDictionaryWord("sureste");
 		base.addDictionaryWord("sudoeste");
+		
+		//add articles so that, for example, the article "las" is not corrected to the noun "alas"
+		base.addDictionaryWord("el");
+		base.addDictionaryWord("la");
+		base.addDictionaryWord("los");
+		base.addDictionaryWord("las");
+		
 		return base;
 	}
 	
