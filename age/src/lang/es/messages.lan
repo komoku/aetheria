@@ -449,3 +449,14 @@ direction.full.sw=el suroeste
 direction.full.se=el sudeste
 direction.full.u=arriba
 direction.full.d=abajo
+
+#open/close default behaviour
+you.unlock.item=Abres $item con $key.
+cant.unlock.key=No parece que $item se abra con $key.
+you.lock.item=Cierras $item con $key.
+cant.lock.key=No parece que $item se pueda cerrar con $key.
+cant.open.already.open=Pero si $item ya está abiert$oa...
+cant.open.locked=Parece que $item está cerrad$oa con llave.
+you.open.item=Abres $item.
+cant.close.already.closed=Pero si $item ya está cerrad$oa...
+you.close.item=Cierras $item.

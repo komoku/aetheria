@@ -90,6 +90,13 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	/**Código en Ensamblador Virtual Aetheria (EVA)*/
 	/*80*/ protected ObjectCode itsCode;
 	
+	/**Note: having these attributes set to true is a sufficient condition (not necessary) 
+	 * for the item to be openable/closeable/lockable/unlockable.*/
+	private boolean openable=false;
+	private boolean closeable=false;
+	private boolean lockable=false;
+	private boolean unlockable=false;
+	
 	
 	//emulador de numeros aleatorios
 	private Random aleat;
@@ -810,9 +817,27 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		readPropListFromXML ( mundo , n );
 		
 		
-		//de momento no leeremos openable,closeable,lockable,unlockable:
+		//[old] de momento no leeremos openable,closeable,lockable,unlockable:
 		//dependerán de si las description lists son o no nulas
-		
+		//[new 2011-11-26] leemos estos cuatro atributos si están.
+		//el objeto será abrible/cerrable/etc. si (1) está el atributo, OR (2)
+		//la lista correspondiente no es nula.
+		if ( e.hasAttribute("openable") )
+		{
+			openable = Boolean.valueOf ( e.getAttribute("openable") ).booleanValue();
+		}
+		if ( e.hasAttribute("closeable") )
+		{
+			closeable = Boolean.valueOf ( e.getAttribute("closeable") ).booleanValue();
+		}
+		if ( e.hasAttribute("lockable") )
+		{
+			lockable = Boolean.valueOf ( e.getAttribute("lockable") ).booleanValue();
+		}
+		if ( e.hasAttribute("unlockable") )
+		{
+			unlockable = Boolean.valueOf ( e.getAttribute("unlockable") ).booleanValue();
+		}
 		
 		
 		//description list (same as in Path)
@@ -1877,25 +1902,25 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	/**Devuelve si el item puede abrirse (no si el personaje puede hacerlo, sino si tiene sentido abrirlo)*/
 	public boolean isOpenable()
 	{
-		return ( openDescriptionList != null && openDescriptionList.length > 0 );
+		return ( openable || (openDescriptionList != null && openDescriptionList.length > 0) );
 	}
 	
 	/**Devuelve si el item puede cerrarse (no es lo mismo, un huevo es openable y no closeable)*/
 	public boolean isCloseable()
 	{
-		return ( closeDescriptionList != null && closeDescriptionList.length > 0 );
+		return ( closeable || ( closeDescriptionList != null && closeDescriptionList.length > 0 ) );
 	}
 
 	//id. anteriores
 	public boolean isUnlockable()
 	{
-		return ( unlockDescriptionList != null && unlockDescriptionList.length > 0 );
+		return ( unlockable || ( unlockDescriptionList != null && unlockDescriptionList.length > 0 ) );
 	}
 	
 	//id. anteriores
 	public boolean isLockable()
 	{
-		return ( lockDescriptionList != null && lockDescriptionList.length > 0 );
+		return ( lockable || ( lockDescriptionList != null && lockDescriptionList.length > 0 ) );
 	}
 	
 	public boolean isOpen()
@@ -1984,6 +2009,29 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 					}
 				}
 			} 
+			
+			
+			if ( descriptionText.equals("") )
+			{
+				//if no description was matched, then we make a default decision based on the open/closed/locked/unlocked
+				//state of the item
+				if ( isOpen() )
+				{
+					exito = false;
+					descriptionText = mundo.getMessages().getMessage("cant.open.already.open","$item",this.getOutputNameThe(),"$oa",(getGender()?"o":"a"),new Object[]{this});
+				}
+				else if ( isLocked() )
+				{
+					exito = false;
+					descriptionText = mundo.getMessages().getMessage("cant.open.locked","$item",this.getOutputNameThe(),"$oa",(getGender()?"o":"a"),new Object[]{this});
+				}
+				else //isClosed() && !isLocked()
+				{
+					exito = true;
+					descriptionText = mundo.getMessages().getMessage("you.open.item","$item",this.getOutputNameThe(),"$oa",(getGender()?"o":"a"),new Object[]{this});
+				}
+			}
+			
 			//si ha tenido éxito (se cumplía alguno de los estados de éxito) abrimos
 			if ( exito )
 			{ 
@@ -2056,6 +2104,23 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 					}
 				}
 			} 
+			
+			if ( descriptionText.equals("") )
+			{
+				//if no description was matched, then we make a default decision based on the open/closed/locked/unlocked
+				//state of the item
+				if ( isClosed() )
+				{
+					exito = false;
+					descriptionText = mundo.getMessages().getMessage("cant.close.already.closed","$item",this.getOutputNameThe(),"$oa",(getGender()?"o":"a"),new Object[]{this});
+				}
+				else 
+				{
+					exito = true;
+					descriptionText = mundo.getMessages().getMessage("you.close.item","$item",this.getOutputNameThe(),"$oa",(getGender()?"o":"a"),new Object[]{this});
+				}
+			}
+			
 			//si ha tenido éxito (se cumplía alguno de los estados de éxito) cerramos
 			if ( exito ) 
 			{
@@ -2109,6 +2174,9 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			//si tiene la llave, miramos primero success. si alguna matchea, perfecto
 			//si no, miramos fail (puede fallar por otras condiciones ajenas a la llave).
 			
+			//2011-11-26: si no tiene ni success ni fail, se usa un mensaje por defecto
+			//y la acción tiene éxito dependiendo de si tiene o no la llave.
+			
 			boolean unlocked = false;
 			
 			String descriptionText = "";
@@ -2139,10 +2207,12 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 					descriptionText += elTexto2;
 				}
 				
+				/*
 				if ( descriptionText.equals("") )
 				{
 					descriptionText = "No consigues abrir " + this.getUniqueName(); //TODO temp, modify
 				}
+				*/
 				
 			}
 			
@@ -2188,6 +2258,13 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 					} //end for all possible descriptions in different states
 				}
 				
+				if ( descriptionText.equals("") )
+				{
+					//in this case, there wasn't any success or failure description.
+					//so the default behaviour (since we used the correct key) is success.
+					unlocked = true;
+				}
+				
 				if ( unlocked )
 				{
 					//hemos conseguido abrirlo
@@ -2210,6 +2287,15 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			
 			
 			} //end else (if unlocks with key) 
+			
+			if ( descriptionText.equals("") )
+			{
+				//if no descriptions matched, then we use default messages as the description.
+				if ( unlocked )
+					descriptionText = mundo.getMessages().getMessage("you.unlock.item","$item",this.getOutputNameThe(),"$key",key.getOutputNameThe(),new Object[]{this});
+				else
+					descriptionText = mundo.getMessages().getMessage("cant.unlock.key","$item",this.getOutputNameThe(),"$key",key.getOutputNameThe(),new Object[]{this});
+			}
 			
 			try
 			{	
@@ -2247,6 +2333,9 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			//2011-05-13: si no tiene la llave, miramos solo fail (eso ya estaba antes).
 			//si tiene la llave, miramos primero success. si alguna matchea, perfecto
 			//si no, miramos fail (puede fallar por otras condiciones ajenas a la llave).
+			
+			//2011-11-26: si no tiene ni success ni fail, se usa un mensaje por defecto
+			//y la acción tiene éxito dependiendo de si tiene o no la llave.
 			
 			boolean locked = false;
 			
@@ -2323,6 +2412,12 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 						} //end for all possible descriptions in different states
 					}
 					
+					if ( descriptionText.equals("") )
+					{
+						//in this case, there wasn't any success or failure description.
+						//so the default behaviour (since we used the correct key) is success.
+						locked = true;
+					}		
 					
 					if ( locked )
 					{
@@ -2345,6 +2440,15 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 					}			
 			
 				} //end else (if unlocks with key) 
+			
+			if ( descriptionText.equals("") )
+			{
+				//if no descriptions matched, then we use default messages as the description.
+				if ( locked )
+					descriptionText = mundo.getMessages().getMessage("you.lock.item","$item",this.getOutputNameThe(),"$key",key.getOutputNameThe(),new Object[]{this});
+				else
+					descriptionText = mundo.getMessages().getMessage("cant.lock.key","$item",this.getOutputNameThe(),"$key",key.getOutputNameThe(),new Object[]{this});
+			}
 			
 			try
 			{	
@@ -2543,10 +2647,10 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		suElemento.setAttribute ( "canGet" , String.valueOf( canGet ) );
 		if ( properName ) suElemento.setAttribute ( "properName" , String.valueOf( properName ) );
 		
-		suElemento.setAttribute ( "openable" , String.valueOf( openDescriptionList != null ) );
-		suElemento.setAttribute ( "closeable" , String.valueOf( closeDescriptionList != null ) );
-		suElemento.setAttribute ( "lockable" , String.valueOf( lockDescriptionList != null ) );
-		suElemento.setAttribute ( "unlockable" , String.valueOf( unlockDescriptionList != null ) );
+		suElemento.setAttribute ( "openable" , String.valueOf(isOpenable()) /*String.valueOf( openDescriptionList != null )*/ );
+		suElemento.setAttribute ( "closeable" , String.valueOf(isCloseable()) /* String.valueOf( closeDescriptionList != null )*/ );
+		suElemento.setAttribute ( "lockable" , String.valueOf(isLockable()) /*String.valueOf( lockDescriptionList != null )*/ );
+		suElemento.setAttribute ( "unlockable" , String.valueOf(isUnlockable()) /*String.valueOf( unlockDescriptionList != null )*/ );
 		
 		//temp gender representation
 		suElemento.setAttribute ( "gender" , String.valueOf( gender ) );
