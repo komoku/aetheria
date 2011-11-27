@@ -659,4 +659,36 @@ public class NaturalLanguage
 	}
 	
 	
+	/**
+	 * Extracts the verb (command) part from an imperative sentence.
+	 * The default behaviour assumes that the verb is the first word in the sentence.
+	 * @param sentence
+	 * @return
+	 */
+	public String extractVerb ( String sentence )
+	{
+	    StringTokenizer st = new StringTokenizer(sentence);
+	    if ( st.hasMoreTokens() ) return st.nextToken();
+	    else return "";
+	}
+	
+	/**
+	 * Extracts everything except the verb (command) part from an imperative sentence.
+	 * The default behaviour assumes that the verb is the first word in the sentence,
+	 * and therefore returns the rest.
+	 * @param sentence
+	 * @return
+	 */
+	public String extractArguments ( String sentence )
+	{
+	    StringTokenizer st = new StringTokenizer(sentence);
+	    if ( !st.hasMoreTokens() ) return "";
+	    else
+	    {
+	    	st.nextToken();
+	    	if ( !st.hasMoreTokens() ) return "";
+	    	else return st.nextToken("");
+	    }
+	}
+	
 }
