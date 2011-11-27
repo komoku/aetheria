@@ -565,8 +565,8 @@ public class Player extends Mobile implements Informador
 				{
 					commandstring = (String)retval.getRetVal();
 					//Debug.println("Command String Changed To " + (String)retval.getRetVal()); 
-					command = StringMethods.getTok(commandstring,1,' ').trim();
-					arguments = StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ').trim();
+					command = lenguaje.extractVerb(commandstring).trim(); //StringMethods.getTok(commandstring,1,' ').trim();
+					arguments = lenguaje.extractArguments(commandstring).trim(); //StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ').trim();
 				}
 			}
 			catch ( bsh.TargetError te )
@@ -644,7 +644,7 @@ public class Player extends Mobile implements Informador
 				commandstring = lenguaje.sustituirVerbo ( commandstring );
 				commandstring = lenguaje.sustituirAlias ( commandstring );
 				commandstring = commandstring.trim();
-				command = StringMethods.getTok(commandstring,1,' ').trim();	
+				command = lenguaje.extractVerb(commandstring); //StringMethods.getTok(commandstring,1,' ').trim();	
 				
 				write ( io.getColorCode("denial") + mundo.getMessages().getMessage("ambiguous.pronoun","$command",command,new Object[]{this,commandstring}) + io.getColorCode("reset") );
 				mentions.setLastMentionedVerb ( firstWord(substitutePronounsInSentence(commandstring)) );
@@ -675,14 +675,14 @@ public class Player extends Mobile implements Informador
 		commandstring = lenguaje.sustituirAlias ( commandstring );
 
 		commandstring = commandstring.trim();
-		command = StringMethods.getTok(commandstring,1,' ').trim();
+		command = lenguaje.extractVerb(commandstring); //StringMethods.getTok(commandstring,1,' ').trim();
 
 		//patch to undo synonym substitutions on command "decir"
 		if ( "decir".equalsIgnoreCase(command) )
 		{
 			commandstring = originalTrimmedCommandString;
 		}	
-		arguments = StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ').trim();
+		arguments = lenguaje.extractArguments(commandstring).trim(); //StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ').trim();
 
 
 		//Debug.println("Definite command to exec: " + commandstring );
@@ -709,8 +709,8 @@ public class Player extends Mobile implements Informador
 			{
 				commandstring = (String)retval.getRetVal();
 				//Debug.println("Command String Changed To " + (String)retval.getRetVal()); 
-				command = StringMethods.getTok(commandstring,1,' ').trim();
-				arguments = StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ').trim();
+				command = lenguaje.extractVerb(commandstring).trim(); //StringMethods.getTok(commandstring,1,' ').trim();
+				arguments = lenguaje.extractArguments(commandstring).trim(); //StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ').trim();
 			}
 		}
 		catch ( bsh.TargetError te )
@@ -924,8 +924,8 @@ public class Player extends Mobile implements Informador
 			{
 				commandstring = (String)retval.getRetVal();
 				//Debug.println("Command String Changed To " + (String)retval.getRetVal()); 
-				command = StringMethods.getTok(commandstring,1,' ').trim();
-				arguments = StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ').trim();
+				command = lenguaje.extractVerb(commandstring).trim(); //StringMethods.getTok(commandstring,1,' ').trim();
+				arguments = lenguaje.extractArguments(commandstring).trim(); //StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ').trim();
 			}
 		}
 		catch ( bsh.TargetError te )
