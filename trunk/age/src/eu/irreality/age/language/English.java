@@ -62,8 +62,6 @@ public class English extends NaturalLanguage
 	}
 	
 	
-	//TODO: custom obtain verb, args from sentence - for phrasal verbs?
-	
 	
 	private boolean containsWord ( String sentence , String word )
 	{

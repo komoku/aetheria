@@ -647,7 +647,7 @@ public class Player extends Mobile implements Informador
 				command = lenguaje.extractVerb(commandstring); //StringMethods.getTok(commandstring,1,' ').trim();	
 				
 				write ( io.getColorCode("denial") + mundo.getMessages().getMessage("ambiguous.pronoun","$command",command,new Object[]{this,commandstring}) + io.getColorCode("reset") );
-				mentions.setLastMentionedVerb ( firstWord(substitutePronounsInSentence(commandstring)) );
+				mentions.setLastMentionedVerb ( lenguaje.extractVerb(substitutePronounsInSentence(commandstring)) );
 				cancelPending();
 				return false;	
 			}
@@ -2015,9 +2015,13 @@ public class Player extends Mobile implements Informador
 		//Ahora, si no lo hemos hecho ya, probamos
 		//a ver si es que ha habido una elipsis de verbo, añadiendo el verbo de la zona
 		//de referencia.
-		else if ( !mentions.getLastMentionedVerb().equalsIgnoreCase( command ) && lenguaje.isGuessable(mentions.getLastMentionedVerb()) )
+		else if ( !mentions.getLastMentionedVerb().equalsIgnoreCase( command ) && 
+				!command.matches("^"+mentions.getLastMentionedVerb()+"(_|\\b).*") /*for English phrasal verbs (1)*/ &&
+				lenguaje.isGuessable(mentions.getLastMentionedVerb()) )
 		{
 
+			//(1) to solve cases like: last mentioned = look, command = look_up, and we add an extra "look".
+			
 			/*DON'T USE QUEUE, JUST EXEC'IT*/
 			/*
 			//aqui nos saltamos la cola de comandos cambiando el primero...
@@ -2031,6 +2035,9 @@ public class Player extends Mobile implements Informador
 			 */
 
 			secondChance = true;
+			
+			System.err.println("Last mentioned verb: " + mentions.getLastMentionedVerb());
+			System.err.println("Command: " + command);
 
 			return execCommand (mentions.getLastMentionedVerb() + " " + commandstring );
 

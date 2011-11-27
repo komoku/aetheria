@@ -36,3 +36,4 @@ kill=attack
 assassinate=attack
 eradicate=attack
 obliterate=attack
+pick_up=take

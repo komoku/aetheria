@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
  */
 public class EnglishPhrasalVerb 
 {
+	private static String separator = "_"; //string to use as separator when verb is returned (e.g. " " for pick up)
 	
 	public boolean separable; /*Whether the object can appear in between verb and particle(s)*/
 	
@@ -90,7 +91,7 @@ public class EnglishPhrasalVerb
 	/**
 	 * Precondition: matches(sentence) is true.
 	 * @param sentence
-	 * @return
+	 * @return verb with spaces changed to separators (e.g. pick_up)
 	 */
 	public String extractVerb ( String sentence )
 	{
@@ -98,7 +99,7 @@ public class EnglishPhrasalVerb
 		{
 			Matcher matcher = firstPattern.matcher(sentence);
 			if ( matcher.find() )
-				return sentence.substring(matcher.start(),matcher.end());
+				return sentence.substring(matcher.start(),matcher.end()).replace(" ", separator);
 			else
 				return null;
 		}
@@ -118,7 +119,7 @@ public class EnglishPhrasalVerb
 			{
 				result.append(" ");
 				result.append(sentence.substring(matcher.start(),matcher.end()));
-				return result.toString();
+				return result.toString().replace(" ", separator);
 			}
 			else
 				return null;
