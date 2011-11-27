@@ -1,5 +1,11 @@
 package eu.irreality.age.language;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -7,14 +13,54 @@ import java.util.regex.Pattern;
 import eu.irreality.age.NaturalLanguage;
 import eu.irreality.age.Player;
 import eu.irreality.age.StringMethods;
+import eu.irreality.age.Utility;
+import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.i18n.UIMessages;
 
 public class English extends NaturalLanguage
 {
 	
+	private List phrasalVerbs = new ArrayList();
+	
 	public English()
 	{
 		super("en");
+		try 
+		{
+			loadPhrasalVerbs();
+		} 
+		catch  (IOException e) 
+		{
+			System.err.println(UIMessages.getInstance().getMessage("warning.no.phrasal.verb.file"));
+			e.printStackTrace();
+		}
 	}
+	
+	/**
+	 * Obtain path to phrasal verbs file.
+	 * @return
+	 */
+	private String getPhrasalVerbPath ( )
+	{
+		return Paths.LANG_FILES_PATH + "/" + getLanguageCode() + "/phrasal.lan";
+	}
+	
+	
+	private void loadPhrasalVerbs() throws IOException , FileNotFoundException
+	{
+		String filePath = getPhrasalVerbPath();
+		BufferedReader filein = new BufferedReader ( Utility.getBestInputStreamReader ( NaturalLanguage.class.getClassLoader().getResourceAsStream(filePath) ) );
+		String linea;
+		while ( ( linea = filein.readLine() ) != null )
+		{
+			if ( !linea.trim().equals("") )
+			{
+				EnglishPhrasalVerb verb = new EnglishPhrasalVerb(linea);
+				phrasalVerbs.add(verb);
+			}
+		}
+	}
+	
 	
 	//TODO: custom obtain verb, args from sentence - for phrasal verbs?
 	
@@ -96,5 +142,58 @@ public class English extends NaturalLanguage
 		Matcher matcher = pattern.matcher(niceString);
 		return matcher.replaceAll(replaceStr);
 	}
+	
+	
+	/**
+	 * Adds English phrasal verb handling to verb extraction.
+	 */
+	public String extractVerb ( String sentence )
+	{
+		//1. see if sentence matches a non-separable phrasal verb
+		for ( Iterator it = phrasalVerbs.iterator() ; it.hasNext() ; )
+		{
+			EnglishPhrasalVerb phrasalVerb = (EnglishPhrasalVerb) it.next();
+			if ( !phrasalVerb.isSeparable() && phrasalVerb.matches(sentence) )
+				return phrasalVerb.extractVerb(sentence);
+		}
+		
+		//2. see if sentence matches a separable phrasal verb
+		for ( Iterator it = phrasalVerbs.iterator() ; it.hasNext() ; )
+		{
+			EnglishPhrasalVerb phrasalVerb = (EnglishPhrasalVerb) it.next();
+			if ( phrasalVerb.isSeparable() && phrasalVerb.matches(sentence) )
+				return phrasalVerb.extractVerb(sentence);
+		}
+		
+		//3. no phrasal verb: standard approach.
+		return super.extractVerb(sentence);
+	}
+	
+	/**
+	 * Adds English phrasal verb handling to argument extraction.
+	 */
+	public String extractArguments ( String sentence )
+	{
+		//1. see if sentence matches a non-separable phrasal verb
+		for ( Iterator it = phrasalVerbs.iterator() ; it.hasNext() ; )
+		{
+			EnglishPhrasalVerb phrasalVerb = (EnglishPhrasalVerb) it.next();
+			if ( !phrasalVerb.isSeparable() && phrasalVerb.matches(sentence) )
+				return phrasalVerb.extractArguments(sentence);
+		}
+		
+		//2. see if sentence matches a separable phrasal verb
+		for ( Iterator it = phrasalVerbs.iterator() ; it.hasNext() ; )
+		{
+			EnglishPhrasalVerb phrasalVerb = (EnglishPhrasalVerb) it.next();
+			if ( phrasalVerb.isSeparable() && phrasalVerb.matches(sentence) )
+				return phrasalVerb.extractArguments(sentence);
+		}
+		
+		//3. no phrasal verb: standard approach.
+		return super.extractArguments(sentence);
+	}
+	
+	
 
 }

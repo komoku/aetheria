@@ -53,13 +53,13 @@ public class EnglishPhrasalVerb
 		{
 			firstComponent = st.nextToken().trim(); 
 			firstPattern = 
-	            Pattern.compile("^"+firstComponent+"\b");
+	            Pattern.compile("^"+firstComponent+"\\b");
 		}
 		if ( st.hasMoreTokens() ) 
 		{
 			secondComponent = st.nextToken().trim(); 
 			secondPattern = 
-	            Pattern.compile("\b"+secondComponent+"\b");
+	            Pattern.compile("\\b"+secondComponent+"\\b");
 		}
 	}
 	
@@ -82,9 +82,9 @@ public class EnglishPhrasalVerb
 	public boolean matches ( String sentence )
 	{
 		if ( !separable )
-			return sentence.trim().matches(firstComponent+"\b.*");
+			return sentence.trim().matches(firstComponent+"\\b.*");
 		else
-			return sentence.trim().matches(firstComponent+"\b.*\b"+secondComponent+"\b.*");
+			return sentence.trim().matches(firstComponent+"\\b.*\\b"+secondComponent+"\\b.*");
 	}
 	
 	/**
@@ -104,10 +104,61 @@ public class EnglishPhrasalVerb
 		}
 		else
 		{
-			//NOT DONE, MODIFY THIS
+			StringBuffer result = new StringBuffer();
 			Matcher matcher = firstPattern.matcher(sentence);
 			if ( matcher.find() )
-				return sentence.substring(matcher.start(),matcher.end());
+			{
+				result.append(sentence.substring(matcher.start(),matcher.end()));
+				sentence = sentence.substring(matcher.end());
+			}
+			else
+				return null;
+			matcher = secondPattern.matcher(sentence);
+			if ( matcher.find() )
+			{
+				result.append(" ");
+				result.append(sentence.substring(matcher.start(),matcher.end()));
+				return result.toString();
+			}
+			else
+				return null;
+		}
+	}
+	
+	
+	/**
+	 * Precondition: matches(sentence) is true.
+	 * @param sentence
+	 * @return
+	 */
+	public String extractArguments ( String sentence )
+	{
+		if ( !separable )
+		{
+			Matcher matcher = firstPattern.matcher(sentence);
+			if ( matcher.find() )
+				return sentence.substring(matcher.end()).trim();
+			else
+				return null;
+		}
+		else
+		{
+			StringBuffer result = new StringBuffer();
+			Matcher matcher = firstPattern.matcher(sentence);
+			if ( matcher.find() )
+			{
+				sentence = sentence.substring(matcher.end());
+			}
+			else
+				return null;
+			matcher = secondPattern.matcher(sentence);
+			if ( matcher.find() )
+			{
+				result.append(sentence.substring(0,matcher.start()).trim());
+				result.append(" ");
+				result.append(sentence.substring(matcher.end()).trim());
+				return result.toString();
+			}
 			else
 				return null;
 		}
