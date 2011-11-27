@@ -6,6 +6,8 @@
 package eu.irreality.age.language;
 
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author carlos
@@ -15,11 +17,15 @@ import java.util.StringTokenizer;
 public class EnglishPhrasalVerb 
 {
 	
-	boolean separable; /*Whether the object can appear in between verb and particle(s)*/
+	public boolean separable; /*Whether the object can appear in between verb and particle(s)*/
 	
-	String firstComponent=""; /*First part to be matched, e.g. in pick * up, pick*/
+	private String firstComponent=""; /*First part to be matched, e.g. in pick * up, pick*/
 	
-	String secondComponent=""; /*Second part to be matched if any, e.g. in pick * up, up*/
+	private String secondComponent=""; /*Second part to be matched if any, e.g. in pick * up, up*/
+	
+	private Pattern firstPattern = null;
+	
+	private Pattern secondPattern = null;
 	
 	/**
 	 * Constructs an English phrasal verb object from a descriptive string.
@@ -43,8 +49,18 @@ public class EnglishPhrasalVerb
 		
 		//and we store its parts:
 		StringTokenizer st = new StringTokenizer(description,"*");
-		if ( st.hasMoreTokens() ) firstComponent = st.nextToken().trim(); 
-		if ( st.hasMoreTokens() ) secondComponent = st.nextToken().trim(); 
+		if ( st.hasMoreTokens() )
+		{
+			firstComponent = st.nextToken().trim(); 
+			firstPattern = 
+	            Pattern.compile("^"+firstComponent+"\b");
+		}
+		if ( st.hasMoreTokens() ) 
+		{
+			secondComponent = st.nextToken().trim(); 
+			secondPattern = 
+	            Pattern.compile("\b"+secondComponent+"\b");
+		}
 	}
 	
 	/**
@@ -69,6 +85,32 @@ public class EnglishPhrasalVerb
 			return sentence.trim().matches(firstComponent+"\b.*");
 		else
 			return sentence.trim().matches(firstComponent+"\b.*\b"+secondComponent+"\b.*");
+	}
+	
+	/**
+	 * Precondition: matches(sentence) is true.
+	 * @param sentence
+	 * @return
+	 */
+	public String extractVerb ( String sentence )
+	{
+		if ( !separable )
+		{
+			Matcher matcher = firstPattern.matcher(sentence);
+			if ( matcher.find() )
+				return sentence.substring(matcher.start(),matcher.end());
+			else
+				return null;
+		}
+		else
+		{
+			//NOT DONE, MODIFY THIS
+			Matcher matcher = firstPattern.matcher(sentence);
+			if ( matcher.find() )
+				return sentence.substring(matcher.start(),matcher.end());
+			else
+				return null;
+		}
 	}
 	
 	
