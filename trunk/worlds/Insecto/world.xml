@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<World author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2008-11-06" moduleName="Insecto mortal" type="Aventura rápida" version="1.1" worldDir="." worldName="Insecto mortal">
+<World author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2011-11-27" language="en" moduleName="Lethal Insect" parserVersion="1.1.8" type="Very small miniadventure" version="0.1" worldDir="." worldName="Lethal Insect">
 <IdeMetaInf>
-<View xoffset="35.0" yoffset="69.0" zoom="2.0"/>
+<View xoffset="34.0" yoffset="69.0" zoom="2.0"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Habitación de Kovacic" x="220" y="260"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Limbo" x="380" y="120"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.CharacterNode" name="Ekaterina" x="220" y="340"/>
@@ -13,9 +13,9 @@
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Caja fuerte" x="120" y="320"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Cama" x="280" y="340"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Cuadro" x="160" y="160"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Alfombra" x="260" y="160"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Perrofake" x="340" y="300"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Perro" x="380" y="340"/>
-<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Alfombra" x="260" y="160"/>
 </IdeMetaInf>
 <Code language="BeanShell"><![CDATA[/*Introducción del juego para un jugador*/
 
@@ -30,17 +30,17 @@ void intro( Player aPlayer )
 
 	aPlayer.borrarPantalla();
 
-	aPlayer.write("Grylloblatta. Un género de insectos del orden Grylloblattodea. Nunca te habrías imaginado que una información tan paradigmáticamente tediosa pudiese llegar a interesarte lo más mínimo. Ni a ti ni a nadie. Pero -vueltas que da el destino- hoy te has enterado de que de este esotérico insecto pueden depender muchas vidas.\n");
+	aPlayer.write("Grylloblatta. A genus of insects in the family Grylloblattidae. You'd never have imagined that such a paradigmatically tedious information would ever interest you in the least. You or anyone, at that. But destiny is capritious, and today you have learned that many lives can depend on that esoteric insect.\n");
 	aPlayer.waitKeyPress();
-	aPlayer.write("Eres Ekaterina Voronova, aunque la fama de implacable que te has ganado hace que algunos ya empiecen a conocerte como Killer Kat. Y es, sin duda, por esta reputación que los servicios secretos sildavos te han confiado una importante y peligrosa misión... y prometido una jugosa recompensa.\n");
+	aPlayer.write("You are Ekaterina Voronova, although your reputation as a relentless spy has made some know you as Killer Kat. And it is, undoubtedly, because of this reputation that the Syldavian secret services have entrusted you with an important and dangerous mission... and promised a juicy reward.\n");
 	aPlayer.waitKeyPress();
-	aPlayer.write("La República de Borduria, enemigo histórico de tu país, ha desarrollado un arma biológica de gran poder letal. Los espías sildavos no han conseguido obtener mucha información sobre ella; pero sí que se sabe que es algún tipo de virus o agente biológico que se transmite a través de ese repugnante bicho, ese Grylloblatta.\n");
+	aPlayer.write("The Republic of Borduria, historic enemy of your country, has developed a biological weapon of great lethal power. Syldavian spies have not managed to obtain much information about it, but it is known that it is some kind of virus or biological agent that can be transmitted by means of that disgusting bug, that Grylloblatta.\n");
 	aPlayer.waitKeyPress();
-	aPlayer.write("Es vital para tu país conseguir una muestra del agente, que permita a los científicos estudiarlo y trabajar en un posible antídoto. El agente Kirilenko estuvo a punto de conseguir la muestra; pero fue interceptado en un tren por los agentes del BSS, y fusilado el mismo día.\n");
+	aPlayer.write("It is vital for your country to obtain a sample of the agent, allowing Syldavian scientists to study it and work on a possible antidote. Agent Kirilenko was about to get the sample, but he was intercepted by BSS agents in a train, and executed by a firing squad the same day.\n");
 	aPlayer.waitKeyPress();
-	aPlayer.write("El segundo intento es el tuyo. Con la colaboración de otros agentes, lo preparaste todo a la perfección, provocando la indisposición de una de las criadas del poderoso general Kovacic para sustituirla. Tres días has estado trabajando en su mansión, sin que te permitieran nunca entrar a su habitación, en la que te informan que se encuentra una muestra del agente, y que permanece vigilada por el día y cerrada por la noche.\n");
+	aPlayer.write("The second try is yours. With the collaboration of other agents, you have prepared everything perfectly, causing illness to one of the maids serving the powerful general Kovacic in order to substitute her. Three days you have been working in his mansion, without ever being permitted to enter his room, which according to your information should contain a sample of the agent, and which is carefully guarded at day and locked at night.\n");
 	aPlayer.waitKeyPress();
-	aPlayer.write("Pero ahora, por fin, es tu ocasión: ha corrido demasiado alcohol en la fiesta del Día Nacional de Borduria, todo el mundo en la casa se divierte, y nadie se ha fijado en que una de las camareras subió por las escaleras. Nadie ha oído cómo reducías al guardia de la puerta y entrabas en la habitación del general. Ahora, sólo te resta encontrar la muestra y salir de este infierno.\n");
+	aPlayer.write("But now, finally, your chance has come: too many alcohol has been served at the Bordurian National Day party, everyone in the house is having fun, and no one has noticed that one of the maids has gone up the stairs. No one has heard how you knocked out the guard before the door and you got into the general's room. Now, you only have to find the sample and get away from this hell.\n");
 	aPlayer.write("\n\n\n");
 
 }
@@ -71,43 +71,44 @@ void parseCommand( Player aPlayer , String verb , String args )
 	{
 		if ( verb.equalsIgnoreCase("s") || verb.equalsIgnoreCase("si") || verb.equalsIgnoreCase("sí") )
 		{
-			aPlayer.forceCommand("tocarDeOido el piano");
+			aPlayer.forceCommand("playByEar piano");
 			end();
 		}
 		else if ( verb.equalsIgnoreCase("n") || verb.equalsIgnoreCase("no") || args.indexOf("norte") >= 0 || args.indexOf("noroeste") >= 0 )
 		{
-			aPlayer.write("Te retiras del piano, mirándolo con respeto.\n");
+			aPlayer.write("You balk away from the piano, looking at it with respect.\n");
 			end();
 		}
 	}
 
-	else if ( verb.equalsIgnoreCase("ir") )
+	else if ( verb.equalsIgnoreCase("go") )
 	{
-		aPlayer.write("No vas a salir de esta habitación hasta que no encuentres esa muestra. Lo único que conseguirías es llamar más la atención.\n");
+		aPlayer.write("You are not going to leave this room before you find that sample. You'd only attract attention if you did that.\n");
 		end();
 	}
 
-	else if ( verb.equalsIgnoreCase("abrir") && args.toLowerCase().indexOf("puerta") >= 0 )
+	else if ( verb.equalsIgnoreCase("open") && args.toLowerCase().indexOf("door") >= 0 )
 	{
-		aPlayer.write("No vas a salir de esta habitación hasta que no encuentres esa muestra. Lo único que conseguirías es llamar más la atención.\n");
+        aPlayer.write("You are not going to leave this room before you find that sample. You'd only attract attention if you did that.\n");
 		end();
 	}
 	
-	else if ( ( verb.equalsIgnoreCase("abrir") || verb.equalsIgnoreCase("mirar") || verb.equalsIgnoreCase("tirar") ) && args.toLowerCase().indexOf("ventana") >= 0 )
+	else if ( ( verb.equalsIgnoreCase("open") || verb.equalsIgnoreCase("look") || verb.equalsIgnoreCase("pull") ) && args.toLowerCase().indexOf("window") >= 0 )
 	{
-		aPlayer.write("La ventana da al jardín, que ya tienes muy visto a fuerza de suplantar a una de las camareras de la mansión. Tienes que encontrar el Grylloblatta, y tus informaciones dicen que está dentro de esta habitación, no fuera.\n");
+		aPlayer.write("The window faces the garden, which you have seen many times while impersonating one of the mansion's maids. You have to find the Grylloblatta, and your information says it is inside this room, not outside.\n");
 		end();
 	}
 
-	else if ( verb.equalsIgnoreCase("poner") && args.toLowerCase().indexOf("ekaterina") >= 0 && args.toLowerCase().indexOf("bajo") >= 0 && args.toLowerCase().indexOf("cama") >= 0  )
-	{
-		aPlayer.write("No te serviría de nada meterte bajo la cama, sobre todo habiendo un perro. Tendrás que resolver tus problemas de otra manera.\n");
+	//else if ( verb.equalsIgnoreCase("poner") && args.toLowerCase().indexOf("ekaterina") >= 0 && args.toLowerCase().indexOf("bajo") >= 0 && args.toLowerCase().indexOf("cama") >= 0  )
+	else if ( (equals(verb,"hide")||equals(verb,"get")||equals(verb,"take")) && args.toLowerCase().indexOf("under") >= 0 && args.toLowerCase().indexOf("bed") >= 0  )
+    {
+		aPlayer.write("It wouldn't be useful to get under the bed, especially with a dog there. You'll have to find another way of solving your problems.\n");
 		end();
 	}
 
-	else if ( verb.equalsIgnoreCase("coger") && ( args.toLowerCase().indexOf("sábana") >= 0 || args.toLowerCase().indexOf("sabana") >= 0 || args.toLowerCase().indexOf("almoh") >= 0)  )
+	else if ( verb.equalsIgnoreCase("take") && ( args.toLowerCase().indexOf("blanket") >= 0 || args.toLowerCase().indexOf("pillow") >= 0)  )
 	{
-		aPlayer.write("No ves que la ropa de cama sea tan interesante como para llevártela.\n");
+		aPlayer.write("You don't think the linen is interesting enough to take it.\n");
 		end();
 	}
 	
@@ -123,12 +124,13 @@ void parseCommand( Player aPlayer , String verb , String args )
 <Input color="#0066cc"/>
 <Description color="#000099"/>
 <Foreground color="#000000"/>
+<Important color="#ffffff"/>
 <Denial color="#660000"/>
 <Action color="#006666"/>
 <Background color="#ffffe8"/>
 <Error color="#663300"/>
 </Colors>
-<Font filename="Courier.ttf" name="Arial" size="16.0"/>
+<Font filename="Courier.ttf" name="Arial" size="24.0"/>
 </VisualConfiguration>
 <Rooms>
 <Room name="Habitación de Kovacic">
@@ -226,7 +228,7 @@ void parseCommand( Player aPlayer , String verb , String args )
 </Room>
 </Rooms>
 <Items>
-<Item closeable="false" gender="true" lockable="false" name="Item falso" openable="false" unlockable="false" volume="10000" weight="10000">
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Item falso" openable="false" unlockable="false" volume="10000" weight="10000">
 <SingularNames>
 <Description>piano de cola</Description>
 </SingularNames>
@@ -251,7 +253,7 @@ void parseCommand( Player aPlayer , String verb , String args )
 <Inventory/>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="true" lockable="false" name="Piano de cola" openable="false" unlockable="false" volume="10000" weight="10000">
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Piano de cola" openable="false" unlockable="false" volume="10000" weight="10000">
 <SingularNames>
 <Description>piano de cola</Description>
 </SingularNames>
@@ -324,7 +326,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 <Inventory/>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="false" lockable="false" name="Partitura" openable="false" unlockable="false" volume="1" weight="1">
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="Partitura" openable="false" unlockable="false" volume="1" weight="1">
 <SingularNames>
 <Description>partitura</Description>
 </SingularNames>
@@ -348,7 +350,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 <PropertyList/>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="true" lockable="false" name="Marco" openable="false" unlockable="false" volume="0" weight="0">
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Marco" openable="false" unlockable="false" volume="0" weight="0">
 <SingularNames/>
 <PluralNames/>
 <SingularReferenceNames>
@@ -390,7 +392,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 }]]></Code>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="true" lockable="false" name="Botón" openable="false" unlockable="false" volume="5000" weight="5000">
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Botón" openable="false" unlockable="false" volume="5000" weight="5000">
 <SingularNames/>
 <PluralNames/>
 <SingularReferenceNames>
@@ -441,7 +443,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 }]]></Code>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="false" lockable="false" name="Caja fuerte" openable="false" unlockable="false" volume="600" weight="600">
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="Caja fuerte" openable="false" unlockable="false" volume="600" weight="600">
 <SingularNames>
 <Description>caja fuerte</Description>
 </SingularNames>
@@ -527,7 +529,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 }]]></Code>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="false" lockable="false" name="Cama" openable="false" unlockable="false" volume="5000" weight="5000">
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="Cama" openable="false" unlockable="false" volume="5000" weight="5000">
 <SingularNames>
 <Description>cama con dosel</Description>
 </SingularNames>
@@ -583,7 +585,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 }]]></Code>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="true" lockable="false" name="Cuadro" openable="false" unlockable="false" volume="400" weight="400">
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Cuadro" openable="false" unlockable="false" volume="400" weight="400">
 <SingularNames>
 <Description>cuadro</Description>
 </SingularNames>
@@ -633,7 +635,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 }]]></Code>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="false" lockable="false" name="Alfombra" openable="false" unlockable="false" volume="100" weight="100">
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="Alfombra" openable="false" unlockable="false" volume="100" weight="100">
 <SingularNames>
 <Description>alfombra persa</Description>
 </SingularNames>
