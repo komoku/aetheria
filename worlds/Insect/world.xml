@@ -153,8 +153,7 @@ void parseCommand( Player aPlayer , String verb , String args )
 <ExtraDescription>
 <Name>window</Name>
 <DescriptionList>
-<Description>You don't see any reason to open the window until you have gotten the sample. The only thing you could gain is undesired and dangerous attention.
-</Description>
+<Description>You don't see any reason to open the window until you have gotten the sample. The only thing you could gain is undesired and dangerous attention.</Description>
 </DescriptionList>
 </ExtraDescription>
 <ExtraDescription>
@@ -332,23 +331,23 @@ void parseCommand( Mobile aCreature , String verb , String args )
 </Item>
 <Item canGet="true" closeable="false" gender="false" lockable="false" name="Partitura" openable="false" unlockable="false" volume="1" weight="1">
 <SingularNames>
-<Description>partitura</Description>
+<Description>score</Description>
 </SingularNames>
 <PluralNames>
-<Description>partituras</Description>
+<Description>scores</Description>
 </PluralNames>
 <SingularReferenceNames>
-<Name>partitura</Name>
-<Name>hoja</Name>
-<Name>papel</Name>
+<Name>score</Name>
+<Name>sheet</Name>
+<Name>paper</Name>
 </SingularReferenceNames>
 <PluralReferenceNames>
-<Name>partituras</Name>
-<Name>hojas</Name>
-<Name>papeles</Name>
+<Name>scores</Name>
+<Name>sheets</Name>
+<Name>papers</Name>
 </PluralReferenceNames>
 <DescriptionList>
-<Description>Se trata de una partitura del 3er concierto para piano de Béla Bartók. Lo escribió cuando padecía de leucemia terminal, y se lo dedicó a su esposa, dicen. Trágico.</Description>
+<Description>It's a score of the Piano Concerto no. 3 by Béla Bartók. He wrote it when he was suffering from terminal leukemia, and he dedicated it to his wife, they say. Tragic.</Description>
 </DescriptionList>
 <ExtraDescriptionList/>
 <PropertyList/>
