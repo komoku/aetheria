@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <World author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2011-11-27" language="en" moduleName="Lethal Insect" parserVersion="1.1.8" type="Very small miniadventure" version="0.1" worldDir="." worldName="Lethal Insect">
 <IdeMetaInf>
-<View xoffset="34.0" yoffset="69.0" zoom="2.0"/>
+<View xoffset="34.0" yoffset="70.0" zoom="2.0"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Habitación de Kovacic" x="220" y="260"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Limbo" x="380" y="120"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.CharacterNode" name="Ekaterina" x="220" y="340"/>
@@ -28,7 +28,7 @@ void intro( Player aPlayer )
 		
 	aPlayer.setProperty("sawIntro",true);
 
-	aPlayer.borrarPantalla();
+	aPlayer.clearScreen();
 
 	aPlayer.write("Grylloblatta. A genus of insects in the family Grylloblattidae. You'd never have imagined that such a paradigmatically tedious information would ever interest you in the least. You or anyone, at that. But destiny is capritious, and today you have learned that many lives can depend on that esoteric insect.\n");
 	aPlayer.waitKeyPress();
@@ -62,6 +62,9 @@ void serverintro()
 /*Método de análisis sintáctico de la entrada*/
 void parseCommand( Player aPlayer , String verb , String args )
 {
+    
+    aPlayer.write("Verb: " + verb + "\n");
+    aPlayer.write("Args: " + args + "\n");
 	
 	//aPlayer: jugador que introduce un comando.
 	//verb: comando que introduce, por ejemplo "coger"
@@ -106,7 +109,7 @@ void parseCommand( Player aPlayer , String verb , String args )
 		end();
 	}
 
-	else if ( verb.equalsIgnoreCase("take") && ( args.toLowerCase().indexOf("blanket") >= 0 || args.toLowerCase().indexOf("pillow") >= 0)  )
+	else if ( verb.equalsIgnoreCase("take") && ( args.toLowerCase().indexOf("sheet") >= 0 ||args.toLowerCase().indexOf("blanket") >= 0 || args.toLowerCase().indexOf("pillow") >= 0)  )
 	{
 		aPlayer.write("You don't think the linen is interesting enough to take it.\n");
 		end();
@@ -136,33 +139,34 @@ void parseCommand( Player aPlayer , String verb , String args )
 <Room name="Habitación de Kovacic">
 <DescriptionList>
 <Description>
-<Condition language="BeanShell">!viewer.getPropertyValueAsBoolean("sawBadTaste")</Condition>Te encuentras en la suntuosa habitación del general Kovacic. Está profusamente decorada, y el valor de todo lo que contiene debe de sumar millones de dólares. Se puede hablar muy mal de los generales bordurios, pero no se puede decir que no tengan buen gusto. Una ventana da al jardín.</Description>
+<Condition language="BeanShell">!viewer.getPropertyValueAsBoolean("sawBadTaste")</Condition>You are in general Kovacic's lavish room. It is profusely decorated, and the value of its contents must add up to millions of dollars. Lots of bad things could be said about Bordurian generals, but one can't deny they have good taste. A window looks into the garden.</Description>
 <Description>
-<Condition language="BeanShell">viewer.getPropertyValueAsBoolean("sawBadTaste")</Condition>Te encuentras en la suntuosa habitación del general Kovacic. Está profusamente decorada, y el valor de todo lo que contiene debe de sumar millones de dólares. Por desgracia, la riqueza del general no va acompañada de buen gusto, a juzgar por el cuadro que has visto en la pared. Una ventana da al jardín.</Description>
+<Condition language="BeanShell">viewer.getPropertyValueAsBoolean("sawBadTaste")</Condition>You are in general Kovacic's lavish room. It is profusely decorated, and the value of its contents must add up to millions of dollars. Unfortunately, the general's wealth is not matched by his good taste, judging by the painting that you have seen on the wall. A window looks into the garden.</Description>
 </DescriptionList>
 <ExtraDescriptionList>
 <ExtraDescription>
-<Name>puerta</Name>
+<Name>door</Name>
 <DescriptionList>
-<Description>Sí, hay una puerta que lleva afuera, pero no piensas abrirla hasta que no hayas conseguido la muestra. Sería muy peligroso.</Description>
+<Description>Yes, there's a door leading outside, but you're not going to open it until you have obtained the sample. It would be very dangerous.</Description>
 </DescriptionList>
 </ExtraDescription>
 <ExtraDescription>
-<Name>ventana</Name>
+<Name>window</Name>
 <DescriptionList>
-<Description>No ves ningún motivo para abrir la ventana hasta que hayas conseguido la muestra. Lo único que conseguirías es llamar la atención indebidamente.</Description>
+<Description>You don't see any reason to open the window until you have gotten the sample. The only thing you could gain is undesired and dangerous attention.
+</Description>
 </DescriptionList>
 </ExtraDescription>
 <ExtraDescription>
-<Name>suelo</Name>
+<Name>floor</Name>
 <DescriptionList>
-<Description>Un suelo de parqué de lo más normal.</Description>
+<Description>A standard, unremarkable parquet floor.</Description>
 </DescriptionList>
 </ExtraDescription>
 <ExtraDescription>
-<Name>techo</Name>
+<Name>ceiling</Name>
 <DescriptionList>
-<Description>No ves nada del otro mundo en el techo.</Description>
+<Description>You don't see anything special on the ceiling.</Description>
 </DescriptionList>
 </ExtraDescription>
 </ExtraDescriptionList>
@@ -255,23 +259,23 @@ void parseCommand( Player aPlayer , String verb , String args )
 </Item>
 <Item canGet="true" closeable="false" gender="true" lockable="false" name="Piano de cola" openable="false" unlockable="false" volume="10000" weight="10000">
 <SingularNames>
-<Description>piano de cola</Description>
+<Description>grand piano</Description>
 </SingularNames>
 <PluralNames>
-<Description>pianos de cola</Description>
+<Description>grand pianos</Description>
 </PluralNames>
 <SingularReferenceNames>
-<Name>piano de cola</Name>
+<Name>grand piano</Name>
 <Name>piano</Name>
-<Name>atril</Name>
+<Name>stand</Name>
 </SingularReferenceNames>
 <PluralReferenceNames>
-<Name>pianos de cola</Name>
+<Name>grand pianos</Name>
 <Name>pianos</Name>
-<Name>atril</Name>
+<Name>stands</Name>
 </PluralReferenceNames>
 <DescriptionList>
-<Description>Un precioso piano de cola de Steinway &amp; Sons. El sueño de cualquier músico. Tu profesora mataría por uno de éstos. Sobre el atril hay %INVENTORY</Description>
+<Description>A beautiful grand piano from Steinway &amp; Sons. The dream of any musician. Your teacher would kill for one of these. On the music stand you can see %INVENTORY</Description>
 </DescriptionList>
 <ExtraDescriptionList/>
 <PropertyList/>
@@ -294,17 +298,17 @@ void parseCommand( Mobile aCreature , String verb , String args )
 	//verb: comando que introduce, por ejemplo "comer"
 	//args: resto de la orden que introduce, por ejemplo "la seta"
 	
-	if ( verb.equalsIgnoreCase("tocar") || verb.equalsIgnoreCase("usar") )
+	if ( verb.equalsIgnoreCase("play") || verb.equalsIgnoreCase("use") )
 	{
 		if ( self.getContents().contains(world.getObject("Partitura")) )
 		{
-			aCreature.write("Te sientas en la banqueta frente al piano y, siguiendo la partitura, tocas una digna versión del Concierto nº 3 de Bartok.\n");
-			aCreature.write("¡El perro que hay tras la puerta parece apaciguarse!\n");
+			aCreature.write("You sit on the stool in front of the piano and, following the score, you play a decent rendition of Bartok's Piano Concerto no. 3.\n");
+			aCreature.write("The dog behind the door seems to calm down!\n");
 			world.getAbstractEntity("Perro").setProperty("power",-300);
 		}
 		else
 		{
-			aCreature.write("No hay ninguna partitura en el atril del piano, y nunca has sido muy buena tocando de oído. ¿Seguro que quieres intentarlo?\n");
+			aCreature.write("There is not score on the piano's music stand, and you have never been any good trying by ear. Are you sure you want to try?\n");
 			aCreature.setProperty("askTryPiano",true);
 		}
 		end();
@@ -312,8 +316,8 @@ void parseCommand( Mobile aCreature , String verb , String args )
 
 	if ( verb.equalsIgnoreCase("tocarDeOido") )
 	{
-		aCreature.write("Intentas tocar de oído el vals en do sostenido menor de Chopin; pero tu actuación es absolutamente infumable.\n");
-		aCreature.write("¡El perro que hay tras la puerta parece ponerse de muy mal humor!\n");
+		aCreature.write("You try to play Chopin's Waltz in C# minor by ear, but your performance is absolutely horrendous.\n");
+		aCreature.write("The dog behind the door seems to get really angry!\n");
 		int pow = world.getAbstractEntity("Perro").getPropertyValueAsInteger("power");
 		if ( pow < 3 )
 			world.getAbstractEntity("Perro").setProperty("power",3);
@@ -531,39 +535,31 @@ void parseCommand( Mobile aCreature , String verb , String args )
 </Item>
 <Item canGet="true" closeable="false" gender="false" lockable="false" name="Cama" openable="false" unlockable="false" volume="5000" weight="5000">
 <SingularNames>
-<Description>cama con dosel</Description>
+<Description>canopy bed</Description>
 </SingularNames>
-<PluralNames>
-<Description>camas con dosel</Description>
-</PluralNames>
+<PluralNames/>
 <SingularReferenceNames>
-<Name>cama con dosel</Name>
-<Name>cama</Name>
-<Name>dosel</Name>
+<Name>canopy bed</Name>
+<Name>bed</Name>
+<Name>canopy</Name>
 </SingularReferenceNames>
-<PluralReferenceNames>
-<Name>camas con dosel</Name>
-<Name>camas</Name>
-<Name>doseles</Name>
-</PluralReferenceNames>
+<PluralReferenceNames/>
 <DescriptionList>
-<Description>Una lujosa cama con dosel, con sábanas y almohadas rojas.</Description>
+<Description>A lavish canopy bed, with red sheets and pillows.</Description>
 </DescriptionList>
 <ExtraDescriptionList>
 <ExtraDescription>
-<Name>sábanas</Name>
-<Name>sabanas</Name>
-<Name>sábana</Name>
-<Name>sabana</Name>
+<Name>blanket</Name>
+<Name>blankets</Name>
 <DescriptionList>
-<Description>Sábanas rojas estándar, nada interesante.</Description>
+<Description>Standard red blankets, nothing interesting.</Description>
 </DescriptionList>
 </ExtraDescription>
 <ExtraDescription>
-<Name>almohadas</Name>
-<Name>almohada</Name>
+<Name>pillow</Name>
+<Name>pillows</Name>
 <DescriptionList>
-<Description>Almohadas rojas normales, nada de interés en ellas.</Description>
+<Description>Regular red pillows, you don't see anything interesting about them.</Description>
 </DescriptionList>
 </ExtraDescription>
 </ExtraDescriptionList>
@@ -576,9 +572,9 @@ void parseCommand( Mobile aCreature , String verb , String args )
 	//verb: comando que introduce, por ejemplo "comer"
 	//args: resto de la orden que introduce, por ejemplo "la seta"
 	
-	if ( verb.equalsIgnoreCase("coger") )
+	if ( equals(verb,"take") )
 	{
-		aCreature.write("¿Cómo te vas a llevar una cama entera con dosel? No estarías pensando que este juego estaría tan mal hecho como para permitirte hacer eso, ¿no?\n"); 
+		aCreature.write("How are you going to carry a full canopy bed? I guess you weren't thinking this game is so badly made as to let you do that, were you?\n");
 		end();
 	}
 	
