@@ -2036,8 +2036,8 @@ public class Player extends Mobile implements Informador
 
 			secondChance = true;
 			
-			System.err.println("Last mentioned verb: " + mentions.getLastMentionedVerb());
-			System.err.println("Command: " + command);
+			//System.err.println("Last mentioned verb: " + mentions.getLastMentionedVerb());
+			//System.err.println("Command: " + command);
 
 			return execCommand (mentions.getLastMentionedVerb() + " " + commandstring );
 
