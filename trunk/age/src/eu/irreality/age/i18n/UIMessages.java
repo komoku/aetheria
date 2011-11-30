@@ -34,17 +34,28 @@ public /*Singleton*/ class UIMessages
 	 */
 	public String getPreferredLanguage()
 	{
-		String configuredLanguage = AGEConfiguration.getInstance().getProperty("language");
+		AGEConfiguration config = null;
+		try
+		{
+			config = AGEConfiguration.getInstance();
+		}
+		catch ( SecurityException se )
+		{
+			//on applet, can't read files
+			System.err.println("Cannot read AGE configuration file due to access restrictions: will use default locale.");
+		}
+		String configuredLanguage = null;
+		if ( config != null ) configuredLanguage = config.getProperty("language");
 		if ( configuredLanguage != null ) return configuredLanguage;
 		String sysLanguage = Locale.getDefault().getLanguage();
 		if ( sysLanguage.contains("es") )
 		{
-			AGEConfiguration.getInstance().setProperty("language","es");
+			if ( config != null ) config.setProperty("language","es");
 			return "es";
 		}
 		if ( sysLanguage.contains("en") )
 		{
-			AGEConfiguration.getInstance().setProperty("language","en");
+			if ( config != null ) config.setProperty("language","en");
 			return "en";
 		}
 		return "en";
