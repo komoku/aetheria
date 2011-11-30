@@ -51,6 +51,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	
 	private Color textFieldForeground = Color.black; //colour of the text field when it's responding. the text field will turn to red sometimes in real time, then go back to this colour
 	
+	private Color keyRequestForeground = Color.black; //colour of the text field in the "waitkeypress" state.
+	
 
 	//if deactivated, all input-getting methods will automatically return no input
 	//use this only when exiting the client
@@ -1023,6 +1025,23 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 				ie.printStackTrace();
 			}
 		}
+	}
+	
+	/**
+	 * Returns colour in which the "press any key" text is to be drawn.
+	 * @return
+	 */
+	public Color getKeyRequestForeground ( )
+	{
+		return keyRequestForeground;
+	}
+	
+	/**
+	 * Sets colour in which the "press any key" text is to be drawn.
+	 */
+	public void setKeyRequestForeground ( Color color )
+	{
+		keyRequestForeground = color;
 	}
 
 	//no bloqueante.
