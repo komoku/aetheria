@@ -92,6 +92,8 @@ class SwingEditBoxListener implements ActionListener , KeyListener
 			cl.setInputString(elCampoJTexto.getText());
 			//cl.notify();
 			
+			cl.setInactiveColor(); //check for threading errors TODO
+			
 			//System.err.println("[DN] Input string set to " + elCampoJTexto.getText());
 			
 			//add new command to game log
@@ -266,7 +268,7 @@ class SwingEditBoxListener implements ActionListener , KeyListener
 			//workaround for java bug http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6223733 :
 			elCampoJTexto.getCaret().setVisible(true);
 			//System.out.println("Setting UNPAK 3");
-			elCampoJTexto.setForeground(Color.red); //until getInput() is called.
+			elCampoJTexto.setForeground( cl.getInputFieldInactiveForeground() ); //until getInput() is called.
 		}
 		inTransitoryState = false;
 	}
