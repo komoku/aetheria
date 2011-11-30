@@ -49,8 +49,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	private Document doc;
 	private MutableAttributeSet atributos = new FancyAttributeSet();
 	
-	private Color textFieldForeground = Color.black; //colour of the text field when it's responding. the text field will turn to red sometimes in real time, then go back to this colour
-	
+	private Color textFieldForeground = Color.black; //colour of the text field when it's responding. the text field will turn to the inactive colour sometimes in real time, then go back to this colour
+	private Color textFieldInactiveForeground = Color.red; //colour of the text field when it's not responding, because stuff is loading, or for example in real-time mode it's not our time to enter another command yet.
 	private Color keyRequestForeground = Color.black; //colour of the text field in the "waitkeypress" state.
 	
 
@@ -786,11 +786,11 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 				else if ( tok.equalsIgnoreCase("blue") )
 					StyleConstants.setForeground(atributos,Color.blue);	
 				else if ( tok.equalsIgnoreCase("yellow") )
-					StyleConstants.setForeground(atributos,Color.blue);
+					StyleConstants.setForeground(atributos,Color.yellow);
 				else if ( tok.equalsIgnoreCase("lightgray") )
-					StyleConstants.setForeground(atributos,Color.blue);
+					StyleConstants.setForeground(atributos,Color.lightGray);
 				else if ( tok.equalsIgnoreCase("magenta") )
-					StyleConstants.setForeground(atributos,Color.blue);	
+					StyleConstants.setForeground(atributos,Color.magenta);	
 				else if ( tok.trim().equalsIgnoreCase("") )
 				{
 					System.out.println(getColorCode("default"));
@@ -981,7 +981,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		if ( deactivated ) return null;
 		showAfterLogLoad();
 		
-		setTextFieldForeground(textFieldForeground);
+		setActiveColor();
 	
 		try
 		{
@@ -1000,7 +1000,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		
 		currentInput = null;
 		
-		setTextFieldForeground(Color.red);
+		setInactiveColor();
 		
 		//System.err.println("[DN] getInput returning " + temp);
 		return temp;
@@ -1027,6 +1027,16 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		}
 	}
 	
+	public void setActiveColor()
+	{
+		setTextFieldForeground(textFieldForeground);
+	}
+	
+	public void setInactiveColor()
+	{
+		setTextFieldForeground(textFieldInactiveForeground);
+	}
+	
 	/**
 	 * Returns colour in which the "press any key" text is to be drawn.
 	 * @return
@@ -1042,8 +1052,26 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	public void setKeyRequestForeground ( Color color )
 	{
 		keyRequestForeground = color;
-	}
+	}	
 
+	/**
+	 * Returns the colour that the input field text is configured to assume when inactive.
+	 */
+	public Color getInputFieldInactiveForeground ( )
+	{
+		return textFieldInactiveForeground;
+	}
+	
+	/**
+	 * Sets the colour that the input field text should assume when inactive.
+	 * This method never changes the field text's colour immediately, changes will only take place in the UI next time the field becomes inactive
+	 * (i.e. when the game engine thread is simulating things). 
+	 */
+	public void setInputFieldInactiveForeground ( final Color color )
+	{
+		textFieldInactiveForeground = color;
+	}
+	
 	//no bloqueante.
 	public synchronized String getRealTimeInput ( Player pl)  
 	{
@@ -1051,12 +1079,12 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		showAfterLogLoad();
 		
 		String temp = currentInput;
-		setTextFieldForeground(textFieldForeground);
+		setActiveColor();
 		currentInput = null;
 		if ( temp == null ) //log a noop
 			loguear("");
 		else
-			setTextFieldForeground(Color.red);
+			setInactiveColor();
 		return temp;
 	}
 	
@@ -1408,7 +1436,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		else colorHex = colorString;
 		int ncolor = Integer.parseInt(colorHex,16);
 		return new Color ( ncolor );
-	}
+	}	
 	
 	/**
 	 * High-level method that sets the default colour for the input field.
