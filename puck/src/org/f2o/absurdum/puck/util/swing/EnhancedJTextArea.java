@@ -5,6 +5,7 @@
 
 package org.f2o.absurdum.puck.util.swing;
 
+import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -73,6 +74,11 @@ public class EnhancedJTextArea extends JTextArea
 	public void init()
 	{
 
+		//make tab cycle focus, instead of adding a tab character to the description
+		this.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+		this.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
+		
+		//listener for popup menu
          this.addMouseListener(new MouseAdapter()
          {
  
