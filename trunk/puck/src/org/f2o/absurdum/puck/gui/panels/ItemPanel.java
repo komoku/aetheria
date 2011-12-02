@@ -264,8 +264,8 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 		
 		openableFlagsPanel.add(oBox);
 		openableFlagsPanel.add(cBox);
-		openableFlagsPanel.add(lBox);
 		openableFlagsPanel.add(uBox);
+		openableFlagsPanel.add(lBox);
 		
 		fourthTabReal.add(openableFlagsPanel);
 				
@@ -280,8 +280,8 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 		
 		innerPanel.add(odp);
 		innerPanel.add(cdp);
-		innerPanel.add(ldp);
 		innerPanel.add(udp);
+		innerPanel.add(ldp);
 		
 		innerScroll.setViewportView(innerPanel);
 		innerScroll.setPreferredSize(new Dimension(0,400));
