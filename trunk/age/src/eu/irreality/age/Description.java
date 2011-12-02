@@ -359,6 +359,7 @@ public class Description
 						this.text=t.getData().trim(); //necessary because XML saving adds whitespace to text nodes
 						this.text = t.getData();
 						this.text = StringMethods.textualSubstitution( this.text, "\\n" , "\n" );
+						this.text = StringMethods.textualSubstitution( this.text, "\\t" , "\t" );
 						this.text = StringMethods.textualSubstitution( this.text, "\\s" , " " ); //escape character for space
 						terminamos = true;
 					}
