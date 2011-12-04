@@ -1,4 +1,4 @@
-\chapter {Presentación del mundo}
+\chapter {Presentación del mundo} \label{sec:PresentacionMundo}
 
 En las secciones anteriores nos hemos centrado en cómo modelar un mundo con
 AGE y hacer que funcione; pero no nos hemos detenido mucho en aspectos de
@@ -268,72 +268,160 @@ Son aquellos métodos que nos permiten añadir gráficos, frames, etc.
 
 \subsection{Imágenes} \label{sec:imagenes}
 
-\subsubsection{Métodos para imágenes}
+\subsubsection{Soporte de imágenes en AGE}
+
+Los mundos de Aetheria Game Engine pueden enriquecerse añadiéndoles gráficos. En
+particular, AGE permite mostrar fácilmente imágenes en una variedad de formatos,
+tanto raster como vectoriales.
+
+Los gráficos raster son aquéllos que están definidos mediante una cuadrícula de
+pequeños puntos (pixels), como es el caso de las fotografías digitales. Los
+gráficos vectoriales son aquellos que se definen mediante líneas y curvas, y se
+generan con programas como Inkscape o Corel Draw.
+
+AGE soporta los siguientes formatos de imagen:
 
 \begin{itemize}
-\item {\textsf{insertCenteredIcon( String imageFile )}: Mostrar una imagen
-centrada integrada en el texto.}
-\item {\textsf{useImage ( String imageFile , int mode , int position , int scaling )}:
-muestra la imagen que está en el fichero \textsf{imageFile}. Este método
-puede usarse tanto para mostrar imágenes en medio del texto, como en marcos
-o como fondo.
-	\begin{itemize}
-	\item {El parámetro mode indica cómo se mostrará la imagen. Sus valores
-	pueden ser \textsf{ImageConstants.INLINE} (mostrar con el texto),
-	\textsf{ImageConstants.FRAME} (mostrar en un marco), o
-	\textsf{ImageConstants.BACKGROUND} (mostrar como fondo).}
-	\item {El parámetro position indica en qué posición se mostrará la imagen.
-	Si el modo es \textsf{ImageConstants.INLINE}, el parámetro position puede
-	valer \textsf{ImageConstants.CENTER (imagen centrada)} o
-	\textsf{ImageConstants.LEFT} (imagen alineada a la derecha). Si el modo es
-	\textsf{ImageConstants.FRAME}, el parámetro position puede valer
-	\textsf{ImageConstants.TOP} (arriba), \textsf{ImageConstants.BOTTOM}
-	(abajo), \textsf{ImageConstants.LEFT} (izquierda) o
-	\textsf{ImageConstants.RIGHT} (derecha), según en qué frame se quiere
-	mostrar la imagen. Si el modo es \textsf{ImageConstants.BACKGROUND}, el
-	parámetro position no tiene de momento ningún efecto (en este caso se
-	puede pasar cualquier valor, por ejemplo 0).}
-	\item {El parámetro scaling indica qué tipo de escalado se aplicará a la
-	imagen. Este parámetro, al menos de momento, sólo tiene sentido en el modo
-	\textsf{ImageConstants.FRAME} (ya que por ejemplo una imagen que se
-	muestra en el medio del texto no necesita escalado). En el resto de los
-	modos se puede pasar cualquier valor, por ejemplo 0. En modo
-	\textsf{ImageConstants.FRAME}, tenemos los siguientes valores permitidos
-	para el parámetro scaling: \textsf{ImageConstants.NO\_SCALING} (la imagen
-	no se escalará, sino que se mostrará a su tamaño natural),
-	\textsf{ImageConstants.FIT\_WIDTH} (la imagen se escalará para ocupar toda
-	la anchura del frame, manteniendo la proporción de aspecto original, o
-	sea, sin estirar ni encoger la imagen), \textsf{ImageConstants.FIT\_HEIGHT}
-	(la imagen se escalará para ocupar toda la altura del frame, manteniendo
-	la proporción de aspecto original), y por último
-	\textsf{ImageConstants.FIT\_BOTH} (la imagen se escalará para ocupar toda
-	la altura y anchura del frame, pudiendo para ello modificar la proporción
-	de aspecto).}
-	\end{itemize}
+\item {Gráficos raster estáticos: JPG, GIF, PNG, BMP.}
+\item {Gráficos raster animados: GIF animado.}
+\item {Gráficos vectoriales: SVG.}
+\end{itemize}
+
+Además, cada imagen se puede mostrar en la ventana de juego de tres maneras
+diferentes:
+
+\begin{itemize}
+\item {Integrados en el texto (como si fuera una imagen en una página web).}
+\item {Como fondo del área de texto (es decir, por detrás del texto).}
+\item {En una zona independiente de la ventana, especialmente pensada para
+mostrar gráficos, llamada frame.}
+\end{itemize}
+
+Los métodos que muestran imágenes se invocan sobre un objeto de la clase
+\textsf{InputOutputClient}, que representa el cliente que está utilizando un
+jugador para jugar su partida. Se puede obtener el cliente de un jugador dado de
+la siguiente manera:
+
+\begin{lstlisting}
+InputOutputClient theClient = jugador.getIO();
+\end{lstlisting}
+
+Es importante tener en cuenta que no todos los clientes de AGE soportan
+imágenes: por ejemplo, se pueden mostrar imágenes en el cliente gráfico de
+ventanas; pero no pueden mostrarse cuando se juega una partida por telnet o por
+IRC (véase \ref{sec:PresentacionMundo} presentación del mundo para más
+información). Esto obliga al programador de aventuras a comprobar que el cliente
+tiene la posibilidad de mostrar imágenes. Para ello, tenemos que comprobar que
+el cliente sea de la subclase \textsf{MultimediaInputOutputClient} (clientes que
+tienen soporte multimedia) y que permita mostrar imágenes, de la siguiente
+manera:
+
+\begin{lstlisting}
+if ( theClient instanceof MultimediaInputOutputClient ) && theClient.isGraphicsEnabled() )
+{
+  //el código para mostrar imágenes iría dentro del if.
 }
+\end{lstlisting}
+
+Si invocáramos los métodos para mostrar imágenes sin hacer esta comprobación,
+nuestro juego funcionaría (y mostraría las imágenes) al jugarlo en clientes
+gráficos; pero no funcionaría (y daría mensajes de error) al jugarlo en clientes
+sin soporte de imágenes como cheapAGE o el bot IRC de AGE. Por ello, es muy
+recomendable hacer siempre la comprobación para que nuestro mundo no dependa de
+un cliente en concreto y pueda ser accesible al mayor número de gente posible.
+
+\subsubsection{Métodos para imágenes}
+
+Una vez obtenido el cliente usado por el jugador y comprobado que soporta
+multimedia (tal y como se ha descrito más arriba), podemos invocar los
+siguientes métodos para mostrarle imágenes al jugador:
+
+\begin{lstlisting}
+/*clase InputOutputClient*/ insertCenteredIcon( URL imageUrl )
+\end{lstlisting}
+
+Mostrar una imagen centrada integrada en el texto. Es una forma rápida de
+mostrar una imagen ocasionalmente, si no queremos preocuparnos de hacer una
+configuración detallada de dónde y cómo queremos que aparezca.
+
+\begin{lstlisting}
+/*clase InputOutputClient*/ useImage ( URL imageUrl , int mode , int position , int scaling )
+\end{lstlisting}
+
+Muestra la imagen que está en el fichero imageFile. Este método puede usarse
+tanto para mostrar imágenes en medio del texto, como en marcos o como fondo. 
+
+\begin{itemize}
+\item{El parámetro mode indica cómo se mostrará la imagen. Sus valores pueden
+ser \textsf{ImageConstants.INLINE} (mostrar con el texto),
+\textsf{ImageConstants.FRAME} (mostrar en un marco), o
+\textsf{ImageConstants.BACKGROUND} (mostrar como fondo). Nótese que para mostrar
+imágenes en marcos con el parámetro \textsf{ImageConstants.FRAME} es necesario
+haber creado el marco primero, tal y como se describe en la sección sobre
+frames.}
+\item{El parámetro position indica en qué posición se mostrará la imagen. Si el
+modo es \textsf{ImageConstants.INLINE}, el parámetro position puede valer
+\textsf{ImageConstants.CENTER} (imagen centrada) o \textsf{ImageConstants.LEFT}
+(imagen alineada a la derecha). Si el modo es \textsf{ImageConstants.FRAME}, el
+parámetro \textsf{position} puede valer \textsf{ImageConstants.TOP} (arriba),
+\textsf{ImageConstants.BOTTOM} (abajo), \textsf{ImageConstants.LEFT} (izquierda)
+o \textsf{ImageConstants.RIGHT} (derecha), según en qué frame se quiere mostrar
+la imagen. Si el modo es \textsf{ImageConstants.BACKGROUND}, el parámetro
+\textsf{position} no tiene de momento ningún efecto (en este caso se puede pasar
+cualquier valor, por ejemplo $0$).}
+\item{El parámetro \textsf{scaling} indica qué tipo de escalado se aplicará a la
+imagen. Este parámetro, al menos de momento, sólo tiene sentido en el modo
+\textsf{ImageConstants.FRAME} (ya que por ejemplo una imagen que se muestra en
+el medio del texto no necesita escalado). En el resto de los modos se puede
+pasar cualquier valor, por ejemplo $0$. En modo \textsf{ImageConstants.FRAME},
+tenemos los siguientes valores permitidos para el parámetro \textsf{scaling}:
+\textsf{ImageConstants.NO\_SCALING} (la imagen no se escalará, sino que se
+mostrará a su tamaño natural), \textsf{ImageConstants.FIT\_WIDTH} (la imagen se
+escalará para ocupar toda la anchura del frame, manteniendo la proporción de
+aspecto original, o sea, sin estirar ni encoger la imagen),
+\textsf{ImageConstants.FIT\_HEIGHT} (la imagen se escalará para ocupar toda la
+altura del frame, manteniendo la proporción de aspecto original), y por último
+\textsf{ImageConstants.FIT\_BOTH} (la imagen se escalará para ocupar toda la
+altura y anchura del frame, pudiendo para ello modificar la proporción de
+aspecto).}
 \end{itemize}
 
 \subsubsection{Ejemplos de código}
 
-Mostrar una imagen de fondo:
+Suponemos que hemos obtenido el cliente del jugador tal y como se explicaba
+arriba, que lo tenemos almacenado en una variable llamada \textsf{theClient} y
+sabemos que soporta multimedia.
+
+Podemos obtener la URL de una imagen que hayamos puesto en el directorio del
+mundo mediante el método \textsf{getResource()} del mundo, de la siguiente
+manera:
+
+\begin{lstlisting}
+imagen = world.getResource("ficheroimagen.png");
+\end{lstlisting}
+
+Hecho esto, podemos usar este código para mostrar la imagen como fondo:
 
 \begin{lstlisting}
 theClient.useImage( imagen , ImageConstants.BACKGROUND , 0 , 0 );
 \end{lstlisting}
 
-Mostrar una imagen centrada integrada en el texto:
+Para mostrar la imagen centrada e integrada en el texto:
 
 \begin{lstlisting}
 theClient.useImage( imagen , ImageConstants.INLINE , ImageConstants.CENTER , 0 );
 \end{lstlisting}
 
-Otra forma de mostrar una imagen centrada integrada en el texto:
+Otra forma de mostrar la imagen centrada e integrada en el texto:
 
 \begin{lstlisting}
 theClient.insertCenteredIcon( imagen );
 \end{lstlisting}
 
-\subsection{Frames}
+En la sección \ref{sec:frames} específica sobre frames se muestra un ejemplo que
+muestra una imagen en un frame. 
+
+\subsection{Frames} \label{sec:frames}
 \subsubsection{Utilidad de los frames}
 
 Los frames son áreas de tamaño fijo que se pueden añadir a la ventana de
@@ -347,33 +435,40 @@ entre otras funcionalidades.
 \subsubsection{Métodos para crear y borrar frames}
 
 Los siguientes métodos se pueden ejecutar sobre un objeto de la clase
-\textsf{MultimediaInputOutputClient}:\footnote{el método \textsf{getIO()} de
-la clase \textsf{Player} nos devuelve una instancia de
+\textsf{MultimediaInputOutputClient}:\footnote{el método \textsf{getIO()} de la
+clase \textsf{Player} nos devuelve una instancia de
 \textsf{MultimediaInputOutputClient} cuando el jugador esté utilizando un
-cliente de juego con soporte multimedia, como lo es el interfaz de ventanas
-de Aetheria Game Engine. Nótese que otros clientes, como el de línea de
-comandos \textsf{cheapAGE}, pueden no soportar multimedia y por lo tanto no
-permitir el uso de frames.}
+cliente de juego con soporte multimedia, como lo es el interfaz de ventanas de
+Aetheria Game Engine. Nótese que otros clientes, como el de línea de comandos
+\textsf{cheapAGE}, pueden no soportar multimedia y por lo tanto no permitir el
+uso de frames. Hay más información sobre esto (incluyendo cómo se comprueba si
+un cliente soporta multimedia) en la sección \ref{sec:imagenes} sobre imágenes.}
+
+\begin{lstlisting}
+/*clase InputOutputClient*/ void addFrame ( int position , int size )
+\end{lstlisting}
+
+Este método crea un marco en la posición dada, y del tamaño en pixels dado.
 
 \begin{itemize}
-\item {\textsf{addFrame ( int position , int size )}: crea un marco en la
-posición dada, y del tamaño en pixels dado.
-	\begin{itemize}
-	\item {La posición puede ser \textsf{ImageConstants.TOP} (arriba),
-	\textsf{ImageConstants.BOTTOM} (abajo), \textsf{ImageConstants.LEFT}
-	(izquierda) o \textsf{ImageConstants.RIGHT} (derecha).}
-	\item {El tamaño se refiere al alto si el frame se crea arriba o abajo, o
-	al ancho si se crea a la derecha o a la izquierda (la otra dimensión
-	variará según el tamaño de la ventana de AGE).}
-	\item {Puede haber varios marcos a la vez, aunque de momento sólo uno por
-	posición (o sea, por ejemplo, no puede haber dos marcos encima del texto
-	a la vez).}
-	\end{itemize}
-}
-\item {\textsf{removeFrames ()}: quita todos los marcos que se hayan creado.
-Esto es útil si una aventura tiene partes que muestran imágenes y otras que
-no. Más tarde se pueden volver a crear los marcos con \textsf{addFrame()}.}
+\item{La posición puede ser \textsf{ImageConstants.TOP} (arriba),
+\textsf{ImageConstants.BOTTOM} (abajo), \textsf{ImageConstants.LEFT} (izquierda)
+o \textsf{ImageConstants.RIGHT} (derecha).}
+\item{El tamaño se refiere al alto si el frame se crea arriba o abajo, o al
+ancho si se crea a la derecha o a la izquierda (la otra dimensión variará según
+el tamaño de la ventana de AGE).}
+\item{Puede haber varios marcos a la vez, aunque de momento sólo uno por
+posición (o sea, por ejemplo, no puede haber dos marcos encima del texto a la
+vez).}
 \end{itemize}
+
+\begin{lstlisting}
+/*clase InputOutputClient*/ void removeFrames ()
+\end{lstlisting}
+
+Este método quita todos los marcos que se hayan creado. Esto es útil si una
+aventura tiene partes que muestran imágenes y otras que no. Más tarde se pueden
+volver a crear los marcos con \textsf{addFrame()}.
 
 \subsubsection{Métodos para mostrar imágenes en frames}
 
@@ -381,6 +476,21 @@ Para mostrar una imagen en un frame, puede utilizarse el método
 \textsf{useImage} especificando como modo de mostrado
 \textsf{ImageConstants.FRAME}, tal y como se muestra en la sección
 \ref{sec:imagenes} Imágenes.
+
+\subsubsection{Manipulación avanzada de frames}
+
+Solamente si eres un programador avanzado de Java y quieres ir más allá de
+mostrar imágenes en los frames, podría interesarte este método:
+
+\begin{lstlisting}
+/*clase InputOutputClient*/ JPanel getFrame ( int position )
+\end{lstlisting}
+
+Dicho método devuelve el panel que se utiliza internamente para representar el
+frame, y puede ser utilizado por programadores que conozcan la API de Swing y
+que quieran dibujar directamente sobre él. Por supuesto, no hace falta este
+método para mostrar imágenes en frames, basta con los anteriores, que serán los
+que interesen a la gran mayoría de usuarios.
 
 \subsubsection{Ejemplos de código}
 
