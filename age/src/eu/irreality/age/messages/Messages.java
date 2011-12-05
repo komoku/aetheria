@@ -59,6 +59,7 @@ public class Messages
 			if ( is == null ) throw new IOException("Could not read message file " + u);
 			//properties.load( new InputStreamReader ( is , "UTF-8" ) );
 		    //1.5 compatible:
+			//TODO: apply this cheap hack only if java version < 1.6
 		    UTF8PropertiesLoader.loadProperties(properties,is,"UTF-8");
 		}
 		catch ( IOException ioe )
@@ -74,6 +75,7 @@ public class Messages
 	    if ( is == null ) throw new IOException("Could not read message file " + u);
 	    //properties.load( new InputStreamReader ( is , "UTF-8" ) );
 	    //1.5 compatible:
+	    //TODO: apply this cheap hack only if java version < 1.6
 	    UTF8PropertiesLoader.loadProperties(properties,is,"UTF-8");
 	}
 	
