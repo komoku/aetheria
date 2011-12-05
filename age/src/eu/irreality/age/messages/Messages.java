@@ -18,6 +18,7 @@ import eu.irreality.age.World;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.util.UTF8PropertiesLoader;
 
 public class Messages 
 {
@@ -56,7 +57,9 @@ public class Messages
 			URL u = this.getClass().getClassLoader().getResource(path);
 			InputStream is = u.openStream();
 			if ( is == null ) throw new IOException("Could not read message file " + u);
-			properties.load( new InputStreamReader ( is , "UTF-8" ) );
+			//properties.load( new InputStreamReader ( is , "UTF-8" ) );
+		    //1.5 compatible:
+		    UTF8PropertiesLoader.loadProperties(properties,is,"UTF-8");
 		}
 		catch ( IOException ioe )
 		{
@@ -69,7 +72,9 @@ public class Messages
 	    properties = new Properties();
 	    InputStream is = u.openStream();
 	    if ( is == null ) throw new IOException("Could not read message file " + u);
-	    properties.load( new InputStreamReader ( is , "UTF-8" ) );
+	    //properties.load( new InputStreamReader ( is , "UTF-8" ) );
+	    //1.5 compatible:
+	    UTF8PropertiesLoader.loadProperties(properties,is,"UTF-8");
 	}
 	
 	private String getEntryForKey ( String key )
