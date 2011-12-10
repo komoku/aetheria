@@ -4,18 +4,18 @@
 <View xoffset="34.0" yoffset="70.0" zoom="2.0"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Habitación de Kovacic" x="220" y="260"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Limbo" x="380" y="120"/>
-<Node class="org.f2o.absurdum.puck.gui.graph.CharacterNode" name="Ekaterina" x="220" y="340"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Item falso" x="100" y="120"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Piano de cola" x="340" y="260"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Partitura" x="320" y="200"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Marco" x="120" y="200"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Botón" x="100" y="260"/>
-<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Caja fuerte" x="120" y="320"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Cama" x="280" y="340"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Cuadro" x="160" y="160"/>
-<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Alfombra" x="260" y="160"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Perrofake" x="340" y="300"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Perro" x="380" y="340"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Alfombra" x="260" y="160"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Caja fuerte" x="120" y="320"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.CharacterNode" name="Ekaterina" x="220" y="340"/>
 </IdeMetaInf>
 <Code language="BeanShell"><![CDATA[/*Introducción del juego para un jugador*/
 
@@ -30,6 +30,10 @@ void intro( Player aPlayer )
 
 	aPlayer.clearScreen();
 
+    aPlayer.writeInformation("NOTE FROM THE AUTHOR: This game was originally written in Spanish, and translated to English by myself. I am not a native English speaker and unfortunately I can't write good English at a literary level. Please forgive the errors and shortcomings in the writing and contact me if you wish to make suggestions for better translations.\n\n\n");
+
+    aPlayer.waitKeyPress();
+
 	aPlayer.write("Grylloblatta. A genus of insects in the family Grylloblattidae. You'd never have imagined that such a paradigmatically tedious information would ever interest you in the least. You or anyone, at that. But destiny is capritious, and today you have learned that many lives can depend on that esoteric insect.\n");
 	aPlayer.waitKeyPress();
 	aPlayer.write("You are Ekaterina Voronova, although your reputation as a relentless spy has made some know you as Killer Kat. And it is, undoubtedly, because of this reputation that the Syldavian secret services have entrusted you with an important and dangerous mission... and promised a juicy reward.\n");
@@ -43,6 +47,7 @@ void intro( Player aPlayer )
 	aPlayer.write("But now, finally, your chance has come: too many alcohol has been served at the Bordurian National Day party, everyone in the house is having fun, and no one has noticed that one of the maids has gone up the stairs. No one has heard how you knocked out the guard before the door and you got into the general's room. Now, you only have to find the sample and get away from this hell.\n");
 	aPlayer.write("\n\n\n");
 
+    
 }
 
 
@@ -63,8 +68,8 @@ void serverintro()
 void parseCommand( Player aPlayer , String verb , String args )
 {
     
-    aPlayer.write("Verb: " + verb + "\n");
-    aPlayer.write("Args: " + args + "\n");
+    //aPlayer.write("Verb: " + verb + "\n");
+    //aPlayer.write("Args: " + args + "\n");
 	
 	//aPlayer: jugador que introduce un comando.
 	//verb: comando que introduce, por ejemplo "coger"
@@ -283,7 +288,7 @@ void parseCommand( Player aPlayer , String verb , String args )
  	
  	//getter: criatura que coge esta cosa.
  	//self: cosa que ha cogido (es decir, esta cosa).
-	getter.writeAction("No estaría mal llevarte el piano, ya que es precioso. Pero, por desgracia, no cuentas con fuerza sobrehumana praa cogerlo.\n");	
+	getter.writeAction("It would be nice to get hold of that piano, it's beautiful... but, unfortunately, you lack the superhuman strength necessary to take it.\n");	
 	end();
 
 }
@@ -307,7 +312,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 		}
 		else
 		{
-			aCreature.write("There is not score on the piano's music stand, and you have never been any good trying by ear. Are you sure you want to try?\n");
+			aCreature.write("There is no score on the piano's music stand, and you have never been any good trying by ear. Are you sure you want to try?\n");
 			aCreature.setProperty("askTryPiano",true);
 		}
 		end();
@@ -357,19 +362,19 @@ void parseCommand( Mobile aCreature , String verb , String args )
 <SingularNames/>
 <PluralNames/>
 <SingularReferenceNames>
-<Name>marco</Name>
+<Name>frame</Name>
 </SingularReferenceNames>
 <PluralReferenceNames>
-<Name>marcos</Name>
+<Name>frames</Name>
 </PluralReferenceNames>
 <DescriptionList>
-<Description>Es un marco dorado, bastante hortera, decorado con patrones geométricos.</Description>
+<Description>A rather tacky golden frame, decorated with geometric patterns.</Description>
 </DescriptionList>
 <ExtraDescriptionList>
 <ExtraDescription>
-<Name>patrones</Name>
+<Name>patterns</Name>
 <DescriptionList>
-<Description>Patrones geométricos.</Description>
+<Description>Geometric patterns.</Description>
 </DescriptionList>
 </ExtraDescription>
 </ExtraDescriptionList>
@@ -384,7 +389,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 	
 	if ( verb.equalsIgnoreCase("mirar") && !aCreature.getPropertyValueAsBoolean("sawMarco") )
 	{
-		aCreature.write("Es un marco dorado bastante hortera, decorado con patrones geométricos y... ¡goddamnit! Acabas de ver un pequeño botón dorado, camuflado en él.\n");
+		aCreature.write("It's a rather tacky golden frame, decorated with geometric patterns and... goddamnit! You have just noticed a little golden button, subtly disguised in it.\n");
 		aCreature.setProperty("sawMarco",true);
 		world.getRoom("Habitación de Kovacic").addItem(world.getItem("Botón"));
 		end();
@@ -399,16 +404,15 @@ void parseCommand( Mobile aCreature , String verb , String args )
 <SingularNames/>
 <PluralNames/>
 <SingularReferenceNames>
-<Name>botón</Name>
-<Name>boton</Name>
-<Name>tecla</Name>
+<Name>button</Name>
+<Name>key</Name>
 </SingularReferenceNames>
 <PluralReferenceNames>
-<Name>botones</Name>
-<Name>teclas</Name>
+<Name>buttons</Name>
+<Name>keys</Name>
 </PluralReferenceNames>
 <DescriptionList>
-<Description>Un pequeño botón dorado camuflado en el marco del Lanfranco. No está mal la artimaña, nadie se pararía a mirar mucho ese cuadro.</Description>
+<Description>A tiny golden button, subtly camouflaged in the Lanfranco's frame. Not a bad trick, most people wouldn't bother to look closely at that painting.</Description>
 </DescriptionList>
 <ExtraDescriptionList/>
 <PropertyList/>
@@ -420,111 +424,25 @@ void parseCommand( Mobile aCreature , String verb , String args )
 	//verb: comando que introduce, por ejemplo "comer"
 	//args: resto de la orden que introduce, por ejemplo "la seta"
 	
-	if ( verb.equalsIgnoreCase("coger") )
+	if ( verb.equalsIgnoreCase("take") )
 	{
-		aCreature.write("Hum. Es uno de estos botones que se pulsan. No un botón como el del pantalón. Así que no tiene sentido cogerlo.\n");
+		aCreature.write("Hmm. It's one of these buttons that people push. Not a button like in trousers and such. So it makes no sense to take it.\n");
 		end();
 	}
 
-	if ( verb.equalsIgnoreCase("pulsar") || verb.equalsIgnoreCase("presionar") || verb.equalsIgnoreCase("accionar") || verb.equalsIgnoreCase("usar") )
+	if ( verb.equalsIgnoreCase("push") || verb.equalsIgnoreCase("press") || verb.equalsIgnoreCase("activate") || verb.equalsIgnoreCase("use") )
 	{
 
 		if ( !self.getPropertyValueAsBoolean("pressed") )
 		{
-			aCreature.write("Pulsas el botón y, con un leve ruidito de engranajes bien engrasados, una parte del cuadro se desliza detrás de otra y deja ver una caja fuerte. ¡Sí! Ahí dentro tiene que estar lo que buscas.\n"); 
+			aCreature.write("You push the button and, with a quiet mechanical noise, a part of the painting slides behind the rest and lets you see a safe. Yeah! The object of your search must be in there.\n"); 
 			world.getRoom("Habitación de Kovacic").addItem(world.getItem("Caja fuerte"));
 			self.setProperty("pressed",true);
 			end();
 		}
 		else
 		{
-			aCreature.write("Pulsas el botón de nuevo, pero nada sucede.\n");
-			end();
-		}
-	}
-	
-}]]></Code>
-<RelationshipList/>
-</Item>
-<Item canGet="true" closeable="false" gender="false" lockable="false" name="Caja fuerte" openable="false" unlockable="false" volume="600" weight="600">
-<SingularNames>
-<Description>caja fuerte</Description>
-</SingularNames>
-<PluralNames>
-<Description>cajas fuertes</Description>
-</PluralNames>
-<SingularReferenceNames>
-<Name>caja fuerte</Name>
-<Name>caja</Name>
-</SingularReferenceNames>
-<PluralReferenceNames>
-<Name>cajas fuertes</Name>
-<Name>cajas</Name>
-</PluralReferenceNames>
-<DescriptionList>
-<Description>La caja fuerte es una Wuttengeiser modelo XL-44 "Rottweiler". Una caja muy buena, a prueba de ladrones. Calculas que te llevará unos tres minutos forzarla.</Description>
-</DescriptionList>
-<ExtraDescriptionList/>
-<PropertyList/>
-<Code language="BeanShell"><![CDATA[void before_do_get ( Mobile getter , Inventory inv , String toAppend )
-{
- 	
- 	//getter: criatura que coge esta cosa.
- 	//self: cosa que ha cogido (es decir, esta cosa).
-	getter.writeAction("La caja fuerte está empotrada en la pared tras el cuadro. Imposible llevársela.\n");	
-	end();
-
-}
-
-
-/*Método de análisis sintáctico de la entrada referida a una cosa*/
-void parseCommand( Mobile aCreature , String verb , String args )
-{
-	
-	//aCreature: criatura que introduce un comando.
-	//verb: comando que introduce, por ejemplo "comer"
-	//args: resto de la orden que introduce, por ejemplo "la seta"
-	
-	if ( verb.equalsIgnoreCase("abrir") )
-	{
-		aCreature.write("La caja fuerte está cerrada, como es natural. Para abrirla, tendrías que forzarla. Tarea que llevaría unos minutos.\n");
-		end();
-	}
-
-	if ( verb.equalsIgnoreCase("forzar") || (verb.equalsIgnoreCase("fuerzo") ) )
-	{
-		int power = world.getAbstractEntity("Perro").getPropertyValueAsInteger("power");
-		if ( power >= 1 )
-		{
-			aCreature.write("Con mucho cuidado, te concentras en los mecanismos de la caja abstrayéndote de todo lo demás, como te enseñó el maestro cerrajero Yan-Kan...\n");
-			aCreature.waitKeyPress();
-			aCreature.write("rrrrrrrrr... CLICK\n");
-			aCreature.waitKeyPress();
-			aCreature.write("rrrrrrrrr... CLICK\n");
-			aCreature.waitKeyPress();
-			aCreature.write("De repente, notas algo frío en el cuello. Por el tacto, reconoces el cañón de 5.52 mm de un fusil de asalto bordurio. ¡Damnit! Con tanta concentración, no te diste cuenta de que entraban en la habitación. Probablemente han oído al perro.\n");
-			aCreature.write("Oyes un tremendo estampido, y pierdes la vida.\n");
-			aCreature.die();
-			aCreature.setRoom(world.getRoom("Limbo"));
-			world.getRoom("Limbo").setProperty("ending",0);
-			end();
-		}
-		else
-		{
-			aCreature.write("Con mucho cuidado, te concentras en los mecanismos de la caja abstrayéndote de todo lo demás, como te enseñó el maestro cerrajero Yan-Kan...\n");
-			aCreature.waitKeyPress();
-			aCreature.write("rrrrrrrrr... CLICK\n");
-			aCreature.waitKeyPress();
-			aCreature.write("rrrrrrrrr... CLICK\n");
-			aCreature.waitKeyPress();
-			aCreature.write("rrrrrrrrr... CLICK\n");
-			aCreature.waitKeyPress();
-			aCreature.write("¡CLACK! ¡CLACK!\n");
-			aCreature.write("La caja se abre, y dentro encuentras una pequeña cajita de cristal con agujeros, donde campan a sus anchas cuatro o cinco feos insectos: ¡los Grylloblatta!\n");
-			aCreature.write("A partir de aquí, te pones en piloto automático. EStás tan bien entrenada para huir de sitios, y tenías tan bien planeada la huida de esta habitación concreta, que ya no necesitas pensar más. Saltas por la ventana y corres antes de que nadie pueda darse cuenta de tu presencia. En menos que canta un gallo, unos compañeros te recogen en coche, y te felicitan por la misión cumplida.\n");
-			aCreature.write("Enhorabuena, has ganado. Gracias a tu magnífica actuación, tu país está a salvo de los belicosos bordurios... al menos por el momento....\n");
-			aCreature.setRoom(world.getRoom("Limbo"));
-			world.getRoom("Limbo").setProperty("ending",1);
+			aCreature.write("You push the button again, but nothing happens.\n");
 			end();
 		}
 	}
@@ -582,28 +500,28 @@ void parseCommand( Mobile aCreature , String verb , String args )
 </Item>
 <Item canGet="true" closeable="false" gender="true" lockable="false" name="Cuadro" openable="false" unlockable="false" volume="400" weight="400">
 <SingularNames>
-<Description>cuadro</Description>
+<Description>painting</Description>
 </SingularNames>
 <PluralNames>
-<Description>cuadros</Description>
+<Description>paintings</Description>
 </PluralNames>
 <SingularReferenceNames>
-<Name>la Resurrección de Cristo</Name>
-<Name>Resurrección</Name>
+<Name>the Resurrection of Christ</Name>
+<Name>Resurrection</Name>
 <Name>Lanfranco</Name>
-<Name>cuadro</Name>
+<Name>painting</Name>
 </SingularReferenceNames>
 <PluralReferenceNames>
-<Name>cuadros</Name>
+<Name>paintings</Name>
 </PluralReferenceNames>
 <DescriptionList>
-<Description>Un cuadro grande, con marco dorado, de tal vez un metro de ancho por dos de alto. Si la memoria no te falla, se trata de "La resurrección de Cristo", de Giovanni Lanfranco. Pero la bandera que aparece en la pintura original ha sido cambiada por una bandera borduria. De acuerdo, tal vez los generales bordurios no tengan tan buen gusto al fin y al cabo.</Description>
+<Description>A large painting with a golden frame, perhaps one meter wide per two meters tall. If your memory doesn't fail you, it is Giovanni Lanfranco's "Resurrection". But the flag in the original painting has been replaced by a Bordurian flag. OK, maybe Bordurian generals don't have such a good taste after all.</Description>
 </DescriptionList>
 <ExtraDescriptionList>
 <ExtraDescription>
-<Name>bandera</Name>
+<Name>flag</Name>
 <DescriptionList>
-<Description>La bandera original del cuadro de Lanfranco ha sido cambiada por una bandera de Borduria en esta reproducción.</Description>
+<Description>The original flag in Lanfranco's painting has been replaced by a Bordurian flag in this reproduction.</Description>
 </DescriptionList>
 </ExtraDescription>
 </ExtraDescriptionList>
@@ -623,7 +541,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 
 	if ( verb.equalsIgnoreCase("coger") )
 	{
-		aCreature.write("El cuadro está muy bien fijado a la pared, dirías que el marco está atornillado. Aunque tuviese algún sentido llevárselo, no habría forma de sacarlo sin montar un jaleo de mil diablos y que te cogieran con las manos en la masa.\n"); 
+		aCreature.write("The painting is firmly fixed to the wall, probably nailed. Even if it made sense to take it, it would be impossible to do so without making a mess and being caught red-handed.\n");
 		end();
 	}
 	
@@ -632,19 +550,23 @@ void parseCommand( Mobile aCreature , String verb , String args )
 </Item>
 <Item canGet="true" closeable="false" gender="false" lockable="false" name="Alfombra" openable="false" unlockable="false" volume="100" weight="100">
 <SingularNames>
-<Description>alfombra persa</Description>
+<Description>Persian carpet</Description>
 </SingularNames>
 <PluralNames/>
 <SingularReferenceNames>
-<Name>alfombra persa</Name>
-<Name>alfombra</Name>
+<Name>persian carpet</Name>
+<Name>persian rug</Name>
+<Name>carpet</Name>
+<Name>rug</Name>
 </SingularReferenceNames>
 <PluralReferenceNames>
-<Name>alfombras persas</Name>
-<Name>alfombras</Name>
+<Name>persian carpets</Name>
+<Name>persian rugs</Name>
+<Name>carpets</Name>
+<Name>rugs</Name>
 </PluralReferenceNames>
 <DescriptionList>
-<Description>Una suntuosa alfombra persa, decorada con intrincados patrones geométricos.</Description>
+<Description>A sumptuous Persian carpet, decorated with intrincate geometric patterns.</Description>
 </DescriptionList>
 <ExtraDescriptionList/>
 <PropertyList/>
@@ -653,7 +575,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
  	
  	//getter: criatura que coge esta cosa.
  	//self: cosa que ha cogido (es decir, esta cosa).
-	getter.writeAction("No necesitas llevarte una maldita alfombra persa. Has venido para cumplir una misión peligrosa, no para hacerte con un stock de artículos de lujo.\n");	
+	getter.writeAction("You don't need to take a damned Persian rug. You're here to fulfill a dangerous mission, not to get hold of a stock of luxuries.\n");
 	end();
 
 }
@@ -667,18 +589,106 @@ void parseCommand( Mobile aCreature , String verb , String args )
 	//verb: comando que introduce, por ejemplo "comer"
 	//args: resto de la orden que introduce, por ejemplo "la seta"
 	
-	if ( verb.equalsIgnoreCase("levantar") || (verb.equalsIgnoreCase("mirar") && args.indexOf("bajo") >= 0) || verb.equalsIgnoreCase("mover") || verb.equalsIgnoreCase("enrollar") )
+	if ( verb.equalsIgnoreCase("lift") || (verb.equalsIgnoreCase("look") && args.indexOf("under") >= 0) || verb.equalsIgnoreCase("move") || verb.equalsIgnoreCase("roll") || verb.equalsIgnoreCase("fold") || verb.equalsIgnoreCase("remove")  )
 	{
 		if ( !world.getItem("Partitura").getPropertyValueAsBoolean("appeared") )
 		{
-			aCreature.write("Mirando la alfombra para mirar lo que hay debajo, encuentras una hoja de papel. ¡Se trata de una partitura!\n");
+			aCreature.write("Checking under the carpet, you find a sheet of paper. It seems to be a music score!\n");
 			world.getItem("Partitura").setProperty("appeared",true);
 			world.getRoom("Habitación de Kovacic").addItem(world.getItem("Partitura"));
 			end();
 		}
 		else
 		{
-			aCreature.write("Ya no hay nada más debajo de la alfombra. Enough is enough.\n");
+			aCreature.write("There is nothing else under the carpet. Enough is enough.\n");
+			end();
+		}
+	}
+	
+}]]></Code>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="Caja fuerte" openable="false" unlockable="false" volume="600" weight="600">
+<SingularNames>
+<Description>safe</Description>
+</SingularNames>
+<PluralNames>
+<Description>safes</Description>
+</PluralNames>
+<SingularReferenceNames>
+<Name>safe</Name>
+<Name>strongbox</Name>
+<Name>strong box</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>safes</Name>
+<Name>strongboxes</Name>
+<Name>strong boxes</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>The safe is a Wuttengeiser model XL-44 "Rottweiler". A very good, burglar-proof strongbox. You calculate that it could take you about three minutes to force it.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[void before_do_get ( Mobile getter , Inventory inv , String toAppend )
+{
+ 	
+ 	//getter: criatura que coge esta cosa.
+ 	//self: cosa que ha cogido (es decir, esta cosa).
+	getter.writeAction("The safe is fitted in the wall behind the painting. It's impossible to take it.\n");	
+	end();
+
+}
+
+
+/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "comer"
+	//args: resto de la orden que introduce, por ejemplo "la seta"
+	
+	if ( verb.equalsIgnoreCase("open") || verb.equalsIgnoreCase("unlock") )
+	{
+		aCreature.write("The safe is locked, as expected. To open it, you would have to force it, and that would take a few minutes.\n");
+		end();
+	}
+
+	if ( verb.equalsIgnoreCase("force") || verb.equalsIgnoreCase("break open") || verb.equalsIgnoreCase("bust open") || verb.equalsIgnoreCase("crack open") )
+	{
+		int power = world.getAbstractEntity("Perro").getPropertyValueAsInteger("power");
+		if ( power >= 1 )
+		{
+			aCreature.write("With utmost care, you concentrate on the safe's mechanism abstracting away from everything else, as the master locksmith Yan-Kan taught you...\n");
+			aCreature.waitKeyPress();
+			aCreature.write("rrrrrrrrr... CLICK\n");
+			aCreature.waitKeyPress();
+			aCreature.write("rrrrrrrrr... CLICK\n");
+			aCreature.waitKeyPress();
+			aCreature.write("Suddenly, you notice something cold on your neck. By touch, you perfectly recognize the 5.52 mm cannon of a Bordurian assault rifle. Damnit! You were concentrating so much that you didn't notice them entering the room. They probably heard the dog.\n");
+			aCreature.write("You hear a tremendous bang, and die.\n");
+			aCreature.die();
+			aCreature.setRoom(world.getRoom("Limbo"));
+			world.getRoom("Limbo").setProperty("ending",0);
+			end();
+		}
+		else
+		{
+			aCreature.write("With utmost care, you concentrate on the safe's mechanism abstracting away from everything else, as the master locksmith Yan-Kan taught you...\n");
+            aCreature.waitKeyPress();
+			aCreature.write("rrrrrrrrr... CLICK\n");
+			aCreature.waitKeyPress();
+			aCreature.write("rrrrrrrrr... CLICK\n");
+			aCreature.waitKeyPress();
+			aCreature.write("rrrrrrrrr... CLICK\n");
+			aCreature.waitKeyPress();
+			aCreature.write("¡CLACK! ¡CLACK!\n");
+			aCreature.write("The box opens, and inside you find a little glass box with holes. Four or five ugly insects roam inside: the Grylloblattas!\n");
+            aCreature.write("From here on, you engage the autopilot. You are well trained to escape from places, and you had your escape from this particular room so well planned, you don't even need to think more. You jump out of the window and run before anyone can notice your presence. In no time at all, some coleagues pick you up in a car, and congratulate you on your successful mission.\n");
+			aCreature.write("Congratulations, you have won. Thanks to your great intervention, your country will be safe from the warlike Bordurians... at least at the moment...\n");
+			aCreature.setRoom(world.getRoom("Limbo"));
+			world.getRoom("Limbo").setProperty("ending",1);
 			end();
 		}
 	}
@@ -691,17 +701,17 @@ void parseCommand( Mobile aCreature , String verb , String args )
 <Mobile gender="true" hp="10" maxhp="10" maxmp="10" mp="10" name="Ekaterina">
 <SingularNames>
 <Description>Ekaterina</Description>
-<Description>Jugador</Description>
+<Description>Player</Description>
 </SingularNames>
 <PluralNames/>
 <SingularReferenceNames>
 <Name>Ekaterina</Name>
-<Name>Jugador</Name>
-<Name>yo</Name>
+<Name>Player</Name>
+<Name>me</Name>
 </SingularReferenceNames>
 <PluralReferenceNames/>
 <DescriptionList>
-<Description>Estás tan calculadamente bella como siempre. Rubia, con sugerente escote y maquillada a la perfección. Si no, Kovacic no te habría contratado.</Description>
+<Description>Your are as calculatingly beautiful as always. Blonde, with a suggestive cleavage and dressed up to perfection. Otherwise, Kovacic wouldn't have hired you.</Description>
 </DescriptionList>
 <ExtraDescriptionList/>
 <PropertyList/>
