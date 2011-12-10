@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <World author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2011-11-27" language="en" moduleName="Lethal Insect" parserVersion="1.1.8" type="Very small miniadventure" version="0.1" worldDir="." worldName="Lethal Insect">
 <IdeMetaInf>
-<View xoffset="34.0" yoffset="70.0" zoom="2.0"/>
+<View xoffset="34.0" yoffset="69.0" zoom="2.0"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Habitación de Kovacic" x="220" y="260"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Limbo" x="380" y="120"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.CharacterNode" name="Ekaterina" x="220" y="340"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Item falso" x="100" y="120"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Piano de cola" x="340" y="260"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Partitura" x="320" y="200"/>
@@ -11,11 +12,10 @@
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Botón" x="100" y="260"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Cama" x="280" y="340"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Cuadro" x="160" y="160"/>
-<Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Perrofake" x="340" y="300"/>
-<Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Perro" x="380" y="340"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Alfombra" x="260" y="160"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Caja fuerte" x="120" y="320"/>
-<Node class="org.f2o.absurdum.puck.gui.graph.CharacterNode" name="Ekaterina" x="220" y="340"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Perro" x="380" y="340"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Perrofake" x="340" y="300"/>
 </IdeMetaInf>
 <Code language="BeanShell"><![CDATA[/*Introducción del juego para un jugador*/
 
@@ -77,12 +77,12 @@ void parseCommand( Player aPlayer , String verb , String args )
 	
 	if ( aPlayer.getPropertyValueAsBoolean("askTryPiano") )
 	{
-		if ( verb.equalsIgnoreCase("s") || verb.equalsIgnoreCase("si") || verb.equalsIgnoreCase("sí") )
+		if ( verb.equalsIgnoreCase("y") || verb.equalsIgnoreCase("yes") || verb.equalsIgnoreCase("yeah") )
 		{
 			aPlayer.forceCommand("playByEar piano");
 			end();
 		}
-		else if ( verb.equalsIgnoreCase("n") || verb.equalsIgnoreCase("no") || args.indexOf("norte") >= 0 || args.indexOf("noroeste") >= 0 )
+		else if ( verb.equalsIgnoreCase("n") || verb.equalsIgnoreCase("no") || args.indexOf("north") >= 0 || args.indexOf("northwest") >= 0 || args.indexOf("northeast") >= 0 )
 		{
 			aPlayer.write("You balk away from the piano, looking at it with respect.\n");
 			end();
@@ -119,6 +119,12 @@ void parseCommand( Player aPlayer , String verb , String args )
 		aPlayer.write("You don't think the linen is interesting enough to take it.\n");
 		end();
 	}
+
+    else if ( verb.equalsIgnoreCase("pick_up") )
+    {
+        aPlayer.forceCommand("take " + args);
+		end();
+    }
 	
 }]]></Code>
 <PlayerList>
@@ -726,10 +732,6 @@ void parseCommand( Mobile aCreature , String verb , String args )
 </Mobiles>
 <Spells/>
 <AbstractEntities>
-<AbstractEntity name="Perrofake">
-<PropertyList/>
-<RelationshipList/>
-</AbstractEntity>
 <AbstractEntity name="Perro">
 <PropertyList/>
 <Code language="BeanShell"><![CDATA[void update ( PropertyEntry pe , World mundo )
@@ -750,33 +752,33 @@ void updateDog()
 
 	if ( power == 1 )
 	{
-		r.informActionAuto(null,null,null,"Se oyen ladridos al otro lado de la puerta de la habitación... ¡mierda! Ese repugnante bulldog del general se habrá enterado de que estás aquí.\n",true);
+		r.informActionAuto(null,null,null,"You can hear barks at the other side of the room's door... Shit! It seems that the general's disgusting bulldog has noticed that you are here.\n",true);
 	}
 	if ( power == 2 )
 	{
-		r.informActionAuto(null,null,null,"El perro tras la puerta ladra: ¡Guau! ¡Guau!\n",true);
+		r.informActionAuto(null,null,null,"The dog behind the door barks: Woof! Woof!\n",true);
 	}
 	if ( power == 3 )
 	{
-		r.informActionAuto(null,null,null,"El perro tras la puerta ladra: ¡GUAU! ¡GUAU!\n",true);
+		r.informActionAuto(null,null,null,"The dog behind the door barks: WOOF! WOOF!\n",true);
 	}
 	if ( power == 4 )
 	{
-		r.informActionAuto(null,null,null,"El perro tras la puerta ladra: ¡GUAU! ¡GUAU! ¡GRRRRRRRRRRRRRR! ¡GUAU! ¡GRRRRRR!\n",true);
+		r.informActionAuto(null,null,null,"The dog behind the door barks: WOOF! WOOF! GRRRRRRRRRRRRRR! WOOF! GRRRRRR!\n",true);
 	}
 	if ( power == 5 )
 	{
-		r.informActionAuto(null,null,null,"El perro tras la puerta ladra: ¡GUAU! ¡GUAU! ¡GUAU! ¡GUAU! ¡GUAU! ¡GUAU! ¡GUAU! ¡GUAU! ¡GRRRRRRRRRRRRRRRRRRRR!\n",true);
+		r.informActionAuto(null,null,null,"The dog behind the door barks: WOOF! WOOF! WOOF! WOOF! WOOF! WOOF! WOOF! WOOF! GRRRRRRRRRRRRRRRRRRRR!\n",true);
 	}
 	if ( power >= 6 )
 	{
-		r.informActionAuto(null,null,null,"El perro tras la puerta ladra: ¡GUAU! ¡GUAU! ¡GUAU! ¡GUAU! ¡GUAU! ¡GUAU! ¡GUAU! ¡GUAU! ¡GRRRRRRRRRRRRRRRRRRRR! ¡GUAU! ¡GUAU! ¡GUAU! ¡GUAU! ¡GRRRRRRRRRRRRRRRRRRRRRRRRR!\n",true);
+		r.informActionAuto(null,null,null,"The dog behind the door barks: WOOF! WOOF! WOOF! WOOF! WOOF! WOOF! WOOF! WOOF! GRRRRRRRRRRRRRRRRRRRR! WOOF! WOOF! WOOF! WOOF! ¡GRRRRRRRRRRRRRRRRRRRRRRRRR!\n",true);
 		Player p = world.getMobile("Ekaterina");
 		if ( !p.getRoom().equals(world.getRoom("Limbo")) )
 		{
-			p.write("Se oyen gritos tras la puerta... ¡parece que el maldito perro ha atraído la atención de alguien de la casa!\n");
+			p.write("You hear screams behind the door... it seems that that cursed dog has caught someone's attention!\n");
 			p.waitKeyPress();
-			p.write("Antes de que te dé tiempo a hacer gran cosa, abre la puerta un grupo de soldados bordurios. Gracias a tu adiestramiento en puntería y artes marciales, vendes cara tu vida. Consigues eliminar a tres o cuatro antes de que te reduzcan, pero son superiores en número. Finalmente, uno de ellos te clava la punta una bayoneta en el corazón. Reprimes la tentación de gritar, y afrontas con dignidad tus últimos momentos, mientras los sicarios bordurios ya te acarrean hacia afuera...\n");
+			p.write("Before you have time to do anything, a group of Bordurian soldiers opens the door. Thanks to your training in martial arts, you sell your life dearly. You manage to knock out three or four before they overpower you, but they are superior in number. Finally, one of them stabs at you with a bayonet and pierces your heart. You refrain from screaming, and face your last moments with dignity, while the Bordurian soliders carry you outside...\n");
 			p.die();
 			p.setRoom(world.getRoom("Limbo"));
 			world.getRoom("Limbo").setProperty("ending",0);
@@ -794,6 +796,10 @@ void extinguish()
 	int newPower = curPower-1500;
 	self.setProperty("power",newPower,1);
 }]]></Code>
+<RelationshipList/>
+</AbstractEntity>
+<AbstractEntity name="Perrofake">
+<PropertyList/>
 <RelationshipList/>
 </AbstractEntity>
 </AbstractEntities>
