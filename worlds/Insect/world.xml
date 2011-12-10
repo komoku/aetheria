@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <World author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2011-11-27" language="en" moduleName="Lethal Insect" parserVersion="1.1.8" type="Very small miniadventure" version="0.1" worldDir="." worldName="Lethal Insect">
 <IdeMetaInf>
-<View xoffset="34.0" yoffset="69.0" zoom="2.0"/>
+<View xoffset="38.0" yoffset="65.0" zoom="2.0"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Habitación de Kovacic" x="220" y="260"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Limbo" x="380" y="120"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.CharacterNode" name="Ekaterina" x="220" y="340"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Item falso" x="100" y="120"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Piano de cola" x="340" y="260"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Partitura" x="320" y="200"/>
-<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Marco" x="120" y="200"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Botón" x="100" y="260"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Cama" x="280" y="340"/>
-<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Cuadro" x="160" y="160"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Alfombra" x="260" y="160"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Caja fuerte" x="120" y="320"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Cuadro" x="160" y="160"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Perro" x="380" y="340"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Perrofake" x="340" y="300"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Marco" x="120" y="200"/>
 </IdeMetaInf>
 <Code language="BeanShell"><![CDATA[/*Introducción del juego para un jugador*/
 
@@ -125,6 +125,13 @@ void parseCommand( Player aPlayer , String verb , String args )
         aPlayer.forceCommand("take " + args);
 		end();
     }
+    
+    
+    else if ( verb.equalsIgnoreCase("put_on") || verb.equalsIgnoreCase("place") )
+    {
+        aPlayer.forceCommand("put " + args);
+		end();
+    }
 	
 }]]></Code>
 <PlayerList>
@@ -223,13 +230,13 @@ void parseCommand( Player aPlayer , String verb , String args )
 	switch ( self.getPropertyValueAsInteger("ending") )
 	{	
 		case 0:
-			p.write("Estás muerta. Has perdido la partida: no has conseguido recuperar la muestra, y tu país es arrasado y saqueado por los bordurios.\n");
+			p.write("You are dead. You have lost the game: you haven't managed to retrieve the sample, and your country is razed and plundered by the Bordurians.\n");
 			end();
 			break;
 		case 1:
-			p.write("Has conseguido completar tu misión con éxito, entregando el ejemplar de Grylloblatta con el agente biológico a tus servicios secretos.\n");
-			p.write("Gracias a tu admirable actuación, los científicos de tu país consiguen elaborar un antídoto contra la temible arma biológica, evitando una previsible guerra contra Borduria.\n");
-			p.write("Mientras, la reputación de la agente Ekaterina Voronova cada vez se ve más reforzada...\n");
+			p.write("You have successfully completed your mission, delivering the sample of Grylloblatta with the biological agent to your secret services.\n");
+			p.write("Thanks to your admirable action, your country's scientist manage to create an antidote against the dreadful biological weapon, preventing a likely war against Borduria.\n");
+			p.write("Meanwhile, the reputation of agent Ekaterina Voronova keeps growing...\n");
 			end();
 			break;
 	}
@@ -318,13 +325,13 @@ void parseCommand( Mobile aCreature , String verb , String args )
 		}
 		else
 		{
-			aCreature.write("There is no score on the piano's music stand, and you have never been any good trying by ear. Are you sure you want to try?\n");
+			aCreature.write("There is no score on the piano's music stand, and you have never been any good playing by ear. Are you sure you want to try?\n");
 			aCreature.setProperty("askTryPiano",true);
 		}
 		end();
 	}
 
-	if ( verb.equalsIgnoreCase("tocarDeOido") )
+	if ( verb.equalsIgnoreCase("playByEar") )
 	{
 		aCreature.write("You try to play Chopin's Waltz in C# minor by ear, but your performance is absolutely horrendous.\n");
 		aCreature.write("The dog behind the door seems to get really angry!\n");
@@ -362,48 +369,6 @@ void parseCommand( Mobile aCreature , String verb , String args )
 </DescriptionList>
 <ExtraDescriptionList/>
 <PropertyList/>
-<RelationshipList/>
-</Item>
-<Item canGet="true" closeable="false" gender="true" lockable="false" name="Marco" openable="false" unlockable="false" volume="0" weight="0">
-<SingularNames/>
-<PluralNames/>
-<SingularReferenceNames>
-<Name>frame</Name>
-</SingularReferenceNames>
-<PluralReferenceNames>
-<Name>frames</Name>
-</PluralReferenceNames>
-<DescriptionList>
-<Description>A rather tacky golden frame, decorated with geometric patterns.</Description>
-</DescriptionList>
-<ExtraDescriptionList>
-<ExtraDescription>
-<Name>patterns</Name>
-<DescriptionList>
-<Description>Geometric patterns.</Description>
-</DescriptionList>
-</ExtraDescription>
-</ExtraDescriptionList>
-<PropertyList/>
-<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
-void parseCommand( Mobile aCreature , String verb , String args )
-{
-	
-	//aCreature: criatura que introduce un comando.
-	//verb: comando que introduce, por ejemplo "comer"
-	//args: resto de la orden que introduce, por ejemplo "la seta"
-	
-	if ( verb.equalsIgnoreCase("mirar") && !aCreature.getPropertyValueAsBoolean("sawMarco") )
-	{
-		aCreature.write("It's a rather tacky golden frame, decorated with geometric patterns and... goddamnit! You have just noticed a little golden button, subtly disguised in it.\n");
-		aCreature.setProperty("sawMarco",true);
-		world.getRoom("Habitación de Kovacic").addItem(world.getItem("Botón"));
-		end();
-	}
-
-
-	
-}]]></Code>
 <RelationshipList/>
 </Item>
 <Item canGet="true" closeable="false" gender="true" lockable="false" name="Botón" openable="false" unlockable="false" volume="5000" weight="5000">
@@ -485,6 +450,12 @@ void parseCommand( Mobile aCreature , String verb , String args )
 <Description>Regular red pillows, you don't see anything interesting about them.</Description>
 </DescriptionList>
 </ExtraDescription>
+<ExtraDescription>
+<Name>sheets</Name>
+<DescriptionList>
+<Description>Standard red bed sheets. Nothing special about them.</Description>
+</DescriptionList>
+</ExtraDescription>
 </ExtraDescriptionList>
 <PropertyList/>
 <Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
@@ -498,56 +469,6 @@ void parseCommand( Mobile aCreature , String verb , String args )
 	if ( equals(verb,"take") )
 	{
 		aCreature.write("How are you going to carry a full canopy bed? I guess you weren't thinking this game is so badly made as to let you do that, were you?\n");
-		end();
-	}
-	
-}]]></Code>
-<RelationshipList/>
-</Item>
-<Item canGet="true" closeable="false" gender="true" lockable="false" name="Cuadro" openable="false" unlockable="false" volume="400" weight="400">
-<SingularNames>
-<Description>painting</Description>
-</SingularNames>
-<PluralNames>
-<Description>paintings</Description>
-</PluralNames>
-<SingularReferenceNames>
-<Name>the Resurrection of Christ</Name>
-<Name>Resurrection</Name>
-<Name>Lanfranco</Name>
-<Name>painting</Name>
-</SingularReferenceNames>
-<PluralReferenceNames>
-<Name>paintings</Name>
-</PluralReferenceNames>
-<DescriptionList>
-<Description>A large painting with a golden frame, perhaps one meter wide per two meters tall. If your memory doesn't fail you, it is Giovanni Lanfranco's "Resurrection". But the flag in the original painting has been replaced by a Bordurian flag. OK, maybe Bordurian generals don't have such a good taste after all.</Description>
-</DescriptionList>
-<ExtraDescriptionList>
-<ExtraDescription>
-<Name>flag</Name>
-<DescriptionList>
-<Description>The original flag in Lanfranco's painting has been replaced by a Bordurian flag in this reproduction.</Description>
-</DescriptionList>
-</ExtraDescription>
-</ExtraDescriptionList>
-<PropertyList/>
-<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
-void parseCommand( Mobile aCreature , String verb , String args )
-{
-	
-	//aCreature: criatura que introduce un comando.
-	//verb: comando que introduce, por ejemplo "comer"
-	//args: resto de la orden que introduce, por ejemplo "la seta"
-	
-	if ( verb.equalsIgnoreCase("mirar") )
-	{
-		aCreature.setProperty("sawBadTaste",true);
-	}
-
-	if ( verb.equalsIgnoreCase("coger") )
-	{
-		aCreature.write("The painting is firmly fixed to the wall, probably nailed. Even if it made sense to take it, it would be impossible to do so without making a mess and being caught red-handed.\n");
 		end();
 	}
 	
@@ -661,7 +582,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 		end();
 	}
 
-	if ( verb.equalsIgnoreCase("force") || verb.equalsIgnoreCase("break open") || verb.equalsIgnoreCase("bust open") || verb.equalsIgnoreCase("crack open") )
+	if ( verb.equalsIgnoreCase("force") || verb.equalsIgnoreCase("break") || verb.equalsIgnoreCase("bust") || verb.equalsIgnoreCase("crack") )
 	{
 		int power = world.getAbstractEntity("Perro").getPropertyValueAsInteger("power");
 		if ( power >= 1 )
@@ -698,6 +619,98 @@ void parseCommand( Mobile aCreature , String verb , String args )
 			end();
 		}
 	}
+	
+}]]></Code>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Cuadro" openable="false" unlockable="false" volume="400" weight="400">
+<SingularNames>
+<Description>painting</Description>
+</SingularNames>
+<PluralNames>
+<Description>paintings</Description>
+</PluralNames>
+<SingularReferenceNames>
+<Name>the Resurrection of Christ</Name>
+<Name>Resurrection</Name>
+<Name>Lanfranco</Name>
+<Name>painting</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>paintings</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>A large painting with a golden frame, perhaps one meter wide per two meters tall. If your memory doesn't fail you, it is Giovanni Lanfranco's "Resurrection". But the flag in the original painting has been replaced by a Bordurian flag. OK, maybe Bordurian generals don't have such a good taste after all.</Description>
+</DescriptionList>
+<ExtraDescriptionList>
+<ExtraDescription>
+<Name>flag</Name>
+<DescriptionList>
+<Description>The original flag in Lanfranco's painting has been replaced by a Bordurian flag in this reproduction.</Description>
+</DescriptionList>
+</ExtraDescription>
+</ExtraDescriptionList>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "comer"
+	//args: resto de la orden que introduce, por ejemplo "la seta"
+	
+	if ( verb.equalsIgnoreCase("look") )
+	{
+		aCreature.setProperty("sawBadTaste",true);
+	}
+
+	if ( verb.equalsIgnoreCase("take") )
+	{
+		aCreature.write("The painting is firmly fixed to the wall, probably nailed. Even if it made sense to take it, it would be impossible to do so without making a mess and being caught red-handed.\n");
+		end();
+	}
+	
+}]]></Code>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Marco" openable="false" unlockable="false" volume="0" weight="0">
+<SingularNames/>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>frame</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>frames</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>A rather tacky golden frame, decorated with geometric patterns.</Description>
+</DescriptionList>
+<ExtraDescriptionList>
+<ExtraDescription>
+<Name>patterns</Name>
+<DescriptionList>
+<Description>Geometric patterns.</Description>
+</DescriptionList>
+</ExtraDescription>
+</ExtraDescriptionList>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "comer"
+	//args: resto de la orden que introduce, por ejemplo "la seta"
+	
+	if ( verb.equalsIgnoreCase("look") && !aCreature.getPropertyValueAsBoolean("sawMarco") )
+	{
+		aCreature.write("It's a rather tacky golden frame, decorated with geometric patterns and... goddamnit! You have just noticed a little golden button, subtly disguised in it.\n");
+		aCreature.setProperty("sawMarco",true);
+		world.getRoom("Habitación de Kovacic").addItem(world.getItem("Botón"));
+		end();
+	}
+
+
 	
 }]]></Code>
 <RelationshipList/>

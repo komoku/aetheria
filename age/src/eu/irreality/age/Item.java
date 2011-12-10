@@ -1104,7 +1104,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		{
 			//si la descripción está construida con la conocida fórmula "hay x" o "lleva x", cambiamos por "no hay nada" o "no lleva nada".
 			//si no, simplemente por "nada".
-			return StringMethods.textualSubstitution ( StringMethods.textualSubstitution ( StringMethods.textualSubstitution ( desString , "lleva %INVENTORY" , "no lleva nada." ) , "hay %INVENTORY" , "no hay nada." ) , "%INVENTORY" , "nada." );
+			return StringMethods.textualSubstitution ( StringMethods.textualSubstitution ( StringMethods.textualSubstitution ( desString , "lleva %INVENTORY" , "no lleva nada." ) , "hay %INVENTORY" , "no hay nada." ) , "%INVENTORY" , mundo.getMessages().getMessage("nothing")+"." );
 		}
 		else
 		{
@@ -1173,7 +1173,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		{
 			//si la descripción está construida con la conocida fórmula "hay x" o "lleva x", cambiamos por "no hay nada" o "no lleva nada".
 			//si no, simplemente por "nada".
-			return StringMethods.textualSubstitution ( StringMethods.textualSubstitution ( StringMethods.textualSubstitution ( desString , "lleva %INVENTORY" , "no lleva nada." ) , "hay %INVENTORY" , "no hay nada." ) , "%INVENTORY" , "nada." );
+			return StringMethods.textualSubstitution ( StringMethods.textualSubstitution ( StringMethods.textualSubstitution ( desString , "lleva %INVENTORY" , "no lleva nada." ) , "hay %INVENTORY" , "no hay nada." ) , "%INVENTORY" , mundo.getMessages().getMessage("nothing")+"." );
 		}
 		else
 		{

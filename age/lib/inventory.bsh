@@ -19,7 +19,7 @@ void inventory_showInventory()
 		{
 		
 			String str = inventory.toString(self);
-			if ( str.equalsIgnoreCase("nada.") ) self.writeInformation ( world.getMessages().getMessage("you.have.nothing",new Object[]{self}) );
+			if ( str.equalsIgnoreCase(world.getMessages().getMessage("nothing")+".") ) self.writeInformation ( world.getMessages().getMessage("you.have.nothing",new Object[]{self}) );
 			else
 			{
 				self.writeInformation ( world.getMessages().getMessage("you.have.items","$inventory",str,new Object[]{self}) );

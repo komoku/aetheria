@@ -459,3 +459,9 @@ cant.open.locked=It seems that $item is locked.
 you.open.item=You open $item.
 cant.close.already.closed=But $item is already closed...
 you.close.item=You close $item.
+
+#to show in inventories, etc. when you have nothing
+nothing=nothing
+
+#the from in "you get the notebook FROM the chest"
+get.prep.from=from
