@@ -772,13 +772,13 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 			}
 		}	
 		//object description
-		if ( itemsInRoom != null && !itemsInRoom.isEmpty() && !itemsInRoom.toString(mundo).equals("nada.") ) //lo del "nada" es porque puede haber items; pero que sean invisibles.
+		if ( itemsInRoom != null && !itemsInRoom.isEmpty() && !itemsInRoom.toString(mundo).equals(mundo.getMessages().getMessage("nothing")+".") ) //lo del "nada" es porque puede haber items; pero que sean invisibles.
 		{
 			/*luego aquí poner en hab. parámetro "laying objs": "Sobre el duro suelo, sobre el blando suelo, sobre el puente..."*/
 			desString+="\nAquí hay ";
 			desString+=itemsInRoom.toString();
 		}
-		if ( mobsInRoom != null && !mobsInRoom.isEmpty() && !mobsInRoom.toString(mundo).equals("nada.") )
+		if ( mobsInRoom != null && !mobsInRoom.isEmpty() && !mobsInRoom.toString(mundo).equals(mundo.getMessages().getMessage("nothing")+".") )
 		{
 			if ( mobsInRoom.size() > 1 )
 				desString += "\nAquí están ";
@@ -871,7 +871,7 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 			}
 		}	
 		//object description
-		if ( itemsInRoom != null && !itemsInRoom.isEmpty() && !itemsInRoom.toString( viewer , mundo ).equals("nada.") ) //lo del "nada" es porque puede haber items; pero que sean invisibles.
+		if ( itemsInRoom != null && !itemsInRoom.isEmpty() && !itemsInRoom.toString( viewer , mundo ).equals(mundo.getMessages().getMessage("nothing")+".") ) //lo del "nada" es porque puede haber items; pero que sean invisibles.
 		{
 			/*luego aquí poner en hab. parámetro "laying objs": "Sobre el duro suelo, sobre el blando suelo, sobre el puente..."*/
 			
@@ -883,7 +883,7 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 			desString+="\n"+getLayingObjectString(viewer);
 		}
 		if ( mobsInRoom != null && viewer instanceof Mobile ) quitado = mobsInRoom.removeElement((Mobile)viewer);
-		if ( mobsInRoom != null && !mobsInRoom.isEmpty() && !mobsInRoom.toString( viewer , mundo ).equals("nada.") )
+		if ( mobsInRoom != null && !mobsInRoom.isEmpty() && !mobsInRoom.toString( viewer , mundo ).equals(mundo.getMessages().getMessage("nothing")+".") )
 		{
 			/*
 			if ( mobsInRoom.size() > 1 )
@@ -958,14 +958,14 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 			}
 		}	
 		//object description
-		if ( itemsInRoom != null && !itemsInRoom.isEmpty() && !itemsInRoom.toString(mundo).equals("nada.") ) //lo del "nada" es porque puede haber items; pero que sean invisibles.
+		if ( itemsInRoom != null && !itemsInRoom.isEmpty() && !itemsInRoom.toString(mundo).equals(mundo.getMessages().getMessage("nothing")+".") ) //lo del "nada" es porque puede haber items; pero que sean invisibles.
 		{
 			desString+="\nAquí hay ";
 			desString+=itemsInRoom.toString();
 		}
 		boolean quitado = false;
 		if ( mobsInRoom != null ) quitado = mobsInRoom.removeElement(toExclude);
-		if ( mobsInRoom != null && !mobsInRoom.isEmpty() && !mobsInRoom.toString(mundo).equals("nada.") )
+		if ( mobsInRoom != null && !mobsInRoom.isEmpty() && !mobsInRoom.toString(mundo).equals(mundo.getMessages().getMessage("nothing")+".") )
 		{
 			if ( mobsInRoom.size() > 1 )
 				desString += "\nAquí están ";

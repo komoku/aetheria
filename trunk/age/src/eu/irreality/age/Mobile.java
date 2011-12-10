@@ -2183,7 +2183,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		if ( inventory != null )
 		{
 			String str = inventory.toString(this,mundo);
-			if ( str.equalsIgnoreCase("nada.") ) write( io.getColorCode("information") + mundo.getMessages().getMessage("you.have.nothing",new Object[]{this}) + io.getColorCode("reset") );
+			if ( str.equalsIgnoreCase(mundo.getMessages().getMessage("nothing")+".") ) write( io.getColorCode("information") + mundo.getMessages().getMessage("you.have.nothing",new Object[]{this}) + io.getColorCode("reset") );
 			else
 			{
 				write( io.getColorCode("information") + 

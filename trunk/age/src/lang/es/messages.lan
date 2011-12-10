@@ -460,3 +460,9 @@ cant.open.locked=Parece que $item está cerrad$oa con llave.
 you.open.item=Abres $item.
 cant.close.already.closed=Pero si $item ya está cerrad$oa...
 you.close.item=Cierras $item.
+
+#to show in inventories, etc. when you have nothing
+nothing=nada
+
+#the from in "you get the notebook FROM the chest"
+get.prep.from=de

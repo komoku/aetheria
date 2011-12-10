@@ -4267,7 +4267,7 @@ public class Player extends Mobile implements Informador
 						{
 							//Debug.println("Division: " +  StringMethods.getToks ( args , 1 , punto_division , ' ' ) );
 							//Debug.println("mirado: " + mirado);
-							mirado = mirado || cogerItem (  StringMethods.getToks ( args , 1 , punto_division , ' ' ) , ourContainer.getContents() , " de " + ourContainer.constructName2True ( 1 , this ) + infoString );
+							mirado = mirado || cogerItem (  StringMethods.getToks ( args , 1 , punto_division , ' ' ) , ourContainer.getContents() , " " + mundo.getMessages().getMessage("get.prep.from") + " " + ourContainer.constructName2True ( 1 , this ) + infoString );
 							//Debug.println("called cogerItem. Now mirado is " + mirado);
 							if ( mirado ) break;
 						}
@@ -4292,7 +4292,7 @@ public class Player extends Mobile implements Informador
 			if ( inv.elementAt(i).isContainer() && !( inv.elementAt(i).isCloseable() && !inv.elementAt(i).isOpen() ) )
 			{
 				String tempstring = infoString;
-				infoString += " de ";
+				infoString += (" " + mundo.getMessages().getMessage("get.prep.from") + " ");
 				infoString += inv.elementAt(i).constructName2True ( 1 , this );
 				//para que muestre "coges la moneda EN el cofre", p.ej.
 				mirado = cogerItem ( args , inv.elementAt(i).getContents() , infoString );
@@ -4307,7 +4307,7 @@ public class Player extends Mobile implements Informador
 				if ( inv.elementAt(i).isContainer() && !( inv.elementAt(i).isCloseable() && !inv.elementAt(i).isOpen() ) )
 				{
 					String tempstring = infoString;
-					infoString += " de ";
+					infoString += (" " + mundo.getMessages().getMessage("get.prep.from") + " ");
 					infoString += inv.elementAt(i).constructName2True ( 1 , this );
 					mirado = cogerContenido ( args , inv.elementAt(i).getContents() , infoString );
 					if ( mirado ) break;
@@ -4329,7 +4329,7 @@ public class Player extends Mobile implements Informador
 			if ( inv.elementAt(i).isContainer() && !( inv.elementAt(i).isCloseable() && !inv.elementAt(i).isOpen() ) )
 			{
 				String tempstring = infoString;
-				String toConcat = " de " + inv.elementAt(i).constructName2True ( 1 , this );
+				String toConcat = (" " + mundo.getMessages().getMessage("get.prep.from") + " ") + inv.elementAt(i).constructName2True ( 1 , this );
 				infoString = toConcat + infoString;
 				//para que muestre "coges la moneda EN el cofre", p.ej.
 				mirado = cogerItem ( inv.elementAt(i).getContents() , infoString );
@@ -4344,7 +4344,7 @@ public class Player extends Mobile implements Informador
 				if ( inv.elementAt(i).isContainer() && !( inv.elementAt(i).isCloseable() && !inv.elementAt(i).isOpen() ) )
 				{
 					String tempstring = infoString;
-					String toConcat = " de " + inv.elementAt(i).constructName2True ( 1 , this );
+					String toConcat = (" " + mundo.getMessages().getMessage("get.prep.from") + " ") + inv.elementAt(i).constructName2True ( 1 , this );
  					infoString = toConcat + infoString;
 					mirado = cogerContenido ( inv.elementAt(i).getContents() , infoString );
 					if ( mirado ) break;

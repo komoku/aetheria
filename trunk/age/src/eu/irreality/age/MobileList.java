@@ -154,7 +154,7 @@ public class MobileList extends EntityList
 			}
 			i++;
 		}
-		if ( vacio ) return "nada.";
+		if ( vacio ) return w.getMessages().getMessage("nothing")+".";
 		else return cadena+".";
 	}
 	
