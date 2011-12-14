@@ -43,7 +43,7 @@ public class PuckToolBar extends JToolBar
 	
 	public PuckToolBar ( GraphEditingPanel gep , PropertiesPanel right , PuckFrame frame )
 	{
-		super("Tools",JToolBar.HORIZONTAL);
+		super("Tools",JToolBar.VERTICAL);
 		associatedPanel = gep;
 		associatedPropertiesPanel = right;
 		associatedFrame = frame;
