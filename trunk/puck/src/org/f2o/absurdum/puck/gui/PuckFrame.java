@@ -145,7 +145,7 @@ public class PuckFrame extends JFrame
 		if ( tools != null )
 			left.remove(tools);
 		tools = new PuckToolBar(graphPanel , propPanel , this);
-		left.add(tools,BorderLayout.NORTH);
+		left.add(tools,BorderLayout.WEST);
 	}
 	
 	public void setSkin ( String skinName )
@@ -498,7 +498,7 @@ public class PuckFrame extends JFrame
 		graphPanel.setSnapToGrid(Boolean.valueOf(PuckConfiguration.getInstance().getProperty("snapToGrid")).booleanValue());
 		propPanel.setGraphEditingPanel(graphPanel);
 		tools = new PuckToolBar(graphPanel , propPanel , this);
-		left.add(tools,BorderLayout.NORTH);
+		left.add(tools,BorderLayout.WEST);
 		left.add(graphPanel,BorderLayout.CENTER);
 		
 		
