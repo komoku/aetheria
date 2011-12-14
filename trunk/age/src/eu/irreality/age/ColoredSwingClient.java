@@ -1716,6 +1716,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 
 	public void setScrollBarBackground ( String s ) { setScrollBarBackground(parseColor(s)); }
 	
+	public void setKeyRequestForeground ( String s ) { setKeyRequestForeground(parseColor(s)); }
 	
 	
 	private boolean processingLog = false;
