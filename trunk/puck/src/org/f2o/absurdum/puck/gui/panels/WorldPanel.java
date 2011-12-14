@@ -8,6 +8,7 @@
 package org.f2o.absurdum.puck.gui.panels;
 
 import java.awt.BorderLayout;
+import java.awt.Button;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -41,6 +42,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -54,6 +57,7 @@ import org.f2o.absurdum.puck.gui.graph.Node;
 import org.f2o.absurdum.puck.gui.graph.RoomNode;
 import org.f2o.absurdum.puck.gui.graph.SpellNode;
 import org.f2o.absurdum.puck.gui.graph.StructuralArrow;
+import org.f2o.absurdum.puck.gui.util.SpringUtilities;
 import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.f2o.absurdum.puck.util.UniqueNameEnforcer;
 import org.f2o.absurdum.puck.util.debug.Debug;
@@ -171,8 +175,16 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 	
 	private EntityListPanel entitiesPanel;
 	
-	public void linkWithGraph()
+	private void addPareja(JPanel p, JLabel l, JComponent editable)
 	{
+		l.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+
+		p.add(l);
+		p.add(editable);
+	}
+
+	public void linkWithGraph()
+	{   
 	
 		//no doughnut!
 		this.removeAll();
@@ -243,66 +255,82 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		
 		secondTab.setLayout(new BoxLayout(secondTab, BoxLayout.PAGE_AXIS));
 		
-		JPanel colorsPanel = new JPanel( new GridLayout(10,1) );
+		JPanel colorsPanel = new JPanel( new GridLayout(0, 2) );
 		colorsPanel.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("label.colors")));
 		
-
-		
+		Color _bgColor = Color.black;
+		final JButton[] _buttons = new JButton[colorCodes.length];
 		for ( int i = 0 ; i < colorCodes.length ; i++ )
 		{
-			final JPanel cPanel = new JPanel();
-			final JButton bPanel = new JButton(colorCodes[i]);
-			cPanel.add(bPanel);
-			final Color color;
-			if ( i == 0 ) color = Color.black;
+			final int ind = i;
+			Color color;
+ 			_buttons[i] = new JButton(colorCodes[i]);
+			colorsPanel.add(_buttons[i]);
+			if ( i == 0 ) color = _bgColor;
 			else if ( colorCodes[i].equals("Error")) color = Color.red;
 			else color = Color.white;
-			final int ind = i;
 			colorsMap.put(colorCodes[i],color);
-			buttonsMap.put(colorCodes[i],bPanel);
-			bPanel.setForeground(color);
-			bPanel.addActionListener( new ActionListener() 
+			buttonsMap.put(colorCodes[i],_buttons[i]);
+			_buttons[i].setForeground(color);
+			if ( i != 0 ) _buttons[i].setBackground(_bgColor);
+			_buttons[i].addActionListener( new ActionListener() 
 					{
 						public void actionPerformed ( ActionEvent evt )
 						{
 							Color c = JColorChooser.showDialog(WorldPanel.this,"Choose Color",(Color)colorsMap.get(colorCodes[ind]));
 							if ( c != null )
 							{
-								bPanel.setForeground(c);
+								_buttons[ind].setForeground(c);
 								colorsMap.put(colorCodes[ind],c);
+								if ( ind == 0 )
+								{
+									for ( int i = 1 ; i < colorCodes.length ; i++ )
+									{
+										_buttons[i].setBackground(c);
+									}
+								}
 							}
 						}
 					}	
 			);
-			colorsPanel.add(cPanel);
 		}
 		
 		
 		
 		secondTab.add(colorsPanel);
 		
-		JPanel fontPanel = new JPanel();
-		fontPanel.setLayout(new BoxLayout(fontPanel,BoxLayout.PAGE_AXIS));
+		JPanel fontPanel = new JPanel(new SpringLayout());
+		fontPanel.setMaximumSize(new Dimension(
+  		  (int)fontPanel.getMaximumSize().getWidth(),
+  		  (int)(15+6)*3) // FIXME: Take into account the font size.
+  		);
+
 		fontPanel.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("label.font")));
 
-		JPanel fontNamePanel = new JPanel();
-		fontNamePanel.add(new JLabel(UIMessages.getInstance().getMessage("label.font.name")));
-		fontNamePanel.add(tfFontName);
 		tfFontName.setText("Courier New");
-		fontPanel.add(fontNamePanel);
+		addPareja(fontPanel,
+		  new JLabel(UIMessages.getInstance().getMessage("label.font.name")),
+		  tfFontName
+		);
 		
-		JPanel fontFilenamePanel = new JPanel();
-		fontFilenamePanel.add(new JLabel(UIMessages.getInstance().getMessage("label.font.filename")));
-		fontFilenamePanel.add(tfFontFile);
-		fontPanel.add(fontFilenamePanel);
+		addPareja(fontPanel,
+		  new JLabel(UIMessages.getInstance().getMessage("label.font.filename")),
+		  tfFontFile
+		);
 		
-		JPanel fontSizePanel = new JPanel();
-		fontSizePanel.add(new JLabel(UIMessages.getInstance().getMessage("label.font.size")));
-		fontSizePanel.add(tfFontSize);
 		tfFontSize.setText("15");
-		fontPanel.add(fontSizePanel);
-		
-		
+		addPareja(fontPanel,
+		  new JLabel(UIMessages.getInstance().getMessage("label.font.size")),
+		  tfFontSize
+		);
+
+		SpringUtilities.makeCompactGrid(
+		  fontPanel,
+		  3, 2, //rows, cols
+		  6, 6,        //initX, initY
+		  6, 6         //xPad, yPad
+		);
+
 		secondTab.add(fontPanel);
 		
 		jtp.add(UIMessages.getInstance().getMessage("tab.visualconf"),secondTab);
@@ -893,14 +921,30 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 					{
 						colorsMap.put(colorCode,color);
 						JButton b = (JButton) buttonsMap.get(colorCode);
-						b.setForeground(color);
-						b.setVisible(false);
-						b.setVisible(true);
-						b.repaint();
-						this.repaint();
+						if ( "Background".equals(colorCode) )
+						{
+							/*set backgrounds of all buttons (except for "Background" button) to the background colour code*/
+							for ( int i = 0 ; i < colorCodes.length ; i++ )
+							{
+								JButton bToSet = (JButton) buttonsMap.get(colorCodes[i]);
+								if ( bToSet != b )
+								{
+									bToSet.setBackground(color);
+								}
+							}
+						}
+						else
+						{
+							b.setForeground(color);
+							//b.setVisible(false);
+							//b.setVisible(true);
+							//b.repaint();
+							//this.repaint();
+						}
 					}
 				}
 			}
+			this.repaint();
 		}
 		
 		NodeList fontNodes = e.getElementsByTagName("Font");
