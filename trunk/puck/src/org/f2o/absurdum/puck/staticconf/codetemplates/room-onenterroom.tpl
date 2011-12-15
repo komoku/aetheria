@@ -1,10 +1,10 @@
 /*
-M閠odo que captura el evento lanzado cuando una criatura entra en una habitaci髇.
+M茅todo que captura el evento lanzado cuando una criatura entra en una habitaci贸n.
 */
 void onEnterRoom ( Mobile aCreature )
 {
  	
- 	//aCreature: criatura que entra en la habitaci髇.
- 	//self: habitaci髇 en la que entra (es decir, esta habitaci髇).
+ 	//aCreature: criatura que entra en la habitaci贸n.
+ 	//self: habitaci贸n en la que entra (es decir, esta habitaci贸n).
  	  
 }

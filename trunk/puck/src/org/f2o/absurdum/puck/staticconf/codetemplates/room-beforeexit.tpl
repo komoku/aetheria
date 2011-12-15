@@ -1,15 +1,15 @@
 /*
-M閠odo que captura el evento lanzado cuando una criatura abandona una habitaci髇
+M茅todo que captura el evento lanzado cuando una criatura abandona una habitaci贸n
 por un camino dado.
 */
 void beforeExit ( Mobile aCreature , Path path )
 {
  	
- 	//aCreature: criatura que abandona la habitaci髇.
- 	//self: habitaci髇 que abandona (es decir, esta habitaci髇).
+ 	//aCreature: criatura que abandona la habitaci贸n.
+ 	//self: habitaci贸n que abandona (es decir, esta habitaci贸n).
  	//path: salida que utiliza para abandonarla.
  
- 	//terminar con end() para que la criatura no consiga salir (se interrumpe la acci髇).						
-  	//terminar normal para que la acci髇 se lleve a cabo.
+ 	//terminar con end() para que la criatura no consiga salir (se interrumpe la acci贸n).						
+  	//terminar normal para que la acci贸n se lleve a cabo.
   
 }

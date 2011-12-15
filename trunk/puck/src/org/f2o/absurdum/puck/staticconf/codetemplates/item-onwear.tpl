@@ -1,5 +1,5 @@
 /*
-Método que captura el evento lanzado cuando una criatura viste esta cosa.
+MÃ©todo que captura el evento lanzado cuando una criatura viste esta cosa.
 */
 void onWear ( Mobile wearer , List limbs )
 {

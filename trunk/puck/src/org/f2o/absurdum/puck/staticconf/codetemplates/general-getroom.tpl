@@ -1,1 +1,1 @@
-Room room = world.getRoom("Nombre identificativo de la habitación");
+Room room = world.getRoom("Nombre identificativo de la habitaciÃ³n");

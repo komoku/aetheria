@@ -1,1 +1,1 @@
-Item thing = world.getItem("Nombre identificativo del ítem");
+Item thing = world.getItem("Nombre identificativo del Ã­tem");

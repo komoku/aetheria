@@ -95,7 +95,7 @@ public class CodeAssistMenuHandler
 		{
 			InputStream stream = this.getClass().getClassLoader().getResourceAsStream("org/f2o/absurdum/puck/staticconf/codetemplates/"+templateLocation);
 			StringBuffer sb = new StringBuffer();
-			BufferedReader br = new BufferedReader ( new InputStreamReader ( stream ) );
+			BufferedReader br = new BufferedReader ( new InputStreamReader ( stream , "UTF-8" ) );
 			String linea = "";
 			while ( linea != null )
 			{

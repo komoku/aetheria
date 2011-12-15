@@ -1,5 +1,5 @@
 /*
-Método que captura el evento lanzado cuando una criatura se desviste esta cosa.
+MÃ©todo que captura el evento lanzado cuando una criatura se desviste esta cosa.
 */
 void onUnwear ( Mobile wearer , List limbs )
 {

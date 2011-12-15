@@ -1,2 +1,2 @@
-//incluir el código de un fichero externo
+//incluir el cÃ³digo de un fichero externo
 source(getResource("fichero.bsh"));

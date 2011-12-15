@@ -1,6 +1,6 @@
 /*
-Método que captura el evento lanzado cuando una criatura pone este ítem dentro de un contenedor
-(o bien pone algo dentro de este ítem, si es un contenedor).
+MÃ©todo que captura el evento lanzado cuando una criatura pone este Ã­tem dentro de un contenedor
+(o bien pone algo dentro de este Ã­tem, si es un contenedor).
 */
 void onPutInside ( Mobile aCreature , Item item , Item container )
 {
