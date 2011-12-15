@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<World author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2008-11-06" moduleName="Insecto mortal" type="Aventura rápida" version="1.1" worldDir="." worldName="Insecto mortal">
+<World author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2008-11-06" language="es" moduleName="Insecto mortal" parserVersion="" type="Aventura rápida" version="1.1" worldDir="." worldName="Insecto mortal">
 <IdeMetaInf>
 <View xoffset="35.0" yoffset="69.0" zoom="2.0"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Habitación de Kovacic" x="220" y="260"/>
@@ -13,9 +13,9 @@
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Caja fuerte" x="120" y="320"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Cama" x="280" y="340"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Cuadro" x="160" y="160"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Alfombra" x="260" y="160"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Perrofake" x="340" y="300"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Perro" x="380" y="340"/>
-<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Alfombra" x="260" y="160"/>
 </IdeMetaInf>
 <Code language="BeanShell"><![CDATA[/*Introducción del juego para un jugador*/
 
@@ -72,13 +72,20 @@ void parseCommand( Player aPlayer , String verb , String args )
 		if ( verb.equalsIgnoreCase("s") || verb.equalsIgnoreCase("si") || verb.equalsIgnoreCase("sí") )
 		{
 			aPlayer.forceCommand("tocarDeOido el piano");
+            set(aPlayer,"askTryPiano",false);
 			end();
 		}
 		else if ( verb.equalsIgnoreCase("n") || verb.equalsIgnoreCase("no") || args.indexOf("norte") >= 0 || args.indexOf("noroeste") >= 0 )
 		{
 			aPlayer.write("Te retiras del piano, mirándolo con respeto.\n");
+            set(aPlayer,"askTryPiano",false);
 			end();
 		}
+        else
+        {
+            aPlayer.write("¿Quieres probar a tocar de oído, sí o no?\n");   
+            end();
+        }
 	}
 
 	else if ( verb.equalsIgnoreCase("ir") )
@@ -123,6 +130,7 @@ void parseCommand( Player aPlayer , String verb , String args )
 <Input color="#0066cc"/>
 <Description color="#000099"/>
 <Foreground color="#000000"/>
+<Important color="#ffffff"/>
 <Denial color="#660000"/>
 <Action color="#006666"/>
 <Background color="#ffffe8"/>
@@ -226,7 +234,7 @@ void parseCommand( Player aPlayer , String verb , String args )
 </Room>
 </Rooms>
 <Items>
-<Item closeable="false" gender="true" lockable="false" name="Item falso" openable="false" unlockable="false" volume="10000" weight="10000">
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Item falso" openable="false" unlockable="false" volume="10000" weight="10000">
 <SingularNames>
 <Description>piano de cola</Description>
 </SingularNames>
@@ -251,7 +259,7 @@ void parseCommand( Player aPlayer , String verb , String args )
 <Inventory/>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="true" lockable="false" name="Piano de cola" openable="false" unlockable="false" volume="10000" weight="10000">
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Piano de cola" openable="false" unlockable="false" volume="10000" weight="10000">
 <SingularNames>
 <Description>piano de cola</Description>
 </SingularNames>
@@ -324,7 +332,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 <Inventory/>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="false" lockable="false" name="Partitura" openable="false" unlockable="false" volume="1" weight="1">
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="Partitura" openable="false" unlockable="false" volume="1" weight="1">
 <SingularNames>
 <Description>partitura</Description>
 </SingularNames>
@@ -348,7 +356,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 <PropertyList/>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="true" lockable="false" name="Marco" openable="false" unlockable="false" volume="0" weight="0">
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Marco" openable="false" unlockable="false" volume="0" weight="0">
 <SingularNames/>
 <PluralNames/>
 <SingularReferenceNames>
@@ -390,7 +398,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 }]]></Code>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="true" lockable="false" name="Botón" openable="false" unlockable="false" volume="5000" weight="5000">
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Botón" openable="false" unlockable="false" volume="5000" weight="5000">
 <SingularNames/>
 <PluralNames/>
 <SingularReferenceNames>
@@ -441,7 +449,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 }]]></Code>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="false" lockable="false" name="Caja fuerte" openable="false" unlockable="false" volume="600" weight="600">
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="Caja fuerte" openable="false" unlockable="false" volume="600" weight="600">
 <SingularNames>
 <Description>caja fuerte</Description>
 </SingularNames>
@@ -527,7 +535,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 }]]></Code>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="false" lockable="false" name="Cama" openable="false" unlockable="false" volume="5000" weight="5000">
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="Cama" openable="false" unlockable="false" volume="5000" weight="5000">
 <SingularNames>
 <Description>cama con dosel</Description>
 </SingularNames>
@@ -583,7 +591,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 }]]></Code>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="true" lockable="false" name="Cuadro" openable="false" unlockable="false" volume="400" weight="400">
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Cuadro" openable="false" unlockable="false" volume="400" weight="400">
 <SingularNames>
 <Description>cuadro</Description>
 </SingularNames>
@@ -633,7 +641,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 }]]></Code>
 <RelationshipList/>
 </Item>
-<Item closeable="false" gender="false" lockable="false" name="Alfombra" openable="false" unlockable="false" volume="100" weight="100">
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="Alfombra" openable="false" unlockable="false" volume="100" weight="100">
 <SingularNames>
 <Description>alfombra persa</Description>
 </SingularNames>

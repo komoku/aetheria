@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <World author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2011-11-27" language="en" moduleName="Lethal Insect" parserVersion="1.2.0" type="Very small miniadventure" version="0.1" worldDir="." worldName="Lethal Insect">
 <IdeMetaInf>
-<View xoffset="38.0" yoffset="65.0" zoom="2.0"/>
+<View xoffset="-5.0" yoffset="45.0" zoom="2.0"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Habitación de Kovacic" x="220" y="260"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Limbo" x="380" y="120"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.CharacterNode" name="Ekaterina" x="220" y="340"/>
@@ -13,9 +13,9 @@
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Alfombra" x="260" y="160"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Caja fuerte" x="120" y="320"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Cuadro" x="160" y="160"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Marco" x="120" y="200"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Perro" x="380" y="340"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Perrofake" x="340" y="300"/>
-<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Marco" x="120" y="200"/>
 </IdeMetaInf>
 <Code language="BeanShell"><![CDATA[/*Introducción del juego para un jugador*/
 
@@ -80,13 +80,20 @@ void parseCommand( Player aPlayer , String verb , String args )
 		if ( verb.equalsIgnoreCase("y") || verb.equalsIgnoreCase("yes") || verb.equalsIgnoreCase("yeah") )
 		{
 			aPlayer.forceCommand("playByEar piano");
+            set(aPlayer,"askTryPiano",false);
 			end();
 		}
 		else if ( verb.equalsIgnoreCase("n") || verb.equalsIgnoreCase("no") || args.indexOf("north") >= 0 || args.indexOf("northwest") >= 0 || args.indexOf("northeast") >= 0 )
 		{
 			aPlayer.write("You balk away from the piano, looking at it with respect.\n");
+            set(aPlayer,"askTryPiano",false);
 			end();
 		}
+        else
+        {
+            aPlayer.write("Would you like to try and play by ear, yes or no?\n");
+            end();   
+        }
 	}
 
 	else if ( verb.equalsIgnoreCase("go") )
@@ -114,7 +121,7 @@ void parseCommand( Player aPlayer , String verb , String args )
 		end();
 	}
 
-	else if ( verb.equalsIgnoreCase("take") && ( args.toLowerCase().indexOf("sheet") >= 0 ||args.toLowerCase().indexOf("blanket") >= 0 || args.toLowerCase().indexOf("pillow") >= 0)  )
+	else if ( verb.equalsIgnoreCase("take") && ( args.toLowerCase().indexOf("blanket") >= 0 || args.toLowerCase().indexOf("pillow") >= 0)  )
 	{
 		aPlayer.write("You don't think the linen is interesting enough to take it.\n");
 		end();
