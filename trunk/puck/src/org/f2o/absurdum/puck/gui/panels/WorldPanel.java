@@ -158,14 +158,21 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		return -1;
 	}
 	
-	private JTextField tfShortName = new EnhancedJTextField(20);
-	private JTextField tfLongName = new EnhancedJTextField(20);
-	private JComboBox cbLanguage = new JComboBox();
-	private JTextField tfAuthor = new EnhancedJTextField(20);
-	private JTextField tfVersion = new EnhancedJTextField(20);
-	private JTextField tfAgeVersion = new EnhancedJTextField(20);
-	private JTextField tfDate = new EnhancedJTextField(20);
-	private JTextField tfType = new EnhancedJTextField(20);
+	private JTextField tfShortName = new EnhancedJTextField();
+	private JTextField tfLongName = new EnhancedJTextField();
+
+	private JComboBox cbLanguage = new JComboBox(
+		new String[]
+		{
+		UIMessages.getInstance().getMessage("language.es"),
+		UIMessages.getInstance().getMessage("language.en")
+		}
+	);
+	private JTextField tfAuthor = new EnhancedJTextField();
+	private JTextField tfVersion = new EnhancedJTextField();
+	private JTextField tfAgeVersion = new EnhancedJTextField();
+	private JTextField tfDate = new EnhancedJTextField();
+	private JTextField tfType = new EnhancedJTextField();
 	
 	private BSHCodePanel bcp = new BSHCodePanel("world");
 	
@@ -175,7 +182,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 	
 	private EntityListPanel entitiesPanel;
 	
-	private void addPareja(JPanel p, JLabel l, JComponent editable)
+	private void styleAndAddTwo(JPanel p, JLabel l, JComponent editable)
 	{
 		l.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
@@ -199,55 +206,53 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		JPanel firstTab = new JPanel();
 		
 		firstTab.setLayout(new BoxLayout(firstTab, BoxLayout.PAGE_AXIS));
+		firstTab.setBorder(BorderFactory.createTitledBorder(
+		  UIMessages.getInstance().getMessage("worldpanel.header")));
+
+		JPanel pGeneralData = new JPanel(new SpringLayout());
 		
-		JLabel header = new JLabel(UIMessages.getInstance().getMessage("worldpanel.header"));
-		header.setAlignmentX(JComponent.LEFT_ALIGNMENT); //does nothing
-		JPanel headerPanel = new JPanel();
-		headerPanel.add(header);
-		firstTab.add(headerPanel);
+		styleAndAddTwo(pGeneralData,
+		  new JLabel(UIMessages.getInstance().getMessage("world.shortname")),
+		  tfShortName);
+
+		styleAndAddTwo(pGeneralData,
+		  new JLabel(UIMessages.getInstance().getMessage("world.longname")),
+		  tfLongName);
+
+		styleAndAddTwo(pGeneralData,
+		  new JLabel(UIMessages.getInstance().getMessage("language") + ":"),
+		  cbLanguage);
+
+		styleAndAddTwo(pGeneralData,
+		  new JLabel(UIMessages.getInstance().getMessage("world.author")),
+		  tfAuthor);
+
+		styleAndAddTwo(pGeneralData,
+		  new JLabel(UIMessages.getInstance().getMessage("world.version")),
+		  tfVersion);
 		
-		JPanel shortNamePanel = new JPanel();
-		shortNamePanel.add(new JLabel(UIMessages.getInstance().getMessage("world.shortname")));
-		shortNamePanel.add(tfShortName);
-		firstTab.add(shortNamePanel);
+		styleAndAddTwo(pGeneralData,
+		  new JLabel(UIMessages.getInstance().getMessage("world.ageversion")),
+		  tfAgeVersion);
 		
-		JPanel longNamePanel = new JPanel();
-		longNamePanel.add(new JLabel(UIMessages.getInstance().getMessage("world.longname")));
-		longNamePanel.add(tfLongName);
-		firstTab.add(longNamePanel);
+		styleAndAddTwo(pGeneralData,
+		  new JLabel(UIMessages.getInstance().getMessage("world.date")),
+		  tfDate);
 		
-		JPanel languagePanel = new JPanel();
-		cbLanguage = new JComboBox( new String[] { UIMessages.getInstance().getMessage("language.es") , UIMessages.getInstance().getMessage("language.en") } );
-		languagePanel.add(new JLabel(UIMessages.getInstance().getMessage("language")));
-		languagePanel.add(cbLanguage);
-		firstTab.add(languagePanel);
+		styleAndAddTwo(pGeneralData,
+		  new JLabel(UIMessages.getInstance().getMessage("world.type")),
+		  tfType);
+
+		SpringUtilities.makeCompactGrid(
+		  pGeneralData,
+		  8, 2,        //rows, cols
+		  6, 6,        //initX, initY
+		  6, 6         //xPad, yPad
+		);
 		
-		JPanel authorPanel = new JPanel();
-		authorPanel.add(new JLabel(UIMessages.getInstance().getMessage("world.author")));
-		authorPanel.add(tfAuthor);
-		firstTab.add(authorPanel);
 		
-		JPanel versionPanel = new JPanel();
-		versionPanel.add(new JLabel(UIMessages.getInstance().getMessage("world.version")));
-		versionPanel.add(tfVersion);
-		firstTab.add(versionPanel);
-		
-		JPanel ageVersionPanel = new JPanel();
-		ageVersionPanel.add(new JLabel(UIMessages.getInstance().getMessage("world.ageversion")));
-		ageVersionPanel.add(tfAgeVersion);
-		firstTab.add(ageVersionPanel);
-		
-		JPanel datePanel = new JPanel();
-		datePanel.add(new JLabel(UIMessages.getInstance().getMessage("world.date")));
-		datePanel.add(tfDate);
-		firstTab.add(datePanel);
-		
-		JPanel typePanel = new JPanel();
-		typePanel.add(new JLabel(UIMessages.getInstance().getMessage("world.type")));
-		typePanel.add(tfType);
-		firstTab.add(typePanel);
-		
-		firstTab.add(bcp);
+		firstTab.add(pGeneralData);
+ 		firstTab.add(bcp);
 		
 		jtp.add("General",firstTab);
 		
@@ -308,18 +313,18 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		fontPanel.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("label.font")));
 
 		tfFontName.setText("Courier New");
-		addPareja(fontPanel,
+		styleAndAddTwo(fontPanel,
 		  new JLabel(UIMessages.getInstance().getMessage("label.font.name")),
 		  tfFontName
 		);
 		
-		addPareja(fontPanel,
+		styleAndAddTwo(fontPanel,
 		  new JLabel(UIMessages.getInstance().getMessage("label.font.filename")),
 		  tfFontFile
 		);
 		
 		tfFontSize.setText("15");
-		addPareja(fontPanel,
+		styleAndAddTwo(fontPanel,
 		  new JLabel(UIMessages.getInstance().getMessage("label.font.size")),
 		  tfFontSize
 		);
