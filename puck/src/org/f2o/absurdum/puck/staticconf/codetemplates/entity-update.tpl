@@ -1,4 +1,4 @@
-/*Método de actualización de esta entidad*/
+/*MÃ©todo de actualizaciÃ³n de esta entidad*/
 
 //pe: propiedad que se actualiza 
 //(pe.getName(): nombre)

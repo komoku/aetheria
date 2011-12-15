@@ -1,4 +1,4 @@
-//código a ejecutar cuando se inicializa el personaje
+//cÃ³digo a ejecutar cuando se inicializa el personaje
 void onInit()
 {
 }

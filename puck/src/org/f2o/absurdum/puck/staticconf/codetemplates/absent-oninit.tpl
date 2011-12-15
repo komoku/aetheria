@@ -1,4 +1,4 @@
-//código a ejecutar cuando se inicializa la entidad abstracta
+//cÃ³digo a ejecutar cuando se inicializa la entidad abstracta
 void onInit()
 {
 }

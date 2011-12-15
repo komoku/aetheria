@@ -1,5 +1,5 @@
 /*
-Método que captura el evento lanzado cuando una criatura coge este ítem.
+MÃ©todo que captura el evento lanzado cuando una criatura coge este Ã­tem.
 */
 void onGet ( Mobile getter )
 {

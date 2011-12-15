@@ -1,4 +1,4 @@
-//código a ejecutar cuando se inicializa la habitación
+//cÃ³digo a ejecutar cuando se inicializa la habitaciÃ³n
 void onInit()
 {
 }

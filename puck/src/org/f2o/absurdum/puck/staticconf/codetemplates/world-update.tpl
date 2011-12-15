@@ -1,4 +1,4 @@
-/*Método de actualización de una entidad del mundo*/
+/*MÃ©todo de actualizaciÃ³n de una entidad del mundo*/
 
 //pe: propiedad que se actualiza 
 //(pe.getName(): nombre)

@@ -1,5 +1,5 @@
 /*
-Método que captura el evento lanzado cuando una criatura deja este ítem.
+MÃ©todo que captura el evento lanzado cuando una criatura deja este Ã­tem.
 */
 void onDrop ( Mobile dropper )
 {

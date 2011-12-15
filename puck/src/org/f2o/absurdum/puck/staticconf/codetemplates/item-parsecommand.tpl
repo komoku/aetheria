@@ -1,4 +1,4 @@
-/*MÈtodo de an·lisis sint·ctico de la entrada referida a una cosa*/
+/*M√©todo de an√°lisis sint√°ctico de la entrada referida a una cosa*/
 void parseCommand( Mobile aCreature , String verb , String args )
 {
 	
@@ -9,7 +9,7 @@ void parseCommand( Mobile aCreature , String verb , String args )
 	
 	//terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
 	//por defecto ante ella
-	//terminar normal: despuÈs de nuestro procesado, se lleva a cabo el an·lisis normal del
-	//comando y ejecuciÛn de la acciÛn correspondiente
+	//terminar normal: despu√©s de nuestro procesado, se lleva a cabo el an√°lisis normal del
+	//comando y ejecuci√≥n de la acci√≥n correspondiente
 	
 }

@@ -1,6 +1,6 @@
-//Evento que captura el envío de un texto a la habitación.
+//Evento que captura el envÃ­o de un texto a la habitaciÃ³n.
 void onRoomText ( String text )
 {
-	//text: texto que ha sido enviado a la habitación.
+	//text: texto que ha sido enviado a la habitaciÃ³n.
 		
 }
