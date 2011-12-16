@@ -548,6 +548,15 @@ public class NaturalLanguage
 			String nextWord = (String) iter.next();
 			corrector.addDictionaryWord(nextWord);
 		}
+		for ( Iterator iter = alias.keySet().iterator() ; iter.hasNext() ; )
+		{
+			String nextAlias = (String)iter.next();
+			StringTokenizer st = new StringTokenizer(nextAlias); //as of 2011-12-16 there are no multiword aliases, but there may be in the future
+			if ( st.hasMoreTokens() )
+			{
+				corrector.addDictionaryWord(st.nextToken());
+			}
+		}
 		//System.err.println(corrector);
 	}
 	
