@@ -434,7 +434,7 @@ public class Inventory extends EntityList
 			
 			if ( this.volume != volume || this.weight != weight )
 				//throw ( new XMLtoWorldException ( "Inventory volume or weight do not match items: " + toString() ) );
-				Debug.println("Warning: Inventory volume or weight do not match items: " + toString() );
+				Debug.println("Warning: Inventory volume or weight do not match items: " + toString(mundo) );
 			
 		} //end if the node is an element
 				
