@@ -230,7 +230,8 @@ public class Inventory extends EntityList
 			}
 			i++;
 		}
-		if ( vacio ) return w.getMessages().getMessage("nothing")+".";
+		if ( vacio && w!=null ) return w.getMessages().getMessage("nothing")+".";
+		else if ( vacio && w== null ) return "<empty inventory, null world passed>";
 		else return cadena+".";
 	}
 	
