@@ -2408,6 +2408,7 @@ public class World implements Informador , SupportingCode
 		item [ maxitem ] = newItem;
 		newItem.setID ( maxitem );
 		newItem.setWorld( this );
+		if ( newItem.getUniqueName() != null ) nameTable.put( newItem.getUniqueName(), new Integer ( maxitem ) );
 		maxitem++;
 		
 	//	Debug.println("Maxitem is now " + maxitem);
@@ -2448,6 +2449,7 @@ public class World implements Informador , SupportingCode
 		//{length of mob is > maxmob}
 		mob [ maxmob ] = newMob;
 		newMob.setID ( maxmob );
+		if ( newMob.getUniqueName() != null ) nameTable.put( newMob.getUniqueName(), new Integer ( maxmob ) );
 		maxmob++;
 		newMob.loadNumberGenerator(this);
 	
@@ -2471,6 +2473,7 @@ public class World implements Informador , SupportingCode
 		//{length of mob is > maxmob}
 		room [ maxroom ] = newRoom;
 		newRoom.setID ( maxroom );
+		if ( newRoom.getUniqueName() != null ) nameTable.put( newRoom.getUniqueName(), new Integer ( maxroom ) );
 		maxroom++;
 		newRoom.loadNumberGenerator(this);
 	
@@ -2493,6 +2496,7 @@ public class World implements Informador , SupportingCode
 		//{length of mob is > maxmob}
 		absent [ maxabsent ] = newAbsEnt;
 		newAbsEnt.setID ( maxabsent );
+		if ( newAbsEnt.getUniqueName() != null ) nameTable.put( newAbsEnt.getUniqueName(), new Integer ( maxabsent ) );
 		maxabsent++;
 		newAbsEnt.loadNumberGenerator(this);
 	
