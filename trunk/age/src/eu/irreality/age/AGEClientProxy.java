@@ -32,6 +32,7 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 
 	public String getColorCode ( String colorType )
 	{
+		if ( colorType == null ) return "";
 		String code = (String) colorCodesTable.get(colorType);
 		Debug.println("CLPROXY CODEGET" + code);
 		if ( code == null ) return "";
