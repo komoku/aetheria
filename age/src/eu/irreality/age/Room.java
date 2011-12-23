@@ -1968,12 +1968,19 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 	}
 	
 	
+	public Room createNewInstance ( World mundo , boolean cloneContents )
+	{
+		return createNewInstance ( mundo , cloneContents , null );
+	}
 	
 	
-	public Room createNewInstance( World mundo , boolean cloneContents  ) 
+	public Room createNewInstance( World mundo , boolean cloneContents , String uniqueName ) 
 	{
 		Room r = (Room) this.clone();
 		r.inheritsFrom = idnumber;
+		
+		if ( uniqueName == null ) r.title = mundo.generateUnusedUniqueName(this.getUniqueName()); 
+		else r.title = uniqueName;
 		
 		mundo.addRoomAssigningID(r);
 		

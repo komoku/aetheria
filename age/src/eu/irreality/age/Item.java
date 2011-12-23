@@ -161,9 +161,13 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		canGet = gettable;
 	}
 	
+	public Item createNewInstance ( World mundo , boolean cloneContents , boolean cloneParts )
+	{
+		return createNewInstance ( mundo , cloneContents , cloneParts, null );
+	}
 	
 	//crea un nuevo Item que hereda de éste y lo añade al mundo
-	public Item createNewInstance( World mundo , boolean cloneContents , boolean cloneParts ) 
+	public Item createNewInstance( World mundo , boolean cloneContents , boolean cloneParts , String uniqueName ) 
 	{
 		Item it = (Item) this.clone();
 		this.mundo=mundo;
@@ -189,6 +193,9 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		{
 			it.partsInventory = it.partsInventory.cloneCopyingItems(mundo,cloneContents,cloneParts);
 		}
+		
+		if ( uniqueName == null ) it.title = mundo.generateUnusedUniqueName(this.getUniqueName()); 
+		else it.title = uniqueName;
 		
 		mundo.addItemAssigningID ( it );
 		

@@ -7023,8 +7023,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 
 
+	public Mobile createNewInstance ( World mundo , boolean cloneInventory , boolean cloneParts , boolean cloneVirtual )
+	{
+		return createNewInstance ( mundo , cloneInventory , cloneParts , cloneVirtual , null );
+	}
+	
 	//crea un nuevo Mobile que hereda de �ste y lo a�ade al mundo
-	public Mobile createNewInstance( World mundo , boolean cloneInventory , boolean cloneParts , boolean cloneVirtual  ) 
+	public Mobile createNewInstance( World mundo , boolean cloneInventory , boolean cloneParts , boolean cloneVirtual , String uniqueName  ) 
 	{
 		Mobile it = (Mobile) this.clone();
 		it.inheritsFrom = 0;
@@ -7175,7 +7180,10 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				}
 			}
 		}
-
+		
+		if ( uniqueName == null ) it.title = mundo.generateUnusedUniqueName(this.getUniqueName()); 
+		else it.title = uniqueName;
+		
 		mundo.addMobileAssigningID ( it );
 
 		return it;
