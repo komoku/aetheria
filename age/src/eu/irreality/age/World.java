@@ -2638,9 +2638,17 @@ public class World implements Informador , SupportingCode
 	}
 	
 	
-	//el Limbo, por defecto, es la habitacion cero.
+	/**
+	 * If there is a room with unique name "limbo" or "Limbo", then that's considered the world's Limbo.
+	 * If not, then by default the Limbo is the room numbered 0. 
+	 * @return
+	 */
 	public Room getLimbo()
 	{
+		Room r = getRoom("limbo");
+		if ( r != null ) return r;
+		r = getRoom("Limbo");
+		if ( r != null ) return r;
 		return getRoom(0);
 	}
 	
