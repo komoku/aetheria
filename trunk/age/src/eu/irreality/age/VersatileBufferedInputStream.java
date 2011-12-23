@@ -28,10 +28,14 @@ class VersatileBufferedInputStream extends BufferedInputStream
 		mark(marklimit+65536);
 		int nbytes = 0;
 		byte cur;	
-		while ( (cur=(byte)read()) != (byte)'\r' ) 
+		while ( (cur=(byte)read()) != (byte)'\r' && cur != -1 ) 
 		{
 			nbytes++;
 		}
+		
+		if ( cur == -1 ) //disconnected
+			throw new IOException("Apparently disconnected.\n");
+		
 		nbytes++; //\r
 		if ( read() == '\n' ) nbytes++;
 	
@@ -45,9 +49,9 @@ class VersatileBufferedInputStream extends BufferedInputStream
 		
 		String resultado;
 		if ( barr[nbytes-1] == '\n' )
-			resultado = new String ( barr , 0 , nbytes-2 );
+			resultado = new String ( barr , 0 , nbytes-2 , "UTF-8" );
 		else
-			resultado = new String ( barr , 0 , nbytes-1 );	
+			resultado = new String ( barr , 0 , nbytes-1 , "UTF-8" );	
 	
 		markpos = temp_markpos;
 		marklimit = temp_marklimit;

@@ -287,8 +287,8 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 		{
 			if (s != null) 
 			{
-				br = new BufferedReader(new InputStreamReader((is=new BufferedInputStream(sock.getInputStream(),100000))));         
-				pw = new PrintWriter(new OutputStreamWriter((os=new BufferedOutputStream(sock.getOutputStream(),100000))))
+				br = new BufferedReader(new InputStreamReader((is=new BufferedInputStream(sock.getInputStream(),100000)),"UTF-8"));         
+				pw = new PrintWriter(new OutputStreamWriter((os=new BufferedOutputStream(sock.getOutputStream(),100000)),"UTF-8"))
 				{
 					public void println(String linea)
 					{
