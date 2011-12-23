@@ -73,6 +73,7 @@ public class ServerProxy extends Thread implements ARSPConstants
 				if ( linea == null )
 				{
 					System.err.println("Read null line. Disconnected, I guess.\n");
+					cliente.write("The server seems to have disconnected.\n");
 					return;
 				}
 				//is.mark(500000);
