@@ -639,9 +639,13 @@ public class ObjectCode
 				{
 					
 					Class argumentClass = null;
+										
 					if ( arguments[k] instanceof bsh.Primitive ) //if code is invoked from the bsh innards, we will get basic type values wrapped in bsh.Primitive
 					{
 						argumentClass = ((bsh.Primitive)arguments[k]).getType();
+						//this includes a primitive null if null is passed from bsh innards. In that case, we unbox arguments[k]
+						//to simplify the null checks ahead.
+						if ( argumentClass == null ) arguments[k] = null;
 					}
 					else //if code is invoked from AGE, we don't wrap basic type values, we use them directly as arguments
 					{
