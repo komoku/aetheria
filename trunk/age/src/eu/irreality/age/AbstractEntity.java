@@ -340,8 +340,12 @@ public class AbstractEntity extends Entity implements SupportingCode, UniqueName
 	
 	}
 	
+	public AbstractEntity createNewInstance ( World mundo )
+	{
+		return createNewInstance(mundo,null);
+	}
 	
-	public AbstractEntity createNewInstance( World mundo ) 
+	public AbstractEntity createNewInstance( World mundo , String uniqueName ) 
 	{
 	
 		Debug.println("Creatin' new instance.");
@@ -363,6 +367,8 @@ public class AbstractEntity extends Entity implements SupportingCode, UniqueName
 			Debug.println("2) instanceOf set to " + this.isInstanceOf);
 		}
 		
+		if ( uniqueName == null ) it.title = mundo.generateUnusedUniqueName(this.getUniqueName()); 
+		else it.title = uniqueName;
 		
 		mundo.addAbstractEntityAssigningID ( it );
 		

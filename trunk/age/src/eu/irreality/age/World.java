@@ -3067,4 +3067,20 @@ public class World implements Informador , SupportingCode
 	{
 		return parserVersion;
 	}
+	
+	
+	/**
+	 * Returns a String starting with base that has not been used as a unique name in this World.
+	 * @param base
+	 * @return
+	 */
+	public String generateUnusedUniqueName ( String base )
+	{
+		for ( ;; ) //generate random names until one is unused
+		{
+			String candidate = ((base==null)?"":base) + UUID.randomUUID().toString();
+			if ( getEntity(candidate) == null ) return candidate;
+		}
+	}
+	
 }
