@@ -41,7 +41,7 @@ public class ServerProxy extends Thread implements ARSPConstants
 			{
 				br = new VersatileBufferedInputStream ( sock.getInputStream() );
         		//br = new BufferedReader(new InputStreamReader((is=new BufferedInputStream(sock.getInputStream(),100000))));         
-        		pw = new PrintWriter(new OutputStreamWriter((os=new BufferedOutputStream(sock.getOutputStream(),100000))))
+        		pw = new PrintWriter(new OutputStreamWriter((os=new BufferedOutputStream(sock.getOutputStream(),100000)),"UTF-8"))
 			    {
 				public void println(String linea)
 				{
@@ -70,6 +70,11 @@ public class ServerProxy extends Thread implements ARSPConstants
 				Debug.println("Last linea: " + linea);
 				br.mark(500000);
 				linea = br.readLine();
+				if ( linea == null )
+				{
+					System.err.println("Read null line. Disconnected, I guess.\n");
+					return;
+				}
 				//is.mark(500000);
 				Debug.println("Current linea: " + linea);
 				parseMessage ( linea );
