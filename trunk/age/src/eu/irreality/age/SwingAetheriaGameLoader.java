@@ -619,7 +619,7 @@ de la ventana hasta acabar de cargar.
 						*/
 						
 						theWorld = WorldLoader.loadWorld( moduledir , gameLog, io, mundoSemaphore);
-						if ( theWorld == null ) return;
+						if ( theWorld == null || io.isDisconnected() ) return;
 						mundo = theWorld;
 						
 						//{theWorld NOT null}

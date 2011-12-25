@@ -860,9 +860,11 @@ public class World implements Informador , SupportingCode
 					//player is only assigned directly if assignPlayer() method not defined or returns null.
 					else
 					{
+						
 						mob[i] = new Player ( this , io , mobNode[i] );
-						jugadorAsignadoACliente = true;
+						//maybe check for client disconnection if player closes client during assignPlayer?
 						addPlayer ( (Player) mob[i] );
+						jugadorAsignadoACliente = true;
 					}
 				}	
 				else
@@ -2834,6 +2836,7 @@ public class World implements Informador , SupportingCode
 		for ( int i = 0 ; i < playerList.size() ; i++ )
 		{
 			Player cur = (Player) playerList.get(i);
+			
 			if ( cur.getState() != Mobile.DISABLED )
 				addedPlayers++;
 		}

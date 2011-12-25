@@ -171,7 +171,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 			System.out.println("3");
 
 			theWorld = WorldLoader.loadWorld( moduledir , gameLog, io, mundoSemaphore);
-			if ( theWorld == null ) return;
+			if ( theWorld == null || io.isDisconnected() ) return;
 			mundo = theWorld;
 
 			//{theWorld NOT null}

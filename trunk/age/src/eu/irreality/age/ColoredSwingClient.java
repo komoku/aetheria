@@ -89,10 +89,14 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		return elAreaTexto;
 	}
 	
+	/**
+	 * Will be disconnected if the window is closing.
+	 */
 	public boolean isDisconnected()
 	{
-		return false;
+		return deactivated;
 	}
+	
 	public String getColorCode ( String colorType )
 	{
 		if ( colorType == null ) return "";
@@ -101,6 +105,10 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		else return code;
 	}
 	
+	/**
+	 * Deactivate the client, from now on it will always return null immediately on input requests.
+	 * This happens when the window is closed.
+	 */
 	public synchronized void exit()
 	{
 		deactivated = true;
