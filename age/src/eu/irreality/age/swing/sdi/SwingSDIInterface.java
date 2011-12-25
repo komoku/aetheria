@@ -281,7 +281,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 				write ( "Exception on loading world: " + e );
 				e.printStackTrace();
 			}
-			if ( theWorld == null ) 
+			if ( theWorld == null || io.isDisconnected() ) //io could be disconnected due to closing the window before assigning player 
 			{
 				((ColoredSwingClient)io).showAfterLogLoad();
 				return;
