@@ -571,7 +571,7 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 
 
 
-			write("Welcome to denebola [port " + sock.getLocalPort() + "] running the Aetheria Game Engine.\n");
+			write("Welcome to " + sock.getLocalAddress().getHostName() + " [port " + sock.getLocalPort() + "] running the Aetheria Game Engine.\n");
 			mundo.addNewPlayerASAP ( this );
 			Debug.println("Welcoming and adding player.\n");
 
