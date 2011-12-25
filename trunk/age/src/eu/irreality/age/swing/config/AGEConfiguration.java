@@ -56,6 +56,8 @@ public class AGEConfiguration
 		defaultProperties.setProperty("mdiSubwindowLocationX","0");
 		defaultProperties.setProperty("mdiSubwindowLocationY","0");
 		
+		defaultProperties.setProperty("lastRemoteIp","127.0.0.1");
+		
 	}
 	
 	private static AGEConfiguration instance;

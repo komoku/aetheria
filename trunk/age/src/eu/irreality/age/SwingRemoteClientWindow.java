@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 import eu.irreality.age.i18n.UIMessages;
+import eu.irreality.age.swing.config.AGEConfiguration;
 
 import java.net.*;
 import java.awt.*;
@@ -18,8 +19,8 @@ public class SwingRemoteClientWindow extends JInternalFrame
 {
 
 
-	private JTextField tfIp = new JTextField("127.0.0.1");
-	private JTextField tfPuerto = new JTextField("8009");
+	private JTextField tfIp = new JTextField("127.0.0.1",15);
+	private JTextField tfPuerto = new JTextField("8009",5);
 	private JButton botonConectar = new JButton( UIMessages.getInstance().getMessage("remote.connect") ); //Conectar
 	private JTextPane logPane;
 	private JList partidasList;
@@ -64,13 +65,18 @@ public class SwingRemoteClientWindow extends JInternalFrame
 		
 		setSize(550,550);
 	
+		//load last IP from properties
+		String ip = AGEConfiguration.getInstance().getProperty("lastRemoteIp");
+		if ( ip != null ) tfIp.setText(ip);
+		
+		
 		panelFichas = new JTabbedPane();
 		JPanel contentPane = new JPanel();
 		setContentPane ( contentPane );
 		contentPane.setLayout(new BorderLayout());
 		contentPane.add(panelFichas,BorderLayout.CENTER);
 		
-		JPanel statusTab = new JPanel( new GridLayout ( 2 , 1 ) );
+		JPanel statusTab = new JPanel( new BorderLayout() /*new GridLayout ( 2 , 1 )*/ );
 		
 		JPanel connectSubPanel = new JPanel();
 		JPanel con1 = new JPanel();
@@ -87,12 +93,12 @@ public class SwingRemoteClientWindow extends JInternalFrame
 		connectSubPanel.add ( con2 );
 		connectSubPanel.add ( con3 );
 		connectSubPanel.setBorder ( BorderFactory.createTitledBorder( UIMessages.getInstance().getMessage("remote.connect") ) );
-		statusTab.add(connectSubPanel);
+		statusTab.add(connectSubPanel,BorderLayout.NORTH);
 		
 		JPanel logSubPanel = new JPanel( new GridLayout(1,1) );
 		logPane = new JTextPane();
 		logSubPanel.add(new JScrollPane(logPane));
-		statusTab.add(logSubPanel);
+		statusTab.add(logSubPanel,BorderLayout.CENTER);
 		
 		panelFichas.addTab( UIMessages.getInstance().getMessage("remote.server") ,statusTab); //Servidor
 	
@@ -119,7 +125,7 @@ public class SwingRemoteClientWindow extends JInternalFrame
 					{
 						if ( partidasList.getSelectedIndex() != -1 )
 						{
-							arsps.joinGame ( partidasList.getSelectedIndex() + 1 );
+							arsps.joinGame ( partidasList.getSelectedIndex() + 1 );							
 							SwingRemoteClientWindow.this.dispose();
 						}
 					}
@@ -185,6 +191,11 @@ public class SwingRemoteClientWindow extends JInternalFrame
 						System.out.println("Handshake done.\n");
 						
 						*/
+						
+						//store ip for next time
+						AGEConfiguration.getInstance().setProperty("lastRemoteIp",tfIp.getText());
+						AGEConfiguration.getInstance().storeProperties();
+						
 				
 					}
 					catch ( UnknownHostException uoe )
