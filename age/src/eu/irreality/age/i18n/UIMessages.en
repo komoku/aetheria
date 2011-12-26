@@ -56,6 +56,7 @@ warning.no.syn.file=Warning: synonym file not found, the synonym table will be e
 warning.no.alias.file=Warning: alias file not found, the alias table will be empty.
 warning.no.2p.file=Warning: 2nd person verb conjugation file not found, the corresponding conjugation table will be empty.
 warning.no.phrasal.verb.file=Warning: phrasal verb list could not be loaded, it will be empty or incomplete.
+warning.no.common.file=Warning: common empty word list could not be loaded, it will be empty.
 serveroptions.serve.age=Serve through AGE, port:
 serveroptions.serve.telnet=Serve through Telnet, port:
 serveroptions.serve.irc=Serve through IRC
