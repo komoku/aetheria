@@ -422,17 +422,20 @@ public class PuckFrame extends JFrame
 	 */
 	public void setLookAndFeel ( String lookAndFeel )
 	{
+		boolean changed = false;
 		try 
 		{
 			if ( "default".equals(lookAndFeel.toLowerCase()) 
 					&& !UIManager.getLookAndFeel().getClass().toString().equals( UIManager.getCrossPlatformLookAndFeelClassName() ) )
 			{
 				UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+				changed = true;
 			}
 			else if ( "system".equals(lookAndFeel.toLowerCase()) 
 					&& !UIManager.getLookAndFeel().getClass().toString().equals( UIManager.getSystemLookAndFeelClassName() ) )
 			{
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+				changed = true;
 			}
 			else
 			{
@@ -443,6 +446,7 @@ public class PuckFrame extends JFrame
 						&& !UIManager.getLookAndFeel().getName().toLowerCase().contains(lookAndFeel.toLowerCase())	)
 					{
 							UIManager.setLookAndFeel(lfs[i].getClassName());
+							changed = true;
 							break;
 					}
 				}
@@ -452,8 +456,11 @@ public class PuckFrame extends JFrame
 		{
 			e.printStackTrace();
 		}
-		SwingUtilities.updateComponentTreeUI(this);
-		PuckConfiguration.getInstance().setProperty("look", lookAndFeel);
+		if ( changed )
+		{
+			SwingUtilities.updateComponentTreeUI(this);
+			PuckConfiguration.getInstance().setProperty("look", lookAndFeel);
+		}
 	}
 	
 	/**
