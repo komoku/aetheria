@@ -426,13 +426,13 @@ public class PuckFrame extends JFrame
 		try 
 		{
 			if ( "default".equals(lookAndFeel.toLowerCase()) 
-					&& !UIManager.getLookAndFeel().getClass().toString().equals( UIManager.getCrossPlatformLookAndFeelClassName() ) )
+					&& !UIManager.getLookAndFeel().getClass().getName().equals( UIManager.getCrossPlatformLookAndFeelClassName() ) )
 			{
 				UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 				changed = true;
 			}
 			else if ( "system".equals(lookAndFeel.toLowerCase()) 
-					&& !UIManager.getLookAndFeel().getClass().toString().equals( UIManager.getSystemLookAndFeelClassName() ) )
+					&& !UIManager.getLookAndFeel().getClass().getName().equals( UIManager.getSystemLookAndFeelClassName() ) )
 			{
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 				changed = true;
