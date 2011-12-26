@@ -64,6 +64,8 @@ public class ReferenceNameCorrector implements SpellingCorrector
 		EntityList mobiles = w.getAllMobiles();
 		EntityList rooms = w.getAllRooms();
 		Set words = new LinkedHashSet();
+		
+		//add item reference names
 		for ( int i = 0 ; i < items.size() ; i++ )
 		{
 			Item it = (Item) items.get(i);
@@ -71,6 +73,8 @@ public class ReferenceNameCorrector implements SpellingCorrector
 			words.addAll( extractRelevantWords(it.getPluralReferenceNames()));
 			words.addAll( extractRelevantWords(it.getExtraDescriptionNames()));
 		}
+		
+		//add mobile reference names
 		for ( int i = 0 ; i < mobiles.size() ; i++ )
 		{
 			Mobile mob = (Mobile) mobiles.get(i);
@@ -78,6 +82,8 @@ public class ReferenceNameCorrector implements SpellingCorrector
 			words.addAll( extractRelevantWords(mob.getPluralReferenceNames()));
 			words.addAll( extractRelevantWords(mob.getExtraDescriptionNames()));
 		}
+		
+		//add words coming from names of exits/paths
 		for ( int i = 0 ; i < rooms.size() ; i++ )
 		{
 			Room r = (Room) rooms.get(i);
@@ -98,6 +104,14 @@ public class ReferenceNameCorrector implements SpellingCorrector
 				}
 			}
 		}
+		
+		//add common words for the language (which don't refer to anything in the world but are expected to appear, e.g. this, another, some, etc.)
+		List commonWords = w.getLanguage().getCommonWordsList();
+		for ( int i = 0 ; i < commonWords.size() ; i++ )
+		{
+			words.add(commonWords.get(i));
+		}
+		
 		init(words);
 	}
 

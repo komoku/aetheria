@@ -26,6 +26,8 @@ public class NaturalLanguage
 	private static String defaultSynonymPath = Paths.LANG_FILES_PATH + "/sinon.lan";
 	private static String defaultAliasPath = Paths.LANG_FILES_PATH + "/alias.lan";
 	private static String defaultVerb32Path = Paths.LANG_FILES_PATH + "/verbos32.lan";
+	
+	private static String defaultCommonWordPath = Paths.LANG_FILES_PATH + "/common.lan";
 
 	private Map imperativoAInfinitivo;
 	private Map infinitivoAImperativo;
@@ -33,7 +35,10 @@ public class NaturalLanguage
 	private Map alias;
 	private Map terceraASegunda;
 	
-	private SpellingCorrector corrector;
+	//common words that may appear in sentences even though they don't refer to world objects, and thus will not be subject to spelling correction
+	private List commonWords;
+	
+	private SpellingCorrector verbCorrector;
 	
 	public static String DEFAULT_LANGUAGE_CODE = "es";
 	
@@ -89,6 +94,16 @@ public class NaturalLanguage
 	{
 		if ( languageCode != null ) return Paths.LANG_FILES_PATH + "/" + languageCode + "/verbos32.lan";
 		return defaultVerb32Path;
+	}
+	
+	/**
+	 * Obtain path to common word file.
+	 * @return
+	 */
+	String getCommonWordPath ( )
+	{
+		if ( languageCode != null ) return Paths.LANG_FILES_PATH + "/" + languageCode + "/common.lan";
+		return defaultCommonWordPath;
 	}
 	
 	/**Verbs that are considered guessable by second-chance mode 
@@ -217,6 +232,17 @@ public class NaturalLanguage
 			System.err.println(UIMessages.getInstance().getMessage("warning.no.2p.file"));
 			terceraASegunda = new Hashtable(1);
 		}
+		
+		try
+		{
+			commonWords = LanguageUtils.loadListFromPath( getCommonWordPath() );
+		}
+		catch (Exception exc)
+		{
+			System.err.println(UIMessages.getInstance().getMessage("warning.no.common.file"));
+			commonWords = new ArrayList();
+		}
+		
 	}
 	
 
@@ -537,16 +563,16 @@ public class NaturalLanguage
 	
 	public void initVerbSpellingCorrector ( )
 	{
-		corrector = new SimpleReverseCorrector();
+		verbCorrector = new SimpleReverseCorrector();
 		for ( Iterator iter = infinitivoAImperativo.keySet().iterator() ; iter.hasNext() ; )
 		{
 			String nextWord = (String) iter.next();
-			corrector.addDictionaryWord(nextWord);
+			verbCorrector.addDictionaryWord(nextWord);
 		}
 		for ( Iterator iter = imperativoAInfinitivo.keySet().iterator() ; iter.hasNext() ; )
 		{
 			String nextWord = (String) iter.next();
-			corrector.addDictionaryWord(nextWord);
+			verbCorrector.addDictionaryWord(nextWord);
 		}
 		for ( Iterator iter = alias.keySet().iterator() ; iter.hasNext() ; )
 		{
@@ -554,7 +580,7 @@ public class NaturalLanguage
 			StringTokenizer st = new StringTokenizer(nextAlias); //as of 2011-12-16 there are no multiword aliases, but there may be in the future
 			if ( st.hasMoreTokens() )
 			{
-				corrector.addDictionaryWord(st.nextToken());
+				verbCorrector.addDictionaryWord(st.nextToken());
 			}
 		}
 		//System.err.println(corrector);
@@ -572,12 +598,12 @@ public class NaturalLanguage
 	
 	private Correction getBestCorrection ( String tentativeVerb )
 	{
-		if ( corrector == null )
+		if ( verbCorrector == null )
 		{
 			if ( isVerb(tentativeVerb) ) return new Correction(tentativeVerb,0);
 			else return null;
 		}
-		return corrector.getBestCorrection(tentativeVerb);
+		return verbCorrector.getBestCorrection(tentativeVerb);
 	}
 	
 	/**
@@ -587,7 +613,7 @@ public class NaturalLanguage
 	 */
 	public String correctVerb ( String commandString )
 	{
-		if ( corrector == null ) initVerbSpellingCorrector();
+		if ( verbCorrector == null ) initVerbSpellingCorrector();
 		StringTokenizer st = new StringTokenizer ( commandString );
 		if ( !st.hasMoreTokens() ) return commandString;
 		String verb = st.nextToken();
@@ -606,8 +632,8 @@ public class NaturalLanguage
 	 */
 	public SpellingCorrector getVerbSpellingCorrector()
 	{
-		if ( corrector == null ) initVerbSpellingCorrector();
-		return corrector;
+		if ( verbCorrector == null ) initVerbSpellingCorrector();
+		return verbCorrector;
 	}
 	
 	
@@ -698,6 +724,16 @@ public class NaturalLanguage
 	    	if ( !st.hasMoreTokens() ) return "";
 	    	else return st.nextToken("");
 	    }
+	}
+	
+	/**
+	 * Returns the list of common words that are expected to appear in sentences even though they don't refer to
+	 * world objects.
+	 * @return
+	 */
+	public List getCommonWordsList ()
+	{
+		return commonWords;
 	}
 	
 }

@@ -56,6 +56,7 @@ warning.no.syn.file=Aviso: no se ha encontrado fichero de sinónimos, la tabla de
 warning.no.alias.file=Aviso: no se ha encontrado fichero de alias, la tabla de alias estará vacía.
 warning.no.2p.file=Aviso: no se ha encontrado fichero de conjugación en 2ª persona, la tabla estará vacía.
 warning.no.phrasal.verb.file=Aviso: no se ha encontrado fichero de phrasal verbs, la lista correspondiente estará vacía.
+warning.no.common.file=Aviso: no se ha encontrado fichero de palabras vacías comunes, la lista correspondiente estará vacía.
 serveroptions.serve.age=Servir por AGE, puerto:
 serveroptions.serve.telnet=Servir por Telnet, puerto:
 serveroptions.serve.irc=Servir por IRC

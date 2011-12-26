@@ -3,7 +3,10 @@ package eu.irreality.age.language;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
 import eu.irreality.age.NaturalLanguage;
@@ -81,6 +84,24 @@ public class LanguageUtils
 	public static Map loadInvertedTableFromPath ( String f , char separator ) throws IOException , FileNotFoundException
 	{
 		return loadInvertedTableFromPath ( f , separator , true );
+	}
+	
+	/**
+	 * Loads a list of lines from a path.
+	 */
+	public static List loadListFromPath ( String f ) throws IOException, FileNotFoundException
+	{
+		BufferedReader filein = new BufferedReader ( new InputStreamReader ( NaturalLanguage.class.getClassLoader().getResourceAsStream(f) , "UTF-8" ) );
+		List result = new ArrayList();
+		String linea;
+		while ( (linea = filein.readLine()) != null )
+		{
+			if ( linea.length() > 0 && !linea.startsWith("#") )
+			{
+				result.add(linea);
+			}
+		}
+		return result;
 	}
 
 }
