@@ -15,6 +15,8 @@ import java.awt.image.BufferedImage;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JTextPane;
+import javax.swing.LookAndFeel;
+import javax.swing.UIManager;
 
 import com.kitfox.svg.app.beans.SVGIcon;
 
@@ -134,6 +136,18 @@ public class FancyJTextPane extends JTextPane implements ImageConstants
 		public FancyJTextPane()
 		{
 			super();
+			
+
+				LookAndFeel laf = UIManager.getLookAndFeel();
+				if ( laf.getID().equals("Nimbus") )
+				{
+					//fix so that we can change background in Nimbus
+					setUI(new javax.swing.plaf.basic.BasicEditorPaneUI());
+				}
+		
+			
+			
+			
 			//setMargin(new Insets(80,80,80,80));
 			//setOpaque(false);
 			setDocument ( new FancyStyledDocument() );
