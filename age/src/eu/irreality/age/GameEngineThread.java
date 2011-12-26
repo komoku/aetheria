@@ -66,6 +66,11 @@ public class GameEngineThread extends Thread
 		realTimeQuantum = quantum;
 	}
 	
+	public long getRealTimeQuantum ( )
+	{
+		return realTimeQuantum;
+	}
+	
 	public boolean isRealTimeEnabled ( )
 	{
 		return realTimeEnabled;
