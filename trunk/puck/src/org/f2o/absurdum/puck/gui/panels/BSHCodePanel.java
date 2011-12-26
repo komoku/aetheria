@@ -131,7 +131,7 @@ public class BSHCodePanel extends JPanel
 		if ( entityPanel == null )
 			return "Code editing";
 		else
-			return entityPanel.getName() + " - " + "Code editing";
+			return entityPanel.getPanelName() + " - " + "Code editing";
 	}
 	
 	public BSHCodePanel ( String context , EntityPanel ep )

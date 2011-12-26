@@ -22,6 +22,9 @@ import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
@@ -414,7 +417,28 @@ public class PuckFrame extends JFrame
 	 */
 	public PuckFrame ()
 	{
+				
 		super();
+		
+		/*
+		LookAndFeelInfo[] lfs = UIManager.getInstalledLookAndFeels();
+		for ( int i = 0 ; i < lfs.length ; i++ )
+		{
+			if ( lfs[i].getName().toLowerCase().contains("nimbus") )
+			{
+				try 
+				{
+					UIManager.setLookAndFeel(lfs[i].getClassName());
+				} 
+				catch (Exception e) //class not found, instantiation exception, etc. (shouldn't happen)
+				{
+					e.printStackTrace();
+				}
+
+			}
+		}
+		*/
+		
 		setSize(PuckConfiguration.getInstance().getIntegerProperty("windowWidth"),PuckConfiguration.getInstance().getIntegerProperty("windowHeight"));
 		setLocation(PuckConfiguration.getInstance().getIntegerProperty("windowLocationX"),PuckConfiguration.getInstance().getIntegerProperty("windowLocationY"));
 		//setSize(600,600);

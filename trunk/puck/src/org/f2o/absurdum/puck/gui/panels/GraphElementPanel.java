@@ -76,8 +76,7 @@ public class GraphElementPanel extends JPanel
 	{
 		return "";
 	}
-	
-	
+		
 	
 	//cache
 	public static boolean CACHE = true;

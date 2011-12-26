@@ -110,7 +110,7 @@ public class AbstractEntityPanel extends EntityPanel implements BeanShellCodeHol
 		return nameTextField.getText() + "##" + super.toString();
 	}
 	
-	public String getName()
+	public String getPanelName()
 	{
 		return nameTextField.getText();
 	}
@@ -301,7 +301,7 @@ public class AbstractEntityPanel extends EntityPanel implements BeanShellCodeHol
 		
 		Element result = d.createElement("AbstractEntity");
 		
-		result.setAttribute("name",this.getName());
+		result.setAttribute("name",this.getPanelName());
 		if ( typeTextField.getText().length() > 0 )
 			result.setAttribute("type",typeTextField.getText());
 		

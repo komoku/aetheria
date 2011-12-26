@@ -127,7 +127,7 @@ public class SpellPanel extends EntityPanel implements BeanShellCodeHolder
 		return nameTextField.getText() + "##" + super.toString();
 	}
 	
-	public String getName()
+	public String getPanelName()
 	{
 		return nameTextField.getText();
 	}
@@ -350,7 +350,7 @@ public class SpellPanel extends EntityPanel implements BeanShellCodeHolder
 		
 		Element result = d.createElement("Spell");
 		
-		result.setAttribute("name",this.getName());
+		result.setAttribute("name",this.getPanelName());
 		
 		/*
 		result.setAttribute("weight",tfWeight.getText());
