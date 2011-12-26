@@ -107,10 +107,7 @@ public class ReferenceNameCorrector implements SpellingCorrector
 		
 		//add common words for the language (which don't refer to anything in the world but are expected to appear, e.g. this, another, some, etc.)
 		List commonWords = w.getLanguage().getCommonWordsList();
-		for ( int i = 0 ; i < commonWords.size() ; i++ )
-		{
-			words.add(commonWords.get(i));
-		}
+		words.addAll( extractRelevantWords(commonWords) );
 		
 		init(words);
 	}
