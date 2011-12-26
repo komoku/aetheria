@@ -34,6 +34,17 @@ public class AGESpellChecker
 		verbCorrector = lang.getVerbSpellingCorrector();
 		nameCorrector = lang.initNameCorrector(w);
 	}
+	
+	/**
+	 * If for some reason it is necessary to make modifications to word lists, it will be necessary to rebuild
+	 * the corrector for removals to take place (words can be added on the fly via the SpellingCorrector
+	 * interface, but not removed) 
+	 */
+	public void rebuild()
+	{
+		verbCorrector = lang.getVerbSpellingCorrector();
+		nameCorrector = lang.initNameCorrector(w);
+	}
 		
 	/**
 	 * Changes a verb/name to a correct one. Can use dictionary of verbs, names, or both.
