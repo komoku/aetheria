@@ -413,12 +413,58 @@ public class PuckFrame extends JFrame
 	}
 	
 	/**
+	 * Sets the L&F to:
+	 * The default cross-platform look and feel if the passed string is (case-insensitive) "Default",
+	 * The system look and feel if the passed string is (case-insensitive) "System",
+	 * The first look and feel found containing (case-insensitive) the string in its name (e.g. "Nimbus"), if any.
+	 * If the L&F specified is the current L&F, nothing will be done.
+	 * @param lookAndFeel
+	 */
+	public void setLookAndFeel ( String lookAndFeel )
+	{
+		try 
+		{
+			if ( "default".equals(lookAndFeel.toLowerCase()) 
+					&& !UIManager.getLookAndFeel().getClass().toString().equals( UIManager.getCrossPlatformLookAndFeelClassName() ) )
+			{
+				UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+			}
+			else if ( "system".equals(lookAndFeel.toLowerCase()) 
+					&& !UIManager.getLookAndFeel().getClass().toString().equals( UIManager.getSystemLookAndFeelClassName() ) )
+			{
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			}
+			else
+			{
+				LookAndFeelInfo[] lfs = UIManager.getInstalledLookAndFeels();
+				for ( int i = 0 ; i < lfs.length ; i++ )
+				{
+					if ( lfs[i].getName().toLowerCase().contains(lookAndFeel.toLowerCase()) 
+						&& !UIManager.getLookAndFeel().getName().toLowerCase().contains(lookAndFeel.toLowerCase())	)
+					{
+							UIManager.setLookAndFeel(lfs[i].getClassName());
+							break;
+					}
+				}
+			}
+		} 
+		catch (Exception e) //class not found, instantiation exception, etc. (shouldn't happen)
+		{
+			e.printStackTrace();
+		}
+		SwingUtilities.updateComponentTreeUI(this);
+		PuckConfiguration.getInstance().setProperty("look", lookAndFeel);
+	}
+	
+	/**
 	 * Instances and shows Puck's main frame.
 	 */
 	public PuckFrame ()
 	{
 				
 		super();
+		
+		setLookAndFeel(PuckConfiguration.getInstance().getProperty("look"));
 		
 		/*
 		LookAndFeelInfo[] lfs = UIManager.getInstalledLookAndFeels();
@@ -896,6 +942,68 @@ public class PuckFrame extends JFrame
 			}
 			optionsMenu.add(skinsMenu);
 		}
+		
+		JMenu lookFeelMenu = new JMenu(UIMessages.getInstance().getMessage("menu.looks"));
+		ButtonGroup lookButtons = new ButtonGroup();
+		final JRadioButtonMenuItem defaultLookMenuItem = new JRadioButtonMenuItem(UIMessages.getInstance().getMessage("menu.looks.default"));
+		if ( "default".equals(PuckConfiguration.getInstance().getProperty("look")) ) 
+		{
+			defaultLookMenuItem.setSelected(true);
+		}
+		lookFeelMenu.add(defaultLookMenuItem);
+		lookButtons.add(defaultLookMenuItem);
+		defaultLookMenuItem.addActionListener( new ActionListener()
+		{
+			public void actionPerformed ( ActionEvent e )
+			{
+				setLookAndFeel("default");
+				defaultLookMenuItem.setSelected(true);
+			}
+		}
+		);
+		final JRadioButtonMenuItem systemLookMenuItem = new JRadioButtonMenuItem(UIMessages.getInstance().getMessage("menu.looks.system"));
+		if ( "system".equals(PuckConfiguration.getInstance().getProperty("look")) ) 
+		{
+			systemLookMenuItem.setSelected(true);
+		}
+		lookFeelMenu.add(systemLookMenuItem);
+		lookButtons.add(systemLookMenuItem);
+		systemLookMenuItem.addActionListener( new ActionListener()
+		{
+			public void actionPerformed ( ActionEvent e )
+			{
+				setLookAndFeel("system");
+				systemLookMenuItem.setSelected(true);
+			}
+		}
+		);
+		String additionalLookList = PuckConfiguration.getInstance().getProperty("additionalLooks");
+		if ( additionalLookList != null && additionalLookList.trim().length() > 0 )
+		{
+			StringTokenizer st = new StringTokenizer(additionalLookList,", ");
+			while ( st.hasMoreTokens() )
+			{
+				final String nextLook = st.nextToken();
+				final JRadioButtonMenuItem lookMenuItem = new JRadioButtonMenuItem(nextLook);
+				lookMenuItem.addActionListener( new ActionListener()
+				{
+					public void actionPerformed ( ActionEvent e )
+					{
+						setLookAndFeel(nextLook);
+						lookMenuItem.setSelected(true);
+					}
+				}
+				);
+				if ( nextLook.equals(PuckConfiguration.getInstance().getProperty("look")) ) 
+				{
+					lookMenuItem.setSelected(true);					
+				}
+				lookFeelMenu.add(lookMenuItem);
+				lookButtons.add(lookMenuItem);
+			}
+		}
+		optionsMenu.add(lookFeelMenu);
+		
 		
 		optionsMenu.add(new UILanguageSelectionMenu(this));
 		

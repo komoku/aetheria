@@ -37,6 +37,7 @@ public class PuckConfiguration
 		defaultProperties = new Properties();
 		defaultProperties.setProperty("nRecentFiles", "5");
 		defaultProperties.setProperty("skin", "jenverde");
+		defaultProperties.setProperty("look", "default");
 		
 		defaultProperties.setProperty("roomDisplaySize", "20");
 		defaultProperties.setProperty("itemDisplaySize", "15");
@@ -78,6 +79,7 @@ public class PuckConfiguration
 		defaultProperties.setProperty("dividerLocation","0.60");
 		
 		defaultProperties.setProperty("availableSkins","naive,urba1,orco,jenverde");
+		defaultProperties.setProperty("additionalLooks","Nimbus"); //L&F's available apart from default and system
 		
 	}
 	
