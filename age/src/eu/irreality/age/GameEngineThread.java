@@ -35,11 +35,11 @@ public class GameEngineThread extends Thread
 	/**
 	* El contador de tiempo.
 	*/
-	protected static long timeCount;
+	protected long timeCount;
 	/**
 	* Si salimos del juego.
 	*/
-	protected static boolean exitFlag;
+	protected boolean exitFlag;
 
 
 	World theWorld;
