@@ -142,7 +142,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		return "World Panel";
 	}
 	
-	public String getName()
+	public String getPanelName()
 	{
 		return "World Panel";
 	}

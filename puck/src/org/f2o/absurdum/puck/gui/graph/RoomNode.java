@@ -223,8 +223,8 @@ public class RoomNode extends Node
 	{
 		if ( associatedPanel != null /*&& associatedPanel instanceof EntityPanel*/ )
 		{
-			//EntityPanel ep = (EntityPanel) associatedPanel;
-			return associatedPanel.getName();
+			EntityPanel ep = (EntityPanel) associatedPanel;
+			return ep.getPanelName();
 		}
 		else return UIMessages.getInstance().getMessage("unnamed.room");
 	}

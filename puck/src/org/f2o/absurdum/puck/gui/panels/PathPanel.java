@@ -139,7 +139,7 @@ public class PathPanel extends ArrowPanel
 		return "Yet Another Path Panel " + describeArrow();
 	}
 	
-	public String getName()
+	public String getPanelName()
 	{
 		return "Yet Another Path Panel";
 	}

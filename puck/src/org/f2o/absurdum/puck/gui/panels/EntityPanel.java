@@ -166,7 +166,7 @@ public class EntityPanel extends GraphElementPanel
 		return nameTextField.getText() + "##" + super.toString();
 	}
 	
-	public String getName()
+	public String getPanelName()
 	{
 		String name = nameTextField.getText();
 		if ( name != null ) return name;

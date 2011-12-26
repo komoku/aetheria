@@ -133,7 +133,7 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 		return nameTextField.getText() + "##" + super.toString();
 	}
 	
-	public String getName()
+	public String getPanelName()
 	{
 		return nameTextField.getText();
 	}
@@ -505,7 +505,7 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 		
 		Element result = d.createElement("Item");
 		
-		result.setAttribute("name",this.getName());
+		result.setAttribute("name",this.getPanelName());
 		
 		//TODO: "type" attr would go here
 		if ( wBox.isSelected() )

@@ -134,7 +134,7 @@ public class RoomPanel extends EntityPanel implements BeanShellCodeHolder
 		
 		Element result = d.createElement("Room");
 		
-		result.setAttribute("name",this.getName());
+		result.setAttribute("name",this.getPanelName());
 		
 		if ( !extendsComboBox.getSelectedItem().equals(UIMessages.getInstance().getMessage("none") ))
 			result.setAttribute("extends",extendsComboBox.getSelectedItem().toString());
@@ -313,6 +313,9 @@ public class RoomPanel extends EntityPanel implements BeanShellCodeHolder
 		
 	}
 	
-
+	public String getPanelName()
+	{
+		return nameTextField.getText();
+	}
 	
 }

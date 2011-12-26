@@ -205,7 +205,7 @@ public class CharacterNode extends Node
 		if ( associatedPanel != null && associatedPanel instanceof EntityPanel )
 		{
 			EntityPanel ep = (EntityPanel) associatedPanel;
-			return ep.getName();
+			return ep.getPanelName();
 		}
 		else return UIMessages.getInstance().getMessage("unnamed.char");
 	}
