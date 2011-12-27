@@ -67,6 +67,14 @@ public class ServerProxy extends Thread implements ARSPConstants
 			String linea="Inicial";
 			for ( ;; )
 			{
+				if ( cliente.isDisconnected() )
+				{
+					//client disconnected (for example, closed the window): we stop executing this proxy.
+					pw.println(GOODBYE);
+					sock.close();
+					return;
+				}
+				
 				Debug.println("Last linea: " + linea);
 				br.mark(500000);
 				linea = br.readLine();
