@@ -747,6 +747,15 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 				}
 			}
 		}
+		else if ( GOODBYE.equalsIgnoreCase(tok) )
+		{
+			clientHasDisconnected = true;
+			try {
+				sock.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 
