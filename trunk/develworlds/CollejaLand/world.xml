@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<World author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2010-04-30" moduleName="Collejaland: Prueba Multijugador" type="" version="0.1" worldDir="." worldName="Collejaland">
+<World author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2010-04-30" language="es" moduleName="Collejaland: Prueba Multijugador" parserVersion="" type="" version="0.1" worldDir="." worldName="Collejaland">
 <IdeMetaInf>
 <View xoffset="32.39543027062969" yoffset="12.395430270629689" zoom="3.0314331330207978"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Sala oeste" x="180" y="160"/>
@@ -18,13 +18,18 @@ Player assignPlayer ( InputOutputClient client )
     
     //Preguntamos al jugador su nombre.
 	boolean nameDone = false;
-	String name;
+	String nombre;
 	while ( ! nameDone )
 	{	
-		client.write("Introduce tu nombre: ");
-		//cl.waitKeyPress();
-		nombre = client.getInput(null);
-				
+    
+        do
+        {
+		  client.write("Introduce tu nombre: ");		
+		  nombre = client.getInput(null);
+          if ( nombre == null ) break;
+        }
+        while ( "".equals(nombre.trim()) );
+		
 		if ( nombre == null ) 
 		{
 			System.out.println("Null input received.");
