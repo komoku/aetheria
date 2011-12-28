@@ -466,3 +466,9 @@ nothing=nada
 
 #the from in "you get the notebook FROM the chest"
 get.prep.from=de
+
+#Nombre para mostrar cuando hay que hablar de un Mobile que no tiene nombre para mostrar a un observador dado (por ejemplo, en acciones)
+unnamed.mobile=alguien
+
+#Nombre para mostrar cuando hay que hablar de un Item que no tiene nombre para mostrar a un observador dado (por ejemplo, en acciones)
+unnamed.item=algo
