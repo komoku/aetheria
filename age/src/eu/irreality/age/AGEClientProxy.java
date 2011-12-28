@@ -115,7 +115,7 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 
 	public void forceInput(String s,boolean output_enabled)
 	{
-		pw.println(FORCE_INPUT+" "+output_enabled+s);
+		pw.println(FORCE_INPUT+" "+output_enabled+" "+s);
 		pw.flush();
 	}
 
