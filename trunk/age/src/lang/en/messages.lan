@@ -465,3 +465,9 @@ nothing=nothing
 
 #the from in "you get the notebook FROM the chest"
 get.prep.from=from
+
+#Name to display when mentioning a mobile without a display name for a given viewer (for example, when reporting actions involving that mobile)
+unnamed.mobile=someone
+
+#Name to display when mentioning an item without a display name for a given viewer (for example, when reporting actions involving that item)
+unnamed.item=algo

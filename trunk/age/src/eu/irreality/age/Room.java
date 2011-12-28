@@ -1247,13 +1247,13 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 		if ( source != null )
 		{
 			String nombre = source.constructName2(1,null); //personalize more (subjetivize) later!
-			if ( nombre == null ) nombre = "alguien";
+			if ( nombre == null ) nombre = mundo.getMessages().getMessage("unnamed.mobile");
 			s = StringMethods.textualSubstitution ( s , "$1" , nombre );
 		}
 		if ( target != null )
 		{
 			String nombre = target.constructName2(1,null); //personalize more (subjetivize) later!
-			if ( nombre == null ) nombre = "alguien"; 
+			if ( nombre == null ) nombre = mundo.getMessages().getMessage("unnamed.mobile");
 			s = StringMethods.textualSubstitution ( s , "$2" , nombre  );
 		}
 		return s;
@@ -1273,9 +1273,9 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 				if ( nombre == null || dollarEntities[i].isInvisible(viewer) ) 
 				{
 					if ( dollarEntities[i] instanceof Mobile )
-						nombre = "alguien";
+						nombre = mundo.getMessages().getMessage("unnamed.mobile");
 					else
-						nombre = "algo";
+						nombre = mundo.getMessages().getMessage("unnamed.item");
 				}
 				s = StringMethods.textualSubstitution ( s , "$" + (i+1) , nombre );
 			}
