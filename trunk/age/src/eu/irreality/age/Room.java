@@ -1912,7 +1912,8 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 		
 		//r.isInstanceOf = isInstanceOf;
 
-		r.itsCode = itsCode.cloneIfNecessary();
+		if ( itsCode != null )
+			r.itsCode = itsCode.cloneIfNecessary();
 
 		
 		r.title = title;
