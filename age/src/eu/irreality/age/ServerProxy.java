@@ -405,6 +405,9 @@ public class ServerProxy extends Thread implements ARSPConstants
 			pw.println(COLORCODE_INFO_LINE + " " + "denial" + " " + cliente.getColorCode("denial") );
 			pw.println(COLORCODE_INFO_LINE + " " + "action" + " " + cliente.getColorCode("action") );
 			pw.println(COLORCODE_INFO_LINE + " " + "default" + " " + cliente.getColorCode("default") );
+			pw.println(COLORCODE_INFO_LINE + " " + "important" + " " + cliente.getColorCode("important") );
+			pw.println(COLORCODE_INFO_LINE + " " + "story" + " " + cliente.getColorCode("story") );
+			pw.println(COLORCODE_INFO_LINE + " " + "reset" + " " + cliente.getColorCode("reset") );
 			pw.println(COLORCODE_INFO_END);
 			pw.flush();
 		}	
