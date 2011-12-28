@@ -6962,7 +6962,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		m.isInstanceOf = isInstanceOf;
 		//m.isVirtual = isVirtual;
 		m.mobileType = mobileType;
-		m.itsCode = itsCode.cloneIfNecessary(); 
+		
+		if ( itsCode != null )
+			m.itsCode = itsCode.cloneIfNecessary(); 
 
 		if ( partsInventory != null )
 			m.partsInventory = (Inventory) partsInventory.clone();
@@ -7125,8 +7127,11 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		 */
 		//just clone them, will be emptied and refilled
 
-		it.wieldedWeapons = (Inventory) it.wieldedWeapons.clone();
-		it.wornItems = (Inventory) it.wornItems.clone();
+		if ( it.wieldedWeapons != null )
+			it.wieldedWeapons = (Inventory) it.wieldedWeapons.clone();
+		
+		if ( it.wornItems != null )
+			it.wornItems = (Inventory) it.wornItems.clone();
 
 
 		if ( cloneParts || cloneInventory )
