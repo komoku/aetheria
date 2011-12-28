@@ -132,7 +132,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		
 		super();
 		this.gep = gep;
-		tfAgeVersion.setText("1.2.0b");
+		tfAgeVersion.setText("1.2.1");
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		entitiesPanel = new EntityListPanel(gep);
 	}
