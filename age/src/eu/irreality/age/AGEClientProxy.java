@@ -410,7 +410,7 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 							String tok2 = st.nextToken();
 							if ( st.hasMoreTokens() )
 							{
-								String tok3 = st.nextToken("");
+								String tok3 = st.nextToken("").trim();
 								/*
 								if ( tok2.equalsIgnoreCase("action") )
 								{
