@@ -71,28 +71,26 @@ public class ServerHandler //Singleton!
 		return logWin;
 	}
 	
-	private ServerHandler ( ServerConfigurationOptions sco , JDesktopPane toAddLogWin )
+	public void applyOptions ( ServerConfigurationOptions sco )
 	{
-		//init everythin'	
-		opcionesServidor = sco;
-		//logWin = new ServerLogWindow();
-		
-		if ( logWin == null && toAddLogWin != null )
-		{
-			logWin = new ServerLogWindow();
-			toAddLogWin.add(logWin);
-		}
-		
 		if ( opcionesServidor.sirveTelnet() )
 		{
 			if ( elServidorTelnet == null )
 				elServidorTelnet = new SimpleTelnetClientHandler( (short)opcionesServidor.getPuertoTelnet() );
+		}
+		else
+		{
+			elServidorTelnet = null;
 		}
 		
 		if ( opcionesServidor.sirveAge() )
 		{
 			if ( elServidorAge == null )
 				elServidorAge = new AGEClientHandler ( (short)opcionesServidor.getPuertoAge() );
+		}
+		else
+		{
+			elServidorAge = null;
 		}
 		
 		if ( opcionesServidor.sirveIrc() )
@@ -143,11 +141,29 @@ public class ServerHandler //Singleton!
 					//we don't join channels and so on at the moment.
 				
 
-				
-				
 			}
 		
 		}
+		else
+		{
+			losBotsIrc.clear();
+			partidasIrc.clear();
+		}
+	}
+	
+	private ServerHandler ( ServerConfigurationOptions sco , JDesktopPane toAddLogWin )
+	{
+		//init everythin'	
+		opcionesServidor = sco;
+		//logWin = new ServerLogWindow();
+		
+		if ( logWin == null && toAddLogWin != null )
+		{
+			logWin = new ServerLogWindow();
+			toAddLogWin.add(logWin);
+		}
+		
+		applyOptions(sco);
 		
 	}
 	
@@ -174,6 +190,7 @@ public class ServerHandler //Singleton!
 			theInstance = new ServerHandler ( toAddLogWin );
 		return theInstance;	
 	}
+	
 
 	public void addToCorrespondingServers ( PartidaEnCurso pec , PartidaEntry pe )
 	{
