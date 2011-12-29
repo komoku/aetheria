@@ -30,12 +30,14 @@ import eu.irreality.age.FiltroFicheroMundo;
 import eu.irreality.age.GameEngineThread;
 import eu.irreality.age.InputOutputClient;
 import eu.irreality.age.ObjectCode;
+import eu.irreality.age.SwingAetheriaGameLoader;
 import eu.irreality.age.SwingAetheriaGameLoaderInterface;
 import eu.irreality.age.World;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.filemanagement.WorldLoader;
 import eu.irreality.age.i18n.UIMessages;
+import eu.irreality.age.swing.CommonSwingFunctions;
 import eu.irreality.age.swing.SwingMenuAetheria;
 import eu.irreality.age.swing.sdi.NewFromFileListener;
 import eu.irreality.age.swing.sdi.SwingSDIInterface;
@@ -77,8 +79,13 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 	{
 		io.write(s);	
 	}
+	
+	public InputOutputClient getIO()
+	{
+		return io;
+	}
 
-	public static String getVersion ( )
+	public String getVersion ( )
 	{
 		return "Swing Applet AGE client, v0.1";
 	}
@@ -111,6 +118,9 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 								io = new ColoredSwingClient(SwingSDIApplet.this,gameLog); //components are added 'ere.
 								//setVisible(true);
 
+								CommonSwingFunctions.writeIntroductoryInfo(SwingSDIApplet.this);
+								
+								/*
 								write("Aetheria Game Engine v " + UIMessages.getInstance().getMessage("age.version") + "\n");
 								//areaTexto.setText("Aetheria Game Engine v 0.4.7b Beta Distribution\n");
 
@@ -126,6 +136,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 								write("\n" + io.getColorCode("information") + "[Object Code Layer]  " + ObjectCode.getInterpreterVersion() + io.getColorCode("reset"));
 								write("\n" + io.getColorCode("information") + "[UI Layer]           " + SwingSDIApplet.getVersion() + io.getColorCode("reset"));
 								write("\n=============================================================\n");
+								*/
 
 							}
 						}
