@@ -934,7 +934,7 @@ public class World implements Informador , SupportingCode
 		
 		write( io.getColorCode("information") + "\n" + UIMessages.getInstance().getMessage("load.world.done") + io.getColorCode("reset") + "\n" );
 		
-		write("\n=============================================================");
+		write("\n=== === === === === === === === === === === === === === === ===");
 		write("\n" + io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.info.intro"));
 		if ( modulename != null )
 			write("\n" + io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.info.name") + modulename + io.getColorCode("reset"));
@@ -954,7 +954,7 @@ public class World implements Informador , SupportingCode
 		if ( parserVersion != null )
 			write("\n" + io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.info.required") + parserVersion + io.getColorCode("reset"));
 			//write("\n" + io.getColorCode("information") + "[Versión engine]   " + parserVersion + io.getColorCode("reset"));
-		write("\n=============================================================\n");
+		write("\n=== === === === === === === === === === === === === === === ===\n\n");
 		
 		//warnVersionIfNeeded(null);
 
@@ -1453,7 +1453,7 @@ public class World implements Informador , SupportingCode
 		write( io.getColorCode("information") + "\nMundo inicializado." + io.getColorCode("reset") + "\n" );
 		
 		
-		write("\n=============================================================");
+		write("\n=== === === === === === === === === === === === === === === ===");
 		write("\n" + io.getColorCode("information") + "Información de Juego:");
 		if ( modulename != null )
 			write("\n" + io.getColorCode("information") + "[Nombre]           " + modulename + io.getColorCode("reset"));
@@ -1467,7 +1467,7 @@ public class World implements Informador , SupportingCode
 			write("\n" + io.getColorCode("information") + "[Fecha]            " + date + io.getColorCode("reset"));
 		if ( parserVersion != null )
 			write("\n" + io.getColorCode("information") + "[Versión engine]   " + parserVersion + io.getColorCode("reset"));
-		write("\n=============================================================\n");
+		write("\n=== === === === === === === === === === === === === === === ===\n");
 		
 	}
 	

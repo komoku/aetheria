@@ -6,6 +6,7 @@ import java.awt.event.FocusListener;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
+import eu.irreality.age.InputOutputClient;
 import eu.irreality.age.World;
 
 /**
@@ -50,5 +51,17 @@ public interface AGEClientWindow extends AGELoggingWindow
     public boolean supportsFullScreen();
     
     public void addFocusListener ( FocusListener fl );
+    
+    /**
+     * Writes a String to the client window.
+     */
+    public void write ( String s );
+    
+    public InputOutputClient getIO();
+    
+    /**
+     * Returns the version of the client window.
+     */
+    public String getVersion();
     
 }

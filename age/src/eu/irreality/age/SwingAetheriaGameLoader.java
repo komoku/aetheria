@@ -14,6 +14,7 @@ import eu.irreality.age.debug.Debug;
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.filemanagement.WorldLoader;
 import eu.irreality.age.i18n.UIMessages;
+import eu.irreality.age.swing.CommonSwingFunctions;
 import eu.irreality.age.swing.SwingMenuAetheria;
 import eu.irreality.age.swing.config.AGEConfiguration;
 import eu.irreality.age.util.VersionComparator;
@@ -72,7 +73,7 @@ public class SwingAetheriaGameLoader extends JInternalFrame implements Informado
 	}
 
 
-	public static String getVersion ( )
+	public String getVersion ( )
 	{
 		return "Swing-based MDI interface with colored text output, version 1.0";
 	}
@@ -472,6 +473,9 @@ de la ventana hasta acabar de cargar.
 												}
 											}
 											
+											CommonSwingFunctions.writeIntroductoryInfo(SwingAetheriaGameLoader.this);
+											
+											/*
 											write("Aetheria Game Engine v " + UIMessages.getInstance().getMessage("age.version") + "\n");
 
 											write( UIMessages.getInstance().getMessage("age.copyright") + "\n" );
@@ -485,6 +489,7 @@ de la ventana hasta acabar de cargar.
 											write("\n" + io.getColorCode("information") + "[Object Code Layer]  " + ObjectCode.getInterpreterVersion() + io.getColorCode("reset"));
 											write("\n" + io.getColorCode("information") + "[UI Layer]           " + SwingAetheriaGameLoader.getVersion() + io.getColorCode("reset"));
 											write("\n=============================================================\n");
+											*/
 											
 										}
 									}
@@ -1278,6 +1283,10 @@ de la ventana hasta acabar de cargar.
 	public void setIO ( InputOutputClient es )
 	{
 		io = es;
+	}
+	public InputOutputClient getIO()
+	{
+		return io;
 	}
 
 

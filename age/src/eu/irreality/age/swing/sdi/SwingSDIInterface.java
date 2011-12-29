@@ -48,6 +48,7 @@ import eu.irreality.age.debug.Debug;
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.filemanagement.WorldLoader;
 import eu.irreality.age.i18n.UIMessages;
+import eu.irreality.age.swing.CommonSwingFunctions;
 import eu.irreality.age.swing.SwingMenuAetheria;
 import eu.irreality.age.swing.UILanguageSelectionMenu;
 import eu.irreality.age.swing.config.AGEConfiguration;
@@ -91,8 +92,13 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 	{
 		io.write(s);	
 	}
+	
+	public InputOutputClient getIO()
+	{
+		return io;
+	}
 
-	public static String getVersion ( )
+	public String getVersion ( )
 	{
 		return "Swing-based simplified SDI client, v1.0";
 	}
@@ -138,6 +144,9 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 									}
 								}
 								
+								CommonSwingFunctions.writeIntroductoryInfo(SwingSDIInterface.this);
+								
+								/*
 								write("Aetheria Game Engine v " + UIMessages.getInstance().getMessage("age.version") + "\n");
 
 								write( UIMessages.getInstance().getMessage("age.copyright") + "\n" );
@@ -151,6 +160,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 								write("\n" + io.getColorCode("information") + "[Object Code Layer]  " + ObjectCode.getInterpreterVersion() + io.getColorCode("reset"));
 								write("\n" + io.getColorCode("information") + "[UI Layer]           " + SwingSDIInterface.getVersion() + io.getColorCode("reset"));
 								write("\n=============================================================\n");
+								*/
 
 							}
 						}
