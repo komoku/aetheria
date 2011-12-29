@@ -307,16 +307,22 @@ public class ServerConfigurationWindow extends JDialog
 			{
 				public void actionPerformed ( ActionEvent evt )
 				{
-					dispose();
 					try
 					{
 						saveConfiguration();
 						if ( cbInitOnOK.isSelected() )
+						{
+							ServerHandler.getInstance().applyOptions(getEntrada());
 							ServerHandler.getInstance().initPartidasDedicadas(SwingAetheriaGUI.getInstance().getPanel());
+						}
 					}
 					catch ( Exception e )
 					{
 						JOptionPane.showMessageDialog ( null , UIMessages.getInstance().getMessage("serveroptions.cannot.save") + " " + e , "¡Oops!" , JOptionPane.ERROR_MESSAGE );
+					}
+					finally
+					{
+						dispose();
 					}
 				}
 			}
