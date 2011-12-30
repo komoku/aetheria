@@ -208,3 +208,6 @@ language.changed.title=Cambio de idioma
 about.frame.title=Acerca de AGE
 about.frame.version=Versión:
 about.frame.download=Puedes descargar nuevas versiones y encontrar información sobre AGE en:
+dialog.fullscreen.error=No se ha podido poner el modo pantalla completa
+dialog.fullscreen.error.null.display=No se ha podido poner el modo pantalla completa porque no se ha podido obtener la resolución del sistema.
+dialog.fullscreen.error.not.supported=No se ha podido poner el modo pantalla completa porque no está soportado o autorizado en este sistema.

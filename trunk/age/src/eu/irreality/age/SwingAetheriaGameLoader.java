@@ -1106,6 +1106,21 @@ de la ventana hasta acabar de cargar.
 		
 			if ( fullScreenMode ) //ya estaba ON
 				return;
+			
+			GraphicsEnvironment env = GraphicsEnvironment.
+				getLocalGraphicsEnvironment();
+			GraphicsDevice device = env.getDefaultScreenDevice(); //devices[0];
+			
+			if ( !device.isFullScreenSupported() )
+			{
+				JOptionPane.showMessageDialog(this, UIMessages.getInstance().getMessage("dialog.fullscreen.error"), UIMessages.getInstance().getMessage("dialog.fullscreen.error.not.supported") , JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			else if ( device.getDisplayMode() == null )
+			{
+				JOptionPane.showMessageDialog(this, UIMessages.getInstance().getMessage("dialog.fullscreen.error"), UIMessages.getInstance().getMessage("dialog.fullscreen.error.null.display") , JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 				
 			fullScreenMode = true;
 			
@@ -1116,16 +1131,15 @@ de la ventana hasta acabar de cargar.
 			setJMenuBar ( new JMenuBar() ); //set j, no set the j
 			fullScreenFrame.setJMenuBar ( barraMenu );
 						
-			GraphicsEnvironment env = GraphicsEnvironment.
-				getLocalGraphicsEnvironment();
-			GraphicsDevice[] devices = env.getScreenDevices();
+
+
 			// REMIND : Multi-monitor full-screen mode not yet supported
 				if ( !fullScreenFrame.isDisplayable() )
 					fullScreenFrame.setUndecorated(true);
 				fullScreenFrame.setResizable(false);
 				//fullScreenFrame.setVisible(false);
 				//fullScreenFrame.setVisible(true);
-				GraphicsDevice device = env.getDefaultScreenDevice(); //devices[0];
+
 				
 				device.setFullScreenWindow ( fullScreenFrame );
 				DisplayMode dm = device.getDisplayMode();

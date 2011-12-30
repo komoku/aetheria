@@ -208,3 +208,6 @@ language.changed.title=Language change
 about.frame.title=About AGE
 about.frame.version=Version:
 about.frame.download=You can download new versions and find information about AGE at:
+dialog.fullscreen.error=Couldn't set full screen mode
+dialog.fullscreen.error.null.display=Couldn't set full screen mode because the screen resolution could not be obtained.
+dialog.fullscreen.error.not.supported=Couldn't set full screen mode because it is not supported or authorized in this system.
