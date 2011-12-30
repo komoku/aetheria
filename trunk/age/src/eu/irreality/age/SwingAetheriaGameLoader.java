@@ -1125,8 +1125,10 @@ de la ventana hasta acabar de cargar.
 				fullScreenFrame.setResizable(false);
 				//fullScreenFrame.setVisible(false);
 				//fullScreenFrame.setVisible(true);
-				devices[0].setFullScreenWindow ( fullScreenFrame );
-				DisplayMode dm = devices[0].getDisplayMode();
+				GraphicsDevice device = env.getDefaultScreenDevice(); //devices[0];
+				
+				device.setFullScreenWindow ( fullScreenFrame );
+				DisplayMode dm = device.getDisplayMode();
 				fullScreenFrame.setSize(new Dimension(dm.getWidth(), dm.getHeight()));
 				fullScreenFrame.validate();
 				fullScreenFrame.paintAll(fullScreenFrame.getGraphics());	
@@ -1185,8 +1187,9 @@ de la ventana hasta acabar de cargar.
 				getLocalGraphicsEnvironment();
 			GraphicsDevice[] devices = env.getScreenDevices();
 			// REMIND : Multi-monitor full-screen mode not yet supported
-				devices[0].setFullScreenWindow ( null );
-				DisplayMode dm = devices[0].getDisplayMode();
+				GraphicsDevice device = env.getDefaultScreenDevice(); //devices[0];
+				device.setFullScreenWindow ( null );
+				DisplayMode dm = device.getDisplayMode();
 				//fullScreenFrame.setVisible(false);
 				fullScreenFrame.setVisible(false);
 				this.setVisible(true);
@@ -1205,6 +1208,13 @@ de la ventana hasta acabar de cargar.
 	}
 	
 	public void exitNow()
+	{
+		saveWindowCoordinates();
+		stopGameSaveAndUnlink();
+		this.dispose();
+	}
+	
+	public void stopGameSaveAndUnlink()
 	{
 		if ( maquinaEstados != null )
 			maquinaEstados.exitNow();
@@ -1231,7 +1241,7 @@ de la ventana hasta acabar de cargar.
 		if ( fullScreenMode )
 			setFullScreenMode ( false );
 		//this.getDesktopPane().remove(this);
-		this.dispose();
+		//this.dispose();
 		
 		/*
 		synchronized ( this.getClient() )
