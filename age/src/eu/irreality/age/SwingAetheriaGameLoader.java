@@ -1141,11 +1141,11 @@ de la ventana hasta acabar de cargar.
 				//fullScreenFrame.setVisible(true);
 
 				
-				device.setFullScreenWindow ( fullScreenFrame );
 				DisplayMode dm = device.getDisplayMode();
 				fullScreenFrame.setSize(new Dimension(dm.getWidth(), dm.getHeight()));
 				fullScreenFrame.validate();
-				fullScreenFrame.paintAll(fullScreenFrame.getGraphics());	
+				fullScreenFrame.paintAll(fullScreenFrame.getGraphics());
+				device.setFullScreenWindow ( fullScreenFrame );
 				fullScreenFrame.requestFocus();
 				//fullScreenFrame.getContentPane().setVisible(true);
 				Runnable updateCode = new UpdatingRun(fullScreenFrame);
