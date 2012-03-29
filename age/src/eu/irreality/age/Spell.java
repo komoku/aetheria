@@ -34,6 +34,14 @@ public class Spell extends Entity implements SupportingCode, UniqueNamed
 	/*80*/ protected ObjectCode itsCode;
 	
 	
+	//reference names, added 2012-03-29
+	protected String respondToSing;
+	protected String respondToPlur;
+	
+	//world reference, added 2012-03-29
+	private World mundo;
+	
+	
 	
 	//generador de numeros aleatorios
 	private Random aleat;
@@ -415,6 +423,38 @@ public class Spell extends Entity implements SupportingCode, UniqueNamed
 				attackElement.appendChild(attackDamageElement);
 			}				
 			*/	
+			
+			
+			//"respond to" names (temp XML representation)
+			if ( respondToSing != null )
+			{
+				org.w3c.dom.Element respTo = doc.createElement("SingularReferenceNames");
+				StringTokenizer st = new StringTokenizer ( respondToSing , "$" );
+				while ( st.hasMoreTokens() )
+				{
+					String tok = st.nextToken();
+					org.w3c.dom.Element esteNombre = doc.createElement("Name");
+					org.w3c.dom.Text elNombre = doc.createTextNode(tok);
+					esteNombre.appendChild(elNombre);
+					respTo.appendChild(esteNombre);
+				}
+				suElemento.appendChild(respTo);
+			}
+			if ( respondToPlur != null )
+			{
+				org.w3c.dom.Element respTo = doc.createElement("PluralReferenceNames");
+				StringTokenizer st = new StringTokenizer ( respondToPlur , "$" );
+				while ( st.hasMoreTokens() )
+				{
+					String tok = st.nextToken();
+					org.w3c.dom.Element esteNombre = doc.createElement("Name");
+					org.w3c.dom.Text elNombre = doc.createTextNode(tok);
+					esteNombre.appendChild(elNombre);
+					respTo.appendChild(esteNombre);
+				}
+				suElemento.appendChild(respTo);
+			}
+			
 
 		if ( effects != null )
 			suElemento.appendChild ( effects.getXMLRepresentation ( doc , intensities ) );
@@ -444,12 +484,7 @@ public class Spell extends Entity implements SupportingCode, UniqueNamed
 	**
 	**/
 	
-		
-	public Spell ( )
-	{
-	
-	}
-	
+
 	public static Spell getInstance ( World mundo , org.w3c.dom.Node n ) throws XMLtoWorldException
 	{
 		if ( ! ( n instanceof org.w3c.dom.Element ) )
@@ -486,6 +521,7 @@ public class Spell extends Entity implements SupportingCode, UniqueNamed
 	
 	public void constructSpell ( World mundo , org.w3c.dom.Node n , boolean allowInheritance , String spelltype ) throws XMLtoWorldException
 	{
+		this.mundo = mundo;
 	
 		if ( ! ( n instanceof org.w3c.dom.Element ) )
 		{
@@ -794,6 +830,13 @@ public class Spell extends Entity implements SupportingCode, UniqueNamed
 				
 			}
 		
+			
+		//2012-03-29: now spells have reference names too.
+		//singular reference names (respondToSing)
+		respondToSing = Utility.loadNameListFromXML ( mundo , e , "SingularReferenceNames" , true );
+
+		//plural reference names (respondToPlur)
+		respondToPlur = Utility.loadNameListFromXML ( mundo , e , "PluralReferenceNames" , true );
 
 	
 		org.w3c.dom.NodeList codeNodes = e.getElementsByTagName ( "Code" );
@@ -834,7 +877,16 @@ public class Spell extends Entity implements SupportingCode, UniqueNamed
 	*/
 	public int matchesCommand ( String commandArgs , boolean pluralOrSingular )
 	{
-		return commandArgs.trim().equalsIgnoreCase(getUniqueName())?1:0;
+		String listaDeInteres;
+		if ( pluralOrSingular ) // plural
+			listaDeInteres = respondToPlur;
+		else
+			listaDeInteres = respondToSing;
+		
+		int modern = matchesCommand ( commandArgs , listaDeInteres , mundo.getCommandMatchingMode() );
+		if ( modern > 0 ) return modern;
+		else
+			return commandArgs.trim().equalsIgnoreCase(getUniqueName())?1:0;
 	}
 	
 
