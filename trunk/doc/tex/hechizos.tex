@@ -1,0 +1,625 @@
+\section{Hechizos} \label{sec:Hechizos}
+
+Entre las características de Aetheria Game Engine dirigidas a la creación de
+juegos de rol de texto mono y multijugador, se cuenta un completo sistema de
+hechizos o conjuros. Al igual que las características relacionadas con combate
+y armas (ver sección \ref{sec:CombateArmas}), los conjuros seguramente sólo
+serán útiles a los autores que quieran crear mundos con elementos de rol,
+pudiendo ignorarlos el resto de los creadores.
+
+El sistema de hechizos en AGE, como el sistema de combate, está fuertemente
+basado en el sistema de temporización (ver sección \ref{sec:Temporizacion}) y en
+los estados de las criaturas (ver sección \ref{sec:EstadosCriaturas}). Es
+recomendable familiarizarse con esas secciones de la documentación antes de
+hacer uso de los hechizos.
+
+Los hechizos se modelan en AGE como entidades de una clase específica (clase
+\textsf{Spell}), que tienen las siguientes características:
+
+\begin{itemize}
+  \item{Las criaturas del mundo (jugadores o no) pueden conocer un hechizo dado,
+  en cuyo caso sabrán cómo conjurarlo.}
+  \item{Conjurar un hechizo supone que la criatura tenga que gastar una
+  cantidad de puntos mágicos (MP). Si la criatura no tiene suficientes puntos
+  mágicos, no podrá conjurar el hechizo.}
+  \item{Cuando se conjura con éxito un hechizo, éste produce un efecto. El
+  efecto se modela como una entidad abstracta separada del hechizo.}
+  \item{Un hechizo puede (o no) conjurarse sobre un objetivo, que es un Item o
+  Mobile sobre el que se aplicará el hechizo. Por ejemplo, un conjuro de bola de
+  fuego típicamente tendrá un objetivo (la criatura u objeto a la que le
+  lanzamos la bola de fuego). Un conjuro de invocar monstruo puede definirse sin
+  objetivo, simplemente aparecerá un monstruo cerca de la criatura que lo ha
+  lanzado.}
+  \item {Por defecto, los jugadores pueden conjurar un hechizo escribiendo
+  \comillas{\textsf{conjurar <nombre de hechizo> (sobre <objetivo>)}}. Por
+  defecto, \comillas{\textsf{invocar}}, \comillas{\textsf{convocar}} y
+  \comillas{\textsf{ejecutar}} son sinónimos de \comillas{\textsf{conjurar}}.}
+\end{itemize}
+
+\subsection{Creación de hechizos en PUCK}
+
+Para crear un hechizo en PUCK, lo primero que haremos será hacer click sobre la
+herramienta \comillas{Añadir Hechizo} en la barra de herramientas, y luego hacer
+click sobre el punto del mapa en el que queramos representar el hechizo. Como
+siempre, aparecerá un formulario con información que debemos rellenar.
+
+El campo de \comillas{Nombre único}, en el formulario \comillas{General}, juega
+en los hechizos el mismo papel que en el resto de entidades. Más abajo, tenemos
+una serie de campos específicos de los hechizos, cuyo significado es el que
+sigue:
+
+\begin{itemize}
+  \item {Pendiente de probabilidad de éxito: valor numérico (tipo double, es
+  decir, con decimales) que define la dificultad de la curva de aprendizaje de
+  lanzar el hechizo con éxito, es decir, lo rápido o lento que se aprende a
+  lanzar ataques certeros. Un valor de 0 correspondería a una dificultad media
+  o moderada, valores positivos hacen el aprendizaje más fácil, y negativos más
+  difícil. Más en detalle, su funcionamiento es idéntico al de la pendiente de
+  probabilidad de éxito en los ataques con armas, que se explica en las
+  subsecciones sobre parámetros de combate de las armas (ver
+  \ref{sec:ParamCombArmas}) y matemática de las armas (ver
+  \ref{sec:MatematicaArmas}) de la sección de combate y armas.}
+  \item {Tiempo de lanzamiento: nos permite personalizar el número de unidades
+  de tiempo que le llevará a una criatura conjurar este hechizo (es decir, el
+  tiempo que pasará desde que la criatura comience a conjurar hasta que el
+  conjuro haga efecto). Para ello, nos permite introducir un valor de
+  \comillas{Base} y una \comillas{Pendiente}. De nuevo, el significado de estos
+  valores es exactamente el mismo que para los valores de base y pendiente que
+  rigen los tiempos de ataque, bloqueo, recuperación, etc. de las armas; y está
+  explicado con detalle en las subsecciones sobre parámetros de combate de las
+  armas (ver \ref{sec:ParamCombArmas}) y matemática de las armas (ver
+  \ref{sec:MatematicaArmas}) de la sección de combate y armas.}
+  \item {Duración: en el caso de hechizos que tengan una duración sostenida en
+  el tiempo (por ejemplo, un encantamiento que imbuya un arma con un aura de
+  fuego durante unos minutos), este campo nos permite personalizar el número de
+  unidades de tiempo que se mantendrá activo el hechizo. De nuevo, el
+  significado de \comillas{Base} y \comillas{Pendiente} es como en las armas.
+  Para los interesados en los detalles, es importante tener en cuenta que, como
+  la duración es una característica \comillas{positiva} (a un conjurador experto
+  le interesa que el tiempo de lanzamiento disminuya; pero en cambio le interesa
+  que la duración aumente), la fórmula que sigue no es la correspondiente a
+  tiempos de la sección sobre matemática de las armas (ver
+  \ref{sec:MatematicaArmas}), sino la correspondiente a probabilidades
+  multiplicada por la duración base. Esto quiere decir que la duración base
+  representa realmente la duración máxima que obtendría del hechizo un
+  conjurador muy experto, mientras que un mago menos experto obtendrá tiempos
+  que se acercarán progresivamente a la duración base a medida que vaya
+  aprendiendo. Para los hechizos que sean instantáneos, y que por lo tanto no
+  tengan una duración sostenida en el tiempo, debe ponerse el valor base de
+  duración a cero.}
+  \item {Coste de lanzamiento: es la cantidad de puntos mágicos (MP) que le
+  costará a una criatura ejecutar el hechizo. Dado que se trata de una
+  característica \comillas{negativa} (interesa reducirla), sigue la fórmula de
+  los tiempos.}
+  \item {Intensidad: representa con cuánta fuerza es capaz el mago de lanzar el
+  hechizo. Más adelante veremos cómo se hace para que, en el mundo del juego,
+  hechizos con mayor intensidad se traduzcan realmente en hechizos más
+  poderosos. Al ser una característica \comillas{positiva}, sigue la misma
+  fórmula que la duración.}
+  \item {Habilidades relevantes: nos permite introducir el conjunto de
+  habilidades que condicionan lo bien que un personaje dado utilizará el
+  conjuro. A medida que el personaje entrene esas habilidades, irá disminuyendo
+  el tiempo y coste de lanzamiento del conjuro, y aumentando su duración,
+  intensidad y probabilidad de éxito. De nuevo, los detalles de cómo rellenar
+  este formulario son los mismos que en la sección de armas, y para los
+  detalles de cómo se calcula el efecto que tienen las habilidades sobre los
+  parámetros del conjuro, remitimos a la sección de matemática de las armas
+  (ver \ref{sec:MatematicaArmas}).}
+\end{itemize}
+
+\subsection{Uso de hechizos por los jugadores}
+La pestaña \comillas{Nombres} del formulario de un hechizo es más sencilla que
+la de otros tipos de entidad como las cosas o las criaturas, dado que los
+conjuros no tienen nombres para mostrar, sino solamente nombres de referencia.
+Los nombres de referencia pueden ser tecleados por los jugadores para referirse
+a los hechizos, como sucedía con otras entidades. A este respecto, es importante
+tener en cuenta que, por el momento, los jugadores sólo pueden referirse a un
+hechizo mediante la orden \comillas{conjurar} descrita anteriormente: no hay
+implementado por defecto ningún otro comando sobre hechizo, y los hechizos no
+cuentan con métodos \textsf{parseCommand} que el creador de mundos pueda
+redefinir para implementar comandos sobre hechizos, ni tampoco pueden participar como
+parámetros en los métodos \textsf{parseCommand} definidos en el jugador o en el
+mundo. Sin embargo, esta funcionalidad podría añadirse a AGE en el futuro, si
+algún autor tuviese interés en utilizarla.
+
+Por el momento, por lo tanto, la utilidad de los nombres de referencia es que
+nos permiten definir los nombres que un jugador puede utilizar para referirse a
+un hechizo. Así, si ponemos como nombres de referencia de nuestro conjuro
+\comillas{bola de fuego} y \comillas{fuego}, el jugador podrá teclear cosas como
+\comillas{conjurar fuego sobre dragón} o \comillas{invocar fuego sobre oso} para
+utilizar el conjuro, suponiendo que lo conozca. Un jugador nunca se podrá
+referir a conjuros que no conoce.
+
+Para indicarle a PUCK qué hechizos conoce un jugador o personaje dado, podemos
+utilizar la relación estructural \comillas{conoce}. Usando la herramienta de
+\comillas{Añadir relación estructural} de PUCK, y haciendo click primero sobre
+el personaje y a continuación sobre el hechizo, crearemos automáticamente dicha
+relación \comillas{conoce}, con lo cual el hechizo estará disponible para el
+jugador.
+
+Dado que en muchos juegos puede interesar que un personaje aprenda hechizos que
+antes no conocía, los hechizos que conoce un personaje también se pueden
+modificar directamente con código BeanShell, utilizando los métodos
+\textsf{addSpell()} y \textsf{removeSpell()} de la clase \textsf{Mobile}:
+
+\begin{lstlisting}
+/*clase Mobile*/ void addSpell ( Spell nuevo )
+\end{lstlisting}
+
+Hace que el \textsf{Mobile} sobre el que invocamos este método aprenda el
+hechizo nuevo.
+
+\begin{lstlisting}
+/*clase Mobile*/ boolean removeSpell ( Spell viejo )
+\end{lstlisting}
+
+Quita viejo de la lista de hechizos conocidos por el \textsf{Mobile} sobre el
+que invocamos este método (es decir, hace que el personaje olvide el conjuro
+viejo y no lo pueda utilizar más) y devuelve \textsf{true}, en el caso de que
+efectivamente el personaje conociese el conjuro. En el caso de que ya no lo
+conociese, este método no hace nada y devuelve \textsf{false}.
+
+Para obtener un objeto de la clase \textsf{Spell} a partir de un hechizo que
+hayamos creado en PUCK, podemos utilizar la función \textsf{spell()} (análoga a
+las funciones \textsf{room()}, \textsf{item()} y \textsf{mobile()} que veíamos
+en los primeros pasos con beanshell, \ref{sec:PrimerosPasosBeanShell}), o bien
+las funciones genéricas \textsf{entity()} o \textsf{get()} que permiten obtener
+cualquier entidad. Por lo tanto, cualquiera de las tres siguientes líneas se
+pueden utilizar para obtener el objeto de la clase \textsf{Spell} que representa
+un conjuro de \comillas{Bola de fuego}:
+
+\begin{lstlisting}
+Spell conjuro;
+conjuro = spell("Bola de fuego");
+conjuro = entity("Bola de fuego");
+conjuro = get("Bola de fuego");
+\end{lstlisting}
+
+Así, por ejemplo, el siguiente código en un libro de magia hace que quien lo lea
+aprenda el conjuro de \comillas{Bola de fuego} y adquiera habilidad en magia de
+ataque (ejemplo adaptado de \comillas{Wizard's Quest: Morluck's Lair}):
+
+\begin{lstlisting}
+void parseCommand( Mobile aCreature , String verb , String args )
+{   
+    if ( equals ( verb , "leer" ) )
+    {
+ 
+        if ( !aCreature.hasItem(self) )
+        {
+            aCreature.writeDenial("Primero tendrías que tenerlo en tus manos...\n");
+            end();   
+        }
+ 
+        if ( !get(self,"read") )
+        {
+            set(self,"read",true);   
+ 
+            aCreature.writeAction("Leyendo el libro de magia, aprendes el conjuro de Bola de Fuego.\n");     
+            aCreature.addSpell(get("Bola de fuego"));
+            aCreature.setSkill("magiaAtaque",10);
+            end();
+        }
+        else
+        {
+            aCreature.writeInformation("Ya has aprendido el conjuro de Bola de Fuego, este libro no tiene nada más que enseñarte.\n");
+            end();
+        }
+ 
+    }
+}
+\end{lstlisting}
+
+Para saber qué hechizos conoce un personaje en un momento dado, puede utilizarse
+el método \textsf{getSpells()} de la clase \textsf{Mobile}:
+
+\begin{lstlisting}
+/*clase Mobile*/ SpellList getSpells ( )
+\end{lstlisting}
+
+Con lo que hemos visto por el momento, sabemos cómo crear un hechizo y hacer que
+un jugador pueda utilizarlo: para ello hará falta por un lado que el personaje
+jugador conozca el hechizo (cosa que podemos conseguir, como hemos visto, desde
+el PUCK o con código BeanShell); y por otro lado que el hechizo tenga algún
+nombre de referencia para que el jugador pueda referirse a él.
+
+Sin embargo, todavía no hemos visto cómo hacer que los hechizos realmente
+funcionen: sabemos crear un conjuro de bola de fuego y que los jugadores puedan
+ejecutarlo, pero ¡no sabemos cómo hacer que realmente produzca fuego! Esto es lo
+que veremos en la siguiente subsección.
+
+\subsection{Funcionamiento de los hechizos}
+Para saber cómo programar hechizos para que hagan lo que queramos, primero
+debemos saber cómo funciona un hechizo. El diagrama \ref{fig:diagramahechizo}
+muestra todo el proceso que se sigue para lanzar un hechizo, desde que un
+personaje se propone lanzarlo (en el caso de un jugador, esto correspondería a
+haber tecleado la orden de conjurar el hechizo) hasta que el hechizo ha
+terminado, sea en éxito o en fracaso.
+\begin{figure}
+\includegraphics[width=\textwidth]{imagenes/diagramahechizo.png} 
+\caption{Diagrama del proceso de funcionamiento de un hechizo.} \label{fig:diagramahechizo}
+\end{figure}
+
+Para entender el diagrama, es importante saber que para que un hechizo funcione,
+son necesarias por lo menos dos entidades (sin contar el personaje que lo lanza
+ni el posible objetivo): una entidad de la clase \textbf{Spell} que representa
+el hechizo en sí, que es la que hemos aprendido a crear y manejar en las
+secciones anteriores, y una entidad abstracta que representará el efecto
+(\textbf{Effect}) del hechizo.
+
+Para crear una entidad abstracta que describa un efecto, basta con crear una
+entidad abstracta de forma normal, y teclear la palabra \comillas{effect} en el
+campo de \comillas{Tipo} de la pestaña \comillas{General} de su formulario. Para
+asociar un efecto a un hechizo, usamos la herramienta \comillas{Añadir relación
+estructural} de PUCK para crear una relación del hechizo al efecto:
+automáticamente, se creará una relación estructural \comillas{Tiene efecto}
+indicando que se trata de un efecto del hechizo.
+
+El motivo de esta separación entre hechizo y efecto, en lugar de definirlo todo
+dentro de la propia entidad hechizo, es que nos proporciona mayor flexibilidad:
+de esta manera podemos crear hechizos que tengan varios efectos (como podría ser
+un conjuro de escudo de fuego que nos protegiese pero que también hiciese daño
+a los oponentes cercanos), o bien poder crear varios hechizos que utilicen el
+mismo efecto de diferentes maneras (por ejemplo, los conjuros de
+\comillas{escudo de fuego} y \comillas{escudo de fuego mejorado} podrían
+utilizar el mismo efecto; pero con distintas duraciones).
+
+\subsubsection{Preparación del hechizo y tiempo de lanzamiento}
+Como se puede ver en el diagrama, lo primero que sucede cuando se pretende
+lanzar un hechizo es que se calculan los puntos mágicos que consumirá. Esto se
+hace utilizando los valores base y pendiente del \comillas{Coste de lanzamiento}
+comentados con anterioridad. En caso de que el mago no disponga de esos puntos
+mágicos, no podrá realizar el conjuro, mostrándosele el mensaje por defecto
+correspondiente.
+
+En el caso de que el jugador sí tenga los puntos mágicos requeridos, se le
+restan de sus puntos mágicos y se ejecuta, si se ha definido, el método
+BeanShell \textsf{prepare()} del hechizo. Este método debe definirse con
+cabecera
+
+\begin{lstlisting}
+/*clase Spell*/ void prepare ( Mobile caster , Entity target )
+\end{lstlisting}
+
+para definir lo que sucederá cuando la criatura \textsf{caster} comience a
+ejecutar el conjuro sobre el objetivo \textsf{target}. En el caso de que el
+conjuro no tenga objetivo, target tomará el valor \textsf{null}. El método
+\textsf{prepare()} sirve para describir cómo un personaje se dispone a lanzar
+un hechizo antes de que realmente lo haga: esto puede ser particularmente útil
+en juegos en los que interactúen varios personajes, y en particular en los que
+tengan combates, para dar tiempo a que otros jugadores y criaturas se den cuenta
+de que alguien está preparando un hechizo y así puedan reaccionar antes de que
+termine (por ejemplo intentando huir, o clavarle rápidamente una daga al mago
+antes de que termine el conjuro).
+
+En el método \textsf{prepare()} también puede utilizarse la función de BeanShell
+\textsf{end()} para interrumpir el proceso de ejecución del hechizo, de modo que
+no llegue a ejecutarse. Esto se puede utilizar para validar situaciones como un
+conjuro que requiere un objetivo pero el jugador no lo ha tecleado, o un conjuro
+que sólo se puede ejecutar sobre objetivos de tipo \textsf{Mobile} pero el
+jugador lo está haciendo sobre un \textsf{Item}. Si bien, como veremos, la
+ejecución del conjuro también se puede terminar más adelante, el método
+\textsf{prepare()} es el mejor punto para hacerlo si queremos que el personaje
+no pierda unidades de tiempo.
+
+Así, por ejemplo, el siguiente método \textsf{prepare()} hace que el personaje
+pronuncie unas palabras arcanas, además de validar que el conjuro tiene un
+objetivo de la clase \textsf{Mobile}:
+
+\begin{lstlisting}
+void prepare ( Mobile caster , Entity target )
+{
+  if ( target == null || !(target instanceof Mobile) )
+  {
+    caster.write("Ese conjuro debe ejecutarse sobre una criatura.\n");
+    end(); 
+  }  
+  else
+  {
+    caster.say("An khali ghorum thunkys..."); 
+  }   
+}
+\end{lstlisting}
+
+A continuación del método \textsf{prepare()}, y suponiendo que no se haya
+terminado con \textsf{end()}, transcurrirán unas unidades de tiempo hasta que el
+conjuro realmente se ejecute. Se puede imaginar este tiempo como el que le lleva
+al mago concentrarse, pronunciar palabras mágicas, focalizar energía, o lo que
+sea necesario para lanzar un conjuro según la ambientación del mundo en que se
+encuentre. Dicho tiempo se calcula a partir de los valores de base y pendiente
+de \comillas{Tiempo de lanzamiento} que hayamos especificado en el formulario
+del hechizo. Si no se quiere que ejecutar un hechizo consuma tiempo, sino que
+sea instantáneo, se puede conseguir simplemente poniendo el tiempo de
+lanzamiento base a cero.
+
+Durante el tiempo de lanzamiento, el mago que va a lanzar el conjuro se
+encontrará en el estado \textsf{Mobile.CASTING}. Por lo tanto, se puede emplear
+este estado en código BeanShell para comprobar si un personaje está o no
+lanzando un hechizo en un momento dado.
+
+Transcurrido el tiempo de lanzamiento, se procederá inmediatamente a lanzar el
+hechizo. Pero el lanzamiento de un hechizo puede ser exitoso o fallido, de
+acuerdo con la habilidad del personaje y con los valores de base y pendiente
+especificados para la \comillas{Probabilidad de éxito} en el formulario del
+hechizo. De acuerdo con esa probabilidad, se sorteará aleatoriamente si el
+conjurador tiene éxito o no, y según el resultado se llamará a unos métodos
+BeanShell o a otros, para permitirnos definir por separado cómo se comporta un
+hechizo cuando es exitoso y cuando fracasa.
+
+\subsubsection{Lanzamiento fallido}
+En el caso de que el conjuro fracase, se ejecutarán, por este orden, los
+siguientes métodos BeanShell (si están definidos):
+
+\begin{enumerate}
+  \item {El método \textsf{beforeFail()} del conjuro, que es de la forma:
+  \begin{lstlisting}
+  /*clase Spell*/ void beforeFail ( Mobile caster , Entity target )
+  \end{lstlisting}
+  donde el parámetro \textsf{caster} nos da el personaje que intenta (sin éxito)
+  lanzar el hechizo, y \textsf{target} nos proporciona la entidad objetivo. En
+  este método podemos, opcionalmente, utilizar la función \textsf{end()} para
+  interrumpir el proceso y que no lleguen a ejecutarse los dos siguientes.}
+  \item {El método \textsf{fail()} de cada uno de los efectos del conjuro, que
+  es de la forma:
+  \begin{lstlisting}
+  /*clase Effect*/ void fail ( Mobile caster , Entity target )
+  \end{lstlisting}
+  siendo de nuevo \textsf{caster} el mago que ha fallado lanzando un conjuro con
+  ese efecto, y \textsf{target} el objetivo.
+  }
+  \item {El método \textsf{afterFail()} del conjuro, que es de la forma:
+  \begin{lstlisting}
+  /*clase Spell*/ void afterFail ( Mobile caster , Entity target )
+  \end{lstlisting}
+  donde los parámetros significan lo mismo que en el método
+  \textsf{beforeFail()}.
+  }
+\end{enumerate}
+
+Si bien los tres métodos se ejecutan en la misma unidad de tiempo, por su orden
+de ejecución y las clases a las que están asociados nos proporcionan
+funcionalidades ligeramente distintas. Por ejemplo, el método
+\textsf{beforeFail()} podría utilizarse para mostrar un mensaje diciendo que el
+hechizo falla, mientras que los métodos \textsf{fail()} de los efectos podrían
+usarse para programar consecuencias del fallo para cada uno de los efectos
+(podríamos querer hacer, por ejemplo, que si conjuramos mal una bola de fuego la
+bola se genere, pero nos estalle en las manos en lugar de golpear a nuestro
+enemigo). El método \textsf{afterFail()} podemos emplearlo para cualquier cosa
+que deba suceder después de las consecuencias del fallo de los efectos (por
+ejemplo, tal vez queramos mostrar algún mensaje de fallo después de dichas
+consecuencias y no antes, o bien hacer que el mago quede aturdido un rato
+después de haber fallado el conjuro).
+
+\subsubsection{Lanzamiento con éxito}
+Si en lugar de fracasar, el conjuro tiene éxito, el comportamiento es análogo,
+ejecutándose los siguientes métodos BeanShell (si están definidos):
+
+\begin{enumerate}
+  \item {El método \textsf{beforeCast()} del conjuro, que es de la forma:
+  \begin{lstlisting}
+  /*clase Spell*/ void beforeCast ( Mobile caster , Entity target )
+  \end{lstlisting}
+  
+  donde el parámetro \textsf{caster} es el personaje que está a punto de
+  conseguir lanzar con éxito el hechizo, y \textsf{target} nos proporciona la
+  entidad objetivo. En este método se puede emplear la función \textsf{end()}
+  para interrumpir el proceso y que no se ejecuten los dos siguientes.}
+  \item {El método \textsf{cast()} de cada uno de los efectos del conjuro, que
+  es de la forma:
+  \begin{lstlisting}
+  /*clase Effect*/ void cast ( Mobile caster , Entity target , int intensity )
+  \end{lstlisting}
+  
+  donde \textsf{caster} es el mago que ha conseguido lanzar un conjuro con ese
+  efecto, \textsf{target} es el objetivo e \textsf{intensity} es la intensidad
+  del efecto. Este valor de intensidad se calcula a partir de los valores base y
+  pendiente de intensidad introducidos en el formulario del hechizo, y su uso
+  será el que le quiera dar el programador: por ejemplo, si estamos creando el
+  efecto de una bola de fuego, seguramente nos interesará programarlo para que
+  haga más daño cuanta mayor sea la intensidad (y tal vez mostrar mensajes
+  distintos según si la bola es modesta o muy grande).}
+  \item {El método \textsf{afterCast()} del conjuro, que es de la forma:
+  \begin{lstlisting}
+  /*clase Spell*/ void afterCast ( Mobile caster , Entity target )
+  \end{lstlisting}
+  
+  y donde los parámetros significan lo mismo que en el método
+  \textsf{beforeCast()}.}
+\end{enumerate}
+
+De este modo, el método \textsf{beforeCast()} puede utilizarse para cualquier
+comportamiento que se quiera definir justo antes de que haga efecto el hechizo.
+Por ejemplo, podríamos mostrar un mensaje para indicar que la preparación del
+conjuro ha terminado y que éste va a actuar ya. Además, cabe destacar que el
+método \textsf{beforeCast()} puede ser útil para validaciones de última hora:
+por ejemplo, puede que el jugador haya tecleado \comillas{conjurar bola de fuego
+sobre troll} y que hayamos comprobado en \textsf{prepare()} que el hechizo tenía
+un objetivo válido (el troll); pero que durante las unidades de tiempo
+transcurridas entre \textsf{prepare()} y \textsf{beforeCast()} (es decir,
+durante el tiempo de lanzamiento del conjuro) el troll se haya ido de la
+habitación. Para comprobar ese extremo, podríamos poner en este método algo
+como:
+
+\begin{lstlisting}
+void beforeCast ( Mobile caster , Entity target )
+{
+  if ( !caster.getRoom().hasMobile(target) )
+  {
+    caster.write("Vaya, ¡mientras preparabas el hechizo, tu enemigo se ha escapado!\n");
+    end(); 
+  }  
+  else
+  {
+    caster.say("...khali mazthi bey!"); 
+  }   
+}
+\end{lstlisting}
+
+Los métodos \textsf{cast()} de cada efecto serán los que deban implementar los
+efectos de cada conjuro cuando tiene éxito: abrir una puerta si se trata de un
+hechizo de apertura, causar daño de fuego si es un hechizo de bola de fuego,
+etc.
+
+Por último, el método \textsf{afterCast()} del conjuro será el que se encargue
+de realizar cualquier procesado inmediatamente posterior a que el hechizo tenga
+efecto, como mostrar algún mensaje adicional o tal vez hacer que el mago tenga
+que pasar unos momentos recuperándose del esfuerzo de conjurar el hechizo.
+
+\subsubsection{Hechizos de efectos duraderos}
+Los métodos anteriormente descritos son suficientes si se quiere implementar
+hechizos de efecto instantáneo, es decir, aquéllos que producen algún cambio en
+el momento en el que se lanzan pero no hacen nada más después de eso.
+
+Sin embargo, en un sistema de magia también resulta interesante poder tener
+hechizos de efecto duradero: aquéllos que provocan algún cambio que tiene una
+determinada duración en el tiempo y, transcurrida ésta, el cambio expira,
+pudiendo ser renovado si se lanza de nuevo el hechizo. Ejemplos de conjuros que
+suelen funcionar de esta manera en muchos juegos son los conjuros que
+proporcionan un escudo protector al jugador, le dan la capacidad de volar o
+encantan un arma para que haga más daño durante un período de tiempo.
+
+Aunque estos conjuros duraderos podrían implementarse a mano a partir de los
+métodos anteriores y usando temporizadores, AGE proporciona soporte nativo para
+crearlos, permitiendo hacerlo con más facilidad, y que además la duración de sus
+efectos se integre con el sistema de habilidades y aprendizaje de AGE (es decir,
+que los magos más capaces consigan efectos más duraderos).
+
+Para utilizar este soporte y crear un conjuro de efectos duraderos en AGE, lo
+primero que debemos hacer es poner la duración base del formulario general del
+hechizo a un valor mayor que cero. Esto indicará a AGE que se trata de un
+hechizo con efectos sostenidos en el tiempo, y además permitirá a AGE calcular
+la duración de dichos efectos mediante la fórmula que se mencionó con
+anterioridad.
+
+Además de esto, necesitaremos indicarle de alguna manera a AGE lo que tiene que
+hacer no sólo cuando se lanza el conjuro y entran en vigor sus efectos (cosa que
+ya indicábamos en el resto de hechizos); sino también cuando éstos expiran y
+deben deshacerse. Para ello, utilizaremos el método \textsf{fade()} de cada uno
+de los efectos del conjuro, que AGE llamará automáticamente cuando éste expire y
+sea necesario deshacer sus efectos. Dicho método es de la forma
+
+\begin{lstlisting}
+/*clase Effect*/ void fade ( Entity target )
+\end{lstlisting}
+
+donde target es el objetivo en el que expira el efecto. Por lo tanto, para
+implementar el hechizo duradero, tendremos que proceder igual que con los
+hechizos instantáneos, poner en el método \textsf{cast()} de cada efecto el
+código que activa el efecto, y poner en el método \textsf{fade()} de cada efecto
+el código que desactiva el efecto, y AGE se encargará del resto.
+
+Algunas veces, dependiendo de la naturaleza del efecto, hará falta tener en
+cuenta en el método \textsf{cast()} si éste está todavía activo o no. Para que
+podamos saber esto, AGE crea automáticamente, inmediatamente después de
+ejecutar \textsf{cast()}, una relación bidireccional de nombre \comillas{cast} y
+valor \textsf{true} entre el efecto y su objetivo (en el caso de que el conjuro
+no tenga objetivo, la relación se crea entre el efecto y la habitación donde se
+haya llamado). Esta relación se pone automáticamente a \textsf{false} cuando el
+efecto expira, justo antes de la ejecución del método \textsf{fade()}. Así, si
+por ejemplo queremos que un efecto de \comillas{aturdir} no sea aplicable a
+enemigos que ya están aturdidos mediante el mismo efecto, podemos hacer algo
+como lo que sigue (ejemplo adaptado de \comillas{Wizard's Quest: Morluck's
+Lair}):
+
+\begin{lstlisting}
+void cast ( Mobile caster , Entity target , int intensity )
+{           
+  if ( get(self,"cast",target) )
+  {
+    caster.write("¡Ese enemigo ya está bajo los efectos de un conjuro de aturdimiento!\n");
+  }
+  else
+  {         
+    //la cifra 10000 no tiene relevancia porque fade() volverá a cambiar el estado
+    target.setNewState(Mobile.SURPRISE_RECOVER,10000);
+    caster.getRoom().informAction(caster,target,null,"$2 queda aturdido por el hechizo de $1...\n",
+      "Quedas aturdido por el hechizo de $1.\n",
+      "Tu hechizo aturde a $2.\n",true);
+  } 
+}
+ 
+void fade ( Entity target )
+{
+  //el if es porque podría no tener ya este estado, tal vez porque algo (un golpe...) lo sacara de su aturdimiento.
+  if ( target.getState() == Mobile.SURPRISE_RECOVER )
+    target.setNewState(Mobile.IDLE,1);
+}
+\end{lstlisting}
+
+Nótese que esta relación \comillas{cast} sólo toma valores booleanos
+(\textsf{true} o \textsf{false}) y por lo tanto no sirve para distinguir casos
+más complejos como que un conjuro duradero se pueda aplicar varias veces de
+manera acumulativa, o que un mismo objetivo pueda ser objeto del mismo efecto
+varias veces por parte de diferentes personajes o jugadores. Si se quieren
+soportar este tipo de cosas, se puede hacer creando otras relaciones más
+complejas a mano en los métodos \textsf{cast()} y \textsf{fade()}.
+
+\subsection{Gestión de los puntos mágicos}
+Como vimos al hablar sobre la preparación de los hechizos, cada vez que un
+personaje conjura un hechizo deberá gastar cierta cantidad de puntos mágicos
+(MP); a no ser que hayamos puesto el valor base del \comillas{Coste de
+lanzamiento} a cero. Normalmente, los juegos de rol que utilizan puntos mágicos
+disponen de algún mecanismo para regenerarlos, bien sea automáticamente con el
+paso del tiempo, o mediante objetos como pociones de maná, o permitiendo ambas
+cosas.
+
+Dado que los mecanismos para regenerar puntos mágicos pueden ser muy diversos y
+depender de cada juego en particular, AGE no implementa ningún mecanismo de
+regeneración específico, sino que lo deja al albedrío del programador,
+proporcionando métodos para modificar los puntos mágicos de una criatura (MP)
+iguales que los análogos para modificar los puntos de vida (HP).
+
+De este modo, podemos especificar los puntos mágicos máximos y los puntos
+mágicos iniciales de una criatura en los campos \comillas{MP} y \comillas{MP
+máx} de la pestaña \comillas{General} de su formulario de PUCK, y podemos
+obtener y modificar dinámicamente los puntos mágicos de una criatura mediante
+los siguientes métodos BeanShell (análogos a los correspondientes a los puntos
+de vida o HP):
+
+\begin{lstlisting}
+/*clase Mobile*/ int getMP ( )
+\end{lstlisting}
+
+Devuelve la cantidad de puntos mágicos que tiene actualmente la criatura sobre
+la que se invoca.
+
+\begin{lstlisting}
+/*clase Mobile*/ void setMP ( int newMP )
+\end{lstlisting}
+
+Cambia la cantidad de puntos mágicos que tiene la criatura sobre la que se
+invoca a la cantidad \textsf{newMP}.
+
+\begin{lstlisting}
+/*clase Mobile*/ int getMaxMP ( )
+\end{lstlisting}
+
+Devuelve la cantidad de puntos mágicos máximos de la criatura sobre la que se
+invoca.
+
+\begin{lstlisting}
+/*clase Mobile*/ void setMaxMP ( int newMaxMP )
+\end{lstlisting}
+
+Cambia la cantidad de puntos mágicos máximos que tiene la criatura sobre la que
+se invoca a la cantidad \textsf{newMaxMP}. Esto se puede utilizar, por ejemplo,
+para implementar subidas de nivel en juegos de rol basados en niveles.
+
+\subsection{Uso de hechizos por los personajes no jugadores}
+Después de haber visto todos los detalles del funcionamiento de los hechizos en
+AGE, y de saber cómo pueden utilizar los hechizos los personajes jugadores,
+concluimos la sección explicando cómo podemos hacer que un personaje no jugador
+lance un conjuro, cosa que puede ser útil para programar enemigos que utilicen
+la magia contra el jugador. Conseguirlo es muy sencillo, simplemente invocaremos
+el siguiente método de la clase \textsf{Mobile}:
+
+\begin{lstlisting}
+/*clase Mobile*/ void cast ( Spell spell , Entity target )
+\end{lstlisting}
+
+donde como parámetro \textsf{spell} pasaremos el conjuro que la criatura va a
+lanzar, y como parámetro \textsf{target} pasaremos el objetivo de dicho conjuro,
+si lo hay, o bien \textsf{null} si se trata de un hechizo sin objetivo.
+
+El proceso de que un personaje no jugador lance un hechizo pasa por las mismas
+etapas y funciona exactamente igual que cuando lo hace un jugador.
