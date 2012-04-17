@@ -26,6 +26,7 @@ public interface ARSPConstants
 	public String FORCE_INPUT = "force_input";
 	public String GET_INPUT = "g";
 	public String GET_INPUT_RETURN = "gr";
+	public String GET_INPUT_RETURN_NULL = "grn";
 	//public String GET_INPUT_ASYNCHRONOUS = "ga";
 	public String SET_INPUT_STRING = "set_input_string";
 	public String SET_MODE = "set_mode";
