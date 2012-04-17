@@ -35,6 +35,7 @@ csclient.pres=Ver
 csclient.pres.colorthemes=Temas de color
 csclient.pres.fullscreen=Pantalla completa
 csclient.pres.sound=Sonido
+csclient.pres.blindacc=Modo accesible para lectores de pantalla
 csclient.theme.game=Por defecto (juego)
 csclient.theme.age=Por defecto (AGE)
 csclient.theme.parchment=Pergamino
