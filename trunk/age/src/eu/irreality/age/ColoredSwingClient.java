@@ -71,6 +71,13 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	
 	private Hashtable colorCodesTable = new Hashtable();
 	
+	/**
+	 * If set to true, the text area won't autoscroll to the bottom when text is added.
+	 * Autoscrolling to the bottom is nice for sighted used, but not so for the blind using screen readers, 
+	 * since they have to manually scroll back so that their readers read the new text.
+	 */
+	private boolean accessibleScrollMode = false;
+	
 	public boolean isSoundEnabled()
 	{
 		return true; //más tarde dar opciones, sound on/off, etc.
@@ -454,12 +461,14 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		JMenu colorConfigurationMenu = new JMenu( UIMessages.getInstance().getMessage("csclient.pres.colorthemes") );
 		final JCheckBoxMenuItem fullScreenOption = new JCheckBoxMenuItem( UIMessages.getInstance().getMessage("csclient.pres.fullscreen") ,window.isFullScreenMode());
 		final JCheckBoxMenuItem soundOption = new JCheckBoxMenuItem( UIMessages.getInstance().getMessage("csclient.pres.sound") ,true);
+		final JCheckBoxMenuItem accessibleScrollOption = new JCheckBoxMenuItem( UIMessages.getInstance().getMessage("csclient.pres.blindacc") ,false);
 		JMenuBar mb = window.getTheJMenuBar();
 		window.setTheJMenuBar(mb); //nótese el "the", es para que la tenga como atributo. Si luego se quita para el modo fullscreen se puede volver a poner.
 		clientConfigurationMenu.add ( colorConfigurationMenu );
 		if ( window.supportsFullScreen() )
 			clientConfigurationMenu.add ( fullScreenOption );
 		clientConfigurationMenu.add(soundOption);
+		clientConfigurationMenu.add(accessibleScrollOption);
 		JRadioButtonMenuItem itemDefaultJuego = new JRadioButtonMenuItem( UIMessages.getInstance().getMessage("csclient.theme.game") ,true);
 		JRadioButtonMenuItem itemDefault = new JRadioButtonMenuItem( UIMessages.getInstance().getMessage("csclient.theme.age") ,false);
 		JRadioButtonMenuItem itemPergamino = new JRadioButtonMenuItem( UIMessages.getInstance().getMessage("csclient.theme.parchment") ,false);
@@ -523,6 +532,20 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 				{
 					AGESoundClient asc = (AGESoundClient)getSoundClient();
 					asc.deactivate();
+				}
+			}
+		} );
+		accessibleScrollOption.addActionListener ( new ActionListener()
+		{
+			public void actionPerformed ( ActionEvent evt )
+			{
+				if ( accessibleScrollOption.isSelected() )
+				{
+					accessibleScrollMode = true;
+				}
+				else
+				{
+					accessibleScrollMode = false;
 				}
 			}
 		} );
@@ -829,10 +852,18 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 			else
 			{
 				try
-				{
+				{	
+					int savedCaret = 0;
 					
+					if ( accessibleScrollMode )
+					{
+						savedCaret = elAreaTexto.getCaretPosition(); //save caret position
+						elAreaTexto.setCaretPosition(elAreaTexto.getText().length()); //move caret to end of document (in non-accessible mode it will already be at end w/o doing this)
+					}	
+						
 					doc.insertString(elAreaTexto.getText().length(),tok,atributos);
-																													
+					
+					if ( accessibleScrollMode ) elAreaTexto.setCaretPosition(savedCaret); //restore saved caret position for screen readers																									
 				}
 				catch ( Exception ble )
 				{
@@ -862,15 +893,19 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		
 		//better scrolling
 		//elScrolling.revalidate();
-		SwingUtilities.invokeLater( new Runnable()
-		{
-			public void run()
+		
+		//if ( !accessibleScrollMode )
+		//{
+			SwingUtilities.invokeLater( new Runnable()
 			{
-				elAreaTexto.scrollRectToVisible(new Rectangle(0,(int)elAreaTexto.getPreferredSize().getHeight(),10,10));
-				//elAreaTexto.setVisible(true);
-				elAreaTexto.repaint();
-			}
-		});
+				public void run()
+				{
+					elAreaTexto.scrollRectToVisible(new Rectangle(0,(int)elAreaTexto.getPreferredSize().getHeight(),10,10));
+					//elAreaTexto.setVisible(true);
+					elAreaTexto.repaint();
+				}
+			});
+		//}
 		
 
 		
