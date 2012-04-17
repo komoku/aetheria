@@ -295,7 +295,9 @@ public class ServerProxy extends Thread implements ARSPConstants
 			String inputText = argTok.nextToken("").trim();
 			cliente.forceInput(inputText,Boolean.valueOf(outputEnabled).booleanValue());
 		}
-		else if ( command.equalsIgnoreCase( GET_INPUT ) ) //aquí todo asíncrono, ya se encargará el servidor de interpretarlo como síncrono si procede
+		else if ( command.equalsIgnoreCase( GET_INPUT ) ) //aquí todo asíncrono, ya se encargará el servidor de interpretarlo como síncrono si procede 
+														//<- i think this comment should be in reverse. this is treated in a synchronous way. But if the server doesn't
+														// receive input on time and is on asynchronous mode, it will go on simulating the world.
 		{
 		    Debug.println("Input get command");
 			
@@ -311,7 +313,10 @@ public class ServerProxy extends Thread implements ARSPConstants
 		    			{
 		    				Debug.println("getInput called");
 		    				String s = cliente.getInput(null); //synchronous (blocking) call
-		    				pw.println(GET_INPUT_RETURN + " " +s);	
+		    				if ( s == null )
+		    					pw.println(GET_INPUT_RETURN_NULL);
+		    				else
+		    					pw.println(GET_INPUT_RETURN + " " +s);	
 		    				pw.flush();
 		    				input_thread_flag = false;
 		    			}

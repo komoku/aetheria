@@ -168,6 +168,12 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 					Debug.println("INPUT GOTTEN: " + args );
 					return args;
 				}
+				else if ( cmd.equalsIgnoreCase( GET_INPUT_RETURN_NULL ) )
+				{
+					//remote client's getInput will return null only if window has been closed.
+					clientHasDisconnected=true;
+					return null;
+				}
 				else
 				{
 					parseRequest ( str );
@@ -641,6 +647,10 @@ public class AGEClientProxy implements MultimediaInputOutputClient , ARSPConstan
 								Debug.println("INPUT GOTTEN: " + args );
 								Debug.println("Adding 2 Que: " + args);
 								inputQueue.addLast(args);
+							}
+							else if ( cmd.equalsIgnoreCase( GET_INPUT_RETURN_NULL ) )
+							{
+								;
 							}
 							else
 							{
