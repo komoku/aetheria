@@ -45,7 +45,7 @@ public class IrcAgeBot extends IrcBot
 			ircSocket.sendPrivate(sender,UIMessages.getInstance().getMessage("irc.bot.intro.1"));
 			ircSocket.sendPrivate(sender,
 					UIMessages.getInstance().getMessage("irc.bot.intro.2"));
-			ircSocket.sendPrivate(sender,UIMessages.getInstance().getMessage("irc.bot.intro.3", "$url", "age.download.url"));
+			ircSocket.sendPrivate(sender,UIMessages.getInstance().getMessage("irc.bot.intro.3", "$url", UIMessages.getInstance().getMessage("age.download.url")));
 		}
 		 
 		System.out.println(sender+": "+message);
