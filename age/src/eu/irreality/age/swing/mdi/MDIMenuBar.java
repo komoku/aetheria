@@ -74,6 +74,8 @@ public class MDIMenuBar extends JMenuBar
 					dispose();
 						 */
 						window.dispose();
+						if ( window.isStandalone() )
+							System.exit(0); //if AGE has been executed in standalone mode, we exit the application, all sockets, etc. will be closed.
 					}
 				}
 

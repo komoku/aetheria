@@ -34,6 +34,8 @@ public class SwingAetheriaGUI extends JFrame
 	JMenuBar menuBar;
 	Vector padre1, padre2;
 	int i=0,j=0;
+	
+	private boolean standalone;
 
 	private static SwingAetheriaGUI instance; //not exactly a singleton, but at least the last instance is always cached (for IDE go button use)
 
@@ -66,6 +68,33 @@ public class SwingAetheriaGUI extends JFrame
 			this.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
 	}
 	*/
+	
+	public void setStandalone ( boolean standalone )
+	{
+		this.standalone = standalone;
+		if ( standalone == true )
+		{
+			//obsolete
+			setDefaultCloseOperation ( JFrame.EXIT_ON_CLOSE );
+			//this:
+			removeWindowListener ( SwingAetheriaGUI.nonStandaloneWindowListener );
+			addWindowListener ( SwingAetheriaGUI.standaloneWindowListener );
+
+		}
+		else
+		{
+			//obsolete
+			setDefaultCloseOperation( JFrame.HIDE_ON_CLOSE );
+			//this:
+			removeWindowListener ( SwingAetheriaGUI.standaloneWindowListener );
+			addWindowListener ( SwingAetheriaGUI.nonStandaloneWindowListener );
+		}
+	}
+	
+	public boolean isStandalone()
+	{
+		return standalone;
+	}
 
 
 	/**
@@ -146,10 +175,15 @@ public class SwingAetheriaGUI extends JFrame
 		super("Aetheria Game Engine, v " + UIMessages.getInstance().getMessage("age.version") );
 		instance = this;
 		
+		/*
+		standalone = true;
 		//obsolete
 		this.setDefaultCloseOperation ( JFrame.EXIT_ON_CLOSE );
 		//this:
 		addWindowListener ( standaloneWindowListener ); //standalone by default
+		*/
+		
+		setStandalone(true); //standalone by default
 		
 		
 		setSize(AGEConfiguration.getInstance().getIntegerProperty("mdiWindowWidth"),AGEConfiguration.getInstance().getIntegerProperty("mdiWindowHeight"));
