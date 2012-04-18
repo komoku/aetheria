@@ -214,6 +214,7 @@ public class ServerConfigurationWindow extends JDialog
 		getContentPane().add(panelPrincipal , BorderLayout.CENTER );
 		getContentPane().add(panelBotones , BorderLayout.SOUTH );
 		pack();
+		setLocationRelativeTo(madre);
 		
 		islAdd.addActionListener
 		(

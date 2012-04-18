@@ -46,16 +46,10 @@ class AddIrcNetworkWindow extends JDialog
 	private boolean editMode = false; //false:add, true:edit
 	//private final IrcServerEntry aEditar;
 
-	public AddIrcNetworkWindow ( final ServerConfigurationWindow madre )
+	
+	//refactoring of common code, 2012-04-18
+	public void initComponents()
 	{
-	
-		super ( madre , true );
-		
-		this.madre = madre;
-	
-		setTitle("Servidor IRC");
-
-
 		getContentPane().setLayout ( new BorderLayout() );
 		JPanel panelPrincipal = new JPanel ( new GridLayout ( 2 , 1 ) );
 			JPanel subPan1 = new JPanel();
@@ -78,23 +72,36 @@ class AddIrcNetworkWindow extends JDialog
 					subPan21.add ( cbChannel );
 					subPan21.add ( cbDCC );
 				JPanel subPan22 = new JPanel();
-					subPan22.add ( channelList );
-					channelVector.add ( "#aetheria" );
-				subPan2.add ( subPan21 );
-				subPan2.add ( subPan22 );
-			panelPrincipal.add(subPan1);
-			panelPrincipal.add(subPan2);
-		JPanel panelBotones = new JPanel ( new GridLayout ( 1 , 4 ) );
-			panelBotones.add ( new JPanel() );
-			panelBotones.add ( new JPanel() );
-			panelBotones.add ( botonAceptar );
-			panelBotones.add ( botonCancelar );
-		panelPrincipal.setBorder ( BorderFactory.createEtchedBorder() );
-		getContentPane().add(panelPrincipal , BorderLayout.CENTER );
-		getContentPane().add(panelBotones , BorderLayout.SOUTH );	
-				
+					subPan22.add ( channelList );	
+					subPan2.add ( subPan21 );
+					subPan2.add ( subPan22 );
+				panelPrincipal.add(subPan1);
+				panelPrincipal.add(subPan2);
+			JPanel panelBotones = new JPanel ( new GridLayout ( 1 , 4 ) );
+				panelBotones.add ( new JPanel() );
+				panelBotones.add ( new JPanel() );
+				panelBotones.add ( botonAceptar );
+				panelBotones.add ( botonCancelar );
+			panelPrincipal.setBorder ( BorderFactory.createEtchedBorder() );
+			getContentPane().add(panelPrincipal , BorderLayout.CENTER );
+			getContentPane().add(panelBotones , BorderLayout.SOUTH );	
+	
+	}
+	
+	public AddIrcNetworkWindow ( final ServerConfigurationWindow madre )
+	{
+	
+		super ( madre , true );
+		
+		this.madre = madre;
+	
+		setTitle("Servidor IRC");
+		
+		fillComponents(null); //set component values to the defaults
+		initComponents();
 			
 		pack();	
+		this.setLocationRelativeTo(madre);
 		
 		botonCancelar.addActionListener
 		(
@@ -123,10 +130,30 @@ class AddIrcNetworkWindow extends JDialog
 	
 	
 	
-	
-	
-	
-	
+	/**
+	 * Fills the components with the values associated with an IRC server entry.
+	 * If aEditar is null, then it fills them with default values.
+	 */
+	public void fillComponents ( IrcServerEntry aEditar )
+	{
+		if ( aEditar == null )
+		{
+			cbQuery.setSelected(true);
+			cbChannel.setSelected(true);
+			cbDCC.setSelected(true);
+			channelVector.add ( "#aetheria" );
+		}
+		else
+		{
+			cbQuery.setSelected(aEditar.respondeAPrivados());
+			cbChannel.setSelected(aEditar.respondeACanales());
+			cbDCC.setSelected(aEditar.respondeADCC());
+			channelVector = aEditar.getChannels();
+			serverTextField.setText(aEditar.getServer());
+			portTextField.setText(String.valueOf(aEditar.getPort()));
+			nickTextField.setText(String.valueOf(aEditar.getNick()));
+		}
+	}
 	
 	
 	public AddIrcNetworkWindow ( final ServerConfigurationWindow madre , final IrcServerEntry aEditar )
@@ -141,51 +168,11 @@ class AddIrcNetworkWindow extends JDialog
 
 		editMode = true;
 
-		getContentPane().setLayout ( new BorderLayout() );
-		JPanel panelPrincipal = new JPanel ( new GridLayout ( 2 , 1 ) );
-			JPanel subPan1 = new JPanel();
-				JPanel subPan11 = new JPanel();
-					subPan11.add ( new JLabel( UIMessages.getInstance().getMessage("server.irc.label.server") ) );
-					serverTextField.setText(aEditar.getServer());
-					subPan11.add ( serverTextField );
-				JPanel subPan12 = new JPanel();
-					subPan12.add ( new JLabel( UIMessages.getInstance().getMessage("server.irc.label.port") ) );
-					portTextField.setText(String.valueOf(aEditar.getPort()));
-					subPan12.add ( portTextField );
-				JPanel subPan13 = new JPanel();
-					subPan13.add ( new JLabel( UIMessages.getInstance().getMessage("server.irc.label.nick") ) );
-					nickTextField.setText(aEditar.getNick());
-					subPan13.add ( nickTextField ); 
-				subPan1.add ( subPan11 );
-				subPan1.add ( subPan12 );
-				subPan1.add ( subPan13 );
-			JPanel subPan2 = new JPanel();
-				subPan2.setLayout ( new GridLayout ( 1 , 2 ) );
-				JPanel subPan21 = new JPanel();
-					cbQuery.setSelected(aEditar.respondeAPrivados());
-					cbChannel.setSelected(aEditar.respondeACanales());
-					cbDCC.setSelected(aEditar.respondeADCC());
-					subPan21.add ( cbQuery );
-					subPan21.add ( cbChannel );
-					subPan21.add ( cbDCC );
-				JPanel subPan22 = new JPanel();
-					subPan22.add ( channelList );
-					channelVector = aEditar.getChannels();
-				subPan2.add ( subPan21 );
-				subPan2.add ( subPan22 );
-			panelPrincipal.add(subPan1);
-			panelPrincipal.add(subPan2);
-		JPanel panelBotones = new JPanel ( new GridLayout ( 1 , 4 ) );
-			panelBotones.add ( new JPanel() );
-			panelBotones.add ( new JPanel() );
-			panelBotones.add ( botonAceptar );
-			panelBotones.add ( botonCancelar );
-		panelPrincipal.setBorder ( BorderFactory.createEtchedBorder() );
-		getContentPane().add(panelPrincipal , BorderLayout.CENTER );
-		getContentPane().add(panelBotones , BorderLayout.SOUTH );	
-				
-			
+		fillComponents(aEditar);
+		initComponents();
+							
 		pack();	
+		this.setLocationRelativeTo(madre);
 		
 		botonCancelar.addActionListener
 		(
