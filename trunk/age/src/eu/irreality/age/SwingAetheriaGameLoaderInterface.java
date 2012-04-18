@@ -153,6 +153,7 @@ public class SwingAetheriaGameLoaderInterface
 	
 	public static void setStandalone ( boolean standalone )
 	{
+		/*
 		if ( standalone == true )
 		{
 			//obsolete
@@ -170,6 +171,8 @@ public class SwingAetheriaGameLoaderInterface
 			SwingAetheriaGUI.getInstance().removeWindowListener ( SwingAetheriaGUI.standaloneWindowListener );
 			SwingAetheriaGUI.getInstance().addWindowListener ( SwingAetheriaGUI.nonStandaloneWindowListener );
 		}
+		*/
+		SwingAetheriaGUI.getInstance().setStandalone(standalone);
 	}
 
 	public static void showIfAlreadyOpen()
