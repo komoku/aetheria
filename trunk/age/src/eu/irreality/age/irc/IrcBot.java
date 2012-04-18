@@ -14,7 +14,7 @@ public class IrcBot implements IrcListener , IrcDccListener
 	
 	private final boolean ACCEPT_DCC_CHAT = true;
 
-	public IrcBot( String server, int port, String nick, String name , Vector channels ) throws Exception
+	public IrcBot( String server, int port, String nick, String name , List channels ) throws Exception
 		{
 
 			ircSocket = new IrcSocket(server,port,this); ircSocket.login(nick,name);

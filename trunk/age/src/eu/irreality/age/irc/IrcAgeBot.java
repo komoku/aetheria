@@ -4,6 +4,7 @@
  */
 package eu.irreality.age.irc;
 
+import java.util.List;
 import java.util.Vector;
 
 import eu.irreality.age.World;
@@ -14,7 +15,7 @@ import eu.irreality.age.server.ServerHandler;
 public class IrcAgeBot extends IrcBot
 {
 
-	public IrcAgeBot ( String server , int port , String nick , Vector channels ) throws Exception
+	public IrcAgeBot ( String server , int port , String nick , List channels ) throws Exception
 	{
 	
 		super ( server , port , nick, UIMessages.getInstance().getMessage("irc.bot.longname") , channels );
