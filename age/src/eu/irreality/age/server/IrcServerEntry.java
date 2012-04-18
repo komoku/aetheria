@@ -1,5 +1,7 @@
 package eu.irreality.age.server;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 public class IrcServerEntry implements java.io.Serializable
@@ -13,14 +15,14 @@ public class IrcServerEntry implements java.io.Serializable
 	private boolean canal;
 	private boolean dcc;
 	
-	private Vector canales;
+	private List canales;
 	
 	public String toString()
 	{
 		return nick + "@" + servidor + ":" + port;
 	}
 	
-	public IrcServerEntry ( String server , int port , String nick , boolean privado , boolean canal , boolean dcc , Vector canales )
+	public IrcServerEntry ( String server , int port , String nick , boolean privado , boolean canal , boolean dcc , List canales )
 	{
 		this.servidor = server;
 		this.port = port;
@@ -28,10 +30,11 @@ public class IrcServerEntry implements java.io.Serializable
 		this.privado = privado;
 		this.canal = canal;
 		this.dcc = dcc;
-		this.canales = (Vector) canales.clone();
+		this.canales = new ArrayList();
+		this.canales.addAll(canales);
 	}
 	
-	public IrcServerEntry ( String server , String port , String nick , boolean privado , boolean canal , boolean dcc , Vector canales ) throws NumberFormatException
+	public IrcServerEntry ( String server , String port , String nick , boolean privado , boolean canal , boolean dcc , List canales ) throws NumberFormatException
 	{
 		this.servidor = server;
 		this.port = Integer.valueOf ( port ).intValue();
@@ -39,7 +42,8 @@ public class IrcServerEntry implements java.io.Serializable
 		this.privado = privado;
 		this.canal = canal;
 		this.dcc = dcc;
-		this.canales = (Vector) canales.clone();
+		this.canales = new ArrayList();
+		this.canales.addAll(canales);
 	}
 	
 	public IrcServerEntry ()
@@ -65,7 +69,7 @@ public class IrcServerEntry implements java.io.Serializable
 	public boolean respondeADCC()
 	{return dcc;
 	}
-	public Vector getChannels()
+	public List getChannels()
 	{return canales;
 	}
 	
