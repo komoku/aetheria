@@ -71,6 +71,10 @@ public class ServerHandler //Singleton!
 		return logWin;
 	}
 	
+	/**
+	 * This initializes the servers specified in the ServerConfigurationOptions passed as a parameter.
+	 * @param sco
+	 */
 	public void applyOptions ( ServerConfigurationOptions sco )
 	{
 		if ( opcionesServidor.sirveTelnet() )
@@ -163,7 +167,8 @@ public class ServerHandler //Singleton!
 			toAddLogWin.add(logWin);
 		}
 		
-		applyOptions(sco);
+		if ( sco.initOnStartup() )
+			applyOptions(sco); //this inits the server (not the games, at the moment).
 		
 	}
 	
