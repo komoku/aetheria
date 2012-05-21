@@ -278,6 +278,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	{
 	    
 	    this.setProperty("describeRoomsOnArrival" , true); //defaults to true
+	    this.setPropertyTimeLeft("describeRoomsOnArrival", -1);
 	    
 		String linea;
 		String id_linea;
@@ -643,6 +644,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	{
 
 	    this.setProperty("describeRoomsOnArrival" , true); //defaults to true
+	    this.setPropertyTimeLeft("describeRoomsOnArrival", -1);
 	    
 		if ( ! ( n instanceof org.w3c.dom.Element ) )
 		{
