@@ -799,11 +799,18 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		//rawText.append(s);
 	
 		//parse color codes
-		StringTokenizer st = new StringTokenizer ( s , "%" );
+		StringTokenizer st = new StringTokenizer ( s , "%" , true );
+		String lastDelimiterString = "";
 		boolean iscode = (s.length()>0 && s.charAt(0)=='%');
 		while ( st.hasMoreTokens() )
 		{
 			String tok = st.nextToken();
+			if ( tok.startsWith("%") )
+			{
+				//save delimiter string in case this is not a code, and we need to write that string
+				lastDelimiterString += tok;
+				continue;
+			}
 			//System.out.println("Token: " + tok );
 			if ( iscode )
 			{
@@ -842,14 +849,15 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 					}
 					catch ( NumberFormatException nfe )
 					{
-						//unrecognized
-					
+						//unrecognized: the string is not a colour code. It's probably a percent symbol that appeared in normal text. So we just write.
+						tok = lastDelimiterString + tok;
+						iscode = false;
 					}
 				}
-		
+				
 		
 			}
-			else
+			if ( !iscode ) //this is not equivalent to an else because iscode can be set to false by an exception above.
 			{
 				try
 				{	
@@ -870,7 +878,16 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 					System.out.println(ble);
 				}
 			}
+			
+			//reset delim string
+			if ( !tok.startsWith("%") )
+			{
+				lastDelimiterString = "";
+			}
+			
+			//change state
 			iscode = !iscode;
+			
 		}
 		
 		
