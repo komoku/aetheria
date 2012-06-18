@@ -27,6 +27,7 @@ import eu.irreality.age.swing.FancyJTextPane;
 import eu.irreality.age.swing.IconLoader;
 import eu.irreality.age.swing.ImagePanel;
 import eu.irreality.age.windowing.AGEClientWindow;
+import eu.irreality.age.windowing.MenuMnemonicOnTheFly;
 
 import eu.irreality.age.swing.FancyStyledDocument;
 
@@ -553,6 +554,9 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		colorConfigurationMenu.add ( itemDefault );
 		colorConfigurationMenu.add ( itemPergamino );
 		mb.add ( clientConfigurationMenu );
+		
+		MenuMnemonicOnTheFly.setMnemonics(mb);
+		
 		window.repaint();
 	}
 	

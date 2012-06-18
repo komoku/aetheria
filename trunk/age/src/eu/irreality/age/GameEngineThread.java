@@ -12,6 +12,7 @@ import eu.irreality.age.swing.applet.SwingSDIApplet;
 import eu.irreality.age.swing.sdi.SwingSDIInterface;
 import eu.irreality.age.windowing.AGEClientWindow;
 import eu.irreality.age.windowing.AGELoggingWindow;
+import eu.irreality.age.windowing.MenuMnemonicOnTheFly;
 
 import java.awt.event.*;
 public class GameEngineThread extends Thread
@@ -214,6 +215,7 @@ public class GameEngineThread extends Thread
 			serverConfigurationMenu.add(reinitItem);
 		}
 		mb.add ( serverConfigurationMenu );
+		MenuMnemonicOnTheFly.setMnemonics(mb);
 		mb.revalidate();
 		window.repaint();
 	}
