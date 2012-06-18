@@ -55,6 +55,7 @@ import eu.irreality.age.swing.config.AGEConfiguration;
 import eu.irreality.age.swing.mdi.SwingAetheriaGUI;
 import eu.irreality.age.util.VersionComparator;
 import eu.irreality.age.windowing.AGEClientWindow;
+import eu.irreality.age.windowing.MenuMnemonicOnTheFly;
 import eu.irreality.age.windowing.UpdatingRun;
 
 public class SwingSDIInterface extends JFrame implements AGEClientWindow
@@ -709,6 +710,8 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 		//setSize(600,440);
 		
 		getTheJMenuBar().add( new UILanguageSelectionMenu(this) );
+		
+		MenuMnemonicOnTheFly.setMnemonics(getTheJMenuBar());
 		
 	}
 

@@ -73,6 +73,7 @@ import org.w3c.dom.Document;
 import com.jstatcom.component.JHelpAction;
 
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.windowing.MenuMnemonicOnTheFly;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -1081,6 +1082,7 @@ public class PuckFrame extends JFrame
 		mainMenuBar.add(helpMenu);
 		
 		
+		MenuMnemonicOnTheFly.setMnemonics(mainMenuBar);
 		
 		this.setJMenuBar(mainMenuBar);
 		

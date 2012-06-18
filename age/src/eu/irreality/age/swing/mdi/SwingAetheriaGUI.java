@@ -27,6 +27,7 @@ import eu.irreality.age.server.ServerConfigurationWindow;
 import eu.irreality.age.server.ServerHandler;
 import eu.irreality.age.swing.config.AGEConfiguration;
 import eu.irreality.age.swing.mdi.gameloader.GameChoosingInternalFrame;
+import eu.irreality.age.windowing.MenuMnemonicOnTheFly;
 
 public class SwingAetheriaGUI extends JFrame
 {
@@ -306,6 +307,9 @@ public class SwingAetheriaGUI extends JFrame
 
 
 		this.setJMenuBar ( new MDIMenuBar( panel , this ) );
+		
+		MenuMnemonicOnTheFly.setMnemonics(this.getJMenuBar());
+		
 		this.setVisible ( true );
 
 
