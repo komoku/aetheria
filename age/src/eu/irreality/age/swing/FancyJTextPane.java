@@ -306,11 +306,16 @@ public class FancyJTextPane extends JTextPane implements ImageConstants
 		}
 		
 
+		public void scaleFonts ( double scaleFactor )
+		{
+			applyFontSizeTransform ( new FontSizeTransform ( FontSizeTransform.MULTIPLY , scaleFactor ) );
+		}
+		
 		/**
-		 * Zooms in/out by applying an offset to font sizes throughout the document.
-		 * @param offset Positive or negative offset to add to all font sizes in the document.
+		 * Zooms in/out by applying an offset or factor to font sizes throughout the document.
+		 * @param t Transform to apply to all font sizes in the document.
 		 */
-		public void applyFontOffset ( int offset )
+		private void applyFontSizeTransform ( FontSizeTransform t )
 		{
 			StyledDocument sd = (StyledDocument) this.getDocument();
 			Element [] rootElts = sd.getRootElements();
@@ -321,10 +326,15 @@ public class FancyJTextPane extends JTextPane implements ImageConstants
 			}
 			for ( int i = 0 ; i < elements.size() ; i++ )
 			{
-				applyFontOffset( offset , (Element) elements.get(i) , sd );
+				applyFontSizeTransform( t , (Element) elements.get(i) , sd );
 			}
 		}
 		
+		/**
+		 * Adds the leaf elements that are descendant of the given element to the given list.
+		 * @param elements
+		 * @param elt
+		 */
 		private void populateElementList ( List elements , Element elt )
 		{
 			
@@ -341,11 +351,11 @@ public class FancyJTextPane extends JTextPane implements ImageConstants
 		
 		/**
 		 * Changes the font size of a document element.
-		 * @param offset An offset to add to font size.
+		 * @param t A transform to apply to font size.
 		 * @param elt An element of the document.
 		 * @param sd The styled document containing the element elt.
 		 */
-		private void applyFontOffset ( int offset , Element elt , StyledDocument sd )
+		private void applyFontSizeTransform ( FontSizeTransform t , Element elt , StyledDocument sd )
 		{			
 			//System.err.println("Element: " + elt);
 			//System.err.println("Attributes: " + elt.getAttributes());
@@ -358,7 +368,7 @@ public class FancyJTextPane extends JTextPane implements ImageConstants
 				int start = elt.getStartOffset();
 				int end = elt.getEndOffset();
 				SimpleAttributeSet sizeOnly = new SimpleAttributeSet();
-				StyleConstants.setFontSize( sizeOnly , fontSize + offset );
+				StyleConstants.setFontSize( sizeOnly , t.apply(fontSize) );
 				//System.err.println("New Font size: " + (fontSize+offset));
 				sd.setCharacterAttributes(start, end-start, sizeOnly, false);
 				//StyleConstants.setFontSize( (MutableAttributeSet) elt.getAttributes(), fontSize+offset);
