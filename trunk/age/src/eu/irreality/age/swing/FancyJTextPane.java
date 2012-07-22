@@ -9,6 +9,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
@@ -17,6 +19,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JTextPane;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.Element;
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import com.kitfox.svg.app.beans.SVGIcon;
 
@@ -298,4 +306,64 @@ public class FancyJTextPane extends JTextPane implements ImageConstants
 		}
 		
 
+		/**
+		 * Zooms in/out by applying an offset to font sizes throughout the document.
+		 * @param offset Positive or negative offset to add to all font sizes in the document.
+		 */
+		public void applyFontOffset ( int offset )
+		{
+			StyledDocument sd = (StyledDocument) this.getDocument();
+			Element [] rootElts = sd.getRootElements();
+			List elements = new ArrayList();
+			for ( int i = 0 ; i < rootElts.length ; i++ )
+			{
+				populateElementList ( elements , rootElts[i] );
+			}
+			for ( int i = 0 ; i < elements.size() ; i++ )
+			{
+				applyFontOffset( offset , (Element) elements.get(i) , sd );
+			}
+		}
+		
+		private void populateElementList ( List elements , Element elt )
+		{
+			
+			if ( elt.isLeaf() )
+				elements.add(elt);
+			
+			//apply recursively to children
+			for ( int i = 0 ; i < elt.getElementCount() ; i++ )
+			{
+				populateElementList ( elements , elt.getElement(i) );
+			}
+			
+		}
+		
+		/**
+		 * Changes the font size of a document element.
+		 * @param offset An offset to add to font size.
+		 * @param elt An element of the document.
+		 * @param sd The styled document containing the element elt.
+		 */
+		private void applyFontOffset ( int offset , Element elt , StyledDocument sd )
+		{			
+			//System.err.println("Element: " + elt);
+			//System.err.println("Attributes: " + elt.getAttributes());
+			//System.err.println("Old Font size: " + elt.getAttributes().getAttribute(StyleConstants.FontSize));
+
+			Object attr = elt.getAttributes().getAttribute(StyleConstants.FontSize);
+			if ( attr != null )
+			{
+				int fontSize = StyleConstants.getFontSize(elt.getAttributes());
+				int start = elt.getStartOffset();
+				int end = elt.getEndOffset();
+				SimpleAttributeSet sizeOnly = new SimpleAttributeSet();
+				StyleConstants.setFontSize( sizeOnly , fontSize + offset );
+				//System.err.println("New Font size: " + (fontSize+offset));
+				sd.setCharacterAttributes(start, end-start, sizeOnly, false);
+				//StyleConstants.setFontSize( (MutableAttributeSet) elt.getAttributes(), fontSize+offset);
+			}
+
+		}
+		
 }
