@@ -24,6 +24,7 @@ import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.swing.FancyAttributeSet;
 import eu.irreality.age.swing.FancyJTextField;
 import eu.irreality.age.swing.FancyJTextPane;
+import eu.irreality.age.swing.FontSizeTransform;
 import eu.irreality.age.swing.IconLoader;
 import eu.irreality.age.swing.ImagePanel;
 import eu.irreality.age.windowing.AGEClientWindow;
@@ -78,6 +79,11 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	 * since they have to manually scroll back so that their readers read the new text.
 	 */
 	private boolean accessibleScrollMode = false;
+	
+	/**
+	 * This font size transform will be applied in all the calls to setCurrentOutputFont(). 
+	 */
+	private FontSizeTransform fontTransform = null;
 	
 	public boolean isSoundEnabled()
 	{
@@ -1581,16 +1587,62 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		execInDispatchThread ( new Runnable() { public void run() { elAreaTexto.setFont(f); } } );
 	}
 	
+	
+	/**
+	 * Changes the factor by which all fonts are scaled.
+	 * @param factor
+	 */
+	public void setFontZoomFactor ( double factor )
+	{
+		//scale existing fonts (the past)
+		double oldFactor = getFontZoomFactor();
+		double ratio = factor / oldFactor;
+		elAreaTexto.scaleFonts(ratio);
+		
+		//add the transform so that it affects future font changes (the future)
+		fontTransform = new FontSizeTransform ( FontSizeTransform.MULTIPLY , factor );
+		
+		//change the current output font (the present)
+		Font currentFont = ((FancyAttributeSet)atributos).getFont();
+		//setCurrentOutputFont(currentFont); //it may seem that we're setting the same, but no, because the transform we just set will be applied
+		//nah, this won't work with cumulative upgrades - it doesn't take ratio into account
+		int newSize = (int)(currentFont.getSize() * ratio);
+		Font f = currentFont.deriveFont((float)newSize);
+		GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(f);
+		((FancyAttributeSet)atributos).setFont(f);
+		StyleConstants.setFontFamily((MutableAttributeSet)atributos,f.getFamily());
+		StyleConstants.setFontSize((MutableAttributeSet)atributos,f.getSize());
+		
+		
+	}
+	
+	/**
+	 * Obtains the factor by which all fonts are scaled.
+	 */
+	public double getFontZoomFactor ( )
+	{
+		if ( fontTransform == null || fontTransform.getType() != FontSizeTransform.MULTIPLY ) return 1.0;
+		else return fontTransform.getAmount();
+	}
+	
+	
 	/**
 	 * Changes the font to use for new text outputted to the output area.
 	 *  @param f New font to use for new text outputted to the output area.
 	 */
-	public void setCurrentOutputFont ( final Font f )
+	public void setCurrentOutputFont ( final Font font )
 	{
+		//System.err.println("sCOF called w/f. size " + font.getSize());
 		//write("Setting current output font: " + f + "\n");
 		//new Throwable().printStackTrace();
 		//GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(f);
 		execInDispatchThread ( new Runnable() { public void run() { 
+			Font f = font;
+			if ( fontTransform != null ) //apply size transform
+			{
+				System.err.println("Changing current output font from " + f.getSize() + " to the fryoleer of " + fontTransform.apply(f.getSize()));
+				f = f.deriveFont((float)fontTransform.apply(f.getSize()));
+			}
 			GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(f);
 			((FancyAttributeSet)atributos).setFont(f);
 			StyleConstants.setFontFamily((MutableAttributeSet)atributos,f.getFamily());

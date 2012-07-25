@@ -39,4 +39,14 @@ public class FontSizeTransform
 		}
 	}
 	
+	public int getType()
+	{
+		return type;
+	}
+	
+	public double getAmount()
+	{
+		return param;
+	}
+	
 }
