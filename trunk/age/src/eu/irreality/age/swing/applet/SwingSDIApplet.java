@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
@@ -12,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Vector;
+import java.util.zip.DataFormatException;
 
 import javax.swing.JApplet;
 import javax.swing.JFileChooser;
@@ -32,6 +34,7 @@ import eu.irreality.age.InputOutputClient;
 import eu.irreality.age.ObjectCode;
 import eu.irreality.age.SwingAetheriaGameLoader;
 import eu.irreality.age.SwingAetheriaGameLoaderInterface;
+import eu.irreality.age.Utility;
 import eu.irreality.age.World;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.filemanagement.Paths;
@@ -478,7 +481,15 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 	
 	public void loadLogFromCookie()
 	{
-		String logAsString = CookieUtils.readCookie(SwingSDIApplet.this,"log");
+		//String logAsString = CookieUtils.readCookie(SwingSDIApplet.this,"log");
+		String logAsString = "";
+		try {
+			logAsString = CookieUtils.readCompressedCookie(SwingSDIApplet.this,"log","UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (DataFormatException e) {
+			e.printStackTrace();
+		}
 		try
 		{
 			logStream = new ByteArrayInputStream(logAsString.getBytes("UTF-8"));
@@ -489,9 +500,6 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 			write(uee.toString());
 		}
 		usarLog = true;
-		write("El contenido del log es:\n");
-		write("["+CookieUtils.readCookie(SwingSDIApplet.this,"log"));
-		write("]\n");
 		reinit();
 	}
 
@@ -600,15 +608,25 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 		for ( int i = 0 ; i < gameLog.size() ; i++ )
 		{
 			logToString += gameLog.get(i);
-			logToString +="\\n"; //con \n no se ejecuta bien el js
+			//logToString +="\\n"; //con \n no se ejecuta bien el js
+			logToString +="\n"; //lo de arriba pierde el sentido con base64
 		}
 			
 		//write("Guardando: "  + logToString);
 		
 		CookieUtils.eraseCookie(this,"log");
-		CookieUtils.createCookie(this,"log",logToString,100);
+		boolean cookieSuccess = false;
+		try {
+			cookieSuccess = CookieUtils.createAndValidateCompressedCookie(this,"log",logToString,"UTF-8",100);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		write(UIMessages.getInstance().getMessage("applet.save.done") + "\n");
+		if ( cookieSuccess )
+			write(UIMessages.getInstance().getMessage("applet.save.done") + "\n");
+		else
+			write(UIMessages.getInstance().getMessage("applet.save.failed") + "\n");
 		
 		/*
 		File elFichero = null;

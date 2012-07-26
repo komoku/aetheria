@@ -2197,7 +2197,15 @@ public class World implements Informador , SupportingCode
 		{
 			logReader.readLine(); //la primera linea no contiene la semilla
 			//la segunda sí
+			try
+			{
 			semilla = Long.valueOf ( logReader.readLine() ).longValue();
+			}
+			catch ( NumberFormatException e )
+			{
+				System.err.println("Read " + logReader.readLine() + ", expected random number seed" );
+				throw e;
+			}
 			aleat = new java.util.Random( semilla );
 		}
 		catch ( java.io.IOException exc )
