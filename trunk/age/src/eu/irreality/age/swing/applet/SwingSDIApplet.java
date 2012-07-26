@@ -505,6 +505,11 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 			}
 		}
 		
+		if ( logAsString == null )
+		{
+			write(UIMessages.getInstance().getMessage("applet.load.notsaved")+"\n");
+			return;
+		}
 		
 		try
 		{
