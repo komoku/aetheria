@@ -75,6 +75,7 @@ public class LocalStorageUtils
 	public static String loadCompressedData (Applet a , String name, String encoding) throws UnsupportedEncodingException, DataFormatException
 	{
 		String compressedValue = loadData ( a , name );
+		if ( compressedValue == null ) return null;
 		return StringCompressor.decompress(compressedValue, encoding);
 	}
 	

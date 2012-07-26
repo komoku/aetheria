@@ -70,6 +70,7 @@ public class CookieUtils
 	{
 		String compressedValue = readCookie ( a , name );
 		//System.err.println("Read  cookie: " + StringCompressor.decompress(compressedValue, encoding));
+		if ( compressedValue == null ) return null;
 		return StringCompressor.decompress(compressedValue, encoding);
 	}
 	
