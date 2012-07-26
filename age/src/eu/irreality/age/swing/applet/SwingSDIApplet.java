@@ -483,13 +483,29 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 	{
 		//String logAsString = CookieUtils.readCookie(SwingSDIApplet.this,"log");
 		String logAsString = "";
-		try {
-			logAsString = CookieUtils.readCompressedCookie(SwingSDIApplet.this,"log","UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (DataFormatException e) {
-			e.printStackTrace();
+		
+		if ( LocalStorageUtils.isLocalStorageSupported(this) )
+		{
+			try {
+				logAsString = LocalStorageUtils.loadCompressedData(SwingSDIApplet.this,"log","UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			} catch (DataFormatException e) {
+				e.printStackTrace();
+			}
 		}
+		else //use plain good ol' cookie
+		{
+			try {
+				logAsString = CookieUtils.readCompressedCookie(SwingSDIApplet.this,"log","UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			} catch (DataFormatException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
 		try
 		{
 			logStream = new ByteArrayInputStream(logAsString.getBytes("UTF-8"));
@@ -614,19 +630,36 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 			
 		//write("Guardando: "  + logToString);
 		
-		CookieUtils.eraseCookie(this,"log");
+		
+		boolean localStorageSuccess = false;
 		boolean cookieSuccess = false;
-		try {
-			cookieSuccess = CookieUtils.createAndValidateCompressedCookie(this,"log",logToString,"UTF-8",100);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if ( LocalStorageUtils.isLocalStorageSupported(this))
+		{
+			LocalStorageUtils.eraseData(this,"log");
+			try {
+				localStorageSuccess = LocalStorageUtils.saveAndValidateCompressedData(this, "log", logToString, "UTF-8");
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
-		if ( cookieSuccess )
+		if ( !localStorageSuccess )
+		{
+			CookieUtils.eraseCookie(this,"log");
+			try {
+				cookieSuccess = CookieUtils.createAndValidateCompressedCookie(this,"log",logToString,"UTF-8",100);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		if ( localStorageSuccess || cookieSuccess )
 			write(UIMessages.getInstance().getMessage("applet.save.done") + "\n");
 		else
 			write(UIMessages.getInstance().getMessage("applet.save.failed") + "\n");
+		
 		
 		/*
 		File elFichero = null;
