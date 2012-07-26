@@ -1,7 +1,11 @@
 package eu.irreality.age.swing.applet;
 
 import java.applet.Applet;
+import java.io.UnsupportedEncodingException;
 import java.util.StringTokenizer;
+import java.util.zip.DataFormatException;
+
+import eu.irreality.age.util.compression.StringCompressor;
 
 import netscape.javascript.JSException;
 import netscape.javascript.JSObject;
@@ -23,6 +27,22 @@ public class CookieUtils
 	        System.out.println(ex.getMessage());
 	    }
 	}
+	
+	public static void createCompressedCookie (Applet a , String name, String value, String encoding, long days) throws UnsupportedEncodingException
+	{
+		String compressedValue = StringCompressor.compress(value, encoding);
+		createCookie ( a , name , compressedValue , days );
+	}
+	
+	public static boolean createAndValidateCompressedCookie (Applet a , String name, String value, String encoding, long days) throws UnsupportedEncodingException, DataFormatException
+	{
+		String compressedValue = StringCompressor.compress(value, encoding);
+		createCookie ( a , name , compressedValue , days );
+		String gottenValue = readCompressedCookie ( a , name , encoding );
+		System.err.println("Created cookie: " + value);
+		return ( value.equals(gottenValue) );
+	}
+	
 
 	public static String readCookie (Applet a , String name) {
 	    try {
@@ -45,6 +65,15 @@ public class CookieUtils
 	    }
 	    return null;
 	}
+	
+	public static String readCompressedCookie (Applet a , String name, String encoding) throws UnsupportedEncodingException, DataFormatException
+	{
+		String compressedValue = readCookie ( a , name );
+		System.err.println("Read  cookie: " + StringCompressor.decompress(compressedValue, encoding));
+		return StringCompressor.decompress(compressedValue, encoding);
+	}
+	
+	
 
 	public static void eraseCookie (Applet a , String name) {
 	    createCookie(a , name, "", -1);
