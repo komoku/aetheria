@@ -39,7 +39,7 @@ public class CookieUtils
 		String compressedValue = StringCompressor.compress(value, encoding);
 		createCookie ( a , name , compressedValue , days );
 		String gottenValue = readCompressedCookie ( a , name , encoding );
-		System.err.println("Created cookie: " + value);
+		//System.err.println("Created cookie: " + value);
 		return ( value.equals(gottenValue) );
 	}
 	
@@ -69,7 +69,7 @@ public class CookieUtils
 	public static String readCompressedCookie (Applet a , String name, String encoding) throws UnsupportedEncodingException, DataFormatException
 	{
 		String compressedValue = readCookie ( a , name );
-		System.err.println("Read  cookie: " + StringCompressor.decompress(compressedValue, encoding));
+		//System.err.println("Read  cookie: " + StringCompressor.decompress(compressedValue, encoding));
 		return StringCompressor.decompress(compressedValue, encoding);
 	}
 	
