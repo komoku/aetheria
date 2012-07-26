@@ -466,16 +466,19 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	public void doInitClientMenu ( final AGEClientWindow window )
 	{
 		JMenu colorConfigurationMenu = new JMenu( UIMessages.getInstance().getMessage("csclient.pres.colorthemes") );
+		JMenu fontSizeMenu = new JMenu ( UIMessages.getInstance().getMessage("csclient.pres.fontsize") );
 		final JCheckBoxMenuItem fullScreenOption = new JCheckBoxMenuItem( UIMessages.getInstance().getMessage("csclient.pres.fullscreen") ,window.isFullScreenMode());
 		final JCheckBoxMenuItem soundOption = new JCheckBoxMenuItem( UIMessages.getInstance().getMessage("csclient.pres.sound") ,true);
 		final JCheckBoxMenuItem accessibleScrollOption = new JCheckBoxMenuItem( UIMessages.getInstance().getMessage("csclient.pres.blindacc") ,false);
 		JMenuBar mb = window.getTheJMenuBar();
 		window.setTheJMenuBar(mb); //nótese el "the", es para que la tenga como atributo. Si luego se quita para el modo fullscreen se puede volver a poner.
 		clientConfigurationMenu.add ( colorConfigurationMenu );
+		clientConfigurationMenu.add ( fontSizeMenu );
 		if ( window.supportsFullScreen() )
 			clientConfigurationMenu.add ( fullScreenOption );
 		clientConfigurationMenu.add(soundOption);
 		clientConfigurationMenu.add(accessibleScrollOption);
+		
 		JRadioButtonMenuItem itemDefaultJuego = new JRadioButtonMenuItem( UIMessages.getInstance().getMessage("csclient.theme.game") ,true);
 		JRadioButtonMenuItem itemDefault = new JRadioButtonMenuItem( UIMessages.getInstance().getMessage("csclient.theme.age") ,false);
 		JRadioButtonMenuItem itemPergamino = new JRadioButtonMenuItem( UIMessages.getInstance().getMessage("csclient.theme.parchment") ,false);
@@ -512,6 +515,33 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 				setPergaminoConfiguration();
 			}
 		} );
+		
+		JMenuItem itemLargerFontSize = new JMenuItem( UIMessages.getInstance().getMessage("csclient.pres.fontsize.larger") );
+		JMenuItem itemDefaultFontSize = new JMenuItem( UIMessages.getInstance().getMessage("csclient.pres.fontsize.default") );
+		JMenuItem itemSmallerFontSize = new JMenuItem( UIMessages.getInstance().getMessage("csclient.pres.fontsize.smaller") );
+		itemLargerFontSize.addActionListener ( new ActionListener()
+		{
+			public void actionPerformed ( ActionEvent evt )
+			{
+				setFontZoomFactor(1.2 * getFontZoomFactor());
+			}
+		} );
+		itemSmallerFontSize.addActionListener ( new ActionListener()
+		{
+			public void actionPerformed ( ActionEvent evt )
+			{
+				setFontZoomFactor(getFontZoomFactor()/1.2);
+			}
+		} );
+		itemDefaultFontSize.addActionListener ( new ActionListener()
+		{
+			public void actionPerformed ( ActionEvent evt )
+			{
+				setFontZoomFactor(1.0);
+			}
+		} );
+		
+		
 		fullScreenOption.addActionListener ( new ActionListener()
 		{
 			public void actionPerformed ( ActionEvent evt )
@@ -556,9 +586,15 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 				}
 			}
 		} );
+		
 		colorConfigurationMenu.add ( itemDefaultJuego );
 		colorConfigurationMenu.add ( itemDefault );
 		colorConfigurationMenu.add ( itemPergamino );
+		
+		fontSizeMenu.add ( itemSmallerFontSize );
+		fontSizeMenu.add ( itemDefaultFontSize );
+		fontSizeMenu.add ( itemLargerFontSize );
+		
 		mb.add ( clientConfigurationMenu );
 		
 		MenuMnemonicOnTheFly.setMnemonics(mb);
@@ -1592,27 +1628,31 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	 * Changes the factor by which all fonts are scaled.
 	 * @param factor
 	 */
-	public void setFontZoomFactor ( double factor )
+	public void setFontZoomFactor ( final double factor )
 	{
-		//scale existing fonts (the past)
-		double oldFactor = getFontZoomFactor();
-		double ratio = factor / oldFactor;
-		elAreaTexto.scaleFonts(ratio);
 		
-		//add the transform so that it affects future font changes (the future)
-		fontTransform = new FontSizeTransform ( FontSizeTransform.MULTIPLY , factor );
+		execInDispatchThread ( new Runnable() { public void run() { 
 		
-		//change the current output font (the present)
-		Font currentFont = ((FancyAttributeSet)atributos).getFont();
-		//setCurrentOutputFont(currentFont); //it may seem that we're setting the same, but no, because the transform we just set will be applied
-		//nah, this won't work with cumulative upgrades - it doesn't take ratio into account
-		int newSize = (int)(currentFont.getSize() * ratio);
-		Font f = currentFont.deriveFont((float)newSize);
-		GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(f);
-		((FancyAttributeSet)atributos).setFont(f);
-		StyleConstants.setFontFamily((MutableAttributeSet)atributos,f.getFamily());
-		StyleConstants.setFontSize((MutableAttributeSet)atributos,f.getSize());
+			//scale existing fonts (the past)
+			double oldFactor = getFontZoomFactor();
+			double ratio = factor / oldFactor;
+			elAreaTexto.scaleFonts(ratio);
+			
+			//add the transform so that it affects future font changes (the future)
+			fontTransform = new FontSizeTransform ( FontSizeTransform.MULTIPLY , factor );
+			
+			//change the current output font (the present)
+			Font currentFont = ((FancyAttributeSet)atributos).getFont();
+			//setCurrentOutputFont(currentFont); //it may seem that we're setting the same, but no, because the transform we just set will be applied
+			//nah, this won't work with cumulative upgrades - it doesn't take ratio into account
+			int newSize = (int)(currentFont.getSize() * ratio);
+			Font f = currentFont.deriveFont((float)newSize);
+			GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(f);
+			((FancyAttributeSet)atributos).setFont(f);
+			StyleConstants.setFontFamily((MutableAttributeSet)atributos,f.getFamily());
+			StyleConstants.setFontSize((MutableAttributeSet)atributos,f.getSize());
 		
+		} } );
 		
 	}
 	
