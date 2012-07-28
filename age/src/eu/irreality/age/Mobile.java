@@ -2062,12 +2062,12 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			}
 			catch ( EVASemanticException exc ) 
 			{
-				write(io.getColorCode("error") + "EVASemanticException found at event_say, mob number " + getID() + io.getColorCode("reset") );
+				mundo.write(io.getColorCode("error") + "EVASemanticException found at event_say, mob number " + getID() + io.getColorCode("reset") );
 			}
 			catch ( bsh.TargetError te )
 			{
-				write(io.getColorCode("error") + "bsh.TargetError found at event_say, mob number " + getID() + io.getColorCode("reset") );
-				writeError(ExceptionPrinter.getExceptionReport(te));
+				mundo.write(io.getColorCode("error") + "bsh.TargetError found at event_say, mob number " + getID() + io.getColorCode("reset") );
+				mundo.writeError(ExceptionPrinter.getExceptionReport(te));
 			}
 
 			String respuesta = getPSIAnswer ( loQueDice );
