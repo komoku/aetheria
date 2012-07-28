@@ -2882,8 +2882,8 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		
 		it.gender = true; //masculino
 	
-		it.respondToSing = it.title + "$cadáver$cadaver$cuerpo$muerto";
-		it.respondToPlur = it.title + "$cadáveres$cadaveres$cuerpos$muertos";
+		it.respondToSing = it.title + "$cadáver$cadaver$cuerpo$muerto$"+m.respondToSing;
+		it.respondToPlur = it.title + "$cadáveres$cadaveres$cuerpos$muertos"+m.respondToPlur;
 		
 		//temp!
 		it.volume = 1000;
