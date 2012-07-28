@@ -701,7 +701,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 	{
 		//write("AVISO: Desde el navegador no se pueden guardar partidas. Pero puedes guardar partidas si te descargas el Aetheria Game Engine, que permite jugar a aventuras como ésta con plena funcionalidad. Bájalo en http://code.google.com/p/aetheria/downloads/list\n");
 		write(UIMessages.getInstance().getMessage("applet.state.warning") + "\n");
-		guardarEstado();
+		guardarLog();
 		
 		/*
 		File elFichero = null;
