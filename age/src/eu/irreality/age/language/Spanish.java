@@ -200,6 +200,9 @@ public class Spanish extends NaturalLanguage
 		base.addDictionaryWord("los");
 		base.addDictionaryWord("las");
 		
+		//"con": avoid confusion with verb "pon"
+		base.addDictionaryWord("con");
+		
 		return base;
 	}
 	
