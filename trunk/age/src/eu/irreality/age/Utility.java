@@ -41,14 +41,14 @@ public class Utility
 	
 
 	/**
-	* Nos devuelve un InputStreamReader que a ser posible lea Latin, para ficheros.
+	* Nos devuelve un InputStreamReader que a ser posible lea UTF-8, para ficheros.
 	*/
 	public static InputStreamReader getBestInputStreamReader ( InputStream is )
 	{
 		InputStreamReader isr;
 		try
 		{
-			isr = new InputStreamReader ( is , "ISO-8859-1" );
+			isr = new InputStreamReader ( is , "UTF-8" );
 		}
 		catch ( UnsupportedEncodingException uee )
 		{
@@ -59,14 +59,14 @@ public class Utility
 	}
 	
 	/**
-	* Nos devuelve un OutputStreamWriter que a ser posible escriba Latin, para ficheros.
+	* Nos devuelve un OutputStreamWriter que a ser posible escriba UTF-8, para ficheros.
 	*/
 	public static OutputStreamWriter getBestOutputStreamWriter ( OutputStream os )
 	{
 		OutputStreamWriter osw;
 		try
 		{
-			osw = new OutputStreamWriter ( os , "ISO-8859-1" );
+			osw = new OutputStreamWriter ( os , "UTF-8" );
 		}
 		catch ( UnsupportedEncodingException uee )
 		{
