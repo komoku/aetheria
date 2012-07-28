@@ -1145,11 +1145,19 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	 */
 	
 
+	/**
+	 * @deprecated Use {@link #getClient()} instead
+	 */
 	public InputOutputClient getIO ( )
+	{
+		return getClient();
+	}
+
+	public InputOutputClient getClient ( )
 	{
 		return io;
 	}
-
+	
 	public boolean isInvisible ( Entity viewer )
 	{
 		return !( getSingName(viewer).length() > 0 );
@@ -7342,7 +7350,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	{
 		if ( !(this instanceof Player) ) return null; //not player, doesn't have an input-output client to play midi
 		Player pl = (Player) this;
-		InputOutputClient io = pl.getIO();
+		InputOutputClient io = pl.getClient();
 		if ( !(io instanceof MultimediaInputOutputClient) ) return null; //player is using client without multimedia capabilities
 		MultimediaInputOutputClient mio = (MultimediaInputOutputClient) io;
 		if ( !mio.isSoundEnabled() ) return null; //sound is disabled in the client

@@ -2753,7 +2753,7 @@ public class World implements Informador , SupportingCode
 				
 				addPlayer ( p );
 					
-				p.getIO().write("Has sido añadido al mundo.\n");
+				p.getClient().write("Has sido añadido al mundo.\n");
 			
 				p.getRoom().reportActionAuto(p,null,"De repente, $1 aparece de la nada.\n",false); 
 			

@@ -187,9 +187,9 @@ public class Player extends Mobile implements Informador
 	public void endOfLog()
 	{
 		from_log = false;
-		if ( this.getIO() instanceof MultimediaInputOutputClient )
+		if ( this.getClient() instanceof MultimediaInputOutputClient )
 		{
-			MultimediaInputOutputClient mioc = (MultimediaInputOutputClient) this.getIO();
+			MultimediaInputOutputClient mioc = (MultimediaInputOutputClient) this.getClient();
 			SoundClient sc = mioc.getSoundClient();
 			if ( sc instanceof AGESoundClient )
 			{
@@ -4418,7 +4418,7 @@ public class Player extends Mobile implements Informador
 
 		enQueEstaba.addMob(this);
 
-		getIO().write("Has sido añadido al mundo.\n");
+		getClient().write("Has sido añadido al mundo.\n");
 
 		getRoom().reportActionAuto(this,null,"De repente, $1 aparece de la nada.\n",false); 
 
