@@ -16,6 +16,7 @@ import org.xml.sax.InputSource;
 import eu.irreality.age.FiltroFicheroEstado;
 import eu.irreality.age.GameInfo;
 import eu.irreality.age.PartidaEntry;
+import eu.irreality.age.Utility;
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.server.ServerHandler;
@@ -54,7 +55,7 @@ public class EscuchadorCargarDesdeEstado implements ActionListener
 				org.w3c.dom.Document d = null;
 
 
-				BufferedReader br = new BufferedReader ( new InputStreamReader ( new FileInputStream (  selector.getSelectedFile()  ) , "ISO-8859-1" ) );
+				BufferedReader br = new BufferedReader ( Utility.getBestInputStreamReader ( new FileInputStream (  selector.getSelectedFile()  ) ) );
 				InputSource is = new InputSource(br);
 				DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 				//io.escribir(io.getColorCode("information") + "Obteniendo árbol DOM de los datos XML...\n" + io.getColorCode("reset") );
