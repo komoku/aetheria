@@ -3650,6 +3650,12 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			return inventory.removeItem(viejo);
 		}
 	}
+	
+	public boolean removeSpell ( Spell viejo )
+	{
+		if ( spellRefs == null ) return false;
+		else return spellRefs.removeElement(viejo);
+	}
 
 	public boolean hasItem ( Item it )
 	{
