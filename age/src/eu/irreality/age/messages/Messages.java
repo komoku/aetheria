@@ -142,7 +142,7 @@ public class Messages
 	
 	/**
 	 * Returns the default repository of messages provided by AGE for a given world, i.e., the repository of messages for the language code associated with the
-	 * language of that world.
+	 * language of that world, and with a pointer to the world.
 	 * @param w
 	 * @return
 	 */
@@ -151,7 +151,10 @@ public class Messages
 		String languageCode = null;
 		if ( w != null ) languageCode = w.getLanguage().getLanguageCode();
 		if ( languageCode == null ) languageCode = NaturalLanguage.DEFAULT_LANGUAGE_CODE;
-		return getDefaultInstance ( languageCode );
+		//return getDefaultInstance ( languageCode );
+		Messages theInstance = new Messages(getPathForLanguage(languageCode));
+		theInstance.setWorld(w);
+		return theInstance;
 	}
 	
 	public void setMessage ( String key , String message )
