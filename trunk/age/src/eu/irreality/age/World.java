@@ -518,8 +518,9 @@ public class World implements Informador , SupportingCode
 		//language configuration
 		if ( e.hasAttribute("language") )
 			languageCode = e.getAttribute("language");
-		messages = Messages.getDefaultInstance(languageCode);
+		//messages = Messages.getDefaultInstance(languageCode);
 		lenguaje = NaturalLanguage.getInstance(languageCode);
+		messages = Messages.getDefaultInstance(this); //language code taken from lenguaje
 		
 		Thread.currentThread().yield();
 		
