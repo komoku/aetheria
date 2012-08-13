@@ -177,6 +177,16 @@ public class Messages
 		return buildMessage ( getMessage(key) , p1 , s1 , p2 , s2 );
 	}
 	
+	public String getMessage ( String key , String p1 , String s1 , String p2 , String s2 , String p3 , String s3 )
+	{
+		return buildMessage ( getMessage(key) , p1 , s1 , p2 , s2 , p3 , s3 );
+	}
+	
+	public String getMessage ( String key , String p1 , String s1 , String p2 , String s2 , String p3 , String s3 , String p4 , String s4 )
+	{
+		return buildMessage ( getMessage(key) , p1 , s1 , p2 , s2 , p3 , s3 , p4 , s4 );
+	}
+	
 	public String getMessage ( String key , String placeholder , String substitution , Object[] argumentsForScriptCode )
 	{
 	    return buildMessage ( getMessage(key,argumentsForScriptCode) , placeholder , substitution );
@@ -185,6 +195,16 @@ public class Messages
 	public String getMessage ( String key , String p1 , String s1 , String p2 , String s2 , Object[] argumentsForScriptCode  )
 	{
 		return buildMessage ( getMessage(key,argumentsForScriptCode) , p1 , s1 , p2 , s2 );
+	}
+	
+	public String getMessage ( String key , String p1 , String s1 , String p2 , String s2 , String p3 , String s3 , Object[] argumentsForScriptCode  )
+	{
+		return buildMessage ( getMessage(key,argumentsForScriptCode) , p1 , s1 , p2 , s2 , p3 , s3 );
+	}
+	
+	public String getMessage ( String key , String p1 , String s1 , String p2 , String s2 , String p3 , String s3 , String p4 , String s4 , Object[] argumentsForScriptCode  )
+	{
+		return buildMessage ( getMessage(key,argumentsForScriptCode) , p1 , s1 , p2 , s2 , p3 , s3 , p4 , s4 );
 	}
 	
 	/**
@@ -206,6 +226,11 @@ public class Messages
 	public static String buildMessage ( String messString , String p1 , String s1 , String p2 , String s2 , String p3 , String s3 )
 	{
 		return buildMessage ( buildMessage ( messString,p1,s1,p2,s2 ) , p3 , s3 );
+	}
+	
+	public static String buildMessage ( String messString , String p1 , String s1 , String p2 , String s2 , String p3 , String s3 , String p4 , String s4 )
+	{
+		return buildMessage ( buildMessage ( messString,p1,s1,p2,s2,p3,s3 ) , p4 , s4 );
 	}
 	
 }

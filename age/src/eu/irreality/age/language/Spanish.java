@@ -166,6 +166,8 @@ public class Spanish extends NaturalLanguage
 	{
 		if ( s == null ) return null;
 		String niceString = super.correctMorphology(s);
+		niceString = niceString.replaceAll(" y i"," e i");
+		niceString = niceString.replaceAll(" y í"," e í");
 		return StringMethods.textualSubstitution ( StringMethods.textualSubstitution ( niceString , " a el" , " al" ) , " de el" , " del" );
 	}
 	
@@ -175,6 +177,8 @@ public class Spanish extends NaturalLanguage
 	{
 		if ( s == null ) return null;
 		String niceString = super.correctMorphologyWithoutTrimming(s);
+		niceString = niceString.replaceAll(" y i"," e i");
+		niceString = niceString.replaceAll(" y í"," e í");
 		return StringMethods.textualSubstitution ( StringMethods.textualSubstitution ( niceString , " a el" , " al" ) , " de el" , " del" );
 	}
 	
