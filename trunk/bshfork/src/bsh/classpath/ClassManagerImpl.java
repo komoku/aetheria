@@ -152,6 +152,7 @@ public class ClassManagerImpl extends BshClassManager
 		
 		absoluteClassCache.put("String", java.lang.String.class);
 		absoluteClassCache.put("Integer", java.lang.Integer.class);
+		absoluteClassCache.put("Character", java.lang.Character.class);
 		absoluteClassCache.put("StringBuffer", java.lang.StringBuffer.class);
 		absoluteClassCache.put("Exception", java.lang.Exception.class);
 		absoluteClassCache.put("IOException", java.io.IOException.class);
@@ -191,6 +192,7 @@ public class ClassManagerImpl extends BshClassManager
 		absoluteClassCache.put("ImageConstants", Class.forName("eu.irreality.age.ImageConstants"));
 		absoluteClassCache.put("ColoredSwingClient", Class.forName("eu.irreality.age.ColoredSwingClient"));
 		absoluteClassCache.put("AGESoundClient", Class.forName("eu.irreality.age.AGESoundClient"));
+		absoluteClassCache.put("Messages", Class.forName("eu.irreality.age.messages.Messages"));
 		}
 		catch ( ClassNotFoundException cnfe ) { ; }
 		
