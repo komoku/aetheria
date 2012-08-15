@@ -1433,6 +1433,11 @@ de la ventana hasta acabar de cargar.
 	{
 		return true;
 	}
+	
+	public Dimension getScreenSize()
+	{
+		return Toolkit.getDefaultToolkit().getScreenSize();
+	}
 
 
 }

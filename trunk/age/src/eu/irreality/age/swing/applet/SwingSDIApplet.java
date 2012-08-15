@@ -1,5 +1,6 @@
 package eu.irreality.age.swing.applet;
 
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -777,5 +778,24 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow
 		super.repaint(100);
 	}
 
+	/**
+	 * Returns screen size based on the values of screenwidth and screenheight parameters if set
+	 */
+	public Dimension getScreenSize()
+	{
+		int width;
+		int height;
+		String sw = this.getParameter("screenwidth");
+		String sh = this.getParameter("screenheight");
+		if ( sw == null || sh == null ) return null;
+		try
+		{
+			return new Dimension ( Integer.valueOf(sw).intValue() , Integer.valueOf(sh).intValue() );
+		}
+		catch ( NumberFormatException nfe )
+		{
+			return null;
+		}
+	}
 
 }

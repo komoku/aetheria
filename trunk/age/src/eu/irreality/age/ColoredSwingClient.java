@@ -1924,4 +1924,15 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		}
 	}
 	
+	/**
+	 * Returns the dimensions of the screen where the window holding the client is displayed, if available.
+	 * If unavailable (due to, for example, being in an applet and not having the adequate parameters
+	 * or having javascript turned off) then null is returned.
+	 * @return
+	 */
+	public Dimension getScreenSize()
+	{
+		return laVentana.getScreenSize();
+	}
+	
 }
