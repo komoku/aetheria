@@ -169,6 +169,7 @@ public class ClassManagerImpl extends BshClassManager
 		absoluteClassCache.put("StringTokenizer", java.util.StringTokenizer.class);
 		absoluteClassCache.put("TargetError", bsh.TargetError.class);
 		absoluteClassCache.put("Vector", java.util.Vector.class);
+		absoluteClassCache.put("Dimension", java.awt.Dimension.class);
 		
 		try
 		{

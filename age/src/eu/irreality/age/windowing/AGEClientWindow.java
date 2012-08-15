@@ -1,6 +1,8 @@
 package eu.irreality.age.windowing;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Toolkit;
 import java.awt.event.FocusListener;
 
 import javax.swing.JMenuBar;
@@ -63,5 +65,14 @@ public interface AGEClientWindow extends AGELoggingWindow
      * Returns the version of the client window.
      */
     public String getVersion();
+    
+    
+	/**
+	 * Obtains the size of the screen in which the window is being displayed. This can be useful to make layout decisions.
+	 * @return The size of the screen, or null if it cannot be recovered for some reason (e.g. running in an applet with javascript disabled or applet not passing height and width parameters).
+	 */
+	public Dimension getScreenSize();
+
+	
     
 }

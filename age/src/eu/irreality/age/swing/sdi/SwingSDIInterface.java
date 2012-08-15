@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.FocusListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -916,5 +917,10 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 		JPanel glass = (JPanel) getGlassPane();
 		glass.setVisible(false);
 	}
-
+	
+	public Dimension getScreenSize()
+	{
+		return Toolkit.getDefaultToolkit().getScreenSize();
+	}
+	
 }
