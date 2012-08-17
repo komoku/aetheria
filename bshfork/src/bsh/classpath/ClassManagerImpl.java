@@ -195,6 +195,8 @@ public class ClassManagerImpl extends BshClassManager
 		absoluteClassCache.put("ColoredSwingClient", Class.forName("eu.irreality.age.ColoredSwingClient"));
 		absoluteClassCache.put("AGESoundClient", Class.forName("eu.irreality.age.AGESoundClient"));
 		absoluteClassCache.put("Messages", Class.forName("eu.irreality.age.messages.Messages"));
+		absoluteClassCache.put("Weapon", Class.forName("eu.irreality.age.Weapon"));
+		absoluteClassCache.put("Wearable", Class.forName("eu.irreality.age.Wearable"));
 		}
 		catch ( ClassNotFoundException cnfe ) { ; }
 		
