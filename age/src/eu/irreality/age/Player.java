@@ -1556,6 +1556,7 @@ public class Player extends Mobile implements Informador
 			boolean mirado = false;
 			
 			//Paso 0: ponerme [algo de mi inventario]
+			//TODO: This case is very doubtful in multilanguage model, should probably be either removed or made optional (issue #244)
 			if ( command.equalsIgnoreCase( "poner" ) && ParserMethods.refersToEntity(arguments, this, false) ) //the player appears as an argument
 			{
 				if ( !oneTargetAction("wear",arguments,inventory) )
