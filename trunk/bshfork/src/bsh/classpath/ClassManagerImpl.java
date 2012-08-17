@@ -155,6 +155,7 @@ public class ClassManagerImpl extends BshClassManager
 		absoluteClassCache.put("Character", java.lang.Character.class);
 		absoluteClassCache.put("StringBuffer", java.lang.StringBuffer.class);
 		absoluteClassCache.put("Exception", java.lang.Exception.class);
+		absoluteClassCache.put("Throwable", java.lang.Throwable.class);
 		absoluteClassCache.put("IOException", java.io.IOException.class);
 		absoluteClassCache.put("FileNotFoundException", java.io.FileNotFoundException.class);
 		absoluteClassCache.put("System", java.lang.System.class);
