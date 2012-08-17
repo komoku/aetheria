@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -21,6 +22,7 @@ import org.xml.sax.SAXException;
 
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.filemanagement.URLUtils;
+import eu.irreality.age.filemanagement.WorldLoader;
 import eu.irreality.age.i18n.UIMessages;
 
 public class GameInfo implements Serializable
@@ -363,8 +365,22 @@ public class GameInfo implements Serializable
 							System.out.println(ioe);ioe.printStackTrace();
 						}
 					}
+					else if ( fl2[j].getName().endsWith(".agz") )
+					{
+						addInfoFromCompressedFile(fl2[j],result);
+					}
+					
+					
 				}
 			}
+			else if ( worldsSubdirectories[i].isFile() )
+			{
+				if ( worldsSubdirectories[i].getName().endsWith(".agz") )
+				{
+					addInfoFromCompressedFile(worldsSubdirectories[i],result);
+				}
+			}
+			
 		}
 		
 		Object[] objetos = result.toArray();
@@ -376,4 +392,18 @@ public class GameInfo implements Serializable
 		
 	}
 	
+	public static void addInfoFromCompressedFile ( File f , List result )
+	{
+		try
+		{
+			result.add(getGameInfo(WorldLoader.goIntoFileIfCompressed(f.getAbsolutePath())));
+		}
+		catch ( IOException ioe )
+		{
+			System.out.println(ioe);ioe.printStackTrace();
+		}
+	}
+	
 }
+
+
