@@ -640,7 +640,7 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 		int numsalida = aleat.nextInt( nvalid_standard + nvalid_nonstandard );
 		int i,j;
 		i = 0;
-		System.err.println("Room " + this + " numsal " + numsalida);
+		//System.err.println("Room " + this + " numsal " + numsalida);
 		for ( int k = 0 ; k < standardExits.length && k < numsalida ; k++ )
 		{
 			if ( isValidExit( true , i ) ) i++;
