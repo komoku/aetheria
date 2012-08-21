@@ -101,7 +101,18 @@ class Reflect
 						boolean ended = code.run(methodName,object,args,retVal);
 						if ( ended == true && code.getEndBehavior() == ObjectCode.INNER_END_THROWS )
 							throw new InvocationTargetException( new BSHCodeExecutedOKException() );
-						return retVal.getRetVal();
+						
+						Object returnValue = retVal.getRetVal();
+						if ( returnValue == null )
+							returnValue = Primitive.NULL;
+						
+						//this is what they do w/std. method invocations
+						//Class returnType =  
+						//	method.getReturnType();
+						//return Primitive.wrap( returnValue, returnType );
+						
+						return returnValue;
+						//return retVal.getRetVal();
 					}
 					else
 						throw re;
