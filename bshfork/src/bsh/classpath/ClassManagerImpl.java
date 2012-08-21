@@ -151,6 +151,7 @@ public class ClassManagerImpl extends BshClassManager
 		absoluteNonClasses.put("lang","lang");
 		
 		absoluteClassCache.put("String", java.lang.String.class);
+		absoluteClassCache.put("StringBuffer", java.lang.StringBuffer.class);
 		absoluteClassCache.put("Integer", java.lang.Integer.class);
 		absoluteClassCache.put("Character", java.lang.Character.class);
 		absoluteClassCache.put("StringBuffer", java.lang.StringBuffer.class);
@@ -171,6 +172,9 @@ public class ClassManagerImpl extends BshClassManager
 		absoluteClassCache.put("TargetError", bsh.TargetError.class);
 		absoluteClassCache.put("Vector", java.util.Vector.class);
 		absoluteClassCache.put("Dimension", java.awt.Dimension.class);
+		absoluteClassCache.put("Set", java.util.Set.class);
+		absoluteClassCache.put("HashSet", java.util.HashSet.class);
+		absoluteClassCache.put("LinkedHashSet", java.util.LinkedHashSet.class);
 		
 		try
 		{
