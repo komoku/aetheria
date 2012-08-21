@@ -23,7 +23,7 @@ import eu.irreality.age.util.UTF8PropertiesLoader;
 public class Messages 
 {
 	
-	private static Map defaultInstances = new HashMap(); //String (language code) -> Messages
+	private static Map defaultInstances = new HashMap(); //String (language code) -> Messages & World -> Messages
 	
 	private Properties properties;
 	
@@ -148,12 +148,16 @@ public class Messages
 	 */
 	public static Messages getDefaultInstance(World w)
 	{
+		Messages cached = (Messages) defaultInstances.get(w);
+		if ( cached != null ) return cached;
+		
 		String languageCode = null;
 		if ( w != null ) languageCode = w.getLanguage().getLanguageCode();
 		if ( languageCode == null ) languageCode = NaturalLanguage.DEFAULT_LANGUAGE_CODE;
 		//return getDefaultInstance ( languageCode );
 		Messages theInstance = new Messages(getPathForLanguage(languageCode));
 		theInstance.setWorld(w);
+		defaultInstances.put(w,theInstance);
 		return theInstance;
 	}
 	
