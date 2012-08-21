@@ -204,6 +204,11 @@ public class Spanish extends NaturalLanguage
 		base.addDictionaryWord("los");
 		base.addDictionaryWord("las");
 		
+		base.addDictionaryWord("un");
+		base.addDictionaryWord("una");
+		base.addDictionaryWord("unos");
+		base.addDictionaryWord("unas");
+		
 		//"con": avoid confusion with verb "pon"
 		base.addDictionaryWord("con");
 		
