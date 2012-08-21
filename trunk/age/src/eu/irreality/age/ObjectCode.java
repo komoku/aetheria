@@ -8,6 +8,7 @@ import java.util.*;
 import eu.irreality.age.bsh.ExtendedBSHInterpreter;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
+import eu.irreality.age.util.VersionComparator;
 import bsh.*;
 public class ObjectCode
 {
@@ -50,6 +51,34 @@ public class ObjectCode
 	ExtendedBSHInterpreter permanentInterpreter = null;
 	
 	
+	//legacy behavior
+	public static int INNER_END_RETURNS = 0;
+	
+	//new behavior
+	public static int INNER_END_THROWS = 1;
+	
+	//what does an end() called from another BSH method do?
+	private int endBehavior = INNER_END_THROWS;
+	
+	public void setEndBehavior ( int behavior )
+	{
+		endBehavior = behavior;
+	}
+	
+	public int getEndBehavior ( )
+	{
+		return endBehavior;
+	}
+	
+	public void configureEndBehavior ( World w )
+	{
+		if ( new VersionComparator().compare(w.getParserVersion(),"1.2.3") < 0 )
+			setEndBehavior(INNER_END_RETURNS);
+		else
+			setEndBehavior(INNER_END_THROWS);
+	}
+	
+	
 	/**
 	* Version may be [string literal]:
 	* - "EVA" (Ensamblador Virtual de Aetheria)
@@ -62,6 +91,7 @@ public class ObjectCode
 		theCode=code;
 		codeVersion=version;
 		theWorld=world;
+		configureEndBehavior(world);
 	}
 	
 	void resetPermanentInterpreter (  )
@@ -589,6 +619,8 @@ public class ObjectCode
 		theCode = e.getFirstChild().getNodeValue(); //should be a Text
 		
 		theWorld = mundo;
+		
+		configureEndBehavior(mundo);
 		
 	}
 	

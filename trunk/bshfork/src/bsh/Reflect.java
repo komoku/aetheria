@@ -36,7 +36,7 @@ package bsh;
 import java.lang.reflect.*;
 import java.util.Vector;
 
-import eu.irreality.age.Entity;
+import eu.irreality.age.BSHCodeExecutedOKException;
 import eu.irreality.age.ObjectCode;
 import eu.irreality.age.ReturnValue;
 import eu.irreality.age.SupportingCode;
@@ -98,7 +98,9 @@ class Reflect
 					if ( code.existsMethod(methodName,object,args ) )
 					{
 						ReturnValue retVal = new ReturnValue(null);
-						code.run(methodName,object,args,retVal);
+						boolean ended = code.run(methodName,object,args,retVal);
+						if ( ended == true && code.getEndBehavior() == ObjectCode.INNER_END_THROWS )
+							throw new InvocationTargetException( new BSHCodeExecutedOKException() );
 						return retVal.getRetVal();
 					}
 					else
