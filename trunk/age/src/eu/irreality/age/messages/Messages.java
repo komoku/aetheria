@@ -161,6 +161,15 @@ public class Messages
 		return theInstance;
 	}
 	
+	/**
+	 * Removes entry for world w from the cache if it is present.
+	 * @param w
+	 */
+	public static void clearCache ( World w )
+	{
+		defaultInstances.remove(w);
+	}
+	
 	public void setMessage ( String key , String message )
 	{
 		properties.setProperty( key , message );

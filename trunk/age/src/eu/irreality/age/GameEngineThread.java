@@ -8,6 +8,7 @@ import javax.swing.*;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
 import eu.irreality.age.i18n.UIMessages;
+import eu.irreality.age.messages.Messages;
 import eu.irreality.age.swing.applet.SwingSDIApplet;
 import eu.irreality.age.swing.sdi.SwingSDIInterface;
 import eu.irreality.age.windowing.AGEClientWindow;
@@ -380,6 +381,7 @@ public class GameEngineThread extends Thread
 			((SwingSDIApplet)ventana).saveAndFreeResources();
 		}
 		exitFlag = true;
+		Messages.clearCache(theWorld);
 		theWorld = null;
 		ventana = null;
 		serverConfigurationMenu = null;
