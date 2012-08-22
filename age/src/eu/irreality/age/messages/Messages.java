@@ -48,6 +48,15 @@ public class Messages
 		this.world = w;
 	}
 	
+	/*
+	public static void printReport()
+	{
+		System.err.println(defaultInstances);
+		System.err.println(defaultInstances.keySet());
+		System.err.println(defaultInstances.values());
+	}
+	*/
+	
 	public Messages(String path)
 	{	
 		properties = new Properties();
@@ -77,6 +86,7 @@ public class Messages
 	    //1.5 compatible:
 	    //TODO: apply this cheap hack only if java version < 1.6
 	    UTF8PropertiesLoader.loadProperties(properties,is,"UTF-8");
+	    is.close();
 	}
 	
 	private String getEntryForKey ( String key )
@@ -158,6 +168,8 @@ public class Messages
 		Messages theInstance = new Messages(getPathForLanguage(languageCode));
 		theInstance.setWorld(w);
 		defaultInstances.put(w,theInstance);
+		//System.err.println("Caching: " + w + "->" + theInstance);
+		//new Throwable().printStackTrace();
 		return theInstance;
 	}
 	
@@ -167,6 +179,14 @@ public class Messages
 	 */
 	public static void clearCache ( World w )
 	{
+		Messages cached = (Messages) defaultInstances.get(w);
+		if ( cached != null )
+		{
+			//System.err.println("Found cached entry: " + cached + " for world " + w);
+			cached.setWorld(null);
+		}
+		//else
+		//	System.err.println("Not found cached entry for world " + w);
 		defaultInstances.remove(w);
 	}
 	

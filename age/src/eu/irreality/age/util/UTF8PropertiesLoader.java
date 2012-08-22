@@ -47,6 +47,8 @@ public class UTF8PropertiesLoader
 		String propertiesAsString = out.toString();
 		ByteArrayInputStream bais = new ByteArrayInputStream(propertiesAsString.getBytes("ISO-8859-1"));
 		p.load(bais);
+		bais.close();
+		in.close();
 	}
 	
 }
