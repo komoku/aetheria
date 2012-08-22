@@ -1261,6 +1261,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	
 	public void removeFrames()
 	{
+		if ( isDisconnected() ) return;
 		try {
 			SwingUtilities.invokeAndWait( new Runnable() 
 			{
@@ -1296,6 +1297,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	
 	public void addFrame ( final int position , final int size )
 	{
+		if ( isDisconnected() ) return;
 		try {
 			SwingUtilities.invokeAndWait( new Runnable() 
 			{
@@ -1416,6 +1418,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	
 	public void showImageInFrame ( Icon icon , int position , int scalingMode )
 	{
+		if ( deactivated ) return;
 		ImagePanel theFrame = getFrame ( position );
 		if ( theFrame == null ) addFrame ( position , 200 );
 		if ( icon == null )
@@ -1450,6 +1453,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	
 	public void showImageInBackground ( URL location )
 	{
+		if ( deactivated ) return;
 		if ( location == null ) 
 			elAreaTexto.setBackgroundImage(null);
 		else
@@ -1513,6 +1517,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	
 	public void setPrompts ( final String left , final String right )
 	{
+		if ( isDisconnected() ) return;
 		try 
 		{
 			SwingUtilities.invokeAndWait( new Runnable() 
@@ -1557,6 +1562,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	
 	public void setInputFieldBackground ( final Color color )
 	{
+		if ( isDisconnected() ) return;
 		if ( SwingUtilities.isEventDispatchThread() )
 		{
 			elCampoTexto.setBackground(color);
@@ -1576,6 +1582,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	
 	public void setOutputAreaBackground ( final Color color )
 	{
+		if ( isDisconnected() ) return;
 		if ( SwingUtilities.isEventDispatchThread() )
 		{
 			elAreaTexto.setBackground(color);
@@ -1595,6 +1602,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	
 	public void setScrollBarBackground ( final Color color )
 	{
+		if ( isDisconnected() ) return;
 		final JScrollBar jsb = elScrolling.getVerticalScrollBar();
 		if ( SwingUtilities.isEventDispatchThread() )
 		{

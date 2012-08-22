@@ -381,7 +381,23 @@ public class GameEngineThread extends Thread
 			((SwingSDIApplet)ventana).saveAndFreeResources();
 		}
 		exitFlag = true;
+
+		try 
+		{
+			//wait for the world to end
+			this.join();
+		} 
+		catch (InterruptedException e) 
+		{
+			e.printStackTrace();
+		}
+		
+		//System.err.println("BEFORE");
+		//Messages.printReport();
 		Messages.clearCache(theWorld);
+		//System.err.println("Cache cleared for world " + theWorld + ".\n");
+		//System.err.println("AFTER");
+		//Messages.printReport();
 		theWorld = null;
 		ventana = null;
 		serverConfigurationMenu = null;
