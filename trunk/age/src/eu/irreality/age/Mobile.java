@@ -2204,41 +2204,67 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				Inventory limbs = getFlattenedPartsInventory();
 				//cosas que blandes
 				Inventory wieldedWeapons = getWieldedWeapons(); //this shadows the homonymous attribute
+				Set alreadyShown = new HashSet(); //para prevenir que armas se muestren dos veces si se llevan en varios miembros (is this really necessary?)
 				if ( wieldedWeapons != null )
 					for ( int i = 0 ; i < wieldedWeapons.size() ; i++ )
 					{
 						if ( wieldedWeapons.elementAt(i) != null )
 						{
-							/*
-							escribir( io.getColorCode("information") + "Llevas " + (wieldedWeapons.elementAt(i)).constructName2True(1,(wieldedWeapons.elementAt(i)).getState())  + " en " + (wieldingLimbs.elementAt(i)).constructName2True(1,(wieldingLimbs.elementAt(i)).getState()) + ".\n" + io.getColorCode("reset") );
-							 */
 							Item arma = wieldedWeapons.elementAt(i);
-							//buscar miembro que blande el arma
+							
+							if ( alreadyShown.contains(arma) ) continue; //this wielded item was already shown (worn in several limbs)
+							else alreadyShown.add(arma);
+							
+							Vector miembrosOcupados = new Vector();
+							//buscar miembros que blanden el arma
 							for ( int j = 0 ; j < limbs.size() ; j++ )
 							{
 								Item miembro = limbs.elementAt(j);
 								if ( miembro.getRelationshipPropertyValueAsBoolean(arma,"wields") )
 								{
-									write( io.getColorCode("information") + 
+									miembrosOcupados.add(miembro);
+									
+								//	write( io.getColorCode("information") + 
 									//"Blandes " + arma.constructName2OneItem(this)  + " en " + miembro.constructName2OneItem(this) + ".\n" 
-									mundo.getMessages().getMessage("you.are.wielding.item","$item",arma.constructName2OneItem(this),"$limbs",miembro.constructName2OneItem(this),new Object[]{this,arma,miembro})
-									+ io.getColorCode("reset") );
+								//	mundo.getMessages().getMessage("you.are.wielding.item","$item",arma.constructName2OneItem(this),"$limbs",miembro.constructName2OneItem(this),new Object[]{this,arma,miembro})
+								//	+ io.getColorCode("reset") );
 									//break;
 								}
 							}
+							//output
+							String toOutput="";
+							for ( int j = 0 ; j < miembrosOcupados.size() ; j++ )
+							{
+								Item limb = (Item)miembrosOcupados.get(j);
+								if ( j == 0 )
+									toOutput += limb.constructName2OneItem(this);
+								else if ( j > 0 && j == miembrosOcupados.size() - 1 )
+									toOutput += " y " + limb.constructName2OneItem(this);
+								else
+									toOutput += ", " + limb.constructName2OneItem(this);
+							}
+							write( io.getColorCode("information") + 
+							mundo.getMessages().getMessage("you.are.wielding.item","$item",arma.constructName2OneItem(this),"$limbs",toOutput,new Object[]{this,arma,toOutput})
+							+ io.getColorCode("reset") );
+							
+							//old:
+							/*
+							write( io.getColorCode("information") + 
+									//"Blandes " + arma.constructName2OneItem(this)  + " en " + miembro.constructName2OneItem(this) + ".\n" 
+									mundo.getMessages().getMessage("you.are.wielding.item","$item",arma.constructName2OneItem(this),"$limbs",miembro.constructName2OneItem(this),new Object[]{this,arma,miembro})
+									+ io.getColorCode("reset") );
+								//break;
+							 */
 						}
 					}
 				//cosas que llevas puestas
 				Inventory wornItems = getWornItems(); //this shadows the homonymous attribute
-				Set alreadyShown = new HashSet(); //para prevenir que prendas se muestren dos veces si se llevan en varios miembros
+				alreadyShown = new HashSet(); //para prevenir que prendas se muestren dos veces si se llevan en varios miembros
 				if ( wornItems != null )
 					for ( int i = 0 ; i < wornItems.size() ; i++ )
 					{
 						if ( wornItems.elementAt(i) != null )
 						{
-							/*
-							escribir( io.getColorCode("information") + "Llevas " + (wieldedWeapons.elementAt(i)).constructName2True(1,(wieldedWeapons.elementAt(i)).getState())  + " en " + (wieldingLimbs.elementAt(i)).constructName2True(1,(wieldingLimbs.elementAt(i)).getState()) + ".\n" + io.getColorCode("reset") );
-							 */
 							Item vestido = wornItems.elementAt(i);
 							
 							if ( alreadyShown.contains(vestido) ) continue; //this worn item was already shown (worn in several limbs)
