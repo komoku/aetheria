@@ -454,7 +454,7 @@ public class CharPanel extends EntityPanel implements BeanShellCodeHolder
 		tfMaxMP.setText(e.getAttribute("maxmp"));
 		
 		//gender combo box
-		if ( e.getAttribute("gender").equals("0") )
+		if ( e.getAttribute("gender").equals("false") || e.getAttribute("gender").equals("0") )
 			genderComboBox.setSelectedIndex(1);
 		else
 			genderComboBox.setSelectedIndex(0);
