@@ -59,6 +59,7 @@ public class Matches
 		for ( Iterator it = iterator() ; it.hasNext() ; )
 		{
 			Match next = (Match)it.next();
+			//System.err.println(next+"\n");
 			result.add(next.getPath());
 		}
 		return result;

@@ -7684,5 +7684,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	{
 		setRoom(r);
 	}
+	
+
 
 }

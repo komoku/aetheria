@@ -180,6 +180,7 @@ public class EntityList
 		//java.util.Vector resultado = new java.util.Vector ( );
 		Matches resultado = new Matches();
 		java.util.Vector path = new java.util.Vector ( );
+		//System.err.println("pmwr " + arguments + " false\n");
 		return patternMatchWithRecursion ( arguments , singOrPlur , path , resultado ).toPathVector();
 	}
 	
