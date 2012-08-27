@@ -4555,6 +4555,11 @@ public class Player extends Mobile implements Informador
 	}
 
 
+	//temporary debugging method
+	public Mentions getMentions()
+	{
+		return mentions;
+	}
 
 }
 

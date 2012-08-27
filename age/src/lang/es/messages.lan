@@ -387,7 +387,7 @@ cant.wear.without.limbs=No puedes ponerte ropa si no tienes ningún miembro.\n
 you.have.free.limb=Tienes libre $limb.\n
 
 #Mostrar miembro ocupado por blandir $item
-you.use.limb.wielding=Estás blandiendo $item en $limb.\n
+you.use.limb.wielding=En $limb ya estás blandiendo $item.\n
 
 #Mostrar miembro ocupado por vestir $item
 you.use.limb.wearing=Llevas puesto $item en $limb.\n

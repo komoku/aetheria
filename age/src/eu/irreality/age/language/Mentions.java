@@ -29,6 +29,19 @@ public class Mentions
 	//plural
 	private String lastMentionedObjectP="";
 
+	
+	
+	public String toString() 
+	{
+		return "Mentions [lastMentionedVerb=" + lastMentionedVerb
+				+ ", lastMentionedObjectMS=" + lastMentionedObjectMS
+				+ ", lastMentionedObjectFS=" + lastMentionedObjectFS
+				+ ", lastMentionedObjectS=" + lastMentionedObjectS
+				+ ", lastMentionedObjectMP=" + lastMentionedObjectMP
+				+ ", lastMentionedObjectFP=" + lastMentionedObjectFP
+				+ ", lastMentionedObjectP=" + lastMentionedObjectP + "]";
+	}
+
 	/**
 	 * @return the lastMentionedVerb
 	 */
