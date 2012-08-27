@@ -95,6 +95,7 @@ class Reflect
 				if ( CALL_BSH_ENTITY_METHODS && object instanceof SupportingCode ) 
 				{
 					ObjectCode code = ((SupportingCode)object).getAssociatedCode();
+					if ( code == null ) throw re; //this particular object doesn't have any beanshell code
 					if ( code.existsMethod(methodName,object,args ) )
 					{
 						ReturnValue retVal = new ReturnValue(null);
