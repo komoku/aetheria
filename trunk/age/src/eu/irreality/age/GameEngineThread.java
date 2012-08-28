@@ -382,6 +382,8 @@ public class GameEngineThread extends Thread
 		}
 		exitFlag = true;
 
+		//if there are more deadlock problems with this, we could always create a "world end thread" with the following code (including join and all), and run it here,
+		//rather than keep running in the event dispatching thread:
 		try 
 		{
 			//wait for the world to end
