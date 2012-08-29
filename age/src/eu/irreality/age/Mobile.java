@@ -14,6 +14,7 @@ import javax.sound.midi.Sequencer;
 
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
+import eu.irreality.age.matching.Matches;
 import eu.irreality.age.messages.Messages;
 import eu.irreality.age.util.Conversions;
 public class Mobile extends Entity implements Descriptible , SupportingCode , Nameable, UniqueNamed
@@ -1973,7 +1974,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 
 
-			Vector patternMatchVectorSing = habitacionActual.mobsInRoom.patternMatch ( elSujeto , false ); //en singular
+			Vector patternMatchVectorSing = habitacionActual.mobsInRoom.patternMatch ( elSujeto , false ).toEntityVector(); //en singular
 			if ( patternMatchVectorSing != null && patternMatchVectorSing.size() > 0 )
 			{
 				elSujetoEnSi = (Mobile)patternMatchVectorSing.elementAt(0);
@@ -1996,7 +1997,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 				Debug.println("Resto's string: " + resto);
 
-				Vector patternMatchVectorSing2 = habitacionActual.mobsInRoom.patternMatch ( resto , false ); //en singular
+				Vector patternMatchVectorSing2 = habitacionActual.mobsInRoom.patternMatch ( resto , false ).toEntityVector(); //en singular
 				if ( patternMatchVectorSing2 != null && patternMatchVectorSing2.size() > 0 )
 				{
 					elObjetoEnSi = (Mobile)patternMatchVectorSing2.elementAt(0);
@@ -2157,8 +2158,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			//ergo, tenemos que buscar en fuera a ver si hay un bicho y decirle dentro.
 
 			MobileList ml = getRoom().getMobiles();
-			Vector patternMatchVectorSing = ml.patternMatch ( fuera , false ); //en singular
-			Vector patternMatchVectorPlur = ml.patternMatch ( fuera , true ); //en plural
+			Vector patternMatchVectorSing = ml.patternMatch ( fuera , false ).toEntityVector(); //en singular
+			Vector patternMatchVectorPlur = ml.patternMatch ( fuera , true ).toEntityVector(); //en plural
 
 			if ( patternMatchVectorSing.size() > 0 )
 			{
@@ -5203,7 +5204,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			//determinar que miembros cumplen el requerimiento, poniendolos en matchingLimbs	
 			while ( st.hasMoreTokens() )
 			{
-				Vector temp = ourLimbs.patternMatch ( st.nextToken() , false );
+				Vector temp = ourLimbs.patternMatch ( st.nextToken() , false ).toEntityVector();
 				for ( int l = 0 ; l < temp.size() ; l++ )
 					if ( !matchingLimbs.contains( temp.elementAt(l) ) )
 						matchingLimbs.add(temp.elementAt(l) );
@@ -5391,7 +5392,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			//determinar que miembros cumplen el requerimiento, poniendolos en matchingLimbs	
 			while ( st.hasMoreTokens() )
 			{
-				Vector temp = ourLimbs.patternMatch ( st.nextToken() , false );
+				Vector temp = ourLimbs.patternMatch ( st.nextToken() , false ).toEntityVector();
 				for ( int l = 0 ; l < temp.size() ; l++ )
 					if ( !matchingLimbs.contains( temp.elementAt(l) ) )
 						matchingLimbs.add(temp.elementAt(l) );
@@ -6173,8 +6174,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 		boolean mirado = false;
 
-		patternMatchVectorSingSing = inv1.patternMatchTwo ( inv2 , arguments , false , false ); //en singular y singular
-		patternMatchVectorPlurSing = inv1.patternMatchTwo ( inv2 , arguments , true , false ); //en plural y singular
+		patternMatchVectorSingSing = Matches.toEntityVectors(inv1.patternMatchTwo ( inv2 , arguments , false , false )); //en singular y singular
+		patternMatchVectorPlurSing = Matches.toEntityVectors(inv1.patternMatchTwo ( inv2 , arguments , true , false )); //en plural y singular
 
 
 
@@ -6437,8 +6438,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 		//Debug.println("cogerItem args: " + args + "Inv " + inv );
 
-		Vector patternMatchVectorSing = inv.patternMatch ( args , false ); //en singular
-		Vector patternMatchVectorPlur = inv.patternMatch ( args , true ); //en plural
+		Vector patternMatchVectorSing = inv.patternMatch ( args , false ).toEntityVector(); //en singular
+		Vector patternMatchVectorPlur = inv.patternMatch ( args , true ).toEntityVector(); //en plural
 
 		if ( patternMatchVectorSing.size() > 0 ) //cogemos un objeto
 		{
@@ -6757,8 +6758,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 		if ( inv == null || inv.isEmpty() ) return false;
 
-		Vector patternMatchVectorSing = inv.patternMatch ( arguments , false ); //en singular
-		Vector patternMatchVectorPlur = inv.patternMatch ( arguments , true ); //en plural
+		Vector patternMatchVectorSing = inv.patternMatch ( arguments , false ).toEntityVector(); //en singular
+		Vector patternMatchVectorPlur = inv.patternMatch ( arguments , true ).toEntityVector(); //en plural
 
 
 		if ( patternMatchVectorSing.size() > 0 && !(((Item)patternMatchVectorSing.elementAt(0)).getDescription(this).equals("") ) ) //miramos un objeto
@@ -6837,8 +6838,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 		if ( ml == null || ml.isEmpty() ) return false;
 
-		Vector patternMatchVectorSing = ml.patternMatch ( arguments , false ); //en singular
-		Vector patternMatchVectorPlur = ml.patternMatch ( arguments , true ); //en plural
+		Vector patternMatchVectorSing = ml.patternMatch ( arguments , false ).toEntityVector(); //en singular
+		Vector patternMatchVectorPlur = ml.patternMatch ( arguments , true ).toEntityVector(); //en plural
 
 
 		if ( patternMatchVectorSing.size() > 0 && !(((Mobile)patternMatchVectorSing.elementAt(0)).getDescription(this)).equals("") ) //miramos un objeto
@@ -7332,10 +7333,10 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		if ( el1 == null || el1.isEmpty() || el2 == null || el2.isEmpty() ) return result;
 
 
-		Vector[] patternMatchVectorSingSing = el1.patternMatchTwo ( el2 , arguments , false , false ); //en singular y singular
-		Vector[] patternMatchVectorSingPlur = el1.patternMatchTwo ( el2 , arguments , false , true ); //en singular y plural
-		Vector[] patternMatchVectorPlurSing = el1.patternMatchTwo ( el2 , arguments , true , false ); //en plural y singular
-		Vector[] patternMatchVectorPlurPlur = el1.patternMatchTwo ( el2 , arguments , true , true ); //en plural y plural
+		Vector[] patternMatchVectorSingSing = Matches.toEntityVectors(el1.patternMatchTwo ( el2 , arguments , false , false )); //en singular y singular
+		Vector[] patternMatchVectorSingPlur = Matches.toEntityVectors(el1.patternMatchTwo ( el2 , arguments , false , true )); //en singular y plural
+		Vector[] patternMatchVectorPlurSing = Matches.toEntityVectors(el1.patternMatchTwo ( el2 , arguments , true , false )); //en plural y singular
+		Vector[] patternMatchVectorPlurPlur = Matches.toEntityVectors(el1.patternMatchTwo ( el2 , arguments , true , true )); //en plural y plural
 
 		if ( patternMatchVectorSingSing != null && patternMatchVectorSingSing[0].size() > 0 )
 		{

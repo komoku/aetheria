@@ -24,14 +24,31 @@ public class Matches
 	
 	private List theMatches = new ArrayList();
 	
+	private boolean sorted = false; //is the list sorted?
+	
+	private void sortIfUnsorted()
+	{
+		if ( !sorted )
+			Collections.sort(theMatches);
+		sorted = true;
+	}
+	
 	public void addMatch ( Match m )
 	{
 		theMatches.add(m);
+		sorted = false;
+	}
+	
+	public int getBestPriority()
+	{
+		sortIfUnsorted();
+		if ( theMatches.isEmpty() ) return 0;
+		else return ((Match)theMatches.get(0)).getPriority();
 	}
 	
 	public Iterator iterator()
 	{
-		Collections.sort(theMatches);
+		sortIfUnsorted();
 		return theMatches.iterator();
 	}
 	
@@ -61,6 +78,46 @@ public class Matches
 			Match next = (Match)it.next();
 			//System.err.println(next+"\n");
 			result.add(next.getPath());
+		}
+		return result;
+	}
+	
+	/**
+	 * For when we don't care about paths, just about plain entities (non-recursive cases).
+	 * @return
+	 */
+	public Vector toEntityVector()
+	{
+		Vector result = new Vector();
+		for ( Iterator it = iterator() ; it.hasNext() ; )
+		{
+			Match next = (Match)it.next();
+			result.add(next.getPath().get(0));
+		}
+		return result;
+	}
+	
+	public int size()
+	{
+		return theMatches.size();
+	}
+	
+	public static Vector[] toEntityVectors( Matches[] ma )
+	{
+		Vector[] result = new Vector[ma.length];
+		for ( int i = 0 ; i < ma.length ; i++ )
+		{
+			result[i] = ma[i].toEntityVector();
+		}
+		return result;
+	}
+	
+	public static Vector[] toPathVectors( Matches[] ma )
+	{
+		Vector[] result = new Vector[ma.length];
+		for ( int i = 0 ; i < ma.length ; i++ )
+		{
+			result[i] = ma[i].toPathVector();
 		}
 		return result;
 	}

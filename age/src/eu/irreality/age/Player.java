@@ -14,6 +14,7 @@ import bsh.TargetError;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
 import eu.irreality.age.language.Mentions;
+import eu.irreality.age.matching.Matches;
 import eu.irreality.age.util.VersionComparator;
 /**
  * Clase del personaje, jugador.
@@ -74,6 +75,7 @@ public class Player extends Mobile implements Informador
 	
 	//a cuántas entidades se refirió el comando anterior
 	private boolean matchedOneEntity = false;
+	private int oneEntityPriority = 0;
 	private boolean matchedTwoEntities = false;
 	private boolean matchedOneEntityPermissive = false;
 	private boolean matchedTwoEntitiesPermissive = false;
@@ -788,11 +790,17 @@ public class Player extends Mobile implements Informador
 		allMatches.addAll(matches_pp);
 
 		matchedTwoEntities = ( allMatches.size() > 0 );
-
-		Vector matches_s = ParserMethods.refersToEntityInRecursive ( arguments,posiblesObjetivos,false );
-		Vector matches_p = ParserMethods.refersToEntityInRecursive ( arguments,posiblesObjetivos,true );
+		
+		Matches matches_s = ParserMethods.refersToEntityInRecursive ( arguments,posiblesObjetivos,false );
+		Matches matches_p = ParserMethods.refersToEntityInRecursive ( arguments,posiblesObjetivos,true );
 		
 		matchedOneEntity = ( matches_s.size() > 0 || matches_p.size() > 0 );
+		
+		if ( matches_s.getBestPriority() == 0 )
+			oneEntityPriority = matches_p.getBestPriority();
+		else if ( matches_p.getBestPriority() == 0 )
+			oneEntityPriority = matches_s.getBestPriority();
+		else oneEntityPriority = Math.min(matches_s.getBestPriority(),matches_p.getBestPriority());
 		
 		//let's see if this works.
 		ejecutado = resolveParseCommandForTwoEntities ( posiblesObjetivos , arguments , arguments , false );
@@ -856,8 +864,8 @@ public class Player extends Mobile implements Informador
 
 
 
-		Vector patternMatchVectorSing = ParserMethods.refersToEntityIn ( arguments,posiblesObjetivos,false );
-		Vector patternMatchVectorPlur = ParserMethods.refersToEntityIn ( arguments,posiblesObjetivos,true );
+		Vector patternMatchVectorSing = ParserMethods.refersToEntityIn ( arguments,posiblesObjetivos,false ).toEntityVector();
+		Vector patternMatchVectorPlur = ParserMethods.refersToEntityIn ( arguments,posiblesObjetivos,true ).toEntityVector();
 
 		//primero vemos si hay una definicion especifica del comando en la habitacion, con o sin argumentos
 		//si la definicion esta especificada sin argumentos y hay argumentos, los dejamos en el data segment.
@@ -1332,8 +1340,8 @@ public class Player extends Mobile implements Informador
 					patternMatchVectorPlur = new Vector();
 					if ( habitacionActual.itemsInRoom != null  )
 					{
-						patternMatchVectorSing = habitacionActual.itemsInRoom.patternMatch ( arguments , false ); //en singular
-						patternMatchVectorPlur = habitacionActual.itemsInRoom.patternMatch ( arguments , true ); //en plural
+						patternMatchVectorSing = habitacionActual.itemsInRoom.patternMatch ( arguments , false ).toEntityVector(); //en singular
+						patternMatchVectorPlur = habitacionActual.itemsInRoom.patternMatch ( arguments , true ).toEntityVector(); //en plural
 					}
 					if ( patternMatchVectorSing.size() > 0 ) //miramos un objeto
 					{
@@ -1371,8 +1379,8 @@ public class Player extends Mobile implements Informador
 					patternMatchVectorPlur = new Vector();
 					if ( inventory != null  )
 					{
-						patternMatchVectorSing = inventory.patternMatch ( arguments , false ); //en singular
-						patternMatchVectorPlur = inventory.patternMatch ( arguments , true ); //en plural
+						patternMatchVectorSing = inventory.patternMatch ( arguments , false ).toEntityVector(); //en singular
+						patternMatchVectorPlur = inventory.patternMatch ( arguments , true ).toEntityVector(); //en plural
 					}
 					if ( patternMatchVectorSing.size() > 0  ) //miramos un objeto
 					{
@@ -1449,8 +1457,8 @@ public class Player extends Mobile implements Informador
 					patternMatchVectorPlur = new Vector();
 					if ( habitacionActual.itemsInRoom != null  )
 					{
-						patternMatchVectorSing = habitacionActual.itemsInRoom.patternMatch ( arguments , false ); //en singular
-						patternMatchVectorPlur = habitacionActual.itemsInRoom.patternMatch ( arguments , true ); //en plural
+						patternMatchVectorSing = habitacionActual.itemsInRoom.patternMatch ( arguments , false ).toEntityVector(); //en singular
+						patternMatchVectorPlur = habitacionActual.itemsInRoom.patternMatch ( arguments , true ).toEntityVector(); //en plural
 					}
 					if ( patternMatchVectorSing.size() > 0 /* && !(((Item)patternMatchVectorSing.elementAt(0)).getDescription(this).equals("")) */ ) //miramos un objeto
 					{
@@ -1489,8 +1497,8 @@ public class Player extends Mobile implements Informador
 					patternMatchVectorPlur = new Vector();
 					if ( inventory != null  )
 					{
-						patternMatchVectorSing = inventory.patternMatch ( arguments , false ); //en singular
-						patternMatchVectorPlur = inventory.patternMatch ( arguments , true ); //en plural
+						patternMatchVectorSing = inventory.patternMatch ( arguments , false ).toEntityVector(); //en singular
+						patternMatchVectorPlur = inventory.patternMatch ( arguments , true ).toEntityVector(); //en plural
 					}
 					if ( patternMatchVectorSing.size() > 0 /* && !(((Item)patternMatchVectorSing.elementAt(0)).getDescription(this).equals("") ) */ ) //miramos un objeto
 					{
@@ -2008,7 +2016,7 @@ public class Player extends Mobile implements Informador
 		{
 			String whatToSay = ((String)commandQueue.elementAt(0)).trim();
 			commandQueue.removeElementAt(0);
-			Mobile whomToSayItTo = (Mobile) ParserMethods.refersToEntityIn(command, this.getAllWorldMobiles(), false).get(0);
+			Mobile whomToSayItTo = (Mobile) ParserMethods.refersToEntityIn(command, this.getAllWorldMobiles(), false).toEntityVector().get(0);
 			return execCommand("decir a " + whomToSayItTo.getBestReferenceName(false) + "\"" + whatToSay + "\"");
 		}
 
@@ -2542,11 +2550,31 @@ public class Player extends Mobile implements Informador
 		List matches_sp = ParserMethods.parseReferencesToEntitiesInRecursive  ( arguments,posiblesObjetivos,posiblesObjetivos,false,true);
 		List matches_ps = ParserMethods.parseReferencesToEntitiesInRecursive  ( arguments,posiblesObjetivos,posiblesObjetivos,true,false);
 		List matches_pp = ParserMethods.parseReferencesToEntitiesInRecursive  ( arguments,posiblesObjetivos,posiblesObjetivos,true,true);
+				
 		List allMatches = new ArrayList();
 		allMatches.addAll(matches_ss);
 		allMatches.addAll(matches_sp);
 		allMatches.addAll(matches_ps);
 		allMatches.addAll(matches_pp);
+		
+		
+		//detect the case where the command does match two entities, but it matches one entity even better
+		//e.g. item1 "libro verde", "libro", "verde"
+		//item2 "libro rojo", "libro", "rojo"
+		//"coger el libro rojo" matches (item1,item2) with priority 2, but it matches item2 only with priority 1 (better).
+		if ( !allMatches.isEmpty() && matchedOneEntity )
+		{
+			int priority = ((SentenceInfo)allMatches.get(0)).getPriority();
+			System.err.println("Args: " + arguments);
+			System.err.println("One entity prio: " + oneEntityPriority);
+			System.err.println("Two entity prio: " + ((SentenceInfo)allMatches.get(0)).getPriority() + " for " + allMatches.get(0));
+			if ( oneEntityPriority > 0 && priority > oneEntityPriority ) //the command matches two entities, but the best match is for one entity. Don't exec parseCommands for two entities.
+			{
+				matchedTwoEntities = false;
+				matchedTwoEntitiesPermissive = false;
+				return false;
+			}
+		}
 
 		matchedTwoEntitiesPermissive = ( allMatches.size() > 0 );
 
@@ -2910,8 +2938,8 @@ public class Player extends Mobile implements Informador
 
 		boolean ejecutado = false;
 
-		Vector objetivos_s = ParserMethods.refersToEntityInRecursive ( arguments,posiblesObjetivos,false );
-		Vector objetivos_p = ParserMethods.refersToEntityInRecursive ( arguments,posiblesObjetivos,true );
+		Vector objetivos_s = ParserMethods.refersToEntityInRecursive ( arguments,posiblesObjetivos,false ).toPathVector();
+		Vector objetivos_p = ParserMethods.refersToEntityInRecursive ( arguments,posiblesObjetivos,true ).toPathVector();
 		
 		//objetivos_s has the form: [ [pearl,chest,box] , [pearl,bottle] ]
 		//(each component is a path to a matched object, only the 1st (top priority) is really used).
@@ -3156,8 +3184,8 @@ public class Player extends Mobile implements Informador
 
 		boolean ejecutado = false;
 
-		Vector objetivos_s = ParserMethods.refersToEntityIn ( arguments,posiblesObjetivos,false );
-		Vector objetivos_p = ParserMethods.refersToEntityIn ( arguments,posiblesObjetivos,true );
+		Vector objetivos_s = ParserMethods.refersToEntityIn ( arguments,posiblesObjetivos,false ).toEntityVector();
+		Vector objetivos_p = ParserMethods.refersToEntityIn ( arguments,posiblesObjetivos,true ).toEntityVector();
 
 		//TODO
 		//we can now migrate this to refersToEntityInRecursive. This returns a Vector of Vectors with paths to stuff.
@@ -3830,10 +3858,10 @@ public class Player extends Mobile implements Informador
 
 		boolean mirado = false;			
 
-		Vector[] patternMatchVectorSingSing = ml.patternMatchTwo ( i , arguments , false , false ); //en singular y singular
-		Vector[] patternMatchVectorSingPlur = ml.patternMatchTwo ( i , arguments , false , true ); //en singular y plural
-		Vector[] patternMatchVectorPlurSing = ml.patternMatchTwo ( i , arguments , true , false ); //en plural y singular
-		Vector[] patternMatchVectorPlurPlur = ml.patternMatchTwo ( i , arguments , true , true ); //en plural y plural
+		Vector[] patternMatchVectorSingSing = Matches.toEntityVectors(ml.patternMatchTwo ( i , arguments , false , false )); //en singular y singular
+		Vector[] patternMatchVectorSingPlur = Matches.toEntityVectors(ml.patternMatchTwo ( i , arguments , false , true )); //en singular y plural
+		Vector[] patternMatchVectorPlurSing = Matches.toEntityVectors(ml.patternMatchTwo ( i , arguments , true , false )); //en plural y singular
+		Vector[] patternMatchVectorPlurPlur = Matches.toEntityVectors(ml.patternMatchTwo ( i , arguments , true , true )); //en plural y plural
 
 		if ( patternMatchVectorSingSing != null && patternMatchVectorSingSing[0].size() > 0 ) //atacamos un bicho con un arma
 		{
@@ -3858,8 +3886,8 @@ public class Player extends Mobile implements Informador
 
 		else //no se especifica bicho y arma. Mirar si se especifica uno de ellos, al menos.
 		{
-			Vector patternMatchVectorSingBicho = ml.patternMatch ( arguments , false );
-			Vector patternMatchVectorSingArma = i.patternMatch ( arguments , false );
+			Vector patternMatchVectorSingBicho = ml.patternMatch ( arguments , false ).toEntityVector();
+			Vector patternMatchVectorSingArma = i.patternMatch ( arguments , false ).toEntityVector();
 
 			if ( patternMatchVectorSingBicho != null && patternMatchVectorSingBicho.size() > 0 )
 			{
@@ -3981,10 +4009,10 @@ public class Player extends Mobile implements Informador
 
 		boolean mirado = false;			
 
-		Vector[] patternMatchVectorSingSing = ml.patternMatchTwo ( i , arguments , false , false ); //en singular y singular
-		Vector[] patternMatchVectorSingPlur = ml.patternMatchTwo ( i , arguments , false , true ); //en singular y plural
-		Vector[] patternMatchVectorPlurSing = ml.patternMatchTwo ( i , arguments , true , false ); //en plural y singular
-		Vector[] patternMatchVectorPlurPlur = ml.patternMatchTwo ( i , arguments , true , true ); //en plural y plural
+		Vector[] patternMatchVectorSingSing = Matches.toEntityVectors(ml.patternMatchTwo ( i , arguments , false , false )); //en singular y singular
+		Vector[] patternMatchVectorSingPlur = Matches.toEntityVectors(ml.patternMatchTwo ( i , arguments , false , true )); //en singular y plural
+		Vector[] patternMatchVectorPlurSing = Matches.toEntityVectors(ml.patternMatchTwo ( i , arguments , true , false )); //en plural y singular
+		Vector[] patternMatchVectorPlurPlur = Matches.toEntityVectors(ml.patternMatchTwo ( i , arguments , true , true )); //en plural y plural
 
 		if ( patternMatchVectorSingSing != null && patternMatchVectorSingSing[0].size() > 0 ) //atacamos un bicho con un arma
 		{
@@ -4014,8 +4042,8 @@ public class Player extends Mobile implements Informador
 
 		else //no se especifica bicho y arma. Mirar si se especifica uno de ellos, al menos.
 		{
-			Vector patternMatchVectorSingBicho = ml.patternMatch ( arguments , false );
-			Vector patternMatchVectorSingArma = i.patternMatch ( arguments , false );
+			Vector patternMatchVectorSingBicho = ml.patternMatch ( arguments , false ).toEntityVector();
+			Vector patternMatchVectorSingArma = i.patternMatch ( arguments , false ).toEntityVector();
 
 			if ( patternMatchVectorSingBicho != null && patternMatchVectorSingBicho.size() > 0 )
 			{
@@ -4249,7 +4277,7 @@ public class Player extends Mobile implements Informador
 
 		if ( inv != null && !inv.isEmpty() )
 		{
-			patternMatchVectorSing = inv.patternMatch( args , false ); //contenedor al fin
+			patternMatchVectorSing = inv.patternMatch( args , false ).toEntityVector(); //contenedor al fin
 			if ( patternMatchVectorSing != null && patternMatchVectorSing.size() > 0 ) //ponemos una cosa en un sitio
 			{
 				for ( int i = 0 ; i < patternMatchVectorSing.size() ; i++ )
@@ -4438,10 +4466,10 @@ public class Player extends Mobile implements Informador
 
 		boolean mirado = false;			
 
-		Vector[] patternMatchVectorSingSing = possibleSpells.patternMatchTwo ( possibleTargets , arguments , false , false ); //en singular y singular
-		Vector[] patternMatchVectorSingPlur = possibleSpells.patternMatchTwo ( possibleTargets , arguments , false , true ); //en singular y plural
-		Vector[] patternMatchVectorPlurSing = possibleSpells.patternMatchTwo ( possibleTargets , arguments , true , false ); //en plural y singular
-		Vector[] patternMatchVectorPlurPlur = possibleSpells.patternMatchTwo ( possibleTargets , arguments , true , true ); //en plural y plural
+		Vector[] patternMatchVectorSingSing = Matches.toEntityVectors(possibleSpells.patternMatchTwo ( possibleTargets , arguments , false , false )); //en singular y singular
+		Vector[] patternMatchVectorSingPlur = Matches.toEntityVectors(possibleSpells.patternMatchTwo ( possibleTargets , arguments , false , true )); //en singular y plural
+		Vector[] patternMatchVectorPlurSing = Matches.toEntityVectors(possibleSpells.patternMatchTwo ( possibleTargets , arguments , true , false )); //en plural y singular
+		Vector[] patternMatchVectorPlurPlur = Matches.toEntityVectors(possibleSpells.patternMatchTwo ( possibleTargets , arguments , true , true )); //en plural y plural
 
 		if ( patternMatchVectorSingSing != null && patternMatchVectorSingSing[0].size() > 0 ) //hacemos un hechizo hacia un objetivo
 		{
@@ -4470,7 +4498,7 @@ public class Player extends Mobile implements Informador
 
 		else //try to cast with nullified target
 		{
-			Vector patternMatchSpellOnly = possibleSpells.patternMatch ( arguments , false );
+			Vector patternMatchSpellOnly = possibleSpells.patternMatch ( arguments , false ).toEntityVector();
 			if ( patternMatchSpellOnly != null && patternMatchSpellOnly.size() > 0 )
 			{
 				mirado = true;
@@ -4496,8 +4524,8 @@ public class Player extends Mobile implements Informador
 		Vector patternMatchVectorPlur = new Vector();
 		if ( posiblesObjetivos != null  )
 		{
-			patternMatchVectorSing = posiblesObjetivos.patternMatch ( arguments , false ); //en singular
-			patternMatchVectorPlur = posiblesObjetivos.patternMatch ( arguments , true ); //en plural
+			patternMatchVectorSing = posiblesObjetivos.patternMatch ( arguments , false ).toEntityVector(); //en singular
+			patternMatchVectorPlur = posiblesObjetivos.patternMatch ( arguments , true ).toEntityVector(); //en plural
 		}
 		if ( patternMatchVectorSing.size() > 0 )
 		{

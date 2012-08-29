@@ -7,6 +7,7 @@ package eu.irreality.age;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.matching.Match;
@@ -111,15 +112,15 @@ public class EntityList
 		return false;
 	}
 	
-	/*general pattern matching: generates vector of matches*/
-	public java.util.Vector patternMatch ( String arguments, boolean singOrPlur )
+	/*general pattern matching: generates vector (no longer vector) of matches*/
+	public Matches patternMatch ( String arguments, boolean singOrPlur )
 	{
 	
 		//Debug.println("patternMatch call: " + this + " - " + arguments + " - " + singOrPlur );
 	
 	
 	
-		java.util.Vector resultado = new java.util.Vector ( );
+		Matches resultado = new Matches ( );
 		int [] prioridades = new int [ size() ];
 		for ( int i = 0 ; i < size() ; i++ )
 		{ 
@@ -133,6 +134,12 @@ public class EntityList
 			//con el plural, "dejar piedras" devolvera lista de piedras para dejarlas todas. Con el singular, normalmente solo consideraremos una de la lista. Pero esto no es cosa de esta función.
 			if ( ( currentMatchPriority != 0 ) )
 			{
+				Vector thePath = new Vector();
+				thePath.add(entityAt(i));
+				resultado.addMatch( new Match(thePath,currentMatchPriority) );
+				
+				//old!
+				/*
 				//insertar en el vector
 				int j = 0;
 				while ((j<size()) && ( prioridades[j] != 0 ) && ( prioridades[j] < currentMatchPriority ))
@@ -140,7 +147,7 @@ public class EntityList
 					j++;
 				}
 				//hemos encontrado la posicion
-				Debug.println("Added " + entityAt(i).getID() + " at pos " + j);
+				//Debug.println("Added " + entityAt(i).getID() + " at pos " + j);
 				
 				if ( j < resultado.size() ) 
 					resultado.add ( j , entityAt(i) );
@@ -152,12 +159,13 @@ public class EntityList
 					prioridades[k+1] = prioridades[k];
 				}
 				prioridades[j] = currentMatchPriority;
+				*/
 			}
 		}
-		if ( resultado.size() == 2 )
-		{
-			Debug.println("Vector is " + "[" + ((Entity)resultado.get(0)).getID() + "," + ((Entity)resultado.get(1)).getID() + "]" );
-		}
+		//if ( resultado.size() == 2 )
+		//{
+		//	Debug.println("Vector is " + "[" + ((Entity)resultado.get(0)).getID() + "," + ((Entity)resultado.get(1)).getID() + "]" );
+		//}
 		return resultado;
 	}
 	
@@ -165,7 +173,8 @@ public class EntityList
 	
 
 	/**
-	 * This generates a vector of vectors, where each subvector is a path of containers
+	 * This generates a Matches object. When we apply the toPathVector() method to it,
+	 * we obtain a vector of vectors, where each subvector is a path of containers
 	 * to the object mentioned in the arguments.
 	 * 
 	 * Such a path is of the form [pearl,box,chest] if the pearl is inside the box which
@@ -175,13 +184,13 @@ public class EntityList
 	 * are two pearls, one in the box inside the chest and one in a bottle, this method
 	 * would return [ [pearl,box,chest], [pearl,bottle] ].
 	 */
-	public java.util.Vector patternMatchWithRecursion ( String arguments , boolean singOrPlur )
+	public Matches patternMatchWithRecursion ( String arguments , boolean singOrPlur )
 	{
 		//java.util.Vector resultado = new java.util.Vector ( );
 		Matches resultado = new Matches();
 		java.util.Vector path = new java.util.Vector ( );
 		//System.err.println("pmwr " + arguments + " false\n");
-		return patternMatchWithRecursion ( arguments , singOrPlur , path , resultado ).toPathVector();
+		return patternMatchWithRecursion ( arguments , singOrPlur , path , resultado );
 	}
 	
 	
@@ -280,11 +289,11 @@ public class EntityList
 	"pattern matching" para cuando se buscan en una frase referencias a dos objetos, no a uno
 	(ejemplo: abrir la puerta con la llave)
 	*/
-	public java.util.Vector [] patternMatchTwoWithRecursion ( String arguments , boolean singOrPlur1 , boolean singOrPlur2 )
+	public Matches [] patternMatchTwoWithRecursion ( String arguments , boolean singOrPlur1 , boolean singOrPlur2 )
 	{ 
 		//int [] prioridades = new int [ size() ];
 		
-		java.util.Vector[] resultado = new java.util.Vector [2];
+		Matches[] resultado = new Matches[2];
 		
 		//El procedimiento es dividir el string en todos los pares de strings posibles
 		//atendiendo a sus tokens, y hacer patternmatching en cada uno.
@@ -297,6 +306,8 @@ public class EntityList
 		
 		int ntokens = StringMethods.numToks ( arguments , ' ' );
 		
+		int bestPriority = Integer.MAX_VALUE; //best matching priority initially very bad.
+		
 		//probar todas las posibles divisiones en tokens.
 		//¿Por qué va al revés? Porque son siempre mejores las divisiones "tardías":
 		//es mejor poner la cinta roja * en el armario azul que poner la cinta * roja en el armario azul.
@@ -304,18 +315,25 @@ public class EntityList
 			{
 				String parte1 = StringMethods.getToks ( arguments , 1 , punto_division , ' ' );
 				String parte2 = StringMethods.getToks ( arguments , punto_division+1 , ntokens , ' ' );
-				java.util.Vector result1 = patternMatchWithRecursion ( parte1 , singOrPlur1 );
-				java.util.Vector result2 = patternMatchWithRecursion ( parte2 , singOrPlur2 );
+				Matches result1 = patternMatchWithRecursion ( parte1 , singOrPlur1 );
+				Matches result2 = patternMatchWithRecursion ( parte2 , singOrPlur2 );
 				if ( result1.size() > 0 && result2.size() > 0 )
 				{
-					resultado[0] = result1;
-					resultado[1] = result2;
-					return resultado;
+					int newPriority = Math.min(result1.getBestPriority(), result2.getBestPriority());
+					if ( newPriority < bestPriority )
+					{
+						resultado[0] = result1;
+						resultado[1] = result2;
+						bestPriority = newPriority;
+					}
 				}
 			}
-		resultado[0] = new java.util.Vector();
-		resultado[1] = new java.util.Vector();
-		return resultado; //el vacio (no se han encontrado combos de dos objetos)
+		if ( resultado[0] == null ) //nothing found
+		{
+			resultado[0] = new Matches();
+			resultado[1] = new Matches(); //el vacio (no se han encontrado combos de dos objetos)
+		}
+		return resultado; 
 	}
 	
 	
@@ -324,11 +342,11 @@ public class EntityList
 	"pattern matching" para cuando se buscan en una frase referencias a dos objetos, no a uno
 	(ejemplo: abrir la puerta con la llave)
 	*/
-	public java.util.Vector [] patternMatchTwo ( String arguments , boolean singOrPlur1 , boolean singOrPlur2 )
+	public Matches [] patternMatchTwo ( String arguments , boolean singOrPlur1 , boolean singOrPlur2 )
 	{ 
 		//int [] prioridades = new int [ size() ];
 		
-		java.util.Vector[] resultado = new java.util.Vector [2];
+		Matches[] resultado = new Matches[2];
 		
 		//El procedimiento es dividir el string en todos los pares de strings posibles
 		//atendiendo a sus tokens, y hacer patternmatching en cada uno.
@@ -341,6 +359,8 @@ public class EntityList
 		
 		int ntokens = StringMethods.numToks ( arguments , ' ' );
 		
+		int bestPriority = Integer.MAX_VALUE; //best matching priority initially very bad.
+		
 		//probar todas las posibles divisiones en tokens.
 		//¿Por qué va al revés? Porque son siempre mejores las divisiones "tardías":
 		//es mejor poner la cinta roja * en el armario azul que poner la cinta * roja en el armario azul.
@@ -348,18 +368,25 @@ public class EntityList
 			{
 				String parte1 = StringMethods.getToks ( arguments , 1 , punto_division , ' ' );
 				String parte2 = StringMethods.getToks ( arguments , punto_division+1 , ntokens , ' ' );
-				java.util.Vector result1 = patternMatch ( parte1 , singOrPlur1 );
-				java.util.Vector result2 = patternMatch ( parte2 , singOrPlur2 );
+				Matches result1 = patternMatch ( parte1 , singOrPlur1 );
+				Matches result2 = patternMatch ( parte2 , singOrPlur2 );
 				if ( result1.size() > 0 && result2.size() > 0 )
 				{
-					resultado[0] = result1;
-					resultado[1] = result2;
-					return resultado;
+					int newPriority = Math.min(result1.getBestPriority(), result2.getBestPriority());
+					if ( newPriority < bestPriority )
+					{
+						resultado[0] = result1;
+						resultado[1] = result2;
+						bestPriority = newPriority;
+					}
 				}
 			}
-		resultado[0] = new java.util.Vector();
-		resultado[1] = new java.util.Vector();
-		return resultado; //el vacio (no se han encontrado combos de dos objetos)
+			if ( resultado[0] == null ) //nothing found
+			{
+				resultado[0] = new Matches();
+				resultado[1] = new Matches(); //el vacio (no se han encontrado combos de dos objetos)
+			}
+			return resultado;
 	}
 	
 	
@@ -369,11 +396,11 @@ public class EntityList
 	función (a no ser que llevemos la puerta) por estar la llave en nuestro inventario
 	y la puerta en el de la habitación.
 	*/
-	public java.util.Vector [] patternMatchTwo ( EntityList i , String arguments , boolean singOrPlur1 , boolean singOrPlur2 )
+	public Matches [] patternMatchTwo ( EntityList i , String arguments , boolean singOrPlur1 , boolean singOrPlur2 )
 	{ 
 		//int [] prioridades = new int [ size() ];
 		
-		java.util.Vector[] resultado = new java.util.Vector [2];
+		Matches[] resultado = new Matches [2];
 		
 		//El procedimiento es dividir el string en todos los pares de strings posibles
 		//atendiendo a sus tokens, y hacer patternmatching en cada uno.
@@ -386,23 +413,32 @@ public class EntityList
 		
 		int ntokens = StringMethods.numToks ( arguments , ' ' );
 		
+		int bestPriority = Integer.MAX_VALUE; //best matching priority initially very bad.
+		
 		//probar todas las posibles divisiones en tokens
 			for ( int punto_division = ntokens-1 ; punto_division >= 1 ; punto_division-- )
 			{
 				String parte1 = StringMethods.getToks ( arguments , 1 , punto_division , ' ' );
 				String parte2 = StringMethods.getToks ( arguments , punto_division+1 , ntokens , ' ' );
-				java.util.Vector result1 = patternMatch ( parte1 , singOrPlur1 );
-				java.util.Vector result2 = i.patternMatch ( parte2 , singOrPlur2 );
+				Matches result1 = patternMatch ( parte1 , singOrPlur1 );
+				Matches result2 = i.patternMatch ( parte2 , singOrPlur2 );
 				if ( result1.size() > 0 && result2.size() > 0 )
 				{
-					resultado[0] = result1;
-					resultado[1] = result2;
-					return resultado;
+					int newPriority = Math.min(result1.getBestPriority(), result2.getBestPriority());
+					if ( newPriority < bestPriority )
+					{
+						resultado[0] = result1;
+						resultado[1] = result2;
+						bestPriority = newPriority;
+					}
 				}
 			}
-		resultado[0] = new java.util.Vector();
-		resultado[1] = new java.util.Vector();
-		return resultado; //el vacio (no se han encontrado combos de dos objetos)
+			if ( resultado[0] == null ) //nothing found
+			{
+				resultado[0] = new Matches();
+				resultado[1] = new Matches(); //el vacio (no se han encontrado combos de dos objetos)
+			}
+			return resultado;
 	}
 	
 	public EntityList()

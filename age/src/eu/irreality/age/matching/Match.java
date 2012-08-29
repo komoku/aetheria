@@ -7,6 +7,8 @@ package eu.irreality.age.matching;
 
 import java.util.Vector;
 
+import eu.irreality.age.Entity;
+
 /**
  * @author carlos
  * Created at regulus2, 2011-07-09
@@ -30,6 +32,11 @@ public class Match implements Comparable
 	public Vector getPath()
 	{
 		return path;
+	}
+	
+	public Entity getEntity()
+	{
+		return (Entity) path.get(0);
 	}
 	
 	public int getPriority()
