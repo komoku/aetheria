@@ -5,6 +5,9 @@
 package eu.irreality.age;
 import java.util.*;
 
+import eu.irreality.age.matching.Match;
+import eu.irreality.age.matching.Matches;
+
 public class ParserMethods
 {
 	
@@ -34,17 +37,17 @@ public class ParserMethods
 		else return ( e.matchesCommand ( s , plur_or_sing ) > 0 );
 	}
 
-	public static Vector refersToEntityIn ( String s , EntityList el , boolean plur_or_sing )
+	public static Matches refersToEntityIn ( String s , EntityList el , boolean plur_or_sing )
 	{
 		return ( el.patternMatch( s , plur_or_sing ) );
 	}
 	
-	public static Vector refersToEntityInRecursive ( String s , EntityList el , boolean plur_or_sing )
+	public static Matches refersToEntityInRecursive ( String s , EntityList el , boolean plur_or_sing )
 	{
 		return ( el.patternMatchWithRecursion( s , plur_or_sing ) );
 	}
 	
-	public static Vector[] refersToTwoEntitiesInRecursive ( String s , EntityList el , boolean plur_or_sing , boolean plur_or_sing_2 )
+	public static Matches[] refersToTwoEntitiesInRecursive ( String s , EntityList el , boolean plur_or_sing , boolean plur_or_sing_2 )
 	{
 		return ( el.patternMatchTwoWithRecursion( s , plur_or_sing , plur_or_sing_2 ) );
 	}
@@ -80,13 +83,15 @@ public class ParserMethods
 	
 	//order matters as far as this one is concerned
 	//devuelve array de dos vectores de entidades matcheadas, o vectores vacíos
-	public static Vector[] refersToEntitiesIn ( String s , EntityList el1 , EntityList el2 , boolean plur1 , boolean plur2 )
+	public static Matches[] refersToEntitiesIn ( String s , EntityList el1 , EntityList el2 , boolean plur1 , boolean plur2 )
 	{		
 			//ídem que el anterior; pero con listas de entidades
 
-			Vector[] resultado = new Vector[2];
+			Matches[] resultado = new Matches[2];
 
 			int ntokens = StringMethods.numToks ( s , ' ' );
+			
+			int bestPriority = Integer.MAX_VALUE; //best matching priority initially very bad.
 			
 			//probar todas las posibles divisiones en tokens
 				for ( int punto_division = 1 ; punto_division < ntokens ; punto_division++ )
@@ -94,21 +99,27 @@ public class ParserMethods
 					String parte1 = StringMethods.getToks ( s , 1 , punto_division , ' ' );
 					String parte2 = StringMethods.getToks ( s , punto_division+1 , ntokens , ' ' );
 					
-					Vector primeraentidad = refersToEntityIn(parte1,el1,plur1);
-					Vector segundaentidad = refersToEntityIn(parte2,el2,plur2);
+					Matches primeraentidad = refersToEntityIn(parte1,el1,plur1);
+					Matches segundaentidad = refersToEntityIn(parte2,el2,plur2);
 					
 					if ( primeraentidad.size() > 0 && segundaentidad.size() > 0 ) 
 					{
-						resultado[0] = primeraentidad;
-						resultado[1] = segundaentidad;
-						return resultado;
+						int newPriority = Math.min(primeraentidad.getBestPriority(), segundaentidad.getBestPriority());
+						if ( newPriority < bestPriority )
+						{
+							resultado[0] = primeraentidad;
+							resultado[1] = segundaentidad;
+							bestPriority = newPriority;
+						}
 					}
 					
 				}
 			
-			//no encontrado pattern-matching con ambos objetos en orden
-				resultado[0] = new Vector();
-				resultado[1] = new Vector();
+				if ( resultado[0] == null ) //nothing found
+				{
+					resultado[0] = new Matches();
+					resultado[1] = new Matches(); //el vacio (no se han encontrado combos de dos objetos)
+				}
 				return resultado;
 				
 	}
@@ -132,22 +143,26 @@ public class ParserMethods
 					String parte1 = StringMethods.getToks ( s , 1 , punto_division , ' ' );
 					String parte2 = StringMethods.getToks ( s , punto_division+1 , ntokens , ' ' );
 					
-					Vector primeraentidad = refersToEntityIn(parte1,el1,plur1);
-					Vector segundaentidad = refersToEntityIn(parte2,el2,plur2);
+					Matches primeraentidad = refersToEntityIn(parte1,el1,plur1);
+					Matches segundaentidad = refersToEntityIn(parte2,el2,plur2);
 					
 					if ( primeraentidad.size() > 0 && segundaentidad.size() > 0 ) 
 					{
-						for ( int i = 0 ; i < primeraentidad.size() ; i++ )
+						for ( Iterator iti = primeraentidad.iterator() ; iti.hasNext() ; )
 						{
-							for ( int j = 0 ; j < segundaentidad.size() ; j++ )
+							Match firstEntityMatch = (Match) iti.next(); 
+							for ( Iterator itj = segundaentidad.iterator() ; itj.hasNext() ; )
 							{
-								Entity firstEntity = (Entity) primeraentidad.get(i);
-								Entity secondEntity = (Entity) segundaentidad.get(j);
+								Match secondEntityMatch = (Match) itj.next(); 
+								
+								Entity firstEntity = firstEntityMatch.getEntity();
+								Entity secondEntity = secondEntityMatch.getEntity();
 								SentenceInfo si = new SentenceInfo();
 								si.setArgs1(parte1);
 								si.setArgs2(parte2);
 								si.setObj1(firstEntity);
 								si.setObj2(secondEntity);
+								si.setPriority(Math.min(firstEntityMatch.getPriority(),secondEntityMatch.getPriority()));
 								resultado.add(si);
 							}
 						}
@@ -155,6 +170,7 @@ public class ParserMethods
 					
 				}
 			
+			Collections.sort(resultado); //sort by match priority
 			return resultado;
 				
 	}
@@ -177,17 +193,20 @@ public class ParserMethods
 					String parte1 = StringMethods.getToks ( s , 1 , punto_division , ' ' );
 					String parte2 = StringMethods.getToks ( s , punto_division+1 , ntokens , ' ' );
 					
-					Vector primeraentidad = refersToEntityInRecursive(parte1,el1,plur1);
-					Vector segundaentidad = refersToEntityInRecursive(parte2,el2,plur2);
+					Matches primeraentidad = refersToEntityInRecursive(parte1,el1,plur1);
+					Matches segundaentidad = refersToEntityInRecursive(parte2,el2,plur2);
 					
 					if ( primeraentidad.size() > 0 && segundaentidad.size() > 0 ) 
 					{
-						for ( int i = 0 ; i < primeraentidad.size() ; i++ )
+						for ( Iterator iti = primeraentidad.iterator() ; iti.hasNext() ; )
 						{
-							for ( int j = 0 ; j < segundaentidad.size() ; j++ )
+							Match firstEntityMatch = (Match) iti.next(); 
+							for ( Iterator itj = segundaentidad.iterator() ; itj.hasNext() ; )
 							{
-							    Vector firstPath = (Vector) primeraentidad.get(i);
-							    Vector secondPath = (Vector) segundaentidad.get(j);
+								Match secondEntityMatch = (Match) itj.next(); 
+								
+							    Vector firstPath = (Vector) firstEntityMatch.getPath();
+							    Vector secondPath = (Vector) secondEntityMatch.getPath();
 							    Entity firstEntity = (Entity) firstPath.get(0);
 							    Entity secondEntity = (Entity) secondPath.get(0);
 							    SentenceInfo si = new SentenceInfo();
@@ -197,6 +216,7 @@ public class ParserMethods
 							    si.setObj2(secondEntity);
 							    si.setPath1(firstPath);
 							    si.setPath2(secondPath);
+							    si.setPriority(Math.min(firstEntityMatch.getPriority(),secondEntityMatch.getPriority()));
 							    resultado.add(si);
 							}
 						}
@@ -204,6 +224,7 @@ public class ParserMethods
 					
 				}
 			
+			Collections.sort(resultado); //sort by match priority
 			return resultado;
 				
 	}
