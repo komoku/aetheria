@@ -2565,9 +2565,9 @@ public class Player extends Mobile implements Informador
 		if ( !allMatches.isEmpty() && matchedOneEntity )
 		{
 			int priority = ((SentenceInfo)allMatches.get(0)).getPriority();
-			System.err.println("Args: " + arguments);
-			System.err.println("One entity prio: " + oneEntityPriority);
-			System.err.println("Two entity prio: " + ((SentenceInfo)allMatches.get(0)).getPriority() + " for " + allMatches.get(0));
+			//System.err.println("Args: " + arguments);
+			//System.err.println("One entity prio: " + oneEntityPriority);
+			//System.err.println("Two entity prio: " + ((SentenceInfo)allMatches.get(0)).getPriority() + " for " + allMatches.get(0));
 			if ( oneEntityPriority > 0 && priority > oneEntityPriority ) //the command matches two entities, but the best match is for one entity. Don't exec parseCommands for two entities.
 			{
 				matchedTwoEntities = false;
@@ -3894,9 +3894,9 @@ public class Player extends Mobile implements Informador
 				Mobile objetivo = (Mobile) patternMatchVectorSingBicho.elementAt(0);
 				Weapon usada = null;
 
-				if ( lastAttackWeapon != null && wieldedWeapons.contains(lastAttackWeapon) )
+				if ( lastBlockWeapon != null && wieldedWeapons.contains(lastBlockWeapon) )
 				{
-					usada = lastAttackWeapon;
+					usada = lastBlockWeapon;
 				}
 				else if ( wieldedWeapons != null && wieldedWeapons.size() > 0 )
 				{
@@ -3933,6 +3933,11 @@ public class Player extends Mobile implements Informador
 				{
 					objetivo = lastAttackedEnemy;
 				}
+				else if ( getEnemies().size() == 1 && habitacionActual.hasMobile((Mobile)getEnemies().get(0) ) )
+				{
+					//if there is a single enemy and it's in this room, there's no doubt we want to block him
+					objetivo = (Mobile) getEnemies().get(0);
+				}
 
 				if ( objetivo == null )
 				{
@@ -3960,18 +3965,28 @@ public class Player extends Mobile implements Informador
 			{
 				Mobile objetivo = null;
 				Weapon usada = null;
-				if ( lastAttackWeapon != null && wieldedWeapons.contains(lastAttackWeapon) )
+				
+				//assign a weapon
+				if ( lastBlockWeapon != null && wieldedWeapons.contains(lastBlockWeapon) )
 				{
-					usada = lastAttackWeapon;
+					usada = lastBlockWeapon;
 				}
 				else if ( wieldedWeapons != null && wieldedWeapons.size() > 0 )
 				{
 					usada = (Weapon) wieldedWeapons.elementAt(0);
 				}
+				
+				//assign an enemy
 				if ( lastAttackedEnemy != null && habitacionActual.hasMobile ( lastAttackedEnemy ) )
 				{
 					objetivo = lastAttackedEnemy;
 				}
+				else if ( getEnemies().size() == 1 && habitacionActual.hasMobile((Mobile)getEnemies().get(0) ) )
+				{
+					//if there is a single enemy and it's in this room, there's no doubt we want to block him
+					objetivo = (Mobile) getEnemies().get(0);
+				}
+				
 				if ( objetivo == null || usada == null )
 				{
 					mirado = false;
