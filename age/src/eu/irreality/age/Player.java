@@ -3933,12 +3933,22 @@ public class Player extends Mobile implements Informador
 				{
 					objetivo = lastAttackedEnemy;
 				}
-				else if ( getEnemies().size() == 1 && habitacionActual.hasMobile((Mobile)getEnemies().get(0) ) )
+				/*
+				else if ( getEnemies() != null && getEnemies().size() == 1 && habitacionActual.hasMobile((Mobile)getEnemies().get(0) ) )
 				{
 					//if there is a single enemy and it's in this room, there's no doubt we want to block him
 					objetivo = (Mobile) getEnemies().get(0);
 				}
-
+				*/
+				else if ( habitacionActual.getMobiles().size() == 2 && getEnemies() != null  )
+				{
+					//if we are alone in the room with an enemy, the target is obviously that enemy.
+					if ( hasEnemy(habitacionActual.getMobiles().elementAt(0)) )
+						objetivo = habitacionActual.getMobiles().elementAt(0);
+					if ( hasEnemy(habitacionActual.getMobiles().elementAt(1)) )
+						objetivo = habitacionActual.getMobiles().elementAt(1);
+				}
+					
 				if ( objetivo == null )
 				{
 					mirado = false;
@@ -3981,10 +3991,20 @@ public class Player extends Mobile implements Informador
 				{
 					objetivo = lastAttackedEnemy;
 				}
-				else if ( getEnemies().size() == 1 && habitacionActual.hasMobile((Mobile)getEnemies().get(0) ) )
+				/*
+				else if ( getEnemies() != null && getEnemies().size() == 1 && habitacionActual.hasMobile((Mobile)getEnemies().get(0) ) )
 				{
 					//if there is a single enemy and it's in this room, there's no doubt we want to block him
 					objetivo = (Mobile) getEnemies().get(0);
+				}
+				*/
+				else if ( habitacionActual.getMobiles().size() == 2 && getEnemies() != null  )
+				{
+					//if we are alone in the room with an enemy, the target is obviously that enemy.
+					if ( hasEnemy(habitacionActual.getMobiles().elementAt(0)) )
+						objetivo = habitacionActual.getMobiles().elementAt(0);
+					if ( hasEnemy(habitacionActual.getMobiles().elementAt(1)) )
+						objetivo = habitacionActual.getMobiles().elementAt(1);
 				}
 				
 				if ( objetivo == null || usada == null )
@@ -4060,7 +4080,7 @@ public class Player extends Mobile implements Informador
 			Vector patternMatchVectorSingBicho = ml.patternMatch ( arguments , false ).toEntityVector();
 			Vector patternMatchVectorSingArma = i.patternMatch ( arguments , false ).toEntityVector();
 
-			if ( patternMatchVectorSingBicho != null && patternMatchVectorSingBicho.size() > 0 )
+			if ( patternMatchVectorSingBicho != null && patternMatchVectorSingBicho.size() > 0 ) //bicho specified, arma unspecified
 			{
 				Mobile objetivo = (Mobile) patternMatchVectorSingBicho.elementAt(0);
 				Weapon usada = null;
@@ -4109,7 +4129,7 @@ public class Player extends Mobile implements Informador
 				}
 
 			}
-			else if ( patternMatchVectorSingArma != null && patternMatchVectorSingArma.size() > 0 )
+			else if ( patternMatchVectorSingArma != null && patternMatchVectorSingArma.size() > 0 ) //specified arma, but not bicho
 			{
 				Mobile objetivo = null;
 				Weapon usada = (Weapon) patternMatchVectorSingArma.elementAt(0);
@@ -4118,10 +4138,22 @@ public class Player extends Mobile implements Informador
 				{
 					objetivo = lastAttackedEnemy;
 				}
-				else if ( getEnemies() != null && getEnemies().size() > 0 && habitacionActual.hasMobile( getEnemies().elementAt(0) ) )
+				/*
+				else if ( getEnemies() != null && getEnemies().size() == 1 && habitacionActual.hasMobile((Mobile)getEnemies().get(0) ) )
 				{
-					objetivo = getEnemies().elementAt(0);
+					//if there is a single enemy and it's in this room, there's no doubt we want to block him
+					objetivo = (Mobile) getEnemies().get(0);
 				}
+				*/
+				else if ( habitacionActual.getMobiles().size() == 2 && getEnemies() != null  )
+				{
+					//if we are alone in the room with an enemy, the target is obviously that enemy.
+					if ( hasEnemy(habitacionActual.getMobiles().elementAt(0)) )
+						objetivo = habitacionActual.getMobiles().elementAt(0);
+					if ( hasEnemy(habitacionActual.getMobiles().elementAt(1)) )
+						objetivo = habitacionActual.getMobiles().elementAt(1);
+				}
+				
 				if ( objetivo == null )
 				{
 					mirado = false;
@@ -4155,6 +4187,7 @@ public class Player extends Mobile implements Informador
 
 				Inventory usableWeapons = getUsableWeapons();
 
+				//assign weapon
 				if ( lastAttackWeapon != null && usableWeapons.contains(lastAttackWeapon) )
 				{
 					usada = lastAttackWeapon;
@@ -4168,14 +4201,28 @@ public class Player extends Mobile implements Informador
 							usada = (Weapon) usableWeapons.elementAt(k);
 					}
 				}
+				
+				//assign enemy
 				if ( lastAttackedEnemy != null && habitacionActual.hasMobile ( lastAttackedEnemy ) )
 				{
 					objetivo = lastAttackedEnemy;
 				}
-				else if ( getEnemies() != null && getEnemies().size() > 0 && habitacionActual.hasMobile( getEnemies().elementAt(0) ) )
+				/*
+				else if ( getEnemies() != null && getEnemies().size() == 1 && habitacionActual.hasMobile((Mobile)getEnemies().get(0) ) )
 				{
-					objetivo = getEnemies().elementAt(0);
+					//if there is a single enemy and it's in this room, there's no doubt we want to block him
+					objetivo = (Mobile) getEnemies().get(0);
 				}
+				*/
+				else if ( habitacionActual.getMobiles().size() == 2 && getEnemies() != null  )
+				{
+					//if we are alone in the room with an enemy, the target is obviously that enemy.
+					if ( hasEnemy(habitacionActual.getMobiles().elementAt(0)) )
+						objetivo = habitacionActual.getMobiles().elementAt(0);
+					if ( hasEnemy(habitacionActual.getMobiles().elementAt(1)) )
+						objetivo = habitacionActual.getMobiles().elementAt(1);
+				}
+				
 				if ( objetivo == null || usada == null )
 				{
 					mirado = false;
