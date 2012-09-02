@@ -6,6 +6,7 @@ package eu.irreality.age;
 import java.util.*;
 
 import eu.irreality.age.debug.Debug;
+import eu.irreality.age.util.Conversions;
 
 
 public class Spell extends Entity implements SupportingCode, UniqueNamed
@@ -908,4 +909,21 @@ public class Spell extends Entity implements SupportingCode, UniqueNamed
 		return itsCode;
 	}
 
+	
+	/**
+	 * Obtain a list with the singular reference names of the mobile, in order.
+	 */
+	public List getSingularReferenceNames()
+	{
+		return Conversions.getReferenceNameList(respondToSing);
+	}
+	
+	/**
+	 * Obtain a list with the plural reference names of the mobile, in order.
+	 */
+	public List getPluralReferenceNames()
+	{
+		return Conversions.getReferenceNameList(respondToPlur);
+	}
+	
 }

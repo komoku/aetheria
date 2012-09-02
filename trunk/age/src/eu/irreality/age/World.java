@@ -1862,6 +1862,17 @@ public class World implements Informador , SupportingCode
 		return el;
 	}
 	
+	public EntityList getAllSpells ( )
+	{
+		EntityList el = new EntityList();
+		for ( int i = 0 ; i < maxspell ; i++ )
+		{
+			if ( spell[i] != null ) //purely defensive check
+				el.addEntity(spell[i]);
+		}
+		return el;
+	}
+	
 	
 	/**
 	* Devuelve el abstract entity del mundo con la ID dada.
