@@ -2774,6 +2774,12 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			//extraDes.appendChild(extraDesContent);
 			suElemento.appendChild(extraDes);
 		}
+		
+		//new extra description support
+		if ( extraDescriptionNameArrays != null && extraDescriptionArrays != null )
+		{
+			suElemento.appendChild(Utility.getExtraDescriptionXMLRepresentation(extraDescriptionNameArrays, extraDescriptionArrays, doc));
+		}
 	
 		//keys inventory
 		if ( keys != null )

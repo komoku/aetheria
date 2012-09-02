@@ -1755,7 +1755,7 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 		{
 			for ( int i = 0 ; i < standardExits.length ; i++ )
 			{
-				if ( standardExits[i] != null )
+				if ( standardExits[i] != null && standardExits[i].getDestinationID() != 0 /*zeroes are non-valid exits*/ )
 					listaSal.appendChild ( standardExits[i].getXMLRepresentation(doc , Path.directionName(i)) );
 			}
 		}
@@ -1814,6 +1814,12 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 			//org.w3c.dom.Text extraDesContent = doc.createTextNode(extraDescriptions);
 			//extraDes.appendChild(extraDesContent);
 			suElemento.appendChild(extraDes);
+		}
+		
+		//new extra description support
+		if ( extraDescriptionNameArrays != null && extraDescriptionArrays != null )
+		{
+			suElemento.appendChild(Utility.getExtraDescriptionXMLRepresentation(extraDescriptionNameArrays, extraDescriptionArrays, doc));
 		}
 		
 		//only restrictions: not at the moment
