@@ -4834,6 +4834,12 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			//extraDes.appendChild(extraDesContent);
 			suElemento.appendChild(extraDes);
 		}
+		
+		//new extra description support
+		if ( extraDescriptionNameArrays != null && extraDescriptionArrays != null )
+		{
+			suElemento.appendChild(Utility.getExtraDescriptionXMLRepresentation(extraDescriptionNameArrays, extraDescriptionArrays, doc));
+		}
 
 		//caracter�sticas (traits): not at the moment
 		//yeW! let's doo-eet!

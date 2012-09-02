@@ -13,6 +13,7 @@ import java.io.*;
 import java.util.*;
 
 import eu.irreality.age.i18n.UIMessages;
+import eu.irreality.age.util.xml.DOMUtils;
 public class Utility
 {
 
@@ -228,6 +229,48 @@ public class Utility
 	
 	}
 	
+	/**
+	 * save extra descriptions. Other objects have getXMLRepresentation() methods in their class, but there's no specific class for
+	 * extra descriptions since their storage is distributed in two different lists of arrays.
+	 * @param nameArrays List of arrays of names for the extra descriptions.
+	 * @param descArrays List of arrays of descriptions.
+	 * @doc XML document in which to create the new XML element.
+	 * @return
+	 */
+	
+	public static org.w3c.dom.Element getExtraDescriptionXMLRepresentation ( List /*of String[]*/ nameArrays , List /*of Description[]*/ descArrays , org.w3c.dom.Document doc )
+	{
+		if ( nameArrays == null || descArrays == null ) return null;
+		org.w3c.dom.Element extraDesList = doc.createElement("ExtraDescriptionList");
+		for ( int i = 0 ; i < nameArrays.size() ; i++ ) //assertion: nameArrays has same size as descArrays
+		{
+			org.w3c.dom.Element extraDes = doc.createElement("ExtraDescription");
+			
+			String[] theNames = (String[]) nameArrays.get(i);
+			
+			for ( int j = 0 ; j < theNames.length ; j++ )
+			{
+				String aName = theNames[j];
+				org.w3c.dom.Element nameElement = doc.createElement("Name");
+				org.w3c.dom.Text nameTextNode = doc.createTextNode(aName);
+				nameElement.appendChild(nameTextNode);
+				extraDes.appendChild(nameElement);
+			}
+			
+			org.w3c.dom.Element desList = doc.createElement("DescriptionList");
+			Description[] theDescriptions = (Description[]) descArrays.get(i);
+			for ( int j = 0 ; j < theDescriptions.length ; j++ )
+			{
+				org.w3c.dom.Node descriptionElement = theDescriptions[j].getXMLRepresentation(doc);
+				desList.appendChild(descriptionElement);
+			}
+			extraDes.appendChild(desList);
+			
+			extraDesList.appendChild(extraDes);
+		}
+		return extraDesList;
+	}
+	
 	//continuacion del anterior
 	public static List loadExtraDescriptionsFromXML ( World mundo , org.w3c.dom.Element exDesListNode  ) throws XMLtoWorldException
 	{
@@ -275,6 +318,7 @@ public class Utility
 				{
 					//no "serious" descriptions, watch for text nodes
 					//search first text node
+					System.err.println("No serious descriptions: " + currentExDes + DOMUtils.nodeToString(currentExDes) );
 					org.w3c.dom.Node hijo = currentExDes.getFirstChild();
 					while ( !(hijo instanceof org.w3c.dom.Text ) || hijo.getNodeValue().trim().length()==0 )
 					{
