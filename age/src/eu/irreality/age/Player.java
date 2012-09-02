@@ -1049,7 +1049,9 @@ public class Player extends Mobile implements Informador
 				//return go (habitacionActual.getExit( true,Path.ABAJO ));
 				actionArgs[0] = habitacionActual.getExit ( true , Path.ABAJO );
 			}	
-			else
+			
+			//else
+			if ( actionArgs[0] == null || !((Path)actionArgs[0]).isValid() ) //changed to admit a custom exit to have a standard name
 			{
 				//Mirar las salidas personalizadas
 				for ( int i=0 ; i<habitacionActual.otherExits.length ; i++ )
