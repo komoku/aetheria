@@ -18,6 +18,7 @@ import eu.irreality.age.Item;
 import eu.irreality.age.Mobile;
 import eu.irreality.age.Path;
 import eu.irreality.age.Room;
+import eu.irreality.age.Spell;
 import eu.irreality.age.World;
 
 /**
@@ -63,6 +64,7 @@ public class ReferenceNameCorrector implements SpellingCorrector
 		EntityList items = w.getAllItems();
 		EntityList mobiles = w.getAllMobiles();
 		EntityList rooms = w.getAllRooms();
+		EntityList spells = w.getAllSpells();
 		Set words = new LinkedHashSet();
 		
 		//add item reference names
@@ -81,6 +83,14 @@ public class ReferenceNameCorrector implements SpellingCorrector
 			words.addAll( extractRelevantWords(mob.getSingularReferenceNames()));
 			words.addAll( extractRelevantWords(mob.getPluralReferenceNames()));
 			words.addAll( extractRelevantWords(mob.getExtraDescriptionNames()));
+		}
+		
+		//add spell reference names
+		for ( int i = 0 ; i < spells.size() ; i++ )
+		{
+			Spell spell = (Spell) spells.get(i);
+			words.addAll( extractRelevantWords(spell.getSingularReferenceNames()));
+			words.addAll( extractRelevantWords(spell.getPluralReferenceNames()));
 		}
 		
 		//add words coming from names of exits/paths
