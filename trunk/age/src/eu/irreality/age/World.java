@@ -17,6 +17,12 @@ import java.util.*;
 import java.util.jar.JarFile;
 
 import javax.xml.parsers.*;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.stream.StreamSource;
 //import javax.xml.transform.*;
 //import javax.xml.transform.stream.*;
 //import javax.xml.transform.dom.*;
@@ -1472,6 +1478,25 @@ public class World implements Informador , SupportingCode
 		
 	}
 	
+	
+	/**
+	 * Obtains an XML DOM document from an input stream.
+	 * Changed the way of obtaining it on 2012-09-08, as the old form (DocumentBuilder:parse(InputStream)) seemed to cause problems
+	 * with XML includes.
+	 * @param is
+	 * @return
+	 * @throws TransformerException
+	 */
+	public org.w3c.dom.Document getXMLFromStream ( InputStream is ) throws TransformerException
+	{
+		Transformer t = TransformerFactory.newInstance().newTransformer();
+		Source s = new StreamSource(is);
+		DOMResult r = new DOMResult();
+		t.transform(s,r);
+	    return (org.w3c.dom.Document)r.getNode();			
+	}
+	
+	
 	/**
 	 * Toma la información del mundo del stream dado. 
 	 * @param is Stream de donde se leen los datos XML del mundo, que puede ser un stream obtenido de un fichero local de mundo, de una URL, etc.
@@ -1482,12 +1507,13 @@ public class World implements Informador , SupportingCode
 	 * @throws SAXException 
 	 * @throws XMLtoWorldException 
 	 */
-	public void loadWorldFromStream ( InputStream is , InputOutputClient io , boolean noSerCliente ) throws ParserConfigurationException, SAXException, IOException, XMLtoWorldException
+	public void loadWorldFromStream ( InputStream is , InputOutputClient io , boolean noSerCliente ) throws ParserConfigurationException, SAXException, IOException, TransformerException, XMLtoWorldException
 	{
 		org.w3c.dom.Document d = null;
-		DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		//DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		io.write(io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.tree") + "\n" + io.getColorCode("reset") );
-		d = db.parse( is );
+		//d = db.parse( is );
+		d = getXMLFromStream( is );
 		org.w3c.dom.Element n = d.getDocumentElement();
 		loadWorldFromXML ( n , io , noSerCliente );
 	}
@@ -1531,6 +1557,11 @@ public class World implements Informador , SupportingCode
 		{
 			pce.printStackTrace();
 			throw new IOException(pce);
+		}
+		catch ( TransformerException te )
+		{
+			te.printStackTrace();
+			throw new IOException(te);
 		}
 		catch ( SAXException se ) //parse()
 		{
@@ -1585,6 +1616,11 @@ public class World implements Informador , SupportingCode
 		{
 			pce.printStackTrace();
 			throw new IOException(pce);
+		}
+		catch ( TransformerException te )
+		{
+			te.printStackTrace();
+			throw new IOException(te);
 		}
 		catch ( SAXException se ) //parse()
 		{
