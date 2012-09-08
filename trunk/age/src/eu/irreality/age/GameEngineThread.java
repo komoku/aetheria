@@ -384,6 +384,34 @@ public class GameEngineThread extends Thread
 
 		//if there are more deadlock problems with this, we could always create a "world end thread" with the following code (including join and all), and run it here,
 		//rather than keep running in the event dispatching thread:
+		
+		
+		//this thread waits for the game engine thread to end, and then clears things like the message cache
+		//which cannot be cleared before the game engine thread ends (since the game engine thread would replace
+		//the Messages instance in the cache).
+		Thread worldEndThread = new Thread()
+		{
+			public void run()
+			{
+				try 
+				{
+					//wait for the world to end
+					GameEngineThread.this.join();
+				} 
+				catch (InterruptedException e) 
+				{
+					e.printStackTrace();
+				}
+				Messages.clearCache(theWorld);
+				theWorld = null;
+				ventana = null;
+				serverConfigurationMenu = null;
+				Debug.println("World ended.");
+			}
+		};
+		worldEndThread.start(); //wait for the game engine thread to end, then clean up
+		
+		/*
 		try 
 		{
 			//wait for the world to end
@@ -404,6 +432,8 @@ public class GameEngineThread extends Thread
 		ventana = null;
 		serverConfigurationMenu = null;
 		Debug.println("Flag set.");
+		*/
+		
 	}
 	
 	public void exitForReinit()
