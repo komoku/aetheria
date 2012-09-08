@@ -11,6 +11,8 @@ package eu.irreality.age;
 */
 import java.io.*;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
@@ -1487,10 +1489,10 @@ public class World implements Informador , SupportingCode
 	 * @return
 	 * @throws TransformerException
 	 */
-	public org.w3c.dom.Document getXMLFromStream ( InputStream is ) throws TransformerException
+	public org.w3c.dom.Document getXMLFromStream ( InputStream is , URI systemId ) throws TransformerException
 	{
 		Transformer t = TransformerFactory.newInstance().newTransformer();
-		Source s = new StreamSource(is);
+		Source s = new StreamSource(is,systemId.toString());
 		DOMResult r = new DOMResult();
 		t.transform(s,r);
 	    return (org.w3c.dom.Document)r.getNode();			
@@ -1500,6 +1502,7 @@ public class World implements Informador , SupportingCode
 	/**
 	 * Toma la información del mundo del stream dado. 
 	 * @param is Stream de donde se leen los datos XML del mundo, que puede ser un stream obtenido de un fichero local de mundo, de una URL, etc.
+	 * @param systemId Provides the relative path for URLs in XML.
 	 * @param io
 	 * @param noSerCliente
 	 * @throws ParserConfigurationException 
@@ -1507,13 +1510,13 @@ public class World implements Informador , SupportingCode
 	 * @throws SAXException 
 	 * @throws XMLtoWorldException 
 	 */
-	public void loadWorldFromStream ( InputStream is , InputOutputClient io , boolean noSerCliente ) throws ParserConfigurationException, SAXException, IOException, TransformerException, XMLtoWorldException
+	public void loadWorldFromStream ( InputStream is , URI systemId , InputOutputClient io , boolean noSerCliente ) throws ParserConfigurationException, SAXException, IOException, TransformerException, XMLtoWorldException
 	{
 		org.w3c.dom.Document d = null;
 		//DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		io.write(io.getColorCode("information") + UIMessages.getInstance().getMessage("load.world.tree") + "\n" + io.getColorCode("reset") );
 		//d = db.parse( is );
-		d = getXMLFromStream( is );
+		d = getXMLFromStream( is , systemId );
 		org.w3c.dom.Element n = d.getDocumentElement();
 		loadWorldFromXML ( n , io , noSerCliente );
 	}
@@ -1551,7 +1554,7 @@ public class World implements Informador , SupportingCode
 		}
 		try
 		{
-			loadWorldFromStream ( is , io , noSerCliente );
+			loadWorldFromStream ( is , url.toURI() , io , noSerCliente );
 		}
 		catch ( ParserConfigurationException pce )
 		{
@@ -1576,6 +1579,10 @@ public class World implements Informador , SupportingCode
 		{
 			write( UIMessages.getInstance().getMessage("load.world.xml.exception") + " " + x2we.getMessage() );
 			//throw ( new IOException ( "Excepción al leer mundo de XML: " + x2we.getMessage() ) );
+		} 
+		catch (URISyntaxException use) 
+		{
+			use.printStackTrace();
 		}
 	}
 	
@@ -1605,8 +1612,9 @@ public class World implements Informador , SupportingCode
 			//br = new BufferedReader ( new InputStreamReader ( new FileInputStream ( new File ( modulefile ) ) , "ISO-8859-1" ) );			
 			//InputSource is = new InputSource(br);
 			//InputSource is = new InputSource( new FileInputStream( new File ( modulefile ) ) );
-			InputStream is = new FileInputStream ( new File ( modulefile ) );
-			loadWorldFromStream ( is , io , noSerCliente );
+			File f = new File ( modulefile );
+			InputStream is = new FileInputStream ( f );
+			loadWorldFromStream ( is , f.toURI() , io , noSerCliente );
 		}
 		catch ( FileNotFoundException fnfe )
 		{
