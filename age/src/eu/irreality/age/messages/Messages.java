@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -23,12 +24,13 @@ import eu.irreality.age.util.UTF8PropertiesLoader;
 public class Messages 
 {
 	
-	private static Map defaultInstances = new HashMap(); //String (language code) -> Messages & World -> Messages
+	private static Map defaultInstances = Collections.synchronizedMap( new HashMap() ); //String (language code) -> Messages & World -> Messages
+		//synchronization because this map is accessed by game engine threads and by the world-end thread (the latter to remove instances)
 	
 	private Properties properties;
 	
 	//this map stores messages that are modified temporarily (for one use only).
-	private Map tempChanged = new HashMap();
+	private Map tempChanged = Collections.synchronizedMap( new HashMap() );
 
 	public static String defaultMessagePath = Paths.LANG_FILES_PATH + "/messages.lan";
 	
