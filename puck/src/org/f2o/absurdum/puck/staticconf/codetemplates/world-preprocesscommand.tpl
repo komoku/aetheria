@@ -5,7 +5,7 @@ La cadena que devolvamos desde este método será la que se pase al parser.
 */
 String preprocessCommand ( Mobile aCreature , String inputText )
 {
-	/* Manipulación del comando */
+    /* Manipulación del comando */
 
-	return inputText;
+    return inputText;
 }

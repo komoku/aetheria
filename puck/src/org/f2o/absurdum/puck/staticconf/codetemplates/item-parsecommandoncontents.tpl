@@ -6,17 +6,17 @@
 */
 void parseCommandOnContents ( Mobile aCreature , String verb , String args , Vector path )
 {
-	
-	//aCreature: criatura que introduce un comando.
-	//verb: comando que introduce, por ejemplo "comer"
-	//args: resto de la orden que introduce, por ejemplo "la seta"
-	//path: camino de contenedores desde el objeto que introdujo el jugador. Por ejemplo, si introdujo "comer la seta" y la seta
-	//   está en una caja, este vector será [seta, caja]. Si la caja está a su vez dentro de un baúl, [seta, caja, baúl]
-	
-	
-	//terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
-	//por defecto ante ella
-	//terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
-	//comando y ejecución de la acción correspondiente
-	
+
+    //aCreature: criatura que introduce un comando.
+    //verb: comando que introduce, por ejemplo "comer"
+    //args: resto de la orden que introduce, por ejemplo "la seta"
+    //path: camino de contenedores desde el objeto que introdujo el jugador. Por ejemplo, si introdujo "comer la seta" y la seta
+    //   está en una caja, este vector será [seta, caja]. Si la caja está a su vez dentro de un baúl, [seta, caja, baúl]
+
+
+    //terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
+    //por defecto ante ella
+    //terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
+    //comando y ejecución de la acción correspondiente
+
 }
