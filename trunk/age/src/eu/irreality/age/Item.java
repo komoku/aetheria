@@ -334,6 +334,11 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		
 		//mob refs and only restrictions are obsolete, do not copy
 	
+		
+		//shallow!
+		
+		it.extraDescriptionArrays = extraDescriptionArrays;
+		it.extraDescriptionNameArrays = extraDescriptionNameArrays;
 	
 	
 	}

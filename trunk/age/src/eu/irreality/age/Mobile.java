@@ -7068,6 +7068,11 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 		//mob refs and only restrictions are obsolete, do not copy
 
+		
+		//shallow!
+		
+		m.extraDescriptionArrays = extraDescriptionArrays;
+		m.extraDescriptionNameArrays = extraDescriptionNameArrays;
 
 
 	}
