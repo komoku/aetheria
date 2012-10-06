@@ -57,22 +57,6 @@ void end ( )
 	throw ( new BSHCodeExecutedOKException() );
 }
 
-boolean getRelacionBoolean ( Entity e1, String propName, Entity e2 )
-{
-	if ( e1 == null ) return false;
-	return e1.getRelationshipPropertyValueAsBoolean(e2,propName);
-}
-
-void setRelacion ( Entity e1 , String propName , Entity e2 , boolean value )
-{
-	e1.setRelationshipProperty ( e2,propName,value );
-}
-
-boolean accion ( String s )
-{
-	return verb.equalsIgnoreCase(s);
-}
-
 boolean equals ( Object o1 , Object o2 )
 {
 	if ( o1 == null ) return o2 == null;
@@ -122,6 +106,12 @@ Object getProperty ( Entity e , String propName )
 void setProperty ( Entity e , String propName , Object value )
 {
 	e.setProperty ( propName , value );
+}
+
+void setProperty ( Entity e , String propName , Object value , long timeLeft )
+{
+	e.setProperty ( propName , value );
+	e.setPropertyTimeLeft ( propName , timeLeft );
 }
 
 void setTime ( Entity e , String propName , long timeLeft )
@@ -192,3 +182,30 @@ void setTime ( Entity e1 , String relName , Entity e2 , long time )
 	setRelationshipTime ( e1 , relName , e2 , time );
 }
 
+Object add ( Entity e , String propName , Object value )
+{
+	Object newValue = getProperty ( e , propName ) + value;
+	setProperty ( e , propName , newValue );
+	return newValue;
+}
+
+boolean negate ( Entity e , String propName )
+{
+	boolean b = e.getPropertyValueAsBoolean ( propName );
+	setProperty ( e , propName , !b );
+	return !b;
+}
+
+Object increment ( Entity e , String propName )
+{
+	Object newValue = getProperty ( e , propName ) + 1;
+	setProperty ( e , propName , newValue );
+	return newValue;
+}
+
+Object decrement ( Entity e , String propName )
+{
+	Object newValue = getProperty ( e , propName ) - 1;
+	setProperty ( e , propName , newValue );
+	return newValue;
+}

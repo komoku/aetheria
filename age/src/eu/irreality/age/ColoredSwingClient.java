@@ -926,10 +926,10 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 			}
 			
 			//reset delim string
-			if ( !tok.startsWith("%") )
-			{
-				lastDelimiterString = "";
-			}
+			//if ( !tok.startsWith("%") )
+			//{
+			lastDelimiterString = "";
+			//}
 			
 			//change state
 			iscode = !iscode;
