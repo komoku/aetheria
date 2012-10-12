@@ -625,6 +625,227 @@ public class Player extends Mobile implements Informador
 
 	}
 
+	
+	/**
+	 * Executes the parseCommand() methods that apply for the current command/arguments in a given scope.
+	 * @param scope
+	 * @return
+	 */
+	private boolean runParseCommandMethods ( EntityList scope )
+	{
+		//***
+		//*** BEGIN EXECUTION OF parseCommand() METHODS
+		//***
+
+		boolean ejecutado = false;
+		
+		setProperty ( "originState" , getState() ); //state that lead into the command execution
+		long originalTimeLeft = getPropertyTimeLeft("state");
+		setNewState ( IDLE , 1 ); //by default, this will be the state at end of command execution.
+			//Of course, this can be overridden by parseCommand methods or by the AGE core implementing the actual command. 
+			//But e.g. after a parseCommand that doesn't do any setNewState(), this will be the resulting state.
+		
+		//codigo bsh en el jugador
+		try
+		{
+			ReturnValue retval = new ReturnValue(null);
+			ejecutado = ejecutado || execCode( "parseCommand" , new Object[] { command , arguments } , retval );
+			if ( retval.getRetVal() != null )
+			{
+				commandstring = (String)retval.getRetVal();
+				//Debug.println("Command String Changed To " + (String)retval.getRetVal()); 
+				command = lenguaje.extractVerb(commandstring).trim(); //StringMethods.getTok(commandstring,1,' ').trim();
+				arguments = lenguaje.extractArguments(commandstring).trim(); //StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ').trim();
+			}
+		}
+		catch ( bsh.TargetError te )
+		{
+			write(io.getColorCode("error") + "bsh.TargetError found at player's parseCommand, command was " + command + " " + arguments + ", error was " + te + io.getColorCode("reset") );
+			writeError(ExceptionPrinter.getExceptionReport(te));
+		}
+
+		if ( ejecutado )
+		{
+			//luego esto lo hara el codigo
+			//setNewState( 1 /*IDLE*/, 1 );
+			mentions.setLastMentionedVerb(command);
+			return true;
+		}
+
+		//[04.03.04] Tocho grande de código (ejecutar comando personalizado con items de
+		//inventario y con items de habitación) sustituido por tocho más simple (ejecutar
+		//comando personalizado con objetivos)
+
+		ejecutado = false;
+
+		matchedOneEntity = false;
+		matchedTwoEntities = false;
+		matchedOneEntityPermissive = false;
+		matchedTwoEntitiesPermissive = false;
+
+		/*
+	Vector[] objetivos_ss = ParserMethods.refersToEntitiesIn ( arguments,posiblesObjetivos,posiblesObjetivos,false,false);
+	Vector[] objetivos_sp = ParserMethods.refersToEntitiesIn ( arguments,posiblesObjetivos,posiblesObjetivos,false,true);	
+	Vector[] objetivos_ps = ParserMethods.refersToEntitiesIn ( arguments,posiblesObjetivos,posiblesObjetivos,true,false);
+	Vector[] objetivos_pp = ParserMethods.refersToEntitiesIn ( arguments,posiblesObjetivos,posiblesObjetivos,true,true);
+		 */
+
+		List matches_ss = ParserMethods.parseReferencesToEntitiesIn( arguments,scope,scope,false,false);
+		List matches_sp = ParserMethods.parseReferencesToEntitiesIn( arguments,scope,scope,false,true);
+		List matches_ps = ParserMethods.parseReferencesToEntitiesIn( arguments,scope,scope,true,false);
+		List matches_pp = ParserMethods.parseReferencesToEntitiesIn( arguments,scope,scope,true,true);
+
+		List allMatches = new ArrayList();
+		allMatches.addAll(matches_ss);
+		allMatches.addAll(matches_sp);
+		allMatches.addAll(matches_ps);
+		allMatches.addAll(matches_pp);
+
+		matchedTwoEntities = ( allMatches.size() > 0 );
+		
+		Matches matches_s = ParserMethods.refersToEntityInRecursive ( arguments,scope,false );
+		Matches matches_p = ParserMethods.refersToEntityInRecursive ( arguments,scope,true );
+		
+		matchedOneEntity = ( matches_s.size() > 0 || matches_p.size() > 0 );
+		
+		if ( matches_s.getBestPriority() == 0 )
+			oneEntityPriority = matches_p.getBestPriority();
+		else if ( matches_p.getBestPriority() == 0 )
+			oneEntityPriority = matches_s.getBestPriority();
+		else oneEntityPriority = Math.min(matches_s.getBestPriority(),matches_p.getBestPriority());
+		
+		//let's see if this works.
+		ejecutado = resolveParseCommandForTwoEntities ( scope , arguments , arguments , false );
+		if ( ejecutado ) //código hizo end()
+		{
+			//setNewState( 1 , 1 );
+			mentions.setLastMentionedVerb(command);
+			return true;
+		}
+
+		//ejecutar parseCommand sobre una entidad, if possible
+		if ( !matchedTwoEntitiesPermissive ) //TODO: add possibility of setting property so that parseCommands for one entity will also be executed when two are matched. 
+			ejecutado = resolveParseCommandForOneEntity ( scope , arguments , arguments , false , true );
+		if ( ejecutado ) //código hizo end()
+		{
+			//setNewState( 1 , 1 );
+			mentions.setLastMentionedVerb(command);
+			return true;
+		}
+		
+		//A.
+		//comandos sobre un componente: sólo se ejecutan si no matchearon comandos con objetos
+		//("coger bastón del suelo" debe ejecutarse antes como comando sobre objeto bastón que sobre componente suelo)
+		//(also, comandos sobre componentes no se ejecutan si el verbo no es reconocido, para que funcione bien "coger espada y bastón del suelo")
+		//(si no, haríamos: coger espada (OK), bastón del suelo (comando sobre "suelo", pifia)
+		if ( !matchedOneEntity && !matchedTwoEntities && lenguaje.isVerb(command) )
+		{
+			EntityList posiblesObjetivosForComponents = (EntityList) scope.clone();
+			posiblesObjetivosForComponents.addEntity(this.getRoom()); //componentes pueden ser de habitación
+			ejecutado = resolveParseCommandForOneComponent ( posiblesObjetivosForComponents , arguments );
+			if ( ejecutado ) //código hizo end()
+			{
+				//setNewState( 1 , 1 );
+				mentions.setLastMentionedVerb(command);
+				return true;
+			}
+		}
+
+		//primero vemos si hay una definicion especifica del comando en la habitacion, con o sin argumentos
+		//si la definicion esta especificada sin argumentos y hay argumentos, los dejamos en el data segment.
+		//(argumentos flexibles) <-- todo esto código EVA
+		ejecutado = false;
+		try
+		{
+			ejecutado = habitacionActual.execCode("command_" + command + "_" + arguments.replace(' ' , '_' ), "this: " + habitacionActual.getID() + "\n" + "player: " + getID()  );
+			if ( !ejecutado ) //no habia comando definido para esos argumentos concretos, probamos sin argumentos
+			{
+				if ( arguments != null ) ejecutado = habitacionActual.execCode("command_" + command , "this: " + habitacionActual.getID() + "\nargs: " + arguments + "\n" + "player: " + getID() );
+				else if ( arguments == null ) ejecutado = habitacionActual.execCode("command_" + command , "this: " + habitacionActual.getID() + "\n" + "player: " + getID() );
+			}
+		}
+		catch ( EVASemanticException exc ) 
+		{
+			write(io.getColorCode("error") + "EVASemanticException found at room command , room number " + habitacionActual.getID() + io.getColorCode("reset") );
+		}
+
+		//ahora vamos con el código BeanShell, más simple, simplemente ejecutamos la función parseCommand.
+		try
+		{
+			ejecutado = ejecutado || habitacionActual.execCode ( "parseCommand" , new Object[] { this , command , arguments } );
+		}
+		catch ( bsh.TargetError te )
+		{
+			te.printStackTrace();
+			write(io.getColorCode("error") + "bsh.TargetError found at parseCommand(), command was " + command + " " + arguments + ", room number " + habitacionActual.getID() + ", error was " + te + io.getColorCode("reset") );
+			writeError(ExceptionPrinter.getExceptionReport(te));
+		}
+
+		if ( ejecutado ) 
+		{
+			mentions.setLastMentionedVerb(command);
+			return true ;
+		}
+
+		//parseCommands de los objetos definidos en el mundo.
+
+		ejecutado = resolveParseCommandForTwoEntities ( scope , arguments , arguments , true );
+		if ( ejecutado ) //código hizo end()
+		{
+			//setNewState( 1 , 1 );
+			mentions.setLastMentionedVerb(command);
+			return true;
+		}
+		
+		if ( !matchedTwoEntitiesPermissive ) //TODO: add possibility of setting property so that parseCommands for one entity will also be executed when two are matched. 
+			ejecutado = resolveParseCommandForOneEntity ( scope , arguments , arguments , true , true );
+		if ( ejecutado ) //código hizo end()
+		{
+			//setNewState( 1 , 1 );
+			mentions.setLastMentionedVerb(command);
+			return true;
+		}
+		
+
+		//parseCommand() del mundo, lo último que se ejecuta antes de las respuestas por defecto del sistema.
+		try
+		{
+			ReturnValue retval = new ReturnValue(null);
+			ejecutado = ejecutado || mundo.execCode( "parseCommand" , new Object[] { this , command , arguments } , retval );
+			if ( retval.getRetVal() != null )
+			{
+				commandstring = (String)retval.getRetVal();
+				//Debug.println("Command String Changed To " + (String)retval.getRetVal()); 
+				command = lenguaje.extractVerb(commandstring).trim(); //StringMethods.getTok(commandstring,1,' ').trim();
+				arguments = lenguaje.extractArguments(commandstring).trim(); //StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ').trim();
+			}
+		}
+		catch ( bsh.TargetError te )
+		{
+			write(io.getColorCode("error") + "bsh.TargetError found at world's parseCommand, command was " + command + " " + arguments + ", error was " + te + io.getColorCode("reset") );
+			writeError(ExceptionPrinter.getExceptionReport(te));
+		}
+
+		if ( ejecutado )
+		{
+			//luego esto lo hara el codigo
+			//setNewState( 1 , 1 ); //idle state
+			mentions.setLastMentionedVerb(command);
+			return true;
+		} 
+
+		//this restores the state and its timer to their values before execution of parseCommand methods, just in case the AGE kernel code
+		//needs to access the state. Which I think it actually doesn't, but well. It doesn't hurt to do this.
+		setNewState ( getPropertyValueAsInteger("originState") , originalTimeLeft );
+		
+		//***
+		//*** END EXECUTION OF parseCommand() METHODS
+		//***
+		
+		//end() not found
+		return false;
+	}
+	
 	public boolean execCommand ( String commandstring  )
 	{
 		
@@ -698,260 +919,18 @@ public class Player extends Mobile implements Informador
 		Object[] actionArgs = null;
 
 
-
-		boolean ejecutado = false;
-
-
-		//codigo bsh en el jugador
-		try
-		{
-			ReturnValue retval = new ReturnValue(null);
-			ejecutado = ejecutado || execCode( "parseCommand" , new Object[] { command , arguments } , retval );
-			if ( retval.getRetVal() != null )
-			{
-				commandstring = (String)retval.getRetVal();
-				//Debug.println("Command String Changed To " + (String)retval.getRetVal()); 
-				command = lenguaje.extractVerb(commandstring).trim(); //StringMethods.getTok(commandstring,1,' ').trim();
-				arguments = lenguaje.extractArguments(commandstring).trim(); //StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ').trim();
-			}
-		}
-		catch ( bsh.TargetError te )
-		{
-			write(io.getColorCode("error") + "bsh.TargetError found at player's parseCommand, command was " + command + " " + arguments + ", error was " + te + io.getColorCode("reset") );
-			writeError(ExceptionPrinter.getExceptionReport(te));
-		}
-
-		if ( ejecutado )
-		{
-			//luego esto lo hara el codigo
-			setNewState( 1 /*IDLE*/, 1 );
-			mentions.setLastMentionedVerb(command);
-			return true;
-		}
-
-		/*
-		//codigo bsh en el mundo
-		try
-		{
-			ReturnValue retval = new ReturnValue(null);
-			ejecutado = ejecutado || mundo.execCode( "parseCommand" , new Object[] { this , command , arguments } , retval );
-			if ( retval.getRetVal() != null )
-			{
-				commandstring = (String)retval.getRetVal();
-				//Debug.println("Command String Changed To " + (String)retval.getRetVal()); 
-				command = StringMethods.getTok(commandstring,1,' ').trim();
-				arguments = StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ').trim();
-			}
-		}
-		catch ( bsh.TargetError te )
-		{
-			write(io.getColorCode("error") + "bsh.TargetError found at world's parseCommand, command was " + command + arguments + ", error was " + te + io.getColorCode("reset") );
-		}
-
-		if ( ejecutado )
-		{
-			//luego esto lo hara el codigo
-			setNewState( 1 , 1 ); //idle state
-			mentions.setLastMentionedVerb(command);
-			return true;
-		} */
-
-		//[04.03.04] Tocho grande de código (ejecutar comando personalizado con items de
-		//inventario y con items de habitación) sustituido por tocho más simple (ejecutar
-		//comando personalizado con objetivos)
-
-		ejecutado = false;
-
-		matchedOneEntity = false;
-		matchedTwoEntities = false;
-		matchedOneEntityPermissive = false;
-		matchedTwoEntitiesPermissive = false;
-
+		
 		EntityList posiblesObjetivos = getReachableEntities();
 
-		/*
-	Vector[] objetivos_ss = ParserMethods.refersToEntitiesIn ( arguments,posiblesObjetivos,posiblesObjetivos,false,false);
-	Vector[] objetivos_sp = ParserMethods.refersToEntitiesIn ( arguments,posiblesObjetivos,posiblesObjetivos,false,true);	
-	Vector[] objetivos_ps = ParserMethods.refersToEntitiesIn ( arguments,posiblesObjetivos,posiblesObjetivos,true,false);
-	Vector[] objetivos_pp = ParserMethods.refersToEntitiesIn ( arguments,posiblesObjetivos,posiblesObjetivos,true,true);
-		 */
-
-		EntityList posiblesObjetivosPermissive = getReachableEntities(true);
-
-		List matches_ss = ParserMethods.parseReferencesToEntitiesIn( arguments,posiblesObjetivos,posiblesObjetivos,false,false);
-		List matches_sp = ParserMethods.parseReferencesToEntitiesIn( arguments,posiblesObjetivos,posiblesObjetivos,false,true);
-		List matches_ps = ParserMethods.parseReferencesToEntitiesIn( arguments,posiblesObjetivos,posiblesObjetivos,true,false);
-		List matches_pp = ParserMethods.parseReferencesToEntitiesIn( arguments,posiblesObjetivos,posiblesObjetivos,true,true);
-
-		List allMatches = new ArrayList();
-		allMatches.addAll(matches_ss);
-		allMatches.addAll(matches_sp);
-		allMatches.addAll(matches_ps);
-		allMatches.addAll(matches_pp);
-
-		matchedTwoEntities = ( allMatches.size() > 0 );
 		
-		Matches matches_s = ParserMethods.refersToEntityInRecursive ( arguments,posiblesObjetivos,false );
-		Matches matches_p = ParserMethods.refersToEntityInRecursive ( arguments,posiblesObjetivos,true );
-		
-		matchedOneEntity = ( matches_s.size() > 0 || matches_p.size() > 0 );
-		
-		if ( matches_s.getBestPriority() == 0 )
-			oneEntityPriority = matches_p.getBestPriority();
-		else if ( matches_p.getBestPriority() == 0 )
-			oneEntityPriority = matches_s.getBestPriority();
-		else oneEntityPriority = Math.min(matches_s.getBestPriority(),matches_p.getBestPriority());
-		
-		//let's see if this works.
-		ejecutado = resolveParseCommandForTwoEntities ( posiblesObjetivos , arguments , arguments , false );
-		if ( ejecutado ) //código hizo end()
-		{
-			setNewState( 1 , 1 );
-			mentions.setLastMentionedVerb(command);
-			return true;
-		}
-
-		//ejecutar parseCommand sobre una entidad, if possible
-		if ( !matchedTwoEntitiesPermissive ) //TODO: add possibility of setting property so that parseCommands for one entity will also be executed when two are matched. 
-			ejecutado = resolveParseCommandForOneEntity ( posiblesObjetivos , arguments , arguments , false , true );
-		if ( ejecutado ) //código hizo end()
-		{
-			setNewState( 1 , 1 );
-			mentions.setLastMentionedVerb(command);
-			return true;
-		}
-		
-		//A.
-		//comandos sobre un componente: sólo se ejecutan si no matchearon comandos con objetos
-		//("coger bastón del suelo" debe ejecutarse antes como comando sobre objeto bastón que sobre componente suelo)
-		//(also, comandos sobre componentes no se ejecutan si el verbo no es reconocido, para que funcione bien "coger espada y bastón del suelo")
-		//(si no, haríamos: coger espada (OK), bastón del suelo (comando sobre "suelo", pifia)
-		if ( !matchedOneEntity && !matchedTwoEntities && lenguaje.isVerb(command) )
-		{
-			EntityList posiblesObjetivosForComponents = (EntityList) posiblesObjetivos.clone();
-			posiblesObjetivosForComponents.addEntity(this.getRoom()); //componentes pueden ser de habitación
-			ejecutado = resolveParseCommandForOneComponent ( posiblesObjetivosForComponents , arguments );
-			if ( ejecutado ) //código hizo end()
-			{
-				setNewState( 1 , 1 );
-				mentions.setLastMentionedVerb(command);
-				return true;
-			}
-		}
-		
-		//ahora vemos los posibles prefijos para el parseCommand. 
-		//TODO: I think this is no longer needed but I may be wrong.
-		//TODO: removed 2011-04-01. Let's see if it works.
-		//seems to work fine.
-		/*
-		if ( !matchedTwoEntities )
-		{
-			int nArgToks = StringMethods.numToks(arguments,' ');
-			for ( int i = nArgToks-1 ; i >= 1 ; i-- )
-			{
-				String currentArgs = StringMethods.getToks(arguments,1,i,' ').trim();
-				ejecutado = resolveParseCommandForOneEntity ( posiblesObjetivos , currentArgs , arguments , false );
-				if ( ejecutado ) //código hizo end()
-				{
-					setNewState( 1 , 1 );
-					mentions.setLastMentionedVerb(command);
-					return true;
-				}
-			}
-		}
-		*/
+		//*** EXECUTE parseCommand() METHODS
+		if ( runParseCommandMethods(posiblesObjetivos) ) return true;
 
 
-
-
+		
 		Vector patternMatchVectorSing = ParserMethods.refersToEntityIn ( arguments,posiblesObjetivos,false ).toEntityVector();
 		Vector patternMatchVectorPlur = ParserMethods.refersToEntityIn ( arguments,posiblesObjetivos,true ).toEntityVector();
-
-		//primero vemos si hay una definicion especifica del comando en la habitacion, con o sin argumentos
-		//si la definicion esta especificada sin argumentos y hay argumentos, los dejamos en el data segment.
-		//(argumentos flexibles) <-- todo esto código EVA
-		ejecutado = false;
-		try
-		{
-			ejecutado = habitacionActual.execCode("command_" + command + "_" + arguments.replace(' ' , '_' ), "this: " + habitacionActual.getID() + "\n" + "player: " + getID()  );
-			if ( !ejecutado ) //no habia comando definido para esos argumentos concretos, probamos sin argumentos
-			{
-				if ( arguments != null ) ejecutado = habitacionActual.execCode("command_" + command , "this: " + habitacionActual.getID() + "\nargs: " + arguments + "\n" + "player: " + getID() );
-				else if ( arguments == null ) ejecutado = habitacionActual.execCode("command_" + command , "this: " + habitacionActual.getID() + "\n" + "player: " + getID() );
-			}
-		}
-		catch ( EVASemanticException exc ) 
-		{
-			write(io.getColorCode("error") + "EVASemanticException found at room command , room number " + habitacionActual.getID() + io.getColorCode("reset") );
-		}
-
-		//ahora vamos con el código BeanShell, más simple, simplemente ejecutamos la función parseCommand.
-		try
-		{
-			ejecutado = ejecutado || habitacionActual.execCode ( "parseCommand" , new Object[] { this , command , arguments } );
-		}
-		catch ( bsh.TargetError te )
-		{
-			te.printStackTrace();
-			write(io.getColorCode("error") + "bsh.TargetError found at parseCommand(), command was " + command + " " + arguments + ", room number " + habitacionActual.getID() + ", error was " + te + io.getColorCode("reset") );
-			writeError(ExceptionPrinter.getExceptionReport(te));
-		}
-
-		if ( ejecutado ) 
-		{
-			mentions.setLastMentionedVerb(command);
-			return true ;
-		}
-
-		//parseCommands de los objetos definidos en el mundo.
-
-		ejecutado = resolveParseCommandForTwoEntities ( posiblesObjetivos , arguments , arguments , true );
-		if ( ejecutado ) //código hizo end()
-		{
-			setNewState( 1 , 1 );
-			mentions.setLastMentionedVerb(command);
-			return true;
-		}
 		
-		if ( !matchedTwoEntitiesPermissive ) //TODO: add possibility of setting property so that parseCommands for one entity will also be executed when two are matched. 
-			ejecutado = resolveParseCommandForOneEntity ( posiblesObjetivos , arguments , arguments , true , true );
-		if ( ejecutado ) //código hizo end()
-		{
-			setNewState( 1 , 1 );
-			mentions.setLastMentionedVerb(command);
-			return true;
-		}
-		
-
-		//parseCommand() del mundo, lo último que se ejecuta antes de las respuestas por defecto del sistema.
-		try
-		{
-			ReturnValue retval = new ReturnValue(null);
-			ejecutado = ejecutado || mundo.execCode( "parseCommand" , new Object[] { this , command , arguments } , retval );
-			if ( retval.getRetVal() != null )
-			{
-				commandstring = (String)retval.getRetVal();
-				//Debug.println("Command String Changed To " + (String)retval.getRetVal()); 
-				command = lenguaje.extractVerb(commandstring).trim(); //StringMethods.getTok(commandstring,1,' ').trim();
-				arguments = lenguaje.extractArguments(commandstring).trim(); //StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ').trim();
-			}
-		}
-		catch ( bsh.TargetError te )
-		{
-			write(io.getColorCode("error") + "bsh.TargetError found at world's parseCommand, command was " + command + " " + arguments + ", error was " + te + io.getColorCode("reset") );
-			writeError(ExceptionPrinter.getExceptionReport(te));
-		}
-
-		if ( ejecutado )
-		{
-			//luego esto lo hara el codigo
-			setNewState( 1 , 1 ); //idle state
-			mentions.setLastMentionedVerb(command);
-			return true;
-		} 
-
-
-
 
 		//si no estaba definido en la habitacion		
 		if ( lenguaje.translateVerb(command,"en").equalsIgnoreCase( "go" ) ) //ir
