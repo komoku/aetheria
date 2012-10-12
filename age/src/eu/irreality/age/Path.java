@@ -329,7 +329,10 @@ public class Path extends Entity implements Descriptible
 	public String getNonStandardName ( )
 	{
 		Debug.println("Path: " + destination + " " + isStandard );
-		return exitCommand[0];
+		if ( exitCommand.length > 0 )
+			return exitCommand[0];
+		else
+			return mundo.getMessages().getMessage("unnamed.path");
 	}
 	
 	public String[] getNonStandardNames ( )
