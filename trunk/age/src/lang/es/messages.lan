@@ -472,3 +472,6 @@ unnamed.mobile=alguien
 
 #Nombre para mostrar cuando hay que hablar de un Item que no tiene nombre para mostrar a un observador dado (por ejemplo, en acciones)
 unnamed.item=algo
+
+#Nombre para mostrar cuando hay que hablar de un Path que no tiene nombre para mostrar a un observador dado (por ejemplo, "Fulano se va hacia...")
+unnamed.path=alguna parte
