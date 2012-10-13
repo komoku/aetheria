@@ -9921,11 +9921,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	{
 		forced = true;
 		force_string = s;
+		if ( getState() == 0 ) setNewState( IDLE,1 ); //Mobiles by default have no state if they haven't done anything yet.
 	}
 	
 	public void enqueueCommand(String s)
 	{
 		commandQueue.add(s);
+		if ( getState() == 0 ) setNewState( IDLE,1 ); //Mobiles by default have no state if they haven't done anything yet.
 	}
 
 	public void setCommandString(String s)
