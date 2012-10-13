@@ -2652,7 +2652,20 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	}
 
 
-
+	private static boolean isDecisionState ( int state )
+	{
+		return ( state == IDLE || state == MOVING || state == ATTACK_RECOVER || 
+				state == DAMAGE_RECOVER || state == BLOCK_RECOVER || state == DODGE_RECOVER || state == SURPRISE_RECOVER );
+	}
+	
+	/**
+	 * Returns true if this creature is in a state where it can make a decision and execute a command.
+	 * @return
+	 */
+	public boolean isInDecisionState()
+	{
+		return isDecisionState(getState());
+	}
 
 
 	public void changeState( World mundo )
@@ -2660,6 +2673,20 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 		Debug.println(this + " state " + getState() + "TUL" + this.getPropertyTimeLeft("state"));
 
+		//if there is a command enqueued, execute it
+		if ( isInDecisionState() )
+		{
+			try
+			{
+				if ( obtainAndExecCommand(mundo) ) return;
+			}
+			catch ( Exception e )
+			{
+				writeError("I/O Exception on Mobile changeState(). This shouldn't happen. Only players should throw such an exception!");
+			}
+		}
+		
+		//else, the AI acts
 		switch ( getState() )
 		{
 		case IDLE: //IDLE
@@ -2774,11 +2801,10 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				}
 
 			}
-
-
 			else //no enemies
+			{
 				setNewState(1 /*IDLE*/,2); //fixes regression bug (enemies wouldn't attack you).
-
+			}
 
 			break;
 		case MOVING: //GO
@@ -2797,7 +2823,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			}
 			catch ( EVASemanticException exc ) 
 			{
-				write( io.getColorCode("denial") + "EVASemanticException found at event_exitroom , room number " + habitacionActual.getID() + io.getColorCode("reset") );
+				write( io.getColorCode("error") + "EVASemanticException found at event_exitroom , room number " + habitacionActual.getID() + io.getColorCode("reset") );
 			}
 			catch ( bsh.TargetError bshte )
 			{
@@ -2807,11 +2833,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 			habitacionActual.reportAction(this,null,"$1 se va hacia " + exitname + ".\n" , null , null , false );	
 
-			Debug.println("Trying room set.");	
-
 			setRoom ( mundo.getRoom(getTarget()) );
-
-			Debug.println("Trying invert inform.");
 
 			habitacionActual.reportAction(this,null,"$1 llega desde " + Path.invert(exitname) + ".\n" , null , null , false );
 
@@ -11357,6 +11379,10 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				forced = false;
 				io.forceInput ( force_string , false );
 				commandstring = force_string;
+			}
+			else
+			{
+				return false; //we don't have a command.
 			}
 
 			//Process raw command:
