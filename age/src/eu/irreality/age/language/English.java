@@ -10,6 +10,7 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import eu.irreality.age.Mobile;
 import eu.irreality.age.NaturalLanguage;
 import eu.irreality.age.Player;
 import eu.irreality.age.StringMethods;
@@ -89,7 +90,7 @@ public class English extends NaturalLanguage
 	}
 	
 	
-	public String substitutePronouns ( Player p , String command , Mentions mentions )
+	public String substitutePronouns ( Mobile m , String command , Mentions mentions )
 	{
 		String theString = command;
 		if ( containsWord(command,"him") )
