@@ -2692,7 +2692,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						if ( w != null )
 						{
 
-							boolean success2 = intentarBlandir ( w , true );
+							boolean success2 = doWield ( w , true );
 
 							Debug.println("Weapon wield success " + success2);
 
@@ -5150,13 +5150,23 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 
 
-
-	/*
-	 * freeLimbsNeeded = true: si no hay miembros libres, fracasa la funci�n (dev. false)
-	 * freeLimbsNeeded = false: si no hay miembros libres, nos quitamos lo que llevemos en ellos para vestirnos
+	/**
+	 * @deprecated Use {@link #doWear(Item,boolean)} instead
 	 */
-
 	public boolean intentarVestir ( Item it , boolean freeLimbsNeeded )
+	{
+		return doWear(it, freeLimbsNeeded);
+	}
+
+	/**
+	 * Tries to wear the given item.
+	 * Does not refresh the mobile's state to reflect the time taken to wear the item - use the higher-level method wear() for that.
+	 * @param it
+	 * @param freeLimbsNeeded If true, the method fails (returning false) if no limbs are free. If false, we automatically remove whatever
+	 * is worn on needed limbs in order to wear the item.
+	 * @return
+	 */
+	public boolean doWear ( Item it , boolean freeLimbsNeeded )
 	{ 
 
 		if ( ! ( it instanceof Wearable ) )
@@ -5250,7 +5260,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					List vestidos = busyLimb.getRelatedEntitiesByValue("wears",true);	
 					for ( int z = 0 ; z < vestidos.size() ; z++ )
 					{
-						if ( desvestir ( (Item) vestidos.get(z) ) == false )
+						if ( doUnwear ( (Item) vestidos.get(z) ) == false )
 							return false;
 					}
 
@@ -5345,13 +5355,23 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 
 
-
-	/*
-	 * freeLimbsNeeded = true: si no hay miembros libres, fracasa la funci�n (dev. false)
-	 * freeLimbsNeeded = false: si no hay miembros libres, nos quitamos lo que llevemos en ellos para vestirnos
+	/**
+	 * @deprecated Use {@link #doWield(Item,boolean)} instead
 	 */
-
 	public boolean intentarBlandir ( Item it , boolean freeLimbsNeeded )
+	{
+		return doWield(it, freeLimbsNeeded);
+	}
+
+	/**
+	 * Try to wield the given item instantly.
+	 * Does not set the state to reflect the time taken to wield a weapon - use the higher level method wield() instead for that.
+	 * @param it
+	 * @param freeLimbsNeeded If true, the method fails if the limbs required to wield the weapon are not free. If false, we automatically
+	 * remove items wielded in those limbs in order to wield the weapon.
+	 * @return
+	 */
+	public boolean doWield ( Item it , boolean freeLimbsNeeded )
 	{
 
 		if ( ! ( it instanceof Weapon ) )
@@ -5438,7 +5458,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					List vestidos = busyLimb.getRelatedEntitiesByValue("wields",true);	
 					for ( int z = 0 ; z < vestidos.size() ; z++ )
 					{
-						if ( guardarArma ( (Item) vestidos.get(z) ) == false )
+						if ( doUnwield ( (Item) vestidos.get(z) ) == false )
 							return false;
 					}
 
@@ -5549,7 +5569,20 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	}
 
 
+	/**
+	 * @deprecated Use {@link #doUnwear(Item)} instead
+	 */
 	public boolean desvestir ( Item it )
+	{
+		return doUnwear(it);
+	}
+
+	/**
+	 * Unwears the given item, but doesn't change the state to reflect the time taken to unwear (use unwear() for that).
+	 * @param it
+	 * @return
+	 */
+	public boolean doUnwear ( Item it )
 	{
 
 		if ( wornItems == null ) return false;
@@ -5599,7 +5632,22 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 	}
 
+	/**
+	 * @deprecated Use {@link #doUnwield(Item)} instead
+	 */
 	public boolean guardarArma ( Item it )
+	{
+		return doUnwield(it);
+	}
+
+	/**
+	 * Tries to unwield an item instantly.
+	 * Does not reflect the state and its timer to represent the time taken to unwield.
+	 * Use the higher-level method unwield(Item) for that.
+	 * @param it
+	 * @return
+	 */
+	public boolean doUnwield ( Item it )
 	{
 
 		if ( wieldedWeapons == null ) return false;
@@ -6489,7 +6537,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 
 
-
+	/**
+	 * Note: this method sets the state adequately if the action succeeds.
+	 * It doesn't guarantee that it will be set if the action fails (although in some cases it does set it).
+	 * @param actionName
+	 * @param actionArgs
+	 * @return
+	 */
 	boolean executeAction ( String actionName , Object[] actionArgs )
 	{
 
@@ -6595,45 +6649,50 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		//se puede invocar multiples veces si el comando es de desvestir varias cosas
 		else if ( actionName.equalsIgnoreCase("unwear") )
 		{
-			boolean retval = desvestir ( (Item) actionArgs[0] );
-			if ( retval == true )
-				setNewState(1,5);
+			setNewState(IDLE,5);
+			boolean retval = doUnwear ( (Item) actionArgs[0] );
+			if ( retval == false )
+				setNewState(IDLE,1);
 			return retval;	
 		}
 
 		//se puede invocar multiples veces si el comando es de vestir varias cosas
 		else if ( actionName.equalsIgnoreCase("wear") )
 		{
-			boolean retval = intentarVestir ( (Item) actionArgs[0] , true );
-			if ( retval == true )
-				setNewState(1,5);
+			setNewState(IDLE,5);
+			boolean retval = doWear ( (Item) actionArgs[0] , true );
+			if ( retval == false )
+				setNewState(IDLE,1);
 			return retval;	
 		}
 
 		//se puede invocar multiples veces si el comando es de blandir varias cosas
 		else if ( actionName.equalsIgnoreCase("wield") )
 		{
-			boolean retval = intentarBlandir ( (Item) actionArgs[0] , true );
-			if ( retval == true )
-				setNewState(1,5);
+			setNewState(IDLE,5);
+			boolean retval = doWield ( (Item) actionArgs[0] , true );
+			if ( retval == false )
+				setNewState(IDLE,1);
 			return retval;	
 		}
 
 		//se puede invocar multiples veces si el comando es de desenfundar varias armas
 		else if ( actionName.equalsIgnoreCase("unwield") )
 		{
-			boolean retval = guardarArma ( (Item) actionArgs[0] );
-			if ( retval == true )
-				setNewState(1,5);
+			setNewState(IDLE,5);
+			boolean retval = doUnwield ( (Item) actionArgs[0] );
+			if ( retval == false )
+				setNewState(IDLE,1);
 			return retval;	
 		}
 
 		//se puede invocar multiples veces si el comando es de dejar varios objetos
 		else if ( actionName.equalsIgnoreCase("drop") )
 		{
-			boolean retval = dejarItem ( (Item) actionArgs[0] );
-			if ( retval == true )
-				setNewState(1,1);
+			setNewState(IDLE,1);
+			boolean retval = doDrop ( (Item) actionArgs[0] );
+			if ( retval == false )
+				setNewState(IDLE,1);
 			return retval;
 		}
 
@@ -6693,7 +6752,20 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 
 
+	/**
+	 * @deprecated Use {@link #doDrop(Item)} instead
+	 */
 	boolean dejarItem ( Item ourItem )
+	{
+		return doDrop(ourItem);
+	}
+
+	/**
+	 * Tries to drop an item instantly. This also includes unwearing/unwielding worn/wielded items.
+	 * @param ourItem
+	 * @return
+	 */
+	boolean doDrop ( Item ourItem )
 	{
 		try
 		{
@@ -6713,12 +6785,12 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				wieldedWeapons.removeItem(ourItem);
 				escribir( io.getColorCode("action")  + "Dejas de blandir " + ourItem.constructName2True(1,ourItem.getState()) + ".\n" + io.getColorCode("reset") );
 				 */
-				guardarArma(ourItem);
+				doUnwield(ourItem);
 			}
 			//si es un wearable que llevamos, dejar tambien de llevarlo
 			if ( wornItems != null && wornItems.contains(ourItem) )
 			{
-				desvestir(ourItem);
+				doUnwear(ourItem);
 			}
 
 			//write( io.getColorCode("action")  + "Dejas " + ourItem.constructName2True(1,this) + ".\n" + io.getColorCode("reset") );

@@ -4582,6 +4582,7 @@ public class Player extends Mobile implements Informador
 			{
 				mentions.setLastMentionedVerb(command);
 				cancelPending();
+				setNewState(IDLE,1); //the action failed, so the player is ready to do more stuff.
 				return true;
 			}
 			else
@@ -4606,6 +4607,7 @@ public class Player extends Mobile implements Informador
 				{
 					mentions.setLastMentionedVerb(command);
 					cancelPending();
+					if ( i == 0 ) setNewState(IDLE,1); //the action (even the first one) failed, so the player is ready to do more stuff.
 					return true;
 				}
 			}
@@ -4619,6 +4621,7 @@ public class Player extends Mobile implements Informador
 			//jugador.escribirDenegacionComando( io.getColorCode("denial") + "¿Qué pretendes quitarte?\n" + io.getColorCode("reset") );
 			mentions.setLastMentionedVerb(command);
 			cancelPending();
+			setNewState(IDLE,1); //the action failed, so the player is ready to do more stuff.
 			return false;		
 		}
 
