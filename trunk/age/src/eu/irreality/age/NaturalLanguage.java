@@ -658,7 +658,7 @@ public class NaturalLanguage
 	 * @param mentions
 	 * @return
 	 */
-	public String substitutePronounsIfVerb ( Player p , String command , Mentions mentions )
+	public String substitutePronounsIfVerb ( Mobile p , String command , Mentions mentions )
 	{
 		return command;
 	}

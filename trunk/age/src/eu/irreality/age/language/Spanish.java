@@ -4,7 +4,6 @@ import java.util.StringTokenizer;
 
 import eu.irreality.age.Mobile;
 import eu.irreality.age.NaturalLanguage;
-import eu.irreality.age.Player;
 import eu.irreality.age.StringMethods;
 import eu.irreality.age.World;
 import eu.irreality.age.spell.ReferenceNameCorrector;
@@ -121,7 +120,7 @@ public class Spanish extends NaturalLanguage
 	//sustituye los comandos al final del verbo por las ZR's correspondientes
 	//tambien corrige el verbo
 	//UNUSED
-	public String substitutePronounsIfVerb ( Player p , String command , Mentions mentions )
+	public String substitutePronounsIfVerb ( Mobile p , String command , Mentions mentions )
 	{
 
 		StringTokenizer st = new StringTokenizer(command);
