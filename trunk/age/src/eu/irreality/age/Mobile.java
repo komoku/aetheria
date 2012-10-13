@@ -7,6 +7,7 @@ package eu.irreality.age;
 import java.util.*;
 
 import bsh.*;
+
 import java.io.*;
 import java.net.URL;
 
@@ -11244,6 +11245,146 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		return mobilesCache;
 	}
 	
+	/**
+	 * Moves the first command from the command queue to the commandstring attribute (command to be executed).
+	 * Also handles the second chance flags if applicable.
+	 * Returns false if for some reason no command was obtained.
+	 * @return
+	 */
+	protected boolean obtainCommandFromQueue()
+	{
+		if ( nextCommandSecondChance )
+		{
+			secondChance = true; //estamos en un comando de segunda oportunidad
+			nextCommandSecondChance = false;
+		}
+
+		//quitar el primer elemento (cabeza) de commandQueue
+		commandstring = ((String)commandQueue.elementAt(0)).trim();
+
+		//Debug.println("(1) Command string set to " + (String)commandQueue.elementAt(0) );
+		commandQueue.removeElementAt(0);
+		
+		//en la cola metemos sentencias simples; pero al sustituir los pronombres pueden 
+		//dar lugar de nuevo a multiplicidad.
+		return separateSentences();
+	}
+	
+	/**
+	 * Executes the preprocessCommand() scripted method for the given input.
+	 * @return true if preprocessCommand() has hit end(), false if not (thus if false we will contiune command execution).
+	 */
+	protected boolean runPreprocessCommand()
+	{
+		/*Llamada a preprocessCommand() configurable*/
+		boolean executed = false;
+		try
+		{
+			ReturnValue retval = new ReturnValue(null);
+			executed = mundo.execCode( "preprocessCommand" , new Object[] { this , commandstring } , retval );
+			if ( retval.getRetVal() != null )
+			{
+				commandstring = (String)retval.getRetVal();
+				//Debug.println("Command String Changed To " + (String)retval.getRetVal()); 
+				command = lenguaje.extractVerb(commandstring).trim(); //StringMethods.getTok(commandstring,1,' ').trim();
+				arguments = lenguaje.extractArguments(commandstring).trim(); //StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ').trim();
+			}
+		}
+		catch ( bsh.TargetError te )
+		{
+			write(io.getColorCode("error") + "bsh.TargetError found at preprocessCommand, raw command was " + commandstring + ", error was " + te + io.getColorCode("reset") );
+			writeError(ExceptionPrinter.getExceptionReport(te));
+		}
+		if ( executed )
+		{
+			//luego esto lo hara el codigo
+			setNewState( 1 /*IDLE*/, 1 );
+			mentions.setLastMentionedVerb(command);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		/*Fin de preprocessCommand()*/
+	}
+	
+	/**
+	 * Runs a command prefixed by "eval" (to evaluate scripted code for debugging) if applicable (i.e. if the current command really
+	 * starts with "eval") and returns true. If not applicable, returns false.
+	 * @return
+	 */
+	protected boolean runEvalIfApplicable()
+	{
+		if ( commandstring.startsWith( "eval " ) && Debug.isEvalEnabled() )
+		{
+			ReturnValue retVal = new ReturnValue(null);
+			arguments = StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ').trim();
+			try {
+				mundo.getAssociatedCode().evaluate(arguments,this,retVal);
+			} catch (TargetError e) {
+				writeError(ExceptionPrinter.getExceptionReport(e));
+			}
+			this.write(""+retVal.getRetVal()+"\n");
+			return true;
+		}
+		return false;
+	}
+	
+	
+	/**
+	 * Obtains an executes a command.
+	 * The command can be obtained:
+	 * - From the command queue,
+	 * - From the "forced command" string.
+	 * The subclass Player overrides this method in order to be able to obtain commands from logs or from client input as well.
+	 */
+	public boolean obtainAndExecCommand ( World mundo ) throws java.io.IOException
+	{
+
+		secondChance = false; //luego se pone a true en obtainCommandFromQueue() si hace falta
+		
+		//mirar si cola de comandos vacia
+		//el !forced es porque si hemos forzado un comando, pasa por delante de la cola
+		if ( !commandQueue.isEmpty() && !forced ) //obtain enqueued piece of command - this was not a directly input command so it is not subject to preprocessCommand and eval
+		{
+			if ( !obtainCommandFromQueue() ) return false;
+		}
+		else
+		{
+			if ( forced )
+			{
+				forced = false;
+				io.forceInput ( force_string , false );
+				commandstring = force_string;
+			}
+
+			//Process raw command:
+			
+			/*Preparación del comando:*/
+			if ( commandstring != null ) commandstring = commandstring.trim();
+			
+			/*Llamada a preprocessCommand() configurable*/
+			if ( runPreprocessCommand() ) return true;
+
+			//comando nulo
+			if ( commandstring == null || commandstring.equals("") ) return false;
+
+			/*Comandos eval - false porque no se ejecuta un comando normal, es un metacomando de fuera del mundo*/
+			if ( runEvalIfApplicable() ) return false;
+			
+			/*Separamos las subfrases*/	
+			if ( !separateSentences() ) return false;
+
+		}
+
+		//modular execCommand()
+
+		if ( commandstring.isEmpty() ) return false; //empty strings can result if, for example, input was ",something", etc.
+		
+		return execCommand ( commandstring  );
+
+	}
 
 	
 }
