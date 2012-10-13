@@ -2,6 +2,7 @@ package eu.irreality.age.language;
 
 import java.util.StringTokenizer;
 
+import eu.irreality.age.Mobile;
 import eu.irreality.age.NaturalLanguage;
 import eu.irreality.age.Player;
 import eu.irreality.age.StringMethods;
@@ -39,7 +40,7 @@ public class Spanish extends NaturalLanguage
 	
 	//sustituye los comandos al final del verbo por las ZR's correspondientes
 	//this method NO LONGER checks if the input is actually a verb, that should be checked outside.
-	public String substitutePronouns ( Player p , String command , Mentions mentions )
+	public String substitutePronouns ( Mobile p , String command , Mentions mentions )
 	{
 		String thestring = command;	
 		boolean doneSomething = false;

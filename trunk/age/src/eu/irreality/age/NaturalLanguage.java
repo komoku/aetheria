@@ -645,7 +645,7 @@ public class NaturalLanguage
 	 * @param mentions
 	 * @return
 	 */
-	public String substitutePronouns ( Player p , String command , Mentions mentions )
+	public String substitutePronouns ( Mobile m , String command , Mentions mentions )
 	{
 		return command;
 	}
