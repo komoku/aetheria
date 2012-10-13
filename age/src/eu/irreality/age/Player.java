@@ -327,30 +327,7 @@ public class Player extends Mobile implements Informador
 	}
 
 
-	/**
-	 * Moves the first command from the command queue to the commandstring attribute (command to be executed).
-	 * Also handles the second chance flags if applicable.
-	 * Returns false if for some reason no command was obtained.
-	 * @return
-	 */
-	private boolean obtainCommandFromQueue()
-	{
-		if ( nextCommandSecondChance )
-		{
-			secondChance = true; //estamos en un comando de segunda oportunidad
-			nextCommandSecondChance = false;
-		}
-
-		//quitar el primer elemento (cabeza) de commandQueue
-		commandstring = ((String)commandQueue.elementAt(0)).trim();
-
-		//Debug.println("(1) Command string set to " + (String)commandQueue.elementAt(0) );
-		commandQueue.removeElementAt(0);
-		
-		//en la cola metemos sentencias simples; pero al sustituir los pronombres pueden 
-		//dar lugar de nuevo a multiplicidad.
-		return separateSentences();
-	}
+	
 	
 	/**
 	 * Obtains a command from the client linked to a Player, putting it into the commandstring attribute.
@@ -385,69 +362,16 @@ public class Player extends Mobile implements Informador
 		return true;
 	}
 	
-	/**
-	 * Executes the preprocessCommand() scripted method for the given input.
-	 * @return true if preprocessCommand() has hit end(), false if not (thus if false we will contiune command execution).
-	 */
-	private boolean runPreprocessCommand()
-	{
-		/*Llamada a preprocessCommand() configurable*/
-		boolean executed = false;
-		try
-		{
-			ReturnValue retval = new ReturnValue(null);
-			executed = mundo.execCode( "preprocessCommand" , new Object[] { this , commandstring } , retval );
-			if ( retval.getRetVal() != null )
-			{
-				commandstring = (String)retval.getRetVal();
-				//Debug.println("Command String Changed To " + (String)retval.getRetVal()); 
-				command = lenguaje.extractVerb(commandstring).trim(); //StringMethods.getTok(commandstring,1,' ').trim();
-				arguments = lenguaje.extractArguments(commandstring).trim(); //StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ').trim();
-			}
-		}
-		catch ( bsh.TargetError te )
-		{
-			write(io.getColorCode("error") + "bsh.TargetError found at preprocessCommand, raw command was " + commandstring + ", error was " + te + io.getColorCode("reset") );
-			writeError(ExceptionPrinter.getExceptionReport(te));
-		}
-		if ( executed )
-		{
-			//luego esto lo hara el codigo
-			setNewState( 1 /*IDLE*/, 1 );
-			mentions.setLastMentionedVerb(command);
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-		/*Fin de preprocessCommand()*/
-	}
 	
+		
 	/**
-	 * Runs a command prefixed by "eval" (to evaluate scripted code for debugging) if applicable (i.e. if the current command really
-	 * starts with "eval") and returns true. If not applicable, returns false.
-	 * @return
+	 * Obtains an executes a command.
+	 * The command can be obtained:
+	 * - From the command queue,
+	 * - From the "forced command" string,
+	 * - From a log if we're executing a log,
+	 * - From client input if none of the above apply.
 	 */
-	private boolean runEvalIfApplicable()
-	{
-		if ( commandstring.startsWith( "eval " ) && Debug.isEvalEnabled() )
-		{
-			ReturnValue retVal = new ReturnValue(null);
-			arguments = StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ').trim();
-			try {
-				mundo.getAssociatedCode().evaluate(arguments,this,retVal);
-			} catch (TargetError e) {
-				writeError(ExceptionPrinter.getExceptionReport(e));
-			}
-			this.write(""+retVal.getRetVal()+"\n");
-			return true;
-		}
-		return false;
-	}
-	
-	/**Ejecutar un comando del jugador.*/
-	//Este es el parser de comandos!
 	synchronized public boolean obtainAndExecCommand ( World mundo ) throws java.io.IOException
 	{
 
@@ -458,7 +382,7 @@ public class Player extends Mobile implements Informador
 		"commandstring" poniendo el nuevo comando y despertará el thread del wait.
 		 */		
 
-		secondChance = false; //luego se pone en el primer if a true si hace falta
+		secondChance = false; //luego se pone a true en obtainCommandFromQueue() si hace falta
 		
 		//mirar si cola de comandos vacia
 		//el !forced es porque si hemos forzado un comando, pasa por delante de la cola
@@ -495,10 +419,12 @@ public class Player extends Mobile implements Informador
 				//in asynchronous mode, we get it via a nonblocking call
 				//in synchronous mode, we get it via a blocking call (we wait for input)
 
-				if ( !obtainCommandFromClient() ) return true;
+				if ( !obtainCommandFromClient() ) return true; //true bc. if player disconnected, we return true
 
 			}
 
+			//Process raw command:
+			
 			/*Preparación del comando:*/
 			if ( commandstring != null ) commandstring = commandstring.trim();
 			
