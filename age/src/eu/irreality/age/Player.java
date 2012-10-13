@@ -474,7 +474,7 @@ public class Player extends Mobile implements Informador
 			write( io.getColorCode("error") + "Excepción E/S en characterChangeState()" + io.getColorCode("reset") );	
 		}
 	}
-
+	
 	public void characterChangeState( World mundo ) throws java.io.IOException
 	{
 
