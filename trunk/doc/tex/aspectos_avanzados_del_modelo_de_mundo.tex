@@ -676,10 +676,14 @@ AGE podrían ser una cota de mallas, un traje, unos guantes, un guantelete,
 unas botas o incluso un anillo o un pendiente.
 
 Las prendas se ponen y se quitan por defecto mediante las órdenes
-\textsf{vestir prenda} y \textsf{desvestir prenda}. A partir de la versión
-1.0.3 de AGE, las órdenes \textsf{poner jugador prenda} (ponerse prenda) y
-\textsf{coger jugador prenda} (quitarse/sacarse prenda) también funcionan
-para ponerse y quitarse prendas.
+\textsf{vestir prenda} y \textsf{desvestir prenda}. En versiones actuales
+de AGE (de 1.0.3 a 1.2.3), las órdenes \textsf{poner jugador prenda} (ponerse
+prenda) y \textsf{coger jugador prenda} (quitarse/sacarse prenda) también
+funcionan para ponerse y quitarse prendas. Sin embargo, es importante tener
+en cuenta que estas últimas órdenes se eliminarán en el futuro, por lo que se
+recomienda a los creadores de aventuras suponer que sólo existen por defecto
+vestir y desvestir, y programarse en BeanShell los verbos poner y quitar si se
+quiere que funcionen para este propósito.
 
 Una prenda en AGE siempre se pone en una o varias partes del cuerpo, esto
 permite crear un sistema de prendas realista (por ejemplo, si tenemos un
@@ -1792,7 +1796,7 @@ protegerá de esa proporción de ataques que van dirigidos a la cabeza.
 La reducción de daño otorgada por una armadura se añade a la reducción
 otorgada por el bloqueo, si el personaje ha bloqueado.
 
-\subsection{Entrando en combate}
+\subsection{Entrando en combate} \label{sec:entrando_en_combate}
 
 Ahora que sabemos cómo funciona exactamente el combate, vamos a ver cómo
 podemos utilizarlo, es decir, cómo hacemos que un personaje de un juego en
