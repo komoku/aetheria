@@ -8281,7 +8281,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			if ( ejecutado ) //código hizo end()
 			{
 				//luego esto lo hara el codigo
-				setNewState( 1 , 1 );
+				//setNewState( 1 , 1 );
 				mentions.setLastMentionedVerb(command);
 				return true;
 			}
@@ -8317,7 +8317,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			if ( ejecutado ) //código hizo end()
 			{
 				//luego esto lo hara el codigo
-				setNewState( 1 , 1 );
+				//setNewState( 1 , 1 );
 				mentions.setLastMentionedVerb(command);
 				return true;
 			}
@@ -8361,7 +8361,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		if ( ejecutado ) //código hizo end()
 		{
 			//luego esto lo hara el codigo
-			setNewState( 1 , 1 );
+			//setNewState( 1 , 1 );
 			mentions.setLastMentionedVerb(command);
 		}
 		return ejecutado;
@@ -8597,7 +8597,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			if ( ejecutado ) //código hizo end()
 			{
 				//luego esto lo hara el codigo
-				setNewState( 1 , 1 );
+				//setNewState( 1 , 1 );
 				mentions.setLastMentionedVerb(command);
 				return true;
 			}
@@ -8619,7 +8619,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				if ( ejecutado ) //código hizo end()
 				{
 					//luego esto lo hara el codigo
-					setNewState( 1 , 1 );
+					//setNewState( 1 , 1 );
 					mentions.setLastMentionedVerb(command);
 					return true;
 				}
@@ -8790,7 +8790,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			if ( ejecutado )
 			{
 				//luego esto lo hara el codigo
-				setNewState( 1 , 1 );
+				//setNewState( 1 , 1 );
 				mentions.setLastMentionedVerb(command);
 				return true;
 			}		
