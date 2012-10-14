@@ -271,6 +271,270 @@ elMobile.getRoom().informAction(...)
 elMobile.getRoom().informActionAuto(...)
 \end{lstlisting}
 
+\section{Ejecución automática de órdenes}
+
+En un mundo de Aetheria Game Engine, tanto los personajes jugadores (clase
+\textsf{Player}) como los no jugadores (clase \textsf{Mobile}) pueden
+interactuar con el mundo que los rodea. Así, cualquier criatura en AGE puede
+manipular objetos, vestir ropa, moverse por el mundo, combatir, o ejecutar
+cualquier otro comportamiento que hayamos programado.
+
+Por defecto, lo que hace el jugador en el mundo está determinado por las
+órdenes que teclea (sean las que provocan comportamientos por defecto, como
+\comillas{coger espada} o \comillas{ir al norte}, o sean las que provocan
+comportamientos definidos por el creador del mundo en los métodos de análisis
+de la entrada (ver \ref{sec:parseCommand}). Por otra parte, las criaturas que
+no son jugadores no hacen nada por defecto salvo combatir una vez que han
+entrado en combate, ya que AGE incluye una IA (inteligencia artificial) para
+que puedan decidir cuándo atacar, bloquear, etc. Para que tomen la iniciativa
+en otras cosas aparte del combate (ver \ref{sec:entrando_en_combate}), hay que
+decírselo explícitamente mediante código BeanShell.
+
+Para conseguir esto, hay varias maneras en AGE de hacer que las criaturas hagan
+cosas. Por un lado, la clase Mobile tiene una serie de métodos (ver
+\ref{sec:metodos_psis}) que podemos usar para mandarle a una criatura (sea un
+jugador o no) que ejecute un comportamiento por defecto, como puede ser ponerse
+una prenda o decir algo. Por otro lado, si lo que queremos que haga la criatura
+no es exactamente un comportamiento por defecto, siempre se puede simular la
+interacción \comillas{a mano}: por ejemplo, ya en la sección sobre manipulación
+básica de entidades (\ref{sec:ManipEntidades}) veíamos un ejemplo donde un
+mendigo aceptaba una moneda si un jugador se la entregaba (ver
+\ref{sec:entrada_dos_entidades}): para que se quedara con la moneda,
+simplemente la poníamos en su inventario y la quitábamos del del jugador
+directamente mediante código BeanShell.
+
+En esta sección veremos una tercera manera de hacer que una criatura haga
+cosas, que es pasar órdenes directamente a la criatura en cuestión para que las
+ejecute. Con esto, podemos hacer que cualquier criatura reciba una orden en
+formato texto del mismo modo que lo haría el personaje jugador: por ejemplo,
+como veremos en detalle más abajo, podemos poner
+\textsf{mobile(''Juan'').forceCommand(''ir al norte'')} para que Juan vaya al
+norte, sin necesidad de utilizar un método específico de movimiento como
+\textsf{goTo(room(''Sala norte''))}. Así, aunque la ejecución automática de
+comandos por parte de criaturas no añade nueva funcionalidad que no se pueda
+implementar de otro modo, sí que nos permite a menudo conseguir cosas con mayor
+comodidad, especialmente si queremos que un personaje no jugador realice
+acciones personalizadas implementadas mediante método de análisis de la
+entrada.
+
+La ejecución automática de comandos también se puede utilizar para personajes
+jugadores: por ejemplo, si se quiere que cuando un jugador coja una espada la
+empuñe automáticamente, podemos mandarle ejecutar la orden \comillas{blandir
+espada} después de cogerla. Además de para ejecutar una orden a continuación
+de otra, también podemos usar esta característica para sustituir una orden por
+otra: por ejemplo, si queremos que \comillas{leer cartel} sea equivalente a
+\comillas{mirar cartel}, podemos hacer que cuando el jugador teclee
+ \comillas{leer cartel} se ejecute de forma transparente la orden \comillas{mirar
+ cartel} en su lugar.
+
+Para todo ello, existen dos métodos de la clase Mobile que nos permiten ejecutar
+órdenes automáticamente: uno que añade la orden dada a una cola de órdenes, y
+otro que la ejecuta lo antes posible.
+
+\subsection {Añadir una orden a la cola de órdenes}
+
+Todas las criaturas, jugadores o no, tienen una cola de órdenes pendientes de
+ejecutar.
+
+En el caso de los jugadores, se guardan por defecto en esta cola las partes
+constituyentes pendientes dentro de una orden compuesta tecleada por el
+jugador: por ejemplo, si el jugador teclea \comillas{coger la manzana y la pera y
+mirar la puerta}, la orden \comillas{coger la manzana} se ejecutará de
+inmediato; mientras que las órdenes \comillas{coger la pera} y \comillas{mirar
+la puerta} quedan en la cola de órdenes esperando su turno para ser ejecutadas.
+De este modo, sólo se cogerá la pera una vez que se haya terminado de coger la
+manzana y se mirará la puerta después de haber cogido la pera. Cada vez que se
+comienza a ejecutar una orden, se elimina de la cola de órdenes pendientes, de
+modo que cuando estemos cogiendo la pera la cola sólo contendrá
+\comillas{mirar la puerta}.
+
+En el caso de las criaturas que no son jugadores, AGE no almacena nada por
+defecto en la cola de órdenes pendientes; pero igualmente está disponible para
+que podamos almacenar órdenes nosotros si queremos que la criatura las
+ejecute.
+
+Así, para añadir una nueva orden al final de la cola de órdenes de una criatura,
+jugador o no, utilizamos el siguiente método:
+
+\begin{lstlisting}
+/*clase Mobile*/ void enqueueCommand ( String command )
+\end{lstlisting}
+
+que incluye la orden dada (\textsf{command}) al final de la cola de órdenes.
+Nótese que se puede dar a las criaturas cualquier orden que pueda teclear un
+jugador, incluso órdenes compuestas, en cuyo caso se añadirán a la cola de
+órdenes sus partes constituyentes.
+
+La orden añadida a la cola se ejecutará en cuanto hayan terminado de procesarse
+el resto de órdenes que pueda haber en la cola, y la criatura esté disponible para
+ejecutar una acción.\footnote{Una criatura está disponible para ejecutar una acción
+cuando llega al final de un estado de los etiquetados con \comillas{Tomar
+decisión} en la tabla de cambios de estado -- es decir, si no está muerta, en
+posición de guardia para bloquear un ataque, recuperándose de un golpe, etc.
+Los momentos de disponibilidad coinciden con los momentos en los que, si la
+criatura es un jugador, se lee un comando tecleado.} Las órdenes encoladas
+tienen prioridad sobre la petición de órdenes por teclado a los jugadores (es decir,
+si un jugador tiene una orden encolada, se ejecutará ésta en lugar de recibir una
+orden tecleada); y también sobre las órdenes que emite la IA de combate para los
+Mobile no jugadores.
+
+De este modo, si en el código de una espada ponemos lo siguiente:
+
+\begin{lstlisting}
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+    if ( equals(verb,"coger") && aCreature.getRoom().hasItem(self) )
+    {
+        aCreature.enqueueCommand("decir Con esto podré derrotar "
+        + "a esos sucios villanos");   
+    }
+}
+\end{lstlisting}
+
+El resultado de coger la espada será:
+
+\begin{verbatim}
+> coger la espada
+Coges la espada.
+Se trata de una espada funcional, ligera pero bien equilibrada.
+Dices "Con esto podré derrotar a esos sucios villanos".
+\end{verbatim}
+
+Por otra parte, si cogemos la espada como parte de una orden compuesta,
+sucedería lo siguiente:
+
+\begin{verbatim}
+> coger espada y dejar el escudo
+Coges la espada.
+Se trata de una espada funcional, ligera pero bien equilibrada.
+Dejas el escudo.
+Dices "Con esto podré derrotar a esos sucios villanos".
+\end{verbatim}
+
+Las órdenes encoladas de este modo siguen exactamente el mismo proceso que
+una orden tecleada normalmente por un jugador, incluyendo su paso por los
+métodos \textsf{preprocessCommand()} y \textsf{parseCommand()}.
+
+Nótese que, en cualquier momento, podemos vaciar la cola de órdenes de una
+criatura con el siguiente método:
+
+\begin{lstlisting}
+/*clase Mobile*/ void cancelPending ( )
+\end{lstlisting}
+
+Esto hará que cualquier orden que en ese momento esté pendiente en la cola no
+llegue a ejecutarse, tanto si ha sido introducida por nosotros mediante
+\textsf{enqueueCommand()} como si formaba parte de una orden compuesta.
+
+\subsection{Ejecutar una orden lo antes posible}
+
+En el ejemplo anterior, la orden \comillas{decir} se ejecuta después de dejar el
+escudo, dado que se pone al final de la cola de órdenes pendientes, y por lo tanto
+tiene que esperar a que \comillas{dejar el escudo} termine.
+
+Sin embargo, a veces nos interesará más ejecutar una orden lo antes posible: en
+el primer momento en que la criatura esté disponible para ejecutar acciones,
+independientemente del resto de órdenes que puedan quedar en la cola (que
+quedan en ella para su ejecución posterior). Para este propósito, existe el
+siguiente método:
+
+\begin{lstlisting}
+/*clase Mobile*/ void forceCommand ( String command )
+\end{lstlisting}
+
+que pone la orden dada (\textsf{command}) a ejecutarse la siguiente vez que la
+criatura pueda llevar a cabo una acción, independientemente de la cola de
+órdenes. Así, si modificáramos el ejemplo anterior para hacer lo siguiente:
+
+\begin{lstlisting}
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+    if ( equals(verb,"coger") && aCreature.getRoom().hasItem(self) )
+    {
+        aCreature.forceCommand("decir Con esto podré derrotar "
+        + "a esos sucios villanos");   
+    }
+}
+\end{lstlisting}
+
+El resultado de coger la espada y dejar el escudo será:
+
+\begin{verbatim}
+> coger espada y dejar el escudo
+Coges la espada.
+Se trata de una espada funcional, ligera pero bien equilibrada.
+Dices "Con esto podré derrotar a esos sucios villanos".
+Dejas el escudo.
+\end{verbatim}
+
+Como en el caso de \textsf{enqueueCommand()}, las órdenes ejecutadas
+mediante \textsf{forceCommand()} siguen exactamente el mismo proceso que
+una orden tecleada normalmente por un jugador, incluyendo su paso por los
+métodos \textsf{preprocessCommand()} y \textsf{parseCommand()}.
+
+El método \textsf{forceCommand()} es especialmente útil para
+\comillas{redirigir} unos comandos a otros. Por ejemplo, supongamos que
+tenemos un cartel, y queremos conseguir que teclear \comillas{leer cartel} haga
+exactamente lo mismo que si hubiésemos tecleado \comillas{mirar cartel}.
+Podemos hacerlo poniendo lo siguiente en el código del cartel:
+
+\begin{lstlisting}
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+    if ( equals(verb,"leer") )
+    {
+        aCreature.forceCommand("mirar cartel");
+        end();
+    }
+}
+\end{lstlisting}
+
+De este modo, si la descripción del cartel es \comillas{El cartel dice que la
+distancia a Madrid es 22 km.}, el jugador podría teclear:
+
+\begin{verbatim}
+> mirar el cartel
+El cartel dice que la distancia a Madrid es 22 km.
+> leer el cartel
+El cartel dice que la distancia a Madrid es 22 km.
+> leer el cartel y dejar el escudo
+El cartel dice que la distancia a Madrid es 22 km.
+Dejas el escudo.
+\end{verbatim}
+
+Nótese que las dos primeras órdenes de este ejemplo habrían funcionado igual de
+bien con \textsf{enqueueCommand()} en lugar de \textsf{forceCommand()};
+pero la tercera no, pues habría dejado el escudo antes de mostrar la descripción
+del cartel.
+
+Algo importante a tener en cuenta a la hora de usar \textsf{forceCommand()}
+es que sólo puede haber una acción pendiente de ejecutar con este método, y
+llamar otra vez a \textsf{forceCommand()} quita la última para sustituirla por
+una nueva. Es decir, mientras que si hacemos algo como
+
+\begin{lstlisting}
+mobile("orco").enqueueCommand("ir al norte");
+mobile("orco").enqueueCommand("ir al este");
+mobile("orco").enqueueCommand("ir al este");
+\end{lstlisting}
+
+los tres comandos se añadirán a la cola del orco y por lo tanto éste irá primero al
+norte y dos veces al este; sin embargo, si en lugar de eso pusiéramos
+
+\begin{lstlisting}
+mobile("orco").forceCommand("ir al norte");
+mobile("orco").forceCommand("ir al este");
+mobile("orco").forceCommand("ir al este");
+\end{lstlisting}
+
+el resultado sería que el orco sólo se movería una vez, para ir al este, que es el
+último comando que hemos forzado.
+
+Otra cosa a tener en cuenta, tanto con \textsf{forceCommand()} como con
+\textsf{enqueueCommand()}, es que si como parte del procesado de una orden
+forzamos o encolamos esa misma orden en la misma criatura, caeremos en un
+bucle infinito.
+
 \section {Presentación general}
 
 \section {Métodos útiles de la API de Java}
