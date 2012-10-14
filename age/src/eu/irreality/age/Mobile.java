@@ -9271,7 +9271,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				mentions.setLastMentionedVerb(command);
 				cancelPending();
 				setNewState(IDLE,1); //the action failed, so the player is ready to do more stuff.
-				return true;
+				return false;
 			}
 			else
 			{
@@ -9296,7 +9296,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					mentions.setLastMentionedVerb(command);
 					cancelPending();
 					if ( i == 0 ) setNewState(IDLE,1); //the action (even the first one) failed, so the player is ready to do more stuff.
-					return true;
+					return false;
 				}
 			}
 	
@@ -10763,7 +10763,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			//But have to think on how to integrate that with the action framework.
 	
 			boolean mirado = false;
-	
+			
+			setNewState( 1 /*IDLE*/, 1 );
 			
 			//Paso 0: cogerme (o sea, quitarme) [algo de mi inventario]
 			if ( ParserMethods.refersToEntity(arguments, this, false) ) //the player appears as an argument
@@ -10796,7 +10797,6 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	
 			if ( mirado )
 			{
-				setNewState( 1 /*IDLE*/, 1 );
 				mentions.setLastMentionedVerb(command);
 				return true;
 			}
@@ -10824,78 +10824,17 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				cancelPending();
 				return false;		
 			}
+			else
+			{
+				mentions.setLastMentionedVerb(command);
+				return true;
+			}
 	
 		} //FIN CMD DEJAR
 		else if ( "inventory".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) && arguments.trim().length() < 1 ) //inventario. deja de valer poner inventario algo.
 		{
-			showInventory();
-			/*
-			if ( inventory != null )
-			{
-				String str = inventory.toString(this);
-				if ( str.equalsIgnoreCase("nada.") ) write( io.getColorCode("information") + "No tienes nada.\n" + io.getColorCode("reset") );
-				else
-				{
-					write( io.getColorCode("information") + "Tienes " + str + "\n" + io.getColorCode("reset") );
-	
-					Inventory limbs = getFlattenedPartsInventory();
-					//cosas que blandes
-					if ( wieldedWeapons != null )
-						for ( int i = 0 ; i < wieldedWeapons.size() ; i++ )
-						{
-							if ( wieldedWeapons.elementAt(i) != null )
-							{
-								Item arma = wieldedWeapons.elementAt(i);
-								//buscar miembro que blande el arma
-								for ( int j = 0 ; j < limbs.size() ; j++ )
-								{
-									Item miembro = limbs.elementAt(j);
-									if ( miembro.getRelationshipPropertyValueAsBoolean(arma,"wields") )
-									{
-										write( io.getColorCode("information") + "Blandes " + arma.constructName2OneItem(this)  + " en " + miembro.constructName2OneItem(this) + ".\n" + io.getColorCode("reset") );
-										//break;
-									}
-								}
-							}
-						}
-					//cosas que llevas puestas
-					Inventory wornItems = getWornItems(); //this shadows the homonymous attribute
-					if ( wornItems != null )
-						for ( int i = 0 ; i < wornItems.size() ; i++ )
-						{
-							if ( wornItems.elementAt(i) != null )
-							{
-								Item vestido = wornItems.elementAt(i);
-								Vector miembrosOcupados = new Vector();
-								//buscar miembros que visten el wearable
-								for ( int j = 0 ; j < limbs.size() ; j++ )
-								{
-									Item miembro = limbs.elementAt(j);
-									if ( miembro.getRelationshipPropertyValueAsBoolean(vestido,"wears") )
-									{
-										miembrosOcupados.add(miembro);
-									}
-								}
-								//output
-								String toOutput="";
-								for ( int j = 0 ; j < miembrosOcupados.size() ; j++ )
-								{
-									Item limb = (Item)miembrosOcupados.get(j);
-									if ( j == 0 )
-										toOutput += limb.constructName2OneItem(this);
-									else if ( j > 0 && j == miembrosOcupados.size() - 1 )
-										toOutput += " y " + limb.constructName2OneItem(this);
-									else
-										toOutput += ", " + limb.constructName2OneItem(this);
-								}
-								write( io.getColorCode("information") + "Llevas " + vestido.constructName2OneItem(this)  + " en " + toOutput + ".\n" + io.getColorCode("reset") );
-							}
-						}
-				}
-			}
-			else write( io.getColorCode("information") + "No tienes nada.\n" + io.getColorCode("reset") );
-			 */
 			setNewState( 1 /*IDLE*/, 1 );
+			showInventory();
 			mentions.setLastMentionedVerb(command);
 			return true;
 		} //FIN CMD INVENTARIO
@@ -10919,7 +10858,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			setNewState( 1 /*IDLE*/, 1 );
 			mentions.setLastMentionedVerb(command);
 			return true;
-		} //FIN CMD INVENTARIO
+		} //END CMD SPELLS
 	
 		else if ( "suicide".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) ) //suicidar, suicidarse
 		//else if ( command.equalsIgnoreCase( "suicidar" ) || command.equalsIgnoreCase( "suicidarse" ) )
@@ -10940,6 +10879,11 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				cancelPending();
 				return false;		
 			}
+			else
+			{
+				mentions.setLastMentionedVerb(command);
+				return true;
+			}
 		}
 	
 		else if ( "wear".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) ) //vestir
@@ -10952,6 +10896,11 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				mentions.setLastMentionedVerb(command);
 				cancelPending();
 				return false;		
+			}
+			else
+			{
+				mentions.setLastMentionedVerb(command);
+				return true;
 			}
 		}
 	
@@ -10966,6 +10915,11 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				cancelPending();
 				return false;		
 			}
+			else
+			{
+				mentions.setLastMentionedVerb(command);
+				return true;
+			}
 		}
 	
 		else if ( "unwield".equalsIgnoreCase(lenguaje.translateVerb(command,"en")) ) //enfundar
@@ -10979,6 +10933,11 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				cancelPending();
 				return false;		
 			}
+			else
+			{
+				mentions.setLastMentionedVerb(command);
+				return true;
+			}
 		}
 	
 	
@@ -10989,9 +10948,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			//say(arguments);
 			//escribir("\n");
 	
-			comandoDecir ( arguments );
-	
 			setNewState( 1 /*IDLE*/, 1 );
+			comandoDecir ( arguments );
 			mentions.setLastMentionedVerb(command);
 			return true;
 		}
