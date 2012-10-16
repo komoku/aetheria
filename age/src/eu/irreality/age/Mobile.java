@@ -7219,6 +7219,17 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	}
 
 
+	/**
+	 * Newer version of createNewInstance() that doesn't need old, unused parameters.
+	 * @param cloneInventory Whether the inventory will be copied or left empty.
+	 * @param cloneParts Whether the parts will be copied or left empty.
+	 * @param uniqueName Unique name of the resulting Mobile.
+	 * @return
+	 */
+	public Mobile createNewInstance ( boolean cloneInventory , boolean cloneParts , String uniqueName )
+	{
+		return createNewInstance ( mundo , cloneInventory , cloneParts , true , uniqueName );
+	}
 
 	public Mobile createNewInstance ( World mundo , boolean cloneInventory , boolean cloneParts , boolean cloneVirtual )
 	{
