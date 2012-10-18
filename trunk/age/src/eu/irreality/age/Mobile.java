@@ -7347,6 +7347,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			Inventory parts = it.getFlattenedPartsInventory();
 			Inventory inv = it.getInventory();
 
+			if ( it.wieldedWeapons == null ) it.wieldedWeapons = new Inventory(10000,10000);
+			if ( it.wornItems == null ) it.wornItems = new Inventory(10000,10000);
+			
 			it.wieldedWeapons.empty();
 			it.wornItems.empty();
 
