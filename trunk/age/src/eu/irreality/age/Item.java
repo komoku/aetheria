@@ -1538,6 +1538,15 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	}
 	
 	/**
+	 * Gets the output name to show one instance of this entity to viewer, without any article.
+	 * @return String with the output name to show to viewer, without using any article.
+	 */
+	public String getOutputNameOnly ( Entity viewer )
+	{
+		return getOutputName ( 1 , viewer , "" , "" , true , true );
+	}
+	
+	/**
 	 * Gets the output name to show one instance of this entity, without parameterising the name for any viewer in particular, without any article.
 	 * @return String with the output name to show to viewer, without using any article.
 	 */
@@ -1568,6 +1577,15 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	}
 	
 	/**
+	 * Gets the output name to show one instance of this entity to viewer, using a definite article.
+	 * @return String with the output name to show to viewer, using a definite article
+	 */
+	public String getOutputNameThe ( Entity viewer )
+	{
+		return getOutputName ( 1 , viewer , mundo.getMessages().getMessage("art.def.m") , mundo.getMessages().getMessage("art.def.f") , true , true );
+	}
+	
+	/**
 	 * Gets the output name to show one instance of this entity, without parameterising the name for any viewer in particular, using a definite article.
 	 * @return String with the output name to show to viewer, using a definite article
 	 */
@@ -1595,6 +1613,15 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	public String getOutputNameA ( int nItems )
 	{
 		return getOutputName ( nItems , null , mundo.getMessages().getMessage("art.ind.m") , mundo.getMessages().getMessage("art.ind.f") , true , true );
+	}
+	
+	/**
+	 * Gets the output name to show one instance of this entity to a given viewer, using an indefinite article.
+	 * @return String with the output name to show to viewer, using an indefinite article.
+	 */
+	public String getOutputNameA ( Entity viewer )
+	{
+		return getOutputName ( 1 , viewer , mundo.getMessages().getMessage("art.ind.m") , mundo.getMessages().getMessage("art.ind.f") , true , true );
 	}
 	
 	/**

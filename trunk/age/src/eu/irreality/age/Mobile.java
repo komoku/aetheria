@@ -2257,14 +2257,14 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							{
 								Item limb = (Item)miembrosOcupados.get(j);
 								if ( j == 0 )
-									toOutput += limb.constructName2OneItem(this);
+									toOutput += limb.getOutputNameThe(this);
 								else if ( j > 0 && j == miembrosOcupados.size() - 1 )
-									toOutput += " y " + limb.constructName2OneItem(this);
+									toOutput += " y " + limb.getOutputNameThe(this);
 								else
-									toOutput += ", " + limb.constructName2OneItem(this);
+									toOutput += ", " + limb.getOutputNameThe(this);
 							}
 							write( io.getColorCode("information") + 
-							mundo.getMessages().getMessage("you.are.wielding.item","$item",arma.constructName2OneItem(this),"$limbs",toOutput,new Object[]{this,arma,toOutput})
+							mundo.getMessages().getMessage("you.are.wielding.item","$item",arma.getOutputNameThe(this),"$limbs",toOutput,new Object[]{this,arma,toOutput})
 							+ io.getColorCode("reset") );
 							
 							//old:
@@ -2306,15 +2306,15 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							{
 								Item limb = (Item)miembrosOcupados.get(j);
 								if ( j == 0 )
-									toOutput += limb.constructName2OneItem(this);
+									toOutput += limb.getOutputNameThe(this);
 								else if ( j > 0 && j == miembrosOcupados.size() - 1 )
-									toOutput += " y " + limb.constructName2OneItem(this);
+									toOutput += " y " + limb.getOutputNameThe(this);
 								else
-									toOutput += ", " + limb.constructName2OneItem(this);
+									toOutput += ", " + limb.getOutputNameThe(this);
 							}
 							write( io.getColorCode("information") + 
 							//"Llevas " + vestido.constructName2OneItem(this)  + " en " + toOutput + ".\n"
-							mundo.getMessages().getMessage("you.are.wearing.item","$item",vestido.constructName2OneItem(this),"$limbs",toOutput,new Object[]{this,vestido,toOutput})
+							mundo.getMessages().getMessage("you.are.wearing.item","$item",vestido.getOutputNameThe(this),"$limbs",toOutput,new Object[]{this,vestido,toOutput})
 							+ io.getColorCode("reset") );
 						}
 					}
@@ -3145,9 +3145,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							if ( numeric_damage )
 							{
 								habitacionActual.reportAction ( this , objetivo ,
-										mundo.getMessages().getMessage("someone.hits.someone.numeric","$weapon",getCurrentWeapon().constructName2OneItem(),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
-										mundo.getMessages().getMessage("enemy.hits.you.numeric","$weapon",getCurrentWeapon().constructName2OneItem(),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
-										mundo.getMessages().getMessage("you.hit.enemy.numeric","$weapon",getCurrentWeapon().constructName2OneItem(),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("someone.hits.someone.numeric","$weapon",getCurrentWeapon().getOutputNameThe(),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("enemy.hits.you.numeric","$weapon",getCurrentWeapon().getOutputNameThe(),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("you.hit.enemy.numeric","$weapon",getCurrentWeapon().getOutputNameThe(),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
 										//"$1 acierta a $2 con " + getCurrentWeapon().constructName2OneItem() + " infligi�ndole " + danyo + " puntos de da�o...\n" ,
 										//"$1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligi�ndote " + danyo + " puntos de da�o...\n" ,
 										//"Aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + " infligi�ndole " + danyo + " puntos de da�o...\n" ,
@@ -3156,9 +3156,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							else
 							{
 								habitacionActual.reportAction ( this , objetivo ,
-										mundo.getMessages().getMessage("someone.hits.someone","$weapon",getCurrentWeapon().constructName2OneItem(),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
-										mundo.getMessages().getMessage("enemy.hits.you","$weapon",getCurrentWeapon().constructName2OneItem(),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
-										mundo.getMessages().getMessage("you.hit.enemy","$weapon",getCurrentWeapon().constructName2OneItem(),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("someone.hits.someone","$weapon",getCurrentWeapon().getOutputNameThe(),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("enemy.hits.you","$weapon",getCurrentWeapon().getOutputNameThe(),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("you.hit.enemy","$weapon",getCurrentWeapon().getOutputNameThe(),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
 										//"$1 acierta a $2 con " + getCurrentWeapon().constructName2OneItem() + " infligi�ndole " + objetivo.estimateDamage(danyo) + "...\n" ,
 										//"$1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligi�ndote " + objetivo.estimateDamage(danyo) + "...\n" ,
 										//"Aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + " infligi�ndole " + objetivo.estimateDamage(danyo) + "...\n" ,
@@ -3191,9 +3191,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						}
 						if ( !ejec )
 							habitacionActual.reportAction ( this , objetivo ,
-									mundo.getMessages().getMessage("someone.hits.someone.nodamage","$weapon",getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
-									mundo.getMessages().getMessage("enemy.hits.you.nodamage","$weapon",getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
-									mundo.getMessages().getMessage("you.hit.enemy.nodamage","$weapon",getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+									mundo.getMessages().getMessage("someone.hits.someone.nodamage","$weapon",getCurrentWeapon().getOutputNameThe(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+									mundo.getMessages().getMessage("enemy.hits.you.nodamage","$weapon",getCurrentWeapon().getOutputNameThe(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+									mundo.getMessages().getMessage("you.hit.enemy.nodamage","$weapon",getCurrentWeapon().getOutputNameThe(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
 									//"$1 acierta a $2 con " + getCurrentWeapon().constructName2OneItem() + " pero no le hace da�o...\n" ,
 									//"$1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " pero no te hace da�o...\n" ,
 									//"Aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + " pero no le haces da�o...\n" ,
@@ -3233,9 +3233,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				if ( !ejec )
 				{
 					habitacionActual.reportAction ( this , objetivo , 
-							mundo.getMessages().getMessage("someone.misses.someone","$weapon",getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
-							mundo.getMessages().getMessage("enemy.misses.you","$weapon",getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
-							mundo.getMessages().getMessage("you.miss.enemy","$weapon",getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+							mundo.getMessages().getMessage("someone.misses.someone","$weapon",getCurrentWeapon().getOutputNameThe(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+							mundo.getMessages().getMessage("enemy.misses.you","$weapon",getCurrentWeapon().getOutputNameThe(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+							mundo.getMessages().getMessage("you.miss.enemy","$weapon",getCurrentWeapon().getOutputNameThe(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
 							//"El ataque de $1 falla a $2.\n" , 
 							//"El ataque de $1 te falla.\n" , 
 							//"Tu ataque falla a $2.\n" , 
@@ -3356,9 +3356,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							if ( numeric_damage )
 							{
 								habitacionActual.reportAction ( this , objetivo , null ,
-										mundo.getMessages().getMessage("someone.hits.blocked.someone.numeric","$weapon",objetivo.getCurrentWeapon().constructName2OneItem(),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,objetivo.getCurrentWeapon(),new Integer(danyo)} ) , 
-										mundo.getMessages().getMessage("enemy.hits.blocked.you.numeric","$weapon",objetivo.getCurrentWeapon().constructName2OneItem(objetivo),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,objetivo.getCurrentWeapon(),new Integer(danyo)} ) , 
-										mundo.getMessages().getMessage("you.hit.blocked.enemy.numeric","$weapon",objetivo.getCurrentWeapon().constructName2OneItem(this),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,objetivo.getCurrentWeapon(),new Integer(danyo)} ) , 					
+										mundo.getMessages().getMessage("someone.hits.blocked.someone.numeric","$weapon",objetivo.getCurrentWeapon().getOutputNameThe(),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,objetivo.getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("enemy.hits.blocked.you.numeric","$weapon",objetivo.getCurrentWeapon().getOutputNameThe(objetivo),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,objetivo.getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("you.hit.blocked.enemy.numeric","$weapon",objetivo.getCurrentWeapon().getOutputNameThe(this),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,objetivo.getCurrentWeapon(),new Integer(danyo)} ) , 					
 										//"$2 se defiende de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem() + " recibiendo " + danyo + " puntos de da�o...\n" ,
 										//"Te defiendes de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem(objetivo) + " recibiendo " + danyo + " puntos de da�o...\n" ,
 										//"$2 se defiende con " + objetivo.getCurrentWeapon().constructName2OneItem(this) + " recibiendo " + danyo + " puntos de da�o...\n" ,	
@@ -3367,9 +3367,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							else
 							{
 								habitacionActual.reportAction ( this , objetivo , null ,
-										mundo.getMessages().getMessage("someone.hits.blocked.someone","$weapon",objetivo.getCurrentWeapon().constructName2OneItem(),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,objetivo.getCurrentWeapon(),new Integer(danyo)} ) , 
-										mundo.getMessages().getMessage("enemy.hits.blocked.you","$weapon",objetivo.getCurrentWeapon().constructName2OneItem(objetivo),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,objetivo.getCurrentWeapon(),new Integer(danyo)} ) , 
-										mundo.getMessages().getMessage("you.hit.blocked.enemy","$weapon",objetivo.getCurrentWeapon().constructName2OneItem(this),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,objetivo.getCurrentWeapon(),new Integer(danyo)} ) , 						
+										mundo.getMessages().getMessage("someone.hits.blocked.someone","$weapon",objetivo.getCurrentWeapon().getOutputNameThe(),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,objetivo.getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("enemy.hits.blocked.you","$weapon",objetivo.getCurrentWeapon().getOutputNameThe(objetivo),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,objetivo.getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("you.hit.blocked.enemy","$weapon",objetivo.getCurrentWeapon().getOutputNameThe(this),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,objetivo.getCurrentWeapon(),new Integer(danyo)} ) , 						
 										//"$2 se defiende de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem() + " recibiendo " + objetivo.estimateDamage(danyo) + "...\n" ,
 										//"Te defiendes de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem(objetivo) + " recibiendo " + objetivo.estimateDamage(danyo) + "...\n" ,
 										//"$2 se defiende con " + objetivo.getCurrentWeapon().constructName2OneItem(this) + " recibiendo " + objetivo.estimateDamage(danyo) + "...\n" ,
@@ -3382,9 +3382,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						else
 						{
 							habitacionActual.reportAction ( this , objetivo , null ,
-									mundo.getMessages().getMessage("someone.hits.blocked.someone.nodamage","$weapon",objetivo.getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,objetivo.getCurrentWeapon()} ) , 
-									mundo.getMessages().getMessage("enemy.hits.blocked.you.nodamage","$weapon",objetivo.getCurrentWeapon().constructName2OneItem(objetivo),new Object[]{this,objetivo,objetivo.getCurrentWeapon()} ) , 
-									mundo.getMessages().getMessage("you.hit.blocked.enemy.nodamage","$weapon",objetivo.getCurrentWeapon().constructName2OneItem(this),new Object[]{this,objetivo,objetivo.getCurrentWeapon()} ) , 						
+									mundo.getMessages().getMessage("someone.hits.blocked.someone.nodamage","$weapon",objetivo.getCurrentWeapon().getOutputNameThe(),new Object[]{this,objetivo,objetivo.getCurrentWeapon()} ) , 
+									mundo.getMessages().getMessage("enemy.hits.blocked.you.nodamage","$weapon",objetivo.getCurrentWeapon().getOutputNameThe(objetivo),new Object[]{this,objetivo,objetivo.getCurrentWeapon()} ) , 
+									mundo.getMessages().getMessage("you.hit.blocked.enemy.nodamage","$weapon",objetivo.getCurrentWeapon().getOutputNameThe(this),new Object[]{this,objetivo,objetivo.getCurrentWeapon()} ) , 						
 									//"$2 se defiende de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem() + ", desviando el ataque...\n" ,
 									//"Te defiendes de $1 con " + objetivo.getCurrentWeapon().constructName2OneItem(objetivo) + ", desviando el ataque...\n" ,
 									//"$2 se defiende con " + objetivo.getCurrentWeapon().constructName2OneItem(this) + ", desviando el ataque...\n" ,
@@ -3428,9 +3428,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							if ( numeric_damage )
 							{
 								habitacionActual.reportAction ( this , objetivo , null ,
-										mundo.getMessages().getMessage("someone.hits.block.failed.someone.numeric","$weapon",getCurrentWeapon().constructName2OneItem(),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
-										mundo.getMessages().getMessage("enemy.hits.block.failed.you.numeric","$weapon",getCurrentWeapon().constructName2OneItem(objetivo),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
-										mundo.getMessages().getMessage("you.hit.block.failed.enemy.numeric","$weapon",getCurrentWeapon().constructName2OneItem(this),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 								
+										mundo.getMessages().getMessage("someone.hits.block.failed.someone.numeric","$weapon",getCurrentWeapon().getOutputNameThe(),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("enemy.hits.block.failed.you.numeric","$weapon",getCurrentWeapon().getOutputNameThe(objetivo),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("you.hit.block.failed.enemy.numeric","$weapon",getCurrentWeapon().getOutputNameThe(this),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 								
 										//"$2 no consigue parar el ataque de $1, que le acierta con " + getCurrentWeapon().constructName2OneItem() + " infligi�ndole " + danyo + " puntos de da�o...\n" ,
 										//"No consigues parar el ataque de $1, que te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligi�ndote " + danyo + " puntos de da�o...\n" ,
 										//"$2 no consigue parar tu ataque, le aciertas con " + getCurrentWeapon().constructName2OneItem(this) + " infligi�ndole " + danyo + " puntos de da�o...\n" ,
@@ -3439,9 +3439,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							else
 							{
 								habitacionActual.reportAction ( this , objetivo , null ,
-										mundo.getMessages().getMessage("someone.hits.block.failed.someone","$weapon",getCurrentWeapon().constructName2OneItem(),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
-										mundo.getMessages().getMessage("enemy.hits.block.failed.you","$weapon",getCurrentWeapon().constructName2OneItem(objetivo),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
-										mundo.getMessages().getMessage("you.hit.block.failed.enemy","$weapon",getCurrentWeapon().constructName2OneItem(this),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 								
+										mundo.getMessages().getMessage("someone.hits.block.failed.someone","$weapon",getCurrentWeapon().getOutputNameThe(),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("enemy.hits.block.failed.you","$weapon",getCurrentWeapon().getOutputNameThe(objetivo),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("you.hit.block.failed.enemy","$weapon",getCurrentWeapon().getOutputNameThe(this),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 								
 										//"$2 no consigue parar el ataque de $1, que le acierta con " + getCurrentWeapon().constructName2OneItem() + " infligi�ndole " + objetivo.estimateDamage(danyo) + "...\n" ,
 										//"No consigues parar el ataque de $1, que te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligi�ndote " + objetivo.estimateDamage(danyo) + "...\n" ,
 										//"$2 no consigue parar tu ataque, le aciertas con " + getCurrentWeapon().constructName2OneItem(this) + " infligi�ndole " + objetivo.estimateDamage(danyo) + "...\n" ,
@@ -3472,9 +3472,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						if ( !ejec )
 						{
 							habitacionActual.reportAction ( this , objetivo , null ,
-									mundo.getMessages().getMessage("someone.hits.block.failed.someone.nodamage","$weapon",getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
-									mundo.getMessages().getMessage("enemy.hits.block.failed.you.nodamage","$weapon",getCurrentWeapon().constructName2OneItem(objetivo),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
-									mundo.getMessages().getMessage("you.hit.block.failed.enemy.nodamage","$weapon",getCurrentWeapon().constructName2OneItem(this),new Object[]{this,objetivo,getCurrentWeapon()} ) , 								
+									mundo.getMessages().getMessage("someone.hits.block.failed.someone.nodamage","$weapon",getCurrentWeapon().getOutputNameThe(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+									mundo.getMessages().getMessage("enemy.hits.block.failed.you.nodamage","$weapon",getCurrentWeapon().getOutputNameThe(objetivo),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+									mundo.getMessages().getMessage("you.hit.block.failed.enemy.nodamage","$weapon",getCurrentWeapon().getOutputNameThe(this),new Object[]{this,objetivo,getCurrentWeapon()} ) , 								
 									//"$2 no consigue parar el ataque de $1, que le acierta con " + getCurrentWeapon().constructName2OneItem() + " pero no le hace da�o...\n" ,
 									//"No consigues parar el ataque de $1, que te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " pero no te hace da�o...\n" ,
 									//"$2 no consigue parar tu ataque, le aciertas con " + getCurrentWeapon().constructName2OneItem(this) + " pero no le haces da�o...\n" ,
@@ -3515,9 +3515,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				if ( !ejec )
 				{
 					habitacionActual.reportAction ( this , objetivo , null ,
-							mundo.getMessages().getMessage("someone.misses.blocked.someone","$weapon",getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
-							mundo.getMessages().getMessage("enemy.misses.blocked.you","$weapon",getCurrentWeapon().constructName2OneItem(objetivo),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
-							mundo.getMessages().getMessage("you.miss.blocked.enemy","$weapon",getCurrentWeapon().constructName2OneItem(this),new Object[]{this,objetivo,getCurrentWeapon()} ) , 								
+							mundo.getMessages().getMessage("someone.misses.blocked.someone","$weapon",getCurrentWeapon().getOutputNameThe(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+							mundo.getMessages().getMessage("enemy.misses.blocked.you","$weapon",getCurrentWeapon().getOutputNameThe(objetivo),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+							mundo.getMessages().getMessage("you.miss.blocked.enemy","$weapon",getCurrentWeapon().getOutputNameThe(this),new Object[]{this,objetivo,getCurrentWeapon()} ) , 								
 							//"El ataque de $1 falla a $2.\n" , 
 							//"El ataque de $1 te falla.\n" , 
 							//"Tu ataque falla a $2.\n" , 
@@ -3570,9 +3570,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					if ( !ejec )
 					{
 						habitacionActual.reportAction ( this , objetivo , null ,
-								mundo.getMessages().getMessage("someone.dodged.by.someone","$weapon",getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
-								mundo.getMessages().getMessage("enemy.dodged.by.you","$weapon",getCurrentWeapon().constructName2OneItem(objetivo),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
-								mundo.getMessages().getMessage("you.dodged.by.enemy","$weapon",getCurrentWeapon().constructName2OneItem(this),new Object[]{this,objetivo,getCurrentWeapon()} ) , 								
+								mundo.getMessages().getMessage("someone.dodged.by.someone","$weapon",getCurrentWeapon().getOutputNameThe(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+								mundo.getMessages().getMessage("enemy.dodged.by.you","$weapon",getCurrentWeapon().getOutputNameThe(objetivo),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+								mundo.getMessages().getMessage("you.dodged.by.enemy","$weapon",getCurrentWeapon().getOutputNameThe(this),new Object[]{this,objetivo,getCurrentWeapon()} ) , 								
 								
 								true );
 					}		
@@ -3614,17 +3614,17 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							if ( numeric_damage )
 							{
 								habitacionActual.reportAction ( this , objetivo , null ,
-										mundo.getMessages().getMessage("someone.hits.dodge.failed.someone.numeric","$weapon",getCurrentWeapon().constructName2OneItem(),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
-										mundo.getMessages().getMessage("enemy.hits.dodge.failed.you.numeric","$weapon",getCurrentWeapon().constructName2OneItem(objetivo),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
-										mundo.getMessages().getMessage("you.hit.dodge.failed.enemy.numeric","$weapon",getCurrentWeapon().constructName2OneItem(this),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 								
+										mundo.getMessages().getMessage("someone.hits.dodge.failed.someone.numeric","$weapon",getCurrentWeapon().getOutputNameThe(),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("enemy.hits.dodge.failed.you.numeric","$weapon",getCurrentWeapon().getOutputNameThe(objetivo),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("you.hit.dodge.failed.enemy.numeric","$weapon",getCurrentWeapon().getOutputNameThe(this),"$damage",String.valueOf(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 								
 										true );
 							}		
 							else
 							{
 								habitacionActual.reportAction ( this , objetivo , null ,
-										mundo.getMessages().getMessage("someone.hits.dodge.failed.someone","$weapon",getCurrentWeapon().constructName2OneItem(),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
-										mundo.getMessages().getMessage("enemy.hits.dodge.failed.you","$weapon",getCurrentWeapon().constructName2OneItem(objetivo),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
-										mundo.getMessages().getMessage("you.hit.dodge.failed.enemy","$weapon",getCurrentWeapon().constructName2OneItem(this),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 								
+										mundo.getMessages().getMessage("someone.hits.dodge.failed.someone","$weapon",getCurrentWeapon().getOutputNameThe(),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("enemy.hits.dodge.failed.you","$weapon",getCurrentWeapon().getOutputNameThe(objetivo),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+										mundo.getMessages().getMessage("you.hit.dodge.failed.enemy","$weapon",getCurrentWeapon().getOutputNameThe(this),"$damage",objetivo.estimateDamage(danyo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 								
 										//"$2 intenta esquivar el golpe de $1; pero no lo consigue, $1 le acierta con " + getCurrentWeapon().constructName2OneItem() + " infligi�ndole " + objetivo.estimateDamage(danyo) + ".\n" ,
 										//"Tu intento de esquivar falla, y $1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " infligi�ndote " + objetivo.estimateDamage(danyo) + ".\n"  ,
 										//"A pesar de su intento de esquivar el ataque, aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + ", infligi�ndole " + objetivo.estimateDamage(danyo) + ".\n"  ,
@@ -3655,9 +3655,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						if ( !ejec )
 						{
 							habitacionActual.reportAction ( this , objetivo , null ,
-									mundo.getMessages().getMessage("someone.hits.dodge.failed.someone.nodamage","$weapon",getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
-									mundo.getMessages().getMessage("enemy.hits.dodge.failed.you.nodamage","$weapon",getCurrentWeapon().constructName2OneItem(objetivo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
-									mundo.getMessages().getMessage("you.hit.dodge.failed.enemy.nodamage","$weapon",getCurrentWeapon().constructName2OneItem(this),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 								
+									mundo.getMessages().getMessage("someone.hits.dodge.failed.someone.nodamage","$weapon",getCurrentWeapon().getOutputNameThe(),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+									mundo.getMessages().getMessage("enemy.hits.dodge.failed.you.nodamage","$weapon",getCurrentWeapon().getOutputNameThe(objetivo),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 
+									mundo.getMessages().getMessage("you.hit.dodge.failed.enemy.nodamage","$weapon",getCurrentWeapon().getOutputNameThe(this),new Object[]{this,objetivo,getCurrentWeapon(),new Integer(danyo)} ) , 								
 									//"$2 intenta esquivar el golpe de $1; pero no lo consigue, $1 le acierta con " + getCurrentWeapon().constructName2OneItem() + " pero no le hace da�o.\n" ,
 									//"Tu intento de esquivar falla, y $1 te acierta con " + getCurrentWeapon().constructName2OneItem(objetivo) + " pero no te hace da�o.\n" ,
 									//"A pesar de su intento de esquivar el ataque, aciertas a $2 con " + getCurrentWeapon().constructName2OneItem(this) + "; pero no le haces da�o.\n" ,
@@ -3687,9 +3687,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				//attack unsuccessful
 
 				habitacionActual.reportAction ( this , objetivo , null ,
-						mundo.getMessages().getMessage("someone.misses.dodged.someone","$weapon",getCurrentWeapon().constructName2OneItem(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
-						mundo.getMessages().getMessage("enemy.misses.dodged.you","$weapon",getCurrentWeapon().constructName2OneItem(objetivo),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
-						mundo.getMessages().getMessage("you.miss.dodged.enemy","$weapon",getCurrentWeapon().constructName2OneItem(this),new Object[]{this,objetivo,getCurrentWeapon()} ) , 								
+						mundo.getMessages().getMessage("someone.misses.dodged.someone","$weapon",getCurrentWeapon().getOutputNameThe(),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+						mundo.getMessages().getMessage("enemy.misses.dodged.you","$weapon",getCurrentWeapon().getOutputNameThe(objetivo),new Object[]{this,objetivo,getCurrentWeapon()} ) , 
+						mundo.getMessages().getMessage("you.miss.dodged.enemy","$weapon",getCurrentWeapon().getOutputNameThe(this),new Object[]{this,objetivo,getCurrentWeapon()} ) , 								
 						//"El ataque de $1 falla a $2.\n" , 
 						//"El ataque de $1 te falla. Tienes la iniciativa...\n" , 
 						//"Tu ataque falla a $2. Te desequilibras...\n" , 
@@ -3959,9 +3959,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				//informar de que armadura absorbi� impacto
 
 				habitacionActual.reportAction ( this , null , null ,
-						mundo.getMessages().getMessage("someones.armor.absorbed","$armor",armadura.constructName2OneItem(),new Object[]{this,armadura} ) , 
+						mundo.getMessages().getMessage("someones.armor.absorbed","$armor",armadura.getOutputNameThe(),new Object[]{this,armadura} ) , 
 						null,
-						mundo.getMessages().getMessage("your.armor.absorbed","$armor",armadura.constructName2OneItem(this),new Object[]{this,armadura} ) , 								
+						mundo.getMessages().getMessage("your.armor.absorbed","$armor",armadura.getOutputNameThe(this),new Object[]{this,armadura} ) , 								
 						
 						//armadura.constructName2OneItem() + " de $1 absorbe totalmente el impacto.\n" , 
 						//null, 
@@ -4322,9 +4322,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		if ( !ejec )
 		{
 			habitacionActual.reportAction ( this , target , null ,
-					mundo.getMessages().getMessage("someone.attacks.someone","$weapon",w.constructName2OneItem(),new Object[]{this,target,w} ) , 
-					mundo.getMessages().getMessage("enemy.attacks.you","$weapon",w.constructName2OneItem(target),new Object[]{this,target,w} ) , 
-					mundo.getMessages().getMessage("you.attack.enemy","$weapon",w.constructName2OneItem(this),new Object[]{this,target,w} ) , 					
+					mundo.getMessages().getMessage("someone.attacks.someone","$weapon",w.getOutputNameThe(),new Object[]{this,target,w} ) , 
+					mundo.getMessages().getMessage("enemy.attacks.you","$weapon",w.getOutputNameThe(target),new Object[]{this,target,w} ) , 
+					mundo.getMessages().getMessage("you.attack.enemy","$weapon",w.getOutputNameThe(this),new Object[]{this,target,w} ) , 					
 					//"$1 ataca a $2 con " + w.constructName2OneItem() + ".\n" ,
 					//"$1 te ataca con " + w.constructName2OneItem(target) + ".\n",
 					//"Atacas a $2 con " + w.constructName2OneItem(this) + ".\n",
@@ -4357,9 +4357,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{		
 
 			habitacionActual.reportAction ( this , target , null ,
-					mundo.getMessages().getMessage("someone.tries.to.block.someone","$weapon",w.constructName2OneItem(),new Object[]{this,target,w} ) , 
-					mundo.getMessages().getMessage("enemy.tries.to.block.you","$weapon",w.constructName2OneItem(target),new Object[]{this,target,w} ) , 
-					mundo.getMessages().getMessage("you.try.to.block.enemy","$weapon",w.constructName2OneItem(this),new Object[]{this,target,w} ) , 					
+					mundo.getMessages().getMessage("someone.tries.to.block.someone","$weapon",w.getOutputNameThe(),new Object[]{this,target,w} ) , 
+					mundo.getMessages().getMessage("enemy.tries.to.block.you","$weapon",w.getOutputNameThe(target),new Object[]{this,target,w} ) , 
+					mundo.getMessages().getMessage("you.try.to.block.enemy","$weapon",w.getOutputNameThe(this),new Object[]{this,target,w} ) , 					
 					//"$1 intenta defenderse de $2 con " + w.constructName2OneItem()  + ".\n",
 					//"$1 intenta defenderse con " + w.constructName2OneItem(target) + ".\n" ,
 					//"Intentas defenderte de $2 con " + w.constructName2OneItem(this) + ".\n" ,
@@ -5243,12 +5243,12 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			if ( it instanceof Weapon )
 			{
 				//write( io.getColorCode("denial") + "�Vestir " + it.constructName2OneItem(this) + "? Parece m�s adecuado blandir" + ((it.getGender())?"lo":"la") + ".\n" );
-				writeDenial(mundo.getMessages().getMessage("cant.wear.weapon","$item",it.constructName2OneItem(this),"$oa",((it.getGender())?"o":"a"),new Object[]{this,it}));
+				writeDenial(mundo.getMessages().getMessage("cant.wear.weapon","$item",it.getOutputNameThe(this),"$oa",((it.getGender())?"o":"a"),new Object[]{this,it}));
 			}
 			else
 			{
 				//write( io.getColorCode("denial") + "No parece que " + it.constructName2OneItem(this) + " sea algo que se pueda vestir." + "\n" );
-				writeDenial(mundo.getMessages().getMessage("item.not.wearable","$item",it.constructName2OneItem(this),"$oa",((it.getGender())?"o":"a"),new Object[]{this,it}));
+				writeDenial(mundo.getMessages().getMessage("item.not.wearable","$item",it.getOutputNameThe(this),"$oa",((it.getGender())?"o":"a"),new Object[]{this,it}));
 			}
 			return false;
 		}  
@@ -5258,7 +5258,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		if ( ourLimbs.size() < 1 ) 
 		{
 			//write ( io.getColorCode("error") + "No puedes ponerte ropa si no tienes ning�n miembro." );
-			writeError(mundo.getMessages().getMessage("cant.wear.without.limbs","$item",it.constructName2OneItem(this),"$oa",((it.getGender())?"o":"a"),new Object[]{this,it}));
+			writeError(mundo.getMessages().getMessage("cant.wear.without.limbs","$item",it.getOutputNameThe(this),"$oa",((it.getGender())?"o":"a"),new Object[]{this,it}));
 			
 		}
 			
@@ -5269,7 +5269,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			if ( limb.getRelationshipPropertyValueAsBoolean ( it , "wears" ) )
 			{
 				//write ( io.getColorCode("denial") + "Ya llevas puesto " + it.constructName2OneItem(this) + ".\n" );
-				writeDenial(mundo.getMessages().getMessage("wear.already.worn","$item",it.constructName2OneItem(this),new Object[]{this,it}));
+				writeDenial(mundo.getMessages().getMessage("wear.already.worn","$item",it.getOutputNameThe(this),new Object[]{this,it}));
 				return false;
 			}		
 		}
@@ -5299,7 +5299,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			if ( matchingLimbs.size() < 1 )
 			{
 				//write( io.getColorCode("denial")  + "No parece adecuado para los de tu especie." + io.getColorCode("reset")  + "\n"  );
-				writeDenial(mundo.getMessages().getMessage("wear.no.suitable.limbs","$item",it.constructName2OneItem(this),new Object[]{this,it}));
+				writeDenial(mundo.getMessages().getMessage("wear.no.suitable.limbs","$item",it.getOutputNameThe(this),new Object[]{this,it}));
 				return false;
 			}
 
@@ -5346,17 +5346,17 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						{
 							Item vestido = ( Item ) vestidos.get(0);
 							//write( io.getColorCode("information") + "Llevas puesto " + vestido.constructName2OneItem(this)  + " en " + current.constructName2OneItem(this) + "." + io.getColorCode("reset")  + "\n"  );			
-							writeInformation(mundo.getMessages().getMessage("you.use.limb.wearing","$item",vestido.constructName2OneItem(this),"$limb",current.constructName2OneItem(this),new Object[]{this,vestido,current.constructName2OneItem(this)}));
+							writeInformation(mundo.getMessages().getMessage("you.use.limb.wearing","$item",vestido.getOutputNameThe(this),"$limb",current.getOutputNameThe(this),new Object[]{this,vestido,current.getOutputNameThe(this)}));
 						}
 						else
 						{
 							//write( io.getColorCode("information") + "Tienes libre " + current.constructName2OneItem(this) + "." + io.getColorCode("reset")  + "\n" );
-							writeInformation(mundo.getMessages().getMessage("you.have.free.limb","$limb",current.constructName2OneItem(this),new Object[]{this,current}));
+							writeInformation(mundo.getMessages().getMessage("you.have.free.limb","$limb",current.getOutputNameThe(this),new Object[]{this,current}));
 						}
 
 					}
 					//write( io.getColorCode("denial") + "Tienes que quitarte algo para poder vestir " + it.constructName2OneItem(this) + "." + io.getColorCode("reset")  + "\n"  );
-					writeDenial(mundo.getMessages().getMessage("wear.busy.limbs","$item",it.constructName2OneItem(this),new Object[]{this,it}));
+					writeDenial(mundo.getMessages().getMessage("wear.busy.limbs","$item",it.getOutputNameThe(this),new Object[]{this,it}));
 					return false;
 
 				}
@@ -5376,19 +5376,19 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			limb.setRelationshipProperty ( it , "wears" , true );
 
 			if ( i == 0 )
-				toOutput += limb.constructName2OneItem(this);
+				toOutput += limb.getOutputNameThe(this);
 			else if ( i > 0 && i == usedLimbs.size() - 1 )
-				toOutput += " y " + limb.constructName2OneItem(this);
+				toOutput += " y " + limb.getOutputNameThe(this);
 			else
-				toOutput += ", " + limb.constructName2OneItem(this);	
+				toOutput += ", " + limb.getOutputNameThe(this);	
 
 		}
 
 		//write( io.getColorCode("action") + "Te pones " + it.constructName2OneItem(this) + " en " + toOutput + ".\n" + io.getColorCode("reset") );
-		writeAction( mundo.getMessages().getMessage("you.wear.item","$item",it.constructName2OneItem(this),"$limbs",toOutput,new Object[]{this,it,usedLimbs})  );
+		writeAction( mundo.getMessages().getMessage("you.wear.item","$item",it.getOutputNameThe(this),"$limbs",toOutput,new Object[]{this,it,usedLimbs})  );
 		
 		//habitacionActual.reportActionAuto ( this , null , "$1 se pone " + it.constructName2OneItem() + ".\n" , false );	
-		habitacionActual.reportActionAuto ( this , null , mundo.getMessages().getMessage("someone.wears.item","$item",it.constructName2OneItem(this),"$limbs",toOutput,new Object[]{this,it,usedLimbs}) , false );
+		habitacionActual.reportActionAuto ( this , null , mundo.getMessages().getMessage("someone.wears.item","$item",it.getOutputNameThe(this),"$limbs",toOutput,new Object[]{this,it,usedLimbs}) , false );
 		
 		if ( wornItems == null ) wornItems = new Inventory(10000,10000);
 		try
@@ -5397,13 +5397,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		}
 		catch ( WeightLimitExceededException wlee )
 		{
-			writeDenial(mundo.getMessages().getMessage("cant.wear.item.weight","$item",it.constructName2OneItem(this),new Object[]{this,it}));
+			writeDenial(mundo.getMessages().getMessage("cant.wear.item.weight","$item",it.getOutputNameThe(this),new Object[]{this,it}));
 			//write( io.getColorCode("denial") + "No puedes vestir eso, pesa demasiado." + ".\n" + io.getColorCode("reset") );	
 			return false;
 		}
 		catch ( VolumeLimitExceededException vlee )
 		{
-			writeDenial(mundo.getMessages().getMessage("cant.wear.item.volume","$item",it.constructName2OneItem(this),new Object[]{this,it}));
+			writeDenial(mundo.getMessages().getMessage("cant.wear.item.volume","$item",it.getOutputNameThe(this),new Object[]{this,it}));
 			//write( io.getColorCode("denial") + "No puedes blandir eso, pesa demasiado." + ".\n" + io.getColorCode("reset") );
 			return false;
 		}
@@ -5447,13 +5447,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			if ( it instanceof Wearable )
 			{
-				writeDenial(mundo.getMessages().getMessage("cant.wield.wearable","$item",it.constructName2OneItem(this),"$oa",((it.getGender())?"o":"a"),new Object[]{this,it}));
+				writeDenial(mundo.getMessages().getMessage("cant.wield.wearable","$item",it.getOutputNameThe(this),"$oa",((it.getGender())?"o":"a"),new Object[]{this,it}));
 				//write( io.getColorCode("denial") + "�Blandir " + it.constructName2OneItem(this) + "? Parece m�s adecuado vestir" + ((it.getGender())?"lo":"la") + ".\n" );
 			}
 			else
 			{
 				//write( io.getColorCode("denial") + "No parece que " + it.constructName2OneItem(this) + " sea un arma." + "\n" );
-				writeDenial(mundo.getMessages().getMessage("wield.non.weapon","$item",it.constructName2OneItem(this),new Object[]{this,it}));
+				writeDenial(mundo.getMessages().getMessage("wield.non.weapon","$item",it.getOutputNameThe(this),new Object[]{this,it}));
 			}
 			return false;
 		}  
@@ -5467,7 +5467,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			if ( limb.getRelationshipPropertyValueAsBoolean ( it , "wields" ) )
 			{
 				//write ( io.getColorCode("denial") + "Ya est�s blandiendo " + it.constructName2OneItem(this) + ".\n" );
-				writeDenial(mundo.getMessages().getMessage("wield.already.wielded","$item",it.constructName2OneItem(this),new Object[]{this,it}));
+				writeDenial(mundo.getMessages().getMessage("wield.already.wielded","$item",it.getOutputNameThe(this),new Object[]{this,it}));
 				return false;
 			}		
 		}
@@ -5497,7 +5497,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			if ( matchingLimbs.size() < 1 )
 			{
 				//write( io.getColorCode("denial")  + "No parece adecuado para los de tu especie." + io.getColorCode("reset")  + "\n"  );
-				writeDenial(mundo.getMessages().getMessage("wield.no.suitable.limbs","$item",it.constructName2OneItem(this),new Object[]{this,it}));
+				writeDenial(mundo.getMessages().getMessage("wield.no.suitable.limbs","$item",it.getOutputNameThe(this),new Object[]{this,it}));
 				return false;
 			}
 
@@ -5544,17 +5544,17 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						{
 							Item vestido = ( Item ) vestidos.get(0);
 							//write( io.getColorCode("information") + "Est�s blandiendo " + vestido.constructName2OneItem(this)  + " en " + current.constructName2OneItem(this) + "." + io.getColorCode("reset")  + "\n"  );			
-							writeInformation(mundo.getMessages().getMessage("you.use.limb.wielding","$item",vestido.constructName2OneItem(this),"$limb",current.constructName2OneItem(this),new Object[]{this,vestido,current.constructName2OneItem(this)}));
+							writeInformation(mundo.getMessages().getMessage("you.use.limb.wielding","$item",vestido.getOutputNameThe(this),"$limb",current.getOutputNameThe(this),new Object[]{this,vestido,current.getOutputNameThe(this)}));
 						}
 						else
 						{
 							//write( io.getColorCode("information") + "Tienes libre " + current.constructName2OneItem(this) + "." + io.getColorCode("reset")  + "\n" );
-							writeInformation(mundo.getMessages().getMessage("you.have.free.limb","$limb",current.constructName2OneItem(this),new Object[]{this,current}));
+							writeInformation(mundo.getMessages().getMessage("you.have.free.limb","$limb",current.getOutputNameThe(this),new Object[]{this,current}));
 						}
 
 					}
 					//write( io.getColorCode("denial") + "Tienes que guardar alg�n arma para poder blandir " + it.constructName2OneItem(this) + "." + io.getColorCode("reset")  + "\n"  );
-					writeDenial(mundo.getMessages().getMessage("wield.busy.limbs","$item",it.constructName2OneItem(this),new Object[]{this,it}));
+					writeDenial(mundo.getMessages().getMessage("wield.busy.limbs","$item",it.getOutputNameThe(this),new Object[]{this,it}));
 					return false;
 
 				}
@@ -5574,19 +5574,19 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			limb.setRelationshipProperty ( it , "wields" , true );
 
 			if ( i == 0 )
-				toOutput += limb.constructName2OneItem(this);
+				toOutput += limb.getOutputNameThe(this);
 			else if ( i > 0 && i == usedLimbs.size() - 1 )
-				toOutput += " y " + limb.constructName2OneItem(this);
+				toOutput += " y " + limb.getOutputNameThe(this);
 			else
-				toOutput += ", " + limb.constructName2OneItem(this);	
+				toOutput += ", " + limb.getOutputNameThe(this);	
 
 		}
 
 		//write( io.getColorCode("action") + "Blandes " + it.constructName2OneItem(this) + " en " + toOutput + ".\n" + io.getColorCode("reset") );
-		writeAction( mundo.getMessages().getMessage("you.wield.item","$item",it.constructName2OneItem(this),"$limbs",toOutput,new Object[]{this,it,usedLimbs})  );
+		writeAction( mundo.getMessages().getMessage("you.wield.item","$item",it.getOutputNameThe(this),"$limbs",toOutput,new Object[]{this,it,usedLimbs})  );
 		
 		//habitacionActual.reportActionAuto ( this , null , "$1 blande " + it.constructName2OneItem() + ".\n" , false );	
-		habitacionActual.reportActionAuto ( this , null , mundo.getMessages().getMessage("someone.wields.item","$item",it.constructName2OneItem(this),"$limbs",toOutput,new Object[]{this,it,usedLimbs}) , false );
+		habitacionActual.reportActionAuto ( this , null , mundo.getMessages().getMessage("someone.wields.item","$item",it.getOutputNameThe(this),"$limbs",toOutput,new Object[]{this,it,usedLimbs}) , false );
 		
 		
 		
@@ -5602,12 +5602,12 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		catch ( WeightLimitExceededException wlee )
 		{
 			//write( io.getColorCode("denial") + "No puedes blandir eso, pesa demasiado." + ".\n" + io.getColorCode("reset") );	
-			writeDenial(mundo.getMessages().getMessage("cant.wield.item.weight","$item",it.constructName2OneItem(this),new Object[]{this,it}));
+			writeDenial(mundo.getMessages().getMessage("cant.wield.item.weight","$item",it.getOutputNameThe(this),new Object[]{this,it}));
 		}
 		catch ( VolumeLimitExceededException vlee )
 		{
 			//write( io.getColorCode("denial") + "No puedes blandir eso, pesa demasiado." + ".\n" + io.getColorCode("reset") );
-			writeDenial(mundo.getMessages().getMessage("cant.wield.item.volume","$item",it.constructName2OneItem(this),new Object[]{this,it}));
+			writeDenial(mundo.getMessages().getMessage("cant.wield.item.volume","$item",it.getOutputNameThe(this),new Object[]{this,it}));
 		}
 
 		return true;
@@ -5675,10 +5675,10 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			}
 
 			//write ( io.getColorCode("action") + "Te quitas " + it.constructName2OneItem() + ".\n" + io.getColorCode("reset") );
-			writeAction ( mundo.getMessages().getMessage("you.unwear.item","$item",it.constructName2OneItem(this),new Object[]{this,it}) );
+			writeAction ( mundo.getMessages().getMessage("you.unwear.item","$item",it.getOutputNameThe(this),new Object[]{this,it}) );
 						
 			//habitacionActual.reportActionAuto ( this , null , "$1 se quita " + it.constructName2OneItem() + ".\n" , false );
-			habitacionActual.reportActionAuto ( this , null , mundo.getMessages().getMessage("someone.unwears.item","$item",it.constructName2OneItem(),new Object[]{this,it}) , false );
+			habitacionActual.reportActionAuto ( this , null , mundo.getMessages().getMessage("someone.unwears.item","$item",it.getOutputNameThe(),new Object[]{this,it}) , false );
 
 			//ejecutar eventos onUnwear
 			try
@@ -5739,8 +5739,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			//write ( io.getColorCode("action") + "Dejas de blandir " + it.constructName2OneItem() + ".\n" + io.getColorCode("reset") );
 			//habitacionActual.reportActionAuto ( this , null , "$1 deja de blandir " + it.constructName2OneItem() + ".\n" , false );
 
-			writeAction ( mundo.getMessages().getMessage("you.unwield.item","$item",it.constructName2OneItem(),new Object[]{this,it}) );
-			habitacionActual.reportActionAuto ( this , null , mundo.getMessages().getMessage("someone.unwields.item","$item",it.constructName2OneItem(),new Object[]{this,it}) , false );
+			writeAction ( mundo.getMessages().getMessage("you.unwield.item","$item",it.getOutputNameThe(),new Object[]{this,it}) );
+			habitacionActual.reportActionAuto ( this , null , mundo.getMessages().getMessage("someone.unwields.item","$item",it.getOutputNameThe(),new Object[]{this,it}) , false );
 			
 			return true;
 
@@ -5968,6 +5968,15 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	}
 	
 	/**
+	 * Gets the output name to show one instance of this entity to viewer, without any article.
+	 * @return String with the output name to show to viewer, without using any article.
+	 */
+	public String getOutputNameOnly ( Entity viewer )
+	{
+		return getOutputName ( 1 , viewer , "" , "" , true , true );
+	}
+	
+	/**
 	 * Gets the output name to show nItems copies of this entity, without parameterising it for any viewer in particular, without any article.
 	 * @param nItems The number of copies of this entity that are being showed.
 	 * @return String with the output name to show to viewer, without using any article for a single item.
@@ -5998,6 +6007,15 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	}
 	
 	/**
+	 * Gets the output name to show one instance of this entity to viewer, using a definite article.
+	 * @return String with the output name to show to viewer, using a definite article
+	 */
+	public String getOutputNameThe ( Entity viewer )
+	{
+		return getOutputName ( 1 , viewer , mundo.getMessages().getMessage("art.def.m") , mundo.getMessages().getMessage("art.def.f") , true , true );
+	}
+	
+	/**
 	 * Gets the output name to show nItems copies of this entity, without parameterising them for any viewer in particular, with a definite article if applicable.
 	 * @param nItems The number of copies of this entity that are being showed.
 	 * @return String with the output name to show to viewer, with a definite article or the number of items.
@@ -6025,6 +6043,15 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	public String getOutputNameA ( int nItems , Entity viewer )
 	{
 		return getOutputName ( nItems , viewer , mundo.getMessages().getMessage("art.ind.m") , mundo.getMessages().getMessage("art.ind.f") , false , true );
+	}
+	
+	/**
+	 * Gets the output name to show one instance of this entity to a given viewer, using an indefinite article.
+	 * @return String with the output name to show to viewer, using an indefinite article.
+	 */
+	public String getOutputNameA ( Entity viewer )
+	{
+		return getOutputName ( 1 , viewer , mundo.getMessages().getMessage("art.ind.m") , mundo.getMessages().getMessage("art.ind.f") , true , true );
 	}
 	
 	/**
@@ -6435,9 +6462,9 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			
 			//habitacionActual.informActionAuto ( this , null , "$1 coge " + ourItem.constructName2OneItem() + toAppend + ".\n" , false );
 			if ( toAppend == null || toAppend.length() < 1 )
-				habitacionActual.reportActionAuto ( this , null , mundo.getMessages().getMessage("someone.gets.item","$item", ourItem.constructName2OneItem(),new Object[]{this,ourItem} ) /*+ "\n"*/ , false );
+				habitacionActual.reportActionAuto ( this , null , mundo.getMessages().getMessage("someone.gets.item","$item", ourItem.getOutputNameThe(),new Object[]{this,ourItem} ) /*+ "\n"*/ , false );
 			else
-				habitacionActual.reportActionAuto ( this , null , mundo.getMessages().getMessage("someone.gets.item.from.location","$item", ourItem.constructName2OneItem(),"$location",toAppend.trim(),new Object[]{this,ourItem} ) /*+ "\n"*/ , false );
+				habitacionActual.reportActionAuto ( this , null , mundo.getMessages().getMessage("someone.gets.item.from.location","$item", ourItem.getOutputNameThe(),"$location",toAppend.trim(),new Object[]{this,ourItem} ) /*+ "\n"*/ , false );
 			
 			//ejecutar eventos onGet
 			try
