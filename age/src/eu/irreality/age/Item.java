@@ -2915,7 +2915,8 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		it.plurNames = new Description[1];
 		it.plurNames[0] = new Description ( "cadáveres de " 
 				//+ m.constructName(2) 
-				+ m.getOutputNameOnly(2)
+				//+ m.getOutputNameOnly(2)
+				+ m.getPlurNameTrue(null)
 				, 0 , 0 );
 		
 		it.gender = true; //masculino
