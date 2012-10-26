@@ -57,9 +57,9 @@ public class AttDefSpecsPanel extends JPanel
 	
 	private JTextField tfProbabilitySteepness = new EnhancedJTextField("0",5);
 	
-	private JTextField tfTimeStarting = new EnhancedJTextField("0",5);
+	private JTextField tfTimeStarting = new EnhancedJTextField("10",5);
 	private JTextField tfTimeSteepness = new EnhancedJTextField("0",5);
-	private JTextField tfRecoverTimeStarting = new EnhancedJTextField("0",5);
+	private JTextField tfRecoverTimeStarting = new EnhancedJTextField("10",5);
 	private JTextField tfRecoverTimeSteepness = new EnhancedJTextField("0",5);
 	
 	private DamageListPanel damagePanel;
