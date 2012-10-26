@@ -11,11 +11,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
 import org.f2o.absurdum.puck.gui.PuckFrame;
 import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
@@ -25,6 +27,7 @@ import org.f2o.absurdum.puck.gui.graph.ItemNode;
 import org.f2o.absurdum.puck.gui.graph.RoomNode;
 import org.f2o.absurdum.puck.gui.graph.SpellNode;
 import org.f2o.absurdum.puck.i18n.UIMessages;
+import org.f2o.absurdum.puck.util.swing.DialogUtils;
 
 public class ShowHideDialog extends JDialog
 {
@@ -119,9 +122,13 @@ public class ShowHideDialog extends JDialog
 		}
 );
 		
+		DialogUtils.registerEscapeAction(this);
+		DialogUtils.registerCloseAction(this,KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
+		
 		this.getContentPane().add(buttonsPanel,BorderLayout.SOUTH);
 		
 		pack();
+		setLocationRelativeTo(null);
 		
 	}
 	

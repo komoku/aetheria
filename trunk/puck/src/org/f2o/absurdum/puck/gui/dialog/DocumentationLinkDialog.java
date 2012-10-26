@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,10 +17,12 @@ import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
 import org.f2o.absurdum.puck.gui.PuckFrame;
 import org.f2o.absurdum.puck.i18n.UIMessages;
+import org.f2o.absurdum.puck.util.swing.DialogUtils;
 
 public class DocumentationLinkDialog extends JDialog
 {
@@ -98,6 +101,9 @@ public class DocumentationLinkDialog extends JDialog
 		}
 		);
 		
+		DialogUtils.registerEscapeAction(this);
+		DialogUtils.registerCloseAction(this,KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
+		
 		buttonsPanel.setLayout(new BorderLayout());
 		buttonsPanel.add(bClose,BorderLayout.EAST);
 		
@@ -105,6 +111,7 @@ public class DocumentationLinkDialog extends JDialog
 		this.getContentPane().add(buttonsPanel,BorderLayout.SOUTH);
 		
 		pack();
+		setLocationRelativeTo(null);
 		
 	}
 	
