@@ -15,11 +15,14 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,6 +51,7 @@ import org.f2o.absurdum.puck.gui.DeleteNodeAction;
 import org.f2o.absurdum.puck.gui.PasteNodeAction;
 import org.f2o.absurdum.puck.gui.PropertiesPanel;
 import org.f2o.absurdum.puck.gui.PuckFrame;
+import org.f2o.absurdum.puck.gui.TranslateTool;
 import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
 import org.f2o.absurdum.puck.gui.panels.EntityPanel;
 import org.f2o.absurdum.puck.gui.panels.RoomPanel;
@@ -63,7 +67,7 @@ import org.w3c.dom.Document;
  *
  * Created at regulus, 19-jul-2005 19:31:22
  */
-public class GraphEditingPanel extends JPanel implements MouseListener, MouseMotionListener, KeyListener
+public class GraphEditingPanel extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, KeyListener
 {
 	
 	private MouseListener toolListener = null;
@@ -1091,6 +1095,37 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 		*/
 	}
 	
+	private static double MOUSE_WHEEL_VIEW_MOVEMENT_SPEED = 50.0;
+	
+	public void mouseWheelMoved ( MouseWheelEvent e )
+	{
+		if ( e.isControlDown() ) //zoom with Ctrl+mouse wheel
+		{
+			int rotation = e.getWheelRotation(); //negative: up (zoom in), positive: down (zoom out)
+			if ( rotation < 0 )
+			{
+				multiplyZoom ( Math.pow(1.1,Math.abs(rotation)) );
+			}
+			else
+			{
+				multiplyZoom ( 1.0/Math.pow(1.1,Math.abs(rotation)) );
+			}
+			repaint();
+		}
+		else if ( e.isShiftDown() ) //horizontal movement with Shift+mouse wheel
+		{
+			int rotation = e.getWheelRotation(); //negative: up (go up), positive: down (go down)
+			setViewXOffset( getViewXOffset() + Math.round(rotation / getViewZoom() * MOUSE_WHEEL_VIEW_MOVEMENT_SPEED));
+			repaint();
+		}
+		else //if ( e.isAltDown() ) //vertical movement with Alt+mouse wheel
+		{
+			int rotation = e.getWheelRotation(); //negative: up (go up), positive: down (go down)
+			setViewYOffset( getViewYOffset() + Math.round(rotation / getViewZoom() * MOUSE_WHEEL_VIEW_MOVEMENT_SPEED));
+			repaint();
+		}
+	}
+	
 	
 	public boolean confirmDeletion ( Object obj )
 	{
@@ -1138,6 +1173,7 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 		setBackground(Color.WHITE);
 		addMouseListener(this);
 		addMouseMotionListener(this);
+		addMouseWheelListener(this);
 		setFocusable(true); //will generate key evts.
 		addKeyListener(this);
 		setVisible(true);
