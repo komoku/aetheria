@@ -24,7 +24,8 @@ import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
 import org.f2o.absurdum.puck.gui.graph.Node;
 import org.f2o.absurdum.puck.gui.panels.WorldPanel;
 import org.f2o.absurdum.puck.i18n.UIMessages;
-import org.f2o.absurdum.puck.util.swing.DialogUtils;
+
+import eu.irreality.age.windowing.DialogUtils;
 
 public class FindEntityDialog extends JDialog
 {

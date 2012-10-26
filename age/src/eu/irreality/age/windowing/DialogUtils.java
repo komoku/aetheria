@@ -3,7 +3,7 @@
  * Licencia en license.txt / License in license.txt
  * File created: 26/10/2012 17:14:36
  */
-package org.f2o.absurdum.puck.util.swing;
+package eu.irreality.age.windowing;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

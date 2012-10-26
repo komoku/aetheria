@@ -27,7 +27,8 @@ import org.f2o.absurdum.puck.gui.graph.ItemNode;
 import org.f2o.absurdum.puck.gui.graph.RoomNode;
 import org.f2o.absurdum.puck.gui.graph.SpellNode;
 import org.f2o.absurdum.puck.i18n.UIMessages;
-import org.f2o.absurdum.puck.util.swing.DialogUtils;
+
+import eu.irreality.age.windowing.DialogUtils;
 
 public class ShowHideDialog extends JDialog
 {
