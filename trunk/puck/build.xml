@@ -29,7 +29,7 @@
   <target name="init" depends="clean">
     <!-- Create the time stamp -->
     <tstamp/>
-    <echo message="Creando directorio build..."/>
+    <echo message="Creando directorio build para PUCK..."/>
     <!-- Create the build directory structure used by compile -->
     <mkdir dir="${build}"/>
   </target>
@@ -47,7 +47,7 @@
 
   <target name="compile" depends="init"
         description="compile the source " >
-        <echo message="Compilando..."/>
+        <echo message="Compilando PUCK..."/>
     <!-- Compile the java code from ${src} into ${build} -->
     <javac sourcepath="" srcdir="${src}" destdir="${build}" classpath=".;${lib}/jhall.jar;${lib}/jhelpaction.jar;${lib}/AgeCore.jar;${lib}/bsh-2.0b4.jar;${lib}/commons-cli-1.2.jar;${lib}/micromod.jar;${lib}/jsyntaxpane-0.9.5-20100209.jar" debug="true" encoding="iso-8859-1">
   		<include name="**/*.java"/>

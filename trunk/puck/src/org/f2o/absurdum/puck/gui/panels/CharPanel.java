@@ -35,6 +35,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 
+import eu.irreality.age.windowing.TabUtils;
+
 /**
  * @author carlos
  *
@@ -220,6 +222,7 @@ public class CharPanel extends EntityPanel implements BeanShellCodeHolder
 		
 		jtp.add(UIMessages.getInstance().getMessage("tab.traits"),traitsTab);
 
+		TabUtils.setDefaultMnemonics(jtp);
 		
 	}
 	

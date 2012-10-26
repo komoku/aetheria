@@ -43,6 +43,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import eu.irreality.age.windowing.TabUtils;
+
 /**
  * @author carlos
  *
@@ -440,11 +442,8 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 
 		jtp.add(UIMessages.getInstance().getMessage("tab.weapon"),sixthTab);
 		
+		TabUtils.setDefaultMnemonics(jtp);
 		
-		
-		
-		
-
 		
 	}
 	

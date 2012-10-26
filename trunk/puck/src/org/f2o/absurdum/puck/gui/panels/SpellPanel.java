@@ -44,6 +44,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import eu.irreality.age.windowing.TabUtils;
+
 /**
  * @author carlos
  *
@@ -286,7 +288,8 @@ public class SpellPanel extends EntityPanel implements BeanShellCodeHolder
 		secondTab.add(pp);
 		
 		jtp.add(UIMessages.getInstance().getMessage("tab.codeprop"),secondTab);
-		
+
+		TabUtils.setDefaultMnemonics(jtp);
 		
 		//openable-closeable support
 		

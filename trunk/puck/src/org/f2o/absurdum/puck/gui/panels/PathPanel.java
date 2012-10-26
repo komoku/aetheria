@@ -31,6 +31,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import eu.irreality.age.windowing.TabUtils;
+
 /**
  * @author carlos
  *
@@ -279,7 +281,7 @@ public class PathPanel extends ArrowPanel
 		
 		jtp.add(mainTab,UIMessages.getInstance().getMessage("tab.structrel"),0);
 		jtp.setSelectedIndex(0);	
-		
+		TabUtils.setDefaultMnemonics(jtp);
 		
 	}
 	

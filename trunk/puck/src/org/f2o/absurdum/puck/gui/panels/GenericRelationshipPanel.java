@@ -16,6 +16,8 @@ import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import eu.irreality.age.windowing.TabUtils;
+
 /*
  Created 10/02/2008 18:12:13
  */
@@ -92,6 +94,8 @@ public class GenericRelationshipPanel extends ArrowPanel
 		
 		jtp.add(mainTab,UIMessages.getInstance().getMessage("tab.structrel"),0);
 		jtp.setSelectedIndex(0);
+		
+		TabUtils.setDefaultMnemonics(jtp);
 		
 	}
 	
