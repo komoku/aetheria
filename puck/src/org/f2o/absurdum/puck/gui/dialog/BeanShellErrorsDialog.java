@@ -10,6 +10,7 @@ import java.awt.Dimension;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -19,8 +20,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 
 import org.f2o.absurdum.puck.i18n.UIMessages;
+import org.f2o.absurdum.puck.util.swing.DialogUtils;
 
 /**
  * @author carlos
@@ -70,6 +73,8 @@ public class BeanShellErrorsDialog extends JDialog
 		
 		pack();
 		this.setLocationRelativeTo(null);
+		DialogUtils.registerEscapeAction(this);
+		DialogUtils.registerCloseAction(this,KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
 		
 		okButton.addActionListener( new ActionListener() 
 		{

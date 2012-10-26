@@ -5,21 +5,28 @@
  */
 package org.f2o.absurdum.puck.gui.dialog;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import org.f2o.absurdum.puck.i18n.UIMessages;
+import org.f2o.absurdum.puck.util.swing.DialogUtils;
 
 /**
  * @author carlos
@@ -81,6 +88,12 @@ public class VerbListFrame extends JFrame
 		mainPanel.add ( tableScroll );
 		
 		this.getContentPane().add(mainPanel);
+		
+		DialogUtils.registerEscapeAction(this);
+		DialogUtils.registerCloseAction(this,KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
+		
+		//pack();
+		setLocationRelativeTo(null);
 		this.setVisible(true);
 	}
 	

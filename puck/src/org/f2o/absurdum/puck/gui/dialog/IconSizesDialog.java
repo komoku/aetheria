@@ -14,17 +14,20 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
+import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -39,6 +42,7 @@ import org.f2o.absurdum.puck.gui.graph.Node;
 import org.f2o.absurdum.puck.gui.graph.RoomNode;
 import org.f2o.absurdum.puck.gui.graph.SpellNode;
 import org.f2o.absurdum.puck.i18n.UIMessages;
+import org.f2o.absurdum.puck.util.swing.DialogUtils;
 
 /**
  * @author carlos
@@ -263,33 +267,46 @@ public class IconSizesDialog extends JDialog
 				{		
 					public void actionPerformed(ActionEvent e) 
 					{
-					/*
-						RoomNode.setDefaultSize(roomSlider.getValue());
-						ItemNode.setDefaultSize(itemSlider.getValue());
-						CharacterNode.setDefaultSize(charSlider.getValue());
-						SpellNode.setDefaultSize(spellSlider.getValue());
-						AbstractEntityNode.setDefaultSize(absSlider.getValue());
-					*/
-						
-						PuckConfiguration.getInstance().setProperty("roomDisplaySize",String.valueOf(roomSlider.getValue()));
-						PuckConfiguration.getInstance().setProperty("itemDisplaySize",String.valueOf(itemSlider.getValue()));
-						PuckConfiguration.getInstance().setProperty("spellDisplaySize",String.valueOf(spellSlider.getValue()));
-						PuckConfiguration.getInstance().setProperty("abstractEntityDisplaySize",String.valueOf(absSlider.getValue()));
-						PuckConfiguration.getInstance().setProperty("characterDisplaySize",String.valueOf(charSlider.getValue()));
-						
-						IconSizesDialog.this.dispose();
+						saveAndDispose();
 					}
 				}
 		);
 		
 		getContentPane().add(buttonsPanel,BorderLayout.SOUTH);
 		
+		registerCloseAction(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0));
+		
+		this.getRootPane().setDefaultButton(bClose);
 		pack();
+		setLocationRelativeTo(null);
 		
 		
 	}
 	
+	private void saveAndDispose()
+	{
+		PuckConfiguration.getInstance().setProperty("roomDisplaySize",String.valueOf(roomSlider.getValue()));
+		PuckConfiguration.getInstance().setProperty("itemDisplaySize",String.valueOf(itemSlider.getValue()));
+		PuckConfiguration.getInstance().setProperty("spellDisplaySize",String.valueOf(spellSlider.getValue()));
+		PuckConfiguration.getInstance().setProperty("abstractEntityDisplaySize",String.valueOf(absSlider.getValue()));
+		PuckConfiguration.getInstance().setProperty("characterDisplaySize",String.valueOf(charSlider.getValue()));
+		
+		dispose();
+	}
 	
+	private void registerCloseAction(KeyStroke keyStroke) 
+	{
+		ActionListener escListener = new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				IconSizesDialog.this.saveAndDispose();
+			}
+		};
+
+		this.getRootPane().registerKeyboardAction(escListener,
+				keyStroke, JComponent.WHEN_IN_FOCUSED_WINDOW);
+	}
 
 	
 

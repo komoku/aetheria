@@ -8,6 +8,7 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -16,12 +17,14 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 
 import org.f2o.absurdum.puck.gui.PuckFrame;
 import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
 import org.f2o.absurdum.puck.gui.graph.Node;
 import org.f2o.absurdum.puck.gui.panels.WorldPanel;
 import org.f2o.absurdum.puck.i18n.UIMessages;
+import org.f2o.absurdum.puck.util.swing.DialogUtils;
 
 public class FindEntityDialog extends JDialog
 {
@@ -61,6 +64,8 @@ public class FindEntityDialog extends JDialog
 			}
 		} );
 		
+		DialogUtils.registerEscapeAction(this);
+		
 		findButton.addActionListener ( new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e)
@@ -89,8 +94,8 @@ public class FindEntityDialog extends JDialog
 		
 		this.getRootPane().setDefaultButton(findButton);
 		
-		setLocationRelativeTo(null);
 		pack();
+		setLocationRelativeTo(null);
 		
 	}
 	
