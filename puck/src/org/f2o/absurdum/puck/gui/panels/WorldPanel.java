@@ -67,6 +67,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import eu.irreality.age.windowing.TabUtils;
+
 /**
  * @author carlos
  *
@@ -347,7 +349,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		thirdTab.setLayout(new BoxLayout(thirdTab, BoxLayout.PAGE_AXIS));
 		thirdTab.add(entitiesPanel);
 		jtp.add(UIMessages.getInstance().getMessage("tab.entities"),thirdTab);
-		
+		TabUtils.setDefaultMnemonics(jtp);
 		
 	}
 	

@@ -22,6 +22,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import eu.irreality.age.windowing.TabUtils;
+
 /*
  Created 08/02/2008 20:13:12
  When it is done, this should be the class from where all panels associated to arrows

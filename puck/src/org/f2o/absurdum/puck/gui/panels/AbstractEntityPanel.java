@@ -45,6 +45,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import eu.irreality.age.windowing.TabUtils;
+
 /**
  * @author carlos
  *
@@ -290,6 +292,8 @@ public class AbstractEntityPanel extends EntityPanel implements BeanShellCodeHol
 		//jtp.add(Messages.getInstance().getMessage("tab.openclose"),fourthTab);
 		jtp.add(Messages.getInstance().getMessage("tab.openclose"),fourthTabReal);
 		 */
+		
+		TabUtils.setDefaultMnemonics(jtp);
 		
 	}
 	

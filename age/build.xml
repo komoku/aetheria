@@ -18,7 +18,7 @@
   <target name="init" depends="clean">
     <!-- Create the time stamp -->
     <tstamp/>
-    <echo message="Creando directorio build..."/>
+    <echo message="Creando directorio build para AGE..."/>
     <!-- Create the build directory structure used by compile -->
     <mkdir dir="${build}"/>
   </target>
@@ -36,7 +36,7 @@
 
   <target name="compile" depends="init"
         description="compile the source " >
-        <echo message="Compilando..."/>
+        <echo message="Compilando AGE..."/>
     <!-- Compile the java code from ${src} into ${build} -->
     <javac sourcepath="" srcdir="${src}" destdir="${build}" classpath=".;${lib}/bsh-2.0b4.jar;${lib}/micromod.jar;${lib}/basicplayer3.0.jar;${lib}/jl1.0.jar;${lib}/commons-cli-1.2.jar;${lib}/svgSalamander.jar;${lib}/plugin.jar" target="1.4" source="1.4" debug="true" encoding="iso-8859-1">
   		<include name="**/*.java"/>
@@ -86,6 +86,13 @@
 			<fileset dir="${src}/bsh/commands"/>
 		</copy>
 		<jar jarfile="${build}/${corejar}" manifest="${conf}/MANIFEST.MF" basedir="${build}" includes="**"/>
+		<echo message="Copiando archivo del núcleo a lib..."/>
+		<copy todir="${lib}">
+			<fileset dir="${build}">
+				<include name="${corejar}"/>
+			</fileset>
+		</copy>
+	
 	</target>
 	
 	<target name="dist" depends="corejar" description="generate distribution">
