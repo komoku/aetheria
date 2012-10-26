@@ -26,7 +26,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import org.f2o.absurdum.puck.i18n.UIMessages;
-import org.f2o.absurdum.puck.util.swing.DialogUtils;
+
+import eu.irreality.age.windowing.DialogUtils;
 
 /**
  * @author carlos

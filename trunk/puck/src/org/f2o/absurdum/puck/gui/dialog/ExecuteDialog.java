@@ -34,12 +34,12 @@ import javax.swing.event.ChangeListener;
 import org.f2o.absurdum.puck.gui.PuckFrame;
 import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
 import org.f2o.absurdum.puck.i18n.UIMessages;
-import org.f2o.absurdum.puck.util.swing.DialogUtils;
 
 import eu.irreality.age.FiltroFicheroLog;
 import eu.irreality.age.Utility;
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.server.ServerHandler;
+import eu.irreality.age.windowing.DialogUtils;
 
 public class ExecuteDialog extends JDialog 
 {

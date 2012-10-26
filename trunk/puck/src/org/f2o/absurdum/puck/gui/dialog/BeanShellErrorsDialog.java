@@ -23,7 +23,8 @@ import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 
 import org.f2o.absurdum.puck.i18n.UIMessages;
-import org.f2o.absurdum.puck.util.swing.DialogUtils;
+
+import eu.irreality.age.windowing.DialogUtils;
 
 /**
  * @author carlos

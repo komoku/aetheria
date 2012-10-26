@@ -42,7 +42,8 @@ import org.f2o.absurdum.puck.gui.graph.Node;
 import org.f2o.absurdum.puck.gui.graph.RoomNode;
 import org.f2o.absurdum.puck.gui.graph.SpellNode;
 import org.f2o.absurdum.puck.i18n.UIMessages;
-import org.f2o.absurdum.puck.util.swing.DialogUtils;
+
+import eu.irreality.age.windowing.DialogUtils;
 
 /**
  * @author carlos
