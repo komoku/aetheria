@@ -122,9 +122,12 @@
 	  	<!--<delete dir="${build}/onejartmp"/>-->
 	</target>
 	
-	<target name="distwithage" depends="dist" description="generate a distribution of AGE+PUCK">
-		<echo message="Creando distribución combinada AGE+PUCK..."/>
+	<target name="callagedist" description="call dist on AGE build.xml file">
 		<ant dir="${age}" target="dist" inheritAll="false"/>
+	</target>
+	
+	<target name="distwithage" depends="callagedist,dist" description="generate a distribution of AGE+PUCK">
+		<echo message="Creando distribución combinada AGE+PUCK..."/>
 		<mkdir dir="${fulldist}"/>		
 		<!--copydir src="${age}/dist" dest="${fulldist}"/>-->
 		<copy todir="${fulldist}">
