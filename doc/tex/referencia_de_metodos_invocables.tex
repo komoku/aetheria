@@ -537,4 +537,1613 @@ bucle infinito.
 
 \section {Presentación general}
 
+\section{Lista de métodos invocables de cosa (clase Item)}
+
+A continuación se muestra una lista alfabética de métodos que se pueden invocar
+sobre instancias de la clase \textsf{Item}, para servir como referencia.
+
+Nota para quien mire el código fuente de AGE: si bien la clase \textsf{Item} tiene
+en realidad más métodos, los métodos que no se listen aquí deben considerarse
+métodos internos de AGE que no están pensados para que los llame el creador de
+aventuras. Esto quiere decir que no se deben usar, puesto que potencialmente
+podrían cambiar en versiones posteriores de AGE, ser eliminados, cambiar de
+nombre, etc. y por lo tanto los mundos que los utilicen podrían dejar de funcionar.
+Sólo se garantiza la compatibilidad hacia adelante de los métodos que aparecen
+descritos en la documentación.
+
+\begin{lstlisting}
+public boolean addItem ( Item nuevo ) throws WeightLimitExceededException, VolumeLimitExceededException
+\end{lstlisting}
+
+Añade la cosa dada (\textsf{nuevo}) al contenido de esta cosa, si es un
+contenedor. Devuelve \textsf{true} si se ha añadido con éxito, y \textsf{false}
+de lo contrario (si esta cosa no es un contenedor, o bien lo que le queremos
+añadir ya estaba dentro \emph{anteriormente}).
+
+\begin{lstlisting}
+public boolean contains ( Item it )
+\end{lstlisting}
+
+Comprueba si esta cosa es un contenedor y tiene la cosa \textsf{it} dentro,
+devolviendo \textsf{true} en ese caso, y \textsf{false} de lo contrario.
+
+\begin{lstlisting}
+public Mobile createNewInstance( boolean cloneInventory , boolean cloneParts , String uniqueName  )
+\end{lstlisting}
+
+Crea un nuevo Item que es copia de éste, lo añade al mundo y lo devuelve. El
+parámetro \textsf{cloneInventory} será \textsf{true} si se quiere que se
+copien también los objetos del inventario (objetos contenidos) y \textsf{false} de
+lo contrario (en cuyo caso, la nueva cosa no tendrá nada dentro). El parámetro
+\textsf{cloneParts} es análogo a \textsf{cloneInventory}; pero para las partes
+de la cosa. El parámetro \textsf{uniqueName} indica el nombre único que tendrá
+la nueva copia de la criatura. (este formato del método está disponible desde AGE
+1.2.4).
+
+\begin{lstlisting}
+public String getBestReferenceName ( boolean plural )
+\end{lstlisting}
+
+Devuelve el nombre de referencia más específico (el de mayor prioridad) con el
+cual nos podemos referir a esta cosa, en singular (si \textsf{plural} es
+\textsf{false}) o plural (si \textsf{plural} es \textsf{true}).
+
+\begin{lstlisting}
+public Inventory getInventory ( )
+\end{lstlisting}
+
+Devuelve un objeto de la clase \textsf{Inventory} con el contenido de esta cosa,
+si es un contenedor, o bien \textsf{null} si la cosa no es un contenedor. Dicho
+inventario se debe utilizar sólo para lectura, y no modificar su contenido, lo cual
+podría provocar errores o comportamientos no deseados. Para modificar el
+contenido de un contenedor, se deben utilizar los métodos que se invocan
+directamente sobre el mismo como \textsf{addItem()}, \textsf{removeItem()};
+o bien el método de cosa \textsf{moveTo()}, por las razones detalladas en la
+sección \ref{sec:Inventario} sobre inventarios.
+
+\begin{lstlisting}
+public String getDescription ( Entity viewer )
+\end{lstlisting}
+
+Devuelve la descripción de esta cosa para la entidad \textsf{viewer}. Dicha
+entidad puede ser referenciada en las condiciones de las descripciones, mediante
+el identificador \textsf{viewer}, que sirve para parametrizarlas para diferentes
+criaturas observadoras. Es posible pasar como parámetro \textsf{null} si se
+quiere una descripción genérica; pero esto sólo funcionará si las condiciones de
+descripción de la entidad no utilizan la variable especial \textsf{viewer} (o están
+preparadas para el caso de que viewer sea \textsf{null}).
+
+\begin{lstlisting}
+public Spell getExtraDescription ( String name , Entity viewer )
+\end{lstlisting}
+
+Devuelve la descripción de componente para el componente de esta cosa llamado
+\textsf{name}, para que la vea la entidad observadora \textsf{viewer}. El
+funcionamiento del parámetro \textsf{viewer} es igual que en el método
+\textsf{getDescription()}.
+
+\begin{lstlisting}
+public List getExtraDescriptionNames ( )
+\end{lstlisting}
+
+Devuelve una lista con todos los nombres descriptibles de componente de esta
+cosa. Cada llamada a este método construye internamente la lista para devolverla,
+así que para una programación eficiente debería evitarse llamarlo muchas veces
+seguidas si se sabe que el resultado no va a cambiar.
+
+\begin{lstlisting}
+public Inventory getFlattenedInventory ( )
+\end{lstlisting}
+
+Devuelve un objeto de la clase \textsf{Inventory} que contiene tanto el
+contenido de esta cosa (si es un contenedor) como el contenido del contenido, el
+contenido del contenido del contenido, etc. El método construye internamente
+dicha lista en cada llamada, así que para una programación eficiente debería
+evitarse llamarlo muchas veces seguidas si se sabe que el resultado no va a
+cambiar.
+
+\begin{lstlisting}
+public Inventory getFlattenedPartsInventory ( )
+\end{lstlisting}
+
+Devuelve un objeto de la clase \textsf{Inventory} que contiene tanto las partes
+de esta cosa como las partes de las partes, las partes de las partes de las partes,
+etc. El método construye internamente dicha lista en cada llamada, así que para
+una programación eficiente debería evitarse llamarlo muchas veces seguidas si se
+sabe que el resultado no va a cambiar.
+
+\begin{lstlisting}
+public boolean getGender ( )
+\end{lstlisting}
+
+Devuelve el género de esta cosa: \textsf{true} si es masculina, \textsf{false}
+si es femenina.
+
+\begin{lstlisting}
+public Entity getLocation ( )
+\end{lstlisting}
+
+Devuelve una habitación o contenedor en el que se encuentra actualmente esta
+cosa. Nótese que una cosa puede estar en varios lugares a la vez, en cuyo caso
+este método sólo devolvería uno (cualquiera).
+
+\begin{lstlisting}
+public EntityList getLocations()
+\end{lstlisting}
+
+Devuelve una lista de los lugares donde se encuentra esta cosa. Cada uno de ellos
+puede ser una habitación o bien otro Item que sea un contenedor.
+
+\begin{lstlisting}
+public String getOutputName ( int nItems , Entity viewer , String mascArt , String femArt , boolean evenIfInvisible , boolean numberToWord )
+\end{lstlisting}
+
+Método avanzado para obtener un nombre para mostrar de esta cosa con un
+artículo o cuantificador (por ejemplo, \comillas{el helado}, \comillas{un helado}
+o \comillas{cuatro helados}). Normalmente no debería ser necesario usar este
+método; sino que debería ser suficiente con utilizar las variantes más sencillas
+como \textsf{getOutputNameThe()}, \textsf{getOutputNameA()} o
+\textsf{getOutputNameOnly()}. Este método podrá ser útil cuando se quieran
+hacer cosas atípicas con el nombre, como prefijarlo con artículos que no sean los
+estándar. Los parámetros son:
+
+\begin{itemize}
+  \item {\textsf{nItems}: número de cosas para las que se quiere obtener el
+  nombre (para generar \comillas{un helado} o \textsf{cuatro helados}, por
+  ejemplo).}
+  \item {\textsf{viewer}: criatura que verá la descripción.}
+  \item {\textsf{mascArt}: artículo masculino a prefijar si la cosa es masculina,
+  por ejemplo \comillas{el} o \comillas{un}.}
+  \item {\textsf{femArt}: artículo femenino a prefijar si la cosa es femenina, por
+  ejemplo \comillas{la} o \comillas{una}.}
+  \item {\textsf{evenIfInvisible}: si se pone a \textsf{true}, el método
+  devolverá un nombre incluso si la cosa no tiene un nombre para mostrar,
+  recurriendo al nombre único. Esta posibilidad rompe la regla general de que el
+  nombre único es para uso exclusivo del programador y no se muestra en
+  pantalla, así que no se recomienda usarla.}
+  \item {\textsf{numberToWord}: si se pone a \textsf{true}, los números se
+  devolverán en formato palabra cuando haya más de una cosa (por ejemplo,
+  \comillas{cuatro helados}). Si se pone a \textsf{false}, se devolverán en
+  formato numérico (\comillas{4 helados}).}
+\end{itemize}
+
+\begin{lstlisting}
+public String getOutputNameA ( )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de esta cosa prefijado con un artículo
+indeterminado (\comillas{un helado}, \comillas{una hamburguesa}), sin
+personalizarlo para un observador en particular. No se puede utilizar esta variante
+del método si en las condiciones de los nombres para mostrar se ha utilizado la
+variable que representa al observador (\textsf{viewer}).
+
+\begin{lstlisting}
+public String getOutputNameA ( Entity viewer )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de esta cosa prefijado con un artículo
+indeterminado (\comillas{un helado}, \comillas{una hamburguesa}),
+personalizado para el observador \textsf{viewer}.
+
+\begin{lstlisting}
+public String getOutputNameA ( int n )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de \emph{n} cosas como ésta, prefijado con
+un artículo indeterminado (\comillas{un helado}, \comillas{una hamburguesa})
+si $n=1$, o con un cuantificador (\comillas{cuatro helados}, \comillas{tres
+hamburguesas}) si $n>1$, y sin personalizarlo para un observador en particular.
+No se puede utilizar esta variante del método si en las condiciones de los nombres
+para mostrar se ha utilizado la variable que representa al observador
+(\textsf{viewer}).
+
+\begin{lstlisting}
+public String getOutputNameA ( int n , Entity viewer )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de \emph{n} cosas como ésta, prefijado con
+un artículo indeterminado (\comillas{un helado}, \comillas{una hamburguesa})
+si $n=1$, o con un cuantificador (\comillas{cuatro helados}, \comillas{tres
+hamburguesas}) si $n>1$, personalizado para el observador \textsf{viewer}.
+
+\begin{lstlisting}
+public String getOutputNameOnly ( )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de esta cosa (\comillas{helado},
+\comillas{hamburguesa}), sin personalizarlo para un observador en particular.
+No se puede utilizar esta variante del método si en las condiciones de los nombres
+para mostrar se ha utilizado la variable que representa al observador
+(\comillas{viewer}).
+
+\begin{lstlisting}
+public String getOutputNameOnly ( Entity viewer )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de esta cosa, personalizado para el observador
+\textsf{viewer}.
+
+\begin{lstlisting}
+public String getOutputNameOnly ( int n )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de n cosas como ésta, en singular
+(\comillas{helado}, \comillas{hamburguesa}) si $n=1$, o en plural
+(\comillas{helados}, \comillas{hamburguesas}) si $n>1$, y sin personalizarlo
+para un observador en particular. No se puede utilizar esta variante del método si
+en las condiciones de los nombres para mostrar se ha utilizado la variable que
+representa al observador (\textsf{viewer}).
+
+\begin{lstlisting}
+public String getOutputNameOnly ( int n , Entity viewer )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de \emph{n} cosas como ésta, en singular
+(\comillas{helado}, \comillas{hamburguesa}) si $n=1$, o en plural
+(\comillas{helados}, \comillas{hamburguesas}) si $n>1$, personalizado para el
+observador \textsf{viewer}.
+
+\begin{lstlisting}
+public String getOutputNameThe ( )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de esta cosa prefijado con un artículo
+determinado (\comillas{el helado}, \comillas{la hamburguesa}), sin
+personalizarlo para un observador en particular. No se puede utilizar esta variante
+del método si en las condiciones de los nombres para mostrar se ha utilizado la
+variable que representa al observador (\textsf{viewer}).
+
+\begin{lstlisting}
+public String getOutputNameThe ( Entity viewer )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de esta cosa prefijado con un artículo
+determinado (\comillas{el helado}, \comillas{la hamburguesa}), personalizado
+para el observador \textsf{viewer}.
+
+\begin{lstlisting}
+public String getOutputNameThe ( int n )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de n cosas como ésta, prefijado con un artículo
+determinado (\comillas{el helado}, \comillas{la hamburguesa}) si $n=1$, o con
+un cuantificador (\comillas{cuatro helados}, \comillas{tres hamburguesas}) si
+$n>1$, y sin personalizarlo para un observador en particular. No se puede utilizar
+esta variante del método si en las condiciones de los nombres para mostrar se ha
+utilizado la variable que representa al observador (\textsf{viewer}).
+
+\begin{lstlisting}
+public String getOutputNameThe ( int n , Entity viewer )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de \emph{n} cosas como ésta, prefijado con
+un artículo determinado (\comillas{el helado}, \comillas{la hamburguesa}) si
+$n=1$, o con un cuantificador (\comillas{cuatro helados}, \comillas{tres
+hamburguesas}) si $n>1$, personalizado para el observador \textsf{viewer}.
+
+\begin{lstlisting}
+public Inventory getParts ( )
+\end{lstlisting}
+
+Devuelve un objeto de la clase \textsf{Inventory} que contiene las partes de
+esta cosa. No contiene las partes de las partes. El inventario resultante se puede
+modificar para añadir o quitar partes a la cosa dinámicamente.
+
+\begin{lstlisting}
+public List getPluralReferenceNames ( )
+\end{lstlisting}
+
+Devuelve una lista de los nombres de referencia plurales de esta cosa, en orden
+de prioridad, del más prioritario al menos prioritario.
+
+\begin{lstlisting}
+public List getSingularReferenceNames ( )
+\end{lstlisting}
+
+Devuelve una lista de los nombres de referencia en singular de esta criatura, en
+orden de prioridad, del más prioritario al menos prioritario.
+
+\begin{lstlisting}
+public int getTotalWeight ( )
+\end{lstlisting}
+
+Devuelve el peso conjunto de esta cosa y todo su contenido (si se trata de un
+contenedor).
+
+\begin{lstlisting}
+public String getUniqueName ( )
+\end{lstlisting}
+
+Devuelve el nombre único de esta cosa, que el programador puede utilizar para
+identificarla.
+
+\begin{lstlisting}
+public int getVolume ( )
+\end{lstlisting}
+
+Devuelve el volumen de esta cosa.
+
+\begin{lstlisting}
+public int getWeight ( )
+\end{lstlisting}
+
+Devuelve el peso de esta cosa.
+
+\begin{lstlisting}
+public boolean isCloseable ( )
+\end{lstlisting}
+
+Comprueba si esta cosa está marcada como cerrable, es decir, si es posible
+cerrarla (en general, no necesariamente en el estado actual). Devuelve
+\textsf{true} en ese caso, y \textsf{false} de lo contrario.
+
+\begin{lstlisting}
+public boolean isClosed ( )
+\end{lstlisting}
+
+Comprueba si esta cosa está cerrada, devolviendo \textsf{true} en tal caso, y
+\textsf{false} de lo contrario. Sólo tiene sentido para cosas cerrables,
+devolviendo un valor indefinido para las que no lo sean.
+
+\begin{lstlisting}
+public boolean isContainer ( )
+\end{lstlisting}
+
+Comprueba si esta cosa es un contenedor, devolviendo \textsf{true} si lo es y
+\textsf{false} de lo contrario.
+
+\begin{lstlisting}
+public boolean isGettable ( )
+\end{lstlisting}
+
+Comprueba si esta cosa puede potencialmente cogerse (es decir, si no está
+\comillas{fija en el sitio}). Devuelve \textsf{true} si se puede coger, y
+\textsf{false} de lo contrario.
+
+\begin{lstlisting}
+public boolean isIndistinguishableFrom ( Item another , Entity viewer )
+\end{lstlisting}
+
+Devuelve \textsf{true} si la cosa \textsf{another} es indistinguible de ésta para
+el observador dado (es decir, si se mostrará en conjunto, como en \comillas{dos
+helados} frente a \comillas{un helado grande y un helado pequeño} -- esto
+sucede si ambas cosas tienen el mismo nombre para mostrar para ese
+observador).
+
+\begin{lstlisting}
+public boolean isInvisible ( Mobile viewer )
+\end{lstlisting}
+
+Devuelve \textsf{true} si esta cosa es invisible para el observador dado. Esto
+sucede si la cosa no tiene nombre para mostrar para ese observador.
+
+\begin{lstlisting}
+public boolean isLockable ( )
+\end{lstlisting}
+
+Comprueba si esta cosa está marcada como cerrable con llave, es decir, si es
+posible cerrarla con llave (en general, no necesariamente en el estado actual).
+Devuelve \textsf{true} en ese caso, y \textsf{false} de lo contrario.
+
+\begin{lstlisting}
+public boolean isLocked ( )
+\end{lstlisting}
+
+Comprueba si esta cosa está cerrada con llave, devolviendo \textsf{true} en tal
+caso, y \textsf{false} de lo contrario. Sólo tiene sentido para cosas cerrables
+con llave, devolviendo un valor indefinido para las que no lo sean.
+
+\begin{lstlisting}
+public boolean isOpen ( )
+\end{lstlisting}
+
+Comprueba si esta cosa está abierta, devolviendo \textsf{true} en tal caso, y
+\textsf{false} de lo contrario. Sólo tiene sentido para cosas abribles, devolviendo
+un valor indefinido para las que no lo sean.
+
+\begin{lstlisting}
+public boolean isOpenable ( )
+\end{lstlisting}
+
+Comprueba si esta cosa está marcada como abrible, es decir, si es posible abrirla
+(en general, no necesariamente en el estado actual). Devuelve \textsf{true} en
+ese caso, y \textsf{false} de lo contrario.
+
+\begin{lstlisting}
+public boolean isUnlockable ( )
+\end{lstlisting}
+
+Comprueba si esta cosa está marcada como abrible con llave, es decir, si es
+posible abrible con llave (en general, no necesariamente en el estado actual).
+Devuelve \textsf{true} en ese caso, y \textsf{false} de lo contrario.
+
+\begin{lstlisting}
+public boolean isUnlocked ( )
+\end{lstlisting}
+
+Comprueba si esta cosa está abierta con llave, devolviendo \textsf{true} en tal
+caso, y \textsf{false} de lo contrario. Sólo tiene sentido para cosas abribles con
+llave, devolviendo un valor indefinido para las que no lo sean.
+
+\begin{lstlisting}
+public boolean isWeapon ( )
+\end{lstlisting}
+
+Comprueba si esta cosa es un arma, devolviendo \textsf{true} en tal caso, y
+\textsf{false} de lo contrario.
+
+\begin{lstlisting}
+public boolean isWearable ( )
+\end{lstlisting}
+
+Comprueba si esta cosa es una vestimenta o armadura, devolviendo
+\textsf{true} en tal caso, y \textsf{false} de lo contrario.
+
+\begin{lstlisting}
+public int matchesCommand ( String commandArgs , boolean pluralOrSingular )
+\end{lstlisting}
+
+Nos dice si los nombres de referencia de la cosa emparejan con una cadena que
+ha tecleado el usuario (\textsf{commandArgs}), sean los nombres de referencia
+singulares (\textsf{pluralOrSingular=false}) o los plurales
+(\textsf{pluralOrSingular=true}). Normalmente este método no se debería usar,
+ya que AGE maneja el análisis de las órdenes del usuario de forma automática.
+Pensar que es necesario usar este método suele ser señal de que uno está
+haciendo algo mal o complicándose más de lo que debería. Sin embargo, como
+podrían existir casos en los que sí que sea necesario para personalizar el análisis
+de órdenes, este método está disponible recomendándose usarlo sólo cuando
+sea necesario.
+
+\begin{lstlisting}
+public void moveTo ( Room/Item/Mobile target )
+\end{lstlisting}
+
+Mueve esta cosa desde donde esté hasta la habitación \textsf{target}, o
+adentro del contenedor \textsf{target}, o al inventario de la criatura
+\textsf{target}. El movimiento es directo, es decir, la cosa se quita de todos los
+lugares donde esté y aparece directamente en el lugar de destino, y no se
+muestra ningún mensaje ni se activa ningún evento.
+
+\begin{lstlisting}
+public void removeFromInventories ( )
+\end{lstlisting}
+
+Quita esta cosa de todos los lugares del mundo (habitaciones, inventarios de
+criaturas, o interior de contenedores) en los que esté, sin ponerla en ningún otro
+lugar.
+
+\begin{lstlisting}
+public boolean removeItem ( Item it )
+\end{lstlisting}
+
+Quita la cosa \textsf{it} del contenido de esta cosa, si es un contenedor.
+Devuelve \textsf{true} si se ha quitado con éxito, y \textsf{false} si no se ha
+hecho porque la cosa pasada como parámetro no estaba realmente dentro de
+esta cosa.
+
+\begin{lstlisting}
+public void reportAction ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , String sufferDes , String execDes  , boolean self_included )
+\end{lstlisting}
+
+Equivalente a llamar al método \textsf{reportAction}, con los mismos
+parámetros, sobre la habitación o habitaciones donde está esta cosa. Véase la
+sección sobre notificación de acciones y sucesos.
+
+\begin{lstlisting}
+public void reportAction ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , String sufferDes , String execDes , String style , boolean self_included )
+\end{lstlisting}
+
+Equivalente a llamar al método \textsf{reportAction}, con los mismos
+parámetros, sobre la habitación o habitaciones donde está esta cosa. Véase la
+sección sobre notificación de acciones y sucesos.
+
+\begin{lstlisting}
+public void reportActionAuto ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes ,  boolean self_included )
+\end{lstlisting}
+
+Equivalente a llamar al método \textsf{reportActionAuto}, con los mismos
+parámetros, sobre la habitación o habitaciones donde está esta cosa. Véase la
+sección sobre notificación de acciones y sucesos.
+
+\begin{lstlisting}
+public void reportActionAuto ( Entity source /*$1*/ , Entity target /*$2*/ , Entity[] objects /*$3..$n*/ , String thirdPersonDes , String style , boolean self_included )
+\end{lstlisting}
+
+Equivalente a llamar al método \textsf{reportActionAuto}, con los mismos
+parámetros, sobre la habitación o habitaciones donde está esta cosa. Véase la
+sección sobre notificación de acciones y sucesos.
+
+\begin{lstlisting}
+public void setGettable ( boolean gettable )
+\end{lstlisting}
+
+Cambia si esta cosa se puede coger o no. Si se pasa \textsf{true}, a partir de la
+ejecución del método se podrá coger, mientras que si se pasa \textsf{false}, se
+marcará como \comillas{fija en el sitio}.
+
+\begin{lstlisting}
+public boolean unlocksWithKey( Item key )
+\end{lstlisting}
+
+Comprueba si esta cosa se puede abrir con el \textsf{Item} llave dado
+\textsf{key}, devolviendo \textsf{true} en tal caso, y \textsf{false} en caso
+contrario.
+
+\section{Lista de métodos invocables de criatura (clase Mobile)}
+
+A continuación se muestra una lista alfabética de métodos que se pueden invocar
+sobre instancias de la clase Mobile, para servir como referencia.
+
+Nota para quien mire el código fuente de AGE: si bien la clase \textsf{Mobile}
+tiene en realidad más métodos, los métodos que no se listen aquí deben
+considerarse métodos internos de AGE que no están pensados para que los llame
+el creador de aventuras. Esto quiere decir que no se deben usar, puesto que
+potencialmente podrían cambiar en versiones posteriores de AGE, ser eliminados,
+cambiar de nombre, etc. y por lo tanto los mundos que los utilicen podrían dejar
+de funcionar. Sólo se garantiza la compatibilidad hacia adelante de los métodos
+que aparecen descritos en la documentación.
+
+\begin{lstlisting}
+public void addEnemy ( Mobile enemy )
+\end{lstlisting}
+
+Añade la criatura dada (\textsf{enemy}) a la lista de enemigos de esta criatura.
+Una criatura siempre atacará a un enemigo en cuanto lo vea.
+
+\begin{lstlisting}
+public void addItem ( Item nuevo ) throws WeightLimitExceededException, VolumeLimitExceededException
+\end{lstlisting}
+
+Añade la cosa dada (\textsf{nuevo}) al inventario de esta criatura.
+
+\begin{lstlisting}
+public void addSpell ( Spell nuevo )
+\end{lstlisting}
+
+Añade el conjuro dado (\textsf{nuevo}) a la lista de hechizos que sabe conjurar
+esta criatura.
+
+\begin{lstlisting}
+public void attack ( Mobile target , Weapon w )
+\end{lstlisting}
+
+Ataca a la criatura \textsf{target} con el arma \textsf{w}. Este método sólo se
+debería llamar si \textsf{target} está en la misma sala que el \textsf{Mobile}
+sobre el que lo invocamos, y si éste tiene empuñada el arma \textsf{w}. No se
+hace gestión de los errores que deriven del incumplimiento de estas
+precondiciones. Normalmente no debería hacer falta llamar a este método, es
+más sencillo usar \textsf{addEnemy()} y \textsf{removeEnemy()} para
+añadirle enemigos a la criatura y que los ataque automáticamente, y confiar en la
+IA para la selección del arma a utilizar.
+
+\begin{lstlisting}
+public void attackBestTarget ()
+\end{lstlisting}
+
+Ataca a la criatura que considere que es el mejor objetivo (el más vulnerable), con
+la mejor de las armas que tenga empuñadas.
+
+\begin{lstlisting}
+public void block ( Mobile target , Weapon w )
+\end{lstlisting}
+
+Se defiende de la criatura \textsf{target}, que le esté atacando, bloqueando
+mediante el arma \textsf{w}. De forma análoga al método
+\textsf{attack ( Mobile , Weapon )}, este método sólo se puede llamar si la
+criatura está realmente siendo atacada por target y empuñando el arma
+\textsf{w}, y su llamada en otras circunstancias puede acarrear errores. Del
+mismo modo, en general se recomienda no llamar a este método si no es
+estrictamente necesario, ya que es más sencillo dejar que AGE gestione el
+combate automáticamente.
+
+\begin{lstlisting}
+public void blockBestTarget ()
+\end{lstlisting}
+
+Se defiende de una criatura que esté atacando, con la mejor (para bloquear) de
+las armas que tenga empuñadas.
+
+\begin{lstlisting}
+public void cast ( Spell s , Entity target )
+\end{lstlisting}
+
+Conjura el hechizo \textsf{s} sobre el objetivo \textsf{target}. Si se trata de un
+hechizo que no tiene objetivos, target deberá pasarse como \textsf{null}. Esta
+función es segura ante errores, es decir, si el objetivo no está, la criatura no tiene
+maná, etc. no se producirá ningún problema (simplemente no se lanzará el
+conjuro).
+
+\begin{lstlisting}
+public Mobile createNewInstance( boolean cloneInventory , boolean cloneParts , String uniqueName  )
+\end{lstlisting}
+
+Crea un nuevo \textsf{Mobile} que es copia de éste, lo añade al mundo y lo
+devuelve. El parámetro \textsf{cloneInventory} será \textsf{true} si se quiere
+que se copien también los objetos del inventario y \textsf{false} de lo contrario
+(en cuyo caso, la nueva criatura no tendrá nada en el inventario). El parámetro
+\textsf{cloneParts} es análogo a \textsf{cloneInventory}; pero para las partes
+de la criatura. El parámetro \textsf{uniqueName} indica el nombre único que
+tendrá la nueva copia de la criatura. (este formato del método está disponible
+desde AGE 1.2.4).
+
+\begin{lstlisting}
+public void decreaseHP ( int amount )
+\end{lstlisting}
+
+Quita a la criatura \textsf{amount} puntos de vida. Si la vida llega a cero, la
+criatura morirá automáticamente.
+
+\begin{lstlisting}
+public void die ()
+\end{lstlisting}
+
+Mata a la criatura. Esto incluye todo el proceso de la muerte, incluyendo la
+ejecución de los eventos correspondientes, generación del cadáver, y retirada del
+\comillas{alma} de la criatura al Limbo.
+
+\begin{lstlisting}
+public void dodge ( Mobile target )
+\end{lstlisting}
+
+Esquiva un ataque que esté lanzando la criatura \textsf{target}. Como otros
+descritos anteriormente, se trata de un método de combate sin manejo de
+errores, y se recomienda no invocarlo si no es estrictamente necesario. Es más
+cómodo fiar el combate a la IA.
+
+\begin{lstlisting}
+public boolean drop ( Item it )
+\end{lstlisting}
+
+La criatura deja la cosa dada por el parámetro \textsf{it}, si está en su
+inventario. El método devuelve \textsf{true} si se ha conseguido dejar la cosa, y
+\textsf{false} de lo contrario (normalmente, esto último sucederá si la cosa
+dada no está en el inventario de la criatura).
+
+\begin{lstlisting}
+public boolean enqueueCommand ( Item it )
+\end{lstlisting}
+
+Añade una orden al final de la cola de órdenes que ejecuta esta criatura. Para más
+detalles, véase la sección sobre Ejecución automática de órdenes.
+
+\begin{lstlisting}
+public String estimateDamage ( int damAmt )
+\end{lstlisting}
+
+Devuelve una cadena con una estimación de lo grave que es que le hagan a esta
+criatura \textsf{damAmt} puntos de daño. Por ejemplo, \comillas{muy ligeros
+daños}, \comillas{gran daño}, etc. Dichas cadenas se toman de mensajes por
+defecto.
+
+\begin{lstlisting}
+public String estimateStatus ( )
+\end{lstlisting}
+
+Devuelve una cadena con una estimación del estado de puntos de vida de esta
+criatura. Por ejemplo, \comillas{tiene algún rasguño} o \comillas{está muy
+gravemente herido}. Dichas cadenas se toman de mensajes por defecto.
+
+\begin{lstlisting}
+public void forceCommand ( String command )
+\end{lstlisting}
+
+Obliga a la criatura a ejecutar la orden dada lo antes posible. Para más detalles,
+véase la sección sobre Ejecución automática de órdenes.
+
+\begin{lstlisting}
+public List getAttackingEnemies ( )
+\end{lstlisting}
+
+Devuelve una lista con todas las criaturas que están atacando a ésta en un
+momento dado. (importante: no todas las criaturas que están en combate con
+ésta; sino que están en ese momento llevando a cabo un ataque -- por ejemplo,
+criaturas que están esquivando o recuperándose de un golpe no aparecerían
+aquí). Aunque este método no provoca errores ni efectos laterales, es raro que el
+creador de aventuras necesite llamarlo, lo más común será que lo use
+internamente la IA de combate de AGE.
+
+\begin{lstlisting}
+public String getBestReferenceName ( boolean plural )
+\end{lstlisting}
+
+Devuelve el nombre de referencia más específico (el de mayor prioridad) con el
+cual nos podemos referir a esta criatura, en singular (si \textsf{plural} es
+\textsf{false}) o plural (si \textsf{plural} es \textsf{true}).
+
+\begin{lstlisting}
+public InputOutputClient getClient ( )
+\end{lstlisting}
+
+Devuelve el cliente asociado a esta criatura. Las criaturas que no son jugadores
+tienen asociado un cliente \comillas{pasivo} que no hace nada.
+
+\begin{lstlisting}
+public Spell getCurrentSpell ( )
+\end{lstlisting}
+
+Devuelve el hechizo que está conjurando esta criatura, en el caso de que esté
+conjurando alguno, es decir, si está en el estado \textsf{Mobile.CASTING}. Si la
+criatura no está en este estado, este método no se debería usar, y su valor de
+retorno es indefinido.
+
+\begin{lstlisting}
+public Weapon getCurrentWeapon ( )
+\end{lstlisting}
+
+Devuelve el arma que esta criatura está utilizando para atacar, si está atacando
+(en el estado \textsf{Mobile.ATTACKING}), o para bloquear, si está bloqueando
+(en el estado \textsf{Mobile.BLOCKING} o \textsf{Mobile.READY\_TO\_BLOCK}).
+Si la criatura no está en ninguno de esos estados, el valor de retorno de este
+método corresponde a la última arma usada para dichos propósitos.
+
+\begin{lstlisting}
+public String getDescription ( Entity viewer )
+\end{lstlisting}
+
+Devuelve la descripción de esta criatura para la entidad \textsf{viewer}. Dicha
+entidad puede ser referenciada en las condiciones de las descripciones, mediante
+el identificador \textsf{viewer}, que sirve para parametrizarlas para diferentes
+criaturas observadoras. Es posible pasar como parámetro \textsf{null} si se
+quiere una descripción genérica; pero esto sólo funcionará si las condiciones de
+descripción de la entidad no utilizan la variable especial \textsf{viewer} (o están
+preparadas para el caso de que viewer sea \textsf{null}).
+
+\begin{lstlisting}
+public MobileList getEnemies ( )
+\end{lstlisting}
+
+Devuelve la lista de enemigos de esta criatura. Una criatura siempre atacará a un
+enemigo en cuanto lo vea.
+
+\begin{lstlisting}
+public Spell getExtraDescription ( String name , Entity viewer )
+\end{lstlisting}
+
+Devuelve la descripción de componente para el componente de esta criatura
+llamado \textsf{name}, para que la vea la entidad observadora \textsf{viewer}.
+El funcionamiento del parámetro \textsf{viewer} es igual que en el método
+\textsf{getDescription()}.
+
+\begin{lstlisting}
+public List getExtraDescriptionNames ( )
+\end{lstlisting}
+
+Devuelve una lista con todos los nombres descriptibles de componente de esta
+criatura. Cada llamada a este método construye internamente la lista para
+devolverla, así que para una programación eficiente debería evitarse llamarlo
+muchas veces seguidas si se sabe que el resultado no va a cambiar.
+
+\begin{lstlisting}
+public Inventory getFlattenedInventory ( )
+\end{lstlisting}
+
+Devuelve un objeto de la clase \textsf{Inventory} que contiene tanto los objetos
+del inventario de esta criatura como aquéllos que estén dentro de ellos (si son
+contenedores), los que estén dentro de los que estén dentro de ellos, etc. El
+método construye internamente dicha lista en cada llamada, así que para una
+programación eficiente debería evitarse llamarlo muchas veces seguidas si se
+sabe que el resultado no va a cambiar.
+
+\begin{lstlisting}
+public Inventory getFlattenedPartsInventory ( )
+\end{lstlisting}
+
+Devuelve un objeto de la clase \textsf{Inventory} que contiene tanto las partes
+(miembros) de esta criatura como las partes de las partes, las partes de las
+partes de las partes, etc. El método construye internamente dicha lista en cada
+llamada, así que para una programación eficiente debería evitarse llamarlo muchas
+veces seguidas si se sabe que el resultado no va a cambiar.
+
+\begin{lstlisting}
+public int getHP ( )
+\end{lstlisting}
+
+Devuelve los puntos de vida actuales de esta criatura.
+
+\begin{lstlisting}
+public Inventory getInventory ( )
+\end{lstlisting}
+
+Devuelve el inventario de esta criatura. Dicho inventario se debe utilizar sólo para
+lectura, y no modificar su contenido, lo cual podría provocar errores o
+comportamientos no deseados. Para modificar el inventario de una criatura, se
+deben utilizar los métodos que se invocan directamente sobre la criatura como
+\textsf{addItem()}, \textsf{removeItem()}; o bien el método de cosa
+\textsf{moveTo()}, por las razones detalladas en la sección sobre inventarios.
+
+\begin{lstlisting}
+public Room getLastRoom ( )
+\end{lstlisting}
+
+Devuelve la última habitación en la que ha estado esta criatura antes de llegar a la
+actual.
+
+\begin{lstlisting}
+public Entity getLocation ( )
+\end{lstlisting}
+
+Devuelve la habitación en la que se encuentra actualmente esta criatura.
+
+\begin{lstlisting}
+public EntityList getLocations()
+\end{lstlisting}
+
+Devuelve una lista de los lugares donde se encuentra esta criatura. Como una
+criatura en AGE sólo puede estar en un lugar a la vez, y éste debe ser una
+habitación, siempre devolverá una lista que contiene sólo esa habitación (el
+sentido de la existencia de este método es que en el caso de los Item sí pueden
+estar en varios lugares a la vez, y/o estar dentro de otro Item).
+
+\begin{lstlisting}
+public int getMaxHP ( )
+\end{lstlisting}
+
+Devuelve los puntos de vida máximos de esta criatura, es decir, los que tendrá si
+está en perfecto estado.
+
+\begin{lstlisting}
+public int getMaxMP ( )
+\end{lstlisting}
+
+Devuelve los puntos mágicos máximos de esta criatura.
+
+\begin{lstlisting}
+public int getMP ( )
+\end{lstlisting}
+
+Devuelve los puntos mágicos que tiene actualmente esta criatura.
+
+\begin{lstlisting}
+public Inventory getNaturalWeapons ( )
+\end{lstlisting}
+
+Devuelve un objeto de la clase \textsf{Inventory} que las partes (miembros) de
+ esta criatura (y partes de partes, etc.) que puede utilizar como armas naturales.
+ El método construye internamente dicha lista en cada llamada, así que para una
+ programación eficiente debería evitarse llamarlo muchas veces seguidas si se
+ sabe que el resultado no va a cambiar.
+
+\begin{lstlisting}
+public String getOutputName ( int nItems , Entity viewer , String mascArt , String femArt , boolean evenIfInvisible , boolean numberToWord )
+\end{lstlisting}
+
+Método avanzado para obtener un nombre para mostrar de esta criatura con un
+artículo o cuantificador (por ejemplo, \comillas{el orco}, \comillas{un orco} o
+\comillas{cuatro orcos}). Normalmente no debería ser necesario usar este
+método; sino que debería ser suficiente con utilizar las variantes más sencillas
+como \textsf{getOutputNameThe()}, \textsf{getOutputNameA()} o
+\textsf{getOutputNameOnly()}. Este método podrá ser útil cuando se quieran
+hacer cosas atípicas con el nombre, como prefijarlo con artículos que no sean los
+estándar. Los parámetros son:
+
+\begin{itemize}
+  \item {\textsf{nItems}: número de criaturas para las que se quiere obtener el
+  nombre (para generar \comillas{un orco} o \comillas{cuatro orcos}, por ejemplo).}
+  \item {\textsf{viewer}: criatura que verá la descripción.}
+  \item {\textsf{mascArt}: artículo masculino a prefijar si la criatura es
+  masculina, por ejemplo \comillas{el} o \textsf{un}.}
+  \item {\textsf{femArt}: artículo femenino a prefijar si la criatura es femenina,
+  por ejemplo \comillas{la} o \comillas{una}.}
+  \item {\textsf{evenIfInvisible}: si se pone a \textsf{true}, el método
+  devolverá un nombre incluso si la criatura no tiene un nombre para mostrar,
+  recurriendo al nombre único. Esta posibilidad rompe la regla general de que el
+  nombre único es para uso exclusivo del programador y no se muestra en
+  pantalla, así que no se recomienda usarla.}
+  \item {\textsf{numberToWord}: si se pone a \textsf{true}, los números se
+  devolverán en formato palabra cuando haya más de una criatura (por ejemplo,
+  \comillas{cuatro orcos}). Si se pone a \textsf{false}, se devolverán en
+  formato numérico (\textsf{4 orcos}).}
+\end{itemize}
+
+\begin{lstlisting}
+public String getOutputNameA ( )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de esta criatura prefijado con un artículo
+indeterminado (\comillas{un dragón}, \comillas{una vampiresa}), sin
+personalizarlo para un observador en particular. No se puede utilizar esta variante
+del método si en las condiciones de los nombres para mostrar se ha utilizado la
+variable que representa al observador (\textsf{viewer}).
+
+\begin{lstlisting}
+public String getOutputNameA ( Entity viewer )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de esta criatura prefijado con un artículo
+indeterminado (\comillas{un dragón}, \comillas{una vampiresa}),
+personalizado para el observador \textsf{viewer}.
+
+\begin{lstlisting}
+public String getOutputNameA ( int n )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de n criaturas como ésta, prefijado con un
+artículo indeterminado (\comillas{un dragón}, \comillas{una vampiresa}) si
+$n=1$, o con un cuantificador (\comillas{cuatro dragones}, \comillas{tres
+vampiresas}) si $n>1$, y sin personalizarlo para un observador en particular. No
+se puede utilizar esta variante del método si en las condiciones de los nombres
+para mostrar se ha utilizado la variable que representa al observador
+(\textsf{viewer}).
+
+\begin{lstlisting}
+public String getOutputNameA ( int n , Entity viewer )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de n criaturas como ésta, prefijado con un
+artículo indeterminado (\comillas{un dragón}, \comillas{una vampiresa}) si
+$n=1$, o con un cuantificador (\comillas{cuatro dragones}, \comillas{tres
+vampiresas}) si $n>1$, personalizado para el observador \textsf{viewer}.
+
+\begin{lstlisting}
+public String getOutputNameOnly ( )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de esta criatura (\comillas{dragón},
+\comillas{vampiresa}), sin personalizarlo para un observador en particular. No
+se puede utilizar esta variante del método si en las condiciones de los nombres
+para mostrar se ha utilizado la variable que representa al observador
+(\textsf{viewer}).
+
+\begin{lstlisting}
+public String getOutputNameOnly ( Entity viewer )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de esta criatura, personalizado para el
+observador \textsf{viewer}.
+
+\begin{lstlisting}
+public String getOutputNameOnly ( int n )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de \emph{n} criaturas como ésta, en singular
+(\comillas{dragón}, \comillas{vampiresa}) si $n=1$, o en plural
+(\comillas{dragones}, \comillas{vampiresas}) si $n>1$, y sin personalizarlo
+para un observador en particular. No se puede utilizar esta variante del método si
+en las condiciones de los nombres para mostrar se ha utilizado la variable que
+representa al observador (\textsf{viewer}).
+
+\begin{lstlisting}
+public String getOutputNameOnly ( int n , Entity viewer )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de \emph{n} criaturas como ésta, en singular
+(\comillas{dragón}, \comillas{vampiresa}) si $n=1$, o en plural 
+(\comillas{dragones}, \comillas{vampiresas}) si $n>1$, personalizado para el
+observador \textsf{viewer}.
+
+\begin{lstlisting}
+public String getOutputNameThe ( )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de esta criatura prefijado con un artículo
+determinado (\comillas{el dragón}, \comillas{la vampiresa}), sin personalizarlo
+para un observador en particular. No se puede utilizar esta variante del método si
+en las condiciones de los nombres para mostrar se ha utilizado la variable que
+representa al observador (\textsf{viewer}).
+
+\begin{lstlisting}
+public String getOutputNameThe ( Entity viewer )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de esta criatura prefijado con un artículo
+determinado (\comillas{el dragón}, \comillas{la vampiresa}), personalizado
+para el observador \textsf{viewer}.
+
+\begin{lstlisting}
+public String getOutputNameThe ( int n )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de \emph{n} criaturas como ésta, prefijado
+con un artículo determinado (\comillas{el dragón}, \comillas{la vampiresa}) si
+$n=1$, o con un cuantificador (\comillas{cuatro dragones}, \comillas{tres
+vampiresas}) si $n>1$, y sin personalizarlo para un observador en particular. No
+se puede utilizar esta variante del método si en las condiciones de los nombres
+para mostrar se ha utilizado la variable que representa al observador
+(\textsf{viewer}).
+
+\begin{lstlisting}
+public String getOutputNameThe ( int n , Entity viewer )
+\end{lstlisting}
+
+Devuelve el nombre para mostrar de \emph{n} criaturas como ésta, prefijado
+con un artículo determinado (\comillas{el dragón}, \comillas{la vampiresa}) si
+$n=1$, o con un cuantificador (\comillas{cuatro dragones}, \comillas{tres
+vampiresas}) si $n>1$, personalizado para el observador \textsf{viewer}.
+
+\begin{lstlisting}
+public Inventory getPartsInventory ( )
+\end{lstlisting}
+
+Devuelve un objeto de la clase \textsf{Inventory} que las partes (miembros) de
+esta criatura. No contiene las partes de las partes. El inventario resultante se
+puede modificar para añadir o quitar miembros a la criatura dinámicamente.
+
+\begin{lstlisting}
+public List getPluralReferenceNames ( )
+\end{lstlisting}
+
+Devuelve una lista de los nombres de referencia plurales de esta criatura, en
+orden de prioridad, del más prioritario al menos prioritario.
+
+\begin{lstlisting}
+public EntityList getReachableEntities ( )
+\end{lstlisting}
+
+Devuelve una lista de las entidades que están al alcance directo del jugador, sin
+tener en cuenta aquéllas que están dentro de otras.
+
+\begin{lstlisting}
+public EntityList getReachableEntities ( boolean includeContainedItems )
+\end{lstlisting}
+
+Devuelve una lista de las entidades que están al alcance del jugador. Si
+\textsf{includeContainedItems} es \textsf{true}, se incluyen aquéllas entidades
+que están dentro de otras (en contenedores abiertos), de lo contrario no.
+
+\begin{lstlisting}
+public Room getRoom ( )
+\end{lstlisting}
+
+Devuelve la habitación en la que se encuentra actualmente esta criatura.
+
+\begin{lstlisting}
+public List getSingularReferenceNames ( )
+\end{lstlisting}
+
+Devuelve una lista de los nombres de referencia en singular de esta criatura, en
+orden de prioridad, del más prioritario al menos prioritario.
+
+\begin{lstlisting}
+public long getSkill ( String skillName )
+\end{lstlisting}
+
+Devuelve la cantidad de experiencia que tiene esta criatura en la habilidad dada
+(\textsf{skillName}). Si la habilidad no está definida para la criatura, devuelve 0.
+
+\begin{lstlisting}
+public SpellList getSpells ( )
+\end{lstlisting}
+
+Devuelve una lista con los conjuros que conoce esta criatura. Dicha lista debe
+usarse sólo para lectura, y no modificarla. Para añadir o quitar hechizos a la
+criatura, deben usarse los métodos \textsf{addSpell()} y \textsf{removeSpell()}
+de la clase \textsf{Mobile}.
+
+\begin{lstlisting}
+public int getStat ( String statName )
+\end{lstlisting}
+
+Devuelve el valor que tiene esta criatura en la característica dada
+(\textsf{statName}). Si la característica no está definida, devuelve 12 (el valor
+por defecto o \comillas{medio} tradicional de las características en muchos
+juegos de rol, como los basados en Dungeons \& Dragons).
+
+\begin{lstlisting}
+public String getUniqueName ( )
+\end{lstlisting}
+
+Devuelve el nombre único de esta criatura.
+
+\begin{lstlisting}
+public Inventory getUsableWeapons ( )
+\end{lstlisting}
+
+Devuelve un inventario que contiene todas las armas que podría usar ahora
+mismo esta criatura, bien sea porque son armas que está empuñando, o porque
+son armas naturales. Cada llamada a este método construye internamente la lista
+para devolverla, así que para una programación eficiente debería evitarse llamarlo
+muchas veces seguidas si se sabe que el resultado no va a cambiar.
+
+\begin{lstlisting}
+public Weapon getWieldedItem ( Item limb )
+\end{lstlisting}
+
+Devuelve el arma que esta criatura está empuñando en el miembro \textsf{limb},
+si es que está empuñando alguna, y si no, devuelve \textsf{null}.
+
+\begin{lstlisting}
+public Inventory getWieldedWeapons ( )
+\end{lstlisting}
+
+Devuelve un inventario que contiene todas las armas que está empuñando esta
+criatura. Cada llamada a este método construye internamente la lista para
+devolverla, así que para una programación eficiente debería evitarse llamarlo
+muchas veces seguidas si se sabe que el resultado no va a cambiar.
+
+\begin{lstlisting}
+public Weapon getWornItem ( Item limb )
+\end{lstlisting}
+
+Devuelve la prenda de ropa o armadura que esta criatura lleva puesta en el
+miembro \textsf{limb}, si es que lleva puesta alguna, y si no, devuelve
+\textsf{null}.
+
+\begin{lstlisting}
+public Inventory getWornItems ( )
+\end{lstlisting}
+
+Devuelve un inventario que contiene todas las prendas y armaduras que lleva
+puestas esta criatura. Cada llamada a este método construye internamente la lista
+para devolverla, así que para una programación eficiente debería evitarse llamarlo
+muchas veces seguidas si se sabe que el resultado no va a cambiar.
+
+\begin{lstlisting}
+public boolean go ( Path p )
+\end{lstlisting}
+
+Hace que esta criatura salga de la habitación donde está a través de la salida
+dada (\textsf{p}), mostrando los mensajes y ejecutando los eventos que
+procedan. Devuelve \textsf{true} si ha tenido éxito, y \textsf{false} de lo
+contrario (por ejemplo, si no es una salida válida, o si hay una puerta cerrada).
+
+\begin{lstlisting}
+public boolean goTo ( Room r )
+\end{lstlisting}
+
+Hace que esta criatura vaya a la habitación dada (\textsf{r}), siempre que sea
+contigua a la actual, mostrando los mensajes y ejecutando los eventos que
+procedan. Si hay varias salidas en esta habitación que conduzcan a la habitación
+\textsf{r}, la criatura tomará una de ellas según un criterio no definido. El
+método devuelve \textsf{true} si ha tenido éxito, y \textsf{false} de lo
+contrario (por ejemplo, si la habitación dada no es contigua, o si lo es pero hay
+una puerta cerrada).
+
+\begin{lstlisting}
+public boolean hasEnemies ( )
+\end{lstlisting}
+
+Devuelve \textsf{true} si esta criatura tiene algún enemigo (criatura a la que
+atacaría si la viese), y \textsf{false} de lo contrario.
+
+\begin{lstlisting}
+public boolean hasEnemy ( Mobile m )
+\end{lstlisting}
+
+Comprueba si esta criatura tiene a la criatura \textsf{m} como enemigo,
+devolviendo true en ese caso, y false de lo contrario.
+
+\begin{lstlisting}
+public boolean hasItem ( Item it )
+\end{lstlisting}
+
+Comprueba si esta criatura tiene la cosa \textsf{it} en su inventario, devolviendo
+\textsf{true} en ese caso, y \textsf{false} de lo contrario.
+
+\begin{lstlisting}
+public boolean hasSpell ( Spell spell )
+\end{lstlisting}
+
+Comprueba si esta criatura conoce el hechizo \textsf{spell}, devolviendo
+\textsf{true} en ese caso, y \textsf{false} de lo contrario.
+
+\begin{lstlisting}
+public void incSkill ( String skillName )
+\end{lstlisting}
+
+Incrementa en una unidad la experiencia de esta criatura en la habilidad de nombre
+dado (\textsf{skillName}).
+
+\begin{lstlisting}
+public boolean isInDecisionState ( )
+\end{lstlisting}
+
+Devuelve \textsf{true} si la criatura se encuentra en un estado en el que puede
+tomar una decisión y ejecutar una orden (véase la sección sobre cambios de
+estado), y \textsf{false} de lo contrario.
+
+\begin{lstlisting}
+public boolean isIndistinguishableFrom ( Mobile another , Entity viewer )
+\end{lstlisting}
+
+Devuelve \textsf{true} si la criatura another es indistinguible de ésta para el
+observador dado (es decir, si se mostrará en conjunto, como en \comillas{dos
+orcos} frente a comillas{un orco grande y un orco pequeño} -- esto sucede si
+ambas criaturas tienen el mismo nombre para mostrar para ese observador).
+
+\begin{lstlisting}
+public boolean isInvisible ( Mobile another )
+\end{lstlisting}
+
+Devuelve \textsf{true} si esta criatura es invisible para el observador dado. Esto
+sucede si la criatura no tiene nombre para mostrar para ese observador.
+
+\begin{lstlisting}
+public boolean makeRandomValidMove ( )
+\end{lstlisting}
+
+Hace que esta criatura se mueva, yendo por un camino aleatorio de los que están
+disponibles. Se trata de un método rudimentario que no tiene en cuenta cosas
+como puertas cerradas (la criatura podría escoger una salida bloqueada con una
+puerta cerrada y darse de bruces contra la puerta en lugar de conseguir
+recorrerla); para obtener comportamientos más avanzados deberán programarse
+a mano. El método devuelve \textsf{true} si se consigue llevar a cabo el
+movimiento, y \textsf{false} de lo contrario (no hay salidas, hay una puerta
+cerrada, etc.)
+
+\begin{lstlisting}
+public int matchesCommand ( String commandArgs , boolean pluralOrSingular )
+\end{lstlisting}
+
+Nos dice si los nombres de referencia de la criatura emparejan con una cadena
+que ha tecleado el usuario (\textsf{commandArgs}), sean los nombres de
+referencia singulares (\textsf{pluralOrSingular=false}) o los plurales
+(\textsf{pluralOrSingular=true}). Normalmente este método no se debería usar,
+ya que AGE maneja el análisis de las órdenes del usuario de forma automática.
+Pensar que es necesario usar este método suele ser señal de que uno está
+haciendo algo mal o complicándose más de lo que debería. Sin embargo, como
+podrían existir casos en los que sí que sea necesario para personalizar el análisis
+de órdenes, este método está disponible recomendándose usarlo sólo cuando
+sea necesario.
+
+\begin{lstlisting}
+public void moveTo ( Room r )
+\end{lstlisting}
+
+Mueve esta criatura de la habitación donde esté a la habitación \textsf{r}. El
+movimiento es directo, es decir, la criatura no camina sino que aparece
+directamente en la habitación destino, y no se muestra ningún mensaje ni se
+activa ningún evento.
+
+\begin{lstlisting}
+public boolean playAudioIfAvailable ( URL u )
+\end{lstlisting}
+
+Toca la pista de audio que haya en la URL \textsf{u} en el cliente asociado a esta
+criatura, si es que se trata de un jugador que tenga un cliente que soporte sonido.
+Devuelve inmediatamente \textsf{true} si se puede tocar el audio con éxito, y
+\textsf{false} de lo contrario (bien sea porque la criatura no es jugador, porque
+su cliente no soporta audio, o porque hay algún error para localizar o abrir el
+fichero de audio correspondiente).
+
+\begin{lstlisting}
+public boolean playAudioIfAvailable ( URL u , int loopTimes )
+\end{lstlisting}
+
+Toca \textsf{loopTimes} veces consecutivas la pista de audio que haya en la URL
+\textsf{u} en el cliente asociado a esta criatura, si es que se trata de un jugador
+que tenga un cliente que soporte sonido. Devuelve inmediatamente \textsf{true}
+si se puede tocar el audio con éxito, y \textsf{false} de lo contrario (bien sea
+porque la criatura no es jugador, porque su cliente no soporta audio, o porque
+hay algún error para localizar o abrir el fichero de audio correspondiente). Si se
+pasa $-1$ como valor del parámetro \textsf{loopTimes}, se tocará el audio en
+bucle infinito, hasta que se pare explícitamente con un método al efecto.
+
+\begin{lstlisting}
+public boolean playAudioIfAvailable ( URL u , int loopTimes , boolean fade )
+\end{lstlisting}
+
+Toca \textsf{loopTimes} veces consecutivas la pista de audio que haya en la URL
+\textsf{u} en el cliente asociado a esta criatura, si es que se trata de un jugador
+que tenga un cliente que soporte sonido. Devuelve inmediatamente \textsf{true}
+si se puede tocar el audio con éxito, y \textsf{false} de lo contrario (bien sea
+porque la criatura no es jugador, porque su cliente no soporta audio, o porque
+hay algún error para localizar o abrir el fichero de audio correspondiente). Si se
+pasa $-1$ como valor del parámetro \textsf{loopTimes}, se tocará el audio en
+bucle infinito, hasta que se pare explícitamente con un método al efecto. Si el
+parámetro fade se pone a \textsf{true}, el audio comenzará a tocarse con un
+efecto \comillas{fade in} (comienzo gradual); mientras que si es \textsf{false},
+se reproducirá de forma normal sin este efecto.
+
+\begin{lstlisting}
+public boolean playMidiIfAvailable ( URL u )
+\end{lstlisting}
+
+Toca la pista de música MIDI que haya en la URL \textsf{u} en el cliente asociado
+a esta criatura, si es que se trata de un jugador que tenga un cliente que soporte
+sonido MIDI. Devuelve inmediatamente \textsf{true} si se puede tocar la música
+con éxito, y \textsf{false} de lo contrario (bien sea porque la criatura no es
+jugador, porque su cliente no soporta música MIDI, o porque hay algún error
+para localizar o abrir el fichero MIDI correspondiente).
+
+\begin{lstlisting}
+public boolean playMidiIfAvailable ( URL u , int loopTimes )
+\end{lstlisting}
+
+Toca \textsf{loopTimes} veces consecutivas la pista de música MIDI que haya en
+la URL \textsf{u} en el cliente asociado a esta criatura, si es que se trata de un
+jugador que tenga un cliente que soporte MIDI. Devuelve inmediatamente
+\textsf{true} si se puede tocar la pista con éxito, y false de lo contrario (bien sea
+porque la criatura no es jugador, porque su cliente no soporta reproducción de
+música MIDI, o porque hay algún error para localizar o abrir el fichero de audio
+correspondiente). Si se pasa $-1$ como valor del parámetro \textsf{loopTimes},
+se tocará la música en bucle infinito, hasta que se pare explícitamente con un
+método al efecto.
+
+\begin{lstlisting}
+public void removeAllEnemies ( )
+\end{lstlisting}
+
+Quita todos los enemigos de esta criatura, haciendo que esté en paz con todo el
+mundo (nótese, sin embargo, que la relación de enemistad es bidireccional, y
+otras criaturas podrían seguir considerando que esta criatura es su enemiga).
+
+\begin{lstlisting}
+public boolean removeEnemy ( Mobile viejo )
+\end{lstlisting}
+
+Quita el personaje viejo de la lista de enemigos de esta criatura. Devuelve
+\textsf{true} si se ha quitado con éxito, y \textsf{false} si no se ha hecho
+porque no era realmente un enemigo de esta criatura.
+
+\begin{lstlisting}
+public boolean removeItem ( Item it )
+\end{lstlisting}
+
+Quita la cosa \textsf{it} del inventario de esta criatura. Devuelve \textsf{true}
+si se ha quitado con éxito, y false si no se ha hecho porque la cosa pasada como
+parámetro no estaba realmente en manos de esta criatura.
+
+\begin{lstlisting}
+public boolean removeSpell ( Spell s )
+\end{lstlisting}
+
+Hace que esta criatura deje de saber conjurar el hechizo \textsf{s}. Devuelve
+\textsf{true} si el conjuro se ha \comillas{olvidado} con éxito, y \textsf{false}
+si no se ha hecho porque la criatura ya no lo conocía anteriormente.
+
+\begin{lstlisting}
+public void say ( String text )
+\end{lstlisting}
+
+Hace que esta criatura diga el texto \textsf{text} en la habitación donde está.
+
+\begin{lstlisting}
+public void say ( String text , String style )
+\end{lstlisting}
+
+Hace que esta criatura diga el texto \textsf{text} en la habitación donde está, y
+que el mensaje asociado se muestre con el estilo \textsf{style} en lugar de con
+el estilo por defecto para diálogos.
+
+\begin{lstlisting}
+public void sayTo ( Mobile m , String text )
+\end{lstlisting}
+
+Hace que esta criatura diga el texto \textsf{text} en la habitación donde está,
+dirigiéndose a la criatura \textsf{m}. Dicha criatura debe estar en la misma
+habitación para que se pueda usar este método. 
+
+\begin{lstlisting}
+public void sayTo ( Mobile m , String text , String style )
+\end{lstlisting}
+
+Hace que esta criatura diga el texto \textsf{text} en la habitación donde está,
+dirigiéndose a la criatura \textsf{m}. Dicha criatura debe estar en la misma
+habitación para que se pueda usar este método. El mensaje asociado se muestra
+con el estilo \textsf{style} en lugar de con el estilo por defecto.
+
+\begin{lstlisting}
+public boolean setAudioGainIfAvailable ( URL sound , double gain )
+\end{lstlisting}
+
+Cambia el volumen al que está sonando el sonido de la URL \textsf{sound}, a un
+nuevo valor entre $0.0$ (silencio) y $1.0$ (volumen máximo), devolviendo
+\textsf{true} si se ha podido hacer el cambio y \textsf{false} de lo contrario.
+
+\begin{lstlisting}
+public void setHP ( int amount )
+\end{lstlisting}
+
+Cambia la cantidad de puntos de vida de esta criatura al valor \textsf{amount}.
+Nótese que este método permite que la criatura tenga una cantidad de puntos de
+vida que supere sus puntos de vida máximos.
+
+\begin{lstlisting}
+public void setMaxHP ( int amount )
+\end{lstlisting}
+
+Cambia la cantidad de puntos de vida máximos de esta criatura (es decir, la
+cantidad de puntos de vida que tiene cuando se considera que está en perfecto
+estado) al valor \textsf{amount}.
+
+\begin{lstlisting}
+public void setMaxMP ( int amount )
+\end{lstlisting}
+
+Cambia la cantidad de puntos mágicos máximos de esta criatura (es decir, la
+cantidad de puntos de vida que tiene cuando se considera que tiene toda su
+energía mágica intacta) al valor \textsf{amount}.
+
+\begin{lstlisting}
+public void setMP ( int amount )
+\end{lstlisting}
+
+Cambia la cantidad de puntos mágicos de esta criatura al valor \textsf{amount}.
+Nótese que este método permite que la criatura tenga una cantidad de puntos
+mágicos que supere sus puntos mágicos máximos.
+
+\begin{lstlisting}
+public void setRoom ( Room newRoom )
+\end{lstlisting}
+
+Coloca a esta criatura en la habitación \textsf{newRoom}, quitándola de donde
+esté. Equivalente a hacer \textsf{moveTo(newRoom)}.
+
+\begin{lstlisting}
+public void setSkill ( String skillName , long value )
+\end{lstlisting}
+
+Fija la experiencia que tiene esta criatura en la habilidad \textsf{skillName} al
+nuevo valor \textsf{value}.
+
+\begin{lstlisting}
+public void setStat ( String statName , int value )
+\end{lstlisting}
+
+Fija el valor que tiene esta criatura en la estadística \textsf{statName} al nuevo
+valor \textsf{value}.
+
+\begin{lstlisting}
+public void showInventory ( )
+\end{lstlisting}
+
+Muestra a esta criatura el contenido de su inventario.
+
+\begin{lstlisting}
+public boolean stopAudioIfAvailable ( URL u )
+\end{lstlisting}
+
+Hace que pare inmediatamente de sonar la pista de audio de la URL \textsf{u}
+en el cliente asociado a la criatura, en caso de que estuviese sonando. Devuelve
+\textsf{true} si efectivamente se ha detenido el audio, y \textsf{false} de lo
+contrario (por ejemplo porque no estuviese ya sonando, o porque la criatura no
+es un jugador o no tiene un cliente que soporte audio).
+
+\begin{lstlisting}
+public boolean stopAudioIfAvailable ( URL u , boolean fade )
+\end{lstlisting}
+
+Hace que pare de sonar la pista de audio de la URL \textsf{u} en el cliente
+asociado a la criatura, en caso de que estuviese sonando. Devuelve \textsf{true}
+si efectivamente se ha detenido el audio, y \textsf{false} de lo contrario (por
+ejemplo porque no estuviese ya sonando, o porque la criatura no es un jugador o
+no tiene un cliente que soporte audio). En el caso de que el parámetro fade se
+ponga a \textsf{true}, el audio se detendrá suavemente con un efecto de
+\comillas{fade out}, mientras que si es \textsf{false}, se detendrá de súbito.
+
+\begin{lstlisting}
+public boolean stopMidiIfAvailable ( URL u )
+\end{lstlisting}
+
+Hace que pare inmediatamente de sonar la pista de MIDI de la URL \textsf{u} en
+el cliente asociado a la criatura, en caso de que estuviese sonando. Devuelve
+\textsf{true} si efectivamente se ha detenido la música, y \textsf{false} de lo
+contrario (por ejemplo porque no estuviese ya sonando, o porque la criatura no
+es un jugador o no tiene un cliente que soporte MIDI).
+
+\begin{lstlisting}
+public void suicide ( )
+\end{lstlisting}
+
+Hace que esta criatura se suicide, siempre que tenga un arma utilizable
+(empuñada o natural). Si no tiene un arma, no podrá suicidarse.
+
+\begin{lstlisting}
+public boolean take ( Item it )
+\end{lstlisting}
+
+La criatura coge la cosa dada por el parámetro \textsf{it}, si está a su alcance
+en el suelo de la habitación o dentro de algún contenedor abierto. El método
+devuelve \textsf{true} si se ha conseguido coger la cosa, y \textsf{false} de lo
+contrario (normalmente, esto último sucederá si la cosa dada no está al alcance
+de la criatura).
+
+\begin{lstlisting}
+public boolean unwear ( Item it )
+\end{lstlisting}
+
+La criatura deja de vestir la prenda o armadura dada por el parámetro \textsf{it},
+si la lleva puesta. El método devuelve \textsf{true} si se ha conseguido desvestir
+la prenda, y \textsf{false} de lo contrario (por ejemplo, porque no la llevaba
+puesta).
+
+\begin{lstlisting}
+public boolean unwield ( Item it )
+\end{lstlisting}
+
+La criatura deja de empuñar el arma dada por el parámetro \textsf{it}, si la está
+empuñando. El método devuelve \textsf{true} si se ha conseguido enfundar el
+arma, y \textsf{false} de lo contrario (por ejemplo, porque no la estaba
+empuñando).
+
+\begin{lstlisting}
+public boolean wear ( Item it )
+\end{lstlisting}
+
+La criatura viste la prenda o armadura dada por el parámetro \textsf{it}, si la
+tiene en el inventario, tiene un miembro adecuada donde ponérsela y no la lleva
+puesto ya. El método devuelve \textsf{true} si se ha conseguido vestir la
+prenda, y \textsf{false} de lo contrario (por ejemplo, porque no es una prenda,
+no la tiene en el inventario, no tiene miembros adecuados, ya la llevaba puesta,
+etc.).
+
+\begin{lstlisting}
+public boolean wearsItem ( Item it )
+\end{lstlisting}
+
+Comprueba si esta criatura lleva puesta la prenda o armadura dada por el
+parámetro \textsf{it}, devolviendo \textsf{true} si es así o \textsf{false} de lo
+contrario.
+
+\begin{lstlisting}
+public boolean wield ( Item it )
+\end{lstlisting}
+
+La criatura empuña el arma dada por el parámetro \textsf{it}, si la tiene en el
+inventario, tiene un miembro adecuado donde empuñarla y no la lleva empuñada
+ya. El método devuelve \textsf{true} si se ha conseguido empuñar el arma, y
+\textsf{false} de lo contrario (por ejemplo, porque no es un arma, no la tiene en
+el inventario, no tiene miembros adecuados, ya estaba empuñada, etc.).
+
+\begin{lstlisting}
+public boolean wieldsItem ( Item it )
+\end{lstlisting}
+
+Comprueba si esta criatura lleva empuñada el arma dada por el parámetro
+\textsf{it} en alguno de sus miembros, devolviendo \textsf{true} si es así o
+\textsf{false} de lo contrario.
+
+\begin{lstlisting}
+public void write ( String message )
+\end{lstlisting}
+
+Escribe la cadena \textsf{message} en el cliente asociado a esta criatura, si es
+que lo hay.
+
+\begin{lstlisting}
+public void writeAction ( String message )
+\end{lstlisting}
+
+Escribe la cadena \textsf{message} con el estilo \comillas{action} en el cliente
+asociado a esta criatura, si es que lo hay.
+
+\begin{lstlisting}
+public void writeDenial ( String message )
+\end{lstlisting}
+
+Escribe la cadena \textsf{message} con el estilo \comillas{denial} en el cliente
+asociado a esta criatura, si es que lo hay.
+
+\begin{lstlisting}
+public void writeDescription ( String message )
+\end{lstlisting}
+
+Escribe la cadena \textsf{message} con el estilo \comillas{description} en el
+cliente asociado a esta criatura, si es que lo hay.
+
+\begin{lstlisting}
+public void writeError ( String message )
+\end{lstlisting}
+
+Escribe la cadena \textsf{message} con el estilo \comillas{error} en el cliente
+asociado a esta criatura, si es que lo hay.
+
+\begin{lstlisting}
+public void writeImportant ( String message )
+\end{lstlisting}
+
+Escribe la cadena \textsf{message} con el estilo \comillas{important} en el
+cliente asociado a esta criatura, si es que lo hay.
+
+\begin{lstlisting}
+public void writeInformation ( String message )
+\end{lstlisting}
+
+Escribe la cadena \textsf{message} con el estilo \comillas{information} en el
+cliente asociado a esta criatura, si es que lo hay.
+
+\begin{lstlisting}
+public void writeStory ( String message )
+\end{lstlisting}
+
+Escribe la cadena \textsf{message} con el estilo \comillas{story} en el cliente
+asociado a esta criatura, si es que lo hay.
+
+\begin{lstlisting}
+public void writeWithTemplate ( String style , String message )
+\end{lstlisting}
+
+Escribe la cadena \textsf{message}, con el estilo dado en el parámetro
+\textsf{style}, en el cliente asociado a esta criatura, si es que lo hay.
+
 \section {Métodos útiles de la API de Java}
