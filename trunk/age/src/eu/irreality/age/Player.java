@@ -615,7 +615,7 @@ public class Player extends Mobile implements Informador
 		case DYING:
 			//die
 			die();
-			break;	
+			return;	
 
 		case DEAD:
 			//don't hold on that state itc, you're in Limbo, enjoy yourself
