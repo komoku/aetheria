@@ -4043,7 +4043,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			habitacionActual.addItem ( cadaver );
 			habitacionActual.removeMob ( this );
 			if ( mundo.getLimbo() != null )
-				mundo.getLimbo().addMob(this);
+				this.setRoom(mundo.getLimbo());
+				//mundo.getLimbo().addMob(this);
 			setNewState ( DEAD , 1 );
 		}
 		catch ( WeightLimitExceededException wlee )
