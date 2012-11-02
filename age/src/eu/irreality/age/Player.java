@@ -450,12 +450,6 @@ public class Player extends Mobile implements Informador
 
 	}
 
-	
-	public void die()
-	{
-		super.die();
-		setRoom( mundo.getLimbo() ); //limbo
-	}
 
 	public void changeState ( World mundo )
 	{
