@@ -19,6 +19,7 @@ import eu.irreality.age.World;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.scripting.ScriptException;
 import eu.irreality.age.util.UTF8PropertiesLoader;
 
 public class Messages 
@@ -123,7 +124,7 @@ public class Messages
 				world.execCode( "getMessage" , new Object[] { key , argumentsForScriptCode } , retval );
 				if ( retval.getRetVal() != null ) return (String)retval.getRetVal();
 			}
-			catch (bsh.TargetError bshte)
+			catch ( ScriptException bshte)
 			{
 				world.writeError("bsh.TargetError found at getMessage routine\n" );
 				world.writeError(ExceptionPrinter.getExceptionReport(bshte));

@@ -6,6 +6,8 @@ package eu.irreality.age;
 
 import java.util.StringTokenizer;
 
+import eu.irreality.age.scripting.ScriptException;
+
 //package AetheriaAWT;
 /**
 * Descripción con comparando y máscara, devuelve un texto u otro según el estado.
@@ -103,7 +105,7 @@ public class Description
 				//Debug.println("Code ran.");
 				
 			}
-			catch ( bsh.TargetError te )
+			catch ( ScriptException te )
 			{
 				//error al evaluar condición.
 				te.printStackTrace();
@@ -181,7 +183,7 @@ public class Description
 				//Debug.println("Code ran.");
 				
 			}
-			catch ( bsh.TargetError te )
+			catch ( ScriptException te )
 			{
 				//error al evaluar condición.
 				te.printStackTrace();

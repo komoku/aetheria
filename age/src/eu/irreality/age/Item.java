@@ -9,6 +9,7 @@ import java.io.*;
 
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
+import eu.irreality.age.scripting.ScriptException;
 import eu.irreality.age.util.Conversions;
 public class Item extends Entity implements Descriptible , SupportingCode , Nameable, UniqueNamed
 {
@@ -1047,7 +1048,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			);
 			
 		}
-		catch ( bsh.TargetError te )
+		catch ( ScriptException te )
 		{
 			te.printStackTrace();
 			mundo.writeError("BeanShell error on initting item " + this + ": error was " + te);
@@ -1153,7 +1154,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 				);
 				
 			}
-			catch ( bsh.TargetError te )
+			catch ( ScriptException te )
 			{
 				te.printStackTrace();
 			}
@@ -1901,7 +1902,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	
 	/*ejecuta el codigo EVA del objeto correspondiente a la rutina dada si existe.
 	Si no existe, simplemente no ejecuta nada y devuelve false.*/
-	public boolean execCode ( String routine , Object[] args ) throws bsh.TargetError 
+	public boolean execCode ( String routine , Object[] args ) throws ScriptException
 	{
 		if ( itsCode != null )
 			return itsCode.run ( routine , this , args );
@@ -1910,7 +1911,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	
 	/*ejecuta el codigo bsh del objeto correspondiente a la rutina dada si existe.
 	Si no existe, simplemente no ejecuta nada y devuelve false.*/
-	public boolean execCode ( String routine , Object[] args , ReturnValue retval ) throws bsh.TargetError 
+	public boolean execCode ( String routine , Object[] args , ReturnValue retval ) throws ScriptException
 	{
 		//S/ystem.out.println("Mobile code runnin'.");
 		//Debug.println("Its Code: " + itsCode);
@@ -2099,7 +2100,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			execCode("onOpen" , new Object[] {abridor , new Boolean(exito)} );
 			execCode("onOpen" , new Object[] {new Boolean(exito)} );
 		}
-		catch ( bsh.TargetError bshte )
+		catch ( ScriptException bshte )
 		{
 				return( "bsh.TargetError found onOpen , item number " + getID() + ": " + bshte + "[description was: " + descriptionText + "]" );
 		}
@@ -2184,7 +2185,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 				execCode("onClose" , new Object[] {cerrador , new Boolean(exito)} );
 				execCode("onClose" , new Object[] {new Boolean(exito)} );
 			}
-			catch ( bsh.TargetError bshte )
+			catch ( ScriptException bshte )
 			{
 				return( "bsh.TargetError found onOpen , item number " + getID() + ": " + bshte + "[description was: " + descriptionText + "]" );
 			}
@@ -2341,7 +2342,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 				execCode("onUnlock" , new Object[] {unlocker , key , new Boolean(unlocked)} );
 				//execCode("onUnlock" , new Object[] {new Boolean(exito)} );
 			}
-			catch ( bsh.TargetError bshte )
+			catch ( ScriptException bshte )
 			{
 				return( "bsh.TargetError found onUnlock , item " + this + ": " + bshte + "[description was: " + descriptionText + "]" );
 			}
@@ -2494,7 +2495,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 				execCode("onLock" , new Object[] {locker , key , new Boolean(locked)} );
 				//execCode("onUnlock" , new Object[] {new Boolean(exito)} );
 			}
-			catch ( bsh.TargetError bshte )
+			catch ( ScriptException bshte )
 			{
 				return( "bsh.TargetError found onLock , item " + this + ": " + bshte + "[description was: " + descriptionText + "]" );
 			}

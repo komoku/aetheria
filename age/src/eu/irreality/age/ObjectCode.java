@@ -8,6 +8,8 @@ import java.util.*;
 import eu.irreality.age.bsh.ExtendedBSHInterpreter;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
+import eu.irreality.age.scripting.ScriptException;
+import eu.irreality.age.scripting.bsh.BSHScriptException;
 import eu.irreality.age.util.VersionComparator;
 import bsh.*;
 public class ObjectCode
@@ -260,9 +262,11 @@ public class ObjectCode
 			or if code cannot be executed (nonexistent routine...)
 	With aroutine == null, just evaluates the code.
 	*/
-	public boolean run ( String aroutine , Object theCaller , Object[] theArguments ) throws TargetError
+	public boolean run ( String aroutine , Object theCaller , Object[] theArguments ) throws ScriptException
 	{
-		return run ( aroutine , theCaller , theArguments , null );
+
+			return run ( aroutine , theCaller , theArguments , null );
+
 		//unified with method below as of 2011-03-26, delete the following if it works
 		/*
 		if ( !codeVersion.equalsIgnoreCase("BeanShell") ) return false;
@@ -333,7 +337,7 @@ public class ObjectCode
 	 * @return
 	 * @throws TargetError
 	 */
-	public boolean evaluate ( String code , Object theCaller , ReturnValue retval ) throws TargetError
+	public boolean evaluate ( String code , Object theCaller , ReturnValue retval ) throws ScriptException
 	{
 		if ( !codeVersion.equalsIgnoreCase("BeanShell") ) return false;
 		try
@@ -368,7 +372,7 @@ public class ObjectCode
 			while ( lastExcNode instanceof TargetError )
 				lastExcNode = ((TargetError)lastExcNode).getTarget();
 			if ( lastExcNode instanceof BSHCodeExecutedOKException ) return true; //llegó al end
-			else throw te;
+			else throw new BSHScriptException(te);
 		}
 		catch ( EvalError pe )
 		{
@@ -392,7 +396,7 @@ public class ObjectCode
 	With aroutine == null, just evaluates the code.
 	ReturnValue holds the routine or code (usually predicate) return value, if any.
 	*/
-	public boolean run ( String aroutine , Object theCaller , Object[] theArguments , ReturnValue retval  ) throws TargetError
+	public boolean run ( String aroutine , Object theCaller , Object[] theArguments , ReturnValue retval  ) throws ScriptException
 	{
 		if ( !codeVersion.equalsIgnoreCase("BeanShell") ) return false;
 		try
@@ -439,7 +443,7 @@ public class ObjectCode
 			while ( lastExcNode instanceof TargetError )
 				lastExcNode = ((TargetError)lastExcNode).getTarget();
 			if ( lastExcNode instanceof BSHCodeExecutedOKException ) return true; //llegó al end
-			else throw te;
+			else throw new BSHScriptException(te);
 		}
 		catch ( EvalError pe )
 		{
@@ -468,7 +472,7 @@ public class ObjectCode
 	IMPORTANT: This method always runs the full code again (in case it uses the initializations). This is a difference
 	with the other methods which apply permanent interpreter optimization so as not to evaluate the full code.
 	*/
-	public boolean run ( String aroutine , Object theCaller , Object[] theArguments , ReturnValue retval , Object[][] initializations  ) throws TargetError
+	public boolean run ( String aroutine , Object theCaller , Object[] theArguments , ReturnValue retval , Object[][] initializations  ) throws ScriptException
 	{
 		if ( !codeVersion.equalsIgnoreCase("BeanShell") ) return false;
 		try
@@ -514,7 +518,7 @@ public class ObjectCode
 			while ( lastExcNode instanceof TargetError )
 				lastExcNode = ((TargetError)lastExcNode).getTarget();
 			if ( lastExcNode instanceof BSHCodeExecutedOKException ) return true; //llegó al end
-			else throw te;
+			else throw new BSHScriptException(te);
 		}
 		catch ( EvalError pe )
 		{

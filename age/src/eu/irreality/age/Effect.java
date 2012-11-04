@@ -5,6 +5,7 @@
 package eu.irreality.age;
 
 import eu.irreality.age.debug.Debug;
+import eu.irreality.age.scripting.ScriptException;
 
 
 public class Effect extends AbstractEntity
@@ -85,7 +86,7 @@ public class Effect extends AbstractEntity
 		{
 			ejecutado = execCode( "cast" , new Object[] { caster , target , new Integer(intensity) } );
 		}
-		catch (bsh.TargetError bshte)
+		catch (ScriptException bshte)
 		{
 			//escribir("bsh.TargetError found at cast routine" );
 			;
@@ -100,7 +101,7 @@ public class Effect extends AbstractEntity
 		{
 			ejecutado = execCode( "fade" , new Object[] { target  } );
 		}
-		catch (bsh.TargetError bshte)
+		catch (ScriptException bshte)
 		{
 			//escribir("bsh.TargetError found at fade routine" );
 			;
@@ -115,7 +116,7 @@ public class Effect extends AbstractEntity
 		{
 			ejecutado = execCode( "fail" , new Object[] { caster , target  } );
 		}
-		catch (bsh.TargetError bshte)
+		catch (ScriptException bshte)
 		{
 			//escribir("bsh.TargetError found at fail routine" );
 			;

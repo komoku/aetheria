@@ -16,6 +16,7 @@ import java.util.*;
 
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
+import eu.irreality.age.scripting.ScriptException;
 public abstract class Entity
 {
 
@@ -271,7 +272,7 @@ public abstract class Entity
 						{
 							ejecutado = esto.execCode( "update" , new Object[] { pe , mundo } );
 						}
-						catch (bsh.TargetError bshte)
+						catch (ScriptException bshte)
 						{
 							mundo.write(mundo.getIO().getColorCode("error"));
 							mundo.write("bsh.TargetError found at update routine, entity is " + this + ", property entry is " + pe.getName() + "\n"  );
@@ -294,7 +295,7 @@ public abstract class Entity
 					{
 						ejecutado = mundo.execCode( "update" , new Object[] { pe , this } );
 					}
-					catch (bsh.TargetError bshte)
+					catch (ScriptException bshte)
 					{
 						mundo.write("bsh.TargetError found at world's update routine, property entry is " + pe.getName() );
 						mundo.writeError(ExceptionPrinter.getExceptionReport(bshte));

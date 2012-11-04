@@ -7,6 +7,7 @@ package eu.irreality.age;
 import java.util.*;
 
 import eu.irreality.age.debug.Debug;
+import eu.irreality.age.scripting.ScriptException;
 
 public class AbstractEntity extends Entity implements SupportingCode, UniqueNamed
 {
@@ -79,7 +80,7 @@ public class AbstractEntity extends Entity implements SupportingCode, UniqueName
 
 	/*ejecuta el codigo bsh del objeto correspondiente a la rutina dada si existe.
 	Si no existe, simplemente no ejecuta nada y devuelve false.*/
-	public boolean execCode ( String routine , Object[] args ) throws bsh.TargetError 
+	public boolean execCode ( String routine , Object[] args ) throws ScriptException
 	{
 		if ( itsCode != null )
 			return itsCode.run ( routine , this , args );
@@ -88,7 +89,7 @@ public class AbstractEntity extends Entity implements SupportingCode, UniqueName
 	
 	/*ejecuta el codigo bsh del objeto correspondiente a la rutina dada si existe.
 	Si no existe, simplemente no ejecuta nada y devuelve false.*/
-	public boolean execCode ( String routine , Object[] args , ReturnValue retval ) throws bsh.TargetError 
+	public boolean execCode ( String routine , Object[] args , ReturnValue retval ) throws ScriptException
 	{
 		//S/ystem.out.println("Mobile code runnin'.");
 		//System.out.println("Its Code: " + itsCode);
@@ -331,7 +332,7 @@ public class AbstractEntity extends Entity implements SupportingCode, UniqueName
 			);
 			
 		}
-		catch ( bsh.TargetError te )
+		catch ( ScriptException te )
 		{
 			te.printStackTrace();
 			mundo.write("BeanShell error on initting abstract entity " + this + ": error was " + te);

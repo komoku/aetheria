@@ -9,6 +9,7 @@ import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
 import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.messages.Messages;
+import eu.irreality.age.scripting.ScriptException;
 import eu.irreality.age.swing.applet.SwingSDIApplet;
 import eu.irreality.age.swing.sdi.SwingSDIInterface;
 import eu.irreality.age.windowing.AGEClientWindow;
@@ -239,7 +240,7 @@ public class GameEngineThread extends Thread
 		{
 			theWorld.write("EVASemanticException found at serverintro routine" );
 		}
-		catch (bsh.TargetError bshte)
+		catch (ScriptException bshte)
 		{
 			theWorld.write("bsh.TargetError found at serverintro routine" );
 			theWorld.write ( bshte.printTargetError(bshte) + bshte.inNativeCode() );
