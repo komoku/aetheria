@@ -6,6 +6,7 @@ package eu.irreality.age;
 import java.util.*;
 
 import eu.irreality.age.debug.Debug;
+import eu.irreality.age.scripting.ScriptException;
 import eu.irreality.age.util.Conversions;
 
 
@@ -87,7 +88,7 @@ public class Spell extends Entity implements SupportingCode, UniqueNamed
 		{
 			ejecutado = execCode( "beforeCast" , new Object[] { caster , target  } );
 		}
-		catch (bsh.TargetError bshte)
+		catch (ScriptException bshte)
 		{
 			//escribir("bsh.TargetError found at fail routine" );
 			;
@@ -105,7 +106,7 @@ public class Spell extends Entity implements SupportingCode, UniqueNamed
 		{
 			ejecutado = execCode( "afterCast" , new Object[] { caster , target  } );
 		}
-		catch (bsh.TargetError bshte)
+		catch (ScriptException bshte)
 		{
 			//escribir("bsh.TargetError found at fail routine" );
 			;
@@ -119,7 +120,7 @@ public class Spell extends Entity implements SupportingCode, UniqueNamed
 		{
 			ejecutado = execCode( "beforeFail" , new Object[] { caster , target  } );
 		}
-		catch (bsh.TargetError bshte)
+		catch (ScriptException bshte)
 		{
 			//escribir("bsh.TargetError found at fail routine" );
 			;
@@ -137,7 +138,7 @@ public class Spell extends Entity implements SupportingCode, UniqueNamed
 		{
 			ejecutado = execCode( "afterFail" , new Object[] { caster , target  } );
 		}
-		catch (bsh.TargetError bshte)
+		catch (ScriptException bshte)
 		{
 			//escribir("bsh.TargetError found at fail routine" );
 			;
@@ -266,7 +267,7 @@ public class Spell extends Entity implements SupportingCode, UniqueNamed
 
 	/*ejecuta el codigo bsh del objeto correspondiente a la rutina dada si existe.
 	Si no existe, simplemente no ejecuta nada y devuelve false.*/
-	public boolean execCode ( String routine , Object[] args ) throws bsh.TargetError 
+	public boolean execCode ( String routine , Object[] args ) throws ScriptException 
 	{
 		if ( itsCode != null )
 			return itsCode.run ( routine , this , args );
@@ -275,7 +276,7 @@ public class Spell extends Entity implements SupportingCode, UniqueNamed
 	
 	/*ejecuta el codigo bsh del objeto correspondiente a la rutina dada si existe.
 	Si no existe, simplemente no ejecuta nada y devuelve false.*/
-	public boolean execCode ( String routine , Object[] args , ReturnValue retval ) throws bsh.TargetError 
+	public boolean execCode ( String routine , Object[] args , ReturnValue retval ) throws ScriptException 
 	{
 		//S/ystem.out.println("Mobile code runnin'.");
 		//Debug.println("Its Code: " + itsCode);

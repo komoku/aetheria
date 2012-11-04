@@ -13,6 +13,7 @@ import bsh.TargetError;
 
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
+import eu.irreality.age.scripting.ScriptException;
 import eu.irreality.age.util.VersionComparator;
 /**
  * Clase del personaje, jugador.
@@ -286,7 +287,7 @@ public class Player extends Mobile implements Informador
 					//setProperty("custom_parsing",false,0);
 					//setRelationshipProperty(ourEntity,"custom_parser",null);
 				}
-				catch ( bsh.TargetError bshte )
+				catch ( ScriptException bshte )
 				{
 					write( io.getColorCode("error") + "bsh.TargetError found at customParse(), execcing from ID " + getID() + " the routine " + routineName + " of " + ourEntity.getID()  );
 					bshte.printStackTrace();
@@ -499,7 +500,7 @@ public class Player extends Mobile implements Informador
 			{
 				write( io.getColorCode("error") + "EVASemanticException found at event_exitroom , room number " + habitacionActual.getID() + io.getColorCode("reset") );
 			}
-			catch ( bsh.TargetError bshte )
+			catch ( ScriptException bshte )
 			{
 				write( io.getColorCode("error") + "bsh.TargetError found onExitRoom , room number " + habitacionActual.getID() + ": " + bshte + io.getColorCode("reset") );
 				writeError(ExceptionPrinter.getExceptionReport(bshte));
@@ -523,7 +524,7 @@ public class Player extends Mobile implements Informador
 			{
 				write( io.getColorCode("error") + "EVASemanticException found at event_enterroom , room number " + habitacionActual.getID() + io.getColorCode("reset") );
 			}
-			catch ( bsh.TargetError bshte )
+			catch ( ScriptException bshte )
 			{
 				write( io.getColorCode("error") + "bsh.TargetError found onEnterRoom , room number " + habitacionActual.getID() + ": " + bshte + io.getColorCode("reset") );
 				writeError(ExceptionPrinter.getExceptionReport(bshte));
@@ -543,7 +544,7 @@ public class Player extends Mobile implements Informador
 						//bichoActual.execCode("event_enterroom","this: " + habitacionActual.getID() + "\n" + "player: " + getID() + "\n" + "orig: " + habitacionAnterior );		
 						bichoActual.execCode("onEnterRoom" , new Object[] {this} );
 					}
-					catch ( bsh.TargetError bshte )
+					catch ( ScriptException bshte )
 					{
 						write( io.getColorCode("error") + "bsh.TargetError found onEnterRoom , mobile number " + bichoActual.getID() + ": " + bshte + "\n" + bshte.getMessage() + io.getColorCode("reset") );
 						writeError(ExceptionPrinter.getExceptionReport(bshte));

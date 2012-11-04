@@ -36,6 +36,7 @@ import eu.irreality.age.debug.ExceptionPrinter;
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.messages.Messages;
+import eu.irreality.age.scripting.ScriptException;
 import eu.irreality.age.spell.AGESpellChecker;
 import eu.irreality.age.util.VersionComparator;
 
@@ -2189,7 +2190,7 @@ public class World implements Informador , SupportingCode
 	
 	/*ejecuta el codigo BSH del objeto correspondiente a la rutina dada si existe.
 	Si no existe, simplemente no ejecuta nada y devuelve false.*/
-	public boolean execCode ( String routine , Object[] args ) throws bsh.TargetError 
+	public boolean execCode ( String routine , Object[] args ) throws ScriptException
 	{
 		if ( itsCode != null )
 			return itsCode.run ( routine , this , args );
@@ -2198,7 +2199,7 @@ public class World implements Informador , SupportingCode
 	
 	/*ejecuta el codigo bsh del objeto correspondiente a la rutina dada si existe.
 	Si no existe, simplemente no ejecuta nada y devuelve false.*/
-	public boolean execCode ( String routine , Object[] args , ReturnValue retval ) throws bsh.TargetError 
+	public boolean execCode ( String routine , Object[] args , ReturnValue retval ) throws ScriptException 
 	{
 		//S/ystem.out.println("Mobile code runnin'.");
 		//Debug.println("Its Code: " + itsCode);
@@ -2596,7 +2597,7 @@ public class World implements Informador , SupportingCode
 			ejecutado = execCode( "assignPlayer" , new Object[] { io } , retval );
 			Debug.println("After exec code");
 		}
-		catch (bsh.TargetError bshte)
+		catch (ScriptException bshte)
 		{
 			writeError("bsh.TargetError found at assignPlayer routine\n" );
 			writeError(ExceptionPrinter.getExceptionReport(bshte));
@@ -2740,7 +2741,7 @@ public class World implements Informador , SupportingCode
 		{
 			write("EVASemanticException found at intro routine" );
 		}
-		catch (bsh.TargetError bshte)
+		catch (ScriptException bshte)
 		{
 			write("bsh.TargetError found at intro routine\n" );
 			writeError(ExceptionPrinter.getExceptionReport(bshte));

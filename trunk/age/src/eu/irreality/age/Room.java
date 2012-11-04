@@ -10,6 +10,7 @@ import java.io.*;
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
 import eu.irreality.age.messages.Messages;
+import eu.irreality.age.scripting.ScriptException;
 public class Room extends Entity implements Descriptible , SupportingCode, UniqueNamed
 {
 
@@ -549,7 +550,7 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 			);
 			
 		}
-		catch ( bsh.TargetError te )
+		catch ( ScriptException te )
 		{
 			mundo.writeError(ExceptionPrinter.getExceptionReport(te));
 			te.printStackTrace();
@@ -841,7 +842,7 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 				);
 				
 			}
-			catch ( bsh.TargetError te )
+			catch ( ScriptException te )
 			{
 				mundo.writeError(ExceptionPrinter.getExceptionReport(te));
 				te.printStackTrace();
@@ -1221,7 +1222,7 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 
 	/*ejecuta el codigo bsh del objeto correspondiente a la rutina dada si existe.
 	Si no existe, simplemente no ejecuta nada y devuelve false.*/
-	public boolean execCode ( String routine , Object[] args ) throws bsh.TargetError 
+	public boolean execCode ( String routine , Object[] args ) throws ScriptException
 	{
 		if ( itsCode != null )
 			return itsCode.run ( routine , this , args );
@@ -1230,7 +1231,7 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 	
 	/*ejecuta el codigo bsh del objeto correspondiente a la rutina dada si existe.
 	Si no existe, simplemente no ejecuta nada y devuelve false.*/
-	public boolean execCode ( String routine , Object[] args , ReturnValue retval ) throws bsh.TargetError 
+	public boolean execCode ( String routine , Object[] args , ReturnValue retval ) throws ScriptException 
 	{
 		//S/ystem.out.println("Mobile code runnin'.");
 		//Debug.println("Its Code: " + itsCode);
@@ -1389,7 +1390,7 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 			}
 			);
 		}
-		catch ( bsh.TargetError te )
+		catch ( ScriptException te )
 		{
 			System.err.println(te);
 			mundo.writeError(ExceptionPrinter.getExceptionReport(te));

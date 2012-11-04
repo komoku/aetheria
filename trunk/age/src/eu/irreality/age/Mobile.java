@@ -19,6 +19,7 @@ import eu.irreality.age.language.Mentions;
 import eu.irreality.age.matching.Matches;
 import eu.irreality.age.messages.Messages;
 import eu.irreality.age.util.Conversions;
+import eu.irreality.age.scripting.ScriptException;
 public class Mobile extends Entity implements Descriptible , SupportingCode , Nameable, UniqueNamed
 {
 
@@ -1091,7 +1092,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			);
 
 		}
-		catch ( bsh.TargetError te )
+		catch ( ScriptException te )
 		{
 			te.printStackTrace();
 			mundo.write("BeanShell error on initting mobile " + this + ": error was " + te);
@@ -1491,7 +1492,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 	/*ejecuta el codigo bsh del objeto correspondiente a la rutina dada si existe.
 	Si no existe, simplemente no ejecuta nada y devuelve false.*/
-	public boolean execCode ( String routine , Object[] args ) throws bsh.TargetError 
+	public boolean execCode ( String routine , Object[] args ) throws ScriptException
 	{
 		if ( itsCode != null )
 			return itsCode.run ( routine , this , args );
@@ -1500,7 +1501,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 	/*ejecuta el codigo bsh del objeto correspondiente a la rutina dada si existe.
 	Si no existe, simplemente no ejecuta nada y devuelve false.*/
-	public boolean execCode ( String routine , Object[] args , ReturnValue retval ) throws bsh.TargetError 
+	public boolean execCode ( String routine , Object[] args , ReturnValue retval ) throws ScriptException
 	{
 		//S/ystem.out.println("Mobile code runnin'.");
 		//Debug.println("Its Code: " + itsCode);
@@ -1946,7 +1947,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					           }
 			);
 		}
-		catch ( bsh.TargetError te )
+		catch ( ScriptException te )
 		{
 			write(""+te);
 			writeError(ExceptionPrinter.getExceptionReport(te));
@@ -2084,7 +2085,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			{
 				mundo.write(io.getColorCode("error") + "EVASemanticException found at event_say, mob number " + getID() + io.getColorCode("reset") );
 			}
-			catch ( bsh.TargetError te )
+			catch ( ScriptException te )
 			{
 				mundo.write(io.getColorCode("error") + "bsh.TargetError found at event_say, mob number " + getID() + io.getColorCode("reset") );
 				mundo.writeError(ExceptionPrinter.getExceptionReport(te));
@@ -2333,7 +2334,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			execced = this.execCode("showInventory",new Object[] {} );
 		}
-		catch ( bsh.EvalError te )
+		catch ( ScriptException te )
 		{
 			write( io.getColorCode("error") + "bsh.EvalError found at showInventory() , mobile " + this + io.getColorCode("reset") + "\n"  );
 		}
@@ -2569,7 +2570,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				endfound = habitacionActual.execCode("onWalkAway" , new Object[] {this,p} );
 				Debug.println("EXECCING GO: ENDFOUND ASSIGN " + endfound);
 			}
-			catch ( bsh.TargetError bshte )
+			catch ( ScriptException bshte )
 			{
 				writeError( io.getColorCode("error") + "bsh.TargetError found onExitRoom , room number " + habitacionActual.getID() + ": " + bshte + io.getColorCode("reset") );
 				writeError(ExceptionPrinter.getExceptionReport(bshte));
@@ -2584,7 +2585,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					endfound = habitacionActual.execCode("beforeExit" , new Object[] {this,p} );
 					Debug.println("EXECCING GO: ENDFOUND ASSIGN " + endfound);
 				}
-				catch ( bsh.TargetError bshte )
+				catch ( ScriptException bshte )
 				{
 					writeError( io.getColorCode("error") + "bsh.TargetError found onExitRoom , room number " + habitacionActual.getID() + ": " + bshte + io.getColorCode("reset") );
 					writeError(ExceptionPrinter.getExceptionReport(bshte));
@@ -2825,7 +2826,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			{
 				write( io.getColorCode("error") + "EVASemanticException found at event_exitroom , room number " + habitacionActual.getID() + io.getColorCode("reset") );
 			}
-			catch ( bsh.TargetError bshte )
+			catch ( ScriptException bshte )
 			{
 				writeError( io.getColorCode("error") + "bsh.TargetError found onExitRoom , room number " + habitacionActual.getID() + ": " + bshte + io.getColorCode("reset") );
 				writeError(ExceptionPrinter.getExceptionReport(bshte));
@@ -2869,7 +2870,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			{
 				write( io.getColorCode("error") + "EVASemanticException found at event_enterroom , room number " + habitacionActual.getID() + io.getColorCode("reset") );
 			}
-			catch ( bsh.TargetError bshte )
+			catch ( ScriptException bshte )
 			{
 				write( io.getColorCode("error") + "bsh.TargetError found onEnterRoom , room number " + habitacionActual.getID() + ": " + bshte + io.getColorCode("reset") );
 				writeError(ExceptionPrinter.getExceptionReport(bshte));
@@ -2889,7 +2890,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						boolean ejecutado = bichoActual.execCode("onEnterRoom" , new Object[] {this} );
 						if ( ejecutado ) return;
 					}
-					catch ( bsh.TargetError bshte )
+					catch ( ScriptException bshte )
 					{
 						write( io.getColorCode("error") + "bsh.TargetError found onEnterRoom , mobile number " + bichoActual.getID() + ": " + bshte + io.getColorCode("reset") );
 						writeError(ExceptionPrinter.getExceptionReport(bshte));
@@ -3038,7 +3039,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						ejec = getCurrentWeapon().execCode ( "infoChoqueArmas" , new Object[] {this,objetivo} ); if ( !ejec )
 							ejec = execCode ( "infoChoqueArmas" , new Object[] {objetivo} );
 					}
-					catch ( bsh.TargetError te )
+					catch ( ScriptException te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at infoChoqueArmas(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
 						writeError(ExceptionPrinter.getExceptionReport(te));
@@ -3078,7 +3079,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							ejec = getCurrentWeapon().execCode ( "infoNoTiempoBloquear" , new Object[] {this,objetivo} ); if ( !ejec )
 								ejec = execCode ( "infoNoTiempoBloquear" , new Object[] {objetivo} );
 						}
-						catch ( bsh.TargetError te )
+						catch ( ScriptException te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at infoNoTiempoBloquear(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
 							writeError(ExceptionPrinter.getExceptionReport(te));
@@ -3105,7 +3106,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							ejec = getCurrentWeapon().execCode ( "infoNoTiempoEsquivar" , new Object[] {this,objetivo} ); if ( !ejec )
 								ejec = execCode ( "infoNoTiempoEsquivar" , new Object[] {objetivo} );
 						}
-						catch ( bsh.TargetError te )
+						catch ( ScriptException te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at infoNoTiempoEsquivar(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
 							writeError(ExceptionPrinter.getExceptionReport(te));
@@ -3135,7 +3136,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 									ejec = getCurrentWeapon().execCode ( "infoOnHit" , new Object[] {this,objetivo,new Integer(danyo)} ); if ( !ejec )
 										ejec = execCode ( "infoOnHit" , new Object[] {objetivo,new Integer(danyo)} );
 						}
-						catch ( bsh.TargetError te )
+						catch ( ScriptException te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at infoAcierto(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
 							writeError(ExceptionPrinter.getExceptionReport(te));
@@ -3184,7 +3185,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 									ejec = getCurrentWeapon().execCode ( "infoOnHit" , new Object[] {this,objetivo,new Integer(danyo)} ); if ( !ejec )
 										ejec = execCode ( "infoOnHit" , new Object[] {objetivo,new Integer(danyo)} );
 						}
-						catch ( bsh.TargetError te )
+						catch ( ScriptException te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at infoAcierto(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
 							writeError(ExceptionPrinter.getExceptionReport(te));
@@ -3225,7 +3226,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					ejec = getCurrentWeapon().execCode ( "infoFallo" , new Object[] {this,objetivo} ); if ( !ejec )
 						ejec = execCode ( "infoFallo" , new Object[] {objetivo} );
 				}
-				catch ( bsh.TargetError te )
+				catch ( ScriptException te )
 				{
 					write(io.getColorCode("error") + "bsh.TargetError found at infoAcierto(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );					
 					writeError(ExceptionPrinter.getExceptionReport(te));
@@ -3262,7 +3263,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						ejec = getCurrentWeapon().execCode ( "infoIniciativaTrasBloquear" , new Object[] {this,objetivo} ); if ( !ejec )
 							ejec = execCode ( "infoIniciativaTrasBloquear" , new Object[] {objetivo} );
 					}
-					catch ( bsh.TargetError te )
+					catch ( ScriptException te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at infoAcierto(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );					
 						writeError(ExceptionPrinter.getExceptionReport(te));
@@ -3295,7 +3296,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						ejec = getCurrentWeapon().execCode ( "infoIniciativaTrasEsquivar" , new Object[] {this,objetivo} ); if ( !ejec )
 							ejec = execCode ( "infoIniciativaTrasEsquivar" , new Object[] {objetivo} );
 					}
-					catch ( bsh.TargetError te )
+					catch ( ScriptException te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at infoAcierto(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );					
 						writeError(ExceptionPrinter.getExceptionReport(te));
@@ -3344,7 +3345,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						ejec = getCurrentWeapon().execCode ( "infoBloqueo" , new Object[] {this,objetivo,new Integer(danyo)} ); if ( !ejec )
 							ejec = execCode ( "infoBloqueo" , new Object[] {objetivo,new Integer(danyo)} );
 					}
-					catch ( bsh.TargetError te )
+					catch ( ScriptException te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at infoBloqueo(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );					
 						writeError(ExceptionPrinter.getExceptionReport(te));
@@ -3418,7 +3419,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							ejec = getCurrentWeapon().execCode ( "infoBloqueoFallido" , new Object[] {this,objetivo,new Integer(danyo)} ); if ( !ejec )
 								ejec = execCode ( "infoBloqueoFallido" , new Object[] {objetivo,new Integer(danyo)} );
 						}
-						catch ( bsh.TargetError te )
+						catch ( ScriptException te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at infoBloqueo(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );					
 							writeError(ExceptionPrinter.getExceptionReport(te));
@@ -3464,7 +3465,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							ejec = getCurrentWeapon().execCode ( "infoBloqueoFallido" , new Object[] {this,objetivo,new Integer(danyo)} ); if ( !ejec )
 								ejec = execCode ( "infoBloqueoFallido" , new Object[] {objetivo,new Integer(danyo)} );
 						}
-						catch ( bsh.TargetError te )
+						catch ( ScriptException te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at infoBloqueo(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );					
 							writeError(ExceptionPrinter.getExceptionReport(te));
@@ -3507,7 +3508,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					ejec = getCurrentWeapon().execCode ( "infoFallo" , new Object[] {this,objetivo} ); if ( !ejec )
 						ejec = execCode ( "infoFallo" , new Object[] {objetivo} );
 				}
-				catch ( bsh.TargetError te )
+				catch ( ScriptException te )
 				{
 					write(io.getColorCode("error") + "bsh.TargetError found at infoFallo(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );					
 					writeError(ExceptionPrinter.getExceptionReport(te));
@@ -3562,7 +3563,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						ejec = getCurrentWeapon().execCode ( "infoEsquivada" , new Object[] {this,objetivo} ); if ( !ejec )
 							ejec = execCode ( "infoEsquivada" , new Object[] {objetivo} );
 					}
-					catch ( bsh.TargetError te )
+					catch ( ScriptException te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at infoEsquivada(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );					
 						writeError(ExceptionPrinter.getExceptionReport(te));
@@ -3604,7 +3605,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							ejec = getCurrentWeapon().execCode ( "infoEsquivadaFallida" , new Object[] {this,objetivo} ); if ( !ejec )
 								ejec = execCode ( "infoEsquivadaFallida" , new Object[] {objetivo} );
 						}
-						catch ( bsh.TargetError te )
+						catch ( ScriptException te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at infoEsquivadaFallida(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );					
 							writeError(ExceptionPrinter.getExceptionReport(te));
@@ -3647,7 +3648,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							ejec = getCurrentWeapon().execCode ( "infoEsquivadaFallida" , new Object[] {this,objetivo} ); if ( !ejec )
 								ejec = execCode ( "infoEsquivadaFallida" , new Object[] {objetivo} );
 						}
-						catch ( bsh.TargetError te )
+						catch ( ScriptException te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at infoEsquivadaFallida(), target id was " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );					
 							writeError(ExceptionPrinter.getExceptionReport(te));
@@ -4025,7 +4026,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			ejecutado = execCode( "beforeDie" , new Object[] {} );
 		}
-		catch (bsh.TargetError bshte)
+		catch ( ScriptException bshte)
 		{
 			write("bsh.TargetError found at die routine" );
 			writeError(ExceptionPrinter.getExceptionReport(bshte));
@@ -4061,7 +4062,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			ejecutado = execCode( "afterDie" , new Object[] { cadaver } );
 		}
-		catch (bsh.TargetError bshte)
+		catch ( ScriptException bshte)
 		{
 			write("bsh.TargetError found at afterDie routine" );
 			writeError(ExceptionPrinter.getExceptionReport(bshte));
@@ -4315,7 +4316,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					ejec = getCurrentWeapon().execCode ( "infoOnAttack" , new Object[] {this,target} ); if ( !ejec )
 						ejec = execCode ( "infoOnAttack" , new Object[] {target} );
 		}
-		catch ( bsh.TargetError te )
+		catch ( ScriptException te )
 		{
 			write(io.getColorCode("error") + "bsh.TargetError found at infoIntentoAtaque(), target id was " + target.getID() + ", error was " + te + io.getColorCode("reset") );					
 			writeError(ExceptionPrinter.getExceptionReport(te));
@@ -4349,7 +4350,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			ejec = getCurrentWeapon().execCode ( "infoIntentoBloqueo" , new Object[] {this,target} ); if ( !ejec )
 				ejec = execCode ( "infoIntentoBloqueo" , new Object[] {target} );
 		}
-		catch ( bsh.TargetError te )
+		catch ( ScriptException te )
 		{
 			write(io.getColorCode("error") + "bsh.TargetError found at infoIntentoBloqueo(), target id was " + target.getID() + ", error was " + te + io.getColorCode("reset") );					
 			writeError(ExceptionPrinter.getExceptionReport(te));
@@ -4396,7 +4397,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			ejec = execCode ( "infoIntentoEsquivada" , new Object[] {target} );
 		}
-		catch ( bsh.TargetError te )
+		catch ( ScriptException te )
 		{
 			write(io.getColorCode("error") + "bsh.TargetError found at infoIntentoEsquivada(), target id was " + target.getID() + ", error was " + te + io.getColorCode("reset") );					
 			writeError(ExceptionPrinter.getExceptionReport(te));
@@ -5414,7 +5415,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{	
 			it.execCode("onWear",new Object[] {this,usedLimbs} );
 		}
-		catch ( bsh.TargetError te )
+		catch ( ScriptException te )
 		{
 			write( io.getColorCode("error") + "bsh.TargetError found at event onWear , item " + it + io.getColorCode("reset") + "\n"  );
 			writeError(ExceptionPrinter.getExceptionReport(te));
@@ -5686,7 +5687,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			{	
 				it.execCode("onUnwear",new Object[] {this,usedLimbs} );
 			}
-			catch ( bsh.TargetError te )
+			catch ( ScriptException te )
 			{
 				write( io.getColorCode("error") + "bsh.TargetError found at event onUnwear , item " + it + io.getColorCode("reset") + "\n"  );
 				writeError(ExceptionPrinter.getExceptionReport(te));
@@ -6240,7 +6241,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			{
 				ejecutado = s.execCode( "prepare" , new Object[] { this , target  } );
 			}
-			catch (bsh.TargetError bshte)
+			catch ( ScriptException bshte)
 			{
 				//escribir("bsh.TargetError found at fail routine" );
 				;
@@ -6406,7 +6407,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				if ( !eventEnded ) 
 					eventEnded = this.execCode("onPutInside",new Object[] {this,ourItem,ourContainer} );
 			}
-			catch ( bsh.TargetError te )
+			catch ( ScriptException te )
 			{
 				write( io.getColorCode("error") + "bsh.TargetError found at event onPutInside , item number " + ourItem.getID() + io.getColorCode("reset") + "\n"  );
 				writeError(ExceptionPrinter.getExceptionReport(te));
@@ -6477,7 +6478,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			{
 				write( io.getColorCode("error") + "EVASemanticException found at event_get , item number " + ourItem.getID() + io.getColorCode("reset") + "\n"  );
 			}
-			catch ( bsh.TargetError te )
+			catch ( ScriptException te )
 			{
 				write( io.getColorCode("error") + "bsh.TargetError found at event onGet , item number " + ourItem.getID() + io.getColorCode("reset") + "\n"  );
 				writeError(ExceptionPrinter.getExceptionReport(te));
@@ -6494,7 +6495,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			{
 				execced = mundo.execCode("messageAfterGet",new Object[] {this,ourItem} );
 			}
-			catch ( bsh.TargetError te )
+			catch ( ScriptException te )
 			{
 				write( io.getColorCode("error") + "bsh.TargetError found at messageAfterGet , item number " + ourItem.getID() + io.getColorCode("reset") + "\n"  );
 				writeError(ExceptionPrinter.getExceptionReport(te));
@@ -6662,7 +6663,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			ejecutado_algo = mundo.execCode ( "before" , generalArgs );
 		}
-		catch (bsh.TargetError bshte)
+		catch ( ScriptException bshte)
 		{
 			write("bsh.TargetError found at general before method" );
 			bshte.printStackTrace();
@@ -6677,7 +6678,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			ejecutado_algo =  this.execCode ( "before_" + actionName , actionArgs );
 		}
-		catch (bsh.TargetError bshte)
+		catch ( ScriptException bshte)
 		{
 			write("bsh.TargetError found at subject before method" );
 			bshte.printStackTrace();
@@ -6700,7 +6701,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			{
 				ejecutado_algo =  directObject.execCode ( "before_do_" + actionName , do_args );
 			}
-			catch (bsh.TargetError bshte)
+			catch ( ScriptException bshte)
 			{
 				write("bsh.TargetError found at direct object before method" );
 				bshte.printStackTrace();
@@ -6720,7 +6721,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			{
 				ejecutado_algo =  indirectObject.execCode ( "before_io_" + actionName , do_args );
 			}
-			catch (bsh.TargetError bshte)
+			catch ( ScriptException bshte)
 			{
 				write("bsh.TargetError found at indirect object before method" );
 				bshte.printStackTrace();
@@ -6913,7 +6914,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{	
 			ourItem.execCode("onDrop",new Object[] {this} );
 		}
-		catch ( bsh.TargetError te )
+		catch ( ScriptException te )
 		{
 			write( io.getColorCode("error") + "bsh.TargetError found at event onDrop , item " + ourItem + io.getColorCode("reset") + "\n"  );
 			writeError(ExceptionPrinter.getExceptionReport(te));
@@ -7966,7 +7967,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						//parseCommandOnContents(Mobile,command,args,chain)
 						ejecutado = ejecutado || ((SupportingCode)currentObject1).execCode ( "parseCommandOnContentsObj1" , new Object[] { this , command , args1 , args2 , path1 , path2 , currentObject2 } );
 					}
-					catch ( bsh.TargetError te )
+					catch ( ScriptException te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsObj1(), command was " + command + " " + fullArguments + ", entity " + currentObject1 + ", error was " + te + io.getColorCode("reset") );
 						writeError(ExceptionPrinter.getExceptionReport(te));
@@ -7978,7 +7979,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						{
 							ejecutado = ejecutado || ((SupportingCode)currentObject1).execCode ( "parseCommandOnContentsTwoObjects" , new Object[] { this , command , args1 , args2 , path1 , path2 , currentObject2 } );
 						}
-						catch ( bsh.TargetError te )
+						catch ( ScriptException te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsTwoObjects(), command was " + command + " " + fullArguments + ", entity " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
 							writeError(ExceptionPrinter.getExceptionReport(te));
@@ -7990,7 +7991,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						{
 							ejecutado = ejecutado || ((SupportingCode)currentObject1).execCode( "parseCommandOnContentsGeneric",  new Object[] { this , command, args1 , args2 , path1 , path2 , currentObject1 , currentObject2 , new Boolean(true) /*isFirst==true*/ } );
 						}
-						catch ( bsh.TargetError te )
+						catch ( ScriptException te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric(), command was " + command + " " + fullArguments + ", entity " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
 							writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8007,7 +8008,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						//parseCommandOnContents(Mobile,command,args,chain)
 						ejecutado = ejecutado || ((SupportingCode)currentObject2).execCode ( "parseCommandOnContentsObj2" , new Object[] { this , command , args1 , args2 , path1 , path2 , currentObject1 } );
 					}
-					catch ( bsh.TargetError te )
+					catch ( ScriptException te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsObj2(), command was " + command + " " + fullArguments + ", entity " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
 						writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8019,7 +8020,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						{
 							ejecutado = ejecutado || ((SupportingCode)currentObject2).execCode ( "parseCommandOnContentsTwoObjects" , new Object[] { this , command , args1 , args2 , path1 , path2 , currentObject1 } );
 						}
-						catch ( bsh.TargetError te )
+						catch ( ScriptException te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsTwoObjects(), command was " + command + " " + fullArguments + ", entity " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
 							writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8031,7 +8032,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						{
 							ejecutado = ejecutado || ((SupportingCode)currentObject2).execCode( "parseCommandOnContentsGeneric",  new Object[] { this , command, args1 , args2 , path1 , path2 , currentObject1 , currentObject2 , new Boolean(false) /*isFirst==false*/ } );
 						}
-						catch ( bsh.TargetError te )
+						catch ( ScriptException te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric(), command was " + command + " " + fullArguments + ", first object was " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
 							writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8049,7 +8050,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						{
 							ejecutado = ejecutado || mundo.execCode ( "parseCommandOnContentsTwoObjects" , new Object[] { this , command , args1 , args2 , path1 , path2 , currentObject1 , currentObject2 } );
 						}
-						catch ( bsh.TargetError te )
+						catch ( ScriptException te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsTwoObjects() executed from world, command was " + command + " " + fullArguments + ", entity " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
 							writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8061,7 +8062,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						{
 							ejecutado = ejecutado || mundo.execCode( "parseCommandOnContentsGeneric",  new Object[] { this , command, args1 , args2 , path1 , path2 , currentObject1 , currentObject2  } );
 						}
-						catch ( bsh.TargetError te )
+						catch ( ScriptException te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric() executed from world, command was " + command + " " + fullArguments + ", first object was " + currentObject1 + ", second object was " + currentObject2 + ", error was " + te + io.getColorCode("reset") );
 							writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8088,7 +8089,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
     					{
     						ejecutado = ejecutado || ((SupportingCode)obj1).execCode ( "parseCommandObj1" , new Object[] { this , command , args1 , args2 , obj2 } );
     					}
-    					catch ( bsh.TargetError te )
+    					catch ( ScriptException te )
     					{
     						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandObj1(), command was " + command + " " + args1 + " " + args2 + ", entity number " + obj1.getID() + ", second object was " + obj2.getID() + ", error was " + te + io.getColorCode("reset") );
     						writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8100,7 +8101,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					{
 						ejecutado = ejecutado || ((SupportingCode)obj1).execCode ( "parseCommandTwoObjects" , new Object[] { this , command , args1 , args2 , obj2 } );
 					}
-					catch ( bsh.TargetError te )
+					catch ( ScriptException te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandTwoObjects(), command was " + command + " " + args1 + " " + args2 + ", entity number " + obj1.getID() + ", second object was " + obj2.getID() + ", error was " + te + io.getColorCode("reset") );
 						writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8113,7 +8114,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						//parseCommandGeneric ( Player aCreature , String verb , Sring args1 , Sring args2 , Entity obj1 , Entity obj2 , boolean isFirst )
 						ejecutado = ejecutado || ((SupportingCode)obj1).execCode ( "parseCommandGeneric" , new Object[] { this , command , args1 , args2 , obj1 , obj2 , new Boolean(true) } );
 					}
-					catch ( bsh.TargetError te )
+					catch ( ScriptException te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric(), command was " + command + " " + args1 + " " + args2 + ", entity number " + obj1 + ", second object was " + obj2 + ", error was " + te + io.getColorCode("reset") );
 						writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8137,7 +8138,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
     					{
     						ejecutado = ejecutado || ((SupportingCode)obj2).execCode ( "parseCommandObj2" , new Object[] { this , command , args1 , args2 , obj1 } );
     					}
-    					catch ( bsh.TargetError te )
+    					catch ( ScriptException te )
     					{
     						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandObj2(), command was " + command + " " + args1 + " " + args2 + ", entity number " + obj2.getID() + ", first object was " + obj1.getID() + ", error was " + te + io.getColorCode("reset") );
     						writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8149,7 +8150,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					{
 						ejecutado = ejecutado || ((SupportingCode)obj2).execCode ( "parseCommandTwoObjects" , new Object[] { this , command , args1 , args2 , obj1 } );
 					}
-					catch ( bsh.TargetError te )
+					catch ( ScriptException te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandTwoObjects(), command was " + command + " " + args1 + " " + args2 + ", entity number " + obj2.getID() + ", first object was " + obj1.getID() + ", error was " + te + io.getColorCode("reset") );
 						writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8162,7 +8163,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						//parseCommandGeneric ( Player aCreature , String verb , Sring args1 , Sring args2 , Entity obj1 , Entity obj2 , boolean isFirst )
 						ejecutado = ejecutado || ((SupportingCode)obj2).execCode ( "parseCommandGeneric" , new Object[] { this , command , args1 , args2 , obj1 , obj2 , new Boolean(false) } );
 					}
-					catch ( bsh.TargetError te )
+					catch ( ScriptException te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric(), command was " + command + " " + args1 + " " + args2 + ", entity number " + obj1 + ", second object was " + obj2 + ", error was " + te + io.getColorCode("reset") );
 						writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8178,7 +8179,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					{
 						ejecutado = ejecutado || mundo.execCode ( "parseCommandTwoObjects" , new Object[] { this , command , args1 , args2 , obj1 , obj2 } );
 					}
-					catch ( bsh.TargetError te )
+					catch ( ScriptException te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandTwoObjects() executed from world, command was " + command + " " + args1 + " " + args2 + ", entity number " + obj2.getID() + ", first object was " + obj1.getID() + ", error was " + te + io.getColorCode("reset") );
 						writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8192,7 +8193,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						//parseCommandGeneric ( Player aCreature , String verb , Sring args1 , Sring args2 , Entity obj1 , Entity obj2 , boolean isFirst )
 						ejecutado = ejecutado || mundo.execCode ( "parseCommandGeneric" , new Object[] { this , command , args1 , args2 , obj1 , obj2 } );
 					}
-					catch ( bsh.TargetError te )
+					catch ( ScriptException te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric() executed from world, command was " + command + args1 + args2 + ", entity number " + obj1 + ", second object was " + obj2 + ", error was " + te + io.getColorCode("reset") );
 						writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8392,7 +8393,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					//parseCommandOnComponent(Mobile,command,args,chain)
 					ejecutado = ejecutado || ((SupportingCode)currentEntity).execCode ( "parseCommandOnComponent" , new Object[] { this , command , arguments } );
 				}
-				catch ( bsh.TargetError te )
+				catch ( ScriptException te )
 				{
 					write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnComponent(), command was " + command + " " + arguments + ", entity " + currentEntity + ", error was " + te + io.getColorCode("reset") );
 					writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8443,7 +8444,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					//parseCommandOnContents(Mobile,command,args,chain)
 					ejecutado = ejecutado || ((SupportingCode)currentObject).execCode ( "parseCommandOnContents" , new Object[] { this , command , fullArguments , path } );
 				}
-				catch ( bsh.TargetError te )
+				catch ( ScriptException te )
 				{
 					write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContents(), command was " + command + " " + fullArguments + ", entity " + currentObject + ", error was " + te + io.getColorCode("reset") );
 					writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8455,7 +8456,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 						ejecutado = ejecutado || ((SupportingCode)currentObject).execCode ( "parseCommandOnContentsGeneric" , new Object[] { this , command , fullArguments , "" , path , null , currentObject , null , new Boolean(true) } );
 					}
-					catch ( bsh.TargetError te )
+					catch ( ScriptException te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric(), command was " + command + " " + fullArguments + ", entity number " + currentObject + ", second object was " + null + ", error was " + te + io.getColorCode("reset") );
 						writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8469,7 +8470,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			    {
 				ejecutado = ejecutado || mundo.execCode ( "parseCommandOnContents" , new Object[] { this , command , fullArguments  , path , currentObject } );
 			    }
-			    catch ( bsh.TargetError te )
+			    catch ( ScriptException te )
 			    {
 			    	write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContents() executed from world, command was " + command + " " + fullArguments + ", entity " + currentObject + ", error was " + te + io.getColorCode("reset") );
 			    	writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8481,7 +8482,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 						ejecutado = ejecutado || mundo.execCode ( "parseCommandOnContentsGeneric" , new Object[] { this , command , fullArguments , "" , path , null , currentObject , null } );
 					}
-					catch ( bsh.TargetError te )
+					catch ( ScriptException te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric() executed from world, command was " + command + " " + fullArguments + ", entity number " + currentObject + ", second object was " + null + ", error was " + te + io.getColorCode("reset") );
 						writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8546,7 +8547,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					{
 						ejecutado = ejecutado || ((SupportingCode)objetivo).execCode ( "parseCommand" , new Object[] { this , command , fullArguments } );
 					}
-					catch ( bsh.TargetError te )
+					catch ( ScriptException te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at parseCommand(), command was " + command + " " + fullArguments + ", item number " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
 						writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8558,7 +8559,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					{
 						ejecutado = ejecutado || ((SupportingCode)objetivo).execCode ( "parseCommandGeneric" , new Object[] { this , command , fullArguments , "" , objetivo , null , new Boolean(true) } );
 					}
-					catch ( bsh.TargetError te )
+					catch ( ScriptException te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric(), command was " + command + " " + fullArguments + ", entity number " + objetivo + ", second object was " + objetivo + ", error was " + te + io.getColorCode("reset") );
 						writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8575,7 +8576,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
     			    {
     				ejecutado = ejecutado || mundo.execCode ( "parseCommand" , new Object[] { this , command , fullArguments , objetivo } );
     			    }
-    			    catch ( bsh.TargetError te )
+    			    catch ( ScriptException te )
     			    {
     			    	write(io.getColorCode("error") + "bsh.TargetError found at parseCommand() executed from world, command was " + command + " " + fullArguments + ", item number " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
     			    	writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8587,7 +8588,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				{
 					ejecutado = ejecutado || mundo.execCode ( "parseCommandGeneric" , new Object[] { this , command , fullArguments , "" , objetivo , null  } );
 				}
-				catch ( bsh.TargetError te )
+				catch ( ScriptException te )
 				{
 					write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric() executed from world, command was " + command + " " + fullArguments + ", entity number " + objetivo + ", second object was " + objetivo + ", error was " + te + io.getColorCode("reset") );
 					writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8687,7 +8688,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 									//parseCommandOnContents(Mobile,command,args,chain)
 									ejecutado = ejecutado || ((SupportingCode)currentObject).execCode ( "parseCommandOnContents" , new Object[] { this , command , fullArguments , objetivoVector } );
 								}
-								catch ( bsh.TargetError te )
+								catch ( ScriptException te )
 								{
 									write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContents(), command was " + command + fullArguments + ", entity " + currentObject + ", error was " + te + io.getColorCode("reset") );
 									writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8699,7 +8700,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 								{
 									ejecutado = ejecutado || ((SupportingCode)currentObject).execCode ( "parseCommandOnContentsGeneric" , new Object[] { this , command , fullArguments , "" , objetivoVector , null  , currentObject , null , new Boolean(true)  } );
 								}
-								catch ( bsh.TargetError te )
+								catch ( ScriptException te )
 								{
 									write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric(), command was " + command + fullArguments + ", entity number " + currentObject + ", second object was " + null + ", error was " + te + io.getColorCode("reset") );
 									writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8714,7 +8715,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 								{
 									ejecutado = ejecutado || mundo.execCode ( "parseCommandOnContents" , new Object[] { this , command , fullArguments  , objetivoVector , currentObject } );
 								}
-								catch ( bsh.TargetError te )
+								catch ( ScriptException te )
 								{
 									write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContents() executed from world, command was " + command + fullArguments + ", entity " + currentObject + ", error was " + te + io.getColorCode("reset") );
 									writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8726,7 +8727,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							{
 								ejecutado = ejecutado || mundo.execCode ( "parseCommandOnContentsGeneric" , new Object[] { this , command , fullArguments , "" , objetivoVector , null  , currentObject , null } );
 							}
-							catch ( bsh.TargetError te )
+							catch ( ScriptException te )
 							{
 								write(io.getColorCode("error") + "bsh.TargetError found at parseCommandOnContentsGeneric() executed from world, command was " + command + fullArguments + ", entity number " + currentObject + ", second object was " + null + ", error was " + te + io.getColorCode("reset") );
 								writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8779,7 +8780,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						{
 							ejecutado = ejecutado || ((SupportingCode)objetivo).execCode ( "parseCommand" , new Object[] { this , command , fullArguments } );
 						}
-						catch ( bsh.TargetError te )
+						catch ( ScriptException te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommand(), command was " + command + fullArguments + ", item number " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
 							writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8791,7 +8792,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						{
 							ejecutado = ejecutado || ((SupportingCode)objetivo).execCode ( "parseCommandGeneric" , new Object[] { this , command , fullArguments , "" , objetivo , null , new Boolean(true) } );
 						}
-						catch ( bsh.TargetError te )
+						catch ( ScriptException te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric(), command was " + command + fullArguments + ", entity number " + objetivo + ", second object was " + objetivo + ", error was " + te + io.getColorCode("reset") );
 							writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8806,7 +8807,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						{
 							ejecutado = ejecutado || mundo.execCode ( "parseCommand" , new Object[] { this , command , fullArguments , objetivo } );
 						}
-						catch ( bsh.TargetError te )
+						catch ( ScriptException te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommand() executed from world, command was " + command + fullArguments + ", item number " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
 							writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8818,7 +8819,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						{
 							ejecutado = ejecutado || mundo.execCode ( "parseCommandGeneric" , new Object[] { this , command , fullArguments , "" , objetivo , null  } );
 						}
-						catch ( bsh.TargetError te )
+						catch ( ScriptException te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric() executed from world, command was " + command + fullArguments + ", entity number " + objetivo + ", second object was " + objetivo + ", error was " + te + io.getColorCode("reset") );
 							writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8910,7 +8911,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				{
 					ejecutado = ejecutado || ((SupportingCode)objetivo).execCode ( "parseCommand" , new Object[] { this , command , fullArguments } );
 				}
-				catch ( bsh.TargetError te )
+				catch ( ScriptException te )
 				{
 					write(io.getColorCode("error") + "bsh.TargetError found at parseCommand(), command was " + command + " " + fullArguments + ", item number " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
 					writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8921,7 +8922,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					{
 						ejecutado = ejecutado || ((SupportingCode)objetivo).execCode ( "parseCommandGeneric" , new Object[] { this , command , fullArguments , "" , objetivo , null , new Boolean(true) } );
 					}
-					catch ( bsh.TargetError te )
+					catch ( ScriptException te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric(), command was " + command + " " + fullArguments + ", entity number " + objetivo + ", second object was " + objetivo + ", error was " + te + io.getColorCode("reset") );
 						writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8983,7 +8984,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 					{
 						ejecutado = ejecutado || ((SupportingCode)objetivo).execCode ( "parseCommand" , new Object[] { this , command , fullArguments } );
 					}
-					catch ( bsh.TargetError te )
+					catch ( ScriptException te )
 					{
 						write(io.getColorCode("error") + "bsh.TargetError found at parseCommand(), command was " + command + " " + fullArguments + ", item number " + objetivo.getID() + ", error was " + te + io.getColorCode("reset") );
 						writeError(ExceptionPrinter.getExceptionReport(te));
@@ -8994,7 +8995,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 						{
 							ejecutado = ejecutado || ((SupportingCode)objetivo).execCode ( "parseCommandGeneric" , new Object[] { this , command , fullArguments , "" , objetivo , null , new Boolean(true) } );
 						}
-						catch ( bsh.TargetError te )
+						catch ( ScriptException te )
 						{
 							write(io.getColorCode("error") + "bsh.TargetError found at parseCommandGeneric(), command was " + command + " " + fullArguments + ", entity number " + objetivo + ", second object was " + objetivo + ", error was " + te + io.getColorCode("reset") );
 							writeError(ExceptionPrinter.getExceptionReport(te));
@@ -9100,7 +9101,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				arguments = lenguaje.extractArguments(commandstring).trim(); //StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ').trim();
 			}
 		}
-		catch ( bsh.TargetError te )
+		catch ( ScriptException te )
 		{
 			write(io.getColorCode("error") + "bsh.TargetError found at player's parseCommand, command was " + command + " " + arguments + ", error was " + te + io.getColorCode("reset") );
 			writeError(ExceptionPrinter.getExceptionReport(te));
@@ -9216,7 +9217,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			ejecutado = ejecutado || habitacionActual.execCode ( "parseCommand" , new Object[] { this , command , arguments } );
 		}
-		catch ( bsh.TargetError te )
+		catch ( ScriptException te )
 		{
 			te.printStackTrace();
 			write(io.getColorCode("error") + "bsh.TargetError found at parseCommand(), command was " + command + " " + arguments + ", room number " + habitacionActual.getID() + ", error was " + te + io.getColorCode("reset") );
@@ -9262,7 +9263,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				arguments = lenguaje.extractArguments(commandstring).trim(); //StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ').trim();
 			}
 		}
-		catch ( bsh.TargetError te )
+		catch ( ScriptException te )
 		{
 			write(io.getColorCode("error") + "bsh.TargetError found at world's parseCommand, command was " + command + " " + arguments + ", error was " + te + io.getColorCode("reset") );
 			writeError(ExceptionPrinter.getExceptionReport(te));
@@ -11222,7 +11223,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		{
 			write( io.getColorCode("error") + "EVASemanticException found at event_showroom , room number " + habitacionActual.getID() + io.getColorCode("reset") );
 		}
-		catch ( bsh.TargetError bshte )
+		catch ( ScriptException bshte )
 		{
 			write( io.getColorCode("error") + "bsh.TargetError found onShowRoom , room number " + habitacionActual.getID() + ": " + bshte + io.getColorCode("reset") );
 			writeError(ExceptionPrinter.getExceptionReport(bshte));
@@ -11314,7 +11315,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				arguments = lenguaje.extractArguments(commandstring).trim(); //StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ').trim();
 			}
 		}
-		catch ( bsh.TargetError te )
+		catch ( ScriptException te )
 		{
 			write(io.getColorCode("error") + "bsh.TargetError found at preprocessCommand, raw command was " + commandstring + ", error was " + te + io.getColorCode("reset") );
 			writeError(ExceptionPrinter.getExceptionReport(te));
@@ -11346,7 +11347,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			arguments = StringMethods.getToks(commandstring,2,StringMethods.numToks(commandstring,' '),' ').trim();
 			try {
 				mundo.getAssociatedCode().evaluate(arguments,this,retVal);
-			} catch (TargetError e) {
+			} catch (ScriptException e) {
 				writeError(ExceptionPrinter.getExceptionReport(e));
 			}
 			this.write(""+retVal.getRetVal()+"\n");

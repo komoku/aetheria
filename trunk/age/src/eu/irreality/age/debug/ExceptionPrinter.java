@@ -5,6 +5,8 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 import eu.irreality.age.World;
+import eu.irreality.age.scripting.ScriptException;
+import eu.irreality.age.scripting.bsh.BSHScriptException;
 
 import bsh.EvalError;
 
@@ -21,6 +23,20 @@ public class ExceptionPrinter
 	}
 	
 
+	public static String getExceptionReport ( ScriptException se )
+	{
+		if ( se instanceof BSHScriptException )
+			return getExceptionReport ( (BSHScriptException) se ); //move this to exception classes
+		else
+		{
+			return getExceptionReport ( (Throwable) se );
+		}
+	}
+	
+	public static String getExceptionReport ( BSHScriptException bse )
+	{
+		return "(bsh) " + getExceptionReport (bse.getTargetError());
+	}
 	
 	public static String getExceptionReport ( bsh.TargetError te )
 	{
@@ -91,6 +107,9 @@ public class ExceptionPrinter
 		theWorld.writeError("\n");
 	}
 	*/
+	
+	
+	
 	
 	public static String getExceptionReport ( Throwable e )
 	{

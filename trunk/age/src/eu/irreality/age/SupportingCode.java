@@ -4,12 +4,14 @@
  */
 package eu.irreality.age;
 
+import eu.irreality.age.scripting.ScriptException;
+
 //interfaz para las entidades y objetos que soporten código beanshell.
 public interface SupportingCode
 {
 
-	public boolean execCode ( String routine , Object[] args , ReturnValue retval ) throws bsh.TargetError;
-	public boolean execCode ( String routine , Object[] args ) throws bsh.TargetError;
+	public boolean execCode ( String routine , Object[] args , ReturnValue retval ) throws ScriptException;
+	public boolean execCode ( String routine , Object[] args ) throws ScriptException;
 	public ObjectCode getAssociatedCode ();
 	
 }

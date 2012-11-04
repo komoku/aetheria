@@ -40,6 +40,8 @@ import eu.irreality.age.BSHCodeExecutedOKException;
 import eu.irreality.age.ObjectCode;
 import eu.irreality.age.ReturnValue;
 import eu.irreality.age.SupportingCode;
+import eu.irreality.age.scripting.ScriptException;
+import eu.irreality.age.scripting.bsh.BSHScriptException;
 
 /**
 	All of the reflection API code lies here.  It is in the form of static
@@ -99,7 +101,16 @@ class Reflect
 					if ( code.existsMethod(methodName,object,args ) )
 					{
 						ReturnValue retVal = new ReturnValue(null);
-						boolean ended = code.run(methodName,object,args,retVal);
+						boolean ended = false;
+						try
+						{
+							ended = code.run(methodName,object,args,retVal);
+						}
+						catch ( ScriptException se )
+						{
+							BSHScriptException bse = (BSHScriptException) se; //the script is obviously a beanshell script
+							throw bse.getTargetError(); //bsh should throw bsh exceptions, not AGE exceptions
+						}
 						if ( ended == true && code.getEndBehavior() == ObjectCode.INNER_END_THROWS )
 							throw new InvocationTargetException( new BSHCodeExecutedOKException() );
 						
