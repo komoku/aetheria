@@ -41,7 +41,7 @@ public class ExceptionPrinter
 	public static String getExceptionReport ( bsh.TargetError te )
 	{
 		StringBuffer report = new StringBuffer();
-		report.append("**********BeanShell Error Report**********\n");
+		report.append("\n**********BeanShell Runtime Error Report**********\n");
 		report.append("*Error: " + te.printTargetError(te) );
 		report.append("*Location: " + te.getErrorSourceFile() + "\n" );
 		report.append("*Line: " + te.getErrorLineNumber() + "\n" );
@@ -54,18 +54,19 @@ public class ExceptionPrinter
 		//	report.append("Cause report: " + getExceptionReport ( te.getCause() ) );
 		if ( te.inNativeCode() && te.getTarget() != null && te.getTarget() != te )
 		    	report.append("*Exception was generated in native code. Stack trace follows: " + getExceptionReport ( te.getTarget() ) + "\n" );
-		report.append("******************************************\n");
+		report.append("**************************************************\n");
 		return report.toString();
 	}
 	
 	public static String getExceptionReport ( bsh.EvalError te )
 	{
 		StringBuffer report = new StringBuffer();
-		report.append("File: " + te.getErrorSourceFile() + "\n" );
-		//report.append("Line: " + te.getErrorLineNumber() + "\n" );
-		//report.append("Error: " + te.getErrorText() + "\n" );
-		report.append("Stack trace: " + getStackTrace(te) + "\n" );
-		report.append("Cause report: " + getExceptionReport ( te.getCause() ) );
+		report.append("*Location: " + te.getErrorSourceFile() + "\n" );
+		//report.append("*Line: " + te.getErrorLineNumber() + "\n" ); //does not work
+		//report.append("*Offending text: " + te.getErrorText() + "\n" ); //does not work
+		report.append("*Message: " + te.getMessage());
+		//report.append("*Stack trace: " + getStackTrace(te) + "\n" );
+		//report.append("*Cause report: " + getExceptionReport ( te.getCause() ) );
 		report.append("\n");
 		return report.toString();
 	}
@@ -73,16 +74,18 @@ public class ExceptionPrinter
 	public static String getExceptionReport ( bsh.EvalError te , String aRoutine , Object theCaller , Object[] theArguments )
 	{
 		StringBuffer report = new StringBuffer();
-		report.append("Syntax error in BeanShell code in object: " + theCaller + "\n");
-		report.append("Loaded to call method " + (aRoutine==null? "(no method)" : aRoutine) + "\n");
-		report.append((theArguments == null || theArguments.length == 0) ? "(with no arguments)" : "With arguments: ");
+		report.append("\n**********BeanShell Syntax Error Report***********\n");
+		report.append("*In code for object: " + theCaller + "\n");
+		report.append("*Loaded to call method " + (aRoutine==null? "(no method)" : aRoutine) );
+		report.append((theArguments == null || theArguments.length == 0) ? " (with no arguments" : " (with arguments:");
 		if ( theArguments != null )
 		{
 			for ( int i = 0 ; i < theArguments.length ; i++ )
-				report.append(theArguments[i] + " ");
+				report.append(" " + theArguments[i]);
 		}
-		report.append("\n");
+		report.append(")\n");
 		report.append(getExceptionReport(te));
+		report.append("**************************************************\n");
 		return report.toString();
 	}
 	
