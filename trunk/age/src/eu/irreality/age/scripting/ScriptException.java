@@ -5,6 +5,8 @@
  */
 package eu.irreality.age.scripting;
 
+import eu.irreality.age.debug.ExceptionPrinter;
+
 /**
  * @author carlos
  * An exception that can be thrown by a script invoked from AGE.
@@ -17,6 +19,18 @@ public abstract class ScriptException extends Exception
 	public abstract String printTargetError( Throwable t );
 	
 	public abstract boolean inNativeCode();
+	
+	public String getReport()
+	{
+		//by default, a generic exception report
+		return ExceptionPrinter.getExceptionReport((Throwable)this);
+	}
+	
+	public String getReport(String context)
+	{
+		//by default, a generic exception report
+		return ExceptionPrinter.getExceptionReport((Throwable)this);
+	}
 	
 
 }

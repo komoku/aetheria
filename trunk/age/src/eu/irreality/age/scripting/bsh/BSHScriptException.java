@@ -8,6 +8,7 @@ package eu.irreality.age.scripting.bsh;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
+import eu.irreality.age.debug.ExceptionPrinter;
 import eu.irreality.age.scripting.ScriptException;
 
 import bsh.EvalError;
@@ -33,6 +34,41 @@ public class BSHScriptException extends ScriptException
 	{
 		this.te = te;
 	}
+	
+	
+	/**
+	 * Return a detailed report of the exception
+	 */
+	public String getReport ()
+	{
+		return getReport(null);
+	}
+	
+	/**
+	 * Return a detailed report of the exception for the given context
+	 */
+	public String getReport ( String context )
+	{
+		StringBuffer report = new StringBuffer();
+		report.append("\n**********BeanShell Runtime Error Report**********\n");
+		if ( context != null ) report.append("*Context: " + context + "\n");
+		report.append("*Error: " + te.printTargetError(te) );
+		report.append("*Location: " + te.getErrorSourceFile() + "\n" );
+		report.append("*Line: " + te.getErrorLineNumber() + "\n" );
+		report.append("*Offending text: " + te.getErrorText() + "\n" );
+		report.append("*Message: " + te.getMessage() + "\n");
+		//report.append("Detailed trace: " + getStackTrace(te) + "\n" );
+		boolean hasScriptStackTrace = te.getScriptStackTrace().trim().length() > 0;
+		if ( hasScriptStackTrace ) report.append("*Script stack trace: " + te.getScriptStackTrace() +"\n");
+		//if ( te.getCause() != null ) //seems unuseful
+		//	report.append("Cause report: " + getExceptionReport ( te.getCause() ) );
+		if ( te.inNativeCode() && te.getTarget() != null && te.getTarget() != te )
+		    	report.append("*Exception was generated in native code. Stack trace follows: " + ExceptionPrinter.getExceptionReport ( te.getTarget() ) + "\n" );
+		report.append("**************************************************\n");
+		return report.toString();
+	}
+	
+	
 
 	/**
 	 * @return

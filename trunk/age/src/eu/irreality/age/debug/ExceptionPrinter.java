@@ -25,19 +25,24 @@ public class ExceptionPrinter
 
 	public static String getExceptionReport ( ScriptException se )
 	{
-		if ( se instanceof BSHScriptException )
-			return getExceptionReport ( (BSHScriptException) se ); //move this to exception classes
-		else
-		{
-			return getExceptionReport ( (Throwable) se );
-		}
+		return se.getReport();
 	}
 	
+	public static String getExceptionReport ( ScriptException se , String context )
+	{
+		return se.getReport(context);
+	}
+	
+	//no longer needed
+	/*
 	public static String getExceptionReport ( BSHScriptException bse )
 	{
 		return getExceptionReport (bse.getTargetError());
 	}
+	*/
 	
+	//moved to ScriptException
+	/*
 	public static String getExceptionReport ( bsh.TargetError te )
 	{
 		StringBuffer report = new StringBuffer();
@@ -57,6 +62,7 @@ public class ExceptionPrinter
 		report.append("**************************************************\n");
 		return report.toString();
 	}
+	*/
 	
 	public static String getExceptionReport ( bsh.EvalError te )
 	{
