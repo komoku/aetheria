@@ -3053,6 +3053,8 @@ public class World implements Informador , SupportingCode
 	
 	public void setDebugMode ( boolean debugMode ) { this.debugMode = debugMode; }
 	
+	public boolean isDebugMode () { return debugMode; }
+	
 	/**
 	 * Give an explicit warning if the version required by the world is more recent than the AGE version being used.
 	 * Pass a player to warn the player, else the server is warned.

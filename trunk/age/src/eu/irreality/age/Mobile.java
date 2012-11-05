@@ -2393,6 +2393,10 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	public void writeError ( String s )
 	{
 		writeWithTemplate("error",s);
+		if ( mundo.isDebugMode() )
+		{
+			System.err.print(s);
+		}
 	}
 
 	public void writeStory ( String s )
