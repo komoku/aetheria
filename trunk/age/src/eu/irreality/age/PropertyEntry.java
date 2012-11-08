@@ -37,7 +37,7 @@ import eu.irreality.age.debug.Debug;
 		}
 		public boolean getValueAsBoolean()
 		{
-			if ( propertyValue == null | propertyValue.equals("") ) return false;
+			if ( propertyValue == null || propertyValue.equals("") ) return false;
 			if ( propertyValue.equalsIgnoreCase("true") || propertyValue.equals("1") || propertyValue.equals("yes") )
 				return true;
 			else
