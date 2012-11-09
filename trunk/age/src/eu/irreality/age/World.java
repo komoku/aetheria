@@ -1705,6 +1705,7 @@ public class World implements Informador , SupportingCode
 	*/
 	public Room getRoom ( int roomid )
 	{
+		if ( roomid % 10000000 >= room.length ) return null;
 		return room [roomid % 10000000 ]; //siete ult dig
 	}
 	
@@ -1722,20 +1723,18 @@ public class World implements Informador , SupportingCode
 		
 	public Room getRoom ( String ident )
 	{
-		int oid;
 		try
 		{
 			return getRoom ( Integer.parseInt(ident) );
 		}
 		catch ( NumberFormatException nfe )
 		{
-			//Debug.println("Looking out nametable for " + ident);
 			Integer i = (Integer)nameTable.get(ident);
-			if ( i != null )
-			{
-				//Debug.println("Found at " + i);
-				return getRoom ( i.intValue() );
-			}
+			if ( i == null ) return null;
+			Room theRoom = getRoom ( i.intValue() );
+			//the following check is needed in case someone uses getRoom() by mistake with the unique name of another entity (like a Mobile).
+			//In this case, the low-level getRoom() would return the room with the same relative ID as the requested Mobile. 
+			if ( theRoom.getUniqueName().equals(ident) ) return theRoom; 
 			else return null;	
 		}
 	}
@@ -1806,7 +1805,7 @@ public class World implements Informador , SupportingCode
 	*/
 	public Item getItem ( int itemid )
 	{
-		//Debug.println("Jar " + itemid%10000000);
+		if ( itemid % 10000000 >= item.length ) return null;
 		return item [ itemid % 10000000 ] ;
 		//devuelve solo los siete ultimos digitos, 
 		//asi acepta ID's de tipo
@@ -1817,7 +1816,6 @@ public class World implements Informador , SupportingCode
 	
 	public Item getItem ( String ident )
 	{
-		int oid;
 		try
 		{
 			return getItem ( Integer.parseInt(ident) );
@@ -1825,9 +1823,12 @@ public class World implements Informador , SupportingCode
 		catch ( NumberFormatException nfe )
 		{
 			Integer i = (Integer)nameTable.get(ident);
-			if ( i != null )
-				return getItem ( i.intValue() );
-			else return null;	
+			if ( i == null ) return null;
+			Item theItem = getItem ( i.intValue() );
+			//the following check is needed in case someone uses getItem() by mistake with the unique name of another entity (like a Mobile).
+			//In this case, the low-level getItem() would return the item with the same relative ID as the requested Mobile. 
+			if ( theItem.getUniqueName().equals(ident) ) return theItem; 
+			else return null;		
 		}
 	}
 		
@@ -1839,6 +1840,7 @@ public class World implements Informador , SupportingCode
 	*/
 	public Mobile getMob ( int mobid )
 	{
+		if ( mobid % 10000000 >= mob.length ) return null;
 		return mob [ mobid % 10000000 ] ;
 		//devuelve solo los siete ultimos digitos, 
 		//asi acepta ID's de tipo
@@ -1859,7 +1861,6 @@ public class World implements Informador , SupportingCode
 	
 	public Mobile getMob ( String ident )
 	{
-		int oid;
 		try
 		{
 			return getMob ( Integer.parseInt(ident) );
@@ -1867,8 +1868,11 @@ public class World implements Informador , SupportingCode
 		catch ( NumberFormatException nfe )
 		{
 			Integer i = (Integer)nameTable.get(ident);
-			if ( i != null )
-				return getMob ( i.intValue() );
+			if ( i == null ) return null;
+			Mobile theMob = getMob ( i.intValue() );
+			//this check is needed in case someone uses getMob() by mistake with the unique name of another entity (like a Room).
+			//In this case, the low-level getMob() would return the mobile with the same relative ID as the requested Room. 
+			if ( theMob.getUniqueName().equals(ident) ) return theMob; 
 			else return null;	
 		}
 	}
@@ -1926,6 +1930,7 @@ public class World implements Informador , SupportingCode
 	*/
 	public AbstractEntity getAbstractEntity ( int absentid )
 	{
+		if ( absentid % Utility.absent_summand >= absent.length ) return null;
 		return absent [ absentid % Utility.absent_summand ] ;
 		//devuelve solo los siete ultimos digitos, 
 		//asi acepta ID's de tipo
@@ -1944,9 +1949,12 @@ public class World implements Informador , SupportingCode
 		catch ( NumberFormatException nfe )
 		{
 			Integer i = (Integer)nameTable.get(ident);
-			if ( i != null )
-				return getAbstractEntity ( i.intValue() );
-			else return null;	
+			if ( i == null ) return null;
+			AbstractEntity theAbstractEntity = getAbstractEntity ( i.intValue() );
+			//the following check is needed in case someone uses getAbstractEntity() by mistake with the unique name of another entity (like a Mobile).
+			//In this case, the low-level getAbstractEntity() would return the abstract entity with the same relative ID as the requested Mobile. 
+			if ( theAbstractEntity.getUniqueName().equals(ident) ) return theAbstractEntity; 
+			else return null;		
 		}
 	}
 	
@@ -1957,6 +1965,7 @@ public class World implements Informador , SupportingCode
 	*/
 	public Spell getSpell ( int spellid )
 	{
+		if ( spellid % Utility.spell_summand >= spell.length ) return null;
 		return spell [ spellid % Utility.spell_summand ] ;
 		//devuelve solo los siete ultimos digitos, 
 		//asi acepta ID's de tipo
@@ -1967,7 +1976,6 @@ public class World implements Informador , SupportingCode
 	
 	public Spell getSpell ( String ident )
 	{
-		int oid;
 		try
 		{
 			return getSpell ( Integer.parseInt(ident) );
@@ -1975,9 +1983,12 @@ public class World implements Informador , SupportingCode
 		catch ( NumberFormatException nfe )
 		{
 			Integer i = (Integer)nameTable.get(ident);
-			if ( i != null )
-				return getSpell ( i.intValue() );
-			else return null;	
+			if ( i == null ) return null;
+			Spell theSpell = getSpell ( i.intValue() );
+			//the following check is needed in case someone uses getSpell() by mistake with the unique name of another entity (like a Mobile).
+			//In this case, the low-level getSpell() would return the spell with the same relative ID as the requested Mobile. 
+			if ( theSpell.getUniqueName().equals(ident) ) return theSpell; 
+			else return null;			
 		}
 	}
 	
