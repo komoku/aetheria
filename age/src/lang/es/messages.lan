@@ -279,7 +279,7 @@ you.attack.dead=Te disponías a atacar; pero vacilas ante la muerte de tu enemig
 #Combate: choque de armas en el aire
 someone.clashes.someone=Las armas de $1 y $2 chocan en el aire...\n
 enemy.clashes.you=Tu arma y la de $1 chocan en el aire...\n
-you.clash.enemy="Tu arma y la de $2 chocan en el aire...\n
+you.clash.enemy=Tu arma y la de $2 chocan en el aire...\n
 
 #Combate: A $2 no le da tiempo a bloquear el ataque de $1
 you.fail.block.time.someone=No te da tiempo a bloquear el ataque de $1...\n
