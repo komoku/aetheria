@@ -271,6 +271,11 @@ someone.attacks.absent=$1 interrumpe su ataque ante la ausencia de su contrincan
 someone.attacks.you.absent=$1 vacila ante tu ausencia.\n
 you.attack.absent=Te disponías a atacar; pero vacilas ante la ausencia de tu enemigo.\n
 
+#$1 ataca a alguien que ya está muerto
+someone.attacks.absent=$1 interrumpe su ataque ante la muerte de su contrincante.\n
+someone.attacks.you.absent=$1 vacila ante tu muerte.\n
+you.attack.absent=Te disponías a atacar; pero vacilas ante la muerte de tu enemigo.\n
+
 #Combate: choque de armas en el aire
 someone.clashes.someone=Las armas de $1 y $2 chocan en el aire...\n
 enemy.clashes.you=Tu arma y la de $1 chocan en el aire...\n

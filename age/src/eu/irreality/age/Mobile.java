@@ -3000,20 +3000,35 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			}
 		}
 
-		if ( objetivo == null )
+		if ( objetivo == null || !objetivo.getRoom().equals(this.getRoom()) )
 		{
 			Debug.println("Oops... El bicho atacado no est�.");
 
-			habitacionActual.reportAction(this, null, null,
-					//"$1 interrumpe su ataque ante la ausencia de su contrincante.\n", 
-					//"$1 vacila ante tu ausencia.\n", 
-					//"Te dispon�as a atacar; pero vacilas ante la ausencia de tu enemigo.\n", 
-					mundo.getMessages().getMessage("someone.attacks.absent",new Object[]{this} ) , 
-					mundo.getMessages().getMessage("someone.attacks.you.absent",new Object[]{this} ) , 
-					mundo.getMessages().getMessage("you.attack.absent",new Object[]{this} ) , 
-					true);
-
-			setNewState ( IDLE , 0 );
+			if ( objetivo.getState() == Mobile.DEAD )
+			{
+				//The attacked Mobile isn't here because he's dead. This can happen e.g. because two opponents
+				//were attacking him, the first attack killed him and the second attack (this one) lands when
+				//he's already dead.
+				habitacionActual.reportAction(this, null, null,
+						mundo.getMessages().getMessage("someone.attacks.dead",new Object[]{this} ) , 
+						mundo.getMessages().getMessage("someone.attacks.you.dead",new Object[]{this} ) , 
+						mundo.getMessages().getMessage("you.attack.dead",new Object[]{this} ) , 
+						true);
+			}
+			else
+			{
+				//The attacked Mobile isn't here due to another reason (e.g. fleed like a chicken).
+				habitacionActual.reportAction(this, null, null,
+						//"$1 interrumpe su ataque ante la ausencia de su contrincante.\n", 
+						//"$1 vacila ante tu ausencia.\n", 
+						//"Te dispon�as a atacar; pero vacilas ante la ausencia de tu enemigo.\n", 
+						mundo.getMessages().getMessage("someone.attacks.absent",new Object[]{this} ) , 
+						mundo.getMessages().getMessage("someone.attacks.you.absent",new Object[]{this} ) , 
+						mundo.getMessages().getMessage("you.attack.absent",new Object[]{this} ) , 
+						true);
+			}
+			
+			setNewState ( IDLE , 1 );
 
 
 			return;

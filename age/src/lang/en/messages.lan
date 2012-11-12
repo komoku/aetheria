@@ -270,6 +270,11 @@ someone.attacks.absent=$1 interrupts the attack given the absence of the enemy.\
 someone.attacks.you.absent=$1 hesitates in your absence.\n
 you.attack.absent=You were going to attack, but you hesitate seeing the absence of your enemy.\n
 
+#$1 attacks someone who isn't there any longer
+someone.attacks.absent=$1 interrupts the attack given the death of the enemy.\n
+someone.attacks.you.absent=$1 hesitates in your death.\n
+you.attack.absent=You were going to attack, but you hesitate seeing the death of your enemy.\n
+
 #Combat: clash of weapons in the air
 someone.clashes.someone=$1 and $2's weapons clash in the air...\n
 enemy.clashes.you=Your weapon and $1's clash in the air...\n
