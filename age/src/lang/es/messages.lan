@@ -243,7 +243,7 @@ damage.90=terribles heridas
 damage.lethal=daño mortal
 
 #Informes de heridas
-woundstatus.1=está intacto
+woundstatus.1=está intact$oa
 woundstatus.5=tiene algún rasguño
 woundstatus.10=tiene ligeras heridas
 woundstatus.18=tiene heridas poco graves
@@ -251,12 +251,12 @@ woundstatus.25=tiene heridas de cierta consideración
 woundstatus.33=tiene heridas importantes
 woundstatus.40=tiene heridas graves
 woundstatus.50=tiene heridas preocupantes
-woundstatus.60=está gravemente herido
-woundstatus.70=está muy gravemente herido
-woundstatus.80=está críticamente herido
+woundstatus.60=está gravemente herid$oa
+woundstatus.70=está muy gravemente herid$oa
+woundstatus.80=está críticamente herid$oa
 woundstatus.90=está en las últimas
 woundstatus.100=está a un paso de la tumba
-woundstatus.lethal=está mortalmente herido
+woundstatus.lethal=está mortalmente herid$oa
 
 #Maná insuficiente para conjurar $spell
 not.enough.mana=No tienes suficiente maná para ejecutar ese hechizo.\n
