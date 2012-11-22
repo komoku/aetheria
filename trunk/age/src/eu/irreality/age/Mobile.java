@@ -6173,33 +6173,33 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		String result;
 
 		if ( percent <= 0.1 )
-			result = mundo.getMessages().getMessage("woundstatus.1",new Object[]{this});
+			result = mundo.getMessages().getMessage("woundstatus.1","$oa",(getGender()?"o":"a"),new Object[]{this});
 		else if ( percent < 5 )
-			result = mundo.getMessages().getMessage("woundstatus.5",new Object[]{this});
+			result = mundo.getMessages().getMessage("woundstatus.5","$oa",(getGender()?"o":"a"),new Object[]{this});
 		else if ( percent < 10 )
-			result = mundo.getMessages().getMessage("woundstatus.10",new Object[]{this});
+			result = mundo.getMessages().getMessage("woundstatus.10","$oa",(getGender()?"o":"a"),new Object[]{this});
 		else if ( percent < 18 )
-			result = mundo.getMessages().getMessage("woundstatus.18",new Object[]{this});
+			result = mundo.getMessages().getMessage("woundstatus.18","$oa",(getGender()?"o":"a"),new Object[]{this});
 		else if ( percent < 25 )
-			result = mundo.getMessages().getMessage("woundstatus.25",new Object[]{this});
+			result = mundo.getMessages().getMessage("woundstatus.25","$oa",(getGender()?"o":"a"),new Object[]{this});
 		else if ( percent < 33 )
-			result = mundo.getMessages().getMessage("woundstatus.33",new Object[]{this});
+			result = mundo.getMessages().getMessage("woundstatus.33","$oa",(getGender()?"o":"a"),new Object[]{this});
 		else if ( percent < 40 )
-			result = mundo.getMessages().getMessage("woundstatus.40",new Object[]{this});
+			result = mundo.getMessages().getMessage("woundstatus.40","$oa",(getGender()?"o":"a"),new Object[]{this});
 		else if ( percent < 50 )
-			result = mundo.getMessages().getMessage("woundstatus.50",new Object[]{this});
+			result = mundo.getMessages().getMessage("woundstatus.50","$oa",(getGender()?"o":"a"),new Object[]{this});
 		else if ( percent < 60 )
-			result = mundo.getMessages().getMessage("woundstatus.60",new Object[]{this});
+			result = mundo.getMessages().getMessage("woundstatus.60","$oa",(getGender()?"o":"a"),new Object[]{this});
 		else if ( percent < 70 )
-			result = mundo.getMessages().getMessage("woundstatus.70",new Object[]{this});
+			result = mundo.getMessages().getMessage("woundstatus.70","$oa",(getGender()?"o":"a"),new Object[]{this});
 		else if ( percent < 80 )
-			result = mundo.getMessages().getMessage("woundstatus.80",new Object[]{this});
+			result = mundo.getMessages().getMessage("woundstatus.80","$oa",(getGender()?"o":"a"),new Object[]{this});
 		else if ( percent < 90 )
-			result = mundo.getMessages().getMessage("woundstatus.90",new Object[]{this});
+			result = mundo.getMessages().getMessage("woundstatus.90","$oa",(getGender()?"o":"a"),new Object[]{this});
 		else if ( percent < 100 )
-			result = mundo.getMessages().getMessage("woundstatus.100",new Object[]{this});
+			result = mundo.getMessages().getMessage("woundstatus.100","$oa",(getGender()?"o":"a"),new Object[]{this});
 		else
-			result = mundo.getMessages().getMessage("woundstatus.lethal",new Object[]{this});
+			result = mundo.getMessages().getMessage("woundstatus.lethal","$oa",(getGender()?"o":"a"),new Object[]{this});
 
 		return result;
 
@@ -6220,6 +6220,11 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	public int getMaxMP()
 	{
 		return maxmp;
+	}
+	
+	public boolean getGender()
+	{
+		return gender;
 	}
 
 
