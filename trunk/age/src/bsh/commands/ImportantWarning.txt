@@ -1,0 +1,2 @@
+As of 2012-11-30, the command files in this directory are no longer used.
+Instead, the command files in bshfork/src/commands are the ones actually used.

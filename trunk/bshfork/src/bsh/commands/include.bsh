@@ -1,0 +1,119 @@
+/**
+	Cargar una librería.
+*/
+
+bsh.help.source = "usage: source( filename | URL )";
+
+/**
+	Cargar una librería.
+*/
+
+bsh.help.source = "usage: source( filename | URL )";
+
+//do not call this method directly
+Object doInclude( InputStream is , String libName ) 
+{
+
+	//System.err.println("doInclude called");
+
+	StringBuffer sb = new StringBuffer();
+	
+	BufferedReader br = new BufferedReader ( new InputStreamReader ( is , "ISO-8859-1" ) );
+	String linea;
+	while ( (linea=br.readLine()) != null )
+	{
+		//System.err.println("Line: " + linea);
+		sb.append ( linea );
+		sb.append ( "\n" );
+	}
+	
+	//System.err.println("Going to reference this.caller.caller");
+
+	if ( this.caller.caller.liblist == void )
+	{
+		this.caller.caller.liblist = new java.util.Vector();
+	}
+	
+	//fname = new File(filename).getName();
+	
+	//java.util.StringTokenizer st = new java.util.StringTokenizer(fname,".");
+	
+	//this.caller.liblist.add ( st.nextToken() );
+
+	this.caller.caller.liblist.add ( libName );
+
+	//System.err.println("libName added");
+
+	if ( this.caller.caller.libsloaded == void )
+	{
+	
+		//System.err.println("setting libsLoaded");
+	
+		this.caller.caller.libsloaded = true;
+		String temp = "source(world.getGlobalResource(\"libinvoke.bsh\"));";
+		//String temp = "source(\"libinvoke.bsh\");";
+		this.interpreter.eval (	temp , this.caller.caller.namespace );	
+		
+		//System.err.println("Evalled stuff");
+			
+	}	
+
+	return this.interpreter.eval ( sb.toString() , this.caller.caller.namespace );
+
+}
+
+
+Object include( String filename )
+{
+	//System.err.println("Include request: " + filename);
+	fname = new File(filename).getName();
+	java.util.StringTokenizer st = new java.util.StringTokenizer(fname,".");
+	String lName = st.nextToken();
+	try
+	{
+		return doInclude ( new FileInputStream ( filename ) , lName );
+	}
+	catch ( Exception fnfe ) //FileNotFoundException (file doesn't exist) or SecurityException (permission denied in applet, etc.)
+	{
+		try
+		{
+			String resLocation;
+			if ( !filename.startsWith("/") )
+				resLocation = "/" + filename;
+			else
+				resLocation = filename;
+			//URL url = self.getClass().getResource(resLocation);
+			//not allowed in applet: 
+			//URL url = self.getClass().getClassLoader().getResource(filename);
+			
+			//this doesn't make much sense, libraries more often than not not in the world at all
+			//URL url = world.getResource(filename);
+			
+			//better to do this:
+			URL url = world.getGlobalResource(filename);
+			//System.err.println("getGlobalResource returned URL: " + url);
+			//and if they want a world-based library let them do a getResource and use the include(URL) method.
+			
+			if ( url == null ) throw new IOException("Nothing found by getGlobalResource at " + filename);
+			String urlString = url.toString();
+			lName = urlString.substring(urlString.lastIndexOf('/')+1, urlString.lastIndexOf('.'));
+			//System.err.println("Openan stream to " + url + " for library name " + lName);
+			InputStream stream = url.openStream();
+			//System.err.println("Stream opened");
+			return doInclude ( stream , lName );
+		}
+		catch ( Exception e )
+		{
+			//System.err.println("Couldn't find library");
+			e.printStackTrace();
+			throw fnfe;
+		}
+	}
+}
+
+Object include ( URL url )
+{
+	String urlString = url.toString();
+	lName = urlString.substring(urlString.lastIndexOf('/')+1, urlString.lastIndexOf('.'));
+	return doInclude ( url.openStream() , lName );
+} 
