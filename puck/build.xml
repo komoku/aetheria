@@ -140,6 +140,20 @@
 		<copydir src="${dist}" dest="${fulldist}"/>
 	</target>
 	
+	<target name="distwithagefrommaster" depends="dist" description="generate a distribution of AGE+PUCK. Called from master file, assumes AGE has been already compiled">
+		<echo message="Creando distribución combinada AGE+PUCK..."/>
+		<mkdir dir="${fulldist}"/>		
+		<!--copydir src="${age}/dist" dest="${fulldist}"/>-->
+		<copy todir="${fulldist}">
+			<fileset dir="${age}/dist">
+				<exclude name="worlds/Morluck/**"/>
+				<exclude name="worlds/Morluck"/>
+				<exclude name="readme.txt"/> <!--devel kit has its own different readme-->
+			</fileset>
+		</copy>
+		<copydir src="${dist}" dest="${fulldist}"/>
+	</target>
+	
 	<target name="dist" depends="corejar" description="generate a distribution with the core jar and associated files">
 		<echo message="Generando distribución de PUCK..."/>
 		<echo message="Copiando jar..."/>
