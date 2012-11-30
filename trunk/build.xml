@@ -7,6 +7,7 @@
   <property name="playkit" location="dist/PlayersKit"/> <!--Distribution including AGE only-->
   <property name="devkit" location="dist/DevelopersKit"/> <!--Distribution including AGE and PUCK-->
   <property name="zipdir" location="dist"/>
+  <property name="age" value="age"/>
   <property name="puck" value="puck"/>
   <property name="bsh" value="bshfork"/>
   <property name="agedist" value="age/dist"/>
@@ -15,7 +16,7 @@
   <property name="lib" location="lib"/>
   <!--<property name="defaultconf" location="defaultconf"/>-->
 	
-	<target name="bshfork" description="generate a distribution of the BSH fork">
+	<target name="bshfork" depends="age" description="generate a distribution of the BSH fork">
 		<ant dir="${bsh}" target="jarall" inheritAll="false"/>
 		<!--Now copy the new BSH distribution-->
 		<copy todir="${lib}">
@@ -24,8 +25,13 @@
 			</fileset>
 		</copy>
     </target>
+	
+	<target name="age" description="generate the AGE jar">
+		<ant dir="${age}" target="corejar" inheritAll="false"/>
+		<!--This already copies it to lib-->
+    </target>
 		
-	<target name="makekits" depends="bshfork" description="generate a distribution of AGE+PUCK">
+	<target name="makekits" depends="bshfork,age" description="generate a distribution of AGE+PUCK">
 		<echo message="Creando Player's Kit y Developer's Kit de AGE y PUCK..."/>
 		<ant dir="${puck}" target="distwithage" inheritAll="false"/>
 		<!--Now copy AGE distribution up to fancy directory-->
