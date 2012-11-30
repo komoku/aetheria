@@ -13,6 +13,7 @@
   <property name="worlds" location="../worlds"/>
   <property name="corejar" value="AgeCore.jar"/>
   <property name="onejar" value="AgeFull.jar"/>
+  <property name="beanshell" value="../bshfork/"/>
   <!--<property name="defaultconf" location="defaultconf"/>-->
 
   <target name="init" depends="clean">
@@ -38,7 +39,7 @@
         description="compile the source " >
         <echo message="Compilando AGE..."/>
     <!-- Compile the java code from ${src} into ${build} -->
-    <javac sourcepath="" srcdir="${src}" destdir="${build}" classpath=".;${lib}/bsh-2.0b4.jar;${lib}/micromod.jar;${lib}/basicplayer3.0.jar;${lib}/jl1.0.jar;${lib}/commons-cli-1.2.jar;${lib}/svgSalamander.jar;${lib}/plugin.jar" target="1.4" source="1.4" debug="true" encoding="iso-8859-1">
+    <javac sourcepath="" srcdir="${src}" destdir="${build}" classpath=".;${beanshell}/src/;${lib}/micromod.jar;${lib}/basicplayer3.0.jar;${lib}/jl1.0.jar;${lib}/commons-cli-1.2.jar;${lib}/svgSalamander.jar;${lib}/plugin.jar" target="1.4" source="1.4" debug="true" encoding="iso-8859-1">
   		<include name="**/*.java"/>
   		<exclude name="**/conf/**"/>
     	<!--exclude does not seem to work-->
@@ -85,7 +86,7 @@
 		<copy todir="${build}/bsh/commands">
 			<fileset dir="${src}/bsh/commands"/>
 		</copy>
-		<jar jarfile="${build}/${corejar}" manifest="${conf}/MANIFEST.MF" basedir="${build}" includes="**"/>
+		<jar jarfile="${build}/${corejar}" manifest="${conf}/MANIFEST.MF" basedir="${build}" includes="**" excludes="bsh/**"/>
 		<echo message="Copiando archivo del núcleo a lib..."/>
 		<copy todir="${lib}">
 			<fileset dir="${build}">

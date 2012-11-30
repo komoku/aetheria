@@ -1,0 +1,12 @@
+
+void assert ( boolean condition )
+{
+	if ( !condition )
+		throw ( new BSHAssertionFailedException() );
+}
+
+void assert ( boolean condition , String message )
+{
+	if ( !condition )
+		throw ( new BSHAssertionFailedException() );
+}

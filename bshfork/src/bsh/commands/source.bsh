@@ -1,23 +1,70 @@
 /**
 	Read filename into the interpreter and evaluate it in the current
 	namespace.  Like the Bourne Shell "." command.
-	This command acts exactly like the eval() command but reads from a file 
-	or URL source.
-	@see eval() for more information.
-	@throws bsh.EvalError or bsh.TargetError on errors in the sourced script.
+	Modified by Carlos.
 */
 
 bsh.help.source = "usage: source( filename | URL )";
 
 Object source( String filename ) {
-	// source with filename preserves file name in error messages
-	return this.interpreter.source( filename, this.caller.namespace );
+
+	try
+	{
+
+		//System.setProperty("file.encoding","ISO-8859-1");
+		
+		StringBuffer sb = new StringBuffer();
+		BufferedReader br = new BufferedReader ( 
+		//	new InputStreamReader ( new FileInputStream ( filename ) , "ISO-8859-1" ) 
+			new InputStreamReader ( new FileInputStream ( filename ) , "UTF-8" ) 
+		);
+		String linea;
+		while ( (linea=br.readLine()) != null )
+		{
+			sb.append ( linea );
+			sb.append ( "\n" );
+		}
+	
+		//return this.interpreter.source( filenameToSource, this.caller.namespace );
+	
+		return this.interpreter.eval ( sb.toString() , this.caller.namespace );
+		
+	}
+	catch ( Exception fnfe ) //FileNotFoundException (file doesn't exist) or SecurityException (in applet, etc.)
+	{
+		try
+		{
+			String resLocation;
+			if ( !filename.startsWith("/") )
+				resLocation = "/" + filename;
+			else
+				resLocation = filename;
+			//URL url = self.getClass().getResource(resLocation);
+			//not allowed in applets: 
+			URL url;
+			if ( world != void ) //world is defined
+				url = world.getResource(filename);
+			else	
+			 	url = this.getClass().getClassLoader().getResource(filename);
+			if ( url == null ) throw new IOException("Nothing found by getResource at " + filename);
+			return this.interpreter.eval( 
+				new InputStreamReader(url.openStream() , "UTF-8" ), this.caller.namespace,  
+				"URL: "+url.toString()
+			);
+		}
+		catch ( Exception e )
+		{
+			throw fnfe;
+		}
+	}
+
 }
 
 Object source( URL url ) {
 	return this.interpreter.eval( 
-		new InputStreamReader(url.openStream()), this.caller.namespace,  
+		new InputStreamReader(url.openStream() , "UTF-8" ), this.caller.namespace,  
 		"URL: "+url.toString()
 	);
 }
 
+	
