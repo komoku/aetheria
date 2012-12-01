@@ -1325,6 +1325,51 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			return ( nItems + " " + getPlurName( comparand ) );	
 		}
 	}
+	
+	
+	/**
+	 * Obtains an extra description, representing a description of a particular component, feature or aspect of this Item.
+	 * This method's implementation has been changed as of 2012-12-01 to match in a more useful way, similar to the Entity moderateMatchesCommand() method.
+	 * @param requestedName The name to match against descriptions (e.g. typed by the player)
+	 * @param viewer The Entity for which the description will be customized.
+	 * @return A description for the component/feature/aspect named requestedName, or null if no such component exists.
+	 */
+	public String getExtraDescription ( String requestedName , Entity viewer )
+	{
+		if ( requestedName == null || requestedName.length() == 0 ) return null; 
+		for ( int i = 0 ; i < extraDescriptionNameArrays.size() ; i++ )
+		{
+			String[] curNameArray = (String[]) extraDescriptionNameArrays.get(i);
+			Description[] curDesArray = (Description[]) extraDescriptionArrays.get(i);
+			for ( int j = 0 ; j < curNameArray.length ; j++ )
+			{
+				String currentReferenceName = curNameArray[j];
+				int position = requestedName.toLowerCase().indexOf(currentReferenceName.toLowerCase());
+				if ( position < 0 ) //does not match
+					continue;
+				if ( position != 0 && !Character.isWhitespace(requestedName.charAt(position-1)) ) //matches but starts at a place other than beginning/whitespace
+					continue;
+				if ( position+currentReferenceName.length() != requestedName.length() && !Character.isWhitespace(requestedName.charAt(position+currentReferenceName.length())) ) //matches but ends at a place other than end/whitespace
+					continue;
+				//if we have reached this point, the match is acceptable
+				String desString="";
+				for ( int k = 0 ; k < curDesArray.length ; k++ )
+				{
+					if ( curDesArray[k].matchesConditions(this,viewer) ) //or general comparand?
+					{
+						desString += "\n";
+						desString += curDesArray[k].getText();
+					}
+				}	
+				if ( desString.length() > 0 )
+					return desString.substring(1); //quitamos primer \n
+				else
+					return null;
+			}
+		}	
+		//nothing found
+		return null;
+	}
 
 	/*
 	public String getExtraDescription ( String thingieName )
@@ -1345,6 +1390,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	}
 	 */
 
+	/*
 	public String getExtraDescription ( String thingieName , Entity viewer )
 	{
 		if ( thingieName == null || thingieName.length() == 0 ) return null; 
@@ -1374,7 +1420,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			}
 		}
 		return null;
-	}	
+	}
+	*/
 
 	/*
 	 * Returns the most specific name with which we can refer to an object in a command.
