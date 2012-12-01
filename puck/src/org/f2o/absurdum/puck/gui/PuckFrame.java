@@ -136,7 +136,7 @@ public class PuckFrame extends JFrame
 	    setExtendedState(state);
 	}
 	
-	private void refreshTitle()
+	public void refreshTitle()
 	{
 		if ( editingFileName != null )
 			setTitle(UIMessages.getInstance().getMessage("frame.title") + " ["+editingFileName+"]");
@@ -468,6 +468,16 @@ public class PuckFrame extends JFrame
 	}
 	
 	/**
+	 * Resets the memory of the file that PUCK is currently editing (which determines the name to use for the "Save" menu action
+	 * and the availability of that action).
+	 */
+	public void resetCurrentlyEditingFile()
+	{
+		editingFileName = null;
+		saveMenuItem.setEnabled(false);
+	}
+	
+	/**
 	 * Instances and shows Puck's main frame.
 	 */
 	public PuckFrame ()
@@ -688,8 +698,7 @@ public class PuckFrame extends JFrame
 						WorldNode wn = new WorldNode(wp);
 						graphPanel.setWorldNode(wn);
 						propPanel.show(graphPanel.getWorldNode());
-						editingFileName = null;
-						saveMenuItem.setEnabled(false);
+						resetCurrentlyEditingFile();
 						refreshTitle();
 						revalidate();
 					}
