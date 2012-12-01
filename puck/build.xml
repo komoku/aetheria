@@ -58,8 +58,10 @@
 		<fileset dir="${src}">
 			<include name="**/Messages.*"/>
 			<include name="**/UIMessages.*"/> <!-- this is for future name change -->
-			<include name="**/codeAssist.xml"/>
+			<!--<include name="**/codeAssist.xml"/>
+			<include name="**/worldTemplates.xml"/>-->
 			<include name="**/*.tpl"/>
+			<include name="**/staticconf/**/*.xml"/>
 		</fileset>
 	</copy>
   	

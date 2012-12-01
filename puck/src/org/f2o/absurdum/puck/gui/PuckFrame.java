@@ -30,8 +30,10 @@ import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -67,10 +69,9 @@ import org.f2o.absurdum.puck.gui.panels.BSHCodeFrame;
 import org.f2o.absurdum.puck.gui.panels.GraphElementPanel;
 import org.f2o.absurdum.puck.gui.panels.WorldPanel;
 import org.f2o.absurdum.puck.gui.skin.ImageManager;
+import org.f2o.absurdum.puck.gui.templates.WorldTemplateMenuBuilder;
 import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.w3c.dom.Document;
-
-import com.jstatcom.component.JHelpAction;
 
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.windowing.MenuMnemonicOnTheFly;
@@ -90,9 +91,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -670,9 +673,10 @@ public class PuckFrame extends JFrame
 					}
 				}
 				);
-		JMenuItem newMenuItem = new JMenuItem(UIMessages.getInstance().getMessage("menu.file.new"));
-		newMenuItem.setMnemonic(KeyEvent.VK_N);
-		newMenuItem.addActionListener ( new ActionListener() 
+		JMenu newMenu = new JMenu(UIMessages.getInstance().getMessage("menu.file.new"));
+		JMenuItem newBlankMenuItem = new JMenuItem(UIMessages.getInstance().getMessage("menu.file.new.blank"));
+		//newBlankMenuItem.setMnemonic(KeyEvent.VK_N);
+		newBlankMenuItem.addActionListener ( new ActionListener() 
 				{
 					public void actionPerformed ( ActionEvent evt )
 					{
@@ -687,9 +691,20 @@ public class PuckFrame extends JFrame
 						editingFileName = null;
 						saveMenuItem.setEnabled(false);
 						refreshTitle();
+						revalidate();
 					}
 				}
 		);
+		newMenu.add(newBlankMenuItem);
+		JMenu templateMenus = new WorldTemplateMenuBuilder(this).getMenu();
+		if ( templateMenus != null )
+		{
+			for ( int i = 0 ; i < templateMenus.getItemCount() ; i++ )
+			{
+				if ( i == 0 ) newMenu.add(new JSeparator());
+				newMenu.add(templateMenus.getItem(i));
+			}
+		}
 		JMenuItem saveAsMenuItem = new JMenuItem(UIMessages.getInstance().getMessage("menu.file.saveas"));
 		saveAsMenuItem.addActionListener ( new ActionListener() 
 				{
@@ -747,16 +762,7 @@ public class PuckFrame extends JFrame
 						if ( opt == JFileChooser.APPROVE_OPTION )
 						{
 							File f = jfc.getSelectedFile();
-							try
-							{
-								openFile(f);
-								//propPanel.loadWithou(wn);
-							}
-							catch ( Exception e )
-							{
-								JOptionPane.showMessageDialog(PuckFrame.this,e.getLocalizedMessage(),"Whoops!",JOptionPane.ERROR_MESSAGE);
-								e.printStackTrace();
-							}
+							openFileOrShowError(f);
 						}
 						
 						//graphPanel.setVisible(true);
@@ -782,7 +788,7 @@ public class PuckFrame extends JFrame
 					}
 				}
 				);
-		fileMenu.add(newMenuItem);
+		fileMenu.add(newMenu);
 		fileMenu.add(openMenuItem);
 		fileMenu.add(openRecentMenu);
 		updateRecentMenu();
@@ -1168,10 +1174,12 @@ public class PuckFrame extends JFrame
 		System.exit(0);
 	}
 	
-	public void openFile ( File f ) throws TransformerException
+
+	public void openStream ( InputStream is ) throws TransformerException
 	{
+		if ( is == null ) throw new NullPointerException("Null stream passed to openStream()");
 		Transformer t = TransformerFactory.newInstance().newTransformer();
-		Source s = new StreamSource(f);
+		Source s = new StreamSource(is);
 		DOMResult r = new DOMResult();
 		t.transform(s,r);
 		GraphElementPanel.emptyQueue();
@@ -1181,11 +1189,53 @@ public class PuckFrame extends JFrame
 		WorldPanel wp = new WorldPanel(graphPanel);
 		WorldNode wn = new WorldNode(wp);
 		graphPanel.setWorldNode(wn);
-		wp.initFromXML(((Document)r.getNode()).getFirstChild());			
+		wp.initFromXML(((Document)r.getNode()).getFirstChild());	
+		revalidate();
+	}
+	
+	public void openFile ( File f ) throws TransformerException, FileNotFoundException
+	{
+		InputStream is = new FileInputStream(f);
+		openStream(is);
 		editingFileName = f.toString();
 		addRecentFile(f);
 		saveMenuItem.setEnabled(true);
 		refreshTitle();
+	}
+	
+	/**
+	 * Tries to open a world file, showing an error dialog if this is not possible.
+	 * @param f
+	 * @return true if the file was successfully opened, false if there was a problem.
+	 */
+	public boolean openFileOrShowError ( File f )
+	{
+		try
+		{
+			openFile(f);
+			return true;
+		}
+		catch ( Exception e )
+		{
+			JOptionPane.showMessageDialog(PuckFrame.this,e.getLocalizedMessage(),"Whoops!",JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean openStreamOrShowError ( InputStream is )
+	{
+		try
+		{
+			openStream(is);
+			return true;
+		}
+		catch ( Exception e )
+		{
+			JOptionPane.showMessageDialog(PuckFrame.this,e.getLocalizedMessage(),"Whoops!",JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	public GraphEditingPanel getGraphEditingPanel()

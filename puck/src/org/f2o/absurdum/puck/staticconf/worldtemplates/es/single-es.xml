@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<World author="" date="" language="es" moduleName="Aventura de texto monojugador" parserVersion="1.2.4" type="" version="" worldDir="." worldName="Aventura de texto monojugador">
+<IdeMetaInf>
+<View xoffset="0.0" yoffset="0.0" zoom="2.0"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Limbo" x="120" y="120"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Habitación inicial" x="180" y="180"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.CharacterNode" name="Jugador" x="180" y="120"/>
+</IdeMetaInf>
+<PlayerList>
+<Player id="Jugador"/>
+</PlayerList>
+<VisualConfiguration>
+<Colors>
+<Story color="#ffffff"/>
+<Information color="#ffffff"/>
+<Default color="#ffffff"/>
+<Input color="#ffffff"/>
+<Description color="#ffffff"/>
+<Foreground color="#ffffff"/>
+<Important color="#ffffff"/>
+<Denial color="#ffffff"/>
+<Action color="#ffffff"/>
+<Background color="#000000"/>
+<Error color="#ff0000"/>
+</Colors>
+<Font filename="" name="Courier New" size="15.0"/>
+</VisualConfiguration>
+<Rooms>
+<Room name="Limbo">
+<DescriptionList>
+<Description>Éste es un buen lugar para enviar todas las entidades de las que te quieras deshacer en tu aventura: monstruos que mueran, objetos que desaparezcan o que se transformen en otros, etc.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<PathList/>
+<Inventory/>
+<MobileList/>
+<RelationshipList/>
+</Room>
+<Room name="Habitación inicial">
+<DescriptionList>
+<Description>La sala en la que comienza la aventura.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<PathList/>
+<Inventory/>
+<MobileList>
+<MobRef id="Jugador"/>
+</MobileList>
+<RelationshipList>
+<Relationship id="Jugador">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+</Rooms>
+<Items/>
+<Mobiles>
+<Mobile gender="true" hp="10" maxhp="10" maxmp="10" mp="10" name="Jugador">
+<SingularNames/>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>jugador</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>Eres tú, el héroe de esta historia.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Traits>
+<SkillList/>
+</Traits>
+<Inventory/>
+<RelationshipList/>
+<CurrentRoom id="Habitación inicial"/>
+<LastRoom id="Habitación inicial"/>
+</Mobile>
+</Mobiles>
+<Spells/>
+<AbstractEntities/>
+</World>

@@ -128,13 +128,19 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 	private HashMap colorsMap = new HashMap();
 	private HashMap buttonsMap = new HashMap();
 	
+	public static String DEFAULT_AGE_VERSION = "1.2.4";
+	
+	public void setDefaultWorldVersion()
+	{
+		tfAgeVersion.setText(DEFAULT_AGE_VERSION);
+	}
 	
 	public WorldPanel ( final GraphEditingPanel gep )
 	{
 		
 		super();
 		this.gep = gep;
-		tfAgeVersion.setText("1.2.4");
+		setDefaultWorldVersion();
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		entitiesPanel = new EntityListPanel(gep);
 	}
