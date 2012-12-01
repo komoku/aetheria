@@ -957,8 +957,11 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		//better scrolling
 		//elScrolling.revalidate();
 		
-		//if ( !accessibleScrollMode )
-		//{
+
+		boolean smoothScrolling = false;
+		
+		if ( !smoothScrolling )
+		{
 			SwingUtilities.invokeLater( new Runnable()
 			{
 				public void run()
@@ -968,7 +971,56 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 					elAreaTexto.repaint();
 				}
 			});
-		//}
+		}
+		
+			
+		//EXPERIMENTAL FUNCTIONALITY
+		
+		if ( smoothScrolling )
+		{
+			//TODO: The stopping criterion return probably returns from the inner run but not from the outer for.
+			//TODO: If there are several pending smooth scrolls, accumulate into one (i.e. set a single target position and scroll to it).
+			Thread animation = new Thread()
+			{
+				public void run()
+				{
+					for (;;)
+					{
+						try 
+						{
+							SwingUtilities.invokeAndWait(new Runnable() {
+								public void run()
+								{
+									Point p = elScrolling.getViewport().getViewPosition();
+									p.y = p.y+1;
+									Rectangle r = elScrolling.getViewport().getViewRect();
+									if ( r.y + r.height >= elAreaTexto.getPreferredSize().getHeight() ) return; //stopping criterion?
+									elScrolling.getViewport().setViewPosition(p);
+									//elAreaTexto.setVisible(true);
+									elAreaTexto.repaint();
+									elAreaTexto.revalidate();
+								}
+							}
+									);
+						} catch (InvocationTargetException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					} //for
+				} //run
+			};
+			animation.start();	
+		}
+
 		
 
 		
