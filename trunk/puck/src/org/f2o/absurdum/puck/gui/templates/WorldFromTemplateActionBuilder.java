@@ -38,7 +38,11 @@ public class WorldFromTemplateActionBuilder
 				}
 				boolean success = pf.openStreamOrShowError(is);
 				if ( success )
+				{
 					((WorldPanel)pf.getGraphEditingPanel().getWorldNode().getAssociatedPanel()).setDefaultWorldVersion();
+					pf.resetCurrentlyEditingFile();
+					pf.refreshTitle();
+				}
 			}
 		};
 	}
