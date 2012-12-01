@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<puck-world-templates>
+	<templates language="es" name="Crear desde plantilla" description="Crear desde plantilla">
+		<item name="Aventura de texto monojugador" description="Aventura de texto monojugador" template-ref="es/single-es.xml"/>
+	</templates>
+	<templates language="en" name="Create from template" description="Create from template">
+		<item name="Single-player text adventure" description="Single-player text adventure" template-ref="en/single-en.xml"/>
+	</templates>
+</puck-world-templates>

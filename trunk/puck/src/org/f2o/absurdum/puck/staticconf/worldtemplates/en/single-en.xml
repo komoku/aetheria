@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<World author="" date="" language="en" moduleName="Single-player text adventure" parserVersion="1.2.4" type="" version="" worldDir="." worldName="Single-player text adventure">
+<IdeMetaInf>
+<View xoffset="0.0" yoffset="0.0" zoom="2.0"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Limbo" x="120" y="120"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Initial room" x="180" y="180"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.CharacterNode" name="Player" x="180" y="120"/>
+</IdeMetaInf>
+<PlayerList>
+<Player id="Player"/>
+</PlayerList>
+<VisualConfiguration>
+<Colors>
+<Story color="#ffffff"/>
+<Information color="#ffffff"/>
+<Default color="#ffffff"/>
+<Input color="#ffffff"/>
+<Description color="#ffffff"/>
+<Foreground color="#ffffff"/>
+<Important color="#ffffff"/>
+<Denial color="#ffffff"/>
+<Action color="#ffffff"/>
+<Background color="#000000"/>
+<Error color="#ff0000"/>
+</Colors>
+<Font filename="" name="Courier New" size="15.0"/>
+</VisualConfiguration>
+<Rooms>
+<Room name="Limbo">
+<DescriptionList>
+<Description>This is a good place to send all the entities in your text adventure that you want to get rid of: monsters who die, items that disappear or get transformed into others, etc.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<PathList/>
+<Inventory/>
+<MobileList/>
+<RelationshipList/>
+</Room>
+<Room name="Initial room">
+<DescriptionList>
+<Description>The room where the adventure begins.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<PathList/>
+<Inventory/>
+<MobileList>
+<MobRef id="Player"/>
+</MobileList>
+<RelationshipList>
+<Relationship id="Player">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+</Rooms>
+<Items/>
+<Mobiles>
+<Mobile gender="true" hp="10" maxhp="10" maxmp="10" mp="10" name="Player">
+<SingularNames/>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>player</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>It's you, the hero of this story.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Traits>
+<SkillList/>
+</Traits>
+<Inventory/>
+<RelationshipList/>
+<CurrentRoom id="Initial room"/>
+<LastRoom id="Initial room"/>
+</Mobile>
+</Mobiles>
+<Spells/>
+<AbstractEntities/>
+</World>

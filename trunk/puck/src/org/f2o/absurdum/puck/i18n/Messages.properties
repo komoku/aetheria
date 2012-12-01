@@ -111,6 +111,7 @@ menu.file.saveas=Guardar como...
 menu.file.open=Abrir...
 menu.file.recent=Abrir reciente
 menu.file.new=Nuevo
+menu.file.new.blank=Mundo en blanco
 menu.file.save=Guardar
 menu.file.exit=Salir
 gender.m=Masculino
