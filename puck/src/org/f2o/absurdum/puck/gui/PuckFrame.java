@@ -700,7 +700,10 @@ public class PuckFrame extends JFrame
 						propPanel.show(graphPanel.getWorldNode());
 						resetCurrentlyEditingFile();
 						refreshTitle();
-						revalidate();
+						//revalidate(); //only since java 1.7
+						//invalidate();
+						//validate();
+						split.revalidate(); //JComponents do have it before java 1.7 (not JFrame)
 					}
 				}
 		);
@@ -1199,7 +1202,10 @@ public class PuckFrame extends JFrame
 		WorldNode wn = new WorldNode(wp);
 		graphPanel.setWorldNode(wn);
 		wp.initFromXML(((Document)r.getNode()).getFirstChild());	
-		revalidate();
+		//revalidate(); //only since java 1.7
+		//invalidate();
+		//validate();
+		split.revalidate(); //JComponents do have it before java 1.7 (not JFrame)
 	}
 	
 	public void openFile ( File f ) throws TransformerException, FileNotFoundException
