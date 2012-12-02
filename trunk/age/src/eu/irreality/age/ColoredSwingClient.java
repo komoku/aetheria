@@ -7,6 +7,7 @@ package eu.irreality.age;
 
 
 import javax.swing.*;
+import javax.swing.Timer;
 
 import java.util.*;
 import java.io.File;
@@ -978,8 +979,34 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		
 		if ( smoothScrolling )
 		{
+			
+			//de-anonymize?
+			
+			
+			final Timer smoothScrollTimer = new Timer(20,null);
+			Action smoothScrollAction = new AbstractAction()
+			{
+				public void actionPerformed ( ActionEvent evt )
+				{
+					//runs on the EDT
+					Point p = elScrolling.getViewport().getViewPosition();
+					p.y = p.y+2;
+					Rectangle r = elScrolling.getViewport().getViewRect();
+					if ( r.y + r.height >= elAreaTexto.getPreferredSize().getHeight() ) smoothScrollTimer.stop(); //stopping criterion?
+					elScrolling.getViewport().setViewPosition(p);
+					//elAreaTexto.setVisible(true);
+					elAreaTexto.repaint();
+					//elAreaTexto.revalidate();
+				}
+			};
+			smoothScrollTimer.addActionListener(smoothScrollAction);
+			smoothScrollTimer.start();
+			
+			
 			//TODO: The stopping criterion return probably returns from the inner run but not from the outer for.
 			//TODO: If there are several pending smooth scrolls, accumulate into one (i.e. set a single target position and scroll to it).
+			
+			/*
 			Thread animation = new Thread()
 			{
 				public void run()
@@ -1018,7 +1045,9 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 					} //for
 				} //run
 			};
-			animation.start();	
+			animation.start();
+			*/
+			
 		}
 
 		
