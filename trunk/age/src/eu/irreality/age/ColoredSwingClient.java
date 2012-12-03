@@ -658,7 +658,12 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
                 else if ( wentUp ) //this is required because the scrollpane could be temporarily not at the bottom due to more text being added, and due to scrolling being handled
                 					//with invokeLater() and taking a moment to actually take place. But in this case, the scroll pane actually counts as being at the bottom
                 					//(i.e. we don't have to stop autoscrolling)
+                {
                 	scrollPaneAtBottom = false;
+                	//if we're doing smooth scrolling, we stop it
+                	if ( smoothScrollTimer != null && smoothScrollTimer.isRunning() )
+                		smoothScrollTimer.stop();
+                }
              
             }
         });
