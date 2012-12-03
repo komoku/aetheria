@@ -644,15 +644,14 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 			
             public void adjustmentValueChanged(AdjustmentEvent event)
             {
+            	if (event.getValueIsAdjusting()) return;
+            	
                 JScrollBar  vbar = (JScrollBar) event.getSource();
                 
                 boolean wentUp = false;
                 int newYPosInView = elScrolling.getViewport().getViewPosition().y;
                 if ( newYPosInView < lastYPosInView ) wentUp = true;
-                lastYPosInView = newYPosInView;
-                
-                if (event.getValueIsAdjusting()) return;
-                
+                lastYPosInView = newYPosInView;                                
                 
                 if ((vbar.getValue() + vbar.getVisibleAmount()) == vbar.getMaximum())
                 	scrollPaneAtBottom = true;
