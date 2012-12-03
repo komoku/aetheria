@@ -1,15 +1,21 @@
 package eu.irreality.age.swing;
 
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.StyleConstants;
 
 import eu.irreality.age.ColoredSwingClient;
 
@@ -81,6 +87,57 @@ public class SmoothScrollTimer extends Timer
 		int fps = 1000/this.getDelay();
 		return pixelsPerFrame * fps;
 	}
+	
+	/*Returns height of a line in pixels in the client.*/
+	private int getLineHeight()
+	{
+		MutableAttributeSet atributos = cl.getTextAttributes();
+		String fontFamily = StyleConstants.getFontFamily(atributos);
+		int fontSize = StyleConstants.getFontSize(atributos);
+		Font font = new Font(fontFamily,Font.PLAIN,fontSize);
+		return cl.getTextArea().getGraphics().getFontMetrics(font).getHeight();
+	}
+	
+	private void doSetLinesPerSecond ( double linesPerSecond )
+	{
+		int lineHeight = getLineHeight();
+		int candidateSpeed = (int) ( linesPerSecond * lineHeight );
+		if ( candidateSpeed > 0 )
+			setSpeed(candidateSpeed);
+		else
+			setSpeed(1);
+	}
+	
+	/**
+	 * Sets the speed of scrolling in lines per second, leaving the frame unchanged but changing pixelsPerFrame.
+	 * Executes automatically in dispatch thread because it queries components.
+	 * @param pixelsPerSecond
+	 */
+	public void setLinesPerSecond ( final double linesPerSecond )
+	{
+			ColoredSwingClient.execInDispatchThread( new Runnable()
+			{
+				public void run()
+				{
+					doSetLinesPerSecond(linesPerSecond);
+				}
+			}
+			);
+	}
+	
+	/**
+	 * Gets the speed of scrolling in lines per second.
+	 * @param pixelsPerSecond
+	 */
+	//yeah, but how do we get the return value from invokeLater?
+	private double doGetLinesPerSecond (  )
+	{
+		int lineHeight = getLineHeight();
+		return ((double)getSpeed()/(double)lineHeight);
+	}
+	
+	
+
 	
 	public int calculateSpeed ( ActionEvent evt , ColoredSwingClient cl )
 	{

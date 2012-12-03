@@ -1042,6 +1042,11 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		smoothScrollTimer.setSpeed(pixelsPerSecond);
 	}
 	
+	public void setScrollLinesPerSecond ( double linesPerSecond )
+	{
+		smoothScrollTimer.setLinesPerSecond(linesPerSecond);
+	}
+	
 	public static final int INSTANT_SCROLLING = -1;
 	public static final int FIXED_SPEED_SMOOTH_SCROLLING = SmoothScrollTimer.FIXED_SPEED_MODE;
 	public static final int ADAPTIVE_SPEED_SMOOTH_SCROLLING = SmoothScrollTimer.ADAPTIVE_SPEED_MODE;
@@ -2081,6 +2086,11 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	public Dimension getScreenSize()
 	{
 		return laVentana.getScreenSize();
+	}
+	
+	public MutableAttributeSet getTextAttributes()
+	{
+		return atributos;
 	}
 	
 }
