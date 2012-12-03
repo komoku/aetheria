@@ -466,6 +466,7 @@ de la ventana hasta acabar de cargar.
 											
 											if ( logFile != null )
 											{
+												((ColoredSwingClient)io).hideForLogLoad();
 												if ( ((ColoredSwingClient)io).getSoundClient() instanceof AGESoundClient )
 												{
 													AGESoundClient asc = (AGESoundClient) ((ColoredSwingClient)io).getSoundClient();
@@ -497,6 +498,7 @@ de la ventana hasta acabar de cargar.
 						}
 						catch ( Exception e )
 						{
+							((ColoredSwingClient)io).showAfterLogLoad();
 							e.printStackTrace();
 						}
 						
@@ -527,6 +529,7 @@ de la ventana hasta acabar de cargar.
 						}
 						catch ( Exception e )
 						{
+							((ColoredSwingClient)io).showAfterLogLoad();
 							e.printStackTrace();
 						}
 						
@@ -656,6 +659,7 @@ de la ventana hasta acabar de cargar.
 						}
 						catch ( Exception e )
 						{
+							((ColoredSwingClient)io).showAfterLogLoad();
 							e.printStackTrace();
 						}
 						
@@ -797,6 +801,7 @@ de la ventana hasta acabar de cargar.
 							catch ( Exception exc )
 							{
 								//write("¡No se ha podido cargar el estado!\n");
+								((ColoredSwingClient)io).showAfterLogLoad();
 								write(UIMessages.getInstance().getMessage("swing.cannot.read.state","$file",stateFile));
 								write(exc.toString());
 								exc.printStackTrace();
@@ -815,17 +820,12 @@ de la ventana hasta acabar de cargar.
 								//DONE!!
 								//theWorld.getPlayer().prepareLog ( logFile ); //el jugador ejecutará los comandos del log
 								
-								System.out.println("RLTLTL");
-								System.out.println("Player list is " + theWorld.getPlayerList());
-								//System.out.println("Single player is " + theWorld.getPlayer());
-								System.out.println("PECADORL");
-								
-								theWorld.prepareLog(logFile);
-								
+								theWorld.prepareLog(logFile);								
 								theWorld.setRandomNumberSeed( logFile );
 							}
 							catch ( Exception exc )
 							{
+								((ColoredSwingClient)io).showAfterLogLoad();
 								//write("Excepción al leer el fichero de log: " + exc + "\n");
 								write(UIMessages.getInstance().getMessage("swing.cannot.read.log","$exc",exc.toString()));
 								exc.printStackTrace();
