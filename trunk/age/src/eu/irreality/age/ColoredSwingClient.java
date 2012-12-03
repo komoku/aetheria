@@ -47,6 +47,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	private JScrollPane elScrolling;
 	private boolean scrollPaneAtBottom = true; //this is automatically set to true if scroll pane is at bottom, false otherwise
 	private boolean smoothScrolling = false; //whether scrolling should be smooth
+	private SmoothScrollTimer smoothScrollTimer; //timer for smooth scrolling
 	private SwingEditBoxListener elEscuchador;	
 	private Vector gameLog;
 	private AGEClientWindow laVentana;
@@ -638,17 +639,31 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		elScrolling.setViewportBorder(BorderFactory.createEmptyBorder());
 		elScrolling.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener()
         {
+			
+			int lastYPosInView = 0;
+			
             public void adjustmentValueChanged(AdjustmentEvent event)
             {
                 JScrollBar  vbar = (JScrollBar) event.getSource();
-
+                
+                boolean wentUp = false;
+                int newYPosInView = elScrolling.getViewport().getViewPosition().y;
+                if ( newYPosInView < lastYPosInView ) wentUp = true;
+                lastYPosInView = newYPosInView;
+                
                 if (event.getValueIsAdjusting()) return;
                 
-                scrollPaneAtBottom = 
-                	((vbar.getValue() + vbar.getVisibleAmount()) == vbar.getMaximum());
+                
+                if ((vbar.getValue() + vbar.getVisibleAmount()) == vbar.getMaximum())
+                	scrollPaneAtBottom = true;
+                else if ( wentUp ) //this is required because the scrollpane could be temporarily not at the bottom due to more text being added, and due to scrolling being handled
+                					//with invokeLater() and taking a moment to actually take place. But in this case, the scroll pane actually counts as being at the bottom
+                					//(i.e. we don't have to stop autoscrolling)
+                	scrollPaneAtBottom = false;
              
             }
         });
+		smoothScrollTimer = new SmoothScrollTimer ( 20 , this ); //timer for smooth scrolling
 		
 		elAreaTexto.setForeground(java.awt.Color.white);
 		elAreaTexto.setBackground(java.awt.Color.black);
@@ -994,7 +1009,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		//scroll the JScrollPane to the bottom
 		//if ( needsScroll && ! scrollIsAtBottom() )
 		
-		if ( needScroll )
+		if ( needScroll && !processingLog )
 		{
 			scrollToBottom();
 		}
@@ -1011,6 +1026,40 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		this.smoothScrolling = smoothScrolling;
 	}
 	
+	
+	private void fastScrollToBottom()
+	{
+	
+		//Nah. Slowpoke. Ugly:
+		/*
+		execInDispatchThread(new Runnable() 
+		{ 
+			public void run() 
+			{ 
+				elAreaTexto.scrollRectToVisible(new Rectangle(0,(int)elAreaTexto.getPreferredSize().getHeight(),10,10));
+				//elAreaTexto.setVisible(true);
+				elAreaTexto.repaint();
+			} 
+		});
+		*/
+		
+		SwingUtilities.invokeLater( new Runnable()
+		{
+			public void run()
+			{
+				elAreaTexto.scrollRectToVisible(new Rectangle(0,(int)elAreaTexto.getPreferredSize().getHeight(),10,10));
+				//elAreaTexto.setVisible(true);
+				elAreaTexto.repaint();
+			}
+		});
+	}
+	
+	private void smoothScrollToBottom()
+	{
+		if ( !smoothScrollTimer.isRunning() ) //we could be scrolling already
+			smoothScrollTimer.start();
+	}
+	
 	/**
 	 * Scrolls the JScrollPane associated to the client to the bottom, i.e., showing the latest text that has been added.
 	 */
@@ -1019,106 +1068,16 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		
 		if ( !smoothScrolling )
 		{
-			SwingUtilities.invokeLater( new Runnable()
-			{
-				public void run()
-				{
-					elAreaTexto.scrollRectToVisible(new Rectangle(0,(int)elAreaTexto.getPreferredSize().getHeight(),10,10));
-					//elAreaTexto.setVisible(true);
-					elAreaTexto.repaint();
-				}
-			});
+			fastScrollToBottom();
 		}
 		
-			
 		//EXPERIMENTAL FUNCTIONALITY
-		
 		if ( smoothScrolling )
 		{
-			
-			//de-anonymize?
-			
-			/*
-			final Timer smoothScrollTimer = new Timer(20,null);
-			Action smoothScrollAction = new AbstractAction()
-			{
-				public void actionPerformed ( ActionEvent evt )
-				{
-					//runs on the EDT
-					if ( scrollIsAtBottom() )
-					{
-						//stop scrolling: we're already at bottom
-						smoothScrollTimer.stop();
-						return;
-					}
-					Point p = elScrolling.getViewport().getViewPosition();
-					p.y = p.y+2;
-					elScrolling.getViewport().setViewPosition(p);
-					//elAreaTexto.setVisible(true);
-					elAreaTexto.repaint();
-					//elAreaTexto.revalidate();
-				}
-			};
-			smoothScrollTimer.addActionListener(smoothScrollAction);
-			*/
-			//TODO: a single timer for the client, which is stopped or started when necessary
-			//and can be configured by methods
-			SmoothScrollTimer timer = new SmoothScrollTimer ( 20 , this );
-			timer.start();
-			
-			
-			//TODO: The stopping criterion return probably returns from the inner run but not from the outer for.
-			//TODO: If there are several pending smooth scrolls, accumulate into one (i.e. set a single target position and scroll to it).
-			
-			/*
-			Thread animation = new Thread()
-			{
-				public void run()
-				{
-					for (;;)
-					{
-						try 
-						{
-							SwingUtilities.invokeAndWait(new Runnable() {
-								public void run()
-								{
-									Point p = elScrolling.getViewport().getViewPosition();
-									p.y = p.y+1;
-									Rectangle r = elScrolling.getViewport().getViewRect();
-									if ( r.y + r.height >= elAreaTexto.getPreferredSize().getHeight() ) return; //stopping criterion?
-									elScrolling.getViewport().setViewPosition(p);
-									//elAreaTexto.setVisible(true);
-									elAreaTexto.repaint();
-									elAreaTexto.revalidate();
-								}
-							}
-									);
-						} catch (InvocationTargetException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						try {
-							Thread.sleep(100);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					} //for
-				} //run
-			};
-			animation.start();
-			*/
+			smoothScrollToBottom();
 			
 		}
 
-		
-
-		
-		//System.err.println("Selectionan gaems " + elAreaTexto.getSelectionStart() + " " + elAreaTexto.getSelectionEnd() );
-	
 	}
 	
 	public void insertIcon ( Icon icon )
@@ -2037,14 +1996,14 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	public void hideForLogLoad()
 	{
 		processingLog = true;
-		if ( laVentana instanceof JFrame )
-		{
+		//if ( laVentana instanceof JFrame )
+		//{
 			//JPanel glass = (JPanel)((JFrame)laVentana).getGlassPane();
 			JPanel glass = new JPanel();
 			glass.setBackground(Color.WHITE);
 			glass.setOpaque(true);
-			((JFrame)laVentana).setGlassPane(glass);
-			
+			//((JFrame)laVentana).setGlassPane(glass);			
+			laVentana.setGlassPane(glass);
 			glass.removeAll();
 			glass.setLayout(new GridLayout(1,1));
 			glass.setBackground(Color.WHITE);
@@ -2060,7 +2019,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 			glass.add(loadingLabel);
 			glass.setVisible(true);
 			//laVentana.getMainPanel().setVisible(false);
-		}
+		//}
 	}
 	
 	public void showAfterLogLoad()
@@ -2068,12 +2027,13 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		if ( processingLog )
 		{
 			processingLog = false;
-			if ( laVentana instanceof JFrame )
-			{
+			fastScrollToBottom();
+			//if ( laVentana instanceof JFrame )
+			//{
 				//laVentana.getMainPanel().setVisible(true);
-				JPanel glass = (JPanel)((JFrame)laVentana).getGlassPane();
+				JPanel glass = (JPanel)(/*(JFrame)*/laVentana).getGlassPane();
 				glass.setVisible(false);
-			}
+			//}
 		}
 	}
 	

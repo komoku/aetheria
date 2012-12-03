@@ -1,5 +1,6 @@
 package eu.irreality.age.windowing;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
@@ -26,6 +27,9 @@ public interface AGEClientWindow extends AGELoggingWindow
     
     public JMenuBar getTheJMenuBar();
     public void setTheJMenuBar( JMenuBar jmb );
+    
+    public void setGlassPane(Component glassPane); //hides when loading log
+    public Component getGlassPane();
     
     public World getMundo();
     
