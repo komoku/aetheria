@@ -668,6 +668,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
             }
         });
 		smoothScrollTimer = new SmoothScrollTimer ( 20 , this ); //timer for smooth scrolling
+		smoothScrollTimer.setSpeed(150);
+		smoothScrollTimer.setMovementMode(SmoothScrollTimer.ADAPTIVE_SPEED_MODE);
 		
 		elAreaTexto.setForeground(java.awt.Color.white);
 		elAreaTexto.setBackground(java.awt.Color.black);
@@ -1030,6 +1032,35 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		this.smoothScrolling = smoothScrolling;
 	}
 	
+	public int getScrollSpeed ()
+	{
+		return smoothScrollTimer.getSpeed();
+	}
+	
+	public void setScrollSpeed ( int pixelsPerSecond )
+	{
+		smoothScrollTimer.setSpeed(pixelsPerSecond);
+	}
+	
+	public static final int INSTANT_SCROLLING = -1;
+	public static final int FIXED_SPEED_SMOOTH_SCROLLING = SmoothScrollTimer.FIXED_SPEED_MODE;
+	public static final int ADAPTIVE_SPEED_SMOOTH_SCROLLING = SmoothScrollTimer.ADAPTIVE_SPEED_MODE;
+	
+	public int getScrollMode ( )
+	{
+		if ( !smoothScrolling ) return INSTANT_SCROLLING;
+		return smoothScrollTimer.getMovementMode();
+	}
+	
+	public void setScrollMode ( int newMode )
+	{
+		if ( newMode == INSTANT_SCROLLING ) smoothScrolling = false;
+		else
+		{
+			smoothScrolling = true;
+			smoothScrollTimer.setMovementMode( newMode );
+		}
+	}
 	
 	private void fastScrollToBottom()
 	{
