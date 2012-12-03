@@ -46,6 +46,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	private FancyJTextPane elAreaTexto;
 	private JScrollPane elScrolling;
 	private boolean scrollPaneAtBottom = true; //this is automatically set to true if scroll pane is at bottom, false otherwise
+	private boolean smoothScrolling = false; //whether scrolling should be smooth
 	private SwingEditBoxListener elEscuchador;	
 	private Vector gameLog;
 	private AGEClientWindow laVentana;
@@ -995,10 +996,19 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		
 		if ( needScroll )
 		{
-			System.err.println("SCROLLAN");
 			scrollToBottom();
 		}
 		
+	}
+	
+	public boolean isSmoothScrolling()
+	{
+		return smoothScrolling;
+	}
+	
+	public void setSmoothScrolling ( boolean smoothScrolling )
+	{
+		this.smoothScrolling = smoothScrolling;
 	}
 	
 	/**
@@ -1006,8 +1016,6 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	 */
 	private void scrollToBottom()
 	{
-		
-		boolean smoothScrolling = false;
 		
 		if ( !smoothScrolling )
 		{
@@ -1053,6 +1061,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 			};
 			smoothScrollTimer.addActionListener(smoothScrollAction);
 			*/
+			//TODO: a single timer for the client, which is stopped or started when necessary
+			//and can be configured by methods
 			SmoothScrollTimer timer = new SmoothScrollTimer ( 20 , this );
 			timer.start();
 			
