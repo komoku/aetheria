@@ -28,6 +28,7 @@ import eu.irreality.age.swing.FancyJTextPane;
 import eu.irreality.age.swing.FontSizeTransform;
 import eu.irreality.age.swing.IconLoader;
 import eu.irreality.age.swing.ImagePanel;
+import eu.irreality.age.swing.SmoothScrollTimer;
 import eu.irreality.age.windowing.AGEClientWindow;
 import eu.irreality.age.windowing.MenuMnemonicOnTheFly;
 
@@ -44,6 +45,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	private FancyJTextField elCampoTexto;
 	private FancyJTextPane elAreaTexto;
 	private JScrollPane elScrolling;
+	private boolean scrollPaneAtBottom = true; //this is automatically set to true if scroll pane is at bottom, false otherwise
 	private SwingEditBoxListener elEscuchador;	
 	private Vector gameLog;
 	private AGEClientWindow laVentana;
@@ -102,6 +104,11 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	public FancyJTextPane getTextArea()
 	{
 		return elAreaTexto;
+	}
+	
+	public JScrollPane getScrollPane()
+	{
+		return elScrolling;
 	}
 	
 	/**
@@ -628,6 +635,20 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		//elScrolling.setHorizontalScrollBarPolicy ( JScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
 		elScrolling.setBorder(BorderFactory.createEmptyBorder());
 		elScrolling.setViewportBorder(BorderFactory.createEmptyBorder());
+		elScrolling.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener()
+        {
+            public void adjustmentValueChanged(AdjustmentEvent event)
+            {
+                JScrollBar  vbar = (JScrollBar) event.getSource();
+
+                if (event.getValueIsAdjusting()) return;
+                
+                scrollPaneAtBottom = 
+                	((vbar.getValue() + vbar.getVisibleAmount()) == vbar.getMaximum());
+             
+            }
+        });
+		
 		elAreaTexto.setForeground(java.awt.Color.white);
 		elAreaTexto.setBackground(java.awt.Color.black);
 		laVentana.getMainPanel().setBackground(java.awt.Color.black);
@@ -828,6 +849,14 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	{
 		write(s);
 	}
+	
+	
+	public boolean scrollIsAtBottom()
+	{
+		Rectangle r = elScrolling.getViewport().getViewRect();
+		Dimension sz = elAreaTexto.getPreferredSize();
+		return ( r.y + r.height >= sz.getHeight() ); //stopping criterion?
+	}
 
 	
 	//private StringBuffer rawText = new StringBuffer(""); //this attribute stores all the text written to the text area WITH color codes included
@@ -843,6 +872,9 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 			return;
 		}
 		
+		//if scroll pane is at bottom we'll need scrolling if we add more lines of text
+		boolean needScroll = scrollPaneAtBottom;
+				
 		//rawText.append(s);
 	
 		//parse color codes
@@ -958,7 +990,23 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		//better scrolling
 		//elScrolling.revalidate();
 		
-
+		//scroll the JScrollPane to the bottom
+		//if ( needsScroll && ! scrollIsAtBottom() )
+		
+		if ( needScroll )
+		{
+			System.err.println("SCROLLAN");
+			scrollToBottom();
+		}
+		
+	}
+	
+	/**
+	 * Scrolls the JScrollPane associated to the client to the bottom, i.e., showing the latest text that has been added.
+	 */
+	private void scrollToBottom()
+	{
+		
 		boolean smoothScrolling = false;
 		
 		if ( !smoothScrolling )
@@ -982,17 +1030,21 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 			
 			//de-anonymize?
 			
-			
+			/*
 			final Timer smoothScrollTimer = new Timer(20,null);
 			Action smoothScrollAction = new AbstractAction()
 			{
 				public void actionPerformed ( ActionEvent evt )
 				{
 					//runs on the EDT
+					if ( scrollIsAtBottom() )
+					{
+						//stop scrolling: we're already at bottom
+						smoothScrollTimer.stop();
+						return;
+					}
 					Point p = elScrolling.getViewport().getViewPosition();
 					p.y = p.y+2;
-					Rectangle r = elScrolling.getViewport().getViewRect();
-					if ( r.y + r.height >= elAreaTexto.getPreferredSize().getHeight() ) smoothScrollTimer.stop(); //stopping criterion?
 					elScrolling.getViewport().setViewPosition(p);
 					//elAreaTexto.setVisible(true);
 					elAreaTexto.repaint();
@@ -1000,7 +1052,9 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 				}
 			};
 			smoothScrollTimer.addActionListener(smoothScrollAction);
-			smoothScrollTimer.start();
+			*/
+			SmoothScrollTimer timer = new SmoothScrollTimer ( 20 , this );
+			timer.start();
 			
 			
 			//TODO: The stopping criterion return probably returns from the inner run but not from the outer for.
