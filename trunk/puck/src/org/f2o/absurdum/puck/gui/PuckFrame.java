@@ -1215,6 +1215,10 @@ public class PuckFrame extends JFrame
 	
 	public void openFile ( File f ) throws TransformerException, FileNotFoundException
 	{
+		/**
+		 * Important note: it's important that the StreamSource is obtained directly from the File object and not from a FileInputStream taken from the File.
+		 * With the second alternative, systemId is not set and files with XML "includes" don't work.
+		 */
 		StreamSource s = new StreamSource(f);
 		openSource(s);
 		editingFileName = f.toString();
