@@ -22,6 +22,7 @@ import java.awt.*;
 import javax.swing.text.*;
 
 import eu.irreality.age.i18n.UIMessages;
+import eu.irreality.age.swing.ColorFadeInTimer;
 import eu.irreality.age.swing.FancyAttributeSet;
 import eu.irreality.age.swing.FancyJTextField;
 import eu.irreality.age.swing.FancyJTextPane;
@@ -51,6 +52,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	private SwingEditBoxListener elEscuchador;	
 	private Vector gameLog;
 	private AGEClientWindow laVentana;
+	
+	private boolean textFadeIn = false; //whether we apply text fade-in
 
 	//for colored output
 	private Document doc;
@@ -967,10 +970,11 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 					if ( accessibleScrollMode )
 					{
 						savedCaret = elAreaTexto.getCaretPosition(); //save caret position
-						elAreaTexto.setCaretPosition(elAreaTexto.getText().length()); //move caret to end of document (in non-accessible mode it will already be at end w/o doing this)
+						elAreaTexto.setCaretPosition(elAreaTexto.getText().length()); //move caret to end of document (in non-accessible mode it will already be at end w/o doing this, in accessible mode it won't because caret is placed by default before last sentence printed, and who knows where the screen reader will put it)
 					}	
 						
-					doc.insertString(elAreaTexto.getText().length(),tok,atributos);
+					//doc.insertString(elAreaTexto.getText().length(),tok,atributos);
+					insertTextAtEnd ( tok , atributos );
 					
 					if ( accessibleScrollMode ) elAreaTexto.setCaretPosition(savedCaret); //restore saved caret position for screen readers																									
 				}
@@ -1022,6 +1026,60 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		
 	}
 	
+	/**
+	 * This method is called by the write method to actually insert a text at the end of the text area.
+	 * @param text
+	 * @param atributos
+	 */
+	private void insertTextAtEnd ( final String text , final MutableAttributeSet atributos )
+	{
+		try
+		{
+			final int insertPosition = elAreaTexto.getText().length();
+			
+			//boolean textFadeIn = true;
+			
+			if ( textFadeIn )
+			{
+				//SimpleAttributeSet invisible = atributos.copyAttributes();
+				//StyleConstants.setForeground(colorAttrToApply,this.getTextArea().getBackground());
+				//sd.setCharacterAttributes(ColorFadeInTimer.this.offset, ColorFadeInTimer.this.length, colorAttrToApply, false);
+				
+				execInDispatchThread( new Runnable()
+				{
+					public void run()
+					{
+						SimpleAttributeSet colorAttrToApply = new SimpleAttributeSet();
+						StyleConstants.setForeground(colorAttrToApply,getTextArea().getBackground());
+						try 
+						{
+							doc.insertString(insertPosition,text,atributos);
+						} 
+						catch (BadLocationException e) 
+						{
+							e.printStackTrace();
+						}
+						((StyledDocument)doc).setCharacterAttributes(insertPosition,text.length(),colorAttrToApply,false);
+						ColorFadeInTimer colorTimer = new ColorFadeInTimer(20,ColoredSwingClient.this,insertPosition,text.length(),StyleConstants.getForeground(atributos),500);
+						colorTimer.start();
+					}
+				} );
+				
+				
+			}
+			else
+			{
+				doc.insertString(insertPosition,text,atributos);
+			}
+			
+
+		}
+		catch ( Exception ble )
+		{
+			System.err.println(ble);
+		}
+	}
+	
 	public boolean isSmoothScrolling()
 	{
 		return smoothScrolling;
@@ -1030,6 +1088,16 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	public void setSmoothScrolling ( boolean smoothScrolling )
 	{
 		this.smoothScrolling = smoothScrolling;
+	}
+	
+	public boolean isTextFadeIn()
+	{
+		return textFadeIn;
+	}
+	
+	public void setTextFadeIn ( boolean textFadeIn )
+	{
+		this.textFadeIn = textFadeIn;
 	}
 	
 	public int getScrollSpeed ()

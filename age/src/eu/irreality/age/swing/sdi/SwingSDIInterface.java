@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -393,7 +394,20 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 			}
 			gameLog.addElement(String.valueOf(theWorld.getRandomNumberSeed())); //segunda línea, semilla
 
-			setVisible(true);
+			//TODO use invoke method for this to avoid deadlocks:
+			try 
+			{
+				SwingUtilities.invokeAndWait( new Runnable() { public void run() { setVisible(true); } } );
+			} 
+			catch (InvocationTargetException e1) 
+			{
+				e1.printStackTrace();
+			} 
+			catch (InterruptedException e1) 
+			{
+				e1.printStackTrace();
+			}
+			
 
 			mundo = theWorld;
 			synchronized ( mundoSemaphore )
