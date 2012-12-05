@@ -1187,11 +1187,9 @@ public class PuckFrame extends JFrame
 	}
 	
 
-	public void openStream ( InputStream is ) throws TransformerException
+	private void openSource ( StreamSource s ) throws TransformerException
 	{
-		if ( is == null ) throw new NullPointerException("Null stream passed to openStream()");
 		Transformer t = TransformerFactory.newInstance().newTransformer();
-		Source s = new StreamSource(is);
 		DOMResult r = new DOMResult();
 		t.transform(s,r);
 		GraphElementPanel.emptyQueue();
@@ -1208,10 +1206,17 @@ public class PuckFrame extends JFrame
 		split.revalidate(); //JComponents do have it before java 1.7 (not JFrame)
 	}
 	
+	public void openStream ( InputStream is ) throws TransformerException
+	{
+		if ( is == null ) throw new NullPointerException("Null stream passed to openStream()");
+		StreamSource s = new StreamSource(is);
+		openSource(s);
+	}
+	
 	public void openFile ( File f ) throws TransformerException, FileNotFoundException
 	{
-		InputStream is = new FileInputStream(f);
-		openStream(is);
+		StreamSource s = new StreamSource(f);
+		openSource(s);
 		editingFileName = f.toString();
 		addRecentFile(f);
 		saveMenuItem.setEnabled(true);
