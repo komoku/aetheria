@@ -1050,7 +1050,9 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 					public void run()
 					{
 						SimpleAttributeSet colorAttrToApply = new SimpleAttributeSet();
-						StyleConstants.setForeground(colorAttrToApply,getTextArea().getBackground());
+						Color targetColor = StyleConstants.getForeground(atributos);
+						Color initialColor = new Color ( targetColor.getRed() , targetColor.getGreen() , targetColor.getBlue() , 0 /*transparent*/ );
+						StyleConstants.setForeground(colorAttrToApply,initialColor);
 						try 
 						{
 							doc.insertString(insertPosition,text,atributos);
@@ -1060,7 +1062,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 							e.printStackTrace();
 						}
 						((StyledDocument)doc).setCharacterAttributes(insertPosition,text.length(),colorAttrToApply,false);
-						ColorFadeInTimer colorTimer = new ColorFadeInTimer(20,ColoredSwingClient.this,insertPosition,text.length(),StyleConstants.getForeground(atributos),500);
+						ColorFadeInTimer colorTimer = new ColorFadeInTimer(20,ColoredSwingClient.this,insertPosition,text.length(),targetColor,500);
 						colorTimer.start();
 					}
 				} );
