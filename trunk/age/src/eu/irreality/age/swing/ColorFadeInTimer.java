@@ -35,7 +35,18 @@ public class ColorFadeInTimer extends Timer
 	/**Duration of the effect in milliseconds*/
 	private int duration;
 	
-	public ColorFadeInTimer ( final int delay , final ColoredSwingClient cl , int offset , int length , Color targetColor , int effectDuration )
+	/**Whether alpha transparency should be used*/
+	private boolean useAlpha = true;
+	
+	private Color getSourceColor ( ColoredSwingClient cl , Color targetColor )
+	{
+		if ( useAlpha )
+			return new Color ( targetColor.getRed() , targetColor.getGreen() , targetColor.getBlue() , 0 /*transparent*/ );
+		else
+			return cl.getTextArea().getBackground();
+	}
+	
+	public ColorFadeInTimer ( final int delay , final ColoredSwingClient cl , int offset , int length , final Color targetColor , int effectDuration )
 	{
 		super ( delay , null );
 		this.cl = cl;
@@ -46,7 +57,7 @@ public class ColorFadeInTimer extends Timer
 		
 		Action colorFadeInAction = new AbstractAction()
 		{
-			Color sourceColor = cl.getTextArea().getBackground(); //initially, the text's color is the text area background
+			Color sourceColor = getSourceColor(cl,targetColor); //initially, the text's color is the text area background
 			Color currentColor = sourceColor; 
 			int iters = 0;
 			
