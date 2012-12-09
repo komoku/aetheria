@@ -1039,7 +1039,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 			
 			//boolean textFadeIn = true;
 			
-			if ( textFadeIn )
+			if ( textFadeIn && !processingLog )
 			{
 				//SimpleAttributeSet invisible = atributos.copyAttributes();
 				//StyleConstants.setForeground(colorAttrToApply,this.getTextArea().getBackground());
