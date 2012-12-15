@@ -9754,9 +9754,16 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	
 	}
 
+	//return true if processed
 	protected boolean atacarBichoConArma(MobileList ml, Inventory i) {
-	
-		if ( i == null || i.isEmpty() || ml == null || ml.isEmpty() ) return false;	
+		
+		if ( ml == null || ml.isEmpty() ) return false; //no one to attack	
+		if ( i == null || i.isEmpty() )
+		{
+			//no weapons -> no podemos atacar
+			writeDenial ( mundo.getMessages().getMessage("no.attack.weapon") );
+			return true; //we have processed everything and given a message
+		}
 	
 		boolean mirado = false;			
 	

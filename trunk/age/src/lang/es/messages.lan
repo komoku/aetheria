@@ -418,6 +418,9 @@ wield.busy.limbs=Tienes que guardar algún arma para poder blandir $item.\n
 #Intentas suicidarte pero no tienes arma para ello
 no.suicide.weapon=No estás blandiendo ningún arma útil para suicidarte.\n
 
+#Intentas atacar pero no tienes arma para ello
+no.attack.weapon=No estás blandiendo ningún arma útil para atacar.\n
+
 #$1 se suicida con el arma $3 (sí, $3)
 someone.suicides=$1 se suicida con $3.\n
 you.suicide=Te suicidas con $3.\n

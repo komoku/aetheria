@@ -417,6 +417,9 @@ wield.busy.limbs=You need to unwield some weapon to be able to wield $item.\n
 #No weapon suitable for suicide
 no.suicide.weapon=You have no weapons suitable for suicide.\n
 
+#No weapon suitable for attacking
+no.attack.weapon=You need to wield a weapon in order to attack.\n
+
 #$1 suicides with weapon $3
 someone.suicides=$1 suicides with $3.\n
 you.suicide=You suicide with $3.\n
