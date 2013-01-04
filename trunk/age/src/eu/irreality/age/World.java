@@ -1545,13 +1545,15 @@ public class World implements Informador , SupportingCode
 		{
 			//we assume jar file url
 			//worlddir = "jar:"+url+"!/";
-			//worlddir = ""; //getResource will work //TODO doesn't work
+			//worlddir = ""; //getResource will work //TODO doesn't work //seems to work now (2013.01.04 - r638). Maybe I wasn't doing it right.
 			worlddir = "jar:"+url.toString()+"!/";
 			worldurl = new URL(worlddir);
-			URLClassLoader ucl = new URLClassLoader ( new URL[] { url } , this.getClass().getClassLoader() );
-			is = ucl.getResourceAsStream("world.xml");
+			
+			//URLClassLoader ucl = new URLClassLoader ( new URL[] { url } , this.getClass().getClassLoader() );
+			is = getResourceAsStream("world.xml");
+			//is = ucl.getResourceAsStream("world.xml");
 			if ( is == null ) throw new IOException("Resource world.xml could not be found in URL " + url);
-			this.setResourceJarFile(url);
+			//this.setResourceJarFile(url);
 		}
 		try
 		{
@@ -2976,18 +2978,21 @@ public class World implements Informador , SupportingCode
 	}
 	
 	//**class loader used by getResource and getResourceAsStream methods*/
+	//currently unused, and maybe better to keep it that way due to applet security restrictions when creating a class loader
 	private ClassLoader resourceLoader;
 	
 	/**
 	 * Sets the jar file inside which world resources (multimedia files, etc.) can reside.
 	 * @param jarFileURL
 	 */
+	//currently unused, and maybe better to keep it that way due to applet security restrictions when creating a class loader
 	private void setResourceJarFile ( URL jarFileURL )
 	{
 		URLClassLoader ucl = new URLClassLoader ( new URL[] {jarFileURL} , this.getClass().getClassLoader() );
 		resourceLoader = ucl;
 	}
 	
+	//currently unused, and maybe better to keep it that way due to applet security restrictions when creating a class loader
 	private ClassLoader getDefaultResourceLoader()
 	{
 		try 
