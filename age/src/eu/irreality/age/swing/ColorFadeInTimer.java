@@ -38,6 +38,23 @@ public class ColorFadeInTimer extends Timer
 	/**Whether alpha transparency should be used*/
 	private boolean useAlpha = true;
 	
+	/**
+	 * Sets the duration (in milliseconds) of the text color fade-in effect.
+	 * @param duration The duration of the text fade-in effect, in ms.
+	 */
+	public void setDuration ( int duration )
+	{
+		this.duration = duration;
+	}
+	
+	/**
+	 * @return The duration (in milliseconds) of the text color fade-in effect.
+	 */
+	public int getDuration()
+	{
+		return duration;
+	}
+	
 	private Color getSourceColor ( ColoredSwingClient cl , Color targetColor )
 	{
 		if ( useAlpha )

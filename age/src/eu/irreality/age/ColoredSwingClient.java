@@ -54,6 +54,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	private AGEClientWindow laVentana;
 	
 	private boolean textFadeIn = false; //whether we apply text fade-in
+	private int textFadeInDuration = 500; //duration of text fade-in (if it's applied)
 
 	//for colored output
 	private Document doc;
@@ -1062,7 +1063,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 							e.printStackTrace();
 						}
 						((StyledDocument)doc).setCharacterAttributes(insertPosition,text.length(),colorAttrToApply,false);
-						ColorFadeInTimer colorTimer = new ColorFadeInTimer(20,ColoredSwingClient.this,insertPosition,text.length(),targetColor,500);
+						ColorFadeInTimer colorTimer = new ColorFadeInTimer(20,ColoredSwingClient.this,insertPosition,text.length(),targetColor,textFadeInDuration);
 						colorTimer.start();
 					}
 				} );
@@ -1092,16 +1093,42 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		this.smoothScrolling = smoothScrolling;
 	}
 	
+	/**
+	 * @return Whether the text fade-in effect is currently active. If so, text written to the client will be slowly faded in.
+	 */
 	public boolean isTextFadeIn()
 	{
 		return textFadeIn;
 	}
 	
+	/**
+	 * Activates/deactivates the text fade-in effect. If active, text written to the client will be slowly faded in.
+	 * @param textFadeIn The new value (true for activated, false for deactivated) of the text fade-in effect.
+	 */
 	public void setTextFadeIn ( boolean textFadeIn )
 	{
 		this.textFadeIn = textFadeIn;
 	}
 	
+	/**
+	 * @return The millisecond duration of the text fade-in effect, i.e., the milliseconds the text takes to get its full color.
+	 */
+	public int getTextFadeInDuration ( )
+	{
+		return textFadeInDuration;
+	}
+	
+	/**
+	 * @param duration The new duration (in milliseconds) of the text fade-in effect.
+	 */
+	public void setTextFadeInDuration ( int duration )
+	{
+		textFadeInDuration = duration;
+	}
+	
+	/**
+	 * @return The speed of smooth text scrolling (if active) in pixels per second.
+	 */
 	public int getScrollSpeed ()
 	{
 		return smoothScrollTimer.getSpeed();
