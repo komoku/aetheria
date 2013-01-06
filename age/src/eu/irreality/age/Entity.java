@@ -497,7 +497,7 @@ public abstract class Entity
 			}	
 		}
 		//property not found, add to list
-		propertiesList.add ( new PropertyEntry ( propertyName , propertyValue , 0 ) );
+		propertiesList.add ( new PropertyEntry ( propertyName , propertyValue , -1 ) );
 	}
 	
 	//notese que si se pasa como segundo parametro un String no se llamara
@@ -514,7 +514,7 @@ public abstract class Entity
 				return;
 			}
 		}
-		PropertyEntry pe = new PropertyEntry ( propertyName , propertyValue.toString() , 0 );
+		PropertyEntry pe = new PropertyEntry ( propertyName , propertyValue.toString() , -1 );
 		pe.setObjectValue ( propertyValue );
 		propertiesList.add ( pe );
 	}
@@ -1072,7 +1072,7 @@ public abstract class Entity
 					}	
 				}
 				//property not found, add to list
-				propertiesList.add ( new PropertyEntry ( propertyName , propertyValue , 0 ) );
+				propertiesList.add ( new PropertyEntry ( propertyName , propertyValue , -1 ) );
 				return;
 			}
 		}
@@ -1105,7 +1105,7 @@ public abstract class Entity
 					}	
 				}
 				//property not found, add to list
-				PropertyEntry pe = new PropertyEntry ( propertyName , propertyValue.toString() , 0 );
+				PropertyEntry pe = new PropertyEntry ( propertyName , propertyValue.toString() , -1 );
 				pe.setObjectValue(propertyValue);
 				propertiesList.add ( pe );
 				return;

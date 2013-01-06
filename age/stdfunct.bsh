@@ -160,6 +160,25 @@ void set ( Entity e , String propName , Object value )
 	setProperty ( e , propName , value );
 }
 
+Object getAndSet ( Entity e , String propName , Object newValue )
+{
+	Object oldValue = get ( e , propName );
+	set ( e , propName , newValue );
+	setTime ( e , propName , -1 );
+	return oldValue;
+}
+
+boolean testAndSet ( Entity e , String propName )
+{
+	boolean oldValue = e.getPropertyValueAsBoolean(propName);
+	if ( oldValue != true ) 
+	{
+		e.setProperty ( propName , true );
+		e.setPropertyTimeLeft ( propName , -1 );
+	}
+	return oldValue;
+}
+
 /*
 void set ( Entity e , String propName , Object value , long time )
 {
