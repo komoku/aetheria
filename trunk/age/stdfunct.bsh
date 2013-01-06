@@ -164,7 +164,7 @@ Object getAndSet ( Entity e , String propName , Object newValue )
 {
 	Object oldValue = get ( e , propName );
 	set ( e , propName , newValue );
-	setTime ( e , propName , -1 );
+	if ( oldValue == null ) setTime ( e , propName , -1 ); //this function sets the timer to -1 if property was undefined 
 	return oldValue;
 }
 
@@ -174,7 +174,7 @@ boolean testAndSet ( Entity e , String propName )
 	if ( oldValue != true ) 
 	{
 		e.setProperty ( propName , true );
-		e.setPropertyTimeLeft ( propName , -1 );
+		if ( get ( e , propName ) == null ) e.setPropertyTimeLeft ( propName , -1 );
 	}
 	return oldValue;
 }
