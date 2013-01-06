@@ -47,7 +47,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	private FancyJTextPane elAreaTexto;
 	private JScrollPane elScrolling;
 	private boolean scrollPaneAtBottom = true; //this is automatically set to true if scroll pane is at bottom, false otherwise
-	private boolean smoothScrolling = false; //whether scrolling should be smooth
+	private boolean smoothScrolling = true; //whether scrolling should be smooth
 	private SmoothScrollTimer smoothScrollTimer; //timer for smooth scrolling
 	private SwingEditBoxListener elEscuchador;	
 	private Vector gameLog;
@@ -55,6 +55,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	
 	private boolean textFadeIn = false; //whether we apply text fade-in
 	private int textFadeInDuration = 500; //duration of text fade-in (if it's applied)
+	
+	private boolean showTextEffects = true; //whether we show text effects - if false, they won't be shown even if textFadeIn/smoothScrolling are set to true
 
 	//for colored output
 	private Document doc;
@@ -483,6 +485,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		JMenu fontSizeMenu = new JMenu ( UIMessages.getInstance().getMessage("csclient.pres.fontsize") );
 		final JCheckBoxMenuItem fullScreenOption = new JCheckBoxMenuItem( UIMessages.getInstance().getMessage("csclient.pres.fullscreen") ,window.isFullScreenMode());
 		final JCheckBoxMenuItem soundOption = new JCheckBoxMenuItem( UIMessages.getInstance().getMessage("csclient.pres.sound") ,true);
+		final JCheckBoxMenuItem textEffectsOption = new JCheckBoxMenuItem( UIMessages.getInstance().getMessage("csclient.pres.textfx") ,true);
 		final JCheckBoxMenuItem accessibleScrollOption = new JCheckBoxMenuItem( UIMessages.getInstance().getMessage("csclient.pres.blindacc") ,false);
 		JMenuBar mb = window.getTheJMenuBar();
 		window.setTheJMenuBar(mb); //nótese el "the", es para que la tenga como atributo. Si luego se quita para el modo fullscreen se puede volver a poner.
@@ -491,6 +494,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		if ( window.supportsFullScreen() )
 			clientConfigurationMenu.add ( fullScreenOption );
 		clientConfigurationMenu.add(soundOption);
+		clientConfigurationMenu.add(textEffectsOption);
 		clientConfigurationMenu.add(accessibleScrollOption);
 		
 		JRadioButtonMenuItem itemDefaultJuego = new JRadioButtonMenuItem( UIMessages.getInstance().getMessage("csclient.theme.game") ,true);
@@ -586,6 +590,20 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 				}
 			}
 		} );
+		textEffectsOption.addActionListener ( new ActionListener()
+		{
+			public void actionPerformed ( ActionEvent evt )
+			{
+				if ( textEffectsOption.isSelected() )
+				{
+					enableTextEffects();
+				}
+				else
+				{
+					disableTextEffects();
+				}
+			}
+		} );
 		accessibleScrollOption.addActionListener ( new ActionListener()
 		{
 			public void actionPerformed ( ActionEvent evt )
@@ -672,8 +690,9 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
             }
         });
 		smoothScrollTimer = new SmoothScrollTimer ( 20 , this ); //timer for smooth scrolling
-		smoothScrollTimer.setSpeed(150);
+		smoothScrollTimer.setSpeed(300);
 		smoothScrollTimer.setMovementMode(SmoothScrollTimer.ADAPTIVE_SPEED_MODE);
+		setSmoothScrolling(true); //smooth scrolling by default
 		
 		elAreaTexto.setForeground(java.awt.Color.white);
 		elAreaTexto.setBackground(java.awt.Color.black);
@@ -1040,7 +1059,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 			
 			//boolean textFadeIn = true;
 			
-			if ( textFadeIn && !processingLog )
+			if ( textFadeIn && showTextEffects && !processingLog )
 			{
 				//SimpleAttributeSet invisible = atributos.copyAttributes();
 				//StyleConstants.setForeground(colorAttrToApply,this.getTextArea().getBackground());
@@ -1203,13 +1222,11 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	private void scrollToBottom()
 	{
 		
-		if ( !smoothScrolling )
+		if ( !smoothScrolling || !showTextEffects )
 		{
 			fastScrollToBottom();
 		}
-		
-		//EXPERIMENTAL FUNCTIONALITY
-		if ( smoothScrolling )
+		else
 		{
 			smoothScrollToBottom();
 			
@@ -2188,6 +2205,22 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	public MutableAttributeSet getTextAttributes()
 	{
 		return atributos;
+	}
+	
+	/**
+	 * This controls the text effects setting in the client menu
+	 */
+	private void enableTextEffects()
+	{
+		showTextEffects = true;
+	}
+	
+	/**
+	 * This controls the text effects setting in the client menu
+	 */
+	private void disableTextEffects()
+	{
+		showTextEffects = false;
 	}
 	
 }

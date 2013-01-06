@@ -3169,4 +3169,12 @@ public class World implements Informador , SupportingCode
 		}
 	}
 	
+	/**
+	 * @return Whether the world is running at least the given version of the parser.
+	 */
+	public boolean versionAtLeast ( String version )
+	{
+		return new VersionComparator().compare(getParserVersion(),version) >= 0;		
+	}
+	
 }
