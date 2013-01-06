@@ -173,8 +173,9 @@ boolean testAndSet ( Entity e , String propName )
 	boolean oldValue = e.getPropertyValueAsBoolean(propName);
 	if ( oldValue != true ) 
 	{
+		Object oldValueAsObject = get ( e , propName );
 		e.setProperty ( propName , true );
-		if ( get ( e , propName ) == null ) e.setPropertyTimeLeft ( propName , -1 );
+		if ( oldValueAsObject == null ) e.setPropertyTimeLeft ( propName , -1 );
 	}
 	return oldValue;
 }
