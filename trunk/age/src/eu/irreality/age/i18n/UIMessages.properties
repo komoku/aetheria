@@ -1,4 +1,4 @@
-age.version=1.2.4
+age.version=1.2.5
 age.copyright=© 1999-2012 Carlos Gómez (solrac888@yahoo.com)
 intro.legal=Véase license.txt para consultar la licencia de AGE y del software de terceros incluido.
 filter.statefile=Ficheros de estado de AGE (*.asf)
@@ -35,6 +35,7 @@ csclient.pres=Ver
 csclient.pres.colorthemes=Temas de color
 csclient.pres.fullscreen=Pantalla completa
 csclient.pres.sound=Sonido
+csclient.pres.textfx=Efectos de texto
 csclient.pres.blindacc=Modo accesible para lectores de pantalla
 csclient.pres.fontsize=Tamaño de letra
 csclient.pres.fontsize.larger=Más grande
