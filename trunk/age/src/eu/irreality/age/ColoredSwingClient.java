@@ -40,7 +40,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.*;
 
 
-public class ColoredSwingClient implements MultimediaInputOutputClient
+public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWheelListener
 {
 
 	private FancyJTextField elCampoTexto;
@@ -396,6 +396,9 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		return true;
 	}
 	
+	/**
+	 * Unused:
+	 */
 	public ColoredSwingClient ( AGEClientWindow window , FancyJTextField nCampo , JScrollPane scrolling, FancyJTextPane nArea , Vector gameLog )
 	{
 		laVentana = window;
@@ -478,6 +481,16 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	
 	private JMenu clientConfigurationMenu = new JMenu( UIMessages.getInstance().getMessage("csclient.pres") );
 	
+	private void increaseFontSize()
+	{
+		setFontZoomFactor(1.2 * getFontZoomFactor());
+	}
+	
+	private void decreaseFontSize()
+	{
+		setFontZoomFactor(getFontZoomFactor()/1.2);
+	}
+	
 	//llamado por los constructores
 	public void doInitClientMenu ( final AGEClientWindow window )
 	{
@@ -541,14 +554,14 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		{
 			public void actionPerformed ( ActionEvent evt )
 			{
-				setFontZoomFactor(1.2 * getFontZoomFactor());
+				increaseFontSize();
 			}
 		} );
 		itemSmallerFontSize.addActionListener ( new ActionListener()
 		{
 			public void actionPerformed ( ActionEvent evt )
 			{
-				setFontZoomFactor(getFontZoomFactor()/1.2);
+				decreaseFontSize();
 			}
 		} );
 		itemDefaultFontSize.addActionListener ( new ActionListener()
@@ -822,6 +835,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 		elCampoTexto.addKeyListener ( elEscuchador );
 		elAreaTexto.setText("--");
 		doc = elAreaTexto.getDocument();
+		
+		elScrolling.addMouseWheelListener(this); //zoom con rueda
 		
 		
 		initClientMenu(laVentana);
@@ -2221,6 +2236,29 @@ public class ColoredSwingClient implements MultimediaInputOutputClient
 	private void disableTextEffects()
 	{
 		showTextEffects = false;
+	}
+	
+	
+	/**
+	 * Zoom with the mouse wheel
+	 * @param e
+	 */
+	public void mouseWheelMoved ( MouseWheelEvent e )
+	{
+		if ( e.isControlDown() ) //zoom with Ctrl+mouse wheel
+		{
+			int rotation = e.getWheelRotation(); //negative: up (zoom in), positive: down (zoom out)
+			if ( rotation < 0 )
+			{
+				increaseFontSize();
+			}
+			else
+			{
+				decreaseFontSize();
+			}
+			elAreaTexto.repaint();
+			e.consume();
+		}
 	}
 	
 }
