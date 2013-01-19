@@ -32,6 +32,10 @@ public class ReferenceNameCorrector implements SpellingCorrector
 
 	private SpellingCorrector theCorrector;
 	
+	/**
+	 * Words with length smaller than this are not included in the corrector, and corrections are not attempted for them. This is to prevent AGE from trying to correct
+	 * things like articles, prepositions, etc. to their closest name.
+	 */
 	private static int MINLENGTH = 4;
 	
 	/**
@@ -134,6 +138,7 @@ public class ReferenceNameCorrector implements SpellingCorrector
 
 	public Correction getBestCorrection(String word) 
 	{
+		if ( word.length() < MINLENGTH ) return new Correction(word,0.0); //don't attempt to correct short words like articles, prepositions, etc.
 		return theCorrector.getBestCorrection(word);
 	}
 	
