@@ -749,10 +749,15 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			//no overriding in strong inheritance!
 			//removed the following line 2011-05-01.
 			//constructItem ( mundo , n , false , itemtype );
+			//we now only override the isInstanceOf field and the unique name (the latter added as fix, 2013-02-07)
 			
 			isInstanceOf = e.getAttribute("clones");
 			
-			Debug.println("Overridden item gender is now " + gender);
+			//the unique name still has to be unique
+			if ( !e.hasAttribute("name") )
+				throw ( new XMLtoWorldException ( "Item node lacks attribute name" ) );
+			title = e.getAttribute("name");
+			
 		
 			return;
 			
