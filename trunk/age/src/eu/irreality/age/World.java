@@ -165,6 +165,12 @@ public class World implements Informador , SupportingCode
 		messages = m;
 	}
 
+	/**
+	 * Does the necessary processing on the world after finishing loading a log.
+	 * This currently amounts to calling each player's endOfLog() method,
+	 * and calling the world's onLogLoaded() scripted method if present so that the programmer can customize behaviors
+	 * to execute after a log has finished loading.
+	 */
 	public void endOfLog()
 	{
 		from_log = false;
@@ -173,6 +179,14 @@ public class World implements Informador , SupportingCode
 		{
 			Player jugador = (Player) jugadores.get(i);
 			jugador.endOfLog();	
+		}
+		try
+		{
+			execCode("onLogLoaded" , new Object[] {});
+		}
+		catch ( ScriptException te )
+		{
+				writeError(ExceptionPrinter.getExceptionReport(te,"onLogLoaded(), world " + this));
 		}
 	}
 	
@@ -2194,6 +2208,7 @@ public class World implements Informador , SupportingCode
 	
 	/*ejecuta el codigo del mundo correspondiente a la rutina dada si existe.
 	Si no existe, simplemente no ejecuta nada y devuelve false.*/
+	/**Legacy method, currently unused.*/
 	public boolean execCode ( String routine , String dataSegment ) throws EVASemanticException
 	{
 		if ( itsCode != null )
@@ -2201,8 +2216,15 @@ public class World implements Informador , SupportingCode
 		else return false;
 	}
 	
-	/*ejecuta el codigo BSH del objeto correspondiente a la rutina dada si existe.
-	Si no existe, simplemente no ejecuta nada y devuelve false.*/
+	/**
+	 * Tries to execute the BSH code corresponding to the given scripted routine.
+	 * If the routine does not exist, this method returns false.
+	 * If the routine does exist, this method executes it and:
+	 * - returns true if it finished normally with end(),
+	 * - returns false if it finished normally without end(),
+	 * - throws a ScriptException if it produced an uncaught exception.
+	 * This method does not provide a way of obtaining the return value returned by the scripted routine.
+	 */
 	public boolean execCode ( String routine , Object[] args ) throws ScriptException
 	{
 		if ( itsCode != null )
@@ -2210,8 +2232,15 @@ public class World implements Informador , SupportingCode
 		else return false;
 	}
 	
-	/*ejecuta el codigo bsh del objeto correspondiente a la rutina dada si existe.
-	Si no existe, simplemente no ejecuta nada y devuelve false.*/
+	/**
+	 * Tries to execute the BSH code corresponding to the given scripted routine.
+	 * If the routine does not exist, this method returns false.
+	 * If the routine does exist, this method executes it and:
+	 * - returns true if it finished normally with end(),
+	 * - returns false if it finished normally without end(),
+	 * - throws a ScriptException if it produced an uncaught exception.
+	 * In addition, the return value of the routine (if applicable) is wrapped into the retval parameter.
+	 */
 	public boolean execCode ( String routine , Object[] args , ReturnValue retval ) throws ScriptException 
 	{
 		//S/ystem.out.println("Mobile code runnin'.");
