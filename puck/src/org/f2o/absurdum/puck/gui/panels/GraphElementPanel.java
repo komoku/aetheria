@@ -93,9 +93,9 @@ public class GraphElementPanel extends JPanel
 	 * Stores time taken by the last three background initializations of panels
 	 * (initializations triggered by the background init thread).
 	 * This is used to adjust the rate at which background initializations take place, so that it adapts to the machine's current observed speed so as not to clog the Swing event dispatch thread too much.
-	 * We start with very conservative values (supposing an initialization for a panel takes 1 whole second) to ensure that we don't clog slow machines. The values will then automatically update to smaller ones when we have actual data showing that initializations are fasater.
+	 * We start with rather conservative values (supposing an initialization for a panel takes 300 ms) to ensure that we don't clog slow machines. The values will then automatically update to smaller ones when we have actual data showing that initializations are fasater.
 	 */
-	private static long lastBackgroundInitTimes[] = new long[] {1000,1000,1000};
+	private static long lastBackgroundInitTimes[] = new long[] {300,300,300};
 	
 	/**Index of the next element of lastBackgroundInitTimes that will be modified*/
 	private static int nextBackgroundInitTimeIndex = 0; 
@@ -217,7 +217,8 @@ public class GraphElementPanel extends JPanel
 							for ( int i = 0 ; i < lastBackgroundInitTimes.length ; i++ )
 								delayTime += lastBackgroundInitTimes[i];
 							delayTime /= lastBackgroundInitTimes.length;
-							delayTime += 30; //have to wait the estimated average time taken by initializations, plus extra slack so that the event dispatching thread can dispatch events
+							delayTime *= 3; //have to wait the estimated average time taken by initializations, with extra slack so that the event dispatching thread can dispatch events
+							if ( delayTime < 4 ) delayTime = 4; //minimum delay time (must be >0, 0 = infinite wait in wait())
 							//System.err.println("Will wait " + delayTime + "ms");
 							g.wait(delayTime); //give time to other threads
 						}
