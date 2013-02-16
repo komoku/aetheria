@@ -89,17 +89,34 @@ public class GraphElementPanel extends JPanel
 		return CACHE && !(this instanceof WorldPanel);
 	}
 	
-	synchronized public final void forceRealInitFromXml ( boolean blocking )
+	/**
+	 * Stores time taken by the last three background initializations of panels
+	 * (initializations triggered by the background init thread).
+	 * This is used to adjust the rate at which background initializations take place, so that it adapts to the machine's current observed speed so as not to clog the Swing event dispatch thread too much.
+	 * We start with very conservative values (supposing an initialization for a panel takes 1 whole second) to ensure that we don't clog slow machines. The values will then automatically update to smaller ones when we have actual data showing that initializations are fasater.
+	 */
+	private static long lastBackgroundInitTimes[] = new long[] {1000,1000,1000};
+	
+	/**Index of the next element of lastBackgroundInitTimes that will be modified*/
+	private static int nextBackgroundInitTimeIndex = 0; 
+	
+	synchronized public final void forceRealInitFromXml ( final boolean blocking )
 	{
 		if ( isCacheEnabled() && !initted && cachedNode != null )
 		{
 			try
 			{
-				if ( !blocking )
-					wait(100); //give time to other threads!
+				
+				//moved to background init thread:
+				//if ( !blocking )
+				//	wait(100); //give time to other threads!
+				
 				Runnable r = new Runnable(){
 					public void run()
 					{
+						long time = 0;
+						if ( !blocking) //take starting point for time measurement to track how background initializations are doing and adjust the delay between them
+							time = System.currentTimeMillis();
 						synchronized(GraphElementPanel.this)
 						{
 							if ( cachedNode != null ) //might be made null by another thread during the previous wait
@@ -115,6 +132,14 @@ public class GraphElementPanel extends JPanel
 								cachedNode = null;
 								if ( GraphElementPanel.this instanceof ArrowPanel ) ((ArrowPanel)GraphElementPanel.this).forceRealCustomRelationshipsInitFromXML ( );
 							}
+						}
+						if ( !blocking )
+						{
+							time = System.currentTimeMillis() - time; //measure time taken by the background initialization
+							//System.err.println("Time: " + time + " [" + GraphElementPanel.this + "]");
+							lastBackgroundInitTimes[nextBackgroundInitTimeIndex] = time; //update the array of times
+							nextBackgroundInitTimeIndex++; //cycle index for next array update
+							if ( nextBackgroundInitTimeIndex == lastBackgroundInitTimes.length ) nextBackgroundInitTimeIndex = 0;
 						}
 					} };
 				if ( blocking )
@@ -184,8 +209,18 @@ public class GraphElementPanel extends JPanel
 					synchronized(g)
 					{
 						if ( !g.initted )
-						//System.out.println("Forcing " + g);
-							g.forceRealInitFromXml(false);
+						{
+							g.forceRealInitFromXml(false); //this launches, via invokeAndWait(), the GUI initialization of that panel
+							
+							//calculate delay
+							long delayTime = 0;
+							for ( int i = 0 ; i < lastBackgroundInitTimes.length ; i++ )
+								delayTime += lastBackgroundInitTimes[i];
+							delayTime /= lastBackgroundInitTimes.length;
+							delayTime += 30; //have to wait the estimated average time taken by initializations, plus extra slack so that the event dispatching thread can dispatch events
+							//System.err.println("Will wait " + delayTime + "ms");
+							g.wait(delayTime); //give time to other threads
+						}
 					}
 				}
 				catch ( InterruptedException ie )
