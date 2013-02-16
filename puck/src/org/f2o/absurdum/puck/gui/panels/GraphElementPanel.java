@@ -116,7 +116,7 @@ public class GraphElementPanel extends JPanel
 					{
 						long time = 0;
 						if ( !blocking) //take starting point for time measurement to track how background initializations are doing and adjust the delay between them
-							time = System.nanoTime(); //may be more accurate that currentTimeMillis()
+							time = System.currentTimeMillis();
 						synchronized(GraphElementPanel.this)
 						{
 							if ( cachedNode != null ) //might be made null by another thread during the previous wait
@@ -135,8 +135,7 @@ public class GraphElementPanel extends JPanel
 						}
 						if ( !blocking )
 						{
-							time = System.nanoTime() - time; //measure time taken by the background initialization
-							time = time / 1000000; //milliseconds are enough, we won't use nanoseconds - we just use nanoTime() because it may be more accurate even when measuring milliseconds
+							time = System.currentTimeMillis() - time; //measure time taken by the background initialization
 							//System.err.println("Time: " + time + " [" + GraphElementPanel.this + "]");
 							lastBackgroundInitTimes[nextBackgroundInitTimeIndex] = time; //update the array of times
 							nextBackgroundInitTimeIndex++; //cycle index for next array update
