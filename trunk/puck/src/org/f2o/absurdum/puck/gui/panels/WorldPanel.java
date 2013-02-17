@@ -57,6 +57,9 @@ import org.f2o.absurdum.puck.gui.graph.Node;
 import org.f2o.absurdum.puck.gui.graph.RoomNode;
 import org.f2o.absurdum.puck.gui.graph.SpellNode;
 import org.f2o.absurdum.puck.gui.graph.StructuralArrow;
+import org.f2o.absurdum.puck.gui.panels.code.BSHCodePanel;
+import org.f2o.absurdum.puck.gui.panels.code.BSHCodePanelFactory;
+import org.f2o.absurdum.puck.gui.panels.code.JSyntaxBSHCodePanel;
 import org.f2o.absurdum.puck.gui.util.SpringUtilities;
 import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.f2o.absurdum.puck.util.UniqueNameEnforcer;
@@ -182,7 +185,8 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 	private JTextField tfDate = new EnhancedJTextField();
 	private JTextField tfType = new EnhancedJTextField();
 	
-	private BSHCodePanel bcp = new BSHCodePanel("world");
+	//private JSyntaxBSHCodePanel bcp = new JSyntaxBSHCodePanel("world");
+	private BSHCodePanel bcp = BSHCodePanelFactory.getInstance().createPanel("world");
 	
 	private JTextField tfFontName = new EnhancedJTextField(20);
 	private JTextField tfFontFile = new EnhancedJTextField(20);

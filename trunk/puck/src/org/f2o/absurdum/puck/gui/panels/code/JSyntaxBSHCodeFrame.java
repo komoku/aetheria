@@ -1,4 +1,4 @@
-package org.f2o.absurdum.puck.gui.panels;
+package org.f2o.absurdum.puck.gui.panels.code;
 
 import java.awt.BorderLayout;
 import java.awt.Rectangle;
@@ -30,7 +30,7 @@ import org.f2o.absurdum.puck.gui.codeassist.CodeInsertActionBuilder;
 import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
 import org.f2o.absurdum.puck.i18n.UIMessages;
 
-public class BSHCodeFrame extends JFrame
+public class JSyntaxBSHCodeFrame extends JFrame
 {
 	
 	
@@ -48,7 +48,7 @@ public class BSHCodeFrame extends JFrame
 	//context attribute: specifies which type of panel it is, used to know which code templates are available on menus
 	private String context;
 	
-	private BSHCodePanel codePanel = null;
+	private JSyntaxBSHCodePanel codePanel = null;
 	
 	public String getContext()
 	{
@@ -125,7 +125,7 @@ public class BSHCodeFrame extends JFrame
 	{
 		for ( int i = 0 ; i < instances.size() ; i++ )
 		{
-			BSHCodeFrame bcf = (BSHCodeFrame) instances.get(i);
+			JSyntaxBSHCodeFrame bcf = (JSyntaxBSHCodeFrame) instances.get(i);
 			bcf.codePanel.unsetCodeFrame();
 			bcf.dispose();
 		}
@@ -137,8 +137,8 @@ public class BSHCodeFrame extends JFrame
 		return instances;
 	}
 	
-	//public BSHCodeFrame( String title , JEditorPane toWriteTo )
-	public BSHCodeFrame( String title , JEditorPane toWriteTo , String context , BSHCodePanel codePanel )
+	//public JSyntaxBSHCodeFrame( String title , JEditorPane toWriteTo )
+	public JSyntaxBSHCodeFrame( String title , JEditorPane toWriteTo , String context , JSyntaxBSHCodePanel codePanel )
 	{
 		//DefaultSyntaxKit.initKit();
 		this.codePanel = codePanel;
@@ -181,7 +181,7 @@ public class BSHCodeFrame extends JFrame
 						externalJep.setDocument(jep.getDocument());
 						//jep.getDocument().putProperty("SearchData",null); //with this we discard the find/replace dialog instances associated with the document.
 						saveSearchDialogs();
-						BSHCodeFrame.this.codePanel.restoreSearchDialogs();
+						JSyntaxBSHCodeFrame.this.codePanel.restoreSearchDialogs();
 						//TODO: remove the previous line when JSyntaxPane is updated so that dialogs are associated to (document,editor) pairs rather than to documents.
 						setVisible(false);
 					}
