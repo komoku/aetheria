@@ -1,4 +1,4 @@
-Copyright (c) 2000-2010, Carlos Gómez Rodríguez
+Copyright (c) 2000-2013, Carlos Gómez Rodríguez
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -9,7 +9,7 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-Copyright (c) 2000-2010, Carlos Gómez Rodríguez
+Copyright (c) 2000-2013, Carlos Gómez Rodríguez
 Todos los derechos reservados.
 
 La redistribución y el uso en forma de fuente o binario, con o sin modificación, están permitidas mientras se cumplan las siguientes condiciones:
@@ -30,3 +30,10 @@ Additionally, this distribution contains the following third-party software:
 - MicroMod (source distribution, micromod class hierarchy) is (c) Martin Cameron, licensed under the GNU Lesser General Public License (LGPL) 2.1 (www.gnu.org).
 - BasicPlayer API (lib directory: jl1.0.jar, jogg-0.0.7.jar, jorbis-0.0.15.jar, jspeex0.9.7.jar, mp3spi1.9.4.jar, tritonus_share.jar, vorbisspi1.0.2.jar) is part of jlGui (JAVA music player for the Java platform), licensed under the GNU Lesser General Public License (LGPL) 2.1 (www.gnu.org). Source code downloadable from http://www.javazoom.net/jlgui/jlgui.html.
 - SVG Salamander (lib directory: svgSalamander.jar) is (c) Mark McKay (Kitfox Studios), licensed under the GNU Lesser General Public License (LGPL) 2.1 (www.gnu.org). Source code downloadable from: https://svgsalamander.dev.java.net/
+- NaturalOrderComparator (source distribution, org.cougaar class hierarchy) is (c) 2003 by Pierre-Luc Paour, licensed under the Cougaar Open Source License as published on the Cougaar Open Source Website (www.cougaar.org).
+- This product includes software developed in part by support from the Defense Advanced Research Project Agency (DARPA).
+- MenuMnemonicOnTheFly (source distribution, eu.irreality.age.windowing.MenuMnemonicOnTheFly) is (c) Bharat Dighe, licensed under the JavaReference.com Software License, Version 1.0 (license/thirdparty/jref.txt)
+- This product includes software developed by the Javareference.com (http://www.javareference.com/)
+- (Developer's Kit only) RSyntaxTextArea (binary distribution, lib directory: rsyntaxtextarea.jar, rstaui.jar and autocomplete.jar) is (c) Robert Futrell, licensed under a BSD license similar to PUCK itself, as described in rsyntaxtextarea.license.txt.
+
+The author would like to thank the authors of this software for making their contributions available under free licenses, greatly helping this project.
