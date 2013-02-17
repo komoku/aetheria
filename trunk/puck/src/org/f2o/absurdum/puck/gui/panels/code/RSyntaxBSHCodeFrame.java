@@ -234,6 +234,9 @@ public class RSyntaxBSHCodeFrame extends JFrame
 		
 		//jep.getEditorKit().
 		
+		theTextArea.getPopupMenu().add(new JSeparator());
+		theTextArea.getPopupMenu().add(new RSyntaxShowFindDialogAction(theTextArea));
+		theTextArea.getPopupMenu().add(new RSyntaxShowReplaceDialogAction(theTextArea));
 		//getComponentPopupMenu() not supported by RSyntaxTextArea for java 1.4 compatibility reasons, so this won't fly:
 		//theTextArea.getComponentPopupMenu().add(CodeAssistMenuHandler.getInstance().getMenuForContext(context, new CodeInsertActionBuilder(theTextArea)),0);
 		//theTextArea.getComponentPopupMenu().add(new JSeparator(),1);

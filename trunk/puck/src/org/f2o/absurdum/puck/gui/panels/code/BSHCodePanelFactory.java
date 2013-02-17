@@ -5,7 +5,7 @@ import org.f2o.absurdum.puck.gui.panels.EntityPanel;
 public abstract class BSHCodePanelFactory 
 {
 	
-	private static BSHCodePanelFactory instance = new JSyntaxCodePanelFactory();
+	private static BSHCodePanelFactory instance = new RSyntaxCodePanelFactory();
 	
 	public static BSHCodePanelFactory getInstance()
 	{
