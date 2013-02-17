@@ -43,7 +43,7 @@ public class RSyntaxFindNextOrPrevAction extends AbstractAction
 	{
 		SearchContext sc = RSyntaxSearchHandler.getInstance().getFindDialog().getSearchContext();
 		if ( sc == null ) return;
-		if ( sc.getSearchFor().length() < 1 ) return;
+		if ( sc.getSearchFor() == null || sc.getSearchFor().length() < 1 ) return;
 		sc.setSearchForward(forward);
 		boolean found = SearchEngine.find( targetTextArea , sc );
 	    if (!found) 
