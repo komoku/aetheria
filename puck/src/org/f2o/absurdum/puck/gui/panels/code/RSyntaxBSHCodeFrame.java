@@ -234,22 +234,31 @@ public class RSyntaxBSHCodeFrame extends JFrame
 	    theTextArea.setAntiAliasingEnabled(true);
 	    theTextArea.setMarkOccurrences(true);
 	    
-	    Action findDialogAction = new RSyntaxShowFindDialogAction(theTextArea);
-	    Action replaceDialogAction = new RSyntaxShowReplaceDialogAction(theTextArea);
-
 		updateFontSize();
 		theTextArea.add(CodeAssistMenuHandler.getInstance().getMenuForContext(context, new CodeInsertActionBuilder(theTextArea)));
+		
+		
+	    Action findDialogAction = new RSyntaxShowFindDialogAction(theTextArea);
+	    Action replaceDialogAction = new RSyntaxShowReplaceDialogAction(theTextArea);
+	    Action findNextAction = new RSyntaxFindNextOrPrevAction(theTextArea,true);
+	    Action findPrevAction = new RSyntaxFindNextOrPrevAction(theTextArea,false);
 		
 		 //find/replace keybindings
 	    theTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F,InputEvent.CTRL_DOWN_MASK),"showFindDialog");
 	    theTextArea.getActionMap().put("showFindDialog", findDialogAction);
 	    theTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_H,InputEvent.CTRL_DOWN_MASK),"showReplaceDialog");
-	    theTextArea.getActionMap().put("showReplaceDialog", replaceDialogAction);    
+	    theTextArea.getActionMap().put("showReplaceDialog", replaceDialogAction);  
+	    theTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F3,0),"findNext");
+	    theTextArea.getActionMap().put("findNext", findNextAction);
+	    theTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F3,InputEvent.SHIFT_DOWN_MASK),"findPrev");
+	    theTextArea.getActionMap().put("findPrev", findPrevAction);  
 		
 		//popup menu options
 		theTextArea.getPopupMenu().add(new JSeparator());
 		theTextArea.getPopupMenu().add(findDialogAction);
 		theTextArea.getPopupMenu().add(replaceDialogAction);
+	    theTextArea.getPopupMenu().add(findNextAction);
+	    theTextArea.getPopupMenu().add(findPrevAction);
 		//getComponentPopupMenu() not supported by RSyntaxTextArea for java 1.4 compatibility reasons, so this won't fly:
 		//theTextArea.getComponentPopupMenu().add(CodeAssistMenuHandler.getInstance().getMenuForContext(context, new CodeInsertActionBuilder(theTextArea)),0);
 		//theTextArea.getComponentPopupMenu().add(new JSeparator(),1);
