@@ -65,9 +65,9 @@ import org.f2o.absurdum.puck.gui.graph.ItemNode;
 import org.f2o.absurdum.puck.gui.graph.RoomNode;
 import org.f2o.absurdum.puck.gui.graph.SpellNode;
 import org.f2o.absurdum.puck.gui.graph.WorldNode;
-import org.f2o.absurdum.puck.gui.panels.BSHCodeFrame;
 import org.f2o.absurdum.puck.gui.panels.GraphElementPanel;
 import org.f2o.absurdum.puck.gui.panels.WorldPanel;
+import org.f2o.absurdum.puck.gui.panels.code.JSyntaxBSHCodeFrame;
 import org.f2o.absurdum.puck.gui.skin.ImageManager;
 import org.f2o.absurdum.puck.gui.templates.WorldTemplateMenuBuilder;
 import org.f2o.absurdum.puck.i18n.UIMessages;
@@ -693,7 +693,7 @@ public class PuckFrame extends JFrame
 						GraphElementPanel.emptyQueue(); //stop deferred loads
 						graphPanel.clear();
 						propPanel.clear();
-						BSHCodeFrame.closeAllInstances();
+						JSyntaxBSHCodeFrame.closeAllInstances();
 						WorldPanel wp = new WorldPanel(graphPanel);
 						WorldNode wn = new WorldNode(wp);
 						graphPanel.setWorldNode(wn);
@@ -1195,7 +1195,7 @@ public class PuckFrame extends JFrame
 		GraphElementPanel.emptyQueue();
 		graphPanel.clear();
 		propPanel.clear();
-		BSHCodeFrame.closeAllInstances();
+		JSyntaxBSHCodeFrame.closeAllInstances();
 		WorldPanel wp = new WorldPanel(graphPanel);
 		WorldNode wn = new WorldNode(wp);
 		graphPanel.setWorldNode(wn);

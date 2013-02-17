@@ -3,9 +3,9 @@
  * Licencia en license/bsd.txt / License in license/bsd.txt
  * 
  * Created at regulus on 23-jul-2005 22:27:32
- * as file BSHCodePanel.java on package org.f2o.absurdum.puck.gui.panels
+ * as file JSyntaxBSHCodePanel.java on package org.f2o.absurdum.puck.gui.panels
  */
-package org.f2o.absurdum.puck.gui.panels;
+package org.f2o.absurdum.puck.gui.panels.code;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -41,8 +41,12 @@ import jsyntaxpane.components.Markers;
 import org.f2o.absurdum.puck.gui.SpacingPanel;
 import org.f2o.absurdum.puck.gui.codeassist.CodeAssistMenuHandler;
 import org.f2o.absurdum.puck.gui.codeassist.CodeInsertActionBuilder;
+import org.f2o.absurdum.puck.gui.panels.EntityPanel;
 import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJEditTextArea;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rtextarea.RTextScrollPane;
 import org.jedit.syntax.JEditTextArea;
 import org.jedit.syntax.JavaTokenMarker;
 import org.jedit.syntax.SyntaxDocument;
@@ -59,58 +63,60 @@ import org.w3c.dom.Text;
  *
  * Created at regulus, 23-jul-2005 22:27:32
  */
-public class BSHCodePanel extends JPanel
+public class RSyntaxBSHCodePanel extends BSHCodePanel
 {
-
-	//private JEditorPane jep;
-	//private EnhancedJEditTextArea jep;
-	private JEditorPane jep;
-	private JButton enlButton = new JButton(UIMessages.getInstance().getMessage("button.enl"));
-	private BSHCodeFrame auxFrame;
 	
-	//context attribute: specifies which type of panel it is, used to know which code templates are available on menus
+	/**The code editing component in this code panel*/
+	private RSyntaxTextArea theTextArea;
+
+	/**Button to enlarge the code, opening a frame*/
+	private JButton enlButton = new JButton(UIMessages.getInstance().getMessage("button.enl"));
+	
+	/**Frame opened when the enlarge button is pressed*/
+	private RSyntaxBSHCodeFrame auxFrame;
+	
+	/**Context attribute: specifies which type of panel it is, used to know which code templates are available on menus*/
 	private String context;
 	
-	//entity panel corresponding to this code panel, if any.
+	/**Entity panel corresponding to this code panel, if any*/
 	private EntityPanel entityPanel;
 	
+	/**Label for line numbers*/
 	final JLabel lineNumLabel = new JLabel(" : ");
 	
-	/*
-	private void updateLineNumberLabel()
-	{
-		int line = jep.getCaretLine();
-		int lineCount = jep.getLineCount();
-		int column =  jep.getCaretPosition() - jep.getLineStartOffset(line);
-		lineNumLabel.setText((line+1) + " : " + (column+1));
-		lineNumLabel.setMinimumSize(new Dimension(200,0));
-	}
-	*/
+	
 	
 	public void unsetCodeFrame()
 	{
 		auxFrame = null;
 	}
 	
-	
+	/**
+	 * Updates the line number label. May be pulled up.
+	 */
 	private void updateLineNumberLabel()
 	{
-		int line = BSHCodeFrame.getCaretRowPosition(jep); //jep. .getCaretLine();
-		//int lineCount = 0; //getCaretColumnPosition(jep); //jep .getLineCount();
-		int column = BSHCodeFrame.getCaretColumnPosition(jep); //jep.getCaretPosition() - jep .getLineStartOffset(line);
+		int line = RSyntaxBSHCodeFrame.getCaretRowPosition(theTextArea); 
+		int column = RSyntaxBSHCodeFrame.getCaretColumnPosition(theTextArea); 
 		lineNumLabel.setText((line+1) + " : " + (column+1));
 	}
 	
+	/**
+	 * Obtains the context attribute.
+	 * @return
+	 */
 	public String getContext()
 	{
 		return context;
 	}
 	
-	public BSHCodePanel ( )
+	public RSyntaxBSHCodePanel ( )
 	{
 		this ( "noContext" );
 	}
 	
+	//jsyntax-specific:
+	/*
 	private DocumentSearchData searchData = null;
 	private void saveSearchDialogs()
 	{
@@ -120,8 +126,9 @@ public class BSHCodePanel extends JPanel
 	{
 		jep.getDocument().putProperty("SearchData",searchData);
 	}
+	*/
 	
-	public BSHCodePanel ( String context )
+	public RSyntaxBSHCodePanel ( String context )
 	{
 		this ( context, null );
 	}
@@ -134,7 +141,7 @@ public class BSHCodePanel extends JPanel
 			return entityPanel.getPanelName() + " - " + "Code editing";
 	}
 	
-	public BSHCodePanel ( String context , EntityPanel ep )
+	public RSyntaxBSHCodePanel ( String context , EntityPanel ep )
 	{
 		
 		this.context = context;
@@ -143,28 +150,25 @@ public class BSHCodePanel extends JPanel
 		setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("bsh.code")));
 		//jep = new JEditorPane();
 		
+		//jsyntax-specific:
+		/*
 		TextAreaDefaults tad = new TextAreaDefaults();
 		tad.rows = 25;
 		tad.cols = 80;
-		
 		DefaultSyntaxKit.initKit();
+		*/
 		
-		jep = new JEditorPane();
+		theTextArea = new RSyntaxTextArea(25,80);
 		//jep = new JEditTextArea(tad);
 		
-		//jep.setDocument(new SyntaxDocument());
-		//jep.setTokenMarker(new JavaTokenMarker()); 
 		setLayout(new BorderLayout());
-		//JScrollPane jsp = new JScrollPane(jep);
-		auxFrame = new BSHCodeFrame(getPanelName(),jep,context,this);
-		//jsp.setPreferredSize(new Dimension(120,70));
-		//add(jsp,BorderLayout.CENTER);
+
+		auxFrame = new RSyntaxBSHCodeFrame(getPanelName(),theTextArea,context,this);
 		
-		//jep.setPreferredSize(new Dimension(120,70));
+		RTextScrollPane jsp = new RTextScrollPane(theTextArea);
+		jsp.setFoldIndicatorEnabled(true);
 		
-		JScrollPane jsp = new JScrollPane(jep);
 		jsp.setPreferredSize(new Dimension(120,70));
-		
 		add(new SpacingPanel(jsp),BorderLayout.CENTER);
 		
 		JPanel southPanel = new JPanel();
@@ -187,11 +191,15 @@ public class BSHCodePanel extends JPanel
 				{
 					public void actionPerformed ( ActionEvent evt )
 					{
-						Markers.removeMarkers(jep);
+						//Markers.removeMarkers(jep); //jsyntax-specific
 						//jep.getDocument().putProperty("SearchData",null); //with this we discard the find/replace dialog instances associated with the document.
-						saveSearchDialogs();
+						//saveSearchDialogs(); //jsyntax-specific
 						//TODO: remove the previous line when JSyntaxPane is updated so that dialogs are associated to (document,editor) pairs rather than to documents.
-						auxFrame.refresh();
+						
+						//Doing this refresh seemed to be necessary with JSyntaxPane for some reason I don't remember. But with RSyntaxTextArea, it's counterproductive
+						//(the setDocument() it does seems to clear the undo history for some reason):
+						//auxFrame.refresh();
+						
 						auxFrame.setVisible(true);
 					}
 				}
@@ -199,36 +207,38 @@ public class BSHCodePanel extends JPanel
 		
 		//jep.addPopupMenu(CodeAssistMenuHandler.getInstance().getMenuForContext(context, new CodeInsertActionBuilder(jep)));
 		
-		jep.addCaretListener ( new CaretListener() 
+		theTextArea.addCaretListener ( new CaretListener() 
 				{
-
 					public void caretUpdate(CaretEvent e) 
 					{
-						
 						updateLineNumberLabel();
-						//lineNumLabel.setText("line: " + (jep.getCaretLine()+1) + "/" + jep.getLineCount());
-						
 					}
-			
 				}
 		);
 		
-		jep.setContentType("text/java");
-		//jep.setFont(jep.getFont().deriveFont((float)18.0));
-		jep.getComponentPopupMenu().add(CodeAssistMenuHandler.getInstance().getMenuForContext(context, new CodeInsertActionBuilder(jep)),0);
-		jep.getComponentPopupMenu().add(new JSeparator(),1);
+		
+		theTextArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+		theTextArea.setCodeFoldingEnabled(true);
+	    theTextArea.setAntiAliasingEnabled(true);
+		
+	    //getComponentPopupMenu() not supported by RSyntaxTextArea for java 1.4 compatibility reasons, so this won't fly:
+		//theTextArea.getComponentPopupMenu().add(CodeAssistMenuHandler.getInstance().getMenuForContext(context, new CodeInsertActionBuilder(theTextArea)),0);
+		//theTextArea.getComponentPopupMenu().add(new JSeparator(),1);
+		//and instead we use this:
+		theTextArea.getPopupMenu().add(CodeAssistMenuHandler.getInstance().getMenuForContext(context, new CodeInsertActionBuilder(theTextArea)),0);
+		theTextArea.getPopupMenu().add(new JSeparator(),1);
 		
 	}
 	
 	public String getCode()
 	{
-		return jep.getText();
+		return theTextArea.getText();
 	}
 	
 	public Node getXML ( Document d )
 	{
 		
-		if (jep.getText() == null || jep.getText().length() == 0)
+		if (theTextArea.getText() == null || theTextArea.getText().length() == 0)
 			return null;
 		
 		Element result = d.createElement("Code");
@@ -261,7 +271,7 @@ public class BSHCodePanel extends JPanel
 		
 		try
 		{
-		result.appendChild(d.createCDATASection(jep.getDocument().getText(0, jep.getDocument().getLength())));
+		result.appendChild(d.createCDATASection(theTextArea.getDocument().getText(0, theTextArea.getDocument().getLength())));
 		}
 		catch ( BadLocationException ble ) { ble.printStackTrace(); }
 		
@@ -284,22 +294,10 @@ public class BSHCodePanel extends JPanel
 				//jep.setText(jep.getText()+child.getNodeValue());
 			}
 		}
-		jep.setText(theCode.trim());
+		theTextArea.setText(theCode.trim());
 		
-		//jep.setContentType("text/java");
-		
-		/*
-		EditorKit ek = jep.getEditorKit();
-		ek.deinstall(jep);
-		ek.install(jep);
-		*/
-		((jsyntaxpane.SyntaxDocument)jep.getDocument()).clearUndos();
-		/*
-		jsyntaxpane.SyntaxDocument doc = (jsyntaxpane.SyntaxDocument)jep.getDocument();
-		UndoManager um = (UndoManager) doc.getUndoableEditListeners()[0];
-		doc.removeUndoableEditListener(um);
-		doc.addUndoableEditListener(new CompoundUndoMan(doc));
-		*/
+		//jsyntaxpane.SyntaxDocument)jep.getDocument()).clearUndos(); //jsyntax-specific
+		theTextArea.discardAllEdits(); //this should do the same.
 		
 	}
 	

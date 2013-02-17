@@ -27,6 +27,7 @@ import javax.swing.JTextField;
 import org.f2o.absurdum.puck.bsh.BeanShellCodeHolder;
 import org.f2o.absurdum.puck.gui.graph.Arrow;
 import org.f2o.absurdum.puck.gui.graph.CharacterNode;
+import org.f2o.absurdum.puck.gui.panels.code.JSyntaxBSHCodePanel;
 import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
 import org.w3c.dom.Document;
@@ -52,7 +53,7 @@ public class CharPanel extends EntityPanel implements BeanShellCodeHolder
 	//privatize
 	public DescriptionListPanel dlp;
 	private ExtraDescriptionsPanel edp;
-	private BSHCodePanel bcp;
+	private JSyntaxBSHCodePanel bcp;
 	private PropertiesPanel pp;
 	
 	private DescriptionListPanel snp; //sing names
@@ -204,7 +205,7 @@ public class CharPanel extends EntityPanel implements BeanShellCodeHolder
 		
 		secondTab.setLayout(new BoxLayout(secondTab, BoxLayout.PAGE_AXIS));
 		
-		bcp = new BSHCodePanel("mobile",this);
+		bcp = new JSyntaxBSHCodePanel("mobile",this);
 		secondTab.add(bcp);
 		
 		pp = new PropertiesPanel();

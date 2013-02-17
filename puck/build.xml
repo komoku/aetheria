@@ -49,7 +49,7 @@
         description="compile the source " >
         <echo message="Compilando PUCK..."/>
     <!-- Compile the java code from ${src} into ${build} -->
-    <javac sourcepath="" srcdir="${src}" destdir="${build}" classpath=".;${lib}/jhall.jar;${lib}/jhelpaction.jar;${lib}/AgeCore.jar;${lib}/bsh-2.0b4.jar;${lib}/commons-cli-1.2.jar;${lib}/micromod.jar;${lib}/jsyntaxpane-0.9.5-20100209.jar" target="1.5" source="1.5" debug="true" encoding="iso-8859-1">
+    <javac sourcepath="" srcdir="${src}" destdir="${build}" classpath=".;${lib}/jhall.jar;${lib}/jhelpaction.jar;${lib}/AgeCore.jar;${lib}/bsh-2.0b4.jar;${lib}/commons-cli-1.2.jar;${lib}/micromod.jar;${lib}/jsyntaxpane-0.9.5-20100209.jar;${lib}/rsyntaxtextarea.jar" target="1.5" source="1.5" debug="true" encoding="iso-8859-1">
   		<include name="**/*.java"/>
   		<exclude name="**/conf/**"/>
     	<!--exclude does not seem to work-->
