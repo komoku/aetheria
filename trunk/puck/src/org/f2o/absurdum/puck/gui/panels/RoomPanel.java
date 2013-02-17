@@ -26,6 +26,8 @@ import javax.swing.JTextField;
 import org.f2o.absurdum.puck.bsh.BeanShellCodeHolder;
 import org.f2o.absurdum.puck.gui.graph.Arrow;
 import org.f2o.absurdum.puck.gui.graph.RoomNode;
+import org.f2o.absurdum.puck.gui.panels.code.BSHCodePanel;
+import org.f2o.absurdum.puck.gui.panels.code.BSHCodePanelFactory;
 import org.f2o.absurdum.puck.gui.panels.code.JSyntaxBSHCodePanel;
 import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.w3c.dom.Attr;
@@ -51,7 +53,7 @@ public class RoomPanel extends EntityPanel implements BeanShellCodeHolder
 	//privatize
 	public DescriptionListPanel dlp;
 	private ExtraDescriptionsPanel edp;
-	private JSyntaxBSHCodePanel bcp;
+	private BSHCodePanel bcp;
 	private PropertiesPanel pp;
 	
 	//the tabbed pane
@@ -120,7 +122,8 @@ public class RoomPanel extends EntityPanel implements BeanShellCodeHolder
 		
 		secondTab.setLayout(new BoxLayout(secondTab, BoxLayout.PAGE_AXIS));
 		
-		bcp = new JSyntaxBSHCodePanel("room",this);
+		bcp // = new JSyntaxBSHCodePanel("room",this);
+			= BSHCodePanelFactory.getInstance().createPanel("room",this);
 		//System.out.println("Setting " + this.hashCode() + "'s panel to " + bcp.hashCode());
 		secondTab.add(bcp);
 		
