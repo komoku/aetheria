@@ -4,9 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
@@ -16,6 +19,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.KeyStroke;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.BadLocationException;
@@ -228,15 +232,24 @@ public class RSyntaxBSHCodeFrame extends JFrame
 		theTextArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
 		theTextArea.setCodeFoldingEnabled(true);
 	    theTextArea.setAntiAliasingEnabled(true);
+	    theTextArea.setMarkOccurrences(true);
+	    
+	    Action findDialogAction = new RSyntaxShowFindDialogAction(theTextArea);
+	    Action replaceDialogAction = new RSyntaxShowReplaceDialogAction(theTextArea);
 
 		updateFontSize();
 		theTextArea.add(CodeAssistMenuHandler.getInstance().getMenuForContext(context, new CodeInsertActionBuilder(theTextArea)));
 		
-		//jep.getEditorKit().
+		 //find/replace keybindings
+	    theTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F,InputEvent.CTRL_DOWN_MASK),"showFindDialog");
+	    theTextArea.getActionMap().put("showFindDialog", findDialogAction);
+	    theTextArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_H,InputEvent.CTRL_DOWN_MASK),"showReplaceDialog");
+	    theTextArea.getActionMap().put("showReplaceDialog", replaceDialogAction);    
 		
+		//popup menu options
 		theTextArea.getPopupMenu().add(new JSeparator());
-		theTextArea.getPopupMenu().add(new RSyntaxShowFindDialogAction(theTextArea));
-		theTextArea.getPopupMenu().add(new RSyntaxShowReplaceDialogAction(theTextArea));
+		theTextArea.getPopupMenu().add(findDialogAction);
+		theTextArea.getPopupMenu().add(replaceDialogAction);
 		//getComponentPopupMenu() not supported by RSyntaxTextArea for java 1.4 compatibility reasons, so this won't fly:
 		//theTextArea.getComponentPopupMenu().add(CodeAssistMenuHandler.getInstance().getMenuForContext(context, new CodeInsertActionBuilder(theTextArea)),0);
 		//theTextArea.getComponentPopupMenu().add(new JSeparator(),1);
