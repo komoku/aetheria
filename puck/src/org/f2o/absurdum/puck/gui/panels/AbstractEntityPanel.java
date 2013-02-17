@@ -37,6 +37,8 @@ import org.f2o.absurdum.puck.gui.graph.AbstractEntityNode;
 import org.f2o.absurdum.puck.gui.graph.Arrow;
 import org.f2o.absurdum.puck.gui.graph.ItemNode;
 import org.f2o.absurdum.puck.gui.graph.SpellNode;
+import org.f2o.absurdum.puck.gui.panels.code.BSHCodePanel;
+import org.f2o.absurdum.puck.gui.panels.code.BSHCodePanelFactory;
 import org.f2o.absurdum.puck.gui.panels.code.JSyntaxBSHCodePanel;
 import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
@@ -70,7 +72,7 @@ public class AbstractEntityPanel extends EntityPanel implements BeanShellCodeHol
 	//privatize
 	//public DescriptionListPanel dlp;
 	//private ExtraDescriptionsPanel edp;
-	private JSyntaxBSHCodePanel bcp;
+	private BSHCodePanel bcp;
 	private PropertiesPanel pp;
 	
 	/*
@@ -231,7 +233,9 @@ public class AbstractEntityPanel extends EntityPanel implements BeanShellCodeHol
 		
 		secondTab.setLayout(new BoxLayout(secondTab, BoxLayout.PAGE_AXIS));
 		
-		bcp = new JSyntaxBSHCodePanel("abstract entity",this);
+		//bcp = new JSyntaxBSHCodePanel("abstract entity",this);
+		bcp = BSHCodePanelFactory.getInstance().createPanel("world",this);
+		
 		secondTab.add(bcp);
 		
 		pp = new PropertiesPanel();

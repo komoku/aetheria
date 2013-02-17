@@ -35,6 +35,8 @@ import javax.swing.JTextField;
 import org.f2o.absurdum.puck.bsh.BeanShellCodeHolder;
 import org.f2o.absurdum.puck.gui.graph.Arrow;
 import org.f2o.absurdum.puck.gui.graph.ItemNode;
+import org.f2o.absurdum.puck.gui.panels.code.BSHCodePanel;
+import org.f2o.absurdum.puck.gui.panels.code.BSHCodePanelFactory;
 import org.f2o.absurdum.puck.gui.panels.code.JSyntaxBSHCodePanel;
 import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.f2o.absurdum.puck.util.swing.EnhancedJTextField;
@@ -70,7 +72,7 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 	//privatize
 	public DescriptionListPanel dlp;
 	private ExtraDescriptionsPanel edp;
-	private JSyntaxBSHCodePanel bcp;
+	private BSHCodePanel bcp;
 	private PropertiesPanel pp;
 	
 	private DescriptionListPanel snp; //sing names
@@ -241,7 +243,8 @@ public class ItemPanel extends EntityPanel implements BeanShellCodeHolder
 		
 		secondTab.setLayout(new BoxLayout(secondTab, BoxLayout.PAGE_AXIS));
 		
-		bcp = new JSyntaxBSHCodePanel("item",this);
+		bcp //= new JSyntaxBSHCodePanel("item",this);
+			= BSHCodePanelFactory.getInstance().createPanel("item",this);
 		secondTab.add(bcp);
 		
 		pp = new PropertiesPanel();
