@@ -228,16 +228,63 @@ public class RSyntaxBSHCodeFrame extends JFrame
 		);
 		
 		
+
+		setDefaults ( theTextArea );
+		
+		
+		updateFontSize();
+		theTextArea.add(CodeAssistMenuHandler.getInstance().getMenuForContext(context, new CodeInsertActionBuilder(theTextArea)));
+		
+		
+		configureMenus ( theTextArea , context );
+		
+		
+		JMenuItem moreFontSize = new JMenuItem(UIMessages.getInstance().getMessage("menu.font.more"));
+		JMenuItem lessFontSize = new JMenuItem(UIMessages.getInstance().getMessage("menu.font.less"));
+		JMenu fontSize = new JMenu(UIMessages.getInstance().getMessage("menu.font.size"));
+		fontSize.add(moreFontSize);
+		fontSize.add(lessFontSize);
+		moreFontSize.addActionListener(new ActionListener(){
+			public void actionPerformed ( ActionEvent evt )
+			{
+				incrementFontSize();
+			}
+		});
+		lessFontSize.addActionListener(new ActionListener(){
+			public void actionPerformed ( ActionEvent evt )
+			{
+				decrementFontSize();
+			}
+		});
+		
+		
+		//theTextArea.getComponentPopupMenu().add(fontSize);
+		theTextArea.getPopupMenu().add(fontSize);
+
+	}
+	
+	/**
+	 * Sets default options for an RSyntaxTextArea.
+	 * @param theTextArea
+	 */
+	public static void setDefaults ( RSyntaxTextArea theTextArea )
+	{
 		//jep.setContentType("text/java");
 		theTextArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
 		theTextArea.setCodeFoldingEnabled(true);
 	    theTextArea.setAntiAliasingEnabled(true);
 	    theTextArea.setMarkOccurrences(true);
-	    
-		updateFontSize();
-		theTextArea.add(CodeAssistMenuHandler.getInstance().getMenuForContext(context, new CodeInsertActionBuilder(theTextArea)));
-		
-		
+	    theTextArea.setLineWrap(true);
+	    //theTextArea.setTabsEmulated(true);
+	}
+	
+	/**
+	 * Adds the keybindings and menus to an RSyntaxTextArea.
+	 * @param theTextArea
+	 * @param context
+	 */
+	public static void configureMenus ( RSyntaxTextArea theTextArea , String context )
+	{
 	    Action findDialogAction = new RSyntaxShowFindDialogAction(theTextArea);
 	    Action replaceDialogAction = new RSyntaxShowReplaceDialogAction(theTextArea);
 	    Action findNextAction = new RSyntaxFindNextOrPrevAction(theTextArea,true);
@@ -265,30 +312,6 @@ public class RSyntaxBSHCodeFrame extends JFrame
 		//and instead we use this:
 		theTextArea.getPopupMenu().add(CodeAssistMenuHandler.getInstance().getMenuForContext(context, new CodeInsertActionBuilder(theTextArea)),0);
 		theTextArea.getPopupMenu().add(new JSeparator(),1);
-		
-		
-		JMenuItem moreFontSize = new JMenuItem(UIMessages.getInstance().getMessage("menu.font.more"));
-		JMenuItem lessFontSize = new JMenuItem(UIMessages.getInstance().getMessage("menu.font.less"));
-		JMenu fontSize = new JMenu(UIMessages.getInstance().getMessage("menu.font.size"));
-		fontSize.add(moreFontSize);
-		fontSize.add(lessFontSize);
-		moreFontSize.addActionListener(new ActionListener(){
-			public void actionPerformed ( ActionEvent evt )
-			{
-				incrementFontSize();
-			}
-		});
-		lessFontSize.addActionListener(new ActionListener(){
-			public void actionPerformed ( ActionEvent evt )
-			{
-				decrementFontSize();
-			}
-		});
-		
-		
-		//theTextArea.getComponentPopupMenu().add(fontSize);
-		theTextArea.getPopupMenu().add(fontSize);
-
 	}
 	
 	private void updateFontSize()
