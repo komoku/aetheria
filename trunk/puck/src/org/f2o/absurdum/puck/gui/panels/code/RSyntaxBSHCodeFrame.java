@@ -277,7 +277,7 @@ public class RSyntaxBSHCodeFrame extends JFrame
 		theTextArea.setCodeFoldingEnabled(true);
 	    theTextArea.setAntiAliasingEnabled(true);
 	    theTextArea.setMarkOccurrences(true);
-	    theTextArea.setLineWrap(true);
+	    theTextArea.setLineWrap(true); //done by toggler now
 	    //theTextArea.setTabsEmulated(true);
 	}
 	
@@ -325,26 +325,39 @@ public class RSyntaxBSHCodeFrame extends JFrame
 	public static void configureSyncedMenus ( RSyntaxTextArea frameArea , RSyntaxTextArea panelArea )
 	{
 		
-		RSyntaxWordWrapAction toggleWordWrapAction = new RSyntaxWordWrapAction ( frameArea , panelArea );
+		//No. This is wrong because it was assuming there are only two text areas, where actually there are two PER ENTITY. Need to re-think this.
+		
+		/*
+		//RSyntaxWordWrapAction toggleWordWrapAction = new RSyntaxWordWrapAction ( frameArea , panelArea );
+		RSyntaxOptionToggleAction wordWrapToggleAction = new RSyntaxOptionToggleAction ( frameArea , panelArea , "Word Wrap" , "rsyntaxWordWrap" , new RSyntaxOptionToggler(){
+			public void setOptionEnabled(RSyntaxTextArea ta1,
+					RSyntaxTextArea ta2, boolean enabled) 
+			{
+				System.err.println("Setting line wrap to " + enabled + " on " + ta1 + " and " + ta2);
+				Thread.dumpStack();
+				ta1.setLineWrap(enabled);
+				ta2.setLineWrap(enabled);
+			}
+
+			@Override
+			public boolean isOptionEnabled(RSyntaxTextArea ta1,
+					RSyntaxTextArea ta2) {
+				return ta1.getLineWrap();
+			}
+		});
 		
 		RSyntaxTextArea[] areas = new RSyntaxTextArea[] { frameArea , panelArea };
 		
 		for ( int i = 0 ; i < areas.length ; i++ )
 		{
 			areas[i].getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_W,InputEvent.CTRL_DOWN_MASK),"toggleWordWrap");
-			areas[i].getActionMap().put("toggleWordWrap", toggleWordWrapAction);
+			areas[i].getActionMap().put("toggleWordWrap", wordWrapToggleAction);
 			
 			areas[i].getPopupMenu().add(new JSeparator());
 			
-			JCheckBoxMenuItem cbWrap = new JCheckBoxMenuItem(toggleWordWrapAction);
-			areas[i].getPopupMenu().add(cbWrap);
-			if ( PuckConfiguration.getInstance().getBooleanProperty("rsyntaxWordWrap") )
-			{
-				areas[i].setLineWrap(true);
-			}
-			cbWrap.setSelected(toggleWordWrapAction.isOptionEnabled());
+			areas[i].getPopupMenu().add(wordWrapToggleAction.getCheckBoxFor(areas[i]));
 		}
-		
+		*/
 		
 		
 	}
