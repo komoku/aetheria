@@ -81,6 +81,8 @@ public class PuckConfiguration
 		defaultProperties.setProperty("availableSkins","naive,urba1,orco,jenverde");
 		defaultProperties.setProperty("additionalLooks","Nimbus"); //L&F's available apart from default and system
 		
+		defaultProperties.setProperty("rsyntaxWordWrap","true");
+		
 	}
 	
 	private static PuckConfiguration instance;
