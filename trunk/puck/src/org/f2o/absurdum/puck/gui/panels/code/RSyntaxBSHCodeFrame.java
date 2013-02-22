@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -261,6 +262,8 @@ public class RSyntaxBSHCodeFrame extends JFrame
 		//theTextArea.getComponentPopupMenu().add(fontSize);
 		theTextArea.getPopupMenu().add(fontSize);
 
+		configureSyncedMenus ( theTextArea , externalTextArea );
+		
 	}
 	
 	/**
@@ -312,6 +315,38 @@ public class RSyntaxBSHCodeFrame extends JFrame
 		//and instead we use this:
 		theTextArea.getPopupMenu().add(CodeAssistMenuHandler.getInstance().getMenuForContext(context, new CodeInsertActionBuilder(theTextArea)),0);
 		theTextArea.getPopupMenu().add(new JSeparator(),1);
+	}
+	
+	/**
+	 * Configure the view options affecting both areas at the same time.
+	 * @param frameArea
+	 * @param panelArea
+	 */
+	public static void configureSyncedMenus ( RSyntaxTextArea frameArea , RSyntaxTextArea panelArea )
+	{
+		
+		RSyntaxWordWrapAction toggleWordWrapAction = new RSyntaxWordWrapAction ( frameArea , panelArea );
+		
+		RSyntaxTextArea[] areas = new RSyntaxTextArea[] { frameArea , panelArea };
+		
+		for ( int i = 0 ; i < areas.length ; i++ )
+		{
+			areas[i].getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_W,InputEvent.CTRL_DOWN_MASK),"toggleWordWrap");
+			areas[i].getActionMap().put("toggleWordWrap", toggleWordWrapAction);
+			
+			areas[i].getPopupMenu().add(new JSeparator());
+			
+			JCheckBoxMenuItem cbWrap = new JCheckBoxMenuItem(toggleWordWrapAction);
+			areas[i].getPopupMenu().add(cbWrap);
+			if ( PuckConfiguration.getInstance().getBooleanProperty("rsyntaxWordWrap") )
+			{
+				areas[i].setLineWrap(true);
+			}
+			cbWrap.setSelected(toggleWordWrapAction.isOptionEnabled());
+		}
+		
+		
+		
 	}
 	
 	private void updateFontSize()
