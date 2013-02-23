@@ -260,9 +260,8 @@ public class RSyntaxBSHCodeFrame extends JFrame
 		
 		
 		//theTextArea.getComponentPopupMenu().add(fontSize);
+		theTextArea.getPopupMenu().add(new JSeparator());
 		theTextArea.getPopupMenu().add(fontSize);
-
-		configureSyncedMenus ( theTextArea , externalTextArea );
 		
 	}
 	
@@ -277,7 +276,10 @@ public class RSyntaxBSHCodeFrame extends JFrame
 		theTextArea.setCodeFoldingEnabled(true);
 	    theTextArea.setAntiAliasingEnabled(true);
 	    theTextArea.setMarkOccurrences(true);
+	    theTextArea.setTabSize(4);
 	    theTextArea.setLineWrap(RSyntaxOption.getInstanceFor("rsyntaxWordWrap").isOptionEnabled());
+	    theTextArea.setPaintTabLines(RSyntaxOption.getInstanceFor("rsyntaxShowTabLines").isOptionEnabled());
+	    theTextArea.setTabsEmulated(RSyntaxOption.getInstanceFor("rsyntaxTabsEmulated").isOptionEnabled());
 	    //theTextArea.setTabsEmulated(true);
 	}
 	
@@ -325,7 +327,9 @@ public class RSyntaxBSHCodeFrame extends JFrame
 	public static void configureSyncedMenus ( RSyntaxTextArea frameArea , RSyntaxTextArea panelArea )
 	{
 		
-		RSyntaxOptionToggleAction wordWrapToggleAction = RSyntaxOptionToggleAction.getInstanceFor("Word Wrap", "rsyntaxWordWrap");
+		RSyntaxOptionToggleAction wordWrapToggleAction = RSyntaxOptionToggleAction.getInstanceFor(UIMessages.getInstance().getMessage("rsyntax.wrap"), "rsyntaxWordWrap");
+		RSyntaxOptionToggleAction tabLinesToggleAction = RSyntaxOptionToggleAction.getInstanceFor(UIMessages.getInstance().getMessage("rsyntax.tablines"), "rsyntaxShowTabLines");
+		RSyntaxOptionToggleAction tabsEmulatedToggleAction = RSyntaxOptionToggleAction.getInstanceFor(UIMessages.getInstance().getMessage("rsyntax.tabs.emulated"), "rsyntaxTabsEmulated");
 		
 		//No. This is wrong because it was assuming there are only two text areas, where actually there are two PER ENTITY. Need to re-think this.
 		
@@ -356,9 +360,21 @@ public class RSyntaxBSHCodeFrame extends JFrame
 			areas[i].getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_W,InputEvent.CTRL_DOWN_MASK),"toggleWordWrap");
 			areas[i].getActionMap().put("toggleWordWrap", wordWrapToggleAction);
 			
+			areas[i].getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_L,InputEvent.CTRL_DOWN_MASK),"showTabLines");
+			areas[i].getActionMap().put("showTabLines", tabLinesToggleAction);
+			
+			areas[i].getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_S,InputEvent.CTRL_DOWN_MASK),"tabsToSpaces");
+			areas[i].getActionMap().put("tabsToSpaces", tabsEmulatedToggleAction);
+			
 			areas[i].getPopupMenu().add(new JSeparator());
 			
-			areas[i].getPopupMenu().add(wordWrapToggleAction.getCheckBox());
+			JMenu viewMenu = new JMenu( UIMessages.getInstance().getMessage("rsyntax.view") );
+			
+			viewMenu.add(wordWrapToggleAction.getCheckBox());
+			viewMenu.add(tabLinesToggleAction.getCheckBox());
+			viewMenu.add(tabsEmulatedToggleAction.getCheckBox());
+			
+			areas[i].getPopupMenu().add ( viewMenu );
 		}
 		
 		
@@ -406,5 +422,9 @@ public class RSyntaxBSHCodeFrame extends JFrame
 		updateFontSize();
 	}
 	
+	public RSyntaxTextArea getTextArea()
+	{
+		return theTextArea;
+	}
 	
 }

@@ -9,6 +9,7 @@ import javax.swing.Action;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.SearchContext;
 import org.fife.ui.rtextarea.SearchEngine;
@@ -25,12 +26,12 @@ public class RSyntaxFindNextOrPrevAction extends AbstractAction
 	{
 		if ( forward )
 		{
-			this.putValue(Action.NAME, "Find next");
+			this.putValue(Action.NAME, UIMessages.getInstance().getMessage("rsyntax.find.next"));
 			this.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F3,0));
 		}
 		else 
 		{
-			this.putValue(Action.NAME, "Find previous");
+			this.putValue(Action.NAME, UIMessages.getInstance().getMessage("rsyntax.find.prev"));
 			this.putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F,InputEvent.SHIFT_DOWN_MASK));
 		}	
 		

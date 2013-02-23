@@ -13,6 +13,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.fife.rsta.ui.search.FindDialog;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
@@ -54,7 +55,7 @@ public class RSyntaxShowReplaceDialogAction extends AbstractAction
 	
 	private RSyntaxShowReplaceDialogAction( Frame dialogParent , RSyntaxTextArea targetTextArea ) 
 	{
-		super("Replace...");
+		super(UIMessages.getInstance().getMessage("rsyntax.replace"));
 		//FindDialog findDialog = dialogForParent ( dialogParent );
 		int c = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_H, c));
