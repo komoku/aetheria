@@ -162,7 +162,8 @@ public class RSyntaxBSHCodePanel extends BSHCodePanel
 		DefaultSyntaxKit.initKit();
 		*/
 		
-		theTextArea = new RSyntaxTextArea(25,80);
+		//theTextArea = new RSyntaxTextArea(25,80);
+		theTextArea = RSyntaxTextAreaRegistry.getInstance().createSmallTextArea(25,80);
 		//jep = new JEditTextArea(tad);
 		
 		setLayout(new BorderLayout());

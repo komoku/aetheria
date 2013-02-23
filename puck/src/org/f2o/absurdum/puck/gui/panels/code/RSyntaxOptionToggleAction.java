@@ -3,8 +3,12 @@ package org.f2o.absurdum.puck.gui.panels.code;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.AbstractAction;
+import javax.swing.ButtonModel;
 import javax.swing.JCheckBoxMenuItem;
 
 import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
@@ -17,39 +21,44 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
  */
 public class RSyntaxOptionToggleAction extends AbstractAction 
 {
-	
-	/**The text areas affected by the option.*/
-	private RSyntaxTextArea ta1, ta2;
-	
+		
 	/**Property in PuckConfiguration where the option will be stored.*/
 	private String configProperty;
-	
-	/**Checkbox for the first text area*/
-	private JCheckBoxMenuItem cb1;
-	
-	/**Checkbox for the second text area*/
-	private JCheckBoxMenuItem cb2;
-	
+		
 	/**Object that defines how to actually toggle the option*/
-	private RSyntaxOptionToggler toggler;
+	private RSyntaxOption toggler;
 	
-	public RSyntaxOptionToggleAction ( RSyntaxTextArea ta1 , RSyntaxTextArea ta2 , String actionName , String configProperty , RSyntaxOptionToggler toggler ) 
+	/**Button model for check boxes*/
+	private ButtonModel bModel;
+	
+	/**Map for instances from config properties*/
+	private static Map instances = Collections.synchronizedMap ( new HashMap() );
+	
+	private RSyntaxOptionToggleAction ( String actionName , String configProperty , RSyntaxOption toggler ) 
 	{
-		this.ta1 = ta1;
-		this.ta2 = ta2;
 		this.toggler = toggler;
 		this.configProperty = configProperty;
 		putValue(NAME, actionName);
 		loadConfig();
-		initCheckBoxes();
+	}
+	
+	public static RSyntaxOptionToggleAction getInstanceFor ( String actionName , String configProperty )
+	{
+		RSyntaxOptionToggleAction instance;
+		instance = (RSyntaxOptionToggleAction) instances.get(configProperty);
+		if ( instance != null ) return instance;
+		//no instance yet for this config property: create and register it
+		instance = new RSyntaxOptionToggleAction ( actionName , configProperty , RSyntaxOption.getInstanceFor(configProperty) );
+		instances.put(configProperty, instance);
+		return instance;
 	}
 	
 	public void actionPerformed(ActionEvent e) 
 	{
-		toggler.setOptionEnabled(ta1,ta2,!toggler.isOptionEnabled(ta1,ta2));
+		toggler.setOptionEnabled(!toggler.isOptionEnabled());
 		
 		//save the configuration so it will be kept for future sessions
-		PuckConfiguration.getInstance().setProperty(configProperty, String.valueOf(toggler.isOptionEnabled(ta1,ta2)));
+		PuckConfiguration.getInstance().setProperty(configProperty, String.valueOf(toggler.isOptionEnabled()));
 	}
 	
 	/**
@@ -57,48 +66,24 @@ public class RSyntaxOptionToggleAction extends AbstractAction
 	 */
 	public void loadConfig()
 	{
-		toggler.setOptionEnabled(ta1,ta2,PuckConfiguration.getInstance().getBooleanProperty(configProperty));
+		toggler.setOptionEnabled(PuckConfiguration.getInstance().getBooleanProperty(configProperty));
 	}
 	
-	public void initCheckBoxes()
+	public JCheckBoxMenuItem getCheckBox ( )
 	{
-		cb1 = new JCheckBoxMenuItem(this);
-		cb2 = new JCheckBoxMenuItem(this);
-		cb1.setSelected(toggler.isOptionEnabled(ta1,ta2));
-		
-		//link both checkboxes
-		cb2.setModel(cb1.getModel());
-		
-		/*
-		cb2.setSelected(isOptionEnabled());
-		
-		//link both checkboxes
-		cb1.addItemListener( new ItemListener()
+		if ( bModel == null )
 		{
-			public void itemStateChanged ( ItemEvent e )
-			{
-				cb2.setSelected(cb1.isSelected());
-			}
+			JCheckBoxMenuItem prototypeCheckBox = new JCheckBoxMenuItem(this);
+			prototypeCheckBox.setSelected(toggler.isOptionEnabled());
+			bModel = prototypeCheckBox.getModel();
 		}
-		);
-		
-		cb2.addItemListener( new ItemListener()
-		{
-			public void itemStateChanged ( ItemEvent e )
-			{
-				cb1.setSelected(cb2.isSelected());
-			}
-		}
-		);
-		*/
+		JCheckBoxMenuItem requested = new JCheckBoxMenuItem(this);
+		requested.setModel(bModel);
+		return requested;
 	}
+
 	
-	public JCheckBoxMenuItem getCheckBoxFor ( RSyntaxTextArea ta )
-	{
-		if ( ta == ta1 ) return cb1;
-		else if ( ta == ta2 ) return cb2;
-		else return null;
-	}
+	
 	
 
 	

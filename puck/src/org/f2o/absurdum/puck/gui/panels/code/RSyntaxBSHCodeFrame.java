@@ -170,7 +170,7 @@ public class RSyntaxBSHCodeFrame extends JFrame
 		setTitle(title);
 		setSize(600,600);
 		externalTextArea = toWriteTo;
-		theTextArea = new RSyntaxTextArea();
+		theTextArea = RSyntaxTextAreaRegistry.getInstance().createLargeTextArea();
 		RTextScrollPane scrPane = new RTextScrollPane(theTextArea);
 		scrPane.setFoldIndicatorEnabled(true);
 		refresh();
@@ -277,7 +277,7 @@ public class RSyntaxBSHCodeFrame extends JFrame
 		theTextArea.setCodeFoldingEnabled(true);
 	    theTextArea.setAntiAliasingEnabled(true);
 	    theTextArea.setMarkOccurrences(true);
-	    theTextArea.setLineWrap(true); //done by toggler now
+	    theTextArea.setLineWrap(RSyntaxOption.getInstanceFor("rsyntaxWordWrap").isOptionEnabled());
 	    //theTextArea.setTabsEmulated(true);
 	}
 	
@@ -325,11 +325,13 @@ public class RSyntaxBSHCodeFrame extends JFrame
 	public static void configureSyncedMenus ( RSyntaxTextArea frameArea , RSyntaxTextArea panelArea )
 	{
 		
+		RSyntaxOptionToggleAction wordWrapToggleAction = RSyntaxOptionToggleAction.getInstanceFor("Word Wrap", "rsyntaxWordWrap");
+		
 		//No. This is wrong because it was assuming there are only two text areas, where actually there are two PER ENTITY. Need to re-think this.
 		
 		/*
 		//RSyntaxWordWrapAction toggleWordWrapAction = new RSyntaxWordWrapAction ( frameArea , panelArea );
-		RSyntaxOptionToggleAction wordWrapToggleAction = new RSyntaxOptionToggleAction ( frameArea , panelArea , "Word Wrap" , "rsyntaxWordWrap" , new RSyntaxOptionToggler(){
+		RSyntaxOptionToggleAction wordWrapToggleAction = new RSyntaxOptionToggleAction ( frameArea , panelArea , "Word Wrap" , "rsyntaxWordWrap" , new RSyntaxOption(){
 			public void setOptionEnabled(RSyntaxTextArea ta1,
 					RSyntaxTextArea ta2, boolean enabled) 
 			{
@@ -345,6 +347,7 @@ public class RSyntaxBSHCodeFrame extends JFrame
 				return ta1.getLineWrap();
 			}
 		});
+		*/
 		
 		RSyntaxTextArea[] areas = new RSyntaxTextArea[] { frameArea , panelArea };
 		
@@ -355,9 +358,9 @@ public class RSyntaxBSHCodeFrame extends JFrame
 			
 			areas[i].getPopupMenu().add(new JSeparator());
 			
-			areas[i].getPopupMenu().add(wordWrapToggleAction.getCheckBoxFor(areas[i]));
+			areas[i].getPopupMenu().add(wordWrapToggleAction.getCheckBox());
 		}
-		*/
+		
 		
 		
 	}
