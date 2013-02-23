@@ -225,6 +225,8 @@ public class RSyntaxBSHCodePanel extends BSHCodePanel
 		RSyntaxBSHCodeFrame.setDefaults ( theTextArea );
 	    
 	    RSyntaxBSHCodeFrame.configureMenus ( theTextArea , context );
+	    
+	    RSyntaxBSHCodeFrame.configureSyncedMenus ( auxFrame.getTextArea() , theTextArea );
 		
 	}
 	

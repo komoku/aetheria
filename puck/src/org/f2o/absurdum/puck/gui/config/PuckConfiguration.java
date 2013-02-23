@@ -82,6 +82,9 @@ public class PuckConfiguration
 		defaultProperties.setProperty("additionalLooks","Nimbus"); //L&F's available apart from default and system
 		
 		defaultProperties.setProperty("rsyntaxWordWrap","true");
+		defaultProperties.setProperty("rsyntaxShowLineNumbers","true");
+		defaultProperties.setProperty("rsyntaxShowTabLines","false");
+		defaultProperties.setProperty("rsyntaxTabsEmulated","true");
 		
 	}
 	

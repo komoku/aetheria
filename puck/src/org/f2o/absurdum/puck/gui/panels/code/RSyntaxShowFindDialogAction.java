@@ -13,6 +13,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 
+import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.fife.rsta.ui.search.FindDialog;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
@@ -62,7 +63,7 @@ public class RSyntaxShowFindDialogAction extends AbstractAction
 	
 	private RSyntaxShowFindDialogAction( Frame dialogParent , RSyntaxTextArea targetTextArea ) 
 	{
-		super("Find...");
+		super(UIMessages.getInstance().getMessage("rsyntax.find"));
 		//FindDialog findDialog = dialogForParent ( dialogParent );
 		int c = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F, c));

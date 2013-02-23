@@ -297,3 +297,11 @@ language.changed=El idioma de PUCK se ha cambiado a español; pero necesitarás ce
 language.changed.title=Cambio de idioma
 online.documentation=<html><p>Puedes consultar información detallada sobre cómo construir mundos en PUCK en la documentación online: <FONT color=\"#000099\"><U>http://www.caad.es/aetheria/doc/</U></FONT>.</p></html>
 online.documentation.browser.error=No puedo encontrar el navegador por defecto de tu sistema. Por favor, navega hasta http://www.caad.es/aetheria/doc a mano.
+rsyntax.find=Buscar...
+rsyntax.replace=Reemplazar...
+rsyntax.find.next=Buscar siguiente
+rsyntax.find.prev=Buscar anterior
+rsyntax.wrap=Ajuste de línea
+rsyntax.tablines=Líneas de tabulación
+rsyntax.tabs.emulated=Indentar con espacios (soft tabs)
+rsyntax.view=Vista

@@ -35,6 +35,9 @@ public class RSyntaxOption
 	static
 	{
 		optionScopes.put("rsyntaxWordWrap", ALL_AREAS);
+		//optionScopes.put("rsyntaxShowLineNumbers", ALL_AREAS); //scroll pane
+		optionScopes.put("rsyntaxShowTabLines", ALL_AREAS);
+		optionScopes.put("rsyntaxTabsEmulated", ALL_AREAS);
 		
 		optionTogglers.put("rsyntaxWordWrap", new RSyntaxOptionApplier()
 		{
@@ -44,6 +47,25 @@ public class RSyntaxOption
 			}
 			
 		});
+		
+		optionTogglers.put("rsyntaxShowTabLines", new RSyntaxOptionApplier()
+		{
+			public void setOptionEnabled(RSyntaxTextArea ta, boolean enabled) 
+			{
+				ta.setPaintTabLines(enabled);
+			}
+		});
+		
+		optionTogglers.put("rsyntaxTabsEmulated", new RSyntaxOptionApplier()
+		{
+			public void setOptionEnabled(RSyntaxTextArea ta, boolean enabled) 
+			{
+				if ( enabled ) ta.convertTabsToSpaces();
+				else ta.convertSpacesToTabs();
+				ta.setTabsEmulated(enabled);
+			}
+		});
+		
 	}
 	
 	private RSyntaxOption ( String configOptionName , int optionScope , RSyntaxOptionApplier toggler )
