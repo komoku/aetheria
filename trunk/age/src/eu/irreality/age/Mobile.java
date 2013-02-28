@@ -3038,6 +3038,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 		Mobile objetivo = null;
 
+		/*
 		for ( int i = 0 ; i < getEnemies().size() ; i++ )
 		{
 			if ( getEnemies().elementAt(i).getID() == getTarget() )
@@ -3046,10 +3047,21 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				break;
 			}
 		}
+		*/
+		//as of 2013-02-28, this method doesn't require that the target is an enemy.
+		//we are managing an attack that has started, so such checks should have been made when the attack was started, if relevant.
+		//sometimes they might not even be relevant, if the game programmers launch a single attack (which doesn't create an enmity) from code. 
+		objetivo = mundo.getMobile( getTarget() );
 
-		if ( objetivo == null || !objetivo.getRoom().equals(this.getRoom()) )
+		if ( objetivo == null )
 		{
-			Debug.println("Oops... El bicho atacado no est�.");
+			//An attack has been launched on a Mobile that does not exist in the world - this is either a world programmer error, or an internal error.
+			mundo.writeError( "Error: " + this + " was attacking, but has no target to attack - attack() method invoked with invalid arguments?\n" );
+		}
+		
+		if ( !objetivo.getRoom().equals(this.getRoom()) )
+		{
+			//The attacked Mobile exists, but is not present in this room. This may be because it moved or because it's dead (and has been moved to Limbo).
 
 			if ( objetivo.getState() == Mobile.DEAD )
 			{
