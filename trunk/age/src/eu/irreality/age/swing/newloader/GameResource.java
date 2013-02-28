@@ -130,6 +130,7 @@ public class GameResource
 	
 	private void downloadFileFromURL ( URL fromURL , File toFile ) throws IOException
 	{
+		//TODO Could also try the default API class ProgressMonitorInputStream
 		ReadableByteChannel rbc = Channels.newChannel(fromURL.openStream());
 		ProgressKeepingReadableByteChannel prbc = new ProgressKeepingReadableByteChannel(rbc,DownloadUtil.contentLength(fromURL),
 				new ProgressKeepingDelegate()
