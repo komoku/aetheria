@@ -12,6 +12,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import eu.irreality.age.swing.newloader.download.ProgressKeepingDelegate;
+
 /**
  * An object of this class represents an entry for a game in the game loader.
  * Each entry contains metadata about the game (title, author, etc.) and information about the resources (files) it requires
@@ -130,14 +132,14 @@ public class GameEntry
 	 * resources, causing inefficiency. 
 	 * @throws IOException
 	 */
-	public void download () throws IOException
+	public void download ( ProgressKeepingDelegate toNotify ) throws IOException
 	{
 		if ( downloaded && checkLocalFilesExist() ) return; //no need to download, file is already there.
 		else
 		{
-			mainResource.download();
+			mainResource.download(toNotify);
 			for ( int i = 0 ; i < extraResources.size() ; i++ )
-				((GameResource)extraResources.get(i)).download();
+				((GameResource)extraResources.get(i)).download(toNotify);
 		}
 	}
 

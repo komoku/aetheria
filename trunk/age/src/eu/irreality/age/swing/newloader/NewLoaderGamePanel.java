@@ -14,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -21,6 +22,8 @@ import javax.swing.table.TableModel;
 import javax.xml.transform.TransformerException;
 
 import eu.irreality.age.i18n.UIMessages;
+import eu.irreality.age.swing.newloader.download.ProgressKeepingDelegate;
+import eu.irreality.age.swing.newloader.download.ProgressKeepingReadableByteChannel;
 
 
 /**
@@ -28,7 +31,7 @@ import eu.irreality.age.i18n.UIMessages;
  * @author carlos
  *
  */
-public class NewLoaderGamePanel extends JPanel
+public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegate
 {
 	
 	private JTable gameTable;
@@ -41,6 +44,7 @@ public class NewLoaderGamePanel extends JPanel
 	
 	private JButton playButton = new JButton("Play");
 	private JButton downloadButton = new JButton("Download");
+	private JButton downloadingButton = new JButton("Downloading...");
 	
 	
 	private GameEntry getSelectedGameEntry()
@@ -52,8 +56,9 @@ public class NewLoaderGamePanel extends JPanel
 	public void downloadSelected() throws IOException
 	{
 		GameEntry toDownload = getSelectedGameEntry();
-		toDownload.download();
+		toDownload.download(this);
 	}
+	
 	
 	private void showError(String message, String title)
 	{
@@ -138,20 +143,55 @@ public class NewLoaderGamePanel extends JPanel
 			{
 				try 
 				{
+					activateDownloadingButton();
 					downloadSelected();
-				} catch (IOException e1) 
+					activatePlayButton();
+					//gameTableModel.fireTableDataChanged(); //game has changed to downloaded
+				} 
+				catch (IOException e1) 
 				{
 					showError(e1.getLocalizedMessage(),"Whoops!");
 					e1.printStackTrace();
+					activateDownloadButton();
 				}
 			}
-		}
-				);
+		});
 		
+		downloadingButton.setEnabled(false);
 		
 		//System.err.println(gameTable.getRowCount());
 		//System.err.println(gameTable.getValueAt(0, 0));
 		
+	}
+	
+	//TODO: This is not done yet and it will need more generality (several downloads at the same time, etc.)
+	private void launchDownload()
+	{
+		Thread thr = new Thread()
+		{
+			public void run()
+			{
+				try 
+				{
+					activateDownloadingButton();
+					downloadSelected();
+					activatePlayButton();
+					//gameTableModel.fireTableDataChanged(); //game has changed to downloaded
+				} 
+				catch (final IOException e1) 
+				{
+					SwingUtilities.invokeLater( new Runnable() {
+						public void run()
+						{
+							showError(e1.getLocalizedMessage(),"Whoops!");
+							e1.printStackTrace();
+							activateDownloadButton();
+						}
+					} );
+				}
+			}
+		};
+		thr.start();
 	}
 	
 	private void activatePlayButton()
@@ -182,6 +222,23 @@ public class NewLoaderGamePanel extends JPanel
 		}
 	}
 	
+	private void activateDownloadingButton()
+	{
+		if ( currentDownloadOrPlayButton != null && currentDownloadOrPlayButton != downloadingButton )
+		{
+			downloadOrPlayButtonPanel.remove(currentDownloadOrPlayButton);
+			currentDownloadOrPlayButton = null;
+		}
+		if ( currentDownloadOrPlayButton == null )
+		{
+			downloadOrPlayButtonPanel.add(downloadingButton);
+			currentDownloadOrPlayButton = downloadingButton;
+		}
+	}
+	
+	//TODO: Add progress bars.
+	//TODO: Color table entries green/red depending on downloaded or not?
+	
 	private void showGameEntry ( GameEntry ge )
 	{
 		StringBuilder sb = new StringBuilder();
@@ -201,6 +258,13 @@ public class NewLoaderGamePanel extends JPanel
 		else
 			activateDownloadButton();
 		
+	}
+
+	public void progressUpdate(ProgressKeepingReadableByteChannel rbc,
+			double progress) 
+	{
+		System.err.println("Progress " + progress);
+		infoPane.setText(infoPane.getText()+"Progress: " + progress + "\n");
 	}
 	
 }
