@@ -238,6 +238,7 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 	
 	//TODO: Add progress bars.
 	//TODO: Color table entries green/red depending on downloaded or not?
+	//TODO: Use setReadTimeout on an URLConnection to set a timeout for the download. Maybe ditch NIO?
 	
 	private void showGameEntry ( GameEntry ge )
 	{
