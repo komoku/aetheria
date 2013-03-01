@@ -58,6 +58,14 @@ public class GameResource
 	{
 		return localURL;
 	}
+	
+	/**
+	 * @return The string indicating the local relative path to the resource.
+	 */
+	public String getLocalRelativePath()
+	{
+		return localRelativePath;
+	}
 
 	/**
 	 * @return the remote URL of the game resource.
@@ -96,7 +104,7 @@ public class GameResource
 			if ( !e.hasAttribute("local") ) throw new MalformedGameEntryException("Game resource entry missing local path (attribute local)");
 			else
 			{
-				URL localWorldsURL = new URL(getPathToWorlds());
+				URL localWorldsURL = new File(getPathToWorlds()).toURI().toURL();
 				localURL = new URL(localWorldsURL,e.getAttribute("local"));
 				localRelativePath = e.getAttribute("local");
 			}
