@@ -25,6 +25,7 @@ public class GameEntry
 	private String title;
 	private String author;
 	private String date;
+	private String version;
 	private String ageVersion;
 	private String type;
 	private String language;
@@ -47,10 +48,11 @@ public class GameEntry
 		if ( !e.hasAttribute("worldName") ) throw new MalformedGameEntryException("Game entry missing world name (attribute worldName)");
 		else title = e.getAttribute("worldName");
 		if ( e.hasAttribute("author") ) author = e.getAttribute("author");
-		if ( e.hasAttribute("date") ) author = e.getAttribute("date");
-		if ( e.hasAttribute("ageVersion") ) author = e.getAttribute("ageVersion");
-		if ( e.hasAttribute("type") ) author = e.getAttribute("type");
-		if ( e.hasAttribute("language") ) author = e.getAttribute("language");
+		if ( e.hasAttribute("date") ) date = e.getAttribute("date");
+		if ( e.hasAttribute("version") ) version = e.getAttribute("version");
+		if ( e.hasAttribute("ageVersion") ) ageVersion = e.getAttribute("ageVersion");
+		if ( e.hasAttribute("type") ) type = e.getAttribute("type");
+		if ( e.hasAttribute("language") ) language = e.getAttribute("language");
 		if ( e.hasAttribute("downloaded") ) downloaded = Boolean.valueOf(e.getAttribute("downloaded")).booleanValue();
 			
 		//main resource
@@ -90,6 +92,7 @@ public class GameEntry
 		result.setAttribute("title", title);
 		result.setAttribute("author", author);
 		result.setAttribute("date", date);
+		result.setAttribute("version", version);
 		result.setAttribute("ageVersion", ageVersion);
 		result.setAttribute("type", type);
 		result.setAttribute("language", language);
@@ -136,6 +139,119 @@ public class GameEntry
 			for ( int i = 0 ; i < extraResources.size() ; i++ )
 				((GameResource)extraResources.get(i)).download();
 		}
+	}
+
+	/**
+	 * @return the title
+	 */
+	public String getTitle() 
+	{
+		return title;
+	}
+
+	/**
+	 * @return the author
+	 */
+	public String getAuthor() 
+	{
+		return author;
+	}
+
+	/**
+	 * @return the date
+	 */
+	public String getDate() 
+	{
+		return date;
+	}
+
+	/**
+	 * @return the ageVersion
+	 */
+	public String getAgeVersion() 
+	{
+		return ageVersion;
+	}
+	
+	/**
+	 * @return the version
+	 */
+	public String getVersion() 
+	{
+		return version;
+	}
+
+
+	/**
+	 * @return the type
+	 */
+	public String getType() 
+	{
+		return type;
+	}
+
+	/**
+	 * @return the language
+	 */
+	public String getLanguage() 
+	{
+		return language;
+	}
+
+	/**
+	 * @return the mainResource
+	 */
+	public GameResource getMainResource() 
+	{
+		return mainResource;
+	}
+
+	/**
+	 * @return the downloaded
+	 */
+	public boolean isDownloaded() 
+	{
+		return downloaded;
+	}
+	
+	/**
+	 * We will consider two game entries to be the same if both the remote URL and the local relative path associated to their main resource is the same.
+	 * @param ge
+	 * @return
+	 */
+	public boolean equals ( Object obj )
+	{
+		if ( !(obj instanceof GameEntry) ) return false;
+		GameEntry ge = (GameEntry) obj;
+		if ( mainResource.getLocalRelativePath() == null )
+		{
+			if ( ge.getMainResource().getLocalRelativePath() != null ) 
+				return false;
+		}
+		else
+		{
+			if ( !mainResource.getLocalRelativePath().equals(ge.getMainResource().getLocalRelativePath()) )
+				return false;
+		}
+		if ( mainResource.getRemoteURL() == null )
+		{
+			if ( ge.getMainResource().getRemoteURL() != null ) 
+				return false;
+		}
+		else
+		{
+			if ( !mainResource.getRemoteURL().equals(ge.getMainResource().getRemoteURL()) )
+				return false;
+		}
+		return true;	
+	}
+	
+	public int hashCode()
+	{
+		int hash = 1;
+		if ( mainResource.getLocalRelativePath() != null ) hash = hash*31 + mainResource.getLocalRelativePath().hashCode();
+		if ( mainResource.getRemoteURL() != null ) hash = hash*31 + mainResource.getRemoteURL().hashCode();
+		return hash;
 	}
 	
 	
