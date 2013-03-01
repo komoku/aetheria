@@ -76,6 +76,11 @@ public class GameTableModel extends AbstractTableModel
 		}
 	}
 	
+	public GameEntry getGameEntry ( int index )
+	{
+		return (GameEntry) gameEntries.get(index);
+	}
+	
 	/**
 	 * Adds all the games contained in a catalog to the table model.
 	 * @param catalogURL URL where the game catalog in XML can be found.
