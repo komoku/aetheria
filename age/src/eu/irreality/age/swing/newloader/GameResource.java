@@ -136,19 +136,15 @@ public class GameResource
 		return result;
 	}
 	
-	private void downloadFileFromURL ( URL fromURL , File toFile ) throws IOException
+	private void downloadFileFromURL ( URL fromURL , File toFile , ProgressKeepingDelegate toNotify ) throws IOException
 	{
 		//TODO Could also try the default API class ProgressMonitorInputStream
+		toNotify.progressUpdate(null,0.05);
 		ReadableByteChannel rbc = Channels.newChannel(fromURL.openStream());
-		ProgressKeepingReadableByteChannel prbc = new ProgressKeepingReadableByteChannel(rbc,DownloadUtil.contentLength(fromURL),
-				new ProgressKeepingDelegate()
-				{
-					public void progressUpdate( ProgressKeepingReadableByteChannel rbc, double progress)
-					{
-						; //update progress bar here
-					}
-				}
-		);
+		toNotify.progressUpdate(null,0.10);
+		int contentLength = DownloadUtil.contentLength(fromURL);
+		toNotify.progressUpdate(null,0.15);
+		ProgressKeepingReadableByteChannel prbc = new ProgressKeepingReadableByteChannel(rbc,contentLength,toNotify);
 		FileOutputStream fos = new FileOutputStream(toFile);
 		fos.getChannel().transferFrom(prbc, 0, 1 << 24);
 	}
@@ -169,12 +165,12 @@ public class GameResource
 	 * resource, causing inefficiency. 
 	 * @throws IOException
 	 */
-	public void download () throws IOException
+	public void download ( ProgressKeepingDelegate toNotify ) throws IOException
 	{
 		if ( downloaded && checkLocalFileExists() ) return; //no need to download, file is already there.
 		else
 		{
-			downloadFileFromURL ( remoteURL , new File(getPathToWorlds(),localRelativePath) );
+			downloadFileFromURL ( remoteURL , new File(getPathToWorlds(),localRelativePath) , toNotify );
 			downloaded = true;
 		}
 	}
