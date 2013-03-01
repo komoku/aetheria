@@ -45,7 +45,9 @@ public class NewLoaderGamePanel extends JPanel
 		}
 		gameTableColumnModel = new XTableColumnModel();
 		
-		gameTable = new JTable ( gameTableModel /*, gameTableColumnModel*/ );
+		gameTable = new JTable ( gameTableModel , gameTableColumnModel );
+		gameTable.createDefaultColumnsFromModel();
+		gameTableColumnModel.setAllColumnsVisible();
 		
 		tableScrollPane = new JScrollPane(gameTable);
 		gameTable.setFillsViewportHeight(true);
