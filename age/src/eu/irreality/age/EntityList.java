@@ -13,7 +13,7 @@ import eu.irreality.age.debug.Debug;
 import eu.irreality.age.matching.Match;
 import eu.irreality.age.matching.Matches;
 
-public class EntityList
+public class EntityList implements Iterable
 {
 
 	/**Vector que contiene las entidades.*/
@@ -29,6 +29,12 @@ public class EntityList
 	public void clear()
 	{
 		laLista.clear();
+	}
+	
+	
+	public Iterator iterator()
+	{
+		return laLista.iterator();
 	}
 	
 	/**
