@@ -49,7 +49,7 @@ public class ProgressKeepingReadableByteChannel implements ReadableByteChannel
             readSoFar += n;
             progress = expectedSize > 0 ? (double) readSoFar / (double) expectedSize * 100.0 : -1.0;
             if ( delegate != null )
-            	delegate.progressUpdate( this, progress );
+            	delegate.progressUpdate( progress , "Downloading" );
         }
         return n;
     }

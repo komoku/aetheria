@@ -13,6 +13,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import eu.irreality.age.swing.newloader.download.ProgressKeepingDelegate;
+import eu.irreality.age.swing.newloader.download.ProgressKeepingReadableByteChannel;
 
 /**
  * An object of this class represents an entry for a game in the game loader.
@@ -36,7 +37,7 @@ public class GameEntry
 	private GameResource mainResource;
 	private List extraResources = new ArrayList();
 	private boolean downloaded;
-	
+	private boolean downloadInProgress;
 	
 	
 	/**
@@ -114,6 +115,40 @@ public class GameEntry
 	
 	
 	/**
+	 * @return Whether this game is currently being downloaded. 
+	 */
+	public boolean getDownloadInProgress()
+	{
+		return downloadInProgress;
+	}
+	
+	/**
+	 * Returns whether the download of this game is in progress.
+	 */
+	public boolean isDownloadInProgress()
+	{
+		return downloadInProgress;
+	}
+	
+	/**
+	 * Set this game as currently being downloaded or not.
+	 * If the value is false, it is propagated to all the game's resources.
+	 * @param value
+	 */
+	public void setDownloadInProgress ( boolean value )
+	{
+		downloadInProgress = value;
+		if ( value == false )
+		{
+			mainResource.setDownloadInProgress(false);
+			for ( int i = 0 ; i < extraResources.size() ; i++ )
+			{
+				((GameResource)extraResources.get(i)).setDownloadInProgress(false);
+			}
+		}
+	}
+	
+	/**
 	 * Check whether the local filesystem has files for all the referenced resources (regardless of the value of the
 	 * downloaded flag)
 	 * @return
@@ -132,14 +167,44 @@ public class GameEntry
 	 * resources, causing inefficiency. 
 	 * @throws IOException
 	 */
-	public void download ( ProgressKeepingDelegate toNotify ) throws IOException
+	public void download ( final ProgressKeepingDelegate toNotify ) throws IOException
 	{
 		if ( downloaded && checkLocalFilesExist() ) return; //no need to download, file is already there.
 		else
 		{
-			mainResource.download(toNotify);
-			for ( int i = 0 ; i < extraResources.size() ; i++ )
-				((GameResource)extraResources.get(i)).download(toNotify);
+			try
+			{
+				setDownloadInProgress(true);
+				
+				final int numResources = 1 + extraResources.size(); //this is used to keep progress
+				mainResource.download(new ProgressKeepingDelegate()
+				{
+					public void progressUpdate(double progress , String progressString) 
+					{
+						toNotify.progressUpdate(progress / ((double)numResources) , progressString);
+					}	
+				}
+						);
+				for ( int i = 0 ; i < extraResources.size() ; i++ )
+				{
+					final int alreadyDownloaded = i+1;
+					((GameResource)extraResources.get(i)).download(new ProgressKeepingDelegate()
+					{
+						public void progressUpdate(double progress , String progressString) 
+						{
+							toNotify.progressUpdate( (alreadyDownloaded+1+progress) / ((double)numResources),progressString);
+						}	
+					}
+							);
+				}
+				setDownloaded(true);
+				setDownloadInProgress(false);
+			}
+			catch (IOException e)
+			{
+				setDownloadInProgress(false);
+				throw e;
+			}
 		}
 	}
 
@@ -214,6 +279,14 @@ public class GameEntry
 	public boolean isDownloaded() 
 	{
 		return downloaded;
+	}
+	
+	/**
+	 * Marks this game as downloaded or not.
+	 */
+	public void setDownloaded ( boolean value )
+	{
+		downloaded = value;
 	}
 	
 	/**
