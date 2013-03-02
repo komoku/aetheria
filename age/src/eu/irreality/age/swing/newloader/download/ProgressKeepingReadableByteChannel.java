@@ -16,12 +16,14 @@ public class ProgressKeepingReadableByteChannel implements ReadableByteChannel
     private long expectedSize;
     private ReadableByteChannel rbc;
     private long readSoFar;
+    private String progressString;
 
-    public ProgressKeepingReadableByteChannel( ReadableByteChannel rbc, long expectedSize, ProgressKeepingDelegate delegate ) 
+    public ProgressKeepingReadableByteChannel( ReadableByteChannel rbc, long expectedSize, ProgressKeepingDelegate delegate , String progressString ) 
     {
         this.delegate = delegate;
         this.expectedSize = expectedSize;
         this.rbc = rbc;
+        this.progressString = progressString;
     }
 
     public void close() throws IOException 
@@ -47,9 +49,9 @@ public class ProgressKeepingReadableByteChannel implements ReadableByteChannel
         if ( ( n = rbc.read( bb ) ) > 0 ) 
         {
             readSoFar += n;
-            progress = expectedSize > 0 ? (double) readSoFar / (double) expectedSize * 100.0 : -1.0;
+            progress = expectedSize > 0 ? (double) readSoFar / (double) expectedSize /** 100.0*/ : -1.0;
             if ( delegate != null )
-            	delegate.progressUpdate( progress , "Downloading" );
+            	delegate.progressUpdate( progress , progressString );
         }
         return n;
     }

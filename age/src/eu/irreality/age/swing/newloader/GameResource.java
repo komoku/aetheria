@@ -158,15 +158,15 @@ public class GameResource
 	private void downloadFileFromURL ( URL fromURL , File toFile , ProgressKeepingDelegate toNotify ) throws IOException
 	{
 		//TODO Could also try the default API class ProgressMonitorInputStream
-		toNotify.progressUpdate(0.05 , "Going to download: " + getLocalURL());
+		toNotify.progressUpdate(0.05 , "Going to download: " + fromURL.getFile());
 		URLConnection connection = fromURL.openConnection();
 		connection.setReadTimeout(5000);
 		InputStream inStream = connection.getInputStream();
 		ReadableByteChannel rbc = Channels.newChannel(inStream);
-		toNotify.progressUpdate(0.10 , "Connection open: " + getLocalURL());
+		toNotify.progressUpdate(0.10 , "Connection open: " + fromURL.getFile());
 		int contentLength = DownloadUtil.contentLength(fromURL);
-		toNotify.progressUpdate(0.15 , "Length estimated:" + getLocalURL());
-		ProgressKeepingReadableByteChannel prbc = new ProgressKeepingReadableByteChannel(rbc,contentLength,toNotify);
+		toNotify.progressUpdate(0.15 , "Length estimated:" + fromURL.getFile());
+		ProgressKeepingReadableByteChannel prbc = new ProgressKeepingReadableByteChannel(rbc,contentLength,toNotify,"Downloading: " + fromURL.getFile());
 		FileOutputStream fos = new FileOutputStream(toFile);
 		fos.getChannel().transferFrom(prbc, 0, 1 << 24);
 		inStream.close();
