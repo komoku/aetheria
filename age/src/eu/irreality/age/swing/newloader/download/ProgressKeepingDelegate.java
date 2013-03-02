@@ -10,9 +10,8 @@ public interface ProgressKeepingDelegate
 
 	/**
 	 * Callback method that will be called by a ProgressKeepingReadableByteChannel to notify its progress.
-	 * @param rbc
 	 * @param progress
 	 */
-	public void progressUpdate ( ProgressKeepingReadableByteChannel rbc, double progress ); 
+	public void progressUpdate ( /*ProgressKeepingReadableByteChannel rbc,*/ double progress , String progressString ); 
 	
 }

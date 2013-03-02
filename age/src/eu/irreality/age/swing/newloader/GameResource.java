@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
@@ -25,6 +27,7 @@ public class GameResource
 	private URL localURL;
 	private URL remoteURL;
 	private boolean downloaded;
+	private boolean downloadInProgress;
 	
 	/**Path to the local directory containing world files and world resources.*/
 	private static String pathToWorlds;
@@ -81,6 +84,22 @@ public class GameResource
 	public boolean isDownloaded() 
 	{
 		return downloaded;
+	}
+	
+	/**
+	 * Whether the download of the remote resource is currently in progress.
+	 */
+	public boolean isDownloadInProgress()
+	{
+		return downloadInProgress;
+	}
+	
+	/**
+	 * Sets or unsets the flag saying that the resource's download is in progress.
+	 */
+	public void setDownloadInProgress ( boolean newValue )
+	{
+		downloadInProgress = newValue;
 	}
 
 	/**
@@ -139,14 +158,19 @@ public class GameResource
 	private void downloadFileFromURL ( URL fromURL , File toFile , ProgressKeepingDelegate toNotify ) throws IOException
 	{
 		//TODO Could also try the default API class ProgressMonitorInputStream
-		toNotify.progressUpdate(null,0.05);
-		ReadableByteChannel rbc = Channels.newChannel(fromURL.openStream());
-		toNotify.progressUpdate(null,0.10);
+		toNotify.progressUpdate(0.05 , "Going to download: " + getLocalURL());
+		URLConnection connection = fromURL.openConnection();
+		connection.setReadTimeout(5000);
+		InputStream inStream = connection.getInputStream();
+		ReadableByteChannel rbc = Channels.newChannel(inStream);
+		toNotify.progressUpdate(0.10 , "Connection open: " + getLocalURL());
 		int contentLength = DownloadUtil.contentLength(fromURL);
-		toNotify.progressUpdate(null,0.15);
+		toNotify.progressUpdate(0.15 , "Length estimated:" + getLocalURL());
 		ProgressKeepingReadableByteChannel prbc = new ProgressKeepingReadableByteChannel(rbc,contentLength,toNotify);
 		FileOutputStream fos = new FileOutputStream(toFile);
 		fos.getChannel().transferFrom(prbc, 0, 1 << 24);
+		inStream.close();
+		fos.close();
 	}
 	
 	/**
@@ -170,8 +194,18 @@ public class GameResource
 		if ( downloaded && checkLocalFileExists() ) return; //no need to download, file is already there.
 		else
 		{
-			downloadFileFromURL ( remoteURL , new File(getPathToWorlds(),localRelativePath) , toNotify );
-			downloaded = true;
+			try
+			{
+				setDownloadInProgress(true);
+				downloadFileFromURL ( remoteURL , new File(getPathToWorlds(),localRelativePath) , toNotify );
+				setDownloaded(true);
+				setDownloadInProgress(false);
+			}
+			catch ( IOException e )
+			{
+				setDownloadInProgress(false);
+				throw e;
+			}
 		}
 	}
 	
