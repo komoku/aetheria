@@ -1,5 +1,7 @@
 package eu.irreality.age.swing.newloader.download;
 
+import java.awt.Dimension;
+
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 
@@ -23,6 +25,8 @@ public class DownloadProgressKeeper implements ProgressKeepingDelegate
 		this.theGameEntry = theGameEntry;
 		downloaded = theGameEntry.isDownloaded();
 		jpb.setStringPainted(true);
+		int preferredHeight = jpb.getPreferredSize() != null ? jpb.getPreferredSize().height : 50;
+		jpb.setPreferredSize( new Dimension(600,preferredHeight) );
 		SwingUtilities.invokeLater( new Runnable()
 		{
 			public void run()
@@ -56,7 +60,7 @@ public class DownloadProgressKeeper implements ProgressKeepingDelegate
 			public void run()
 			{
 				jpb.setValue( (int)Math.round(DownloadProgressKeeper.this.progress*100) );
-				jpb.setString(DownloadProgressKeeper.this.progressString);
+				jpb.setString(DownloadProgressKeeper.this.progressString + "(" + ((int)Math.round(DownloadProgressKeeper.this.progress*100)) + "%)");
 			}
 		});
 	}

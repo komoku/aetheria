@@ -193,15 +193,22 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		final DownloadProgressKeeper progressKeeper = getProgressKeeper(toDownload); 
 		progressBarPanel.removeAll();
 		progressBarPanel.add(progressKeeper.getBar());
+		activateDownloadingButton();
 		Thread thr = new Thread()
 		{
 			public void run()
 			{
 				try 
 				{
-					activateDownloadingButton();
 					toDownload.download(progressKeeper);
-					activatePlayButton();
+					SwingUtilities.invokeLater( new Runnable() {
+						public void run()
+						{
+							activatePlayButton();
+							gameTableModel.fireTableDataChanged(); //game has changed to downloaded //TODO: This unselects the game. Store selection and then re-select after this!
+							progressKeeper.progressUpdate(1.0, "Game is available");
+						}
+					} );	
 					//gameTableModel.fireTableDataChanged(); //game has changed to downloaded
 				} 
 				catch (final IOException e1) 
@@ -287,6 +294,8 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		//and show the play button or the download button as needed.
 		if ( ge.isDownloaded() )
 			activatePlayButton();
+		else if ( ge.isDownloadInProgress() )
+			activateDownloadingButton();
 		else
 			activateDownloadButton();
 		
