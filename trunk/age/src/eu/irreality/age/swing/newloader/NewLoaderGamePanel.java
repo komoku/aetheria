@@ -251,10 +251,23 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 	
 	/**
 	 * Launches the game that is currently selected in the table.
+	 * Must be invoked from the Swing event dispatching thread.
 	 */
 	private void launchGame()
 	{
 		final GameEntry toPlay = getSelectedGameEntry();
+		if ( !toPlay.getMainResource().checkLocalFileExists() )
+		{
+			int opt = JOptionPane.showConfirmDialog(this, "Game is missing. Redownload?", "Oops!", JOptionPane.YES_NO_OPTION);
+			if ( opt == JOptionPane.YES_OPTION )
+			{
+				toPlay.setDownloaded(false);
+				showGameEntry(toPlay); //refresh display (downloading button, etc.)
+				refreshTable();
+				launchDownload();
+				return;
+			}
+		}
 		Thread thr = new Thread()
 		{
 			public void run()
@@ -268,6 +281,13 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 			}
 		};
 		thr.start();
+	}
+	
+	private void refreshTable()
+	{
+		int selIndex = gameTable.getSelectedRow();
+		gameTableModel.fireTableDataChanged();
+		gameTable.setRowSelectionInterval(selIndex, selIndex);
 	}
 	
 	/**
@@ -292,7 +312,7 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 						{
 							activatePlayButton();
 							int selIndex = gameTable.getSelectedRow();
-							gameTableModel.fireTableDataChanged(); //game has changed to downloaded //TODO: This unselects the game. Store selection and then re-select after this!
+							refreshTable(); //this fires a data changed event
 							gameTable.setRowSelectionInterval(selIndex, selIndex);
 							progressKeeper.progressUpdate(1.0, "Game is available");
 						}
