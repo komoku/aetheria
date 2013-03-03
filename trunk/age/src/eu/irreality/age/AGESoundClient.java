@@ -508,6 +508,7 @@ public class AGESoundClient implements SoundClient
 		try
 		{
 			InputStream theStream = u.openStream();
+			//if this if-else structure gives any problem, we can also directly open the URL with the basicplayer. This avoids the mark/reset problem.
 			if ( theStream.markSupported() )
 			{
 				bp.open(theStream);
