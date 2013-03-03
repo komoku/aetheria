@@ -26,7 +26,7 @@ public class DownloadProgressKeeper implements ProgressKeepingDelegate
 		downloaded = theGameEntry.isDownloaded();
 		jpb.setStringPainted(true);
 		int preferredHeight = jpb.getPreferredSize() != null ? jpb.getPreferredSize().height : 50;
-		jpb.setPreferredSize( new Dimension(600,preferredHeight) );
+		jpb.setPreferredSize( new Dimension(300,preferredHeight) );
 		SwingUtilities.invokeLater( new Runnable()
 		{
 			public void run()
