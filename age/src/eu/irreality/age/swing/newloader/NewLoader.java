@@ -48,6 +48,7 @@ public class NewLoader extends JFrame
 				SwingSDIInterface.main( new String[0] );
 			}
 		});
+		//TODO: Option to add the game loaded from disk to the catalog: a checkbox + a method to read a world XML and create a catalog entry (even w/o remote url)
 		fromDiskPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		fromDiskPanel.add(Box.createRigidArea(new Dimension(5,5)));
 		fromDiskPanel.add(loadFromDiskButton);
