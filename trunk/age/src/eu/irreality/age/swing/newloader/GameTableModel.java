@@ -100,17 +100,35 @@ public class GameTableModel extends AbstractTableModel
 	public void addGameCatalog ( URL catalogURL ) throws IOException, TransformerException, MalformedGameEntryException
 	{
 		if ( catalogURL == null ) throw new IOException("Null catalog URL passed");
-		
-		if ( !catalogUrls.contains(catalogURL) )
-			catalogUrls.add(catalogURL);
-		
+				
 		InputStream is = catalogURL.openStream();
 		StreamSource s = new StreamSource(is,catalogURL.toString());
 		Transformer t = TransformerFactory.newInstance().newTransformer();
 		DOMResult r = new DOMResult();
 		t.transform(s,r);
 		addGameCatalog((Element)((Document)r.getNode()).getFirstChild());		
+		
+		if ( !catalogUrls.contains(catalogURL) )
+			catalogUrls.add(catalogURL);
 	}
+	
+	/**
+	 * Tries to add all the games contained in a catalog to the table model, but it this fails for some reason, this method does not throw exceptions but return false instead.
+	 * @param catalogURL
+	 */
+	public boolean addGameCatalogIfPossible ( URL catalogURL )
+	{
+		try
+		{
+			addGameCatalog ( catalogURL );
+			return true;
+		}
+		catch ( Exception e )
+		{
+			return false;
+		}
+	}
+	
 	
 	/**
 	 * Adds all the games described in the game XML elements that are children of the given catalog XML elements.

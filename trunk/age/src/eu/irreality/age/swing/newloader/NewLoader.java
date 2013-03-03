@@ -21,6 +21,7 @@ public class NewLoader extends JFrame
 		getContentPane().setLayout(new BoxLayout(this.getContentPane(),BoxLayout.PAGE_AXIS));
 		getContentPane().add(gamePanel = new NewLoaderGamePanel());
 		pack();
+		setLocationRelativeTo(null);
 		setVisible(true);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener ( new WindowAdapter()
