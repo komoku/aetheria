@@ -1,5 +1,6 @@
 package eu.irreality.age.swing.newloader;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -16,6 +17,7 @@ import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
 import eu.irreality.age.SwingAetheriaGameLoaderInterface;
+import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.swing.sdi.SwingSDIInterface;
 
 public class NewLoader extends JFrame 
@@ -37,8 +39,8 @@ public class NewLoader extends JFrame
 		JPanel fromDiskPanel = new JPanel();
 		fromDiskPanel.setLayout(new BoxLayout(fromDiskPanel,BoxLayout.LINE_AXIS));
 		fromDiskPanel.add ( Box.createHorizontalGlue() );
-		fromDiskPanel.add( new JLabel("Load from disk: ") );
-		loadFromDiskButton = new JButton("Browse...");
+		fromDiskPanel.add( new JLabel( UIMessages.getInstance().getMessage("gameloader.fromdisk") ) );
+		loadFromDiskButton = new JButton( UIMessages.getInstance().getMessage("gameloader.browse") );
 		loadFromDiskButton.addActionListener( new ActionListener()
 		{
 			public void actionPerformed ( ActionEvent e )
@@ -47,6 +49,7 @@ public class NewLoader extends JFrame
 			}
 		});
 		fromDiskPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
+		fromDiskPanel.add(Box.createRigidArea(new Dimension(5,5)));
 		fromDiskPanel.add(loadFromDiskButton);
 		getContentPane().add(new JSeparator());
 		getContentPane().add(fromDiskPanel);

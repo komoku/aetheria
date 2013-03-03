@@ -16,6 +16,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import eu.irreality.age.filemanagement.Paths;
+import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.swing.newloader.download.DownloadUtil;
 import eu.irreality.age.swing.newloader.download.ProgressKeepingDelegate;
 import eu.irreality.age.swing.newloader.download.ProgressKeepingReadableByteChannel;
@@ -179,15 +180,15 @@ public class GameResource
 	private void downloadFileFromURL ( URL fromURL , File toFile , ProgressKeepingDelegate toNotify ) throws IOException
 	{
 		//TODO Could also try the default API class ProgressMonitorInputStream
-		toNotify.progressUpdate(0.001 , "Going to download: " + getFileNameFromURL(fromURL) );
+		toNotify.progressUpdate(0.001 , UIMessages.getInstance().getMessage("gameloader.pre.download") + ": " + getFileNameFromURL(fromURL) );
 		URLConnection connection = fromURL.openConnection();
 		connection.setReadTimeout(5000);
 		InputStream inStream = connection.getInputStream();
 		ReadableByteChannel rbc = Channels.newChannel(inStream);
-		toNotify.progressUpdate(0.002 , "Connection open: " + getFileNameFromURL(fromURL) );
+		toNotify.progressUpdate(0.002 , UIMessages.getInstance().getMessage("gameloader.pre.download.connection") + ": " + getFileNameFromURL(fromURL) );
 		int contentLength = DownloadUtil.contentLength(fromURL);
-		toNotify.progressUpdate(0.003 , "Length estimated:" + getFileNameFromURL(fromURL) );
-		ProgressKeepingReadableByteChannel prbc = new ProgressKeepingReadableByteChannel(rbc,contentLength,toNotify,"Downloading: " + getFileNameFromURL(fromURL) );
+		toNotify.progressUpdate(0.003 , UIMessages.getInstance().getMessage("gameloader.pre.download.length") + ": " + getFileNameFromURL(fromURL) );
+		ProgressKeepingReadableByteChannel prbc = new ProgressKeepingReadableByteChannel(rbc,contentLength,toNotify, UIMessages.getInstance().getMessage("gameloader.game.downloading") + ": " + getFileNameFromURL(fromURL) );
 		FileOutputStream fos = new FileOutputStream(toFile);
 		fos.getChannel().transferFrom(prbc, 0, 1 << 24);
 		inStream.close();
