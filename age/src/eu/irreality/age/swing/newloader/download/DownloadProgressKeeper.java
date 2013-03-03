@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 
+import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.swing.newloader.GameEntry;
 
 public class DownloadProgressKeeper implements ProgressKeepingDelegate 
@@ -34,12 +35,12 @@ public class DownloadProgressKeeper implements ProgressKeepingDelegate
 				if ( downloaded )
 				{
 					jpb.setValue(100);
-					jpb.setString("Game is available");
+					jpb.setString( UIMessages.getInstance().getMessage("gameloader.game.available") );
 				}
 				else
 				{
 					jpb.setValue(0);
-					jpb.setString("Game not downloaded");
+					jpb.setString( UIMessages.getInstance().getMessage("gameloader.game.not.downloaded") );
 				}
 			}
 		}

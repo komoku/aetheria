@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -58,9 +59,9 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 	private JPanel progressBarPanel = new JPanel();
 	private JButton currentDownloadOrPlayButton; //this can be a play button or a download button
 	
-	private JButton playButton = new JButton("Play");
-	private JButton downloadButton = new JButton("Download");
-	private JButton downloadingButton = new JButton("Downloading...");
+	private JButton playButton = new JButton( UIMessages.getInstance().getMessage("gameloader.play") );
+	private JButton downloadButton = new JButton( UIMessages.getInstance().getMessage("gameloader.download") );
+	private JButton downloadingButton = new JButton( UIMessages.getInstance().getMessage("gameloader.downloading") );
 	
 	/**This maps game entries to the objects keeping their download progress and holding their progress bars*/
 	private Map downloadProgressKeepers = Collections.synchronizedMap(new HashMap());
@@ -74,7 +75,7 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		} 
 		catch (Exception e)
 		{
-			this.showError(e.getLocalizedMessage(),"Could not save data");
+			this.showError(e.getLocalizedMessage(), UIMessages.getInstance().getMessage("gameloader.error.saving.catalog") );
 		}
 	}
 	
@@ -166,10 +167,13 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		infoPane.setEditable(false);
 		infoPane.setPreferredSize(new Dimension(300,400));
 		infoPane.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,18));
+		infoPane.setMargin(new Insets(10,10,10,10));
 		Font tableFont = new Font(Font.SANS_SERIF,Font.PLAIN,18);
 		gameTable.setFont(tableFont);
 		FontMetrics fm = gameTable.getFontMetrics(tableFont);
 		gameTable.setRowHeight(fm.getHeight());
+		gameTable.getColumn(UIMessages.getInstance().getMessage("gameinfo.downloaded")).setPreferredWidth(80);
+		gameTable.getColumn(UIMessages.getInstance().getMessage("gameinfo.downloaded")).setMaxWidth(120);
 		
 		
 		tableScrollPane.setPreferredSize(new Dimension(800,400));
@@ -258,7 +262,7 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		final GameEntry toPlay = getSelectedGameEntry();
 		if ( !toPlay.getMainResource().checkLocalFileExists() )
 		{
-			int opt = JOptionPane.showConfirmDialog(this, "Game is missing. Redownload?", "Oops!", JOptionPane.YES_NO_OPTION);
+			int opt = JOptionPane.showConfirmDialog(this, UIMessages.getInstance().getMessage("gameloader.game.missing"), "Oops!", JOptionPane.YES_NO_OPTION);
 			if ( opt == JOptionPane.YES_OPTION )
 			{
 				toPlay.setDownloaded(false);
@@ -314,7 +318,7 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 							int selIndex = gameTable.getSelectedRow();
 							refreshTable(); //this fires a data changed event
 							gameTable.setRowSelectionInterval(selIndex, selIndex);
-							progressKeeper.progressUpdate(1.0, "Game is available");
+							progressKeeper.progressUpdate(1.0, UIMessages.getInstance().getMessage("gameloader.game.available") );
 						}
 					} );	
 					//gameTableModel.fireTableDataChanged(); //game has changed to downloaded
@@ -324,7 +328,7 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 					SwingUtilities.invokeLater( new Runnable() {
 						public void run()
 						{
-							progressKeeper.progressUpdate(0.0,"Problem occurred");
+							progressKeeper.progressUpdate(0.0, UIMessages.getInstance().getMessage("gameloader.download.problem") );
 							showError(e1.getLocalizedMessage(),"Whoops!");
 							e1.printStackTrace();
 							activateDownloadButton();
