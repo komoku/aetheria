@@ -4,6 +4,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import eu.irreality.age.SwingAetheriaGameLoaderInterface;
+
 public class NewLoader extends JFrame 
 {
 
@@ -15,7 +17,7 @@ public class NewLoader extends JFrame
 		getContentPane().add(new NewLoaderGamePanel());
 		pack();
 		setVisible(true);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
 	
 	public static void main ( String[] args )

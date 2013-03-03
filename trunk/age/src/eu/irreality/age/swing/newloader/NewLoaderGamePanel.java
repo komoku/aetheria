@@ -30,6 +30,7 @@ import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.swing.newloader.download.DownloadProgressKeeper;
 import eu.irreality.age.swing.newloader.download.ProgressKeepingDelegate;
 import eu.irreality.age.swing.newloader.download.ProgressKeepingReadableByteChannel;
+import eu.irreality.age.swing.sdi.SwingSDIInterface;
 
 
 /**
@@ -190,6 +191,15 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 			}
 		});
 		
+		playButton.addActionListener ( new ActionListener() 
+		{
+			public void actionPerformed ( ActionEvent e )
+			{
+				launchGame();
+			}
+		}
+		);
+		
 
 		
 		//System.err.println(gameTable.getRowCount());
@@ -197,6 +207,31 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		
 	}
 	
+	
+	/**
+	 * Launches the game that is currently selected in the table.
+	 */
+	private void launchGame()
+	{
+		final GameEntry toPlay = getSelectedGameEntry();
+		Thread thr = new Thread()
+		{
+			public void run()
+			{
+				SwingUtilities.invokeLater( new Runnable() {
+					public void run()
+					{
+						new SwingSDIInterface(toPlay.getMainResource().getLocalPath().getAbsolutePath(),false,null,null);
+					}
+				} );
+			}
+		};
+		thr.start();
+	}
+	
+	/**
+	 * Launches the download of the game currently selected in the table.
+	 */
 	private void launchDownload()
 	{
 		final GameEntry toDownload = getSelectedGameEntry();

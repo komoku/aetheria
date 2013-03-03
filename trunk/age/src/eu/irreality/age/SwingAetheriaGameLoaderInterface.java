@@ -68,6 +68,12 @@ public class SwingAetheriaGameLoaderInterface
 {
 
 	public static Font font;
+	
+	public static Font getFont()
+	{
+		if ( font == null ) loadFont();
+		return font;
+	}
 
 	public static void loadFont()
 	{
