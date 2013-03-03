@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -107,8 +109,9 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		gameTableModel = new GameTableModel();
 		try 
 		{
-			gameTableModel.addGameCatalog(this.getClass().getClassLoader().getResource("catalog.xml"));
-			gameTableModel.setCatalogWritePath(new File("catalog.xml"));
+			gameTableModel.addGameCatalogIfPossible(new File("maincatalog.xml").toURI().toURL()); //this will exist only if the application has been ran in the past
+			gameTableModel.addGameCatalog(this.getClass().getClassLoader().getResource("catalog.xml")); //this will exist always, distributed with AGE
+			gameTableModel.setCatalogWritePath(new File("maincatalog.xml"));
 		} 
 		catch (Exception e)
 		{
@@ -214,6 +217,21 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 			}
 		}
 		);
+		
+		//double click: play or download!
+		gameTable.addMouseListener(new MouseAdapter() 
+		{
+			public void mouseClicked(MouseEvent e) 
+			{
+				if (e.getClickCount() == 2) 
+				{
+					JTable target = (JTable)e.getSource();
+					GameEntry game = getSelectedGameEntry();
+					if ( game.isDownloaded() ) launchGame();
+					else launchDownload();
+				}
+			}
+		});
 		
 
 		

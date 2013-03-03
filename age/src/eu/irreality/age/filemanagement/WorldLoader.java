@@ -208,7 +208,7 @@ public class WorldLoader
 		}
 		catch ( IOException ioe )
 		{
-			io.write( UIMessages.getInstance().getMessage("load.world.cannot.read.word") + " " + pathnameOrUrl + "\n"); 
+			io.write( UIMessages.getInstance().getMessage("load.world.cannot.read.world") + " " + pathnameOrUrl + "\n"); 
 			ioe.printStackTrace();
 			return null; 
 		}
