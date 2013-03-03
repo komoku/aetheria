@@ -60,7 +60,7 @@ public class DownloadProgressKeeper implements ProgressKeepingDelegate
 			public void run()
 			{
 				jpb.setValue( (int)Math.round(DownloadProgressKeeper.this.progress*100) );
-				jpb.setString(DownloadProgressKeeper.this.progressString + "(" + ((int)Math.round(DownloadProgressKeeper.this.progress*100)) + "%)");
+				jpb.setString(DownloadProgressKeeper.this.progressString + " (" + ((int)Math.round(DownloadProgressKeeper.this.progress*100)) + "%)");
 			}
 		});
 	}

@@ -1,5 +1,7 @@
 package eu.irreality.age.swing.newloader;
 
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -137,6 +139,15 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		gameTable.setRowSelectionInterval(0,0);
 		
 		
+		downloadingButton.setEnabled(false);
+		infoPane.setEditable(false);
+		infoPane.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,18));
+		Font tableFont = new Font(Font.SANS_SERIF,Font.PLAIN,18);
+		gameTable.setFont(tableFont);
+		FontMetrics fm = gameTable.getFontMetrics(tableFont);
+		gameTable.setRowHeight(fm.getHeight());
+		
+		
 		add(tableScrollPane);
 		
 		JPanel rightPanel = new JPanel();
@@ -179,14 +190,13 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 			}
 		});
 		
-		downloadingButton.setEnabled(false);
+
 		
 		//System.err.println(gameTable.getRowCount());
 		//System.err.println(gameTable.getValueAt(0, 0));
 		
 	}
 	
-	//TODO: This is not done yet and it will need more generality (several downloads at the same time, etc.)
 	private void launchDownload()
 	{
 		final GameEntry toDownload = getSelectedGameEntry();
@@ -205,7 +215,9 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 						public void run()
 						{
 							activatePlayButton();
+							int selIndex = gameTable.getSelectedRow();
 							gameTableModel.fireTableDataChanged(); //game has changed to downloaded //TODO: This unselects the game. Store selection and then re-select after this!
+							gameTable.setRowSelectionInterval(selIndex, selIndex);
 							progressKeeper.progressUpdate(1.0, "Game is available");
 						}
 					} );	
@@ -240,6 +252,7 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 			downloadOrPlayButtonPanel.add(playButton);
 			currentDownloadOrPlayButton = playButton;
 		}
+		downloadOrPlayButtonPanel.revalidate();
 	}
 	
 	private void activateDownloadButton()
@@ -254,6 +267,7 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 			downloadOrPlayButtonPanel.add(downloadButton);
 			currentDownloadOrPlayButton = downloadButton;
 		}
+		downloadOrPlayButtonPanel.revalidate();
 	}
 	
 	private void activateDownloadingButton()
@@ -268,28 +282,38 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 			downloadOrPlayButtonPanel.add(downloadingButton);
 			currentDownloadOrPlayButton = downloadingButton;
 		}
+		downloadOrPlayButtonPanel.revalidate();
+		
 	}
 	
-	//TODO: Add progress bars.
 	//TODO: Color table entries green/red depending on downloaded or not?
-	//TODO: Use setReadTimeout on an URLConnection to set a timeout for the download. Maybe ditch NIO?
+	//TODO: Handle zipped games
+	
+	
+	private String yesNo ( boolean b )
+	{
+		if ( b ) return UIMessages.getInstance().getMessage("boolean.yes");
+		else return UIMessages.getInstance().getMessage("boolean.no"); 
+	}
 	
 	private void showGameEntry ( GameEntry ge )
 	{
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append( UIMessages.getInstance().getMessage("gameinfo.name") + ":" + ge.getTitle() + "\n" );
-		sb.append( UIMessages.getInstance().getMessage("gameinfo.author") + ":" + ge.getAuthor() + "\n" );
-		sb.append( UIMessages.getInstance().getMessage("gameinfo.date") + ":" + ge.getDate() + "\n" );
-		sb.append( UIMessages.getInstance().getMessage("gameinfo.version") + ":" + ge.getVersion() + "\n" );
-		sb.append( UIMessages.getInstance().getMessage("gameinfo.required") + ":" + ge.getAgeVersion() + "\n" );
-		sb.append( UIMessages.getInstance().getMessage("gameinfo.downloaded") + ":" + ge.isDownloaded() + "\n" );
+		sb.append( UIMessages.getInstance().getMessage("gameinfo.name") + " " + ge.getTitle() + "\n" );
+		sb.append( UIMessages.getInstance().getMessage("gameinfo.author") + " " + ge.getAuthor() + "\n" );
+		sb.append( UIMessages.getInstance().getMessage("gameinfo.date") + " " + ge.getDate() + "\n" );
+		sb.append( UIMessages.getInstance().getMessage("gameinfo.version") + " " + ge.getVersion() + "\n" );
+		sb.append( UIMessages.getInstance().getMessage("gameinfo.required") + " " + ge.getAgeVersion() + "\n" );
+		sb.append( UIMessages.getInstance().getMessage("gameinfo.downloaded") + " " + yesNo(ge.isDownloaded()) + "\n" );
 		
 		infoPane.setText(sb.toString());
+		infoPane.revalidate();
 		
 		//show the progress bar if applicable
 		progressBarPanel.removeAll();
 		progressBarPanel.add(getProgressKeeper(ge).getBar());
+		progressBarPanel.revalidate();
 		
 		//and show the play button or the download button as needed.
 		if ( ge.isDownloaded() )

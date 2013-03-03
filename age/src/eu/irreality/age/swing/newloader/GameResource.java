@@ -19,6 +19,7 @@ import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.swing.newloader.download.DownloadUtil;
 import eu.irreality.age.swing.newloader.download.ProgressKeepingDelegate;
 import eu.irreality.age.swing.newloader.download.ProgressKeepingReadableByteChannel;
+import eu.irreality.age.swing.newloader.download.Unzipper;
 
 public class GameResource 
 {
@@ -155,18 +156,30 @@ public class GameResource
 		return result;
 	}
 	
+	/**
+	 * Obtains only the filename (not complete path) from an URL.
+	 * @param u
+	 */
+	private String getFileNameFromURL ( URL u )
+	{
+		String path = u.getFile();
+		int index = path.lastIndexOf('/');
+		if ( index < 0 ) return "";
+		else return path.substring(index+1);
+	}
+	
 	private void downloadFileFromURL ( URL fromURL , File toFile , ProgressKeepingDelegate toNotify ) throws IOException
 	{
 		//TODO Could also try the default API class ProgressMonitorInputStream
-		toNotify.progressUpdate(0.05 , "Going to download: " + fromURL.getFile());
+		toNotify.progressUpdate(0.001 , "Going to download: " + getFileNameFromURL(fromURL) );
 		URLConnection connection = fromURL.openConnection();
 		connection.setReadTimeout(5000);
 		InputStream inStream = connection.getInputStream();
 		ReadableByteChannel rbc = Channels.newChannel(inStream);
-		toNotify.progressUpdate(0.10 , "Connection open: " + fromURL.getFile());
+		toNotify.progressUpdate(0.002 , "Connection open: " + getFileNameFromURL(fromURL) );
 		int contentLength = DownloadUtil.contentLength(fromURL);
-		toNotify.progressUpdate(0.15 , "Length estimated:" + fromURL.getFile());
-		ProgressKeepingReadableByteChannel prbc = new ProgressKeepingReadableByteChannel(rbc,contentLength,toNotify,"Downloading: " + fromURL.getFile());
+		toNotify.progressUpdate(0.003 , "Length estimated:" + getFileNameFromURL(fromURL) );
+		ProgressKeepingReadableByteChannel prbc = new ProgressKeepingReadableByteChannel(rbc,contentLength,toNotify,"Downloading: " + getFileNameFromURL(fromURL) );
 		FileOutputStream fos = new FileOutputStream(toFile);
 		fos.getChannel().transferFrom(prbc, 0, 1 << 24);
 		inStream.close();
@@ -196,8 +209,18 @@ public class GameResource
 		{
 			try
 			{
+				boolean isZipped = remoteURL.toString().endsWith(".zip"); //if the download is zipped, we'll need to download the zip file and then decompress it
 				setDownloadInProgress(true);
-				downloadFileFromURL ( remoteURL , new File(getPathToWorlds(),localRelativePath) , toNotify );
+				File outputPath = new File(getPathToWorlds(),localRelativePath);
+				if ( isZipped ) outputPath = new File(outputPath.getParentFile(),outputPath.getName()+".zip");
+				if ( !outputPath.getParentFile().exists() ) outputPath.getParentFile().mkdirs(); //create directory if it doesn't exist
+				downloadFileFromURL ( remoteURL , outputPath , toNotify );
+				if ( isZipped )
+				{
+					toNotify.progressUpdate(1.0, "Unzipping " + outputPath.getName());
+					Unzipper.unzip(outputPath.getAbsolutePath(), outputPath.getParentFile().getAbsolutePath()); //unzip
+					outputPath.delete(); //delete the zipfile since we have extracted the contents
+				}
 				setDownloaded(true);
 				setDownloadInProgress(false);
 			}
