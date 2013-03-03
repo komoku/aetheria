@@ -198,7 +198,7 @@ public class GameResource
 	 * Checks if the local file referenced in the resource exists (regardless of the contents of the "downloaded" flag)
 	 * @return
 	 */
-	protected boolean checkLocalFileExists ()
+	public boolean checkLocalFileExists ()
 	{
 		return new File(getPathToWorlds(),localRelativePath).exists();
 	}
