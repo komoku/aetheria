@@ -505,6 +505,7 @@ public class AGESoundClient implements SoundClient
 		}
 		
 		final BasicPlayer bp = new BasicPlayer();
+		final InputStream theSoundStream;
 		try
 		{
 			InputStream theStream = u.openStream();
@@ -512,11 +513,13 @@ public class AGESoundClient implements SoundClient
 			if ( theStream.markSupported() )
 			{
 				bp.open(theStream);
+				theSoundStream = theStream;
 			}
 			else //in applets that read remote URLs, mark is not supported so we need to add an extra layer.
 			{
 				BufferedInputStream bib = new BufferedInputStream(theStream);
 				bp.open(bib);
+				theSoundStream = bib;
 			}
 		}
 		catch ( BasicPlayerException bpe )
@@ -547,12 +550,20 @@ public class AGESoundClient implements SoundClient
 							bp.play();
 							*/
 							if ( !isOn() ) return;
-							bp.stop();
-							double theGain = getCurrentGain(u);
-							//bp.open(u.openStream());
-							bp.open(u); //to fix mark/reset not supported? if not, just wrap open with bufferedinputstream
-							bp.play();
-							bp.setGain(theGain);
+							if ( theSoundStream.markSupported() ) //true always? except maybe on applet?
+							{
+								bp.seek(0);
+								bp.play();
+							}
+							else
+							{
+								bp.stop();
+								double theGain = getCurrentGain(u);
+								//bp.open(u.openStream());
+								bp.open(u); //to fix mark/reset not supported? if not, just wrap open with bufferedinputstream
+								bp.play();
+								bp.setGain(theGain);
+							}
 						}
 						catch ( BasicPlayerException bpe )
 						{
@@ -575,12 +586,20 @@ public class AGESoundClient implements SoundClient
 							bp.play();
 							*/
 							if ( !isOn() ) return;
-							bp.stop();
-							double theGain = getCurrentGain(u);
-							//bp.open(u.openStream());						
-							bp.open(u); //to fix mark/reset not supported?
-							bp.play();
-							bp.setGain(theGain);
+							if ( theSoundStream.markSupported() ) //true always? except maybe on applet?
+							{
+								bp.seek(0);
+								bp.play();
+							}
+							else
+							{
+								bp.stop();
+								double theGain = getCurrentGain(u);
+								//bp.open(u.openStream());						
+								bp.open(u); //to fix mark/reset not supported?
+								bp.play();
+								bp.setGain(theGain);
+							}
 						}
 						catch ( BasicPlayerException bpe )
 						{
