@@ -32,6 +32,7 @@ gameinfo.version=Versión:
 gameinfo.required=Versión AGE requerida:
 gameinfo.file=Fichero:
 gameinfo.downloaded=Descargado:
+gameinfo.language=Idioma:
 csclient.pres=Ver
 csclient.pres.colorthemes=Temas de color
 csclient.pres.fullscreen=Pantalla completa

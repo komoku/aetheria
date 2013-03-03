@@ -1,5 +1,7 @@
 package eu.irreality.age.swing.newloader;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.event.ActionEvent;
@@ -10,8 +12,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -160,6 +164,7 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		
 		downloadingButton.setEnabled(false);
 		infoPane.setEditable(false);
+		infoPane.setPreferredSize(new Dimension(300,400));
 		infoPane.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,18));
 		Font tableFont = new Font(Font.SANS_SERIF,Font.PLAIN,18);
 		gameTable.setFont(tableFont);
@@ -167,6 +172,7 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		gameTable.setRowHeight(fm.getHeight());
 		
 		
+		tableScrollPane.setPreferredSize(new Dimension(800,400));
 		add(tableScrollPane);
 		
 		JPanel rightPanel = new JPanel();
@@ -179,8 +185,10 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		
 		rightPanel.add(rightDownPanel);
 		
+		progressBarPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 		rightDownPanel.add(progressBarPanel);
 		rightDownPanel.add(Box.createHorizontalGlue());
+		downloadOrPlayButtonPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 		rightDownPanel.add(downloadOrPlayButtonPanel);
 		
 		add(rightPanel);
@@ -370,6 +378,7 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		
 		sb.append( UIMessages.getInstance().getMessage("gameinfo.name") + " " + ge.getTitle() + "\n" );
 		sb.append( UIMessages.getInstance().getMessage("gameinfo.author") + " " + ge.getAuthor() + "\n" );
+		sb.append( UIMessages.getInstance().getMessage("gameinfo.language") + " " + new Locale(ge.getLanguage()).getDisplayLanguage() + "\n" );
 		sb.append( UIMessages.getInstance().getMessage("gameinfo.date") + " " + ge.getDate() + "\n" );
 		sb.append( UIMessages.getInstance().getMessage("gameinfo.version") + " " + ge.getVersion() + "\n" );
 		sb.append( UIMessages.getInstance().getMessage("gameinfo.required") + " " + ge.getAgeVersion() + "\n" );
