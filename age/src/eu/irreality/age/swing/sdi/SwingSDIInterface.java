@@ -171,7 +171,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 			}
 			catch ( Exception e )
 			{
-				((ColoredSwingClient)io).showAfterLogLoad();
+				if ( io != null ) ((ColoredSwingClient)io).showAfterLogLoad();
 				e.printStackTrace();
 			}
 
@@ -290,8 +290,8 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 			}
 			catch ( Exception e )
 			{
-				((ColoredSwingClient)io).showAfterLogLoad();
-				write ( "Exception on loading world: " + e );
+				if ( io != null ) ((ColoredSwingClient)io).showAfterLogLoad();
+				if ( io != null ) write ( "Exception on loading world: " + e );
 				e.printStackTrace();
 			}
 			if ( theWorld == null || io.isDisconnected() ) //io could be disconnected due to closing the window before assigning player 

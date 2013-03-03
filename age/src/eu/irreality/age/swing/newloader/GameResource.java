@@ -46,6 +46,14 @@ public class GameResource
 		}
 		return pathToWorlds;
 	}
+	
+	/**
+	 * @return the local absolute path of the game resource.
+	 */
+	public File getLocalPath()
+	{
+		return new File(getPathToWorlds(),localRelativePath);
+	}
 
 	/**
 	 * @return the local absolute URL of the game resource.
@@ -211,7 +219,7 @@ public class GameResource
 			{
 				boolean isZipped = remoteURL.toString().endsWith(".zip"); //if the download is zipped, we'll need to download the zip file and then decompress it
 				setDownloadInProgress(true);
-				File outputPath = new File(getPathToWorlds(),localRelativePath);
+				File outputPath = getLocalPath();
 				if ( isZipped ) outputPath = new File(outputPath.getParentFile(),outputPath.getName()+".zip");
 				if ( !outputPath.getParentFile().exists() ) outputPath.getParentFile().mkdirs(); //create directory if it doesn't exist
 				downloadFileFromURL ( remoteURL , outputPath , toNotify );

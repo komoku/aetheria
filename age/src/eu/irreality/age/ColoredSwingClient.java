@@ -735,7 +735,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		System.err.println("Prompt created");
 		*/
 
-		elCampoTexto.setFont(SwingAetheriaGameLoaderInterface.font.deriveFont((float)24.0));
+		elCampoTexto.setFont(SwingAetheriaGameLoaderInterface.getFont().deriveFont((float)24.0));
 		
 		elCampoTexto.setVisible(true);
 		laVentana.getMainPanel().add(elCampoTexto,"South");
