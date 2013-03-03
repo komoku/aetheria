@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import eu.irreality.age.i18n.UIMessages;
@@ -57,6 +59,18 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 	/**This maps game entries to the objects keeping their download progress and holding their progress bars*/
 	private Map downloadProgressKeepers = Collections.synchronizedMap(new HashMap());
 	
+	
+	public void writeData()
+	{
+		try 
+		{
+			gameTableModel.writeCatalog();
+		} 
+		catch (Exception e)
+		{
+			this.showError(e.getLocalizedMessage(),"Could not save data");
+		}
+	}
 	
 	/**
 	 * Obtains the DownloadProgressKeeper for the given game entry, or initializes it if there is none. 
@@ -94,6 +108,7 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		try 
 		{
 			gameTableModel.addGameCatalog(this.getClass().getClassLoader().getResource("catalog.xml"));
+			gameTableModel.setCatalogWritePath(new File("catalog.xml"));
 		} 
 		catch (Exception e)
 		{

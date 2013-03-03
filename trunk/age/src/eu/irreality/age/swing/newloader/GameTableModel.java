@@ -1,5 +1,6 @@
 package eu.irreality.age.swing.newloader;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -11,12 +12,19 @@ import java.util.Vector;
 
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.w3c.dom.Document;
@@ -36,6 +44,7 @@ public class GameTableModel extends AbstractTableModel
 	
 	private Vector columnNames;
 	private List catalogUrls; //urls to the XML catalog files
+	private File catalogWritePath; //file to write the global catalog to
 	
 	private List gameEntries = new ArrayList(); //game entries (the content of the model)
 	
@@ -117,6 +126,39 @@ public class GameTableModel extends AbstractTableModel
 			ge.initFromXML(gameList.item(i));
 			addGameEntry ( ge );
 		}
+	}
+	
+	/**
+	 * Sets the path to which the combined catalog will be written at the end of execution. 
+	 * @param path
+	 */
+	public void setCatalogWritePath ( File path )
+	{
+		catalogWritePath = path;
+	}
+	
+	/**
+	 * Writes the combined, updated catalog to the set path.
+	 * @throws ParserConfigurationException 
+	 */
+	public void writeCatalog() throws TransformerException, ParserConfigurationException, IOException
+	{
+		if ( catalogWritePath == null ) return;
+
+		Document d = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+		
+		org.w3c.dom.Element catalogElement = d.createElement("catalog");
+		for ( int i = 0 ; i < gameEntries.size() ; i++ )
+		{
+			catalogElement.appendChild( ((GameEntry)gameEntries.get(i)).getXML(d) );
+		}
+		
+		d.appendChild(catalogElement);
+		Transformer t = TransformerFactory.newInstance().newTransformer();
+		t.setOutputProperty(OutputKeys.INDENT,"yes");
+		Source s = new DOMSource(d);
+		Result r = new StreamResult(catalogWritePath);
+		t.transform(s,r);		
 	}
 	
 	/**

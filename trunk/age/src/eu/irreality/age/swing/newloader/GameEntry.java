@@ -48,8 +48,13 @@ public class GameEntry
 	public void initFromXML ( Node n ) throws MalformedGameEntryException
 	{
 		Element e = (Element) n;
-		if ( !e.hasAttribute("worldName") ) throw new MalformedGameEntryException("Game entry missing world name (attribute worldName)");
-		else title = e.getAttribute("worldName");
+		if ( !e.hasAttribute("worldName") && !e.hasAttribute("title") && !e.hasAttribute("moduleName") ) throw new MalformedGameEntryException("Game entry missing world name (attribute worldName, title or moduleName)");
+		else 
+		{
+			if ( e.hasAttribute("worldName") ) title = e.getAttribute("worldName");
+			if ( e.hasAttribute("moduleName") ) title = e.getAttribute("moduleName");
+			if ( e.hasAttribute("title") ) title = e.getAttribute("title");
+		}
 		if ( e.hasAttribute("author") ) author = e.getAttribute("author");
 		if ( e.hasAttribute("date") ) date = e.getAttribute("date");
 		if ( e.hasAttribute("version") ) version = e.getAttribute("version");
