@@ -548,7 +548,8 @@ public class AGESoundClient implements SoundClient
 							if ( !isOn() ) return;
 							bp.stop();
 							double theGain = getCurrentGain(u);
-							bp.open(u.openStream());
+							//bp.open(u.openStream());
+							bp.open(u); //to fix mark/reset not supported? if not, just wrap open with bufferedinputstream
 							bp.play();
 							bp.setGain(theGain);
 						}
@@ -556,10 +557,10 @@ public class AGESoundClient implements SoundClient
 						{
 							bpe.printStackTrace();
 						}
-						catch ( IOException ioe )
-						{
-							ioe.printStackTrace();
-						}
+						//catch ( IOException ioe )
+						//{
+						//	ioe.printStackTrace();
+						//}
 					}
 					else if ( loopCount > 0 )
 					{
@@ -575,7 +576,8 @@ public class AGESoundClient implements SoundClient
 							if ( !isOn() ) return;
 							bp.stop();
 							double theGain = getCurrentGain(u);
-							bp.open(u.openStream());						
+							//bp.open(u.openStream());						
+							bp.open(u); //to fix mark/reset not supported?
 							bp.play();
 							bp.setGain(theGain);
 						}
@@ -583,10 +585,10 @@ public class AGESoundClient implements SoundClient
 						{
 							bpe.printStackTrace();
 						}
-						catch ( IOException ioe )
-						{
-							ioe.printStackTrace();
-						}
+						//catch ( IOException ioe )
+						//{
+						//	ioe.printStackTrace();
+						//}
 					}
 					else
 					{
