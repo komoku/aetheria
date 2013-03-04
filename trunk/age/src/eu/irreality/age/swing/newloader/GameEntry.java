@@ -59,6 +59,7 @@ public class GameEntry
 		if ( e.hasAttribute("date") ) date = e.getAttribute("date");
 		if ( e.hasAttribute("version") ) version = e.getAttribute("version");
 		if ( e.hasAttribute("ageVersion") ) ageVersion = e.getAttribute("ageVersion");
+		if ( e.hasAttribute("parserVersion") ) ageVersion = e.getAttribute("parserVersion");
 		if ( e.hasAttribute("type") ) type = e.getAttribute("type");
 		if ( e.hasAttribute("language") ) language = e.getAttribute("language");
 		if ( e.hasAttribute("downloaded") ) downloaded = Boolean.valueOf(e.getAttribute("downloaded")).booleanValue();

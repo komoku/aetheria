@@ -19,6 +19,8 @@ public class Unzipper
 	public static void unzip(String zipFile, String outputFolder) throws IOException
 	{
 		
+		//System.out.println("Unzipping " + zipFile + " to " + outputFolder + ":\n");
+		
 		byte[] buffer = new byte[1024];
 
 
@@ -41,21 +43,36 @@ public class Unzipper
 			String fileName = ze.getName();
 			File newFile = new File(outputFolder + File.separator + fileName);
 
-			//System.out.println("file unzip : "+ newFile.getAbsoluteFile());
-
-			//create all non existent folders
-			//(corresponding to compressed folders inside the zipfile)
-			new File(newFile.getParent()).mkdirs();
-				
-			FileOutputStream fos = new FileOutputStream(newFile);             
-
-			int len;
-			while ((len = zis.read(buffer)) > 0) 
+			if ( ze.isDirectory() )
 			{
-				fos.write(buffer, 0, len);
+				//create the directory.
+				newFile.mkdirs();
+			}
+			
+			else
+			{
+			
+				//System.out.println("file unzip : "+ newFile.getAbsoluteFile());
+	
+				//create all non existent folders
+				//(corresponding to compressed folders inside the zipfile)
+				new File(newFile.getParent()).mkdirs();
+				
+				//System.out.println("*Made dirs to " + newFile.getParent() + "\n");
+				//System.out.println("*Will create " + newFile + "\n");
+				
+				FileOutputStream fos = new FileOutputStream(newFile);             
+	
+				int len;
+				while ((len = zis.read(buffer)) > 0) 
+				{
+					fos.write(buffer, 0, len);
+				}
+				fos.close();  
+			
 			}
 	
-			fos.close();   
+ 
 			ze = zis.getNextEntry();
 			
 		}

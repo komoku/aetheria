@@ -1,8 +1,8 @@
 
 FUEGO.
-v1.2.1, 2011-05-05
-(c) 2008, 2011 Carlos Gómez (Al-Khwarizmi)
-Este documento actualizado 2011-05-05
+v1.2.2, 2011
+(c) 2008-2013 Carlos Gómez (Al-Khwarizmi)
+Este documento actualizado 2013-03-04
 
 Se trata de una aventura contrarreloj. Has de escapar de un incendio. Pensada para jugar en tiempo real, tienes que resolverla rápidamente o morirás.
 
