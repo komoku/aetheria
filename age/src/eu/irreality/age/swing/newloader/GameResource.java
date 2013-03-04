@@ -25,10 +25,24 @@ import eu.irreality.age.swing.newloader.download.Unzipper;
 public class GameResource 
 {
 
+	/**
+	 * The local path of the game resource, relative to the AGE worlds directory.
+	 */
 	private String localRelativePath;
+	
+	/**
+	 * If this is not null, then it's the path to store the zipfile downloaded from the remoteURL
+	 * and the local relative path stores the path of the main resource inside that zipfile (which may
+	 * be in some subdirectory extracted from the zipfile).
+	 */
+	private String zipfileRelativePath;
+	
 	private URL localURL;
+	
 	private URL remoteURL;
+	
 	private boolean downloaded;
+	
 	private boolean downloadInProgress;
 	
 	/**Path to the local directory containing world files and world resources.*/
@@ -78,6 +92,25 @@ public class GameResource
 	public String getLocalRelativePath()
 	{
 		return localRelativePath;
+	}
+	
+	/**
+	 * @return The string indicating the full relative path to store the zipfile downloaded from the server, that we will
+	 * need to unzip in order to get the game resource.
+	 */
+	public String getZipfileRelativePath()
+	{
+		if ( zipfileRelativePath != null ) return zipfileRelativePath;
+		else return localRelativePath + ".zip"; //example: vampiro/world.xml.zip
+	}
+	
+	/**
+	 * @return the local absolute path to store the zipfile downloaded from the server, that we will need to unzip in order to
+	 * get the game resource.
+	 */
+	public File getZipfilePath()
+	{
+		return new File(getPathToWorlds(),getZipfileRelativePath());
 	}
 
 	/**
@@ -137,6 +170,7 @@ public class GameResource
 				localURL = new URL(localWorldsURL,e.getAttribute("local"));
 				localRelativePath = e.getAttribute("local");
 			}
+			if ( e.hasAttribute("zip") ) zipfileRelativePath = e.getAttribute("zip");
 			if ( e.hasAttribute("remote") ) remoteURL = new URL(e.getAttribute("remote"));
 			if ( e.hasAttribute("downloaded") ) downloaded = Boolean.valueOf(e.getAttribute("downloaded")).booleanValue();
 		}
@@ -221,7 +255,7 @@ public class GameResource
 				boolean isZipped = remoteURL.toString().endsWith(".zip"); //if the download is zipped, we'll need to download the zip file and then decompress it
 				setDownloadInProgress(true);
 				File outputPath = getLocalPath();
-				if ( isZipped ) outputPath = new File(outputPath.getParentFile(),outputPath.getName()+".zip");
+				if ( isZipped ) outputPath = getZipfilePath();
 				if ( !outputPath.getParentFile().exists() ) outputPath.getParentFile().mkdirs(); //create directory if it doesn't exist
 				downloadFileFromURL ( remoteURL , outputPath , toNotify );
 				if ( isZipped )

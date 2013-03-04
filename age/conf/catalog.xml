@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog>
-	<game ageVersion="1.0" author="Jaume Alcazo Castellarnau (Versión de Carlos Gómez Rodríguez)" date="2008-04-27" language="" title="Vampiro 3" type="Clásica" version="0.1">
-		<main-resource downloaded="false" local="Vampiro/world3.xml" remote="http://www.grupocole.org/~cgomezr/ageweb/worlds/Vampiro/world.xml"/>
+	<game ageVersion="1.0" author="Jaume Alcazo Castellarnau (Versión de Carlos Gómez Rodríguez)" date="2008-04-27" language="es" title="Vampiro" type="Clásica" version="0.1">
+		<main-resource downloaded="false" local="Vampiro/world.xml" zip="vampiro.zip" remote="http://www.caad.es/sites/default/files/descargas/Juegos/AGE/vampiro.zip"/>
 	</game>
 	<game ageVersion="1.2.3" author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2012-09-02" language="es" title="Wizard's Quest: Morluck's Lair" type="Rolero" version="1.0">
 		<main-resource downloaded="false" local="Morluck10/Morluck.agz" remote="http://www.caad.es/sites/default/files/descargas/Juegos/AGE/Morluck10.zip"/>
+	</game>
+	<game author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2011-05-05" title="Fuego" ageVersion="1.1" type="Aventura de velocidad" version="1.2.1" language="es">
+		<main-resource downloaded="false" local="Fuego/world.xml" zip="fuego.zip" remote="http://www.caad.es/sites/default/files/descargas/Juegos/AGE/fuego-v122.zip"/>
 	</game>
 </catalog>
