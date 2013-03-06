@@ -481,7 +481,47 @@ public class AGESoundClient implements SoundClient
 		if ( !isOn() ) return;
 		audioStartUnpreloaded(u,0);
 	}
+	
+	/**
+	 * Restarts a sound that was playing. This is used by loops to restart the sound once it hits its end.
+	 * @param bp BasicPlayer where the sould was playing and must be restarted.
+	 * @param u URL of the sound to be restarted.
+	 */
+	private void restartSound ( BasicPlayer bp , URL u )
+	{
+		try
+		{
+			/*
+			System.err.println("Seek:");
+			bp.seek(0);
+			System.err.println("Play:");
+			bp.play();
+			*/
+			if ( !isOn() ) return;
+			bp.stop();
+			double theGain = getCurrentGain(u);
+			//bp.open(u.openStream());
+			bp.open(u); //to fix mark/reset not supported? if not, just wrap open with bufferedinputstream
+			bp.play();
+			bp.setGain(theGain);
+		}
+		catch ( BasicPlayerException bpe )
+		{
+			bpe.printStackTrace();
+		}
+		//catch ( IOException ioe )
+		//{
+		//	ioe.printStackTrace();
+		//}
+	}
 
+	/**
+	 * Plays the sound file located at the given URL, looping it loopTimes times (i.e., playing it loopTimes+1 times in total).
+	 * A negative value of loopTimes stands for infinity.
+	 * @param u
+	 * @param loopTimes
+	 * @throws IOException
+	 */
 	public void audioStartUnpreloaded ( final URL u , final int loopTimes ) throws IOException
 	{
 		if ( !isOn() ) return;
@@ -536,62 +576,20 @@ public class AGESoundClient implements SoundClient
 			{
 				if ( arg0.getCode() == BasicPlayerEvent.EOM )
 				{
-					if ( loopCount < 0 ) //infinite loop
+					if ( loopCount != 0 && basicPlayers.get(u) == bp ) 
+					//if a stop method has been called, the basic player will have been unregistered from the table, then we have to stop playing
 					{
-						try
+						if ( loopCount < 0 ) //infinite loop
 						{
-							/*
-							System.err.println("Seek:");
-							bp.seek(0);
-							System.err.println("Play:");
-							bp.play();
-							*/
-							if ( !isOn() ) return;
-							bp.stop();
-							double theGain = getCurrentGain(u);
-							//bp.open(u.openStream());
-							bp.open(u); //to fix mark/reset not supported? if not, just wrap open with bufferedinputstream
-							bp.play();
-							bp.setGain(theGain);
+							restartSound(bp,u);
 						}
-						catch ( BasicPlayerException bpe )
+						else if ( loopCount > 0 )
 						{
-							bpe.printStackTrace();
+							loopCount--;
+							restartSound(bp,u);
 						}
-						//catch ( IOException ioe )
-						//{
-						//	ioe.printStackTrace();
-						//}
 					}
-					else if ( loopCount > 0 )
-					{
-						loopCount--;
-						try
-						{
-							/*
-							System.err.println("Seek:");
-							bp.seek(0);
-							System.err.println("Play:");
-							bp.play();
-							*/
-							if ( !isOn() ) return;
-							bp.stop();
-							double theGain = getCurrentGain(u);
-							//bp.open(u.openStream());						
-							bp.open(u); //to fix mark/reset not supported?
-							bp.play();
-							bp.setGain(theGain);
-						}
-						catch ( BasicPlayerException bpe )
-						{
-							bpe.printStackTrace();
-						}
-						//catch ( IOException ioe )
-						//{
-						//	ioe.printStackTrace();
-						//}
-					}
-					else
+					else //we don't need to restart the sound (either because the loop parameter was set to zero, or we already executed all loops, or a stop operation was executed)
 					{
 						basicPlayers.remove(u);
 						resetCurrentGain(u);
