@@ -402,7 +402,8 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		
 		sb.append( UIMessages.getInstance().getMessage("gameinfo.name") + " " + ge.getTitle() + "\n" );
 		sb.append( UIMessages.getInstance().getMessage("gameinfo.author") + " " + ge.getAuthor() + "\n" );
-		sb.append( UIMessages.getInstance().getMessage("gameinfo.language") + " " + new Locale(ge.getLanguage()).getDisplayLanguage() + "\n" );
+		if ( ge.getLanguage() != null )
+			sb.append( UIMessages.getInstance().getMessage("gameinfo.language") + " " + new Locale(ge.getLanguage()).getDisplayLanguage() + "\n" );
 		sb.append( UIMessages.getInstance().getMessage("gameinfo.date") + " " + ge.getDate() + "\n" );
 		sb.append( UIMessages.getInstance().getMessage("gameinfo.version") + " " + ge.getVersion() + "\n" );
 		sb.append( UIMessages.getInstance().getMessage("gameinfo.required") + " " + ge.getAgeVersion() + "\n" );
