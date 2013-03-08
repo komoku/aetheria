@@ -195,6 +195,7 @@ public class GameResource
 			result = doc.createElement("resource");
 		if ( localRelativePath != null ) result.setAttribute("local",localRelativePath);
 		if ( remoteURL != null ) result.setAttribute("remote",remoteURL.toString());
+		if ( zipfileRelativePath != null ) result.setAttribute("zip", zipfileRelativePath);
 		result.setAttribute("downloaded",String.valueOf(downloaded));
 		return result;
 	}
@@ -224,7 +225,7 @@ public class GameResource
 		toNotify.progressUpdate(0.003 , UIMessages.getInstance().getMessage("gameloader.pre.download.length") + ": " + getFileNameFromURL(fromURL) );
 		ProgressKeepingReadableByteChannel prbc = new ProgressKeepingReadableByteChannel(rbc,contentLength,toNotify, UIMessages.getInstance().getMessage("gameloader.game.downloading") + ": " + getFileNameFromURL(fromURL) );
 		FileOutputStream fos = new FileOutputStream(toFile);
-		fos.getChannel().transferFrom(prbc, 0, 1 << 24);
+		fos.getChannel().transferFrom(prbc, 0, Long.MAX_VALUE);
 		inStream.close();
 		fos.close();
 	}
