@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -81,6 +82,7 @@ public class GameTableModel extends AbstractTableModel
 		if ( !gameEntries.contains(ge) ) //equality is by local path and remote url
 		{
 			gameEntries.add(ge);
+			Collections.sort(gameEntries); //TODO this may not scale
 			fireTableDataChanged();
 		}
 	}

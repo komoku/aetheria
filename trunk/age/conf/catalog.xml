@@ -9,6 +9,9 @@
 	<game author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2011-05-05" title="Fuego" ageVersion="1.1" type="Aventura de velocidad" version="1.2.1" language="es">
 		<main-resource downloaded="false" local="Fuego/world.xml" zip="fuego.zip" remote="http://www.caad.es/sites/default/files/descargas/Juegos/AGE/fuego-v122.zip"/>
 	</game>
+	<game title="Zendyr's Labyrinth" author="Carlos Gómez Rodríguez (Al-Khwarizmi)" version="0.1 Beta" parserVersion="0.6.5c" date="2003-11-30" language="es" type="Rolero/Experimental">
+		<main-resource downloaded="false" local="ZendyrsLabyrinth/world.xml" zip="zendyr.zip" remote="http://www.caad.es/sites/default/files/descargas/Juegos/AGE/ZendyrsLabyrinth011.zip"/>
+	</game>
 	<game author="Jenesis" date="2011-02-16" language="es" moduleName="15 meses y un día" parserVersion="1.0.3" type="Mixta" version="1.2.1" worldName="15 meses">
 		<main-resource downloaded="false" local="15_meses_v.1.2.1/15_meses/worlds/15_meses/world.xml" zip="15_meses_v.1.2.1.zip" remote="http://www.caad.es/sites/default/files/descargas/Juegos/AGE/15_meses_v.1.2.1.zip"/>
 	</game>

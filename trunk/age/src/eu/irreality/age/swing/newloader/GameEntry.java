@@ -22,7 +22,7 @@ import eu.irreality.age.swing.newloader.download.ProgressKeepingReadableByteChan
  * @author carlos
  *
  */
-public class GameEntry 
+public class GameEntry implements Comparable
 {
 
 	private String title;
@@ -333,6 +333,11 @@ public class GameEntry
 		if ( mainResource.getLocalRelativePath() != null ) hash = hash*31 + mainResource.getLocalRelativePath().hashCode();
 		if ( mainResource.getRemoteURL() != null ) hash = hash*31 + mainResource.getRemoteURL().hashCode();
 		return hash;
+	}
+
+	public int compareTo(Object o) 
+	{
+		return getTitle().compareTo(((GameEntry)o).getTitle()); 
 	}
 	
 	
