@@ -1,13 +1,11 @@
 
 ZENDYR'S LABYRINTH.
-v0.1, 2003-11-30
-(c) 2003 Carlos Gómez (Al-Khwarizmi)
+v0.1.1, 2013-03-09 (sólo retoque menor a v0.1, 2003-11-30)
+(c) 2003-2013 Carlos Gómez (Al-Khwarizmi)
 
 Este juego experimental crea un laberinto con cientos de localidades que se genera aleatoriamente, siendo distinto cada vez. El laberinto está lleno de botones que a veces hay que pulsar para abrir o cerrar puertas, así como de enemigos para combatir. Las dimensiones del laberinto se pueden modificar en el código fuente de la aventura.
 
 Requiere el Aetheria Game Engine (AGE).
-
-También puedes descargar un pack jugable de AGE con varias aventuras (incluyendo ésta) de http://irreality.eu/aetheria
 
 
 
