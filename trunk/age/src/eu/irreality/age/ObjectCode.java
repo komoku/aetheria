@@ -620,7 +620,9 @@ public class ObjectCode
 		
 		codeVersion = e.getAttribute("language");
 		
-		theCode = e.getFirstChild().getNodeValue(); //should be a Text
+		org.w3c.dom.Node cdataNode = e.getFirstChild();
+		if ( cdataNode != null ) theCode = cdataNode.getNodeValue(); //should be a Text
+		else theCode = "";
 		
 		theWorld = mundo;
 		
