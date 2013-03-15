@@ -36,6 +36,8 @@ gameloader.game.available=Game available
 gameloader.game.not.downloaded=Game not downloaded
 gameloader.game.downloading=Downloading
 gameloader.download.problem=Download problem
+gameloader.beta.title=Warning
+gameloader.beta.message=<html><body width=800><p>This game loading program is still experimental. At the moment, it has several shortcomings and it may contain bugs. For a more stable experience, please load your games using the "simpleage" program also included in this distribution.</p>
 save.name=Name:
 save.date=Date:
 save.game=Game:

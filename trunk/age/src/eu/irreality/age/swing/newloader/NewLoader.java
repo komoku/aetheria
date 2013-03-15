@@ -12,6 +12,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
@@ -68,6 +69,7 @@ public class NewLoader extends JFrame
 			}
 		}
 		);
+		JOptionPane.showMessageDialog(this, UIMessages.getInstance().getMessage("gameloader.beta.message") , UIMessages.getInstance().getMessage("gameloader.beta.title") , JOptionPane.INFORMATION_MESSAGE );
 	}
 	
 	public static void main ( String[] args )
