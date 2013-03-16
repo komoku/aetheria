@@ -44,6 +44,13 @@ public class AGEConfiguration
 		defaultProperties.setProperty("sdiWindowLocationX","100");
 		defaultProperties.setProperty("sdiWindowLocationY","100");
 		
+		//these'll be 0 by default and sorted out by the window itself
+		//defaultProperties.setProperty("loaderWindowWidth", "770");
+		//defaultProperties.setProperty("loaderWindowHeight", "570");
+		defaultProperties.setProperty("loaderWindowMaximized", "false");
+		//defaultProperties.setProperty("loaderWindowLocationX","50");
+		//defaultProperties.setProperty("loaderWindowLocationY","50");
+		
 		defaultProperties.setProperty("mdiWindowWidth", "800");
 		defaultProperties.setProperty("mdiWindowHeight", "600");
 		defaultProperties.setProperty("mdiWindowMaximized", "true");
