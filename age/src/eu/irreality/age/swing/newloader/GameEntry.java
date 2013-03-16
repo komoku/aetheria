@@ -288,6 +288,15 @@ public class GameEntry implements Comparable
 	}
 	
 	/**
+	 * Returns whether we know where to download this game.
+	 * @return
+	 */
+	public boolean isDownloadable()
+	{
+		return getMainResource().getRemoteURL() != null;
+	}
+	
+	/**
 	 * Marks this game as downloaded or not.
 	 */
 	public void setDownloaded ( boolean value )
