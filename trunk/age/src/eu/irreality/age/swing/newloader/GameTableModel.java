@@ -237,7 +237,7 @@ public class GameTableModel extends AbstractTableModel
 				value = Boolean.valueOf(gameEntry.isDownloaded());
 				break;
 			case 7:
-				value = gameEntry.getMainResource().getLocalRelativePath();
+				value = gameEntry.getMainResource().getLocalPath();
 				break;
 			case 8:
 				value = gameEntry.getMainResource().getRemoteURL();

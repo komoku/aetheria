@@ -39,6 +39,8 @@ gameloader.game.downloading=Downloading
 gameloader.download.problem=Download problem
 gameloader.beta.title=Warning
 gameloader.beta.message=<html><body width=800><p>This game loading program is still experimental. At the moment, it has several shortcomings and it may contain bugs. For a more stable experience, please load your games using the "simpleage" program also included in this distribution.</p>
+gameloader.catalog=Game catalog
+gameloader.addonload=Also add game to the catalog
 save.name=Name:
 save.date=Date:
 save.game=Game:
@@ -49,6 +51,7 @@ gameinfo.version=Version:
 gameinfo.required=Required AGE version:
 gameinfo.file=File:
 gameinfo.downloaded=Downloaded:
+gameinfo.downloadable=Downloadable:
 gameinfo.language=Language:
 csclient.pres=View
 csclient.pres.colorthemes=Color themes

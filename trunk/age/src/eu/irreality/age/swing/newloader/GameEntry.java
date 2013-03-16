@@ -2,16 +2,25 @@ package eu.irreality.age.swing.newloader;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.stream.StreamSource;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import eu.irreality.age.filemanagement.WorldLoader;
 import eu.irreality.age.swing.newloader.download.ProgressKeepingDelegate;
 import eu.irreality.age.swing.newloader.download.ProgressKeepingReadableByteChannel;
 
@@ -40,14 +49,8 @@ public class GameEntry implements Comparable
 	private boolean downloadInProgress;
 	
 	
-	/**
-	 * Gets the information about a game entry from an XML node.
-	 * @param n
-	 * @throws MalformedGameEntryException
-	 */
-	public void initFromXML ( Node n ) throws MalformedGameEntryException
+	private void initGameEntryAttributes ( Element e ) throws MalformedGameEntryException
 	{
-		Element e = (Element) n;
 		if ( !e.hasAttribute("worldName") && !e.hasAttribute("title") && !e.hasAttribute("moduleName") ) throw new MalformedGameEntryException("Game entry missing world name (attribute worldName, title or moduleName)");
 		else 
 		{
@@ -63,6 +66,19 @@ public class GameEntry implements Comparable
 		if ( e.hasAttribute("type") ) type = e.getAttribute("type");
 		if ( e.hasAttribute("language") ) language = e.getAttribute("language");
 		if ( e.hasAttribute("downloaded") ) downloaded = Boolean.valueOf(e.getAttribute("downloaded")).booleanValue();
+	}
+	
+	/**
+	 * Gets the information about a game entry from an XML node.
+	 * @param n
+	 * @throws MalformedGameEntryException
+	 */
+	public void initFromXML ( Node n ) throws MalformedGameEntryException
+	{
+		Element e = (Element) n;
+
+		//initialize the attributes of the game entry element
+		initGameEntryAttributes(e);
 			
 		//main resource
 		NodeList mainResList = e.getElementsByTagName("main-resource");
@@ -86,6 +102,50 @@ public class GameEntry implements Comparable
 				extraResources.add(newResource);
 			}
 		}
+
+	}
+	
+	/**
+	 * Reads the world file at the specified path (which is the absolute path to a file) and obtains the metadata to initialize the game entry,
+	 * if possible.
+	 * @param worldPath Absolute path to a world file.
+	 * @return true if and only if the metadata was successfully obtained from the world file.
+	 */
+	public boolean obtainFromWorld ( String worldPath )
+	{
+		try 
+		{
+			URL u = WorldLoader.getURLForWorldLoad(worldPath);
+			InputStream is = u.openStream();
+			Transformer t = TransformerFactory.newInstance().newTransformer();
+			Source s = new StreamSource(is,u.toString());
+			DOMResult r = new DOMResult();
+			t.transform(s,r);
+		    Document d = (org.w3c.dom.Document)r.getNode();		
+		    Element rootElement = d.getDocumentElement();
+		    
+		    //initialize game entry attributes
+		    initGameEntryAttributes(rootElement);
+		    
+		    mainResource = new GameResource();
+		    mainResource.setLocalAbsolutePath(worldPath);
+		    return true;
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+			return false;
+		}
+		catch (TransformerException e) 
+		{
+			e.printStackTrace();
+			return false;
+		} 
+		catch (MalformedGameEntryException e) 
+		{
+			e.printStackTrace();
+			return false;
+		} 
 
 	}
 	
@@ -313,14 +373,14 @@ public class GameEntry implements Comparable
 	{
 		if ( !(obj instanceof GameEntry) ) return false;
 		GameEntry ge = (GameEntry) obj;
-		if ( mainResource.getLocalRelativePath() == null )
+		if ( mainResource.getLocalPath() == null )
 		{
-			if ( ge.getMainResource().getLocalRelativePath() != null ) 
+			if ( ge.getMainResource().getLocalPath() != null ) 
 				return false;
 		}
 		else
 		{
-			if ( !mainResource.getLocalRelativePath().equals(ge.getMainResource().getLocalRelativePath()) )
+			if ( !mainResource.getLocalPath().equals(ge.getMainResource().getLocalPath()) )
 				return false;
 		}
 		if ( mainResource.getRemoteURL() == null )
@@ -339,7 +399,7 @@ public class GameEntry implements Comparable
 	public int hashCode()
 	{
 		int hash = 1;
-		if ( mainResource.getLocalRelativePath() != null ) hash = hash*31 + mainResource.getLocalRelativePath().hashCode();
+		if ( mainResource.getLocalPath() != null ) hash = hash*31 + mainResource.getLocalPath().hashCode();
 		if ( mainResource.getRemoteURL() != null ) hash = hash*31 + mainResource.getRemoteURL().hashCode();
 		return hash;
 	}

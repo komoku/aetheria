@@ -437,6 +437,12 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		sb.append( UIMessages.getInstance().getMessage("gameinfo.required") + " " + ge.getAgeVersion() + "\n" );
 		sb.append( UIMessages.getInstance().getMessage("gameinfo.downloaded") + " " + yesNo(ge.isDownloaded()) + "\n" );
 		
+		if ( !ge.isDownloaded() )
+		{
+			sb.append( UIMessages.getInstance().getMessage("gameinfo.downloadable") + " " + yesNo(ge.isDownloadable()) + "\n" );
+		}
+		
+		
 		infoPane.setText(sb.toString());
 		infoPane.revalidate();
 		
@@ -463,6 +469,11 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 	{
 		System.err.println("Progress " + progress);
 		infoPane.setText(infoPane.getText()+ progressString + ": " + progress + "\n");
+	}
+	
+	public void addGameEntry ( GameEntry ge )
+	{
+		gameTableModel.addGameEntry(ge);
 	}
 	
 }

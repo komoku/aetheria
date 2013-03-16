@@ -39,6 +39,8 @@ gameloader.game.downloading=Descargando
 gameloader.download.problem=Problema con la descarga
 gameloader.beta.title=Aviso
 gameloader.beta.message=<html><body width=800><p>Este cargador de juegos por catálogo es experimental. Por el momento, su funcionalidad es limitada y podría tener errores. Si te da algún problema o simplemente no quieres arriesgarte a experimentarlos, es mejor que juegues las aventuras mediante el programa "simpleage" también incluido en esta distribución, que es estable.</p>
+gameloader.catalog=Catálogo de juegos
+gameloader.addonload=Y añadirlo al catálogo
 save.name=Nombre:
 save.date=Fecha:
 save.game=Juego:
@@ -49,6 +51,7 @@ gameinfo.version=Versión:
 gameinfo.required=Versión AGE requerida:
 gameinfo.file=Fichero:
 gameinfo.downloaded=Descargado:
+gameinfo.downloadable=Descargable:
 gameinfo.language=Idioma:
 csclient.pres=Ver
 csclient.pres.colorthemes=Temas de color

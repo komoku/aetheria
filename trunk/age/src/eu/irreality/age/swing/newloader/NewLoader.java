@@ -2,6 +2,7 @@ package eu.irreality.age.swing.newloader;
 
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -12,14 +13,22 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.TitledBorder;
 
+import eu.irreality.age.FiltroFicheroMundo;
 import eu.irreality.age.SwingAetheriaGameLoaderInterface;
+import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.swing.config.AGEConfiguration;
 import eu.irreality.age.swing.sdi.SwingSDIInterface;
@@ -30,7 +39,15 @@ public class NewLoader extends JFrame
 	private NewLoaderGamePanel gamePanel;
 	
 	private JButton loadFromDiskButton;
+	private JCheckBox addLoadedGameCheckBox = new JCheckBox(UIMessages.getInstance().getMessage("gameloader.addonload"),true);
 
+	private static Border addSpaceToBorder ( Border b )
+	{
+		Border b1 = new CompoundBorder ( BorderFactory.createEmptyBorder(5,5,5,5) , b );
+		Border b2 = new CompoundBorder ( b1, BorderFactory.createEmptyBorder(5,5,5,5) );
+		return b2;
+	}
+	
 	public NewLoader()
 	{
 		super(UIMessages.getInstance().getMessage("gameloader.title"));
@@ -38,7 +55,14 @@ public class NewLoader extends JFrame
 		getContentPane().setLayout(new BoxLayout(this.getContentPane(),BoxLayout.PAGE_AXIS));
 		
 		//the panel with the game catalog
-		getContentPane().add(gamePanel = new NewLoaderGamePanel());
+		gamePanel = new NewLoaderGamePanel();
+		TitledBorder catalogBorder = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),"  " + UIMessages.getInstance().getMessage("gameloader.catalog") + "  ");
+		catalogBorder.setTitleJustification(TitledBorder.CENTER);
+		gamePanel.setBorder( addSpaceToBorder( catalogBorder ) );
+		getContentPane().add(Box.createVerticalStrut(8));
+		//getContentPane().add(new JLabel(UIMessages.getInstance().getMessage("gameloader.catalog")+":"));
+		getContentPane().add(gamePanel);
+		//gamePanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		
 		JPanel fromDiskPanel = new JPanel();
 		fromDiskPanel.setLayout(new BoxLayout(fromDiskPanel,BoxLayout.LINE_AXIS));
@@ -49,14 +73,36 @@ public class NewLoader extends JFrame
 		{
 			public void actionPerformed ( ActionEvent e )
 			{
-				SwingSDIInterface.main( new String[0] );
+				//SwingSDIInterface.main( new String[0] );
+				SwingAetheriaGameLoaderInterface.loadFont();
+				JFileChooser selector = new JFileChooser( Paths.WORLD_PATH );
+				selector.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+				selector.setDialogTitle( UIMessages.getInstance().getMessage("dialog.new.title") );
+				selector.setFileFilter ( new FiltroFicheroMundo() );
+				int returnVal = selector.showOpenDialog(null);
+				if(returnVal == JFileChooser.APPROVE_OPTION) 
+				{
+					if ( addLoadedGameCheckBox.isSelected() )
+					{
+						GameEntry ge = new GameEntry();
+						boolean success = ge.obtainFromWorld(selector.getSelectedFile().getAbsolutePath());
+						ge.setDownloaded(true);
+						if ( success ) gamePanel.addGameEntry(ge);
+					}
+					new SwingSDIInterface(selector.getSelectedFile().getAbsolutePath(),false,null,null);
+					
+				}
 			}
 		});
 		//TODO: Option to add the game loaded from disk to the catalog: a checkbox + a method to read a world XML and create a catalog entry (even w/o remote url)
 		fromDiskPanel.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 		fromDiskPanel.add(Box.createRigidArea(new Dimension(5,5)));
 		fromDiskPanel.add(loadFromDiskButton);
-		getContentPane().add(new JSeparator());
+		fromDiskPanel.add(addLoadedGameCheckBox);
+		
+		//getContentPane().add(new JSeparator());
+		
+		
 		getContentPane().add(fromDiskPanel);
 		
 		loadWindowCoordinates(); //if no coordinates stored, this does pack() and setLocationRelativeTo(null).
