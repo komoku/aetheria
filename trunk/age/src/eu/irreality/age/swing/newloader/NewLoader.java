@@ -30,7 +30,7 @@ public class NewLoader extends JFrame
 
 	public NewLoader()
 	{
-		super("New Loader");
+		super(UIMessages.getInstance().getMessage("gameloader.title"));
 		setSize(400,400);
 		getContentPane().setLayout(new BoxLayout(this.getContentPane(),BoxLayout.PAGE_AXIS));
 		

@@ -93,6 +93,20 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		return result;
 	}
 	
+	/**
+	 * Associates a new DownloadProgressKeeper with the given game entry, based on its current download progress data, and 
+	 * discarding the already stored progress keeper if present.
+	 * This is used if we thought a game was downloaded, but it was actually not present in the hard disk, so we have to reset
+	 * its progress.
+	 * @param ge
+	 * @return
+	 */
+	private void resetProgressKeeper ( GameEntry ge )
+	{
+		DownloadProgressKeeper newKeeper = new DownloadProgressKeeper(ge);
+		downloadProgressKeepers.put( ge, newKeeper );
+	}
+	
 	private GameEntry getSelectedGameEntry()
 	{
 		int index = gameTable.getSelectedRow();
@@ -237,10 +251,10 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 			{
 				if (e.getClickCount() == 2) 
 				{
-					JTable target = (JTable)e.getSource();
 					GameEntry game = getSelectedGameEntry();
 					if ( game.isDownloaded() ) launchGame();
-					else launchDownload();
+					else if ( game.isDownloadable() ) launchDownload();
+					else JOptionPane.showMessageDialog(NewLoaderGamePanel.this, UIMessages.getInstance().getMessage("gameloader.game.missing.undownloadable"), "Oops!", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 		});
@@ -260,15 +274,25 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 	private void launchGame()
 	{
 		final GameEntry toPlay = getSelectedGameEntry();
-		if ( !toPlay.getMainResource().checkLocalFileExists() )
+		if ( !toPlay.getMainResource().checkLocalFileExists() ) //game is marked as downloaded, but the game file doesn't exist (removed, moved, not actually downloaded, etc.)
 		{
-			int opt = JOptionPane.showConfirmDialog(this, UIMessages.getInstance().getMessage("gameloader.game.missing"), "Oops!", JOptionPane.YES_NO_OPTION);
-			if ( opt == JOptionPane.YES_OPTION )
+			toPlay.setDownloaded(false);
+			resetProgressKeeper(toPlay);
+			showGameEntry(toPlay);
+			if ( toPlay.isDownloadable() ) //we ask the user if she wants to download the game
 			{
-				toPlay.setDownloaded(false);
-				showGameEntry(toPlay); //refresh display (downloading button, etc.)
-				refreshTable();
-				launchDownload();
+				int opt = JOptionPane.showConfirmDialog(this, UIMessages.getInstance().getMessage("gameloader.game.missing.downloadable"), "Oops!", JOptionPane.YES_NO_OPTION);
+				if ( opt == JOptionPane.YES_OPTION )
+				{
+					showGameEntry(toPlay); //refresh display (downloading button, etc.)
+					refreshTable();
+					launchDownload();
+					return;
+				}
+			}
+			else //if the game is not downloadable (we don't have its remote URL) we show a dialog telling the user that life is hard
+			{
+				JOptionPane.showMessageDialog(NewLoaderGamePanel.this, UIMessages.getInstance().getMessage("gameloader.game.missing.undownloadable"), "Oops!", JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
 		}
@@ -396,6 +420,10 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		else return UIMessages.getInstance().getMessage("boolean.no"); 
 	}
 	
+	/**
+	 * Shows the information associated with a game entry (title, author, etc.) as well as its progress bar and the relevant button (play, download, etc.)
+	 * @param ge
+	 */
 	private void showGameEntry ( GameEntry ge )
 	{
 		StringBuilder sb = new StringBuilder();
@@ -423,7 +451,10 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		else if ( ge.isDownloadInProgress() )
 			activateDownloadingButton();
 		else
+		{
 			activateDownloadButton();
+			downloadButton.setEnabled(ge.isDownloadable());
+		}
 		
 	}
 
