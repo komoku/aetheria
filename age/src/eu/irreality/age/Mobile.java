@@ -6352,6 +6352,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 		Debug.println("End of cast state!");
 
+		int origState = getState();
+		long origTimer = getPropertyTimeLeft("state");
 
 		if ( getSuccessFromProbability ( getCurrentSpell() ) )
 		{
@@ -6370,7 +6372,12 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			//return false;
 		}
 
-		setNewState ( IDLE , 1 );
+		/*
+		 * if the spell casting hasn't changed the state/timer (it could change it, for example because the spell killed the caster!), then we change the state to
+		 * IDLE so more commands can be accepted.
+		 */
+		if ( getState() == origState && getPropertyTimeLeft("state") == origTimer )
+			setNewState ( IDLE , 1 );
 
 	}
 
@@ -9168,6 +9175,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	
 		boolean ejecutado = false;
 		
+		//TODO: have a wrapper method that stores the state and timer, runs runParseCommandMethods, and then IF the state/timer has not changed, sets it to IDLE.
 		setProperty ( "originState" , getState() ); //state that lead into the command execution
 		long originalTimeLeft = getPropertyTimeLeft("state");
 		setNewState ( IDLE , 1 ); //by default, this will be the state at end of command execution.
