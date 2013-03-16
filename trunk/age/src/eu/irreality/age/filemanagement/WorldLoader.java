@@ -14,6 +14,14 @@ import eu.irreality.age.i18n.UIMessages;
 public class WorldLoader 
 {
 	
+	/**
+	 * As far as I know, unused from 2013-03-16.
+	 * @param moduledir
+	 * @param gameLog
+	 * @param io
+	 * @param mundoSemaphore
+	 * @return
+	 */
 	public static World loadWorldFromPath ( String moduledir , Vector gameLog , InputOutputClient io , Object mundoSemaphore )
 	{
 		//posibilidades:
@@ -128,16 +136,15 @@ public class WorldLoader
 		}
 	}
 	
-	
-	public static World loadWorld ( String pathnameOrUrl , Vector gameLog , InputOutputClient io , Object mundoSemaphore )
+	/**
+	 * This method converts a path to a world given as path to directory, path to zipped file, path to world.xml, remote URL to one of those, etc.
+	 * into an URL to the actual world.xml file (be it local or remote) so that we can load the world.
+	 * @param pathnameOrUrl
+	 * @return
+	 * @throws MalformedURLException
+	 */
+	public static URL getURLForWorldLoad ( String pathnameOrUrl ) throws MalformedURLException
 	{
-		//tres posibilidades:
-		//*nos han dado un nombre de fichero: mundo loquesea.xml
-		//*nos han dado un directorio y el mundo es directorio/world.xml
-		//*nos han dado un directorio y el mundo es directorio/world.dat <- NO LONGER SUPPORTED
-		//*nos han dado una URL a un world.xml
-		//*nos han dado una URL de un jar
-		
 		//Updated possibilities:
 		//1. pathname to worldname.xml file
 		//2. pathname to directoryname (and world is directoryname/world.xml)
@@ -147,9 +154,6 @@ public class WorldLoader
 		//6. pathname to agz, zip, jar compressed file (which should have world.xml inside)
 		//7. url to agz, zip, jar compressed file (which should have world.xml inside)
 		
-		
-		World theWorld = null;
-		
 		//with this line cases 6 and 7 are collapsed into case 3:
 		try
 		{
@@ -158,12 +162,14 @@ public class WorldLoader
 		catch ( SecurityException se )
 		{
 			; //apparently not permitted in applet, but no problem, we don't support compressed files in applet.
+			//now it does work in applet, this exception should not be thrown in general
 		}
 		
-		//probamos si la cadena es una URL
+		URL url = null;
+		//probamos si la cadena ya es una URL
 		try 
 		{	
-			URL url = null;
+			
 			try
 			{
 				url = new URL(pathnameOrUrl); 	//cases 3, 4?	
@@ -186,9 +192,53 @@ public class WorldLoader
 				*/
 				if ( url.toString().endsWith("/") ) //case 4
 					url = new URL ( url.toString() + "world.xml" );
-
+		}
+		catch (MalformedURLException e1) //have to check for cases 1, 2 here
+		{
+			//if it's not an URL, it should be a path
 			
-			theWorld = new World ( url , io , false ); //cases 3, 4, 5 covered here
+			File f = new File(pathnameOrUrl);
+			if ( !f.isFile() )
+				f = new File ( f , "world.xml" ); //check for case 2
+			try
+			{
+				url = f.toURI().toURL(); //cases 1 and 2
+			}
+			catch (MalformedURLException e2)
+			{
+				//this is hopeless. Probably the given string was neither an URL nor a pathname.
+				throw e2;
+			}
+		}
+		
+		return url;
+	}
+	
+	public static World loadWorld ( String pathnameOrUrl , Vector gameLog , InputOutputClient io , Object mundoSemaphore )
+	{
+		//tres posibilidades:
+		//*nos han dado un nombre de fichero: mundo loquesea.xml
+		//*nos han dado un directorio y el mundo es directorio/world.xml
+		//*nos han dado un directorio y el mundo es directorio/world.dat <- NO LONGER SUPPORTED
+		//*nos han dado una URL a un world.xml
+		//*nos han dado una URL de un jar
+		
+		//Updated possibilities:
+		//1. pathname to worldname.xml file
+		//2. pathname to directoryname (and world is directoryname/world.xml)
+		//3. url to worldname.xml file [3a. to world not inside anything, 3b. to world inside a jar file]
+		//4. url to directoryname [4a. not inside anything, 4b. inside a jar file]
+		//5. resource pathname (could be to a world inside applet jar, for example)
+		//6. pathname to agz, zip, jar compressed file (which should have world.xml inside)
+		//7. url to agz, zip, jar compressed file (which should have world.xml inside)
+		
+		
+		World theWorld = null;
+		
+		try
+		{
+			URL url = getURLForWorldLoad (pathnameOrUrl);
+			theWorld = new World ( url , io , false ); //cases 3, 4, 5 covered here (apart from 6, 7 which were collapsed into 3 before)
 			System.out.println("World generated.\n");
 			if ( mundoSemaphore != null )
 			{
@@ -201,11 +251,6 @@ public class WorldLoader
 			gameLog.addElement(theWorld.getResource("world.xml").toString()); //URL a fichero de mundo
 			return theWorld;
 		} 
-		catch (MalformedURLException e1) //have to check for cases 1, 2 here
-		{
-			//if it's not an URL, it should be a path
-			return loadWorldFromPath ( pathnameOrUrl , gameLog , io , mundoSemaphore );
-		}
 		catch ( IOException ioe )
 		{
 			io.write( UIMessages.getInstance().getMessage("load.world.cannot.read.world") + " " + pathnameOrUrl + "\n"); 
