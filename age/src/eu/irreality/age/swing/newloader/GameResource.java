@@ -26,9 +26,14 @@ public class GameResource
 {
 
 	/**
-	 * The local path of the game resource, relative to the AGE worlds directory.
+	 * The local path of the game resource, relative to the AGE worlds directory. Either this or localAbsolutePath must be non-null.
 	 */
 	private String localRelativePath;
+	
+	/**
+	 * The absolute path of the game resource. Either this or localRelativePath must be non-null.
+	 */
+	private String localAbsolutePath;
 	
 	/**
 	 * If this is not null, then it's the path to store the zipfile downloaded from the remoteURL
@@ -67,7 +72,10 @@ public class GameResource
 	 */
 	public File getLocalPath()
 	{
-		return new File(getPathToWorlds(),localRelativePath);
+		if ( localRelativePath != null )
+			return new File(getPathToWorlds(),localRelativePath);
+		else
+			return new File(localAbsolutePath);
 	}
 
 	/**
@@ -77,15 +85,7 @@ public class GameResource
 	{
 		return localURL;
 	}
-	
-	/**
-	 * @return the local path of the game resource relative to the worlds path.
-	 */
-	public URL getLocalRelativePathURL() 
-	{
-		return localURL;
-	}
-	
+		
 	/**
 	 * @return The string indicating the local relative path to the resource.
 	 */
@@ -101,6 +101,7 @@ public class GameResource
 	public String getZipfileRelativePath()
 	{
 		if ( zipfileRelativePath != null ) return zipfileRelativePath;
+		else if ( localRelativePath == null ) return null; //this shouldn't happen, we shouldn't be asking for the zipfile path of a file in this situation
 		else return localRelativePath + ".zip"; //example: vampiro/world.xml.zip
 	}
 	
@@ -154,6 +155,16 @@ public class GameResource
 	}
 	
 	/**
+	 * Sets the local absolute path to the resource.
+	 * This is used to build a game resource from a local disk file.
+	 * @param thePath
+	 */
+	public void setLocalAbsolutePath ( String thePath )
+	{
+		localAbsolutePath = thePath;
+	}
+	
+	/**
 	 * Gets the information about a game resource from an XML node.
 	 * @param n
 	 * @throws MalformedGameEntryException
@@ -163,12 +174,18 @@ public class GameResource
 		try
 		{
 			Element e = (Element) n;
-			if ( !e.hasAttribute("local") ) throw new MalformedGameEntryException("Game resource entry missing local path (attribute local)");
-			else
+			if ( !e.hasAttribute("local") && !e.hasAttribute("localAbsolute") ) throw new MalformedGameEntryException("Game resource entry missing local path (attribute local or localAbsolute)");
+			else if ( e.hasAttribute("local") )
 			{
 				URL localWorldsURL = new File(getPathToWorlds()).toURI().toURL();
 				localURL = new URL(localWorldsURL,e.getAttribute("local"));
 				localRelativePath = e.getAttribute("local");
+			}
+			else //has attribute localAbsolute
+			{
+				localAbsolutePath = e.getAttribute("localAbsolute");
+				localURL = new File(localAbsolutePath).toURI().toURL();
+				if ( e.hasAttribute("zip") || e.hasAttribute("remote") ) throw new MalformedGameEntryException("Malformed game resource: a resource without local relative path (attribute local) cannot have attributes zip or remote");
 			}
 			if ( e.hasAttribute("zip") ) zipfileRelativePath = e.getAttribute("zip");
 			if ( e.hasAttribute("remote") ) remoteURL = new URL(e.getAttribute("remote"));
@@ -194,6 +211,7 @@ public class GameResource
 		else
 			result = doc.createElement("resource");
 		if ( localRelativePath != null ) result.setAttribute("local",localRelativePath);
+		if ( localAbsolutePath != null ) result.setAttribute("localAbsolute",localAbsolutePath);
 		if ( remoteURL != null ) result.setAttribute("remote",remoteURL.toString());
 		if ( zipfileRelativePath != null ) result.setAttribute("zip", zipfileRelativePath);
 		result.setAttribute("downloaded",String.valueOf(downloaded));
@@ -236,7 +254,7 @@ public class GameResource
 	 */
 	public boolean checkLocalFileExists ()
 	{
-		return new File(getPathToWorlds(),localRelativePath).exists();
+		return getLocalPath().exists();
 	}
 	
 	
