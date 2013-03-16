@@ -9176,6 +9176,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		boolean ejecutado = false;
 		
 		//TODO: have a wrapper method that stores the state and timer, runs runParseCommandMethods, and then IF the state/timer has not changed, sets it to IDLE.
+		//TODO: no, because if no parseCommand is really ran, the state/timer don't change but we don't have to set IDLE (default verbs could need to read state too).
+		// --> set IDLE if true is returned and state/timer not changed. Else, don't touch the state.
 		setProperty ( "originState" , getState() ); //state that lead into the command execution
 		long originalTimeLeft = getPropertyTimeLeft("state");
 		setNewState ( IDLE , 1 ); //by default, this will be the state at end of command execution.
