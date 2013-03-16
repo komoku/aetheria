@@ -1,0 +1,1 @@
+This directory contains worlds that are not included in the standard kits at the moment, but I have deemed useful to include in version control for some reason.
