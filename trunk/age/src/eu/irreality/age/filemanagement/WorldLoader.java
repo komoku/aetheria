@@ -162,7 +162,7 @@ public class WorldLoader
 		catch ( SecurityException se )
 		{
 			; //apparently not permitted in applet, but no problem, we don't support compressed files in applet.
-			//now it does work in applet, this exception should not be thrown in general
+			//now it does work in applet (tested that we can load an AGZ from applet, even though not recommended in large AGZ's due to slowness). This exception should not be thrown in general.
 		}
 		
 		URL url = null;
