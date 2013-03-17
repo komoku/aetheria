@@ -9163,26 +9163,55 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 	} //end method hacer hechizo
 
+	
+	/**
+	 * Executes the parseCommand() methods that apply for the current command/arguments in a given scope.
+	 * Returns true if execution of parseCommand() methods was terminated by an end(), and false otherwise.
+	 * If execution was terminated by an end() and parseCommand() methods didn't explicitly update this Mobile's state, then this method updates the state and its timer to (IDLE,1).
+	 * @param scope
+	 * @return  true if end() was hit, false otherwise.
+	 */
+	protected boolean runParseCommandMethods ( EntityList scope )
+	{
+		
+		/*
+		 * As of 2013-03-17, we split this method in the following way:
+		 * - This method does the state handling (i.e. sets the state to IDLE and timer to 1 if the parseCommands hit an end() but the state was not changed).
+		 * - The execution of the parseCommands themselves is delegated into the doRunParseCommandMethods.
+		 */
+		
+		int origState = getState();
+		long origTimeLeft = getPropertyTimeLeft("state");
+		
+		setProperty ( "originState" , origState ); //this is just for compatibility
+		
+		boolean foundEnd = doRunParseCommandMethods(scope);
+		
+		if ( foundEnd && getState() == origState && getPropertyTimeLeft("state") == origTimeLeft ) 
+		{
+			/*
+			 * if the parseCommand methods have hit an end() (and thereby declared the command as processed) but
+			 * they haven't touched the state, we set state to (IDLE,1) so that the next command will be processed as normal.
+			 */
+			setNewState ( IDLE , 1 );
+		}
+		
+		return foundEnd;
+	}
+	
 	/**
 	 * Executes the parseCommand() methods that apply for the current command/arguments in a given scope.
 	 * @param scope
-	 * @return
+	 * @return true if end() was hit, false otherwise.
 	 */
-	protected boolean runParseCommandMethods(EntityList scope) {
+	private boolean doRunParseCommandMethods(EntityList scope) 
+	{
+		
 		//***
 		//*** BEGIN EXECUTION OF parseCommand() METHODS
 		//***
 	
 		boolean ejecutado = false;
-		
-		//TODO: have a wrapper method that stores the state and timer, runs runParseCommandMethods, and then IF the state/timer has not changed, sets it to IDLE.
-		//TODO: no, because if no parseCommand is really ran, the state/timer don't change but we don't have to set IDLE (default verbs could need to read state too).
-		// --> set IDLE if true is returned and state/timer not changed. Else, don't touch the state.
-		setProperty ( "originState" , getState() ); //state that lead into the command execution
-		long originalTimeLeft = getPropertyTimeLeft("state");
-		setNewState ( IDLE , 1 ); //by default, this will be the state at end of command execution.
-			//Of course, this can be overridden by parseCommand methods or by the AGE core implementing the actual command. 
-			//But e.g. after a parseCommand that doesn't do any setNewState(), this will be the resulting state.
 		
 		//codigo bsh en el jugador
 		try
@@ -9373,16 +9402,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			return true;
 		} 
 	
-		//this restores the state and its timer to their values before execution of parseCommand methods, just in case the AGE kernel code
-		//needs to access the state. Which I think it actually doesn't, but well. It doesn't hurt to do this.
-		setNewState ( getPropertyValueAsInteger("originState") , originalTimeLeft );
-		
-		//***
-		//*** END EXECUTION OF parseCommand() METHODS
-		//***
-		
-		//end() not found
 		return false;
+		
 	}
 
 	public void cancelPending() {
