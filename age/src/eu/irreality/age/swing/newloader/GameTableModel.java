@@ -75,15 +75,28 @@ public class GameTableModel extends AbstractTableModel
 	}
 	
 	/**
-	 * Adds a game entry to the table model, if it does not exist yet in the model.
+	 * Adds a game entry to the table model.
+	 * If the overwrite parameter is false, it adds the game only if it does not already exist in the model.
+	 * If it is true, then if the game exists, it deletes the old entry and adds the given game entry.
 	 */
-	public void addGameEntry( GameEntry ge )
+	public void addGameEntry( GameEntry ge , boolean overwrite )
 	{
-		if ( !gameEntries.contains(ge) ) //equality is by local path and remote url
+		if ( overwrite )
 		{
+			if ( gameEntries.contains(ge) )
+				gameEntries.remove(ge);
 			gameEntries.add(ge);
 			Collections.sort(gameEntries); //TODO this may not scale
 			fireTableDataChanged();
+		}
+		else
+		{
+			if ( !gameEntries.contains(ge) ) //equality is by local path and remote url
+			{
+				gameEntries.add(ge);
+				Collections.sort(gameEntries); //TODO this may not scale
+				fireTableDataChanged();
+			}
 		}
 	}
 	
@@ -95,11 +108,12 @@ public class GameTableModel extends AbstractTableModel
 	/**
 	 * Adds all the games contained in a catalog to the table model.
 	 * @param catalogURL URL where the game catalog in XML can be found.
+	 * @param overwrite If true, the entries from the given catalog overwrite those of the old catalog if they have the same local path and remote URL.
 	 * @throws MalformedGameEntryException 
 	 * @throws TransformerFactoryConfigurationError 
 	 * @throws TransformerConfigurationException 
 	 */
-	public void addGameCatalog ( URL catalogURL ) throws IOException, TransformerException, MalformedGameEntryException
+	public void addGameCatalog ( URL catalogURL , boolean overwrite ) throws IOException, TransformerException, MalformedGameEntryException
 	{
 		if ( catalogURL == null ) throw new IOException("Null catalog URL passed");
 				
@@ -108,21 +122,27 @@ public class GameTableModel extends AbstractTableModel
 		Transformer t = TransformerFactory.newInstance().newTransformer();
 		DOMResult r = new DOMResult();
 		t.transform(s,r);
-		addGameCatalog((Element)((Document)r.getNode()).getFirstChild());		
+		addGameCatalog((Element)((Document)r.getNode()).getFirstChild(),overwrite);		
 		
 		if ( !catalogUrls.contains(catalogURL) )
-			catalogUrls.add(catalogURL);
+		{
+			if ( overwrite )
+				catalogUrls.add(0,catalogURL); //add at beginning so that it takes larger priority when refresh is called
+			else
+				catalogUrls.add(catalogURL); //add at end
+		}
 	}
 	
 	/**
 	 * Tries to add all the games contained in a catalog to the table model, but it this fails for some reason, this method does not throw exceptions but return false instead.
+	 * If the overwrite parameter is true, then the added entries overwrite existing entries with the same local path / remote URL.
 	 * @param catalogURL
 	 */
-	public boolean addGameCatalogIfPossible ( URL catalogURL )
+	public boolean addGameCatalogIfPossible ( URL catalogURL , boolean overwrite )
 	{
 		try
 		{
-			addGameCatalog ( catalogURL );
+			addGameCatalog ( catalogURL , overwrite );
 			return true;
 		}
 		catch ( Exception e )
@@ -134,17 +154,18 @@ public class GameTableModel extends AbstractTableModel
 	
 	/**
 	 * Adds all the games described in the game XML elements that are children of the given catalog XML elements.
+	 * If overwrite is true, the existing entries with the same local path and remote URL are overwritten by the new entries. If it's false, they aren't.
 	 * @param e
 	 * @throws MalformedGameEntryException
 	 */
-	public void addGameCatalog ( Element e ) throws MalformedGameEntryException
+	public void addGameCatalog ( Element e , boolean overwrite ) throws MalformedGameEntryException
 	{
 		NodeList gameList = e.getElementsByTagName("game");
 		for ( int i = 0 ; i < gameList.getLength() ; i++ )
 		{
 			GameEntry ge = new GameEntry();
 			ge.initFromXML(gameList.item(i));
-			addGameEntry ( ge );
+			addGameEntry ( ge , overwrite );
 		}
 	}
 	
@@ -192,7 +213,7 @@ public class GameTableModel extends AbstractTableModel
 		gameEntries.clear();
 		for ( int i = 0 ; i < catalogUrls.size() ; i++ )
 		{
-			addGameCatalog ( (URL)catalogUrls.get(i) );
+			addGameCatalog ( (URL)catalogUrls.get(i) , false );
 		}
 		fireTableDataChanged();
 	}

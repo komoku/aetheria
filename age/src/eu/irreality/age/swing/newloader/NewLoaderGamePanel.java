@@ -128,8 +128,8 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		gameTableModel = new GameTableModel();
 		try 
 		{
-			gameTableModel.addGameCatalogIfPossible(new File("maincatalog.xml").toURI().toURL()); //this will exist only if the application has been ran in the past
-			gameTableModel.addGameCatalog(this.getClass().getClassLoader().getResource("catalog.xml")); //this will exist always, distributed with AGE
+			gameTableModel.addGameCatalogIfPossible(new File("maincatalog.xml").toURI().toURL(),false); //this will exist only if the application has been ran in the past
+			gameTableModel.addGameCatalog(this.getClass().getClassLoader().getResource("catalog.xml"),false); //this will exist always, distributed with AGE
 			gameTableModel.setCatalogWritePath(new File("maincatalog.xml"));
 		} 
 		catch (Exception e)
@@ -471,9 +471,9 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		infoPane.setText(infoPane.getText()+ progressString + ": " + progress + "\n");
 	}
 	
-	public void addGameEntry ( GameEntry ge )
+	public void addGameEntry ( GameEntry ge , boolean overwrite )
 	{
-		gameTableModel.addGameEntry(ge);
+		gameTableModel.addGameEntry(ge,false);
 	}
 	
 }
