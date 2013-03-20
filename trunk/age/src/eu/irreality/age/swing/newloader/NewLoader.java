@@ -87,7 +87,7 @@ public class NewLoader extends JFrame
 						GameEntry ge = new GameEntry();
 						boolean success = ge.obtainFromWorld(selector.getSelectedFile().getAbsolutePath());
 						ge.setDownloaded(true);
-						if ( success ) gamePanel.addGameEntry(ge);
+						if ( success ) gamePanel.addGameEntry(ge,false);
 					}
 					new SwingSDIInterface(selector.getSelectedFile().getAbsolutePath(),false,null,null);
 					
