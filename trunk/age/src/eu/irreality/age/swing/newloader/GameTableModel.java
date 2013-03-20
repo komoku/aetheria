@@ -105,8 +105,29 @@ public class GameTableModel extends AbstractTableModel
 		return (GameEntry) gameEntries.get(index);
 	}
 	
+	
+	/**
+	 * Obtains an XML document (will be used for catalogs) from a URL.
+	 * @param catalogURL
+	 * @return
+	 * @throws IOException
+	 * @throws TransformerException
+	 */
+	private Document getXMLFromURL ( URL catalogURL ) throws IOException, TransformerException
+	{
+		if ( catalogURL == null ) throw new IOException("Null catalog URL passed");
+		
+		InputStream is = catalogURL.openStream();
+		StreamSource s = new StreamSource(is,catalogURL.toString());
+		Transformer t = TransformerFactory.newInstance().newTransformer();
+		DOMResult r = new DOMResult();
+		t.transform(s,r);
+		return ((Document) r.getNode());
+	}
+	
 	/**
 	 * Adds all the games contained in a catalog to the table model.
+	 * This method is blocking and should be called from the event dispatch thread.
 	 * @param catalogURL URL where the game catalog in XML can be found.
 	 * @param overwrite If true, the entries from the given catalog overwrite those of the old catalog if they have the same local path and remote URL.
 	 * @throws MalformedGameEntryException 
@@ -115,14 +136,9 @@ public class GameTableModel extends AbstractTableModel
 	 */
 	public void addGameCatalog ( URL catalogURL , boolean overwrite ) throws IOException, TransformerException, MalformedGameEntryException
 	{
-		if ( catalogURL == null ) throw new IOException("Null catalog URL passed");
-				
-		InputStream is = catalogURL.openStream();
-		StreamSource s = new StreamSource(is,catalogURL.toString());
-		Transformer t = TransformerFactory.newInstance().newTransformer();
-		DOMResult r = new DOMResult();
-		t.transform(s,r);
-		addGameCatalog((Element)((Document)r.getNode()).getFirstChild(),overwrite);		
+		Document doc = getXMLFromURL(catalogURL);
+		
+		addGameCatalog((Element)doc.getFirstChild(),overwrite);		
 		
 		if ( !catalogUrls.contains(catalogURL) )
 		{
