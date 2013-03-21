@@ -253,7 +253,7 @@ public class SwingAetheriaGameLoaderInterface
 			Option worldFile = OptionBuilder.withArgName( "file" )
             .hasArg()
             .withDescription(  "The world file or URL to play" )
-            .create( "worldfile" );
+            .create( "worldfile" ); //TODO: withLongOpt (for long option, --tal supongo).
 			/*
 			Option worldUrl = OptionBuilder.withArgName( "url" )
             .hasArg()
