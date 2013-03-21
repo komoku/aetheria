@@ -55,7 +55,7 @@ public class NewLoader extends JFrame
 		getContentPane().setLayout(new BoxLayout(this.getContentPane(),BoxLayout.PAGE_AXIS));
 		
 		//the panel with the game catalog
-		gamePanel = new NewLoaderGamePanel();
+		gamePanel = new NewLoaderGamePanel(this);
 		TitledBorder catalogBorder = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),"  " + UIMessages.getInstance().getMessage("gameloader.catalog") + "  ");
 		catalogBorder.setTitleJustification(TitledBorder.CENTER);
 		gamePanel.setBorder( addSpaceToBorder( catalogBorder ) );

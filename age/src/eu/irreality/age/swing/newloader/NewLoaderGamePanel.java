@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
+import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -59,6 +60,7 @@ import eu.irreality.age.util.xml.XMLfromURL;
 public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegate
 {
 	
+	private final Frame parentFrame;
 	private JTable gameTable;
 	private JTextPane infoPane = new JTextPane();
 	private GameTableModel gameTableModel;
@@ -71,6 +73,8 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 	private JButton playButton = new JButton( UIMessages.getInstance().getMessage("gameloader.play") );
 	private JButton downloadButton = new JButton( UIMessages.getInstance().getMessage("gameloader.download") );
 	private JButton downloadingButton = new JButton( UIMessages.getInstance().getMessage("gameloader.downloading") );
+	
+	private JButton syncButton = new JButton( UIMessages.getInstance().getMessage("gameloader.sync") );
 	
 	/**This maps game entries to the objects keeping their download progress and holding their progress bars*/
 	private Map downloadProgressKeepers = Collections.synchronizedMap(new HashMap());
@@ -235,10 +239,12 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		
 	}
 	
-	public NewLoaderGamePanel()
+	public NewLoaderGamePanel( final Frame parentFrame )
 	{
 		
 		setLayout(new BoxLayout(this,BoxLayout.LINE_AXIS));
+		
+		this.parentFrame = parentFrame;
 		
 		gameTableModel = new GameTableModel();
 		try 
@@ -303,10 +309,20 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		gameTable.setRowHeight(fm.getHeight());
 		gameTable.getColumn(UIMessages.getInstance().getMessage("gameinfo.downloaded")).setPreferredWidth(80);
 		gameTable.getColumn(UIMessages.getInstance().getMessage("gameinfo.downloaded")).setMaxWidth(120);
-		
-		
+				
 		tableScrollPane.setPreferredSize(new Dimension(800,400));
-		add(tableScrollPane);
+		
+		JPanel leftPanel = new JPanel();
+		leftPanel.setLayout(new BoxLayout(leftPanel,BoxLayout.PAGE_AXIS));
+		
+		leftPanel.add(tableScrollPane);
+		
+		JPanel leftDownPanel = new JPanel();
+		leftDownPanel.setLayout(new BoxLayout(leftDownPanel,BoxLayout.LINE_AXIS));
+		
+		leftPanel.add(leftDownPanel);
+		
+		leftDownPanel.add(syncButton);
 		
 		JPanel rightPanel = new JPanel();
 		rightPanel.setLayout(new BoxLayout(rightPanel,BoxLayout.PAGE_AXIS));
@@ -324,6 +340,7 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		downloadOrPlayButtonPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 		rightDownPanel.add(downloadOrPlayButtonPanel);
 		
+		add(leftPanel);
 		add(rightPanel);
 		
 		downloadButton.addActionListener( new ActionListener()
@@ -355,6 +372,15 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 			public void actionPerformed ( ActionEvent e )
 			{
 				launchGame();
+			}
+		}
+		);
+		
+		syncButton.addActionListener ( new ActionListener() 
+		{
+			public void actionPerformed ( ActionEvent e )
+			{
+				new SyncWithServerDialog(parentFrame,true);
 			}
 		}
 		);
