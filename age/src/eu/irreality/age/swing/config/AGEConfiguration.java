@@ -50,6 +50,7 @@ public class AGEConfiguration
 		defaultProperties.setProperty("loaderWindowMaximized", "false");
 		//defaultProperties.setProperty("loaderWindowLocationX","50");
 		//defaultProperties.setProperty("loaderWindowLocationY","50");
+		defaultProperties.setProperty("catalogURL", "http://www.caad.es/aetheria/catalog.xml");
 		
 		defaultProperties.setProperty("mdiWindowWidth", "800");
 		defaultProperties.setProperty("mdiWindowHeight", "600");
