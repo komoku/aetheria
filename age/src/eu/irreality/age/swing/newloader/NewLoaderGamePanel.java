@@ -168,9 +168,10 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 
 	
 	/**
-	 * Loads the games contained in a catalog in a URL when possible.
+	 * Loads the games contained in a catalog in a URL when possible. Shows dialogs showing the number of games updated,
+	 * or the errors found, if any.
 	 * This method is not blocking. It will open a new thread to download the catalog, and add the games to the table
-	 * in the event dispatch thread when it is ready.
+	 * in the event dispatch thread when it is ready. The dialogs will also be enqueued on the event dispatch thread.
 	 * While it is possible to call this method for a local URL as well, it wouldn't make much sense to go through all
 	 * the threading complexity for a local catalog - just call loadCatalog on the GameTableModel for that.
 	 * @param catalogURL
@@ -178,7 +179,7 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 	 * @throws IOException
 	 * @throws TransformerException
 	 */
-	public void syncWithRemoteCatalogIfPossible ( final URL catalogURL , final boolean overwrite ) throws IOException, TransformerException
+	public void syncWithRemoteCatalog ( final URL catalogURL , final boolean overwrite ) throws IOException, TransformerException
 	{
 		//If we ask for java 1.6, this could be done better with SwingWorker. doInBackground(), throw exception, and in done catch in get() ExecutedException, InterruptedException
 	
@@ -211,12 +212,16 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 					{
 						try 
 						{
-							gameTableModel.addGameCatalog(doc,catalogURL,overwrite);
+							int nGamesUpdated = gameTableModel.addGameCatalog(doc,catalogURL,overwrite);
+							if ( nGamesUpdated == 0 )
+								JOptionPane.showMessageDialog(NewLoaderGamePanel.this,"<html><p>"+UIMessages.getInstance().getMessage("gameloader.no.games.updated")+"</p>",UIMessages.getInstance().getMessage("gameloader.sync.result"),JOptionPane.INFORMATION_MESSAGE);
+							else
+								JOptionPane.showMessageDialog(NewLoaderGamePanel.this,"<html><p>"+nGamesUpdated + " " + UIMessages.getInstance().getMessage("gameloader.games.updated")+"</p>",UIMessages.getInstance().getMessage("gameloader.sync.result"),JOptionPane.INFORMATION_MESSAGE);
 						} 
 						catch (MalformedGameEntryException e) 
 						{
 							e.printStackTrace();
-							showErrorWhenPossible(e.getLocalizedMessage(),"Whoops!");
+							showError(e.getLocalizedMessage(),"Whoops!");
 							return;
 						}		
 					}
