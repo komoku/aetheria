@@ -11,6 +11,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
@@ -33,13 +35,20 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.stream.StreamSource;
+
+import org.w3c.dom.Document;
 
 import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.swing.newloader.download.DownloadProgressKeeper;
 import eu.irreality.age.swing.newloader.download.ProgressKeepingDelegate;
 import eu.irreality.age.swing.newloader.download.ProgressKeepingReadableByteChannel;
 import eu.irreality.age.swing.sdi.SwingSDIInterface;
+import eu.irreality.age.util.xml.XMLfromURL;
 
 
 /**
@@ -120,6 +129,107 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		JOptionPane.showMessageDialog(this,"<html><p>"+message+"</p>",title,JOptionPane.ERROR_MESSAGE);
 	}
 	
+	/**
+	 * Shows an error message as soon as possible in the event dispatching thread (i.e. via invokeLater()).
+	 * Can be called from any thread.
+	 * @param message
+	 * @param title
+	 */
+	private void showErrorWhenPossible(final String message, final String title)
+	{
+		SwingUtilities.invokeLater(new Runnable()
+		{
+			public void run()
+			{
+				JOptionPane.showMessageDialog(NewLoaderGamePanel.this,"<html><p>"+message+"</p>",title,JOptionPane.ERROR_MESSAGE);
+			}
+		});
+		
+	}
+	
+	/**
+	 * Tries to add all the games contained in a catalog to the table model, but it this fails for some reason, this method does not throw exceptions but return false instead.
+	 * If the overwrite parameter is true, then the added entries overwrite existing entries with the same local path / remote URL.
+	 * @param catalogURL
+	 */
+	public boolean loadGameCatalogIfPossible ( URL catalogURL , boolean overwrite )
+	{
+		try
+		{
+			gameTableModel.loadGameCatalog ( catalogURL , overwrite );
+			return true;
+		}
+		catch ( Exception e )
+		{
+			return false;
+		}
+	}
+	
+
+	
+	/**
+	 * Loads the games contained in a catalog in a URL when possible.
+	 * This method is not blocking. It will open a new thread to download the catalog, and add the games to the table
+	 * in the event dispatch thread when it is ready.
+	 * While it is possible to call this method for a local URL as well, it wouldn't make much sense to go through all
+	 * the threading complexity for a local catalog - just call loadCatalog on the GameTableModel for that.
+	 * @param catalogURL
+	 * @param overwrite
+	 * @throws IOException
+	 * @throws TransformerException
+	 */
+	public void syncWithRemoteCatalogIfPossible ( final URL catalogURL , final boolean overwrite ) throws IOException, TransformerException
+	{
+		//If we ask for java 1.6, this could be done better with SwingWorker. doInBackground(), throw exception, and in done catch in get() ExecutedException, InterruptedException
+	
+		Thread thr = new Thread()
+		{
+			public void run()
+			{
+				
+				final Document doc;
+				try 
+				{
+					doc = XMLfromURL.getXMLFromURL(catalogURL);
+				} 
+				catch (IOException e1) 
+				{
+					e1.printStackTrace();
+					showErrorWhenPossible(e1.getLocalizedMessage(),"Whoops!");
+					return;
+				} 
+				catch (TransformerException e1) 
+				{
+					e1.printStackTrace();
+					showErrorWhenPossible(e1.getLocalizedMessage(),"Whoops!");
+					return;
+				}
+		
+				SwingUtilities.invokeLater( new Runnable() 
+				{
+					public void run()
+					{
+						try 
+						{
+							gameTableModel.addGameCatalog(doc,catalogURL,overwrite);
+						} 
+						catch (MalformedGameEntryException e) 
+						{
+							e.printStackTrace();
+							showErrorWhenPossible(e.getLocalizedMessage(),"Whoops!");
+							return;
+						}		
+					}
+				}
+				);
+		
+			}
+		};
+		
+		thr.start();
+		
+	}
+	
 	public NewLoaderGamePanel()
 	{
 		
@@ -128,8 +238,8 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		gameTableModel = new GameTableModel();
 		try 
 		{
-			gameTableModel.addGameCatalogIfPossible(new File("maincatalog.xml").toURI().toURL(),false); //this will exist only if the application has been ran in the past
-			gameTableModel.addGameCatalog(this.getClass().getClassLoader().getResource("catalog.xml"),false); //this will exist always, distributed with AGE
+			loadGameCatalogIfPossible(new File("maincatalog.xml").toURI().toURL(),false); //this will exist only if the application has been ran in the past
+			gameTableModel.loadGameCatalog(this.getClass().getClassLoader().getResource("catalog.xml"),false); //this will exist always, distributed with AGE
 			gameTableModel.setCatalogWritePath(new File("maincatalog.xml"));
 		} 
 		catch (Exception e)
