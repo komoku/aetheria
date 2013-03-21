@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -34,6 +36,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import eu.irreality.age.i18n.UIMessages;
+import eu.irreality.age.util.xml.XMLfromURL;
 
 /**
  * A model for a JTable containing information about AGE worlds.
@@ -106,39 +109,19 @@ public class GameTableModel extends AbstractTableModel
 	}
 	
 	
-	/**
-	 * Obtains an XML document (will be used for catalogs) from a URL.
-	 * @param catalogURL
-	 * @return
-	 * @throws IOException
-	 * @throws TransformerException
-	 */
-	private Document getXMLFromURL ( URL catalogURL ) throws IOException, TransformerException
-	{
-		if ( catalogURL == null ) throw new IOException("Null catalog URL passed");
-		
-		InputStream is = catalogURL.openStream();
-		StreamSource s = new StreamSource(is,catalogURL.toString());
-		Transformer t = TransformerFactory.newInstance().newTransformer();
-		DOMResult r = new DOMResult();
-		t.transform(s,r);
-		return ((Document) r.getNode());
-	}
+
 	
 	/**
-	 * Adds all the games contained in a catalog to the table model.
-	 * This method is blocking and should be called from the event dispatch thread.
-	 * @param catalogURL URL where the game catalog in XML can be found.
-	 * @param overwrite If true, the entries from the given catalog overwrite those of the old catalog if they have the same local path and remote URL.
-	 * @throws MalformedGameEntryException 
-	 * @throws TransformerFactoryConfigurationError 
-	 * @throws TransformerConfigurationException 
+	 * Adds the games contained in the given catalog to the table model, and updates the catalog URLs,
+	 * adding the given URL as a catalog URL to the model.
+	 * @param doc
+	 * @param catalogURL
+	 * @param overwrite
+	 * @throws MalformedGameEntryException
 	 */
-	public void addGameCatalog ( URL catalogURL , boolean overwrite ) throws IOException, TransformerException, MalformedGameEntryException
+	public void addGameCatalog ( Document doc , URL catalogURL , boolean overwrite ) throws MalformedGameEntryException
 	{
-		Document doc = getXMLFromURL(catalogURL);
-		
-		addGameCatalog((Element)doc.getFirstChild(),overwrite);		
+		addGamesFromCatalog((Element)doc.getFirstChild(),overwrite);		
 		
 		if ( !catalogUrls.contains(catalogURL) )
 		{
@@ -150,23 +133,23 @@ public class GameTableModel extends AbstractTableModel
 	}
 	
 	/**
-	 * Tries to add all the games contained in a catalog to the table model, but it this fails for some reason, this method does not throw exceptions but return false instead.
-	 * If the overwrite parameter is true, then the added entries overwrite existing entries with the same local path / remote URL.
-	 * @param catalogURL
+	 * Opens a XML catalog from an URL, adds all the games contained in a catalog to the table model, and updates the catalog URLs
+	 * to add the given URL.
+	 * This method is blocking and should be called from the event dispatch thread. Note that this means it is not suitable for remote
+	 * catalogs where getting the XML information from the URL could take significant time.
+	 * @param catalogURL URL where the game catalog in XML can be found.
+	 * @param overwrite If true, the entries from the given catalog overwrite those of the old catalog if they have the same local path and remote URL.
+	 * @throws MalformedGameEntryException 
+	 * @throws TransformerFactoryConfigurationError 
+	 * @throws TransformerConfigurationException 
 	 */
-	public boolean addGameCatalogIfPossible ( URL catalogURL , boolean overwrite )
+	public void loadGameCatalog ( URL catalogURL , boolean overwrite ) throws IOException, TransformerException, MalformedGameEntryException
 	{
-		try
-		{
-			addGameCatalog ( catalogURL , overwrite );
-			return true;
-		}
-		catch ( Exception e )
-		{
-			return false;
-		}
+		Document doc = XMLfromURL.getXMLFromURL(catalogURL);
+		addGameCatalog(doc,catalogURL,overwrite);
 	}
 	
+		
 	
 	/**
 	 * Adds all the games described in the game XML elements that are children of the given catalog XML elements.
@@ -174,7 +157,7 @@ public class GameTableModel extends AbstractTableModel
 	 * @param e
 	 * @throws MalformedGameEntryException
 	 */
-	public void addGameCatalog ( Element e , boolean overwrite ) throws MalformedGameEntryException
+	private void addGamesFromCatalog ( Element e , boolean overwrite ) throws MalformedGameEntryException
 	{
 		NodeList gameList = e.getElementsByTagName("game");
 		for ( int i = 0 ; i < gameList.getLength() ; i++ )
@@ -224,15 +207,22 @@ public class GameTableModel extends AbstractTableModel
 	 * @throws TransformerException 
 	 * @throws IOException 
 	 */
+	/**
+	 * TODO: At the moment this operation is unused. If we actually want to use it, maybe some refactoring would be good.
+	 * Loading stuff from URLs (especially if they're remote URLs) is not very model-ish. Maybe this should be on the
+	 * game panel class, should get the URLs from the model, and load the catalogs from them (calling addCatalog, loadCatalog,
+	 * etc. on the model when necessary)
+	 */
 	public void refreshCatalogs ( ) throws IOException, TransformerException, MalformedGameEntryException
 	{
 		gameEntries.clear();
 		for ( int i = 0 ; i < catalogUrls.size() ; i++ )
 		{
-			addGameCatalog ( (URL)catalogUrls.get(i) , false );
+			loadGameCatalog ( (URL)catalogUrls.get(i) , false );
 		}
 		fireTableDataChanged();
 	}
+	
 
 	public int getRowCount() 
 	{
