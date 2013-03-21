@@ -81,8 +81,9 @@ public class GameTableModel extends AbstractTableModel
 	 * Adds a game entry to the table model.
 	 * If the overwrite parameter is false, it adds the game only if it does not already exist in the model.
 	 * If it is true, then if the game exists, it deletes the old entry and adds the given game entry.
+	 * Returns true if changes were made, false if they weren't (i.e. if overwrite was set to false and entry already existed).
 	 */
-	public void addGameEntry( GameEntry ge , boolean overwrite )
+	public boolean addGameEntry( GameEntry ge , boolean overwrite )
 	{
 		if ( overwrite )
 		{
@@ -91,6 +92,7 @@ public class GameTableModel extends AbstractTableModel
 			gameEntries.add(ge);
 			Collections.sort(gameEntries); //TODO this may not scale
 			fireTableDataChanged();
+			return true;
 		}
 		else
 		{
@@ -99,7 +101,9 @@ public class GameTableModel extends AbstractTableModel
 				gameEntries.add(ge);
 				Collections.sort(gameEntries); //TODO this may not scale
 				fireTableDataChanged();
+				return true;
 			}
+			return false;
 		}
 	}
 	
@@ -118,10 +122,11 @@ public class GameTableModel extends AbstractTableModel
 	 * @param catalogURL
 	 * @param overwrite
 	 * @throws MalformedGameEntryException
+	 * @return The number of entries that were added or overwritten.
 	 */
-	public void addGameCatalog ( Document doc , URL catalogURL , boolean overwrite ) throws MalformedGameEntryException
+	public int addGameCatalog ( Document doc , URL catalogURL , boolean overwrite ) throws MalformedGameEntryException
 	{
-		addGamesFromCatalog((Element)doc.getFirstChild(),overwrite);		
+		int nGamesAdded = addGamesFromCatalog((Element)doc.getFirstChild(),overwrite);		
 		
 		if ( !catalogUrls.contains(catalogURL) )
 		{
@@ -130,6 +135,8 @@ public class GameTableModel extends AbstractTableModel
 			else
 				catalogUrls.add(catalogURL); //add at end
 		}
+		
+		return nGamesAdded;
 	}
 	
 	/**
@@ -156,16 +163,21 @@ public class GameTableModel extends AbstractTableModel
 	 * If overwrite is true, the existing entries with the same local path and remote URL are overwritten by the new entries. If it's false, they aren't.
 	 * @param e
 	 * @throws MalformedGameEntryException
+	 * @return The number of game entries that were added or overwritten (might be 0 not only if the catalog is empty, but also if
+	 * overwrite is false and all the entries in the catalog were already present in the model).
 	 */
-	private void addGamesFromCatalog ( Element e , boolean overwrite ) throws MalformedGameEntryException
+	private int addGamesFromCatalog ( Element e , boolean overwrite ) throws MalformedGameEntryException
 	{
+		int nGamesAdded = 0;
 		NodeList gameList = e.getElementsByTagName("game");
 		for ( int i = 0 ; i < gameList.getLength() ; i++ )
 		{
 			GameEntry ge = new GameEntry();
 			ge.initFromXML(gameList.item(i));
-			addGameEntry ( ge , overwrite );
+			boolean added = addGameEntry ( ge , overwrite );
+			if ( added ) nGamesAdded++;
 		}
+		return nGamesAdded;
 	}
 	
 	/**
