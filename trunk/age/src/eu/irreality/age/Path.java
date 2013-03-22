@@ -315,14 +315,15 @@ public class Path extends Entity implements Descriptible
 	/**
 	* Nos dice si la salida "se da por aludida" ante el contenido de un comando "ir" (por ejemplo, "Norte").
 	*
-	* return Si la salida se corresponde al comando.
+	* return >= 0 si esta salida se corresponde al comando, < 0 de lo contrario. En caso de >= 0, el valor de retorno
+	* es la longitud del nombre de la salida con el cual se corresponde el comando.
 	*/
-	public boolean matchExitCommand ( String toParse )
+	public int matchExitCommand ( String toParse )
 	{
 		for ( int i = 0 ; i < exitCommand.length ; i++ )
 			//if ( exitCommand[i].equalsIgnoreCase(toParse) ) return true;
-			if ( toParse.toLowerCase().endsWith(exitCommand[i].toLowerCase()) ) return true;
-		return false;
+			if ( toParse.toLowerCase().endsWith(exitCommand[i].toLowerCase()) ) return exitCommand[i].length();
+		return -1;
 	}
 	
 	
