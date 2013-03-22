@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog>
+	<game ageVersion="1.0" author="Jaume Alcazo Castellarnau (Versión de Carlos Gómez Rodríguez)" date="2008-04-27" language="es" title="Vampiro" type="Clásica" version="0.1">
+		<main-resource downloaded="false" local="Vampiro/world.xml" zip="vampiro.zip" remote="http://www.caad.es/sites/default/files/descargas/Juegos/AGE/vampiro.zip"/>
+	</game>
+	<game ageVersion="1.2.3" author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2012-09-02" language="es" title="Wizard's Quest: Morluck's Lair" type="Rolero" version="1.0">
+		<main-resource downloaded="false" local="Morluck10/Morluck.agz" remote="http://www.caad.es/sites/default/files/descargas/Juegos/AGE/Morluck10.zip"/>
+	</game>
+	<game downloaded="false" author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2011-05-05" title="Fuego" ageVersion="1.1" type="Aventura de velocidad" version="1.2.1" language="es">
+		<main-resource downloaded="false" local="Fuego/world.xml" zip="fuego.zip" remote="http://www.caad.es/sites/default/files/descargas/Juegos/AGE/fuego-v122.zip"/>
+	</game>
+	<game title="Zendyr's Labyrinth" author="Carlos Gómez Rodríguez (Al-Khwarizmi)" version="0.1 Beta" parserVersion="0.6.5c" date="2003-11-30" language="es" type="Rolero/Experimental">
+		<main-resource downloaded="false" local="ZendyrsLabyrinth/world.xml" zip="zendyr.zip" remote="http://www.caad.es/sites/default/files/descargas/Juegos/AGE/ZendyrsLabyrinth011.zip"/>
+	</game>
+	<game author="Jenesis" date="2011-02-16" language="es" moduleName="15 meses y un día" parserVersion="1.0.3" type="Mixta" version="1.2.1" worldName="15 meses">
+		<main-resource downloaded="false" local="15_meses_v.1.2.1/15_meses/worlds/15_meses/world.xml" zip="15_meses_v.1.2.1.zip" remote="http://www.caad.es/sites/default/files/descargas/Juegos/AGE/15_meses_v.1.2.1.zip"/>
+	</game>
+	<game author="Jenesis" date="2012-01-01" language="es" moduleName="El libro que se aburría" parserVersion="1.2.1" type="comedia" version="0.3" worldName="libro">
+		<main-resource downloaded="false" local="libro_AGE/libro/worlds/libro/world.xml" zip="libro_AGE_patched.zip" remote="http://www.caad.es/aetheria/libro_AGE_patched.zip"/>
+	</game>
+	<game author="Mistery, Al-Khwarizmi" language="es" date="2011-07-22" moduleName="Fotones Perdidos" parserVersion="1.1.5" type="Experimental" version="1.1.0"  worldName="Fotones Perdidos">
+		<main-resource downloaded="false" local="Fotones/world.xml" zip="Fotones/fotones.zip" remote="http://www.caad.es/sites/default/files/descargas/Juegos/AGE/world-v11.zip"/>
+	</game>
+	<game downloaded="false" author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2008-11-06" language="es" moduleName="Insecto mortal" parserVersion="1.0" type="Aventura rápida" version="1.1" worldDir="." worldName="Insecto mortal">
+		<main-resource downloaded="false" local="Insecto/world.xml"/>
+	</game>
+	<game downloaded="false" author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2011-11-27" language="en" moduleName="Lethal Insect" parserVersion="1.2.0" type="Very small miniadventure" version="0.1" worldDir="." worldName="Lethal Insect">
+		<main-resource downloaded="false" local="Insect/world.xml"/>
+	</game>
+	
+	
+</catalog>
