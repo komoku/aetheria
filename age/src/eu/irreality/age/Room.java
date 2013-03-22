@@ -669,6 +669,27 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 			return otherExits[10-nsal];	
 	}
 	
+	/**
+	 * Obtains the path from this room that best matches the given arguments.
+	 * @param arguments
+	 * @return
+	 */
+	public Path getNonStandardPathMatchingArguments ( String arguments )
+	{
+		Path result = null;
+		
+		//Mirar las salidas personalizadas
+		for ( int i=0 ; i < otherExits.length ; i++ )
+		{
+			if ( isValidExit(false,i) && getExit(false,i).matchExitCommand( arguments ) )
+			{
+				result = getExit ( false , i );	
+			}
+		}	
+		
+		return result;
+	}
+	
 	public String getExitName ( boolean isStandard , int exitn )
 	{
 		if ( isStandard )
