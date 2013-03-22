@@ -7,7 +7,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -25,6 +30,14 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 
 import eu.irreality.age.FiltroFicheroMundo;
 import eu.irreality.age.SwingAetheriaGameLoaderInterface;
@@ -121,8 +134,72 @@ public class NewLoader extends JFrame
 		JOptionPane.showMessageDialog(this, UIMessages.getInstance().getMessage("gameloader.beta.message") , UIMessages.getInstance().getMessage("gameloader.beta.title") , JOptionPane.INFORMATION_MESSAGE );
 	}
 	
+	
+	public static void redirectStandardError ( String file )
+	{
+		File f = new File(file);
+		if ( !f.exists() )
+		{
+			if ( !f.getParentFile().exists() )
+			{
+				if ( !f.getParentFile().mkdirs() )
+				{
+					System.err.println("Could not redirect standard error to " + file + ": unable to create directories.");
+					return;
+				}
+			}
+		}
+		//{f.getParentFile().exists()
+		try 
+		{
+			System.setErr ( new PrintStream ( new FileOutputStream(f,true) ) );
+			System.err.println("[" + new Date() + "]");
+		} 
+		catch (FileNotFoundException e) 
+		{
+			System.err.println("Could not redirect standard error to " + file + ":");
+			e.printStackTrace();
+		}
+	}
+	
+	
 	public static void main ( String[] args )
 	{
+		
+		if ( args.length > 0 )
+		{
+			//parse command line
+			Option errorLog = OptionBuilder.withArgName( "errorlog" )
+		            .hasArg()
+		            .withDescription(  "A file to append the error output to" )
+		            .withLongOpt( "errorlog" )
+		            .create( "e" );
+			
+			Options options = new Options();
+			options.addOption( errorLog );
+			CommandLineParser parser = new GnuParser();
+			
+			 try 
+			 {
+			        // parse the command line arguments
+			        CommandLine line = parser.parse( options, args );
+			        
+			        String errorLogFile = null;
+			        
+			        if ( line.hasOption("e") ) errorLogFile = line.getOptionValue("e");
+			        
+			        if ( errorLogFile != null ) redirectStandardError(errorLogFile);
+			 }
+			 catch( ParseException exp ) 
+			 {
+			        // oops, something went wrong
+			        System.err.println( "Parsing failed.  Reason: " + exp.getMessage() );
+			 }
+				
+		}
+		
+		
+		
 		SwingUtilities.invokeLater ( new Runnable()
 		{
 			public void run() 
@@ -130,6 +207,7 @@ public class NewLoader extends JFrame
 				new NewLoader();	
 			}	
 		});
+		
 	}
 	
 	

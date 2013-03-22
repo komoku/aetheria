@@ -128,7 +128,7 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 	
 
 	
-	private void showError(String message, String title)
+	void showError(String message, String title)
 	{
 		JOptionPane.showMessageDialog(this,"<html><p>"+message+"</p>",title,JOptionPane.ERROR_MESSAGE);
 	}
@@ -183,7 +183,7 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 	 * @throws IOException
 	 * @throws TransformerException
 	 */
-	public void syncWithRemoteCatalog ( final URL catalogURL , final boolean overwrite ) throws IOException, TransformerException
+	public void syncWithRemoteCatalog ( final URL catalogURL , final boolean overwrite )
 	{
 		//If we ask for java 1.6, this could be done better with SwingWorker. doInBackground(), throw exception, and in done catch in get() ExecutedException, InterruptedException
 	
@@ -200,13 +200,13 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 				catch (IOException e1) 
 				{
 					e1.printStackTrace();
-					showErrorWhenPossible(e1.getLocalizedMessage(),"Whoops!");
+					showErrorWhenPossible(UIMessages.getInstance().getMessage("exception.io") + ": " + e1.getLocalizedMessage(),"Whoops!");
 					return;
 				} 
 				catch (TransformerException e1) 
 				{
 					e1.printStackTrace();
-					showErrorWhenPossible(e1.getLocalizedMessage(),"Whoops!");
+					showErrorWhenPossible(UIMessages.getInstance().getMessage("exception.transformer") + ": " + e1.getLocalizedMessage(),"Whoops!");
 					return;
 				}
 		
@@ -225,7 +225,7 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 						catch (MalformedGameEntryException e) 
 						{
 							e.printStackTrace();
-							showError(e.getLocalizedMessage(),"Whoops!");
+							showError(UIMessages.getInstance().getMessage("exception.malformed.game.entry") + ": " + e.getLocalizedMessage(),"Whoops!");
 							return;
 						}		
 					}
@@ -380,7 +380,7 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 		{
 			public void actionPerformed ( ActionEvent e )
 			{
-				new SyncWithServerDialog(parentFrame,true);
+				new SyncWithServerDialog(parentFrame,true,NewLoaderGamePanel.this);
 			}
 		}
 		);
