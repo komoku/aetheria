@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -197,6 +198,12 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 				{
 					doc = XMLfromURL.getXMLFromURL(catalogURL);
 				} 
+				catch (FileNotFoundException e1)
+				{
+					e1.printStackTrace();
+					showErrorWhenPossible(UIMessages.getInstance().getMessage("exception.file.not.found") + ": " + e1.getLocalizedMessage(),"Whoops!");
+					return;
+				}
 				catch (IOException e1) 
 				{
 					e1.printStackTrace();

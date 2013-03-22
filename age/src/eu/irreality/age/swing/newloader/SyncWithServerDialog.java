@@ -46,10 +46,10 @@ public class SyncWithServerDialog extends JDialog
 		
 		buttonsPanel.add(Box.createHorizontalStrut(8));
 		//buttonsPanel.add(buttonChangeUrl);
-		//buttonsPanel.add(Box.createHorizontalGlue());
-		buttonsPanel.add(buttonCancel);
-		buttonsPanel.add(Box.createHorizontalStrut(8));
+		buttonsPanel.add(Box.createHorizontalGlue());
 		buttonsPanel.add(buttonOk);
+		buttonsPanel.add(Box.createHorizontalStrut(8));
+		buttonsPanel.add(buttonCancel);
 		buttonsPanel.add(Box.createHorizontalStrut(8));
 		
 		getContentPane().add(Box.createVerticalStrut(8));
