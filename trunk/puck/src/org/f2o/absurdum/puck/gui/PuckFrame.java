@@ -189,11 +189,11 @@ public class PuckFrame extends JFrame
 	public void runCurrentFileInAge ( boolean onMdi , String withLog )
 	{
 		    List arguments = new ArrayList();
-		    arguments.add("-worldfile");
+		    arguments.add("--worldfile");
 		    arguments.add(editingFileName);
 		    if ( withLog != null )
 		    {
-			arguments.add("-logfile");
+			arguments.add("--logfile");
 			arguments.add(withLog);
 		    }
 		    if ( !onMdi )
