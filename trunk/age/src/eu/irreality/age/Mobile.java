@@ -10348,15 +10348,22 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			if ( actionArgs[0] == null || !((Path)actionArgs[0]).isValid() ) //changed to admit a custom exit to have a standard name
 			{
 				//Mirar las salidas personalizadas
+				actionArgs[0] = habitacionActual.getNonStandardPathMatchingArguments(arguments);
+				if ( actionArgs[0] != null )
+					mentions.setLastMentionedVerb(command);
+				
+				//old. commented 2013-03-22
+				/*
 				for ( int i=0 ; i<habitacionActual.otherExits.length ; i++ )
 				{
-					if ( habitacionActual.isValidExit(false,i) && habitacionActual.getExit(false,i).matchExitCommand( arguments /*StringMethods.getTok( arguments,StringMethods.numToks(arguments,' '), ' ' ) */ ) )
+					if ( habitacionActual.isValidExit(false,i) && habitacionActual.getExit(false,i).matchExitCommand( arguments ) )
 					{
 						mentions.setLastMentionedVerb(command);
 						actionArgs[0] = habitacionActual.getExit ( false , i );	
 						//return go (habitacionActual.getExit( false,i ));
 					}
-				}	
+				}
+				*/
 	
 				//si no había ninguna salida
 				if ( actionArgs[0] == null )
