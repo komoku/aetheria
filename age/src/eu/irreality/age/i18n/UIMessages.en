@@ -41,6 +41,12 @@ gameloader.beta.title=Warning
 gameloader.beta.message=<html><body width=800><p>This game loading program is still experimental. At the moment, it has several shortcomings and it may contain bugs. For a more stable experience, please load your games using the "simpleage" program also included in this distribution.</p>
 gameloader.catalog=Game catalog
 gameloader.addonload=Also add game to the catalog
+gameloader.sync=Synchronize
+gameloader.change.url=Change URL...
+gameloader.sync.description=AGE will now search for new games for the catalog on the following URL:
+gameloader.sync.result=Synchronization result
+gameloader.no.games.updated=No new games were found
+gameloader.games.updated=games were added or updated
 save.name=Name:
 save.date=Date:
 save.game=Game:
@@ -249,3 +255,9 @@ dialog.fullscreen.error.null.display=Couldn't set full screen mode because the s
 dialog.fullscreen.error.not.supported=Couldn't set full screen mode because it is not supported or authorized in this system.
 boolean.yes=Yes
 boolean.no=No
+exception.malformed.url=Malformed URL
+exception.file.not.found=File not found
+exception.io=Problem when reading/writing data
+exception.malformed.game.entry=Malformed game entry
+exception.transformer=Error in XML transformer
+

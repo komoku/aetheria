@@ -253,7 +253,8 @@ public class SwingAetheriaGameLoaderInterface
 			Option worldFile = OptionBuilder.withArgName( "file" )
             .hasArg()
             .withDescription(  "The world file or URL to play" )
-            .create( "worldfile" ); //TODO: withLongOpt (for long option, --tal supongo).
+            .withLongOpt( "worldfile" )
+            .create( "w" ); 
 			/*
 			Option worldUrl = OptionBuilder.withArgName( "url" )
             .hasArg()
@@ -262,20 +263,24 @@ public class SwingAetheriaGameLoaderInterface
 			Option logFile   = OptionBuilder.withArgName( "file" )
             .hasArg()
             .withDescription(  "Log file to load the game from (requires a world file)" )
-            .create( "logfile" );
+            .withLongOpt( "logfile" )
+            .create( "l" );
 			Option stateFile   = OptionBuilder.withArgName( "file" )
             .hasArg()
             .withDescription(  "State file to load the game from (requires a world file)" )
-            .create( "statefile" );
+            .withLongOpt( "statefile" )
+            .create( "s" );
 			Option errorLog = OptionBuilder.withArgName( "errorlog" )
             .hasArg()
             .withDescription(  "A file to append the error output to" )
-            .create( "errorlog" );
+            .withLongOpt( "errorlog" )
+            .create( "e" );
 			
 			Option saveDir = OptionBuilder.withArgName( "pathToDir" )
 			.hasArg()
 			.withDescription("Path to the directory where saves will be stored by default")
-			.create("savedir");
+			.withLongOpt( "savedir" )
+			.create("d");
 			
 			Options options = new Options();
 
@@ -302,13 +307,13 @@ public class SwingAetheriaGameLoaderInterface
 		        
 		        String saveDirPath = null;
 		        
-		        if ( line.hasOption("errorlog") ) errorLogFile = line.getOptionValue("errorlog");
+		        if ( line.hasOption("e") ) errorLogFile = line.getOptionValue("e");
 		        
-		        if ( line.hasOption("statefile") ) desiredStateFile = line.getOptionValue("statefile");
-		        if ( line.hasOption("logfile") ) desiredLogFile = line.getOptionValue("logfile");
-		        if ( line.hasOption("worldfile") ) desiredWorldFile = line.getOptionValue("worldfile");
+		        if ( line.hasOption("s") ) desiredStateFile = line.getOptionValue("s");
+		        if ( line.hasOption("l") ) desiredLogFile = line.getOptionValue("l");
+		        if ( line.hasOption("w") ) desiredWorldFile = line.getOptionValue("w");
 		        
-		        if ( line.hasOption("savedir") ) saveDirPath = line.getOptionValue("savedir");
+		        if ( line.hasOption("d") ) saveDirPath = line.getOptionValue("sd");
 		        
 		        //first, redirect std. error if necessary
 		        if ( errorLogFile != null ) redirectStandardError(errorLogFile);
