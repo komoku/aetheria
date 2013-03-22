@@ -1303,7 +1303,8 @@ public class PuckFrame extends JFrame
 		Option errorLog = OptionBuilder.withArgName( "errorlog" )
         .hasArg()
         .withDescription(  "A file to append the error output to" )
-        .create( "errorlog" );
+        .withLongOpt( "errorlog" )
+        .create( "e" );
 		
 		Options options = new Options();
 		options.addOption( errorLog );
