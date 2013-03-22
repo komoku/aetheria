@@ -11,6 +11,7 @@ import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
 import eu.irreality.age.messages.Messages;
 import eu.irreality.age.scripting.ScriptException;
+import eu.irreality.age.util.VersionComparator;
 public class Room extends Entity implements Descriptible , SupportingCode, UniqueNamed
 {
 
@@ -678,14 +679,41 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 	{
 		Path result = null;
 		
-		//Mirar las salidas personalizadas
-		for ( int i=0 ; i < otherExits.length ; i++ )
+		if ( new VersionComparator().compare(mundo.getParserVersion(),"1.3.0") < 0 )
 		{
-			if ( isValidExit(false,i) && getExit(false,i).matchExitCommand( arguments ) >= 0 )
+			
+			//old behaviour: only matches with the end of the command
+			//not sure if there is really any point on maintaining this. I can't really think of a case where going with the new behaviour in an old game could 
+			//be problematic.
+			//Mirar las salidas personalizadas
+			for ( int i=0 ; i < otherExits.length ; i++ )
 			{
-				result = getExit ( false , i );	
+				if ( isValidExit(false,i) && getExit(false,i).matchExitCommand( arguments ) >= 0 )
+				{
+					result = getExit ( false , i );	
+				}
 			}
-		}	
+		
+		}
+		else
+		{
+			
+			//new behaviour: matches with any part of the command, returning the longest path name that is contained in it
+			int bestMatch = -1;
+			for ( int i=0 ; i < otherExits.length ; i++ )
+			{
+				if ( isValidExit(false,i) )
+				{
+					int lengthMatched = getExit(false,i).matchExitCommand( arguments );
+					if ( lengthMatched > bestMatch )
+					{
+						result = getExit ( false , i );	
+						bestMatch = lengthMatched;
+					}
+				}
+			}
+			
+		}
 		
 		return result;
 	}
