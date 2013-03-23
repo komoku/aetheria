@@ -10348,7 +10348,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			if ( actionArgs[0] == null || !((Path)actionArgs[0]).isValid() ) //changed to admit a custom exit to have a standard name
 			{
 				//Mirar las salidas personalizadas
-				actionArgs[0] = habitacionActual.getNonStandardPathMatchingArguments(arguments);
+				actionArgs[0] = habitacionActual.getNonStandardExitMatchingArguments(arguments);
 				if ( actionArgs[0] != null )
 					mentions.setLastMentionedVerb(command);
 				
