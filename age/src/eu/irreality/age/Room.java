@@ -688,7 +688,7 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 			//Mirar las salidas personalizadas
 			for ( int i=0 ; i < otherExits.length ; i++ )
 			{
-				if ( isValidExit(false,i) && getExit(false,i).matchExitCommand( arguments ) >= 0 )
+				if ( isValidExit(false,i) && getExit(false,i).matchExitCommand( arguments , false ) >= 0 )
 				{
 					result = getExit ( false , i );	
 				}
@@ -704,7 +704,7 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 			{
 				if ( isValidExit(false,i) )
 				{
-					int lengthMatched = getExit(false,i).matchExitCommand( arguments );
+					int lengthMatched = getExit(false,i).matchExitCommand( arguments , true );
 					if ( lengthMatched > bestMatch )
 					{
 						result = getExit ( false , i );	

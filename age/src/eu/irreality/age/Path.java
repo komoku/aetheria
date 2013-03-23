@@ -312,18 +312,47 @@ public class Path extends Entity implements Descriptible
 		return desString;
 	}	
 	
+	
+	/**
+     * Nos dice si la salida "se da por aludida" ante el contenido de un comando "ir" (por ejemplo, "Norte").
+     * This is a legacy method. It is not used anymore by the AGE kernel since 2013-03-22, but it *is* used by some games, so it must
+     * be kept.
+     *
+     * return Si la salida se corresponde al comando.
+     */
+     public boolean matchExitCommand ( String toParse )
+     {
+             for ( int i = 0 ; i < exitCommand.length ; i++ )
+                     //if ( exitCommand[i].equalsIgnoreCase(toParse) ) return true;
+                     if ( toParse.toLowerCase().endsWith(exitCommand[i].toLowerCase()) ) return true;
+             return false;
+     }
+	
 	/**
 	* Nos dice si la salida "se da por aludida" ante el contenido de un comando "ir" (por ejemplo, "Norte").
+	* 2013-03-23
 	*
 	* return >= 0 si esta salida se corresponde al comando, < 0 de lo contrario. En caso de >= 0, el valor de retorno
 	* es la longitud del nombre de la salida con el cual se corresponde el comando.
 	*/
-	public int matchExitCommand ( String toParse )
+	public int matchExitCommand ( String toParse , boolean lenient )
 	{
+		int match = -1;
 		for ( int i = 0 ; i < exitCommand.length ; i++ )
+		{
 			//if ( exitCommand[i].equalsIgnoreCase(toParse) ) return true;
-			if ( toParse.toLowerCase().endsWith(exitCommand[i].toLowerCase()) ) return exitCommand[i].length();
-		return -1;
+			if ( !lenient && toParse.toLowerCase().endsWith(exitCommand[i].toLowerCase()) )
+			{
+				if ( exitCommand[i].length() > match )
+					match = exitCommand[i].length();
+			}
+			if ( lenient && toParse.toLowerCase().contains(exitCommand[i].toLowerCase()) )
+			{
+				if ( exitCommand[i].length() > match )
+					match = exitCommand[i].length();
+			}
+		}
+		return match;
 	}
 	
 	
