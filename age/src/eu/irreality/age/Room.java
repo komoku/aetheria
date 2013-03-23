@@ -675,7 +675,7 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 	 * @param arguments
 	 * @return
 	 */
-	public Path getNonStandardPathMatchingArguments ( String arguments )
+	public Path getNonStandardExitMatchingArguments ( String arguments )
 	{
 		Path result = null;
 		
