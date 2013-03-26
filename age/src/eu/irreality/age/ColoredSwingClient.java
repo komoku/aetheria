@@ -114,6 +114,11 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		return elAreaTexto;
 	}
 	
+	public FancyJTextField getInputField()
+	{
+		return elCampoTexto;
+	}
+	
 	public JScrollPane getScrollPane()
 	{
 		return elScrolling;
