@@ -2261,4 +2261,34 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		}
 	}
 	
+	
+	private Dimension storedScrollBarSize = null;
+	
+	/**
+	 * Makes the vertical scroll bar visible or invisible, as requested.
+	 * Mouse wheel scrolling will still work with the invisible scroll bar.
+	 * @param visible
+	 */
+	public void setVerticalScrollBarVisible ( final boolean visible )
+	{
+		execInDispatchThread(new Runnable() 
+		{ 
+			public void run() 
+			{ 
+				if ( elScrolling.getVerticalScrollBar() == null ) elScrolling.createVerticalScrollBar();
+				if ( !visible )
+				{
+					storedScrollBarSize = elScrolling.getVerticalScrollBar().getPreferredSize();
+					elScrolling.getVerticalScrollBar().setPreferredSize(new Dimension(0,0));
+				}
+				else
+				{
+					if ( storedScrollBarSize != null )
+						elScrolling.getVerticalScrollBar().setPreferredSize(storedScrollBarSize);
+				}
+			} 
+		});
+		
+	}
+	
 }
