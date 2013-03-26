@@ -2124,6 +2124,23 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		setMargins ( top , left , bottom , right , true );
 	}
 	
+	/**
+	 * Sets margins on the input text box.
+	 * @param left
+	 * @param bottom
+	 * @param right
+	 */
+	public void setInputMargins (  final int left , final int right )
+	{
+		execInDispatchThread(new Runnable() 
+		{ 
+			public void run() 
+			{ 
+				elCampoTexto.setMargin(new Insets(0,left,0,right)); /*elCampoTexto.setMargin(new Insets(0,left,0,right));*/ 
+			} 
+		});
+	}
+	
 	
 	/*
 	public void setOutputAreaForeground ( final Color c )
