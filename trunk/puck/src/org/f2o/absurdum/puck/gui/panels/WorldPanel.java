@@ -131,7 +131,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 	private HashMap colorsMap = new HashMap();
 	private HashMap buttonsMap = new HashMap();
 	
-	public static String DEFAULT_AGE_VERSION = "1.3.0";
+	public static String DEFAULT_AGE_VERSION = "1.3.0b";
 	
 	public void setDefaultWorldVersion()
 	{
