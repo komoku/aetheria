@@ -1539,7 +1539,7 @@ public class World implements Informador , SupportingCode
 	public World ( URL url , InputOutputClient io , boolean noSerCliente ) throws IOException
 	{
 		InputStream is = null;
-		if ( url.toString().toLowerCase().endsWith(".xml") )
+		if ( /*url.toString().toLowerCase().endsWith(".xml")*/ !url.toString().toLowerCase().endsWith(".agz") &&  !url.toString().toLowerCase().endsWith(".zip") )
 		{
 			if ( !url.toString().startsWith("jar:") && !url.toString().startsWith("zip:") )
 			{
