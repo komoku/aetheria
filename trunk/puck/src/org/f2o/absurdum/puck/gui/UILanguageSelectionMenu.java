@@ -33,18 +33,45 @@ public class UILanguageSelectionMenu extends JMenu
 	{
 		super( UIMessages.getInstance().getMessage("language") );
 		
+		final String[] languageCodes = UIMessages.getInstance().getSupportedLanguages();
+		JRadioButtonMenuItem[] languageMenuItems = new JRadioButtonMenuItem[languageCodes.length];
+		
+		for ( int i = 0 ; i < languageCodes.length ; i++ )
+		{
+			languageMenuItems[i] = new JRadioButtonMenuItem(UIMessages.getInstance().getMessage("language."+languageCodes[i]),false);
+		}
+		
+		/*
 		JRadioButtonMenuItem itemSpanish = new JRadioButtonMenuItem(UIMessages.getInstance().getMessage("language.es"),false);
 		JRadioButtonMenuItem itemEnglish = new JRadioButtonMenuItem(UIMessages.getInstance().getMessage("language.en"),false);
+		*/
 		
 		ButtonGroup bg = new ButtonGroup();
+		
+		/*
 		bg.add ( itemSpanish );
 		bg.add ( itemEnglish );
+		*/
 		
+		for ( int i = 0 ; i < languageCodes.length ; i++ )
+		{
+			bg.add ( languageMenuItems[i] );
+		}
+		
+		/*
 		if ( UIMessages.getInstance().getPreferredLanguage().equals("es") )
 			itemSpanish.setSelected(true);
 		else
 			itemEnglish.setSelected(true);
-			
+		*/
+		
+		for ( int i = 0 ; i < languageCodes.length ; i++ )
+		{
+			if ( UIMessages.getInstance().getPreferredLanguage().equals(languageCodes[i]) )
+				languageMenuItems[i].setSelected(true);
+		}
+		
+		/*
 		itemSpanish.addActionListener( new ActionListener()
 		{	
 			public void actionPerformed ( ActionEvent evt )
@@ -70,10 +97,33 @@ public class UILanguageSelectionMenu extends JMenu
 			}
 		}
 		);
+		*/
 		
+		for ( int i = 0 ; i < languageCodes.length ; i++ )
+		{
+			final int j = i;
+			languageMenuItems[j].addActionListener( new ActionListener()
+			{	
+				public void actionPerformed ( ActionEvent evt )
+				{
+					if ( !UIMessages.getInstance().getPreferredLanguage().equals(languageCodes[j]) )
+					{
+						UIMessages.getInstance().setPreferredLanguage(languageCodes[j]);
+						showLanguageChangedDialog ( frame );
+					}
+				}
+			} );
+		}
+		
+		for ( int i = 0 ; i < languageCodes.length ; i++ )
+		{
+			this.add(languageMenuItems[i]);
+		}
+		
+		/*
 		this.add( itemSpanish );
 		this.add( itemEnglish );
-		
+		*/
 		
 	}
 	
