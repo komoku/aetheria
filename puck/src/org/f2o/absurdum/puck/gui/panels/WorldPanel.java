@@ -51,6 +51,7 @@ import org.f2o.absurdum.puck.bsh.BeanShellCodeHolder;
 import org.f2o.absurdum.puck.gui.graph.AbstractEntityNode;
 import org.f2o.absurdum.puck.gui.graph.Arrow;
 import org.f2o.absurdum.puck.gui.graph.CharacterNode;
+import org.f2o.absurdum.puck.gui.graph.GraphArranger;
 import org.f2o.absurdum.puck.gui.graph.GraphEditingPanel;
 import org.f2o.absurdum.puck.gui.graph.ItemNode;
 import org.f2o.absurdum.puck.gui.graph.Node;
@@ -664,8 +665,8 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		if ( coords == null )
 		{
 			Point coords2 = new Point();
-			coords2.x = (int) (Math.random()*100);
-			coords2.y = (int) (Math.random()*100);
+			coords2.x = 200 + (int) (Math.random()*100);
+			coords2.y = 200 + (int) (Math.random()*100);
 			return coords2;
 		}
 		else return coords;
@@ -1543,6 +1544,10 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		
 		//show the world node.
 		gep.getPropertiesPanel().show(gep.getWorldNode());
+		
+		
+		//if ( metaInfNode == null ) //rearrange nodes a bit
+		//	new GraphArranger().arrange(gep, 250);
 		
 		
 	}
