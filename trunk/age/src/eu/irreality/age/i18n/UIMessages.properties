@@ -245,6 +245,7 @@ button.can=Cancelar
 language=Idioma
 language.es=Español
 language.en=Inglés
+language.gl=Gallego
 language.changed=El idioma de AGE se ha cambiado a español; pero necesitarás cerrar y volver a abrir AGE para ver toda la interfaz en español.
 language.changed.title=Cambio de idioma
 about.frame.title=Acerca de AGE

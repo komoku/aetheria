@@ -48,6 +48,18 @@ public /*Singleton*/ class UIMessages
 		if ( config != null ) configuredLanguage = config.getProperty("language");
 		if ( configuredLanguage != null ) return configuredLanguage;
 		String sysLanguage = Locale.getDefault().getLanguage();
+		
+		String[] supportedLanguages = getSupportedLanguages();
+		for ( int i = 0 ; i < supportedLanguages.length ; i++ )
+		{
+			if ( sysLanguage.contains(supportedLanguages[i]) )
+			{
+				if ( config != null ) config.setProperty("language",supportedLanguages[i]);
+				return supportedLanguages[i];
+			}
+		}
+		
+		/*
 		if ( sysLanguage.contains("es") )
 		{
 			if ( config != null ) config.setProperty("language","es");
@@ -58,6 +70,9 @@ public /*Singleton*/ class UIMessages
 			if ( config != null ) config.setProperty("language","en");
 			return "en";
 		}
+		*/
+		
+		//by default, English
 		return "en";
 	}
 	
@@ -152,6 +167,16 @@ public /*Singleton*/ class UIMessages
 	public String getMessage ( String key , String p1 , String s1 , String p2 , String s2 , String p3 , String s3 )
 	{
 		return buildMessage ( getMessage(key) , p1 , s1 , p2 , s2 , p3 , s3 );
+	}
+	
+	/**
+	 * Return the language codes of the supported languages for the UI.
+	 * At the moment, this is hardcoded.
+	 * @return
+	 */
+	public String[] getSupportedLanguages()
+	{
+		return new String[] {"es","en","gl"};
 	}
 
 }
