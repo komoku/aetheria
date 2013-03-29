@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<World author="" date="" language="es" moduleName="Aventura de texto monoxogador" parserVersion="1.3.0b" type="" version="" worldDir="." worldName="Aventura de texto monoxogador">
+<IdeMetaInf>
+<View xoffset="0.0" yoffset="0.0" zoom="2.0"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Limbo" x="120" y="120"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Habitación inicial" x="180" y="180"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.CharacterNode" name="Jugador" x="180" y="120"/>
+</IdeMetaInf>
+<PlayerList>
+<Player id="Xogador"/>
+</PlayerList>
+<VisualConfiguration>
+<Colors>
+<Story color="#ffffff"/>
+<Information color="#ffffff"/>
+<Default color="#ffffff"/>
+<Input color="#ffffff"/>
+<Description color="#ffffff"/>
+<Foreground color="#ffffff"/>
+<Important color="#ffffff"/>
+<Denial color="#ffffff"/>
+<Action color="#ffffff"/>
+<Background color="#000000"/>
+<Error color="#ff0000"/>
+</Colors>
+<Font filename="" name="Courier New" size="15.0"/>
+</VisualConfiguration>
+<Rooms>
+<Room name="Limbo">
+<DescriptionList>
+<Description>Éste é un bo lugar para enviar todas as entidades das que te queiras desfacer na túa aventura: monstros que morran, obxectos que desaparezan ou que se transformen noutros, etc.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<PathList/>
+<Inventory/>
+<MobileList/>
+<RelationshipList/>
+</Room>
+<Room name="Habitación inicial">
+<DescriptionList>
+<Description>A sala na que comeza a aventura.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<PathList/>
+<Inventory/>
+<MobileList>
+<MobRef id="Xogador"/>
+</MobileList>
+<RelationshipList>
+<Relationship id="Xogador">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+</Rooms>
+<Items/>
+<Mobiles>
+<Mobile gender="true" hp="10" maxhp="10" maxmp="10" mp="10" name="Xogador">
+<SingularNames/>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>xogador</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>Es ti, o heroe desta historia.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Traits>
+<SkillList/>
+</Traits>
+<Inventory/>
+<RelationshipList/>
+<CurrentRoom id="Habitación inicial"/>
+<LastRoom id="Habitación inicial"/>
+</Mobile>
+</Mobiles>
+<Spells/>
+<AbstractEntities/>
+</World>

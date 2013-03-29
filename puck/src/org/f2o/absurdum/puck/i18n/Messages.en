@@ -293,6 +293,7 @@ bsh.errors.ok=Close
 language=Language
 language.es=Spanish
 language.en=English
+language.gl=Galician
 language.changed=PUCK's interface language has been changed to English, but you will need to restart PUCK for the change to totally take place.
 language.changed.title=Language change
 online.documentation=<html><p>You can obtain detailed information about building worlds with PUCK in the online documentation (in Spanish): <FONT color=\"#000099\"><U>http://www.caad.es/aetheria/doc/</U></FONT>.</p></html>

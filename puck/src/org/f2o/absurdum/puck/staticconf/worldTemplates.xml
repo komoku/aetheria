@@ -6,4 +6,8 @@
 	<templates language="en" name="Create from template" description="Create from template">
 		<item name="Single-player text adventure" description="Single-player text adventure" template-ref="en/single-en.xml"/>
 	</templates>
+	<templates language="gl" name="Crear dende plantilla" description="Crear dende plantilla">
+		<item name="Aventura de texto monoxogador" description="Aventura de texto monoxogador" template-ref="es/single-es.xml"/>
+		<!-- Cambiar a gl/single-gl.xml cuando esté listo el soporte de aventuras en gallego -->
+	</templates>
 </puck-world-templates>

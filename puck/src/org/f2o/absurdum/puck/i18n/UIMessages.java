@@ -14,6 +14,8 @@ import java.util.Properties;
 
 import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
 
+import eu.irreality.age.swing.config.AGEConfiguration;
+
 /**
  * @author carlos
  *
@@ -35,9 +37,22 @@ public /*Singleton*/ class UIMessages
 	 */
 	public String getPreferredLanguage()
 	{
-		String configuredLanguage = PuckConfiguration.getInstance().getProperty("language");
+		PuckConfiguration config = null;
+		config = PuckConfiguration.getInstance();
+		String configuredLanguage = config.getProperty("language");
 		if ( configuredLanguage != null ) return configuredLanguage;
 		String sysLanguage = Locale.getDefault().getLanguage();
+		
+		String[] supportedLanguages = getSupportedLanguages();
+		for ( int i = 0 ; i < supportedLanguages.length ; i++ )
+		{
+			if ( sysLanguage.contains(supportedLanguages[i]) )
+			{
+				config.setProperty("language",supportedLanguages[i]);
+				return supportedLanguages[i];
+			}
+		}
+		/*
 		if ( sysLanguage.contains("es") )
 		{
 			PuckConfiguration.getInstance().setProperty("language","es");
@@ -48,6 +63,7 @@ public /*Singleton*/ class UIMessages
 			PuckConfiguration.getInstance().setProperty("language","en");
 			return "en";
 		}
+		*/
 		return "en";
 	}
 	
@@ -106,6 +122,16 @@ public /*Singleton*/ class UIMessages
 		if ( instance == null )
 			instance = new UIMessages();
 		return instance;
+	}
+	
+	/**
+	 * Return the language codes of the supported languages for the UI.
+	 * At the moment, this is hardcoded.
+	 * @return
+	 */
+	public String[] getSupportedLanguages()
+	{
+		return new String[] {"es","en","gl"};
 	}
 
 }
