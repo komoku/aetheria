@@ -2263,6 +2263,19 @@ public class World implements Informador , SupportingCode
 		return lenguaje;
 	}
 	
+	/**
+	 * Changes the language of this World to the language with the given code.
+	 * Note that this includes changing the instance of Messages associated with the world.
+	 * @param languageCode
+	 */
+	public void setLanguage ( String languageCode )
+	{
+		lenguaje = NaturalLanguage.getInstance(languageCode);
+		Messages.clearCache(this); //so that the default instance changes to the default messages for the new language
+		messages = Messages.getDefaultInstance(this); //language code taken from lenguaje
+		spellChecker = null; //will be initted again in the next call to getSpellChecker().
+	}
+	
 
 	
 	public void setRandomNumberSeed ( )
