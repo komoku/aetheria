@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<World author="Al-Khwarizmi" date="2013-04-02" language="es" moduleName="Prueba Multiidioma" parserVersion="1.3.0b" type="Experimental" version="0.1" worldDir="." worldName="Prueba Multiidioma">
+<IdeMetaInf>
+<View xoffset="-49.0" yoffset="-49.0" zoom="2.0"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="big room" x="160" y="200"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.CharacterNode" name="hero" x="160" y="120"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="shepherd's pie" x="240" y="260"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="spanish omelette" x="240" y="160"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="button" x="80" y="200"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="language" x="260" y="100"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Limbo" x="80" y="60"/>
+</IdeMetaInf>
+<Code language="BeanShell"><![CDATA[/*Introducción del juego para un jugador*/
+void intro( Player aPlayer )
+{
+    aPlayer.write("Bienvenido a esta aventura...\n");
+    aPlayer.writeStory("Tienes mucha hambre. Tu objetivo es comer los dos trozos de comida que hay en la sala.\n");
+    world.loadMessages(world.getResource("custom.es"));
+}]]></Code>
+<PlayerList>
+<Player id="hero"/>
+</PlayerList>
+<VisualConfiguration>
+<Colors>
+<Story color="#ffffff"/>
+<Information color="#ffffff"/>
+<Default color="#ffffff"/>
+<Input color="#ffffff"/>
+<Description color="#ffffff"/>
+<Foreground color="#ffffff"/>
+<Important color="#ffffff"/>
+<Denial color="#ffffff"/>
+<Action color="#ffffff"/>
+<Background color="#000000"/>
+<Error color="#ff0000"/>
+</Colors>
+<Font filename="" name="Arial" size="18.0"/>
+</VisualConfiguration>
+<Rooms>
+<Room name="big room">
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">get("language").spanish()</Condition>Una gran habitación de blancas paredes, mayormente vacía. En uno de los muros hay un misterioso botón.</Description>
+<Description>
+<Condition language="BeanShell">get("language").english()</Condition>A big, mostly empty room with white walls. There is a strange button on one of the walls.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<PathList/>
+<Inventory>
+<ItemRef id="spanish omelette"/>
+<ItemRef id="shepherd's pie"/>
+<ItemRef id="button"/>
+</Inventory>
+<MobileList>
+<MobRef id="hero"/>
+</MobileList>
+<RelationshipList>
+<Relationship id="spanish omelette">
+<PropertyList/>
+</Relationship>
+<Relationship id="shepherd's pie">
+<PropertyList/>
+</Relationship>
+<Relationship id="button">
+<PropertyList/>
+</Relationship>
+<Relationship id="hero">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+<Room name="Limbo">
+<DescriptionList/>
+<ExtraDescriptionList/>
+<PropertyList>
+<PropertyEntry name="won" timeUnitsLeft="-1" value="false"/>
+</PropertyList>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada en una habitación*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+
+    if ( get(self,"won") )
+        aCreature.write(world.getMessages().getMessage("victory"));
+    else
+        aCreature.write(world.getMessages().getMessage("defeat"));
+    end();
+}
+]]></Code>
+<PathList/>
+<Inventory/>
+<MobileList/>
+<RelationshipList/>
+</Room>
+</Rooms>
+<Items>
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="shepherd's pie" openable="false" unlockable="false" volume="1" weight="1">
+<SingularNames>
+<Description>
+<Condition language="BeanShell">get("language").spanish()</Condition>trozo de pastel inglés</Description>
+<Description>
+<Condition language="BeanShell">get("language").english()</Condition>piece of shepherd's pie</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>pastel</Name>
+<Name>shepherd's</Name>
+<Name>shepherd</Name>
+<Name>pie</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">get("language").spanish()</Condition>Un trozo de una cosa de ésas que comen los ingleses. Debe de ser eso que llaman "shepherd's pie", Y en su versión vegana, para más inri.</Description>
+<Description>
+<Condition language="BeanShell">get("language").english()</Condition>An excellent-looking piece of traditional British shepherd's pie. Yummy!</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+
+    String englishVerb = world.getLanguage().translateVerb(verb,"en");
+    if ( equals(englishVerb,"eat") )
+    {
+        if ( get("language").english() )
+        {
+            aCreature.write(world.getMessages().getMessage("food.good"));
+            increment(aCreature,"eaten");
+            if ( get(aCreature,"eaten") == 2 )
+            {
+                set(room("Limbo"),"won",true);
+                aCreature.moveTo(room("Limbo"));
+            }
+        }
+        else
+        {
+            aCreature.write(world.getMessages().getMessage("food.bad"));
+            aCreature.die();
+        }
+        end();
+    }
+}
+]]></Code>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="spanish omelette" openable="false" unlockable="false" volume="1" weight="1">
+<SingularNames>
+<Description>
+<Condition language="BeanShell">get("language").spanish()</Condition>trozo de tortilla española</Description>
+<Description>
+<Condition language="BeanShell">get("language").english()</Condition>piece of Spanish omelette</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>tortilla</Name>
+<Name>omelette</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">get("language").spanish()</Condition>Un buen trozo de tortilla de patatas de toda la vida, amarilla, jugosa, con cebollita, como la que hacen en los mejores bares. Se te hace la boca agua.</Description>
+<Description>
+<Condition language="BeanShell">get("language").english()</Condition>An unhealthy-looking, yellowish piece of grub that you recognize as Spanish omelette.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+
+    String englishVerb = world.getLanguage().translateVerb(verb,"en");
+    if ( equals(englishVerb,"eat") )
+    {
+        if ( get("language").spanish() )
+        {
+            aCreature.write(world.getMessages().getMessage("food.good"));
+            increment(aCreature,"eaten");
+            if ( get(aCreature,"eaten") == 2 )
+            {
+                set(room("Limbo"),"won",true);
+                aCreature.moveTo(room("Limbo"));
+            }
+        }
+        else
+        {
+            aCreature.write(world.getMessages().getMessage("food.bad"));
+            aCreature.die();
+        }
+        end();
+    }
+}
+]]></Code>
+<RelationshipList/>
+</Item>
+<Item canGet="false" closeable="false" gender="true" lockable="false" name="button" openable="false" unlockable="false" volume="0" weight="0">
+<SingularNames>
+<Description>
+<Condition language="BeanShell">get("language").spanish()</Condition>extraño botón</Description>
+<Description>
+<Condition language="BeanShell">get("language").english()</Condition>strange button</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>botón</Name>
+<Name>button</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">get("language").spanish()</Condition>El botón tiene los colores de la Union Jack, la bandera británica.</Description>
+<Description>
+<Condition language="BeanShell">get("language").english()</Condition>The button is painted with the yellow and red stripes of the Spanish flag.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+
+    String englishVerb = world.getLanguage().translateVerb(verb,"en");
+
+    if ( equals(englishVerb,"press") || equals(englishVerb,"push") )
+    {
+        aCreature.write(world.getMessages().getMessage("push.button"));
+        if ( get("language").spanish() )
+            get("language").setEnglish();
+        else
+            get("language").setSpanish();
+        end();
+    }
+
+
+}]]></Code>
+<RelationshipList/>
+</Item>
+</Items>
+<Mobiles>
+<Mobile gender="true" hp="10" maxhp="10" maxmp="10" mp="10" name="hero">
+<SingularNames/>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>hero</Name>
+<Name>héroe</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">get("language").english()</Condition>It's you, the hero of this story.</Description>
+<Description>
+<Condition language="BeanShell">get("language").spanish()</Condition>Eres tú, el héroe de esta historia.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList>
+<PropertyEntry name="eaten" timeUnitsLeft="-1" value="0"/>
+</PropertyList>
+<Traits>
+<SkillList/>
+</Traits>
+<Inventory/>
+<RelationshipList/>
+<CurrentRoom id="big room"/>
+<LastRoom id="big room"/>
+</Mobile>
+</Mobiles>
+<Spells/>
+<AbstractEntities>
+<AbstractEntity name="language">
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[//Checks whether the current world language is Spanish.
+boolean spanish()
+{
+    return world.getLanguage().getLanguageCode().equals("es");
+}
+
+//Checks whether the current world language is English.
+boolean english()
+{
+    return world.getLanguage().getLanguageCode().equals("en");
+}
+
+//Sets the language to Spanish.
+void setSpanish()
+{
+    world.setLanguage("es");
+    world.loadMessages(world.getResource("custom.es"));
+}
+
+//Sets the language to English.
+void setEnglish()
+{
+    world.setLanguage("en");
+    world.loadMessages(world.getResource("custom.en"));
+}]]></Code>
+<RelationshipList/>
+</AbstractEntity>
+</AbstractEntities>
+</World>
