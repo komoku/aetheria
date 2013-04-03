@@ -62,5 +62,11 @@
 			<zipfileset dir="${devkit}" includes="**/*.command" filemode="755"/>
 		</zip>
 	</target>
+	
+	<target name="clean" description="clean all">
+		<ant dir="${age}" target="clean" inheritAll="false"/>
+		<ant dir="${puck}" target="clean" inheritAll="false"/>
+		<ant dir="${bsh}" target="clean" inheritAll="false"/>
+    </target>
 
 </project>
