@@ -1,0 +1,485 @@
+#Mensaxes por defecto de AGE
+#para idioma español
+
+#Cando colles o obxecto $item
+you.get.item=Colles $item.\n
+
+#Cando colles o obxecto $item que está en contedores ($location)
+you.get.item.from.location=Colles $item $location.\n
+
+#Cando $1 colle o obxecto $item
+someone.gets.item=$1 colle $item.\n
+
+#Cando $1 colle o obxecto $item que está en contedores ($location)
+someone.gets.item.from.location=$1 colle $item $location.\n
+
+#Cando deixas o obxecto $item
+you.drop.item=Deixas $item.\n
+
+#Cando $1 deixa o obxecto $item
+someone.drops.item=$1 deixa $item.\n
+
+#Cando te pos o obxecto $item en $limbs
+you.wear.item=Poste $item en $limbs.\n
+
+#Cando $1 se pon o obxecto $item en $limbs
+someone.wears.item=$1 ponse $item.\n
+
+#Cando te quitas o obxecto $item
+you.unwear.item=Quítaste $item.\n
+
+#Cando $1 se quita o obxecto $item
+someone.unwears.item=$1 quítase $item.\n
+
+#Cando brandes o obxecto $item en $limbs
+you.wield.item=Brandes $item en $limbs.\n
+
+#Cando $1 brande o obxecto $item en $limbs
+someone.wields.item=$1 brande $item.\n
+
+#Cando deixas de brandir o obxecto $item
+you.unwield.item=Deixas de brandir $item.\n
+
+#Cando $1 deixa de brandir o obxecto $item
+someone.unwields.item=$1 deixa de brandir $item.\n
+
+#Cando non podes coller un item porque non é cogible (fixo no sitio)
+denial.get.ungettable=Non ten moito sentido tentar coller $item.\n
+
+#Cando o parser non entende algo
+erro.parsing=Non entendo...\n
+
+#Cando non se pode coller un obxecto polo seu peso
+cant.get.item.weight=Levas demasiado peso para coller $item.\n
+
+#Cando non se pode coller un obxecto polo seu volume
+cant.get.item.volume=Levas obxectos demasiado voluminosos para coller $item.\n
+
+#Cando non se pode deixar un obxecto polo seu peso
+cant.drop.item.weight=Non podes deixar aquí $item, hai demasiado peso.\n
+
+#Cando non se pode deixar un obxecto polo seu volume
+cant.drop.item.volume=Non podes deixar aquí $item, non hai espazo suficiente.\n
+
+#Cando tentas abrir unha cousa non abrible ($item)
+item.not.openable=É absurdo abrir iso.
+
+#Cando tentas pechar unha cousa non cerrable ($item)
+item.not.closeable=É absurdo pechar iso.
+
+#Cando tentas abrir con chave unha cousa non abrible con chave ($item)
+item.not.unlockable=Non parece que se poida abrir iso dese modo.
+
+#Cando tentas pechar con chave unha cousa non cerrable con chave ($item)
+item.not.lockable=Non parece que se poida pechar iso dese modo.
+
+#Cando tentas brandir algo que non é unha arma
+wield.non.weapon=Non parece que $item sexa unha arma.\n
+
+#Cando tentas brandir algo que xa estás brandindo
+wield.already.wielded=Xa estás brandindo $item.\n
+
+#Cando tentas vestir algo que xa estás a vestir
+wear.already.worn=Xa levas posto $item.\n
+
+#Cando tentas vestir algo nun membro onde xa tes posta outra cousa
+wear.already.worn=Tes que quitarte algo para poder vestir $item.\n
+
+#Cando tentas blandir unha arma que require algún tipo de membro que non tes
+wield.non.suitable.limbs=Non parece adecuado para os da túa especie.\n
+
+#Cando tentas vestir unha armadura que require algún tipo de membro que non tes
+wear.non.suitable.limbs=Non parece adecuado para os da túa especie.\n
+
+#Cando pos $item en $container
+you.put.into=Pos $item en $container.\n
+
+#Cando non podes pór $item en $container porque pesa demasiado
+cant.put.into.weight=$container non pode soportar tanto peso.\n
+
+#Cando non podes pór $item en $container porque non cabe (por volume)
+cant.put.into.volume=$item non cabe en $container.\n
+
+#Cando tentas pór algo nun $container que realmente non é colector.
+cant.put.into.noncontainer=Non parece moi útil pór cousas en $container.\n
+
+#Cando tentas pór algo nun $container que está pechado.
+cant.put.into.closed=$container está pechade$oa.\n
+
+#Cando tentas mirar algo que non existe
+look.what=Que pretendes mirar?\n
+
+#Cando tentas abrir algo que non existe
+open.what=Que pretendes abrir?\n
+
+#Cando tentas pechar algo que non está
+close.what=Que pretendes pechar?\n
+
+#Cando tentas coller algo que non está na habitación
+get.what=Que pretendes coller?\n
+
+#Cando tentas deixar algo que non existe ou non tes
+drop.what=Que pretendes deixar?\n
+
+#Cando tentas desvestir algo que non existe ou non levas posto
+unwear.what=Que pretendes quitarte?\n
+
+#Cando tentas vestir algo que non existe ou non tes
+wear.what=Que pretendes vestir?\n
+
+#Cando tentas brandir algo que non existe ou non tes
+wield.what=Que arma pretendes brandir?\n
+
+#Cando tentas enfundar algo que non existe ou non levas brandido
+unwield.what=Que arma pretendes enfundar?\n
+
+#Cando tentas ir cara a un sitio que non se recoñece
+go.where=Como? Cara a onde queres ir?\n
+
+#Cando tentas ir cara a unha saída marcada como non válida (non usado actualmente)
+go.where=Como? Ir onde?\n
+
+#Cando o verbo ir aparece sen argumentos
+go.nowhere=Ir onde?\n
+
+#Cando tentas ir cara a unha dirección estándar (norte, etc.) pero non hai saída
+go.noexit=Non parece haber saída nesa dirección.\n
+
+#Cando tentas atacar a alguén que non está
+attack.what=Como? Atacar a quen?\n
+
+#Cando tentas bloquear a alguén que non está
+block.what=Como? Defenderse de quen?\n
+
+#Cando tentas esquivar a alguén que non está
+dodge.what=Non te atacan. Esquivar que?\n
+
+#Cando tentas pór algo en algo e os obxectos non se recoñecen
+put.what.where=Como? Pór que onde?\n
+
+#Lista de obxectos nunha habitación
+items.here=Aquí hai $inventory.
+
+#Se hai un personaxe nunha habitación
+mobile.here=Aquí está $list.
+
+#Se hai varios personaxes nunha habitación
+mobiles.here=Aquí están $list.
+
+#Mostrar inventario (con cousas)
+you.have.items=Tes $inventory.\n
+
+#Mostrar inventario (baleiro)
+you.have.nothing=Non tes nada.\n
+
+#Mostrar peza que levas posta
+you.are.wearing.item=Levas $item en $limbs.\n
+
+#Mostrar arma que levas blandida
+you.are.wielding.item=Estás brandindo $item en $limbs.\n
+
+#Tentar conxurar esconxuro que non existe ou coñeces
+cast.non.spell=Non coñeces tal feitizo.\n
+
+#Cando morres
+you.die=Morres.\n
+
+#Cando alguén morre
+someone.dies=$1 morre.\n
+
+#Tentando abrir algo do chan nun comando con varios obxectivos (abrir as caixas, etc.)
+you.try.open.from.floor=Tentas abrir $item:
+
+#Tentando abrir algo do inventario nun comando con varios obxectivos (abrir as caixas, etc.)
+you.try.open.from.inventory=Tratas de abrir $item que levas:
+
+#Tentando pechar algo do chan nun comando con varios obxectivos (pechar as caixas, etc.)
+you.try.close.from.floor=Tentas pechar $item:
+
+#Tentando pechar algo do inventario nun comando con varios obxectivos (pechar as caixas, etc.)
+you.try.close.from.inventory=Tratas de pechar $item que levas:
+
+#Cando se teclea un verbo que está nas listas de verbos pero para o que non definimos comportamento
+undefined.action=Como? $command?\n
+
+#Cando a propiedade noPronounDisambiguation dun xogador está posto a true e úsase un pronombre "o/a/os/as" onde a acción anterior se refería a dúas entidades. Pódese usar $command para referirse ao verbo.
+ambiguous.pronoun=Non entendo moi ben unha orde pronominal cando a orde anterior se refería a dous obxectos.\n
+
+#Cando tentas volver pero non hai ningunha saída que conduza á habitación anterior
+cant.go.back=Non ves o modo de volver...\n
+
+#Combate: acerto con arma, dano numérico ($1 ataca a $2 con $weapon, acerta, lle inflige $damage dano)
+someone.hits.someone.numeric=$1 acerta a $2 con $weapon inflixíndolle $damage puntos de dano...\n
+enemy.hits.you.numeric=$1 acértache con $weapon inflixíndoche $damage puntos de dano...\n
+you.hit.enemy.numeric=Acertas a $2 con $weapon inflixíndolle $damage puntos de dano...\n
+
+#Combate: acerto con arma, dano subxectivo
+someone.hits.someone=$1 acerta a $2 con $weapon inflixíndolle $damage...\n
+enemy.hits.you=$1 acértache con $weapon inflixíndoche $damage...\n
+you.hit.enemy=Acertas a $2 con $weapon inflixíndolle $damage...\n
+
+#Combate: acerto con arma, pero sen danos
+someone.hits.someone.nodamage=$1 acerta a $2 con $weapon pero non lle fai dano...\n
+enemy.hits.you.nodamage=$1 acértache con $weapon pero non che fai dano...\n
+you.hit.enemy.nodamage=Acertas a $2 con $weapon pero non lle fas dano...\n
+
+#Combate: fallo con arma
+someone.misses.someone=O ataque de $1 falla a $2.\n
+enemy.misses.you=O ataque de $1 fállache.\n
+you.miss.enemy=O teu ataque falla a $2.\n
+
+#Informes de dano
+damage.5=moi lixeiros danos
+damage.10=lixeiros danos
+damage.18=algún dano
+damage.25=un dano significativo
+damage.33=danos moderados
+damage.40=bastante dano
+damage.50=severos danos
+damage.60=moito dano
+damage.70=gran dano
+damage.80=enorme dano
+damage.90=terribles feridas
+damage.lethal=dano mortal
+
+#Informes de feridas
+woundstatus.1=está intact$oa
+woundstatus.5=ten algún rasguño
+woundstatus.10=ten lixeiras feridas
+woundstatus.18=ten feridas pouco graves
+woundstatus.25=ten feridas de certa consideración
+woundstatus.33=ten feridas importantes
+woundstatus.40=ten feridas graves
+woundstatus.50=ten feridas preocupantes
+woundstatus.60=está gravemente ferid$oa
+woundstatus.70=está moi gravemente ferid$oa
+woundstatus.80=está críticamente ferid$oa
+woundstatus.90=está nas últimas
+woundstatus.100=está a un paso da tumba
+woundstatus.lethal=está mortalmente ferid$oa
+
+#Maná insuficiente para conxurar $spell
+not.enough.mana=Non tes suficiente maná para executar ese feitizo.\n
+
+#Interrupcións: interrómpenche un movemento, un ataque ou un lanzamento de feitizo por causa $cause.
+interrupted.move=$cause interrompe o teu intento de irche.\n
+interrupted.attack=$cause interrompe o teu intento de ataque.\n
+interrupted.cast=$cause interrompe o teu intento de facer maxia.\n
+
+#$1 ataca a alguén que xa non está
+someone.attacks.absent=$1 interrompe o seu ataque ante a ausencia do seu adversario.\n
+someone.attacks.you.absent=$1 vacila ante a túa ausencia.\n
+you.attack.absent=Dispúñaste a atacar; pero vacilas ante a ausencia do teu inimigo.\n
+
+#$1 ataca a alguén que xa está morto
+someone.attacks.dead=$1 interrompe o seu ataque ante a morte do seu adversario.\n
+someone.attacks.you.dead=$1 vacila ante a túa morte.\n
+you.attack.dead=Dispúñaste a atacar; pero vacilas ante a morte do teu inimigo.\n
+
+#Combate: choque de armas no aire
+someone.clashes.someone=As armas de $1 e $2 chocan no aire...\n
+enemy.clashes.you=A túa arma e a de $1 chocan no aire...\n
+you.clash.enemy=A túa arma e a de $2 chocan no aire...\n
+
+#Combate: A $2 non lle dá tempo a bloquear o ataque de $1
+you.fail.block.estafe.someone=Non che dá tempo a bloquear o ataque de $1...\n
+someone.fails.block.estafe.you=A $2 non lle dá tempo a bloquear o teu ataque...\n
+
+#Combate: A $2 non lle dá tempo a esquivar o ataque de $1
+you.fail.dodge.estafe.someone=Non che dá tempo a esquivar o ataque de $1...\n
+someone.fails.dodge.estafe.you=A $2 non lle dá tempo a esquivar o teu ataque...\n
+
+#Combate: $1 estaba a atacar a $2, que estaba a bloquear o ataque. Pero $1 falla así que agora $2 ten a iniciativa.
+someone.fails.blocking.you=Tes a iniciativa...\n
+you.fail.blocking.someone=Vendo o teu ataque errado, $2 interrompe o seu movemento defensivo...\n
+
+#Combate: $1 estaba a atacar a $2, que estaba a esquivar o ataque. Pero $1 falla así que agora $2 ten a iniciativa.
+someone.fails.dodging.you=Tes a iniciativa...\n
+you.fail.dodging.someone=Vendo o teu ataque errado, $2 interrompe a súa esquivada...\n
+
+#Combate: bloqueo con arma, dano numérico ($1 ataca a $2 con $weapon, $2 bloquea, pero aínda así $1 lle inflige $damage dano)
+someone.hits.blocked.someone.numeric=$2 deféndese de $1 con $weapon recibindo $damage puntos de dano...\n
+enemy.hits.blocked.you.numeric=Deféndeste de $1 con $weapon recibindo $damage puntos de dano...\n
+you.hit.blocked.enemy.numeric=$2 deféndese con $weapon recibindo $damage puntos de dano...\n
+
+#Combate: bloqueo con arma, dano subxectivo
+someone.hits.blocked.someone=$2 deféndese de $1 con $weapon recibindo $damage...\n
+enemy.hits.blocked.you=Deféndeste de $1 con $weapon recibindo $damage...\n
+you.hit.blocked.enemy=$2 deféndese con $weapon recibindo $damage...\n
+
+#Combate: bloqueo con arma, sen danos
+someone.hits.blocked.someone.nodamage=$2 deféndese de $1 con $weapon, desviando o ataque...\n
+enemy.hits.blocked.you.nodamage=Deféndeste de $1 con $weapon, desviando o seu ataque...\n
+you.hit.blocked.enemy.nodamage=$2 deféndese con $weapon, desviando o teu ataque...\n
+
+#Combate: acerto con arma fronte a bloqueo errado, dano numérico ($1 ataca a $2 con $weapon, $2 non consegue bloquear, $1 acerta, inflíxelle $damage dano)
+someone.hits.block.failed.someone.numeric=$2 non consegue parar o ataque de $1, que lle acerta con $weapon inflixíndolle $damage puntos de dano...\n
+enemy.hits.block.failed.you.numeric=Non consegues parar o ataque de $1, que che acerta con $weapon inflixíndoche $damage puntos de dano...\n
+you.hit.block.failed.enemy.numeric=$2 non consegue parar o teu ataque, acértaslle con $weapon inflixíndolle $damage puntos de dano...\n
+
+#Combate: acerto con arma fronte a bloqueo errado, dano subxectivo
+someone.hits.block.failed.someone=$2 non consegue parar o ataque de $1, que lle acerta con $weapon inflixíndolle $damage...\n
+enemy.hits.block.failed.you=Non consegues parar o ataque de $1, que che acerta con $weapon inflixíndoche $damage...\n
+you.hit.block.failed.enemy=$2 non consegue parar o teu ataque, acértaslle con $weapon inflixíndolle $damage...\n
+
+#Combate: acerto con arma fronte a bloqueo errado, pero sen danos
+someone.hits.block.failed.someone.nodamage=$2 non consegue parar o ataque de $1, que lle acerta con $weapon pero non lle fai dano...\n
+enemy.hits.block.failed.you.nodamage=Non consegues parar o ataque de $1, que che acerta con $weapon pero non faiche dano...\n
+you.hit.block.failed.enemy.nodamage=$2 non consegue parar o teu ataque, acértaslle con $weapon pero non lle fas dano...\n
+
+#Combate: fallo con arma fronte a bloqueo (xa non se determina se o bloqueo ten éxito ou non)
+someone.misses.blocked.someone=O ataque de $1 falla a $2.\n
+enemy.misses.blocked.you=O ataque de $1 fállache.\n
+you.miss.blocked.enemy=O teu ataque falla a $2.\n
+
+#Combate: $2 esquiva a $1 con éxito
+someone.dodged.by.someone=$2 esquiva hábilmente o ataque de $1.\n
+enemy.dodged.by.you=Esquivas o ataque de $1.\n
+you.dodged.by.enemy=$2 esquiva o teu ataque.\n
+
+#Combate: acerto con arma fronte a esquivada errada, dano numérico ($1 ataca a $2 con $weapon, $2 non consegue esquivar, $1 acerta, lle inflige $damage dano)
+someone.hits.dodge.failed.someone.numeric=$2 tenta esquivar o golpe de $1; pero non o consegue, $1 acértalle con $weapon inflixíndolle $damage puntos de dano...\n
+enemy.hits.dodge.failed.you.numeric=O teu intento de esquivar falla, e $1 acértache con $weapon inflixíndoche $damage puntos de dano...\n
+you.hit.dodge.failed.enemy.numeric=A pesar do seu intento de esquivar o ataque, acertas a $2 con $weapon, inflixíndolle $damage puntos de dano...\n
+
+#Combate: acerto con arma fronte a esquivada errada, dano subxectivo
+someone.hits.dodge.failed.someone=$2 tenta esquivar o golpe de $1; pero non o consegue, $1 acértalle con $weapon inflixíndolle " $damage...\n
+enemy.hits.dodge.failed.you=O teu intento de esquivar falla, e $1 acértache con $weapon inflixíndoche $damage...\n
+you.hit.dodge.failed.enemy=A pesar do seu intento de esquivar o ataque, acertas a $2 con $weapon, inflixíndolle $damage...\n
+
+#Combate: acerto con arma fronte a esquivada errada, pero sen danos
+someone.hits.dodge.failed.someone.nodamage=$2 tenta esquivar o golpe de $1; pero non o consegue, $1 acértalle con $weapon pero non lle fai dano.\n\n
+enemy.hits.dodge.failed.you.nodamage=O teu intento de esquivar falla, e $1 acértache con $weapon pero non che fai dano.\n
+you.hit.dodge.failed.enemy.nodamage=A pesar do seu intento de esquivar o ataque, acertas a $2 con $weapon; pero non lle fas dano.\n
+
+#Combate: fallo con arma fronte a esquivada (xa non se determina se a esquivada ten éxito ou non)
+someone.misses.dodged.someone=O ataque de $1 falla a $2.\n
+enemy.misses.dodged.you=O ataque de $1 fállache. Tes a iniciativa...\n
+you.miss.dodged.enemy=O teu ataque falla a $2. Desequilíbrasche...\n
+
+#Combate: a armadura $armor de $1 absorbe totalmente un impacto
+someones.armor.absorbede=$armor de $1 absorbe totalmente o impacto.\n
+your.armor.absorbede=$armor protéxete absorbendo totalmente o impacto.\n
+
+#Combate: ataque con arma
+someone.attacks.someone=$1 ataca a $2 con $weapon.\n
+enemy.attacks.you=$1 atácate con $weapon.\n
+you.attack.enemy=Atacas a $2 con $weapon.\n
+
+#Combate: tentar bloquear
+someone.tries.to.block.someone=$1 tenta defenderse de $2 con $weapon.\n
+enemy.tries.to.block.you=$1 tenta defenderse con $weapon.\n
+you.try.to.block.enemy=Tentas defenderte de $2 con $weapon.\n
+
+#Combate: tentar esquivar
+someone.tries.to.dodge.someone=$1 tenta esquivar o ataque de $2.\n
+enemy.tries.to.dodge.you=$1 tenta esquivarte.\n
+you.try.to.dodge.enemy=Tentas esquivar o ataque de $2.\n
+
+#Tentar vestir unha arma ($item)
+cant.wear.weapon=Vestir $item? Parece máis apropiado blandil$oa.\n
+
+#Tentar blandir unha peza ($item)
+cant.wield.wearable=Blandir $item? Parece máis apropiado vestil$oa.\n
+
+#Tentar vestir algo non vestible ($item)
+item.not.wearable=Non parece que $item sexa algo que se poida vestir.\n
+
+#Tentar vestir algo cando non tes membros
+cant.wear.without.limbs=Non podes pór roupa se non tes ningún membro.\n
+
+#Mostrar membro libre
+you.have.free.limb=Tes libre $limb.\n
+
+#Mostrar membro ocupado por blandir $item
+you.use.limb.wielding=En $limb xa estás brandindo $item.\n
+
+#Mostrar membro ocupado por vestir $item
+you.use.limb.wearing=Levas posto $item en $limb.\n
+
+#Cando non se pode brandir un obxecto polo seu peso
+cant.wield.item.weight=Non podes brandir $item, pesa demasiado.\n
+
+#Cando non se pode vestir un obxecto polo seu peso
+cant.wear.item.weight=Non podes vestir $item, pesa demasiado.\n
+
+#Cando non se pode blandir un obxecto polo seu volume
+cant.wield.item.volume=Non podes brandir $item, ocupa demasiado.\n
+
+#Cando non se pode vestir un obxecto polo seu volume
+cant.wear.item.volume=Non podes vestir $item, ocupa demasiado.\n
+
+#Cando non se pode vestir algo porque os membros están ocupados
+wear.busy.limbs=Tes que quitarte algo para poder vestir $item.\n
+
+#Cando non se pode brandir algo porque os membros están ocupados
+wield.busy.limbs=Tes que gardar algunha arma para poder blandir $item.\n
+
+#Tentas suicidarche pero non tes arma para iso
+non.suicide.weapon=Non estás brandindo ningunha arma útil para suicidarte.\n
+
+#Tentas atacar pero non tes arma para iso
+non.attack.weapon=Non estás brandindo ningunha arma útil para atacar.\n
+
+#$1 se suicida coa arma $3 (si, $3)
+someone.suicides=$1 se suicida con $3.\n
+you.suicide=Suicídaste con $3.\n
+
+#Artigos: definido masculino/feminino, indefinido masculino/feminino
+art.def.m=o
+art.def.f=a
+art.ind.m=un
+art.ind.f=unha
+
+#Coordinating conjunction
+coord.conj=e
+
+#Directions
+direction.n=norte
+direction.s=sur
+direction.w=oeste
+direction.e=este 
+direction.nw=noroeste
+direction.ne=nordeste
+direction.sw=suroeste
+direction.se=sueste
+direction.ou=arriba
+direction.d=abaixo
+
+#Directions (full name): creature comes from...
+direction.full.n=o norte
+direction.full.s=o sur
+direction.full.w=o oeste
+direction.full.e=o leste
+direction.full.nw=o noroeste
+direction.full.ne=o nordeste
+direction.full.sw=o suroeste
+direction.full.se=o sueste
+direction.full.ou=arriba
+direction.full.d=abaixo
+
+#open/close default behaviour
+you.unlock.item=Abres $item con $key.
+cant.unlock.key=Non parece que $item se abra con $key.
+you.lock.item=Pechas $item con $key.
+cant.lock.key=Non parece que $item se poida pechar con $key.
+cant.open.already.open=Pero se $item xa está abert$oa...
+cant.open.locked=Parece que $item está pechade$oa con chave.
+you.open.item=Abres $item.
+cant.close.already.closed=Pero se $item xa está pechad$oa...
+you.close.item=Pechas $item.
+
+#to show in inventories, etc. when you have nothing
+nothing=nada
+
+#the from in "you get the notebook FROM the chest"
+get.prep.from=de
+
+#Nome para mostrar cando hai que falar dun Mobile que non ten nome para mostrar a un observador dado (por exemplo, en accións)
+unnamed.mobile=alguén
+
+#Nome para mostrar cando hai que falar dun Item que non ten nome para mostrar a un observador dado (por exemplo, en accións)
+unnamed.item=algo
+
+#Nome para mostrar cando hai que falar dun Path que non ten nome para mostrar a un observador dado (por exemplo, "Fulano vaise cara a...")
+unnamed.path=algunha parte
