@@ -173,11 +173,13 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 	private JTextField tfShortName = new EnhancedJTextField();
 	private JTextField tfLongName = new EnhancedJTextField();
 
+	//TODO: make this more general
 	private JComboBox cbLanguage = new JComboBox(
 		new String[]
 		{
 		UIMessages.getInstance().getMessage("language.es"),
-		UIMessages.getInstance().getMessage("language.en")
+		UIMessages.getInstance().getMessage("language.en"),
+		UIMessages.getInstance().getMessage("language.eo")
 		}
 	);
 	private JTextField tfAuthor = new EnhancedJTextField();
@@ -395,6 +397,8 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		String languageString = (String) cbLanguage.getSelectedItem();
 		if (languageString.equals(UIMessages.getInstance().getMessage("language.en")))
 			result.setAttribute("language","en");
+		else if (languageString.equals(UIMessages.getInstance().getMessage("language.eo")))
+			result.setAttribute("language","eo");
 		else
 			result.setAttribute("language","es");
 		
@@ -872,6 +876,8 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		//languages combo box
 		if ( e.hasAttribute("language") && e.getAttribute("language").equals("en") )
 			cbLanguage.setSelectedIndex(1);
+		else if ( e.hasAttribute("language") && e.getAttribute("language").equals("eo") )
+			cbLanguage.setSelectedIndex(2);
 		else
 			cbLanguage.setSelectedIndex(0);
 		
