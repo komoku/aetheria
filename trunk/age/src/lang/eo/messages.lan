@@ -1,0 +1,485 @@
+#Mensajes por defecto de AGE
+#para idioma esperanto
+
+#Cuando coges el objeto $item
+you.get.item=Vi prenas $item.\n
+
+#Cuando coges el objeto $item que está en contenedores ($location)
+you.get.item.from.location=Vi prenas $item el $location.\n
+
+#Cuando $1 coge el objeto $item
+someone.gets.item=$1 prenas $item.\n
+
+#Cuando $1 coge el objeto $item que está en contenedores ($location)
+someone.gets.item.from.location=$1 prenas $item el $location.\n
+
+#Cuando dejas el objeto $item
+you.drop.item=Vi lasas $item.\n
+
+#Cuando $1 deja el objeto $item
+someone.drops.item=$1 lasas $item.\n
+
+#Cuando te pones el objeto $item en $limbs
+you.wear.item=Vi metas $item en $limbs.\n
+
+#Cuando $1 se pone el objeto $item en $limbs
+someone.wears.item=$1 metas $item.\n
+
+#Cuando te quitas el objeto $item
+you.unwear.item=Vi deprenas $item.\n
+
+#Cuando $1 se quita el objeto $item
+someone.unwears.item=$1 deprenas $item.\n
+
+#Cuando blandes el objeto $item en $limbs
+you.wield.item=Vi svengas $item kun $limbs.\n
+
+#Cuando $1 blande el objeto $item en $limbs
+someone.wields.item=$1 svengas $item.\n
+
+#Cuando dejas de blandir el objeto $item
+you.unwield.item=Vi ĉesas svingante $item.\n
+
+#Cuando $1 deja de blandir el objeto $item
+someone.unwields.item=$1 ĉesas svingante $item.\n
+
+#Cuando no puedes coger un item porque no es cogible (fijo en el sitio)
+denial.get.ungettable=Estas neniu utilas preni $item.\n
+
+#Cuando el parser no entiende algo
+error.parsing=mi ne scias...\n
+
+#Cuando no se puede coger un objeto por su peso
+cant.get.item.weight=Vi portas tro pezo por preni $item.\n
+
+#Cuando no se puede coger un objeto por su volumen
+cant.get.item.volume=Vi portas dikigitaj celoj por preni $item.\n
+
+#Cuando no se puede dejar un objeto por su peso
+cant.drop.item.weight=Vi ne povas lasi tie $item, tro da pezo.\n
+
+#Cuando no se puede dejar un objeto por su volumen
+cant.drop.item.volume=Vi ne povas lasi tie $item, ne sufiĉa spaco.\n
+
+#Cuando intentas abrir una cosa no abrible ($item)
+item.not.openable=Estas absurde malfermi tio.
+
+#Cuando intentas cerrar una cosa no cerrable ($item)
+item.not.closeable=Estas absurde fermi tio.
+
+#Cuando intentas abrir con llave una cosa no abrible con llave ($item)
+item.not.unlockable=Ne ŝajnas de povi malfermi ĝin tiel.
+
+#Cuando intentas cerrar con llave una cosa no cerrable con llave ($item)
+item.not.lockable=Ne ŝajnas de povi fermi ĝin tiel.
+
+#Cuando intentas blandir algo que no es un arma
+wield.non.weapon=Ne ŝajnas ke $item estas armilo.\n
+
+#Cuando intentas blandir algo que ya estás blandiendo
+wield.already.wielded=Jam svingas $item.\n
+
+#Cuando intentas vestir algo que ya estás vistiendo
+wear.already.worn=Vi jam surportas $item.\n
+
+#Cuando intentas vestir algo en un miembro donde ya tienes puesta otra cosa
+wear.already.worn=Vi devas demeti ion per povi vesti $item.\n
+
+#Cuando intentas blandir un arma que requiere algún tipo de miembro que no tienes
+wield.no.suitable.limbs=Ne ŝajnas netaŭga por via speco.\n
+
+#Cuando intentas vestir una armadura que requiere algún tipo de miembro que no tienes
+wear.no.suitable.limbs=Ne ŝajnas netaŭga por via speco.\n
+
+#Cuando pones $item en $container
+you.put.into=Vi metas $item en $container.\n
+
+#Cuando no puedes poner $item en $container porque pesa demasiado
+cant.put.into.weight=$container ne povas toleri tiel pezo.\n
+
+#Cuando no puedes poner $item en $container porque no cabe (por volumen)
+cant.put.into.volume=$item ne eniras en $container.\n
+
+#Cuando intentas poner algo en un $container que realmente no es contenedor.
+cant.put.into.noncontainer=Ne ŝajnas utile meti aĵoj en $container.\n
+
+#Cuando intentas poner algo en un $container que está cerrado.
+cant.put.into.closed=$container estas ferma.\n
+
+#Cuando intentas mirar algo que no existe
+look.what=Kion vi volas rigardi?\n
+
+#Cuando intentas abrir algo que no existe
+open.what=Kion vi volas malfermi?\n
+
+#Cuando intentas cerrar algo que no está
+close.what=Kion vi volas fermi?\n
+
+#Cuando intentas coger algo que no está en la habitación
+get.what=Kion vi volas preni?\n
+
+#Cuando intentas dejar algo que no existe o no tienes
+drop.what=Kion vi volas lasi?\n
+
+#Cuando intentas desvestir algo que no existe o no llevas puesto
+unwear.what=Kion vi volas demeti ĝin?\n
+
+#Cuando intentas vestir algo que no existe o no tienes
+wear.what=Kion vi volas vesti?\n
+
+#Cuando intentas blandir algo que no existe o no tienes
+wield.what=Kion armilon vi volas svingi?\n
+
+#Cuando intentas enfundar algo que no existe o no llevas blandido
+unwield.what=Kion armilon vi volas eningigi?\n
+
+#Cuando intentas ir hacia un sitio que no se reconoce
+go.where=Ĉu. Kie vi volas iri?\n
+
+#Cuando intentas ir hacia una salida marcada como no válida (no usado actualmente)
+go.where=Ĉu. Kie vi iras?\n
+
+#Cuando el verbo ir aparece sin argumentos
+go.nowhere=Kie vi iras?\n
+
+#Cuando intentas ir hacia una dirección estándar (norte, etc.) pero no hay salida
+go.noexit=Ne ŝajnas ke estas eliro en tiu direckto.\n
+
+#Cuando intentas atacar a alguien que no está
+attack.what=Ĉu. Ĉu ataki al kiu?\n
+
+#Cuando intentas bloquear a alguien que no está
+block.what=Ĉu. Ĉu protekti de kiu?\n
+
+#Cuando intentas esquivar a alguien que no está
+dodge.what=Ne atakas vin. Kio vi volas ekeviti?\n
+
+#Cuando intentas poner algo en algo y los objetos no se reconocen
+put.what.where=Ĉu. Ĉu meti kio kie?\n
+
+#Lista de objetos en una habitación
+items.here=Tie estas $inventory.
+
+#Si hay un personaje en una habitación
+mobile.here=Tie estas $list.
+
+#Si hay varios personajes en una habitación
+mobiles.here=Tie estas $list.
+
+#Mostrar inventario (con cosas)
+you.have.items=Vi havas $inventory.\n
+
+#Mostrar inventario (vacío)
+you.have.nothing=Vi havas nenion.\n
+
+#Mostrar prenda que llevas puesta
+you.are.wearing.item=Vi portas $item en $limbs.\n
+
+#Mostrar arma que llevas blandida
+you.are.wielding.item=Vi svingas $item en $limbs.\n
+
+#Intentar conjurar conjuro que no existe o conoces
+cast.no.spell=Vi ne konas tia sorĉo.\n
+
+#Cuando mueres
+you.die=Vi mortas.\n
+
+#Cuando alguien muere
+someone.dies=$1 mortas.\n
+
+#Intentando abrir algo del suelo en un comando con varios objetivos (abrir las cajas, etc.)
+you.try.open.from.floor=Vi provas malfermi $item:
+
+#Intentando abrir algo del inventario en un comando con varios objetivos (abrir las cajas, etc.)
+you.try.open.from.inventory=Vi provas malfermi $item kiu vi portas:
+
+#Intentando cerrar algo del suelo en un comando con varios objetivos (cerrar las cajas, etc.)
+you.try.close.from.floor=Vi provas fermi $item:
+
+#Intentando cerrar algo del inventario en un comando con varios objetivos (cerrar las cajas, etc.)
+you.try.close.from.inventory=Vi provas fermi $item kiu vi portas:
+
+#Cuando se teclea un verbo que está en las listas de verbos pero para el que no hemos definido comportamiento
+undefined.action=Ĉu. Ĉu $command?\n
+
+#Cuando la propiedad noPronounDisambiguation de un jugador está puesto a true y se usa un pronombre "lo/la/los/las" donde la acción anterior se refería a dos entidades. Se puede usar $command para referirse al verbo.
+ambiguous.pronoun=Mi ne komprenas tre bone komando kiam la antaŭa komando rilatas pri du celoj.\n
+
+#Cuando intentas volver pero no hay ninguna salida que conduzca a la habitación anterior
+cant.go.back=Vi ne vidas kiel reveni...\n
+
+#Combate: acierto con arma, daño numérico ($1 ataca a $2 con $weapon, acierta, le inflige $damage daño)
+someone.hits.someone.numeric=$1 trafas $2n kun $weapon okazigi siajn $damage punktojn da damaĝo...\n
+enemy.hits.you.numeric=$1 trafas vin kun $weapon okazigi viajn $damage punktojn da damaĝo...\n
+you.hit.enemy.numeric=Vi trafas $2n kun $weapon okazigi siajn $damage punktojn da damaĝo...\n
+
+#Combate: acierto con arma, daño subjetivo
+someone.hits.someone=$1 trafas $2n kun $weapon okazigi sian $damage...\n
+enemy.hits.you=$1 trafas vin kun $weapon okazigi vian $damage...\n
+you.hit.enemy= Vi trafas $2n kun $weapon okazigi sian $damage...\n
+
+#Combate: acierto con arma, pero sin daños
+someone.hits.someone.nodamage=$1 trafas $2n kun $weapon sed ne damaĝigas...\n
+enemy.hits.you.nodamage=$1 trafas vin kun $weapon sed ne damaĝigas...\n
+you.hit.enemy.nodamage=Vi trafas $2n kun $weapon sen ne damaĝigas...\n
+
+#Combate: fallo con arma
+someone.misses.someone=La atako de $1 ne atingas $2n.\n
+enemy.misses.you=La atako de $1 ne atigas vin.\n
+you.miss.enemy=Via atako ne atigas $2n.\n
+
+#Informes de daño
+damage.5=tre malgravajn damaĝojn
+damage.10=malgravajn damaĝojn
+damage.18=iun damaĝon
+damage.25=signifajn damaĝojn
+damage.33=moderajn damaĝojn
+damage.40=tre damaĝo
+damage.50=severajn damaĝojn
+damage.60=molte damaĝo
+damage.70=granda damaĝo
+damage.80=ega damaĝo
+damage.90=teruraj vundoj
+damage.lethal=mortiga damaĝo
+
+#Informes de heridas
+woundstatus.1=estas nerompita
+woundstatus.5=havas iun lezeto
+woundstatus.10=havas leĝerajn lezojn
+woundstatus.18=havas iujn seriozajn lezojn
+woundstatus.25=havas iujn konsiderojn lezojn
+woundstatus.33=havas malpli gravajn lezojn
+woundstatus.40=havas gravajn lezojn
+woundstatus.50=havas maltrankvilajn lezojn
+woundstatus.60=estas grave vundita
+woundstatus.70=estas tre grave vundita
+woundstatus.80=estas maltrankviliga vundita
+woundstatus.90=estas finiĝa
+woundstatus.100=havas piedo en la tombo
+woundstatus.lethal=estas morte vundita
+
+#Maná insuficiente para conjurar $spell
+not.enough.mana=Vi ne havas sufiĉen manaon por ĵeti tiu sorĉo.\n
+
+#Interrupciones: te interrumpen un movimiento, un ataque o un lanzamiento de hechizo por causa $cause.
+interrupted.move=$cause interrompas vian provon iri.\n
+interrupted.attack=$cause interrompas vian provon ataki.\n
+interrupted.cast=$cause interrompas vian provon fari magion.\n
+
+#$1 ataca a alguien que ya no está
+someone.attacks.absent=$1 interrompas la atakon per la foresto de la kontraŭulo.\n
+someone.attacks.you.absent=$1 dubas via foresto.\n
+you.attack.absent=Ĉi tie vi disponas al ataki; sed dubas per la foresto de via malamikulo.\n
+
+#$1 ataca a alguien que ya está muerto
+someone.attacks.dead=$1 interrompas la atakon per la morto de la kontraŭulo.\n
+someone.attacks.you.dead=$1 dubas via morto.\n
+you.attack.dead=Ĉi tie vi disponas al ataki; sed dubas per la morto de via malamikulo.\n
+
+#Combate: choque de armas en el aire
+someone.clashes.someone=La armiloj de $1 kaj $2 kolizias en la aero...\n
+enemy.clashes.you=Via armilo kaj la armilo de $1 kolizias en la aero...\n
+you.clash.enemy=La armilo de $2 kaj la via kolizias en la aero...\n
+
+#Combate: A $2 no le da tiempo a bloquear el ataque de $1
+you.fail.block.time.someone=Vi ne havas tempon pro bloki la atako de $1...\n
+someone.fails.block.time.you=$2 ne havas tempon pro bloki via atako...\n
+
+#Combate: A $2 no le da tiempo a esquivar el ataque de $1
+you.fail.dodge.time.someone=Vi ne havas tempon pro ekeviti la atako de $1...\n
+someone.fails.dodge.time.you=$2 ne havas tempon pro ekeviti via atako...\n
+
+#Combate: $1 estaba atacando a $2, que estaba bloqueando el ataque. Pero $1 falla así que ahora $2 tiene la iniciativa.
+someone.fails.blocking.you=Vi havas la iniciaton...\n
+you.fail.blocking.someone=Vidante via fiaska atako, $2 interrompas la defendan movadon...\n
+
+#Combate: $1 estaba atacando a $2, que estaba esquivando el ataque. Pero $1 falla así que ahora $2 tiene la iniciativa.
+someone.fails.dodging.you=Vi havas la iniciaton...\n
+you.fail.dodging.someone=Vidante via fiaska atako, $2 interrompas la ekeviton...\n
+
+#Combate: bloqueo con arma, daño numérico ($1 ataca a $2 con $weapon, $2 bloquea, pero aun así $1 le inflige $damage daño)
+someone.hits.blocked.someone.numeric=$2 defendas sin de $1 per $weapon kun $damage da punktoj damaĝo...\n
+enemy.hits.blocked.you.numeric=Vi defendas vin de $1 per $weapon kun $damage da punktoj damaĝo...\n
+you.hit.blocked.enemy.numeric=$2 defendas sin per $weapon kun $damage da punktoj damaĝo...\n
+
+#Combate: bloqueo con arma, daño subjetivo
+someone.hits.blocked.someone=$2 defendas sin de $1 per $weapon ricevante $damage...\n
+enemy.hits.blocked.you=Vi defendas vin de $1 per $weapon ricevente $damage...\n
+you.hit.blocked.enemy=$2 defendas sin per $weapon ricevante $damage...\n
+
+#Combate: bloqueo con arma, sin daños
+someone.hits.blocked.someone.nodamage=$2 protektas de $1 per $weapon, deturnante la atako...\n
+enemy.hits.blocked.you.nodamage=Vin protektas de $1 per $weapon, deturnante la atako...\n
+you.hit.blocked.enemy.nodamage=$2 protektas per $weapon, deturnante la atako...\n
+
+#Combate: acierto con arma frente a bloqueo fallido, daño numérico ($1 ataca a $2 con $weapon, $2 no consigue bloquear, $1 acierta, le inflige $damage daño)
+someone.hits.block.failed.someone.numeric=$2 ne povas halti la atakon de $1, kiu okazas per $weapon kaŭzante $damage da punktoj de damaĝo...\n
+enemy.hits.block.failed.you.numeric=Vi ne povas halti la atakon de $1, kiu trafas vin per $weapon kaŭzante $damage da punktoj de damaĝo...\n
+you.hit.block.failed.enemy.numeric=$2 ne povas halti vian atakon, vi trafas per $weapon kaŭzante $damage da punktoj de damaĝo...\n
+
+#Combate: acierto con arma frente a bloqueo fallido, daño subjetivo
+someone.hits.block.failed.someone=$2 ne povas halti la atakon de $1, kiu okazas per $weapon kaŭzante $damage...\n
+enemy.hits.block.failed.you=Vi ne povas halti la atakon de $1, kiu okazas per $weapon kaŭzante $damage...\n
+you.hit.block.failed.enemy=$2 ne povas halti vian atakon, vi trafas per $weapon kaŭzante $damage...\n
+
+#Combate: acierto con arma frente a bloqueo fallido, pero sin daños
+someone.hits.block.failed.someone.nodamage=$2 ne povas halti la atako de $1, kiu okazas per $weapon sed sen kaŭzi damaĝojn...\n
+enemy.hits.block.failed.you.nodamage=Ne povas halti la atako de $1, kiu trafas vin per $weapon sed sen kaŭzi damaĝojn...\n
+you.hit.block.failed.enemy.nodamage=$2 ne povas halti vian atakon, vi trafas per $weapon sed sen kaŭzi damaĝojn...\n
+
+#Combate: fallo con arma frente a bloqueo (ya no se determina si el bloqueo tiene éxito o no)
+someone.misses.blocked.someone=La atako de $1 maltrafas el $2.\n
+enemy.misses.blocked.you=La atako de $1 maltrafas vin.\n
+you.miss.blocked.enemy=Via atako maltrafas el $2.\n
+
+#Combate: $2 esquiva a $1 con éxito
+someone.dodged.by.someone=$2 lerte ekevitas la atakon de $1.\n
+enemy.dodged.by.you=Vi ekevitas la atakon de $1.\n
+you.dodged.by.enemy=$2 ekevita via atakon.\n
+
+#Combate: acierto con arma frente a esquivada fallida, daño numérico ($1 ataca a $2 con $weapon, $2 no consigue esquivar, $1 acierta, le inflige $damage daño)
+someone.hits.dodge.failed.someone.numeric=$2 provas ekeviti la baton de $1; sed $1 trafas per $weapon kun $damage punktoj de damaĝo...\n
+enemy.hits.dodge.failed.you.numeric=Via provo de ekeviti estas fiasko, kaj $1 batas vin per $weapon kun $damage punktoj de damaĝo...\n
+you.hit.dodge.failed.enemy.numeric=Malgraŭ la provo de ekeviti la atakon, vi trafas $2 per $weapon kun $damage punktoj de damaĝo...\n
+
+#Combate: acierto con arma frente a esquivada fallida, daño subjetivo
+someone.hits.dodge.failed.someone=$2 provas ekeviti la baton de $1; sed $1 trafas per $weapon kun $damage...\n
+enemy.hits.dodge.failed.you=Via provo de ekeviti estas fiasko, kaj $1 batas vin per $weapon kun $damage...\n
+you.hit.dodge.failed.enemy=Malgraŭ la provo de ekeviti via atakon, vi trafas $2 per $weapon, kun $damage...\n
+
+#Combate: acierto con arma frente a esquivada fallida, pero sin daños
+someone.hits.dodge.failed.someone.nodamage=$2 provas ekeviti la baton de $1; $1 trafas per $weapon sed sen damaĝo.\n\n
+enemy.hits.dodge.failed.you.nodamage=Via provo de ekeviti estas fiasko, kaj $1 batas vin per $weapon sed sen damaĝo.\n
+you.hit.dodge.failed.enemy.nodamage=Malgraŭ la provo de ekeviti via atakon, vi trafas $2 per $weapon; sed sen damaĝo.\n
+
+#Combate: fallo con arma frente a esquivada (ya no se determina si la esquivada tiene éxito o no)
+someone.misses.dodged.someone=La atako de $1 maltrafas $2n.\n
+enemy.misses.dodged.you=La atako de $1 maltrafas vin. Vi havas la iniciaton...\n
+you.miss.dodged.enemy=Via atako maltrafas $2n. Vi malekvilibras...\n
+
+#Combate: la armadura $armor de $1 absorbe totalmente un impacto
+someones.armor.absorbed=$armor de $1 ensorbas ĉiun la trafon.\n
+your.armor.absorbed=$armor protektas vin ensorbante ĉiun la trafon.\n
+
+#Combate: ataque con arma
+someone.attacks.someone=$1 atakas $2n per $weapon.\n
+enemy.attacks.you=$1 atakas vin per $weapon.\n
+you.attack.enemy=Vi atakas $2n per $weapon.\n
+
+#Combate: intentar bloquear
+someone.tries.to.block.someone=$1 provas defendi de $2 per $weapon.\n
+enemy.tries.to.block.you=$1 provas defendi per $weapon.\n
+you.try.to.block.enemy=Vi provas defendi de $2 per $weapon.\n
+
+#Combate: intentar esquivar
+someone.tries.to.dodge.someone=$1 provas ekeviti la atakon $2.\n
+enemy.tries.to.dodge.you=$1 provas ekeviti vin.\n
+you.try.to.dodge.enemy=Vi provas ekeviti la atakon de $2.\n
+
+#Intentar vestir un arma ($item)
+cant.wear.weapon=Ĉu vi volas vesti $itemn? Ŝajnas pli taŭge skermi ĝin.\n
+
+#Intentar blandir una prenda ($item)
+cant.wield.wearable=Ĉu vi volas skermi $itemn? Ŝajnas pli taŭge vesti ĝin.\n
+
+#Intentar vestir algo no vestible ($item)
+item.not.wearable=Ŝajnas ke la $item estas io, ke vi povas vesti.\n
+
+#Intentar vestir algo cuando no tienes miembros
+cant.wear.without.limbs=Vi ne povas porti vestojn, se vi ne havas iun membrojn.\n
+
+#Mostrar miembro libre
+you.have.free.limb=Vi havas libera $limbn.\n
+
+#Mostrar miembro ocupado por blandir $item
+you.use.limb.wielding=$limb estas skermanta $itemn.\n
+
+#Mostrar miembro ocupado por vestir $item
+you.use.limb.wearing=Vi estas vesti $item en $limb.\n
+
+#Cuando no se puede blandir un objeto por su peso
+cant.wield.item.weight=Vi ne povas skermi $item, ĝi estas tro peza.\n
+
+#Cuando no se puede vestir un objeto por su peso
+cant.wear.item.weight=Vi ne povas vesti $item, ĝi estas tro peza.\n
+
+#Cuando no se puede blandir un objeto por su volumen
+cant.wield.item.volume=Vi ne povas skermi $item, ĝi estas tro voluma.\n
+
+#Cuando no se puede vestir un objeto por su volumen
+cant.wear.item.volume=Vi ne povas vesti $item, ĝi estas tro voluma.\n
+
+#Cuando no se puede vestir algo porque los miembros están ocupados
+wear.busy.limbs=Vi devas demeti iun por povi vesti $item.\n
+
+#Cuando no se puede blandir algo porque los miembros están ocupados
+wield.busy.limbs=Vi devas gardi iun armilon por povi skermi $item.\n
+
+#Intentas suicidarte pero no tienes arma para ello
+no.suicide.weapon=Ne skermas neniun utilan armilon por memmortigiĝi.\n
+
+#Intentas atacar pero no tienes arma para ello
+no.attack.weapon=Ne skermas neniun utilan armilon por ataki.\n
+
+#$1 se suicida con el arma $3 (sí, $3)
+someone.suicides=$1 memmortigiĝi pri $3.\n
+you.suicide=Vi memmortigiĝas pri $3.\n
+
+#Artículos: definido masculino/femenino, indefinido masculino/femenino
+art.def.m=la
+art.def.f=la
+art.ind.m=
+art.ind.f=
+
+#Coordinating conjunction
+coord.conj=kaj
+
+#Directions
+direction.n=norda
+direction.s=suda
+direction.w=okcidenta
+direction.e=orienta
+direction.nw=nordokcidenta
+direction.ne=nordorienta
+direction.sw=sudokcidenta
+direction.se=sudorienta
+direction.u=supre
+direction.d=sube
+
+#Directions (full name): creature comes from...
+direction.full.n=la nordo
+direction.full.s=la sudo
+direction.full.w=la okcidento
+direction.full.e=la oriento
+direction.full.nw=la nordokcidento
+direction.full.ne=la nordoriento
+direction.full.sw=la sudokcidento
+direction.full.se=la sudoriento
+direction.full.u=supre
+direction.full.d=sube
+
+#open/close default behaviour
+you.unlock.item=Vi malfermas $item pri $key.
+cant.unlock.key=Ne ŝajnas ke $item malfermas pri $key.
+you.lock.item=Vi fermas $item pri $key.
+cant.lock.key=Ne ŝajnas ke $item povas fermi pri $key.
+cant.open.already.open=Sed, se $item ja estas malfermata...
+cant.open.locked=Ŝajnas ke $item estas fermi pri klavo.
+you.open.item=Vi malfermas $item.
+cant.close.already.closed=Sed, se $item ja estas fermata...
+you.close.item=Cierras $item.
+
+#to show in inventories, etc. when you have nothing
+nothing=nenio
+
+#the from in "you get the notebook FROM the chest"
+get.prep.from=de
+
+#Nombre para mostrar cuando hay que hablar de un Mobile que no tiene nombre para mostrar a un observador dado (por ejemplo, en acciones)
+unnamed.mobile=iu
+
+#Nombre para mostrar cuando hay que hablar de un Item que no tiene nombre para mostrar a un observador dado (por ejemplo, en acciones)
+unnamed.item=io
+
+#Nombre para mostrar cuando hay que hablar de un Path que no tiene nombre para mostrar a un observador dado (por ejemplo, "Fulano se va hacia...")
+unnamed.path=iu loko
