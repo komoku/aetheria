@@ -54,6 +54,7 @@ public class GameEngineThread extends Thread
 
 	public GameEngineThread ( World theWorld , AGELoggingWindow ventana , boolean realTimeEnabled )
 	{
+		setName(getName()+": AGE Game Engine Thread");
 		this.theWorld = theWorld;
 		this.ventana = ventana;
 		this.realTimeEnabled = realTimeEnabled;
@@ -390,7 +391,7 @@ public class GameEngineThread extends Thread
 		//this thread waits for the game engine thread to end, and then clears things like the message cache
 		//which cannot be cleared before the game engine thread ends (since the game engine thread would replace
 		//the Messages instance in the cache).
-		Thread worldEndThread = new Thread()
+		Thread worldEndThread = new Thread("World End Thread")
 		{
 			public void run()
 			{

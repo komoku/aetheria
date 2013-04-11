@@ -197,7 +197,7 @@ public class ClassManagerImpl extends BshClassManager
 		absoluteClassCache.put("PropertyEntry", Class.forName("eu.irreality.age.PropertyEntry"));
 		absoluteClassCache.put("ImageConstants", Class.forName("eu.irreality.age.ImageConstants"));
 		absoluteClassCache.put("ColoredSwingClient", Class.forName("eu.irreality.age.ColoredSwingClient"));
-		absoluteClassCache.put("AGESoundClient", Class.forName("eu.irreality.age.AGESoundClient"));
+		absoluteClassCache.put("AGESoundClient", Class.forName("eu.irreality.age.AGESoundClient")); //TODO Note: this causes mandatory dependency with BasicPlayer due to a private method in AGESoundClient declaring a BasicPlayer parameter, I think
 		absoluteClassCache.put("Messages", Class.forName("eu.irreality.age.messages.Messages"));
 		absoluteClassCache.put("Weapon", Class.forName("eu.irreality.age.Weapon"));
 		absoluteClassCache.put("Wearable", Class.forName("eu.irreality.age.Wearable"));
