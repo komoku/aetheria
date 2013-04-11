@@ -51,7 +51,12 @@ public class FancyJTextPane extends JTextPane implements ImageConstants
 		}
 		
 		public ImageIcon getRasterBackgroundImage() { return rasterBackgroundImage; }
-		public SVGIcon getVectorBackgroundImage() { return vectorBackgroundImage; }
+		
+		/*
+		 * returns Icon because if we return SVGIcon, checkCoalescing() (internal java method)
+		 * creates a dependency with the SVG Salamander library.
+		 */
+		public Icon getVectorBackgroundImage() { return vectorBackgroundImage; }
 		
 		//private int scalingMode = FIT_BOTH;
 

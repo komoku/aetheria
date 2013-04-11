@@ -44,7 +44,14 @@ public class ImagePanel extends JPanel implements ImageConstants
 		return theRasterImage;
 	}
 	
-	public SVGIcon getVectorImage ()
+	/**
+	 * This method returns a SVGIcon, but we declare the return type as Icon to avoid a 
+	 * mandatory dependency with SVG Salamander on games that do not use SVG files.
+	 * The result can be safely cast to SVGIcon if needed (or if it is commonly needed
+	 * in the future to use SVGIcon specific methods, an interface could be created).
+	 * @return
+	 */
+	public Icon getVectorImage ()
 	{
 		return theVectorImage;
 	}
@@ -60,8 +67,15 @@ public class ImagePanel extends JPanel implements ImageConstants
 	    theRasterImage = ii;
 	}
 	
-	public void setVectorImage ( SVGIcon si )
+	/**
+	 * Precondition: the parameter si must be an SVGIcon.
+	 * We don't declare its type as SVGIcon to avoid a mandatory dependency with the SVG Salamander
+	 * library on games that do not use SVG images.
+	 * @param si
+	 */
+	public void setVectorImage ( Icon svgIcon )
 	{
+		SVGIcon si = (SVGIcon) svgIcon; //we can now cast since this code is not exposed to checkCoalescing()
 	    theVectorImage = si;
 	    vectorImageBaseWidth = si.getPreferredSize().getWidth();
 	    vectorImageBaseHeight = si.getPreferredSize().getHeight();
