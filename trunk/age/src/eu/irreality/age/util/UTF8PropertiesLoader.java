@@ -43,15 +43,40 @@ public class UTF8PropertiesLoader
 	    for ( int i = 0 ; i < arr.length ; i++ ) 
 	    {
 	    	char character = arr[i];
+	    	/*
 	        if (asciiEncoder.canEncode(character)) 
 	        {
-	            result.append(character);
+	            result.append(character); //this won't really encode it
 	        } 
 	        else 
 	        {
 	            result.append("\\u");
 	            result.append(Integer.toHexString(0x10000 | character).substring(1).toUpperCase());
 	        }
+	        */
+	    	
+	    	//directly from the internets
+			if ((arr[i] /*\u007f*/ > '')) //not UTF-8 char
+			{
+			// wr\uddddte ?
+				result.append('\\');
+			    result.append('u');
+			    String hex = Integer.toHexString(arr[i]);
+			    StringBuffer hex4 = new StringBuffer(hex);
+			    hex4.reverse();
+			    int length = 4 - hex4.length();
+			    for (int j = 0; j < length; j++) 
+			    {
+			    	hex4.append('0');
+			    }
+			    for (int j = 0; j < 4; j++) 
+			    {
+			    	result.append(hex4.charAt(3 - j));
+			    }
+			} 
+			else
+				result.append(arr[i]);
+	    	
 	    }
 	    return result.toString();
 	 }
