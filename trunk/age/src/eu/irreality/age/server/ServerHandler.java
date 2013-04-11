@@ -329,7 +329,7 @@ public class ServerHandler //Singleton!
 			
 		Debug.println("SAGL loaded. " + SwingUtilities.isEventDispatchThread());
 		
-		Thread thr = new Thread()
+		Thread thr = new Thread("ServerHandler Game Creation Thread")
 		{
 		
 			public void run()
