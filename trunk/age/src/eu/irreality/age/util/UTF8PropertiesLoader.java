@@ -37,26 +37,27 @@ public class UTF8PropertiesLoader
 	public static String toIsoWithEscapes( String src ) 
 	{
 	    //final String src = "Hallo הצü"; // this has to be read with the right encoding
-	    final CharsetEncoder asciiEncoder = Charset.forName("ISO-8859-1").newEncoder(); //US-ASCII?
+	    final CharsetEncoder asciiEncoder = Charset.forName("US-ASCII").newEncoder(); //US-ASCII, because if US-ASCII can encode it, then the char is the same in UTF as in ISO
 	    final StringBuilder result = new StringBuilder();
 	    char[] arr = src.toCharArray();
 	    for ( int i = 0 ; i < arr.length ; i++ ) 
 	    {
 	    	char character = arr[i];
-	    	/*
+	    	
 	        if (asciiEncoder.canEncode(character)) 
 	        {
-	            result.append(character); //this won't really encode it
+	            result.append(character); //character needs no modification
 	        } 
-	        else 
+	        else //just use an unicode escape
 	        {
 	            result.append("\\u");
 	            result.append(Integer.toHexString(0x10000 | character).substring(1).toUpperCase());
 	        }
-	        */
+	    	
+	    	/*
 	    	
 	    	//directly from the internets
-			if ((arr[i] /*\u007f*/ > '')) //not UTF-8 char
+			if ((arr[i] > '')) //characters that aren't the same in ISO and in UTF-8 (i.e. non-US-ASCII chars). That char is char 127. \u007f
 			{
 			// wr\uddddte ?
 				result.append('\\');
@@ -76,6 +77,8 @@ public class UTF8PropertiesLoader
 			} 
 			else
 				result.append(arr[i]);
+				
+			*/
 	    	
 	    }
 	    return result.toString();
