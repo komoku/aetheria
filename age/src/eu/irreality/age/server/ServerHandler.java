@@ -308,7 +308,7 @@ public class ServerHandler //Singleton!
 		try
 		{
 		//SwingUtilities.invokeAndWait ( 
-			( new Thread() { 
+			( new Thread("ServerHandler Game Loader Init Thread") { 
 				public void run()
 				{
 					Debug.println("b4 inigl");
