@@ -16,7 +16,9 @@ import eu.irreality.age.filemanagement.WorldLoader;
 import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.swing.CommonSwingFunctions;
 import eu.irreality.age.swing.SwingMenuAetheria;
+import eu.irreality.age.swing.applet.SwingSDIApplet;
 import eu.irreality.age.swing.config.AGEConfiguration;
+import eu.irreality.age.swing.menu.ServerMenuHandler;
 import eu.irreality.age.util.VersionComparator;
 import eu.irreality.age.windowing.AGEClientWindow;
 import eu.irreality.age.windowing.UpdatingRun;
@@ -877,6 +879,9 @@ de la ventana hasta acabar de cargar.
 								theWorld,
 								esto , false );
 						
+						maquinaEstados.attachObserver(new ServerMenuHandler(SwingAetheriaGameLoader.this));
+						
+						
 						//System.out.println("STARTING ENGINE THREAD");
 						
 						maquinaEstados.start();		
@@ -1277,7 +1282,8 @@ de la ventana hasta acabar de cargar.
 		}
 		
 		if ( maquinaEstados != null )
-			maquinaEstados.uninitServerMenu(this);
+			maquinaEstados.detachAllObservers();
+			//maquinaEstados.uninitServerMenu(this);
 			
 		//very important to avoid memory leaks: unreference thread
 		maquinaEstados = null;	

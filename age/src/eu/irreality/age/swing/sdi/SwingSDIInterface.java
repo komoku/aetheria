@@ -53,8 +53,10 @@ import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.swing.CommonSwingFunctions;
 import eu.irreality.age.swing.SwingMenuAetheria;
 import eu.irreality.age.swing.UILanguageSelectionMenu;
+import eu.irreality.age.swing.applet.SwingSDIApplet;
 import eu.irreality.age.swing.config.AGEConfiguration;
 import eu.irreality.age.swing.mdi.SwingAetheriaGUI;
+import eu.irreality.age.swing.menu.ServerMenuHandler;
 import eu.irreality.age.util.VersionComparator;
 import eu.irreality.age.windowing.AGEClientWindow;
 import eu.irreality.age.windowing.MenuMnemonicOnTheFly;
@@ -419,6 +421,8 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 				new GameEngineThread ( 
 						theWorld,
 						SwingSDIInterface.this , false );
+			
+			maquinaEstados.attachObserver(new ServerMenuHandler(SwingSDIInterface.this));
 
 			//System.out.println("STARTING ENGINE THREAD");
 
@@ -546,7 +550,8 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow
 		}
 		
 		if ( maquinaEstados != null )
-			maquinaEstados.uninitServerMenu(this);
+			maquinaEstados.detachAllObservers();
+			//maquinaEstados.uninitServerMenu(this);
 		
 		//very important to avoid memory leaks: unreference thread
 		maquinaEstados = null;	

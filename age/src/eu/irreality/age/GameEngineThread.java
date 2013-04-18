@@ -9,6 +9,7 @@ import eu.irreality.age.debug.Debug;
 import eu.irreality.age.debug.ExceptionPrinter;
 import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.messages.Messages;
+import eu.irreality.age.observer.GameThreadObserver;
 import eu.irreality.age.scripting.ScriptException;
 import eu.irreality.age.swing.applet.SwingSDIApplet;
 import eu.irreality.age.swing.sdi.SwingSDIInterface;
@@ -17,6 +18,8 @@ import eu.irreality.age.windowing.AGELoggingWindow;
 import eu.irreality.age.windowing.MenuMnemonicOnTheFly;
 
 import java.awt.event.*;
+import java.util.List;
+import java.util.Vector;
 public class GameEngineThread extends Thread
 {
 
@@ -58,11 +61,13 @@ public class GameEngineThread extends Thread
 		this.theWorld = theWorld;
 		this.ventana = ventana;
 		this.realTimeEnabled = realTimeEnabled;
-		if ( ventana != null )
-		{
-			initServerMenu(ventana);
-			ventana.repaint();
-		}
+		
+		//now done from the outside by attaching a ServerMenuHandler observer:
+		//if ( ventana != null )
+		//{
+		//	initServerMenu(ventana);
+		//	ventana.repaint();
+		//}
 	}
 	
 	public void setRealTimeQuantum ( long quantum )
@@ -83,144 +88,6 @@ public class GameEngineThread extends Thread
 	public void setRealTimeEnabled ( boolean b )
 	{
 		realTimeEnabled = b;
-	}
-	
-	public void initServerMenu ( final AGELoggingWindow window )
-	{
-		if ( SwingUtilities.isEventDispatchThread() )
-			doInitServerMenu(window);
-		else
-		{
-			try
-			{
-				SwingUtilities.invokeAndWait 
-				( 
-						new Runnable()
-						{
-							public void run()
-							{
-								doInitServerMenu(window);
-								window.repaint();
-							}
-						}
-				);
-			}
-			catch ( Exception e )
-			{
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public void uninitServerMenu ( final AGELoggingWindow window )
-	{
-		if ( SwingUtilities.isEventDispatchThread() )
-			doUninitServerMenu(window);
-		else
-		{
-			try
-			{
-				SwingUtilities.invokeAndWait 
-				( 
-						new Runnable()
-						{
-							public void run()
-							{
-								doUninitServerMenu(window);
-								window.repaint();
-							}
-						}
-				);
-			}
-			catch ( Exception e )
-			{
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public void doInitServerMenu ( final AGELoggingWindow window )
-	{
-		doInitServerMenu( window, UIMessages.getInstance().getMessage("servermenu.gameoptions") );
-	}
-	
-	private JMenu serverConfigurationMenu;
-	
-	public void doUninitServerMenu ( final AGELoggingWindow window )
-	{
-		JMenuBar menubar = window.getTheJMenuBar();
-		menubar.remove(serverConfigurationMenu);
-	}
-	
-	private void setJMenuBarAsNeeded ( final AGELoggingWindow window , JMenuBar mb )
-	{
-	    /*
-		if ( window instanceof SwingAetheriaGameLoader )
-			((SwingAetheriaGameLoader)window).setTheJMenuBar(mb);
-		else
-			window.setJMenuBar(mb);
-			*/
-	    window.setTheJMenuBar(mb);
-	}
-	
-	private JMenuBar getJMenuBarAsNeeded ( final AGELoggingWindow window )
-	{
-	    /*
-		if ( window instanceof SwingAetheriaGameLoader )
-			return ((SwingAetheriaGameLoader)window).getTheJMenuBar();
-		else
-			return window.getJMenuBar();
-			*/
-	    return window.getTheJMenuBar();
-	}
-	
-	public void doInitServerMenu ( final AGELoggingWindow window , String menuName )
-	{
-		serverConfigurationMenu = new JMenu( menuName );
-		JMenu timeConfigurationMenu = new JMenu( UIMessages.getInstance().getMessage("servermenu.gamemode") );
-		JMenuBar mb = getJMenuBarAsNeeded(window);
-		if ( mb == null )
-			setJMenuBarAsNeeded ( window , mb = new JMenuBar() );
-		serverConfigurationMenu.add ( timeConfigurationMenu );
-		JRadioButtonMenuItem itemTurns = new JRadioButtonMenuItem(UIMessages.getInstance().getMessage("servermenu.gamemode.sync"),true);
-		JRadioButtonMenuItem itemRealTime = new JRadioButtonMenuItem(UIMessages.getInstance().getMessage("servermenu.gamemode.async"),false);
-		ButtonGroup bg = new ButtonGroup();
-		bg.add ( itemTurns );
-		bg.add ( itemRealTime );
-		if ( realTimeEnabled ) itemRealTime.setSelected(true);
-		itemTurns.addActionListener ( new ActionListener()
-		{
-			public void actionPerformed ( ActionEvent evt )
-			{
-				setRealTimeEnabled(false);
-			}
-		} );
-		itemRealTime.addActionListener ( new ActionListener()
-		{
-			public void actionPerformed ( ActionEvent evt )
-			{
-				setRealTimeEnabled(true);
-				//setRealTimeQuantum(DEFAULT_REAL_TIME_QUANTUM);
-			}
-		} );
-		timeConfigurationMenu.add ( itemTurns );
-		timeConfigurationMenu.add ( itemRealTime );
-		if ( window instanceof AGEClientWindow )
-		{
-			JMenuItem reinitItem = new JMenuItem( UIMessages.getInstance().getMessage("servermenu.restart") );
-			reinitItem.addActionListener ( new ActionListener()
-			{
-				public void actionPerformed ( ActionEvent evt )
-				{
-					((AGEClientWindow)window).reinit();
-				}
-			} );
-			serverConfigurationMenu.add(reinitItem);
-		}
-		mb.add ( serverConfigurationMenu );
-		MenuMnemonicOnTheFly.setMnemonics(mb);
-		mb.revalidate();
-		window.repaint();
 	}
 	
 	public void run ( )	
@@ -407,7 +274,8 @@ public class GameEngineThread extends Thread
 				Messages.clearCache(theWorld);
 				theWorld = null;
 				ventana = null;
-				serverConfigurationMenu = null;
+				//serverConfigurationMenu = null;
+				detachAllObservers();
 				Debug.println("World ended.");
 			}
 		};
@@ -443,6 +311,33 @@ public class GameEngineThread extends Thread
 		Debug.println("Gonna x-it.");
 		exitFlag = true;
 		Debug.println("Flag set.");
+	}
+	
+	private List observers = new Vector();
+	
+	public void attachObserver ( GameThreadObserver obs )
+	{
+		observers.add(obs);
+		obs.onAttach(this);
+	}
+	
+	public boolean hasObserver ( GameThreadObserver obs )
+	{
+		return observers.contains(this);
+	}
+	
+	public void detachObserver ( GameThreadObserver obs )
+	{
+		observers.remove(obs);
+		obs.onDetach(this);
+	}
+	
+	public void detachAllObservers()
+	{
+		while ( !observers.isEmpty() )
+		{
+			detachObserver((GameThreadObserver)observers.get(0));
+		}
 	}
 
 }
