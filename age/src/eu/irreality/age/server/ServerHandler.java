@@ -302,24 +302,23 @@ public class ServerHandler //Singleton!
 		*/
 		
 		
-		final SwingAetheriaGameLoader sagl1;
+		final Thread gameLoaderInitThread = ( new Thread("ServerHandler Game Loader Init Thread") { 
+			public void run()
+			{
+				Debug.println("b4 inigl");
+				initGameLoader(ficheroMundo,thePanel,logFile,stateFile);
+				Debug.println("af inigl");
+				//SwingAetheriaGameLoader sagl = new SwingAetheriaGameLoader( ficheroMundo.getParent() , thePanel , (logFile!=null) , logFile , stateFile , (stateFile!=null) /*pues, si usamos estado, no seremos cliente porque el jugador se cargará al cargar el estado*/  );
+			}
+		} );
+			
 		
 		//changed as of 2008-05-01
 		try
 		{
 		//SwingUtilities.invokeAndWait ( 
-			( new Thread("ServerHandler Game Loader Init Thread") { 
-				public void run()
-				{
-					Debug.println("b4 inigl");
-					initGameLoader(ficheroMundo,thePanel,logFile,stateFile);
-					Debug.println("af inigl");
-					//SwingAetheriaGameLoader sagl = new SwingAetheriaGameLoader( ficheroMundo.getParent() , thePanel , (logFile!=null) , logFile , stateFile , (stateFile!=null) /*pues, si usamos estado, no seremos cliente porque el jugador se cargará al cargar el estado*/  );
-				}
-			} )
+			gameLoaderInitThread.start();
 		//	);
-			.start();
-
 		}
 		catch ( Exception intex )
 		{
@@ -342,6 +341,8 @@ public class ServerHandler //Singleton!
 		
 			try
 			{
+				gameLoaderInitThread.join();
+				/*
 				while ( tempSagl == null )
 				{
 					synchronized(this)
@@ -349,6 +350,7 @@ public class ServerHandler //Singleton!
 						this.wait(200);
 					}
 				}
+				*/
 				Debug.println("b4 wait");
 				//synchronized(tempSagl)
 				{
