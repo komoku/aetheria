@@ -14,6 +14,8 @@ import eu.irreality.age.server.IrcServerEntry;
 import eu.irreality.age.NullInputOutputClient;
 import eu.irreality.age.PartidaEntry;
 import eu.irreality.age.server.ServerConfigurationOptions;
+import eu.irreality.age.swing.applet.SwingSDIApplet;
+import eu.irreality.age.swing.menu.ServerMenuHandler;
 import eu.irreality.age.telnet.SimpleTelnetClientHandler;
 import eu.irreality.age.SwingAetheriaGameLoader;
 import eu.irreality.age.World;
@@ -456,6 +458,8 @@ public class ServerHandler //Singleton!
 						new GameEngineThread ( 
 							theWorld,
 							slw , true ); //dedicated games are now real time by default
+					
+					maquinaEstados.attachObserver(new ServerMenuHandler(slw));
 					
 					maquinaEstados.start();	
 		
