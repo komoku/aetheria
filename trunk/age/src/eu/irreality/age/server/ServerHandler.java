@@ -112,7 +112,7 @@ public class ServerHandler //Singleton!
 				final IrcServerEntry ise = (IrcServerEntry)ircServerEntryList.get(i);
 				
 
-					Thread th = new Thread()
+					Thread th = new Thread("IRC Bot Initialization Thread")
 					{
 						
 						public void run ()

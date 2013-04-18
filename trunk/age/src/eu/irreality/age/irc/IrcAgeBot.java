@@ -75,7 +75,7 @@ public class IrcAgeBot extends IrcBot
 	{
 	
 		//hacer un fork, porque la selección de mundo, etc. tiene esperas, y mientras tenemos que poder atender a otros clientes	
-		Thread th = new Thread()
+		Thread th = new Thread("IRC Game Launcher")
 		{
 			public void run()
 			{
