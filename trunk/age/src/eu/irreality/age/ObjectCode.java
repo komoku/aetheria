@@ -234,6 +234,23 @@ public class ObjectCode
 		i.set("world",theWorld);
 	}
 	
+	
+	/**This attribute is used to control the execution of initFakeInterpreter() so that it is executed only once.*/
+	private static boolean fakeInitializationDone = false;
+	
+	/**
+	 * This method is used to prevent a bounded memory leak caused by BeanShell.
+	 * The first time an Interpreter is initialized, BeanShell keeps a static reference to it (as a kind of fallback interpreter, I think).
+	 * This prevents the GC from collecting anything that is linked from variables in the scripted context of that interpreter.
+	 * Therefore, we use this method so that the first interpreter we create in a given session is "fake" and we don't really use it,
+	 * so that variables are not created on its context and thus the leak doesn't happen.
+	 */
+	private void initFakeInterpreter()
+	{
+		new ExtendedBSHInterpreter();
+		fakeInitializationDone = true;
+	}
+	
 	/**
 	 * Initializes a beanshell interpreter for a given entity.
 	 * This includes loading the standard library, setting the standard variables (world, self)
@@ -244,6 +261,10 @@ public class ObjectCode
 	 */
 	private ExtendedBSHInterpreter initInterpreter ( Object theCaller ) throws EvalError
 	{
+		//the following line is to avoid a pitfall with beanshell that can cause a (bounded) memory leak. It's not needed to understand this code, since it does nothing that has an influence
+		//on the working of this class:
+		if ( !fakeInitializationDone ) initFakeInterpreter();
+		
 		ExtendedBSHInterpreter i;
 		i = new ExtendedBSHInterpreter();
 		permanentInterpreter = i;
