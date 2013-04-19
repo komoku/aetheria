@@ -49,17 +49,15 @@ public class GameEngineThread extends Thread
 
 
 	World theWorld;
-	AGELoggingWindow ventana;
 	
 	/*¿Tiempo real?*/
 	boolean realTimeEnabled;
 	long realTimeQuantum = DEFAULT_REAL_TIME_QUANTUM;
 
-	public GameEngineThread ( World theWorld , AGELoggingWindow ventana , boolean realTimeEnabled )
+	public GameEngineThread ( World theWorld  , boolean realTimeEnabled )
 	{
 		setName(getName()+": AGE Game Engine Thread");
 		this.theWorld = theWorld;
-		this.ventana = ventana;
 		this.realTimeEnabled = realTimeEnabled;
 		
 		//now done from the outside by attaching a ServerMenuHandler observer:
@@ -234,6 +232,9 @@ public class GameEngineThread extends Thread
 	public void exitNow ( )
 	{
 		Debug.println("Gonna x-it.");
+		
+		//now this is done when detaching the observers
+		/*
 		if ( ventana instanceof SwingAetheriaGameLoader )
 		{
 			((SwingAetheriaGameLoader)ventana).unlinkWorld(); //we are client and server so we can do this
@@ -249,6 +250,10 @@ public class GameEngineThread extends Thread
 			((SwingSDIApplet)ventana).unlinkWorld(); //we are client and server so we can do this
 			((SwingSDIApplet)ventana).saveAndFreeResources();
 		}
+		*/
+		detachAllObservers();
+		
+		
 		exitFlag = true;
 
 		//if there are more deadlock problems with this, we could always create a "world end thread" with the following code (including join and all), and run it here,
@@ -273,9 +278,7 @@ public class GameEngineThread extends Thread
 				}
 				Messages.clearCache(theWorld);
 				theWorld = null;
-				ventana = null;
-				//serverConfigurationMenu = null;
-				detachAllObservers();
+				//serverConfigurationMenu = null; //the equivalent to this now done by detachAllObservers() above.
 				Debug.println("World ended.");
 			}
 		};

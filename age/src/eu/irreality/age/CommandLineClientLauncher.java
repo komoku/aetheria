@@ -223,8 +223,7 @@ public class CommandLineClientLauncher
 			
 			GameEngineThread maquinaEstados =
 				new GameEngineThread ( 
-					theWorld,
-					null , false );
+					theWorld, false );
 			
 			maquinaEstados.start();		
 			
