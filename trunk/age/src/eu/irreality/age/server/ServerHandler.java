@@ -16,6 +16,7 @@ import eu.irreality.age.PartidaEntry;
 import eu.irreality.age.server.ServerConfigurationOptions;
 import eu.irreality.age.swing.applet.SwingSDIApplet;
 import eu.irreality.age.swing.menu.ServerMenuHandler;
+import eu.irreality.age.swing.sdi.SwingSDIInterface;
 import eu.irreality.age.telnet.SimpleTelnetClientHandler;
 import eu.irreality.age.SwingAetheriaGameLoader;
 import eu.irreality.age.World;
@@ -355,6 +356,7 @@ public class ServerHandler //Singleton!
 				//synchronized(tempSagl)
 				{
 					mundo = tempSagl.waitForMundoToLoad();	
+					tempSagl = null; //no longer needed
 				}
 				Debug.println("af wait");
 			}
@@ -458,9 +460,9 @@ public class ServerHandler //Singleton!
 					//de momento pasamos slw para añadir servermenu.
 					GameEngineThread maquinaEstados =
 						new GameEngineThread ( 
-							theWorld,
-							slw , true ); //dedicated games are now real time by default
+							theWorld, true ); //dedicated games are now real time by default
 					
+					//maquinaEstados.attachObserver(slw); //not an observer at the moment, nothing special to do
 					maquinaEstados.attachObserver(new ServerMenuHandler(slw));
 					
 					maquinaEstados.start();	

@@ -14,6 +14,7 @@ import eu.irreality.age.debug.Debug;
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.filemanagement.WorldLoader;
 import eu.irreality.age.i18n.UIMessages;
+import eu.irreality.age.observer.GameThreadObserver;
 import eu.irreality.age.swing.CommonSwingFunctions;
 import eu.irreality.age.swing.SwingMenuAetheria;
 import eu.irreality.age.swing.applet.SwingSDIApplet;
@@ -30,7 +31,7 @@ import java.io.*; //savegame
 
 //ventana que carga el juego del directorio dado y llama al Game Engine, la máquina de estados.
 
-public class SwingAetheriaGameLoader extends JInternalFrame implements Informador, AGEClientWindow
+public class SwingAetheriaGameLoader extends JInternalFrame implements Informador, AGEClientWindow, GameThreadObserver
 {
 	/**
 	* El contador de tiempo.
@@ -876,9 +877,9 @@ de la ventana hasta acabar de cargar.
 							
 						maquinaEstados =
 							new GameEngineThread ( 
-								theWorld,
-								esto , false );
+								theWorld, false );
 						
+						maquinaEstados.attachObserver(SwingAetheriaGameLoader.this);
 						maquinaEstados.attachObserver(new ServerMenuHandler(SwingAetheriaGameLoader.this));
 						
 						
@@ -1443,6 +1444,16 @@ de la ventana hasta acabar de cargar.
 	public Dimension getScreenSize()
 	{
 		return Toolkit.getDefaultToolkit().getScreenSize();
+	}
+
+	public void onAttach(GameEngineThread thread) 
+	{
+	}
+
+	public void onDetach(GameEngineThread thread) 
+	{
+		unlinkWorld();
+		saveAndFreeResources();
 	}
 
 
