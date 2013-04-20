@@ -26,6 +26,7 @@ import eu.irreality.age.windowing.UpdatingRun;
 
 import java.io.*; //savegame
 //import javax.sound.*;
+import java.lang.reflect.InvocationTargetException;
 
 
 
@@ -479,39 +480,20 @@ de la ventana hasta acabar de cargar.
 											
 											CommonSwingFunctions.writeIntroductoryInfo(SwingAetheriaGameLoader.this);
 											
-											/*
-											write("Aetheria Game Engine v " + UIMessages.getInstance().getMessage("age.version") + "\n");
-
-											write( UIMessages.getInstance().getMessage("age.copyright") + "\n" );
-											write( UIMessages.getInstance().getMessage("intro.legal") + "\n" );
-											
-											write("\n=============================================================");
-											write("\n" + io.getColorCode("information") + "Engine-related Version Info:");
-											write("\n" + io.getColorCode("information") + "[OS Layer]           " + System.getProperty("os.name") + " " + System.getProperty("os.version") + " " + System.getProperty("os.arch") + io.getColorCode("reset"));
-											write("\n" + io.getColorCode("information") + "[Java Layer]         " + System.getProperty("java.version") + io.getColorCode("reset"));
-											write("\n" + io.getColorCode("information") + "[Simulation Layer]   " + GameEngineThread.getVersion() + io.getColorCode("reset"));
-											write("\n" + io.getColorCode("information") + "[Object Code Layer]  " + ObjectCode.getInterpreterVersion() + io.getColorCode("reset"));
-											write("\n" + io.getColorCode("information") + "[UI Layer]           " + SwingAetheriaGameLoader.getVersion() + io.getColorCode("reset"));
-											write("\n=============================================================\n");
-											*/
-											
 										}
 									}
 							);
 						}
 						catch ( Exception e )
 						{
-							((ColoredSwingClient)io).showAfterLogLoad();
+							if ( io != null ) ((ColoredSwingClient)io).showAfterLogLoad();
 							e.printStackTrace();
 						}
-						
-						
+							
 						//System.out.println("2");
 					
-						
-						
 						String worldName;
-						World theWorld;
+						World theWorld = null;
 						
 						if ( moduledir == null || moduledir.length() == 0 ) moduledir="aetherworld";
 					
@@ -535,102 +517,29 @@ de la ventana hasta acabar de cargar.
 							((ColoredSwingClient)io).showAfterLogLoad();
 							e.printStackTrace();
 						}
-						
-						
+							
 						//System.out.println("3");
-					
-						//doUpdate2 = new UpdatingThread( this , doUpdate );
-						//doUpdate2.start();
-						//Thread.currentThread().yield();
-
-
-
-						//tres posibilidades:
-						//*nos han dado un nombre de fichero: mundo loquesea.xml
-						//*nos han dado un directorio y el mundo es directorio/world.xml
-						//*nos han dado un directorio y el mundo es directorio/world.dat
 						
+						try
+						{
+							theWorld = WorldLoader.loadWorld( moduledir , gameLog, io, mundoSemaphore);
+						}
+						catch ( Exception e )
 						/*
-						File inputAsFile = new File(moduledir);
-						if ( inputAsFile.isFile() )
+						 * This shouldn't happen, because unchecked exceptions in world initialization scripts are caught before reaching this level,
+						 * and the loadWorld method doesn't throw its own exceptions (it returns null if the world cannot be loaded). But it's defensive
+						 * programming in case AGE forgets to catch some unchecked exception, which has happened in the past.
+						 */
 						{
-							
-							//nos han dado un fichero
-							//eventualmente esto debería ser the way to go, y el else de este if ser eliminado por antiguo, pero de momento aún se usa el else (TODO)
-							
-							System.out.println("Attempting world location: " +  inputAsFile );
-							try
-							{
-								theWorld = new World ( moduledir , io , noSerCliente );
-								mundo = theWorld;
-								System.out.println("World generated.\n");
-								synchronized ( mundoSemaphore )
-								{
-									mundoSemaphore.notifyAll();
-								}
-								gameLog.addElement( inputAsFile.getAbsolutePath() ); //primera línea del log, fichero de mundo
-							}
-							catch ( java.io.IOException ioe )
-							{
-								write("No puedo leer el fichero del mundo: " + inputAsFile + "\n"); 
-								ioe.printStackTrace();
-								return; 
-							}
-							
+							if ( io != null ) ((ColoredSwingClient)io).showAfterLogLoad();
+							if ( io != null ) write ( "Exception on loading world: " + e );
+							e.printStackTrace();
 						}
-						else
+						if ( theWorld == null || io.isDisconnected() ) //io could be disconnected due to closing the window before assigning player 
 						{
-						
-							//nos han dado un directorio
-						
-							//buscar a ver si el mundo es un world.xml
-							//new World tanto si es xml como dat
-							try
-							{
-								System.out.println("Attempting world location: " + moduledir + "/world.xml" );
-								theWorld = new World ( moduledir + "/world.xml" , io , noSerCliente );
-								mundo = theWorld;
-								System.out.println("World generated.\n");
-								synchronized ( mundoSemaphore )
-								{
-									mundoSemaphore.notifyAll();
-								}
-								gameLog.addElement(moduledir + "/world.xml"); //primera línea del log, fichero de mundo
-							}
-							catch ( java.io.IOException e )
-							{
-		
-								System.out.println(e);
-		
-								//buscar a ver si el mundo es un world.dat
-								try 
-								{ 
-									System.out.println("Attempting world location: " + moduledir + "/world.dat" );
-									theWorld = new World ( moduledir + "/world.dat" , io , noSerCliente );
-								 	mundo = theWorld;
-									synchronized ( mundoSemaphore )
-									{
-										mundoSemaphore.notifyAll();
-									}
-									gameLog.addElement(moduledir + "/world.dat"); //primera línea del log, fichero de mundo
-								 }
-								catch ( java.io.FileNotFoundException loadworldfileioerror )
-								{ 
-									write("No encontrado el fichero del mundo. Tal vez el directorio seleccionado no sea un directorio de mundo AGE válido.\n"); 
-									return; 
-								}
-								catch ( java.io.IOException loadworldfileioerror2 )
-								{
-									write("No puedo leer el fichero del mundo. Tal vez el directorio seleccionado no sea un directorio de mundo AGE válido.\n"); 
-								  	return; 
-								}
-							}
-						
+							((ColoredSwingClient)io).showAfterLogLoad();
+							return;
 						}
-						*/
-						
-						theWorld = WorldLoader.loadWorld( moduledir , gameLog, io, mundoSemaphore);
-						if ( theWorld == null || io.isDisconnected() ) return;
 						mundo = theWorld;
 						
 						//{theWorld NOT null}
@@ -713,31 +622,6 @@ de la ventana hasta acabar de cargar.
 							JOptionPane.showMessageDialog(SwingAetheriaGameLoader.this, mess, UIMessages.getInstance().getMessage("age.version.warning.title"), JOptionPane.WARNING_MESSAGE);
 						}
 						
-						/*
-						org.w3c.dom.Document d = null;
-						try
-						{
-							d = theWorld.getXMLRepresentation();
-							System.out.println("D=null?" + (d==null) );
-						}
-						catch ( javax.xml.parsers.ParserConfigurationException exc )
-						{
-							System.out.println(exc);
-						}
-						*/
-						
-						/*
-						try
-						{
-							PrintStream ps = new PrintStream ( new FileOutputStream ( new File ( "elmundo.xml" ) ) );
-							ps.println(d);
-						}
-						catch ( FileNotFoundException fnfe )
-						{
-							System.out.println(fnfe);
-						}
-						*/
-						
 						//xml printout begin
 						
 						if ( Debug.DEBUG_OUTPUT )
@@ -803,7 +687,6 @@ de la ventana hasta acabar de cargar.
 							}
 							catch ( Exception exc )
 							{
-								//write("¡No se ha podido cargar el estado!\n");
 								((ColoredSwingClient)io).showAfterLogLoad();
 								write(UIMessages.getInstance().getMessage("swing.cannot.read.state","$file",stateFile));
 								write(exc.toString());
@@ -841,20 +724,21 @@ de la ventana hasta acabar de cargar.
 						}
 						gameLog.addElement(String.valueOf(theWorld.getRandomNumberSeed())); //segunda línea, semilla
 						
-						//System.out.println("Jugata creado.\n");
-						
-						setVisible(true);
+						//TODO use invoke method for this to avoid deadlocks:
+						try 
+						{
+							SwingUtilities.invokeAndWait( new Runnable() { public void run() { setVisible(true); } } );
+						} 
+						catch (InvocationTargetException e1) 
+						{
+							e1.printStackTrace();
+						} 
+						catch (InterruptedException e1) 
+						{
+							e1.printStackTrace();
+						}
 						
 						timeCount=0;
-						
-						/*
-						theWorld.escribir("\n\nAVISO IMPORTANTE:\n");
-						theWorld.escribir("Ésta es una versión Beta del Aetheria Game Engine. Ello quiere decir que el programa no está terminado, y si lo tienes es porque lo he difundido para que la gente vaya conociéndolo y para localizar los fallos y puntos débiles. Por lo tanto:\n");
-						theWorld.escribir("- Las funciones del programa están muy incompletas, faltando características que estarán presentes en la versión final (personajes seudointeligentes, combate, etcétera).\n");
-						theWorld.escribir("- Se mostrarán muchas veces mensajes que no son necesarios (debug) y no aparecerán, en aras de una mayor simplicidad y manejabilidad, en el programa final.\n");
-						theWorld.escribir("- Pueden aparecer errores, ya sea en forma de excepciones, mensajes de error o bloqueo del programa. Si esto sucede, te agradecería que me informaras del error (qué estabas haciendo cuando apareció, y mensajes de error que salieron, si es que salieron) en la dirección aetheria@irreality.org. Así podré eliminarlo y mejorar el programa.\n");
-						theWorld.escribir("La web del AGE es http://www.irreality.org/aetheria - ahí irán apareciendo las novedades y las nuevas versiones del engine.\n\n");
-						*/
 						
 						mundo = theWorld;
 							synchronized ( mundoSemaphore )
@@ -888,8 +772,6 @@ de la ventana hasta acabar de cargar.
 						maquinaEstados.start();		
 					
 						//System.out.println("ENGINE THREAD STARTED");
-						
-						System.out.println("noSerCliente = " + noSerCliente);
 						
 						//Esto engaña con los estados, lo quitamos.
 						/*

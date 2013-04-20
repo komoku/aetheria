@@ -151,22 +151,6 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow, GameTh
 								}
 								
 								CommonSwingFunctions.writeIntroductoryInfo(SwingSDIInterface.this);
-								
-								/*
-								write("Aetheria Game Engine v " + UIMessages.getInstance().getMessage("age.version") + "\n");
-
-								write( UIMessages.getInstance().getMessage("age.copyright") + "\n" );
-								write( UIMessages.getInstance().getMessage("intro.legal") + "\n" );
-
-								write("\n=============================================================");
-								write("\n" + io.getColorCode("information") + "Engine-related Version Info:");
-								write("\n" + io.getColorCode("information") + "[OS Layer]           " + System.getProperty("os.name") + " " + System.getProperty("os.version") + " " + System.getProperty("os.arch") + io.getColorCode("reset"));
-								write("\n" + io.getColorCode("information") + "[Java Layer]         " + System.getProperty("java.version") + io.getColorCode("reset"));
-								write("\n" + io.getColorCode("information") + "[Simulation Layer]   " + GameEngineThread.getVersion() + io.getColorCode("reset"));
-								write("\n" + io.getColorCode("information") + "[Object Code Layer]  " + ObjectCode.getInterpreterVersion() + io.getColorCode("reset"));
-								write("\n" + io.getColorCode("information") + "[UI Layer]           " + SwingSDIInterface.getVersion() + io.getColorCode("reset"));
-								write("\n=============================================================\n");
-								*/
 
 							}
 						}
@@ -178,11 +162,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow, GameTh
 				e.printStackTrace();
 			}
 
-
 			//System.out.println("2");
-
-			//areaTexto.setText(areaTexto.getText() + "Running on Aetheria Multiple Game Interface v 1.0 / swing-based MDI interface" );
-
 
 			String worldName;
 			World theWorld = null;
@@ -210,88 +190,18 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow, GameTh
 				e.printStackTrace();
 			}
 
-
 			//System.out.println("3");
-
-			//doUpdate2 = new UpdatingThread( this , doUpdate );
-			//doUpdate2.start();
-			//Thread.currentThread().yield();
-
-
-
-			//tres posibilidades:
-			//*nos han dado un nombre de fichero: mundo loquesea.xml
-			//*nos han dado un directorio y el mundo es directorio/world.xml
-			//*nos han dado un directorio y el mundo es directorio/world.dat
-
-			/*
-			File inputAsFile = new File(moduledir);
-			if ( inputAsFile.isFile() )
-			{
-
-				//nos han dado un fichero
-				//eventualmente esto debería ser the way to go, y el else de este if ser eliminado por antiguo, pero de momento aún se usa el else (TODO)
-
-				System.out.println("Attempting world location: " +  inputAsFile );
-				try
-				{
-					theWorld = new World ( moduledir , io , false );
-					mundo = theWorld;
-					System.out.println("World generated.\n");
-					synchronized ( mundoSemaphore )
-					{
-						mundoSemaphore.notifyAll();
-					}
-					gameLog.addElement( inputAsFile.getAbsolutePath() ); //primera línea del log, fichero de mundo
-				}
-				catch ( java.io.IOException ioe )
-				{
-					write("No puedo leer el fichero del mundo: " + inputAsFile + "\n"); 
-					ioe.printStackTrace();
-					return; 
-				}
-
-			}
-			else
-			{
-
-				//nos han dado un directorio
-
-				//buscar a ver si el mundo es un world.xml
-				//new World tanto si es xml como dat
-				try
-				{
-					System.out.println("Attempting world location: "  + moduledir + "/world.xml" );
-					theWorld = new World (  moduledir + "/world.xml" , io , false );
-					mundo = theWorld;
-					System.out.println("World generated.\n");
-					synchronized ( mundoSemaphore )
-					{
-						mundoSemaphore.notifyAll();
-					}
-					gameLog.addElement( moduledir + "/world.xml"); //primera línea del log, fichero de mundo
-				}
-				catch ( java.io.IOException e )
-				{
-
-					System.out.println(e);
-
-					//buscar a ver si el mundo es un world.dat? no en este cliente.
-				}
-
-			}
-
-			if ( theWorld == null )
-			{
-				write("No encontrado el fichero del mundo. Tal vez el directorio seleccionado no sea un directorio de mundo AGE válido.\n"); 
-				return; 
-			}*/
 			
 			try
 			{
 				theWorld = WorldLoader.loadWorld( moduledir , gameLog, io, mundoSemaphore);
 			}
 			catch ( Exception e )
+			/*
+			 * This shouldn't happen, because unchecked exceptions in world initialization scripts are caught before reaching this level,
+			 * and the loadWorld method doesn't throw its own exceptions (it returns null if the world cannot be loaded). But it's defensive
+			 * programming in case AGE forgets to catch some unchecked exception, which has happened in the past.
+			 */
 			{
 				if ( io != null ) ((ColoredSwingClient)io).showAfterLogLoad();
 				if ( io != null ) write ( "Exception on loading world: " + e );
@@ -345,19 +255,6 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow, GameTh
 				mess = mess + " " + UIMessages.getInstance().getMessage("age.download.url");
 				JOptionPane.showMessageDialog(SwingSDIInterface.this, mess, UIMessages.getInstance().getMessage("age.version.warning.title"), JOptionPane.WARNING_MESSAGE);
 			}
-
-			/*
-			org.w3c.dom.Document d = null;
-			try
-			{
-				d = theWorld.getXMLRepresentation();
-				System.out.println("D=null?" + (d==null) );
-			}
-			catch ( javax.xml.parsers.ParserConfigurationException exc )
-			{
-				System.out.println(exc);
-			}
-			*/
 
 			//usar estado si lo hay
 			if ( stateFile != null )
@@ -430,8 +327,6 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow, GameTh
 			maquinaEstados.start();		
 
 			//System.out.println("ENGINE THREAD STARTED");
-
-			System.out.println("noSerCliente = " + false);
 
 			//Esto engaña con los estados, lo quitamos.
 			/*
