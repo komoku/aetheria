@@ -96,17 +96,25 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 		return "Swing Applet AGE client, v0.1";
 	}
 
+	/**
+	 * Removes whatever was on the applet and changes it to a new ColoredSwingClient.
+	 */
+	private void initClient()
+	{
+		gameLog = new Vector(); //init game log
+		//setVisible(false);
+		getContentPane().removeAll();
+		mainPanel = new JPanel(); //panel que contiene al cliente
+		setMainPanel( mainPanel );
+		io = new ColoredSwingClient(SwingSDIApplet.this,gameLog); //components are added 'ere.
+		//setVisible(true);
+	}
+	
 	class LoaderThread extends Thread 
 	{
 
-
 		public void run ()
 		{
-
-
-			gameLog = new Vector(); //init game log
-			
-			Debug.println("1");
 
 			try
 			{
@@ -117,12 +125,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 							public void run()
 							{
 
-								//setVisible(false);
-								getContentPane().removeAll();
-								mainPanel = new JPanel(); //panel que contiene al cliente
-								setMainPanel( mainPanel );
-								io = new ColoredSwingClient(SwingSDIApplet.this,gameLog); //components are added 'ere.
-								//setVisible(true);
+								initClient();
 
 								CommonSwingFunctions.writeIntroductoryInfo(SwingSDIApplet.this);
 								
