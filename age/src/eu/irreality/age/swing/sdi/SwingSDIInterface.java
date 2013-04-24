@@ -109,18 +109,27 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow, GameTh
 		return "Swing-based simplified SDI client, v1.0";
 	}
 
+	/**
+	 * Removes whatever was on the window and changes it to a new ColoredSwingClient.
+	 */
+	private void initClient()
+	{
+		gameLog = new Vector(); //init game log
+		//setVisible(false);
+		//cover();
+		getContentPane().removeAll();
+		mainPanel = new JPanel(); //panel que contiene al cliente
+		setMainPanel( mainPanel );
+		io = new ColoredSwingClient(SwingSDIInterface.this,gameLog); //components are added 'ere.
+		//setVisible(true);
+		//uncover();
+	}
 
 	class LoaderThread extends Thread 
 	{
 
-
 		public void run ()
 		{
-
-
-			gameLog = new Vector(); //init game log
-
-			Debug.println("1");
 
 			try
 			{
@@ -131,14 +140,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow, GameTh
 							public void run()
 							{
 
-								//setVisible(false);
-								//cover();
-								getContentPane().removeAll();
-								mainPanel = new JPanel(); //panel que contiene al cliente
-								setMainPanel( mainPanel );
-								io = new ColoredSwingClient(SwingSDIInterface.this,gameLog); //components are added 'ere.
-								//setVisible(true);
-								//uncover();
+								initClient();
 								
 								if ( logFile != null )
 								{

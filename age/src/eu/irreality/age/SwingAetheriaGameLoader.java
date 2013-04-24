@@ -437,15 +437,23 @@ de la ventana hasta acabar de cargar.
 	private String stateFile;
 	private boolean noSerCliente;
 	
+	/**
+	 * Removes whatever was on the window and changes it to a new ColoredSwingClient.
+	 */
+	private void initClient()
+	{
+		gameLog = new Vector(); //init game log
+		getContentPane().removeAll();
+		mainPanel = new JPanel(); //panel que contiene al cliente
+		setMainPanel( mainPanel );
+		io = new ColoredSwingClient(esto,gameLog); //components are added 'ere.
+	}
+	
 	class LoaderThread extends Thread 
 	{
 	
-		
 					public void run ()
 					{
-
-						
-						gameLog = new Vector(); //init game log
 						
 						//io = new SwingEntradaSalida(campoTexto,scrollAreaTexto,areaTexto,gameLog);
 						//io = new ColoredSwingClient(esto,campoTexto,scrollAreaTexto,areaTexto,gameLog);
@@ -463,10 +471,7 @@ de la ventana hasta acabar de cargar.
 										public void run()
 										{
 										
-											getContentPane().removeAll();
-											mainPanel = new JPanel(); //panel que contiene al cliente
-											setMainPanel( mainPanel );
-											io = new ColoredSwingClient(esto,gameLog); //components are added 'ere.
+											initClient();
 											
 											if ( logFile != null )
 											{
