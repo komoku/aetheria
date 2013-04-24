@@ -789,6 +789,7 @@ de la ventana hasta acabar de cargar.
 										{
 											repaint();
 											updateNow();
+											/*
 											if ( !fullScreenMode )
 											{
 												setVisible(false);
@@ -799,6 +800,7 @@ de la ventana hasta acabar de cargar.
 												fullScreenFrame.setVisible(false);
 												fullScreenFrame.setVisible(true);
 											}
+											*/
 										}
 									}
 							);
