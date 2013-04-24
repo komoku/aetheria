@@ -618,6 +618,16 @@ public abstract class Entity
 	 */
 	protected int lenientMatchesCommand ( String commandArgs , String referenceNameList )
 	{
+		StringTokenizer st = new StringTokenizer ( referenceNameList , "$" );
+		int j = 1; //current token being read, starting at 1
+		while ( st.hasMoreTokens() )
+		{
+			String currentReferenceName = st.nextToken();
+			if ( commandArgs.toLowerCase().contains(currentReferenceName.toLowerCase()) )
+				return j;
+		}
+		return 0;
+		/*
 		int nToksList = StringMethods.numToks( referenceNameList , '$');
 		for ( int j = 1 ; j <= nToksList ; j++ )
 		{
@@ -626,6 +636,7 @@ public abstract class Entity
 				return j;
 		}
 		return 0;
+		*/
 	}
 	
 	
@@ -638,6 +649,23 @@ public abstract class Entity
 	 */
 	protected int moderateMatchesCommand ( String commandArgs , String referenceNameList )
 	{
+		StringTokenizer st = new StringTokenizer ( referenceNameList , "$" );
+		int j = 1; //current token being read, starting at 1
+		while ( st.hasMoreTokens() )
+		{
+			String currentReferenceName = st.nextToken();
+			int position = commandArgs.toLowerCase().indexOf(currentReferenceName.toLowerCase());
+			if ( position < 0 ) //does not match
+				continue;
+			if ( position != 0 && !Character.isWhitespace(commandArgs.charAt(position-1)) ) //matches but starts at a place other than beginning/whitespace
+				continue;
+			if ( position+currentReferenceName.length() != commandArgs.length() && !Character.isWhitespace(commandArgs.charAt(position+currentReferenceName.length())) ) //matches but ends at a place other than end/whitespace
+				continue;
+			//if we have reached this point, the match is acceptable
+			return j;
+		}
+		return 0;
+		/*
 		int nToksList = StringMethods.numToks( referenceNameList , '$');
 		for ( int j = 1 ; j <= nToksList ; j++ )
 		{
@@ -653,6 +681,7 @@ public abstract class Entity
 			return j;
 		}
 		return 0;
+		*/
 	}
 	
 	/**
