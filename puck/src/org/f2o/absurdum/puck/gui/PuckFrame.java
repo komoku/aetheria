@@ -217,25 +217,33 @@ public class PuckFrame extends JFrame
 	public void saveChangesInCurrentFile ( ) throws Exception
 	{
 		File f = new File(editingFileName);
-
-			Document d = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-			d.appendChild(graphPanel.getWorldNode().getAssociatedPanel().getXML(d));
-			Transformer t = TransformerFactory.newInstance().newTransformer();
-			t.setOutputProperty(OutputKeys.INDENT,"yes");
-			Source s = new DOMSource(d);
-			Result r = new StreamResult(f);
-			t.transform(s,r);
-			editingFileName = f.toString();
-			refreshTitle();
-			
+		saveToFile(f);
+		editingFileName = f.toString();
+		refreshTitle();	
 		addRecentFile(f);
-
 	}
 	
 	private void addRecentFile ( File f )
 	{
 		PuckConfiguration.getInstance().addRecentFile(f);
 		updateRecentMenu();
+	}
+	
+	
+	/**
+	 * Save the PUCK world to a given file. This is used by saveAs().
+	 * @param f Path to the file where the world will be saved.
+	 * @throws Exception IO and XML-related exceptions.
+	 */
+	public void saveToFile ( File f ) throws Exception
+	{
+		Document d = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+		d.appendChild(graphPanel.getWorldNode().getAssociatedPanel().getXML(d));
+		Transformer t = TransformerFactory.newInstance().newTransformer();
+		t.setOutputProperty(OutputKeys.INDENT,"yes");
+		Source s = new DOMSource(d);
+		Result r = new StreamResult(f);
+		t.transform(s,r);
 	}
 	
 	/**
@@ -248,27 +256,10 @@ public class PuckFrame extends JFrame
 		if ( opt == JFileChooser.APPROVE_OPTION )
 		{
 			File f = jfc.getSelectedFile();
-			//try
-			//{
-				Document d = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-				d.appendChild(graphPanel.getWorldNode().getAssociatedPanel().getXML(d));
-				Transformer t = TransformerFactory.newInstance().newTransformer();
-				t.setOutputProperty(OutputKeys.INDENT,"yes");
-				Source s = new DOMSource(d);
-				Result r = new StreamResult(f);
-				t.transform(s,r);
-				editingFileName = f.toString();
-			//	saveMenuItem.setEnabled(true);
-				refreshTitle();
-			//}
-			//catch ( Exception e )
-			//{
-			//	JOptionPane.showMessageDialog(PuckFrame.this,e,"Whoops!",JOptionPane.ERROR_MESSAGE);
-			//	e.printStackTrace();
-			//}
-				
-				addRecentFile(f);
-				
+			saveToFile(f);
+			editingFileName = f.toString();
+			refreshTitle();
+			addRecentFile(f);	
 			return true;
 		}
 		else
