@@ -454,14 +454,7 @@ de la ventana hasta acabar de cargar.
 	
 					public void run ()
 					{
-						
-						//io = new SwingEntradaSalida(campoTexto,scrollAreaTexto,areaTexto,gameLog);
-						//io = new ColoredSwingClient(esto,campoTexto,scrollAreaTexto,areaTexto,gameLog);
-						
-						
-						//System.out.println("1");
-						
-						
+												
 						try
 						{
 							SwingUtilities.invokeAndWait 
