@@ -5,10 +5,15 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -95,6 +100,7 @@ public class ExportAppletDialog extends JDialog
 			public void actionPerformed(ActionEvent e)
 			{
 				JFileChooser jfc = new JFileChooser(".");
+				jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 				int opt = jfc.showSaveDialog(ExportAppletDialog.this);
 				if ( opt == JFileChooser.APPROVE_OPTION )
 				{
@@ -115,6 +121,7 @@ public class ExportAppletDialog extends JDialog
 		} );
 		
 		DialogUtils.registerEscapeAction(this);
+		pack();
 		
 	}
 	
@@ -226,9 +233,31 @@ public class ExportAppletDialog extends JDialog
 			exportLib(targetLibFile,findLibFileStartingWith("svgSalamander"),libHtmlString);
 		}
 		
+		//copy the AgeCore.jar file
+		File ageCoreSource = new File ( Paths.getWorkingDirectory() , "AgeCore.jar" );
+		File ageCoreTarget = new File ( f , "AgeCore.jar" );
+		FileUtils.copyFile(ageCoreSource,ageCoreTarget);
+		
 		//create the html index
 		//TODO Continue here.
-		
+		InputStream stream = this.getClass().getClassLoader().getResourceAsStream("org/f2o/absurdum/puck/staticconf/html/applet-template.html");
+		StringBuffer sb = new StringBuffer();
+		BufferedReader br = new BufferedReader ( new InputStreamReader ( stream , "UTF-8" ) );
+		String linea = "";
+		while ( linea != null )
+		{
+			linea = br.readLine();
+			if ( linea != null )
+			{
+				linea = linea.replace("$LIBRARIES",libHtmlString.toString());
+				sb.append(linea+"\n");
+			}
+		}
+		File htmlFile = new File( f , "index.html" );
+		OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(htmlFile));
+		osw.write(sb.toString());
+		osw.close();
+		dispose();
 	}
 	
 }

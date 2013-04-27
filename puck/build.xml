@@ -62,6 +62,7 @@
 			<include name="**/worldTemplates.xml"/>-->
 			<include name="**/*.tpl"/>
 			<include name="**/staticconf/**/*.xml"/>
+			<include name="**/staticconf/html/**/*.html"/>
 		</fileset>
 	</copy>
   	
