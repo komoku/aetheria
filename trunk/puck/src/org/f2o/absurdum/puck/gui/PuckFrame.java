@@ -54,6 +54,7 @@ import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
 import org.f2o.absurdum.puck.gui.dialog.BeanShellErrorsDialog;
 import org.f2o.absurdum.puck.gui.dialog.DocumentationLinkDialog;
 import org.f2o.absurdum.puck.gui.dialog.ExecuteDialog;
+import org.f2o.absurdum.puck.gui.dialog.ExportAppletDialog;
 import org.f2o.absurdum.puck.gui.dialog.FindEntityDialog;
 import org.f2o.absurdum.puck.gui.dialog.IconSizesDialog;
 import org.f2o.absurdum.puck.gui.dialog.ShowHideDialog;
@@ -791,6 +792,19 @@ public class PuckFrame extends JFrame
 					}
 				}
 				);
+		JMenu exportMenu = new JMenu(UIMessages.getInstance().getMessage("menu.file.export"));
+		JMenuItem exportAppletMenuItem = new JMenuItem(UIMessages.getInstance().getMessage("menu.file.export.applet"));
+		exportAppletMenuItem.addActionListener ( new ActionListener()
+				{
+					public void actionPerformed ( ActionEvent evt )
+					{
+						ExportAppletDialog dial = new ExportAppletDialog ( PuckFrame.this );
+						dial.setVisible(true);
+					}
+				}
+				);
+		exportMenu.add(exportAppletMenuItem);
+		
 		fileMenu.add(newMenu);
 		fileMenu.add(openMenuItem);
 		fileMenu.add(openRecentMenu);
@@ -799,6 +813,7 @@ public class PuckFrame extends JFrame
 		saveMenuItem.setEnabled(false);
 		fileMenu.add(saveMenuItem);
 		fileMenu.add(saveAsMenuItem);
+		fileMenu.add(exportMenu);
 		fileMenu.add(new JSeparator());
 		fileMenu.add(exitMenuItem);
 		
