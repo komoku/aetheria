@@ -105,6 +105,11 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 	{
 		maquinaEstados = get;
 	}
+	
+	public Vector getGameLog ( )
+	{
+		return gameLog;
+	}
 
 	public String getVersion ( )
 	{
@@ -114,7 +119,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 	/**
 	 * Removes whatever was on the applet and changes it to a new ColoredSwingClient.
 	 */
-	private void initClient()
+	public void initClient()
 	{
 		gameLog = new Vector(); //init game log
 		//setVisible(false);
