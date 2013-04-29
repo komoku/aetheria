@@ -90,6 +90,21 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 	{
 		return io;
 	}
+	
+	public void setIO ( InputOutputClient io )
+	{
+		this.io = io;
+	}
+	
+	public GameEngineThread getEngineThread ( )
+	{
+		return maquinaEstados;
+	}
+
+	public void setEngineThread ( GameEngineThread get )
+	{
+		maquinaEstados = get;
+	}
 
 	public String getVersion ( )
 	{
@@ -422,9 +437,14 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 		return io;
 	}
 
-	public World getMundo()
+	public World getWorld()
 	{
 		return mundo;
+	}
+	
+	public void setWorld ( World w )
+	{
+		mundo = w;
 	}
 
 	public JMenuBar getTheJMenuBar()

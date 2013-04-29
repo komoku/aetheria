@@ -71,11 +71,25 @@ public class SwingAetheriaGameLoader extends JInternalFrame implements Informado
 	//
 	private GameEngineThread maquinaEstados;
 	
-	public World getMundo()
+	public World getWorld()
 	{
 		return mundo;
 	}
+	
+	public void setWorld ( World w )
+	{
+		mundo = w;
+	}
+	
+	public GameEngineThread getEngineThread ( )
+	{
+		return maquinaEstados;
+	}
 
+	public void setEngineThread ( GameEngineThread get )
+	{
+		maquinaEstados = get;
+	}
 
 	public String getVersion ( )
 	{
