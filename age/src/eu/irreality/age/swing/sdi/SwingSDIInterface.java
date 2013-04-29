@@ -119,6 +119,11 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow, GameTh
 		maquinaEstados = get;
 	}
 	
+	public Vector getGameLog ( )
+	{
+		return gameLog;
+	}
+	
 	public String getVersion ( )
 	{
 		return "Swing-based simplified SDI client, v1.0";
@@ -127,7 +132,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow, GameTh
 	/**
 	 * Removes whatever was on the window and changes it to a new ColoredSwingClient.
 	 */
-	private void initClient()
+	public void initClient()
 	{
 		gameLog = new Vector(); //init game log
 		//setVisible(false);

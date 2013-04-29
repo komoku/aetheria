@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.FocusListener;
+import java.util.Vector;
 
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
@@ -12,13 +13,14 @@ import javax.swing.JPanel;
 import eu.irreality.age.GameEngineThread;
 import eu.irreality.age.InputOutputClient;
 import eu.irreality.age.World;
+import eu.irreality.age.observer.GameThreadObserver;
 
 /**
  * Interface for any window that is able to serve as an AGE client.
  * For example, SwingAetheriaGameLoader is one.
  *
  */
-public interface AGEClientWindow extends AGELoggingWindow
+public interface AGEClientWindow extends AGELoggingWindow, GameThreadObserver
 {
 
     public void setTitle ( String s );
@@ -54,6 +56,8 @@ public interface AGEClientWindow extends AGELoggingWindow
     public void guardarLog();
     public void guardarEstado();
     
+    public Vector getGameLog();
+    
     public void exitNow();
  
     public boolean supportsFullScreen();
@@ -64,6 +68,8 @@ public interface AGEClientWindow extends AGELoggingWindow
      * Writes a String to the client window.
      */
     public void write ( String s );
+    
+    public void initClient();
     
     public InputOutputClient getIO();
     public void setIO ( InputOutputClient io );
@@ -83,6 +89,8 @@ public interface AGEClientWindow extends AGELoggingWindow
 	 */
 	public Dimension getScreenSize();
 
+	public void onAttach ( GameEngineThread thread );
+	public void onDetach ( GameEngineThread thread );
 	
     
 }

@@ -90,6 +90,11 @@ public class SwingAetheriaGameLoader extends JInternalFrame implements Informado
 	{
 		maquinaEstados = get;
 	}
+	
+	public Vector getGameLog ( )
+	{
+		return gameLog;
+	}
 
 	public String getVersion ( )
 	{
@@ -454,7 +459,7 @@ de la ventana hasta acabar de cargar.
 	/**
 	 * Removes whatever was on the window and changes it to a new ColoredSwingClient.
 	 */
-	private void initClient()
+	public void initClient()
 	{
 		gameLog = new Vector(); //init game log
 		getContentPane().removeAll();
