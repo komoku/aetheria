@@ -103,7 +103,22 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow, GameTh
 	{
 		return io;
 	}
+	
+	public void setIO ( InputOutputClient io )
+	{
+		this.io = io;
+	}
+	
+	public GameEngineThread getEngineThread ( )
+	{
+		return maquinaEstados;
+	}
 
+	public void setEngineThread ( GameEngineThread get )
+	{
+		maquinaEstados = get;
+	}
+	
 	public String getVersion ( )
 	{
 		return "Swing-based simplified SDI client, v1.0";
@@ -471,9 +486,14 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow, GameTh
 		return io;
 	}
 
-	public World getMundo()
+	public World getWorld()
 	{
 		return mundo;
+	}
+	
+	public void setWorld ( World w )
+	{
+		mundo = w;
 	}
 
 	public JMenuBar getTheJMenuBar()

@@ -9,6 +9,7 @@ import java.awt.event.FocusListener;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
+import eu.irreality.age.GameEngineThread;
 import eu.irreality.age.InputOutputClient;
 import eu.irreality.age.World;
 
@@ -31,7 +32,8 @@ public interface AGEClientWindow extends AGELoggingWindow
     public void setGlassPane(Component glassPane); //hides when loading log
     public Component getGlassPane();
     
-    public World getMundo();
+    public World getWorld ();
+    public void setWorld ( World w );
     
     public void setFullScreenMode(boolean b);
     public boolean isFullScreenMode();
@@ -64,6 +66,10 @@ public interface AGEClientWindow extends AGELoggingWindow
     public void write ( String s );
     
     public InputOutputClient getIO();
+    public void setIO ( InputOutputClient io );
+    
+    public GameEngineThread getEngineThread();
+    public void setEngineThread ( GameEngineThread thread );
     
     /**
      * Returns the version of the client window.

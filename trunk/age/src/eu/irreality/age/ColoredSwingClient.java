@@ -533,9 +533,9 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		{
 			public void actionPerformed ( ActionEvent evt )
 			{
-				if ( window.getMundo() != null )
+				if ( window.getWorld() != null )
 				{
-					VisualConfiguration vc = ( window.getMundo().getVisualConfiguration() );
+					VisualConfiguration vc = ( window.getWorld().getVisualConfiguration() );
 					if ( vc != null ) 
 					{
 						setVisualConfiguration ( vc );
