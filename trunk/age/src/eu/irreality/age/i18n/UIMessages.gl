@@ -246,6 +246,7 @@ language=Idioma
 language.es=Castelán
 language.en=Inglés
 language.gl=Galego
+language.eo=Esperanto
 language.changed=O idioma de AGE cambiouse a galego; pero necesitarás pechar y voltar a abrir AGE para ver toda a interfaz en galego.
 language.changed.title=Cambio de idioma
 about.frame.title=Acerca de AGE
