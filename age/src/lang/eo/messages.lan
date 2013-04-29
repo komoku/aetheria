@@ -461,13 +461,13 @@ direction.full.d=sube
 #open/close default behaviour
 you.unlock.item=Vi malfermas $item pri $key.
 cant.unlock.key=Ne ŝajnas ke $item malfermas pri $key.
-you.lock.item=Vi fermas $item pri $key.
-cant.lock.key=Ne ŝajnas ke $item povas fermi pri $key.
+you.lock.item=Vi ŝlosi $item pri $key.
+cant.lock.key=Ne ŝajnas ke $item povas ŝlosi pri $key.
 cant.open.already.open=Sed, se $item ja estas malfermata...
-cant.open.locked=Ŝajnas ke $item estas fermi pri klavo.
+cant.open.locked=Ŝajnas ke $item estas fermi pri ŝlosilo.
 you.open.item=Vi malfermas $item.
 cant.close.already.closed=Sed, se $item ja estas fermata...
-you.close.item=Cierras $item.
+you.close.item=Vi fermas $item.
 
 #to show in inventories, etc. when you have nothing
 nothing=nenio
