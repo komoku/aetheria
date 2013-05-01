@@ -133,6 +133,14 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 		//setVisible(true);
 	}
 	
+	public void prepareLog( World theWorld ) throws Exception
+	{
+		logStream.mark(100000);
+		theWorld.prepareLog(logStream);
+		logStream.reset();
+		theWorld.setRandomNumberSeed( logStream );
+	}
+	
 	class LoaderThread extends Thread 
 	{
 
@@ -287,10 +295,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 			{
 				try //different on applet
 				{
-					logStream.mark(100000);
-					theWorld.prepareLog(logStream);
-					logStream.reset();
-					theWorld.setRandomNumberSeed( logStream );
+					prepareLog( theWorld );
 				}
 				catch ( Exception exc )
 				{

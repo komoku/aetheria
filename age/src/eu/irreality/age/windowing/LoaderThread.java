@@ -25,7 +25,6 @@ public class LoaderThread extends Thread
 
 	private String moduledir;
 	private boolean usarLog;
-	private String logFile;
 	private String stateFile;
 	private boolean noSerCliente;
 	
@@ -33,12 +32,11 @@ public class LoaderThread extends Thread
 	
 	private AGEClientWindow window;
 
-	public LoaderThread ( String moduledir, boolean usarLog, String logFile, String stateFile, boolean noSerCliente, AGEClientWindow window , Object mundoSemaphore ) 
+	public LoaderThread ( String moduledir, boolean usarLog, String stateFile, boolean noSerCliente, AGEClientWindow window , Object mundoSemaphore ) 
 	{
 		super("Loader Thread: " + moduledir);
 		this.moduledir = moduledir;
 		this.usarLog = usarLog;
-		this.logFile = logFile;
 		this.stateFile = stateFile;
 		this.noSerCliente = noSerCliente;
 		this.window = window;
@@ -201,8 +199,7 @@ public class LoaderThread extends Thread
 		{
 			try
 			{
-				theWorld.prepareLog(logFile);
-				theWorld.setRandomNumberSeed( logFile );
+				window.prepareLog(theWorld);
 			}
 			catch ( Exception exc )
 			{

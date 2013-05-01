@@ -77,6 +77,10 @@ public interface AGEClientWindow extends AGELoggingWindow, GameThreadObserver
     public GameEngineThread getEngineThread();
     public void setEngineThread ( GameEngineThread thread );
     
+    
+    public void prepareLog ( World theWorld ) throws Exception;
+    
+    
     /**
      * Returns the version of the client window.
      */

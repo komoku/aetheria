@@ -468,6 +468,18 @@ de la ventana hasta acabar de cargar.
 		io = new ColoredSwingClient(esto,gameLog); //components are added 'ere.
 	}
 	
+	public void prepareLog ( World theWorld ) throws Exception
+	{
+		/**TEMPORAL. CAMBIAR ESTO.**/
+		/**El log debe ser multiplayer.**/
+		/*Quitar esta línea:*/
+		//DONE!!
+		//theWorld.getPlayer().prepareLog ( logFile ); //el jugador ejecutará los comandos del log
+		
+		theWorld.prepareLog(logFile);								
+		theWorld.setRandomNumberSeed( logFile );
+	}
+	
 	class LoaderThread extends Thread 
 	{
 	
@@ -716,15 +728,7 @@ de la ventana hasta acabar de cargar.
 						{
 							try
 							{
-							
-								/**TEMPORAL. CAMBIAR ESTO.**/
-								/**El log debe ser multiplayer.**/
-								/*Quitar esta línea:*/
-								//DONE!!
-								//theWorld.getPlayer().prepareLog ( logFile ); //el jugador ejecutará los comandos del log
-								
-								theWorld.prepareLog(logFile);								
-								theWorld.setRandomNumberSeed( logFile );
+								prepareLog ( theWorld );
 							}
 							catch ( Exception exc )
 							{

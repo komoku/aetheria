@@ -144,7 +144,13 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow, GameTh
 		//setVisible(true);
 		//uncover();
 	}
-
+	
+	public void prepareLog ( World theWorld ) throws Exception
+	{
+		theWorld.prepareLog(logFile);
+		theWorld.setRandomNumberSeed( logFile );
+	}
+	
 	class LoaderThread extends Thread 
 	{
 
@@ -299,8 +305,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow, GameTh
 			{
 				try
 				{
-					theWorld.prepareLog(logFile);
-					theWorld.setRandomNumberSeed( logFile );
+					prepareLog(theWorld);
 				}
 				catch ( Exception exc )
 				{
