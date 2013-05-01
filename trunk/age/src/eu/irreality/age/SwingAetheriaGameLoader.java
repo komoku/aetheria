@@ -20,8 +20,10 @@ import eu.irreality.age.swing.SwingMenuAetheria;
 import eu.irreality.age.swing.applet.SwingSDIApplet;
 import eu.irreality.age.swing.config.AGEConfiguration;
 import eu.irreality.age.swing.menu.ServerMenuHandler;
+import eu.irreality.age.swing.sdi.SwingSDIInterface;
 import eu.irreality.age.util.VersionComparator;
 import eu.irreality.age.windowing.AGEClientWindow;
+import eu.irreality.age.windowing.LoaderThread;
 import eu.irreality.age.windowing.UpdatingRun;
 
 import java.io.*; //savegame
@@ -480,364 +482,364 @@ de la ventana hasta acabar de cargar.
 		theWorld.setRandomNumberSeed( logFile );
 	}
 	
-	class LoaderThread extends Thread 
-	{
-	
-					public void run ()
-					{
-												
-						try
-						{
-							SwingUtilities.invokeAndWait 
-							( 
-									new Runnable()
-									{
-										public void run()
-										{
-										
-											initClient();
-											
-											if ( usarLog )
-											{
-												((ColoredSwingClient)io).hideForLogLoad();
-												if ( ((ColoredSwingClient)io).getSoundClient() instanceof AGESoundClient )
-												{
-													AGESoundClient asc = (AGESoundClient) ((ColoredSwingClient)io).getSoundClient();
-													asc.deactivate(); //will be activated on log end (player:endOfLog()
-												}
-											}
-											
-											CommonSwingFunctions.writeIntroductoryInfo(SwingAetheriaGameLoader.this);
-											
-										}
-									}
-							);
-						}
-						catch ( Exception e )
-						{
-							if ( io != null ) ((ColoredSwingClient)io).showAfterLogLoad();
-							e.printStackTrace();
-						}
-							
-						//System.out.println("2");
-					
-						String worldName;
-						World theWorld = null;
-						
-						if ( moduledir == null || moduledir.length() == 0 ) moduledir="aetherworld";
-					
-						
-						try
-						{
-							SwingUtilities.invokeAndWait 
-							( 
-									new Runnable()
-									{
-										public void run()
-										{
-											repaint();
-											updateNow();
-										}
-									}
-							);
-						}
-						catch ( Exception e )
-						{
-							((ColoredSwingClient)io).showAfterLogLoad();
-							e.printStackTrace();
-						}
-							
-						//System.out.println("3");
-						
-						try
-						{
-							theWorld = WorldLoader.loadWorld( moduledir , gameLog, io, mundoSemaphore);
-						}
-						catch ( Exception e )
-						/*
-						 * This shouldn't happen, because unchecked exceptions in world initialization scripts are caught before reaching this level,
-						 * and the loadWorld method doesn't throw its own exceptions (it returns null if the world cannot be loaded). But it's defensive
-						 * programming in case AGE forgets to catch some unchecked exception, which has happened in the past.
-						 */
-						{
-							if ( io != null ) ((ColoredSwingClient)io).showAfterLogLoad();
-							if ( io != null ) write ( "Exception on loading world: " + e );
-							e.printStackTrace();
-						}
-						if ( theWorld == null || io.isDisconnected() ) //io could be disconnected due to closing the window before assigning player 
-						{
-							((ColoredSwingClient)io).showAfterLogLoad();
-							return;
-						}
-						mundo = theWorld;
-						
-						//{theWorld NOT null}
-									
-						final World theFinalWorld = theWorld;
-						
-						
-						try
-						{
-							SwingUtilities.invokeAndWait 
-							( 
-									new Runnable()
-									{
-										public void run()
-										{
-										
-										updateNow();
-				
-										//atender telnet
-											//SimpleTelnetClientHandler stch = new SimpleTelnetClientHandler ( theWorld , 6 , (short)8010 );
-											//No. Dar medios para meterla en partidas dedicadas en forma de PartidaEnCurso.
-					
-										if ( theFinalWorld.getModuleName() != null && theFinalWorld.getModuleName().length() > 0 )
-											setTitle(theFinalWorld.getModuleName());
-										}
-									}
-								);
-								
-						}
-						catch ( Exception e )
-						{
-							((ColoredSwingClient)io).showAfterLogLoad();
-							e.printStackTrace();
-						}
-						
-						
-						//add player if there isn't any
-						/*
-						if ( theWorld.getPlayerList().size() < 1 && !noSerCliente ) //pues en XML ya se cargan solos los jugadores
-						{
-						
-							Player theProtagonist;
-							
-							try
-							{
-								theProtagonist = new Player ( theWorld , io );
-							}
-							catch ( java.io.IOException loadplayerfileioerror )
-							{
-							
-								try
-								{
-									//from template
-									System.out.println("Adding player, since there isn't any.");
-									theWorld.addNewPlayerASAP ( io );
-								}
-								catch ( XMLtoWorldException xml2we )
-								{	
-									escribir("No puedo leer el fichero del jugador ni usar plantillas.\n");
-									return;
-								}
-							}
-						
-						}
-						*/
-						
-						
-						if ( new VersionComparator().compare(GameEngineThread.getVersionNumber(),theWorld.getRequiredAGEVersion()) < 0 )
-						{
-							String mess = UIMessages.getInstance().getMessage("age.version.warning",
-									"$curversion",GameEngineThread.getVersionNumber(),"$reqversion",theWorld.getRequiredAGEVersion(),
-									"$world",theWorld.getModuleName());
-							mess = mess + " " + UIMessages.getInstance().getMessage("age.download.url");
-							/*
-							String mess = "Estás usando la versión " +
-								GameEngineThread.getVersionNumber() + " de AGE; pero el mundo " + theWorld.getModuleName() +
-								" requiere la versión " + theWorld.getRequiredAGEVersion() + " como mínimo. Podría no funcionar " +
-								" si no te bajas una nueva versión de AGE en http://code.google.com/p/aetheria";
-							*/
-							JOptionPane.showMessageDialog(SwingAetheriaGameLoader.this, mess, UIMessages.getInstance().getMessage("age.version.warning.title"), JOptionPane.WARNING_MESSAGE);
-						}
-						
-						//xml printout begin
-						
-						if ( Debug.DEBUG_OUTPUT )
-						{
-							
-							org.w3c.dom.Document d = null;
-							try
-							{
-								d = theWorld.getXMLRepresentation();
-							}
-							catch ( javax.xml.parsers.ParserConfigurationException exc )
-							{
-								System.out.println(exc);
-							}
-						
-							javax.xml.transform.stream.StreamResult sr = null;
-						
-							try
-							{
-								sr = new javax.xml.transform.stream.StreamResult ( new FileOutputStream ( "theworld.xml" ) );
-							}
-							catch ( FileNotFoundException fnfe ) //FileOutputStream <init>
-							{
-								System.out.println(fnfe);
-							}
-							
-							//hace la transformacion identidad (copia), eso si, escribiendo en ISO.
-							try
-							{
-								javax.xml.transform.Transformer tr = javax.xml.transform.TransformerFactory.newInstance().newTransformer();
-							
-								tr.setOutputProperty ( javax.xml.transform.OutputKeys.ENCODING , "ISO-8859-1" );
-							
-								javax.xml.transform.Source s = new javax.xml.transform.dom.DOMSource ( d );
-							
-								//Debug.println("Nodo:" + ((javax.xml.transform.dom.DOMSource)s).getNode());
-							
-								tr.transform(s,sr); //si esto tira un NullPointerException, la experiencia indica que puede ser por dejar algún atributo a null, y esto puede pasar en código descuidado si no se ponen todos los atributos posibles en un tag XML.
-								//nota: también puede ser porque falte un elemento.
-								
-							}
-							catch ( javax.xml.transform.TransformerConfigurationException tfe ) //newTransformer()
-							{
-								System.out.println(tfe);
-							}
-							catch ( javax.xml.transform.TransformerException te ) //transform()
-							{
-								System.out.println(te);
-							}
-						
-						}
-						
-						
-						//xml printout end
-						
-						
-						//usar estado si lo hay
-						if ( stateFile != null )
-						{
-							try
-							{
-								theWorld.loadState ( stateFile );
-							}
-							catch ( Exception exc )
-							{
-								((ColoredSwingClient)io).showAfterLogLoad();
-								write(UIMessages.getInstance().getMessage("swing.cannot.read.state","$file",stateFile));
-								write(exc.toString());
-								exc.printStackTrace();
-							}
-						}
-						
-						
-						if ( usarLog )
-						{
-							try
-							{
-								prepareLog ( theWorld );
-							}
-							catch ( Exception exc )
-							{
-								((ColoredSwingClient)io).showAfterLogLoad();
-								//write("Excepción al leer el fichero de log: " + exc + "\n");
-								write(UIMessages.getInstance().getMessage("swing.cannot.read.log","$exc",exc.toString()));
-								exc.printStackTrace();
-								return;
-							}
-						}
-						else
-						{
-							theWorld.setRandomNumberSeed();
-						}
-						gameLog.addElement(String.valueOf(theWorld.getRandomNumberSeed())); //segunda línea, semilla
-						
-						//TODO use invoke method for this to avoid deadlocks:
-						try 
-						{
-							SwingUtilities.invokeAndWait( new Runnable() { public void run() { setVisible(true); } } );
-						} 
-						catch (InvocationTargetException e1) 
-						{
-							e1.printStackTrace();
-						} 
-						catch (InterruptedException e1) 
-						{
-							e1.printStackTrace();
-						}
-						
-						timeCount=0;
-						
-						mundo = theWorld;
-							synchronized ( mundoSemaphore )
-							{
-								mundoSemaphore.notifyAll();
-							}
-						
-						/* UNCOMMENT THIS FOR REAL-TIME
-						GameEngineThread maquinaEstados =
-							new GameEngineThread ( 
-								theWorld.getPlayer(),
-								theWorld,
-								esto , true );
-						
-						maquinaEstados.setRealTimeQuantum(100);
-						*/
-						
-				
-
-							
-						maquinaEstados =
-							new GameEngineThread ( 
-								theWorld, false );
-						
-						maquinaEstados.attachObserver(SwingAetheriaGameLoader.this);
-						maquinaEstados.attachObserver(new ServerMenuHandler(SwingAetheriaGameLoader.this));
-						
-						
-						//System.out.println("STARTING ENGINE THREAD");
-						
-						maquinaEstados.start();		
-					
-						//System.out.println("ENGINE THREAD STARTED");
-						
-						//Esto engaña con los estados, lo quitamos.
-						/*
-						if (noSerCliente)
-							write("Este mundo se está ejecutando en modo Dedicado. Por eso no ves nada aquí: no eres jugador.");
-						*/	
-									
-						try
-						{
-							SwingUtilities.invokeAndWait 
-							( 
-									new Runnable()
-									{
-										public void run()
-										{
-											repaint();
-											updateNow();
-											/*
-											if ( !fullScreenMode )
-											{
-												setVisible(false);
-												setVisible(true);
-											}
-											else
-											{
-												fullScreenFrame.setVisible(false);
-												fullScreenFrame.setVisible(true);
-											}
-											*/
-										}
-									}
-							);
-						}
-						catch ( Exception e )
-						{
-							e.printStackTrace();
-						}
-						
-						if ( io instanceof ColoredSwingClient )
-							((ColoredSwingClient)io).refreshFocus();
-
-						
-						
-					} //end run
-	}
+//	class LoaderThread extends Thread 
+//	{
+//	
+//					public void run ()
+//					{
+//												
+//						try
+//						{
+//							SwingUtilities.invokeAndWait 
+//							( 
+//									new Runnable()
+//									{
+//										public void run()
+//										{
+//										
+//											initClient();
+//											
+//											if ( usarLog )
+//											{
+//												((ColoredSwingClient)io).hideForLogLoad();
+//												if ( ((ColoredSwingClient)io).getSoundClient() instanceof AGESoundClient )
+//												{
+//													AGESoundClient asc = (AGESoundClient) ((ColoredSwingClient)io).getSoundClient();
+//													asc.deactivate(); //will be activated on log end (player:endOfLog()
+//												}
+//											}
+//											
+//											CommonSwingFunctions.writeIntroductoryInfo(SwingAetheriaGameLoader.this);
+//											
+//										}
+//									}
+//							);
+//						}
+//						catch ( Exception e )
+//						{
+//							if ( io != null ) ((ColoredSwingClient)io).showAfterLogLoad();
+//							e.printStackTrace();
+//						}
+//							
+//						//System.out.println("2");
+//					
+//						String worldName;
+//						World theWorld = null;
+//						
+//						if ( moduledir == null || moduledir.length() == 0 ) moduledir="aetherworld";
+//					
+//						
+//						try
+//						{
+//							SwingUtilities.invokeAndWait 
+//							( 
+//									new Runnable()
+//									{
+//										public void run()
+//										{
+//											repaint();
+//											updateNow();
+//										}
+//									}
+//							);
+//						}
+//						catch ( Exception e )
+//						{
+//							((ColoredSwingClient)io).showAfterLogLoad();
+//							e.printStackTrace();
+//						}
+//							
+//						//System.out.println("3");
+//						
+//						try
+//						{
+//							theWorld = WorldLoader.loadWorld( moduledir , gameLog, io, mundoSemaphore);
+//						}
+//						catch ( Exception e )
+//						/*
+//						 * This shouldn't happen, because unchecked exceptions in world initialization scripts are caught before reaching this level,
+//						 * and the loadWorld method doesn't throw its own exceptions (it returns null if the world cannot be loaded). But it's defensive
+//						 * programming in case AGE forgets to catch some unchecked exception, which has happened in the past.
+//						 */
+//						{
+//							if ( io != null ) ((ColoredSwingClient)io).showAfterLogLoad();
+//							if ( io != null ) write ( "Exception on loading world: " + e );
+//							e.printStackTrace();
+//						}
+//						if ( theWorld == null || io.isDisconnected() ) //io could be disconnected due to closing the window before assigning player 
+//						{
+//							((ColoredSwingClient)io).showAfterLogLoad();
+//							return;
+//						}
+//						mundo = theWorld;
+//						
+//						//{theWorld NOT null}
+//									
+//						final World theFinalWorld = theWorld;
+//						
+//						
+//						try
+//						{
+//							SwingUtilities.invokeAndWait 
+//							( 
+//									new Runnable()
+//									{
+//										public void run()
+//										{
+//										
+//										updateNow();
+//				
+//										//atender telnet
+//											//SimpleTelnetClientHandler stch = new SimpleTelnetClientHandler ( theWorld , 6 , (short)8010 );
+//											//No. Dar medios para meterla en partidas dedicadas en forma de PartidaEnCurso.
+//					
+//										if ( theFinalWorld.getModuleName() != null && theFinalWorld.getModuleName().length() > 0 )
+//											setTitle(theFinalWorld.getModuleName());
+//										}
+//									}
+//								);
+//								
+//						}
+//						catch ( Exception e )
+//						{
+//							((ColoredSwingClient)io).showAfterLogLoad();
+//							e.printStackTrace();
+//						}
+//						
+//						
+//						//add player if there isn't any
+//						/*
+//						if ( theWorld.getPlayerList().size() < 1 && !noSerCliente ) //pues en XML ya se cargan solos los jugadores
+//						{
+//						
+//							Player theProtagonist;
+//							
+//							try
+//							{
+//								theProtagonist = new Player ( theWorld , io );
+//							}
+//							catch ( java.io.IOException loadplayerfileioerror )
+//							{
+//							
+//								try
+//								{
+//									//from template
+//									System.out.println("Adding player, since there isn't any.");
+//									theWorld.addNewPlayerASAP ( io );
+//								}
+//								catch ( XMLtoWorldException xml2we )
+//								{	
+//									escribir("No puedo leer el fichero del jugador ni usar plantillas.\n");
+//									return;
+//								}
+//							}
+//						
+//						}
+//						*/
+//						
+//						
+//						if ( new VersionComparator().compare(GameEngineThread.getVersionNumber(),theWorld.getRequiredAGEVersion()) < 0 )
+//						{
+//							String mess = UIMessages.getInstance().getMessage("age.version.warning",
+//									"$curversion",GameEngineThread.getVersionNumber(),"$reqversion",theWorld.getRequiredAGEVersion(),
+//									"$world",theWorld.getModuleName());
+//							mess = mess + " " + UIMessages.getInstance().getMessage("age.download.url");
+//							/*
+//							String mess = "Estás usando la versión " +
+//								GameEngineThread.getVersionNumber() + " de AGE; pero el mundo " + theWorld.getModuleName() +
+//								" requiere la versión " + theWorld.getRequiredAGEVersion() + " como mínimo. Podría no funcionar " +
+//								" si no te bajas una nueva versión de AGE en http://code.google.com/p/aetheria";
+//							*/
+//							JOptionPane.showMessageDialog(SwingAetheriaGameLoader.this, mess, UIMessages.getInstance().getMessage("age.version.warning.title"), JOptionPane.WARNING_MESSAGE);
+//						}
+//						
+//						//xml printout begin
+//						
+//						if ( Debug.DEBUG_OUTPUT )
+//						{
+//							
+//							org.w3c.dom.Document d = null;
+//							try
+//							{
+//								d = theWorld.getXMLRepresentation();
+//							}
+//							catch ( javax.xml.parsers.ParserConfigurationException exc )
+//							{
+//								System.out.println(exc);
+//							}
+//						
+//							javax.xml.transform.stream.StreamResult sr = null;
+//						
+//							try
+//							{
+//								sr = new javax.xml.transform.stream.StreamResult ( new FileOutputStream ( "theworld.xml" ) );
+//							}
+//							catch ( FileNotFoundException fnfe ) //FileOutputStream <init>
+//							{
+//								System.out.println(fnfe);
+//							}
+//							
+//							//hace la transformacion identidad (copia), eso si, escribiendo en ISO.
+//							try
+//							{
+//								javax.xml.transform.Transformer tr = javax.xml.transform.TransformerFactory.newInstance().newTransformer();
+//							
+//								tr.setOutputProperty ( javax.xml.transform.OutputKeys.ENCODING , "ISO-8859-1" );
+//							
+//								javax.xml.transform.Source s = new javax.xml.transform.dom.DOMSource ( d );
+//							
+//								//Debug.println("Nodo:" + ((javax.xml.transform.dom.DOMSource)s).getNode());
+//							
+//								tr.transform(s,sr); //si esto tira un NullPointerException, la experiencia indica que puede ser por dejar algún atributo a null, y esto puede pasar en código descuidado si no se ponen todos los atributos posibles en un tag XML.
+//								//nota: también puede ser porque falte un elemento.
+//								
+//							}
+//							catch ( javax.xml.transform.TransformerConfigurationException tfe ) //newTransformer()
+//							{
+//								System.out.println(tfe);
+//							}
+//							catch ( javax.xml.transform.TransformerException te ) //transform()
+//							{
+//								System.out.println(te);
+//							}
+//						
+//						}
+//						
+//						
+//						//xml printout end
+//						
+//						
+//						//usar estado si lo hay
+//						if ( stateFile != null )
+//						{
+//							try
+//							{
+//								theWorld.loadState ( stateFile );
+//							}
+//							catch ( Exception exc )
+//							{
+//								((ColoredSwingClient)io).showAfterLogLoad();
+//								write(UIMessages.getInstance().getMessage("swing.cannot.read.state","$file",stateFile));
+//								write(exc.toString());
+//								exc.printStackTrace();
+//							}
+//						}
+//						
+//						
+//						if ( usarLog )
+//						{
+//							try
+//							{
+//								prepareLog ( theWorld );
+//							}
+//							catch ( Exception exc )
+//							{
+//								((ColoredSwingClient)io).showAfterLogLoad();
+//								//write("Excepción al leer el fichero de log: " + exc + "\n");
+//								write(UIMessages.getInstance().getMessage("swing.cannot.read.log","$exc",exc.toString()));
+//								exc.printStackTrace();
+//								return;
+//							}
+//						}
+//						else
+//						{
+//							theWorld.setRandomNumberSeed();
+//						}
+//						gameLog.addElement(String.valueOf(theWorld.getRandomNumberSeed())); //segunda línea, semilla
+//						
+//						//TODO use invoke method for this to avoid deadlocks:
+//						try 
+//						{
+//							SwingUtilities.invokeAndWait( new Runnable() { public void run() { setVisible(true); } } );
+//						} 
+//						catch (InvocationTargetException e1) 
+//						{
+//							e1.printStackTrace();
+//						} 
+//						catch (InterruptedException e1) 
+//						{
+//							e1.printStackTrace();
+//						}
+//						
+//						timeCount=0;
+//						
+//						mundo = theWorld;
+//							synchronized ( mundoSemaphore )
+//							{
+//								mundoSemaphore.notifyAll();
+//							}
+//						
+//						/* UNCOMMENT THIS FOR REAL-TIME
+//						GameEngineThread maquinaEstados =
+//							new GameEngineThread ( 
+//								theWorld.getPlayer(),
+//								theWorld,
+//								esto , true );
+//						
+//						maquinaEstados.setRealTimeQuantum(100);
+//						*/
+//						
+//				
+//
+//							
+//						maquinaEstados =
+//							new GameEngineThread ( 
+//								theWorld, false );
+//						
+//						maquinaEstados.attachObserver(SwingAetheriaGameLoader.this);
+//						maquinaEstados.attachObserver(new ServerMenuHandler(SwingAetheriaGameLoader.this));
+//						
+//						
+//						//System.out.println("STARTING ENGINE THREAD");
+//						
+//						maquinaEstados.start();		
+//					
+//						//System.out.println("ENGINE THREAD STARTED");
+//						
+//						//Esto engaña con los estados, lo quitamos.
+//						/*
+//						if (noSerCliente)
+//							write("Este mundo se está ejecutando en modo Dedicado. Por eso no ves nada aquí: no eres jugador.");
+//						*/	
+//									
+//						try
+//						{
+//							SwingUtilities.invokeAndWait 
+//							( 
+//									new Runnable()
+//									{
+//										public void run()
+//										{
+//											repaint();
+//											updateNow();
+//											/*
+//											if ( !fullScreenMode )
+//											{
+//												setVisible(false);
+//												setVisible(true);
+//											}
+//											else
+//											{
+//												fullScreenFrame.setVisible(false);
+//												fullScreenFrame.setVisible(true);
+//											}
+//											*/
+//										}
+//									}
+//							);
+//						}
+//						catch ( Exception e )
+//						{
+//							e.printStackTrace();
+//						}
+//						
+//						if ( io instanceof ColoredSwingClient )
+//							((ColoredSwingClient)io).refreshFocus();
+//
+//						
+//						
+//					} //end run
+//	}
 	
 
 	public boolean isFullScreenMode()
@@ -958,8 +960,9 @@ de la ventana hasta acabar de cargar.
 		
 		System.out.println("D");
 		
-		loaderThread = this.new LoaderThread( );
-		
+		loaderThread = //this.new LoaderThread( );
+				new LoaderThread ( moduledir, usarLog, stateFile, this , mundoSemaphore );
+				
 		loaderThread.start();
 		
 
@@ -984,7 +987,8 @@ de la ventana hasta acabar de cargar.
 			Thread thr = new Thread() {
 				public void run()
 				{
-					loaderThread = SwingAetheriaGameLoader.this.new LoaderThread( );
+					loaderThread //= SwingAetheriaGameLoader.this.new LoaderThread( );
+						= new LoaderThread ( moduledir, usarLog, stateFile, SwingAetheriaGameLoader.this , mundoSemaphore );
 					loaderThread.start();
 					try
 					{
