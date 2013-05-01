@@ -51,6 +51,7 @@ import eu.irreality.age.swing.sdi.NewFromFileListener;
 import eu.irreality.age.swing.sdi.SwingSDIInterface;
 import eu.irreality.age.util.VersionComparator;
 import eu.irreality.age.windowing.AGEClientWindow;
+import eu.irreality.age.windowing.LoaderThread;
 import eu.irreality.age.windowing.UpdatingRun;
 
 public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThreadObserver
@@ -141,245 +142,245 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 		theWorld.setRandomNumberSeed( logStream );
 	}
 	
-	class LoaderThread extends Thread 
-	{
-
-		public void run ()
-		{
-
-			try
-			{
-				SwingUtilities.invokeAndWait 
-				( 
-						new Runnable()
-						{
-							public void run()
-							{
-
-								initClient();
-
-								if ( usarLog )
-								{
-									((ColoredSwingClient)io).hideForLogLoad();
-									if ( ((ColoredSwingClient)io).getSoundClient() instanceof AGESoundClient )
-									{
-										AGESoundClient asc = (AGESoundClient) ((ColoredSwingClient)io).getSoundClient();
-										asc.deactivate(); //will be activated on log end (player:endOfLog()
-									}
-								}
-								
-								CommonSwingFunctions.writeIntroductoryInfo(SwingSDIApplet.this);
-
-							}
-						}
-				);
-			}
-			catch ( Exception e )
-			{
-				if ( io != null ) ((ColoredSwingClient)io).showAfterLogLoad();
-				e.printStackTrace();
-			}
-
-			//System.out.println("2");
-
-			String worldName;
-			World theWorld = null;
-
-			if ( moduledir == null || moduledir.length() == 0 ) moduledir="aetherworld";
-
-
-			try
-			{
-				SwingUtilities.invokeAndWait 
-				( 
-						new Runnable()
-						{
-							public void run()
-							{
-								repaint();
-								updateNow();
-							}
-						}
-				);
-			}
-			catch ( Exception e )
-			{
-				((ColoredSwingClient)io).showAfterLogLoad();
-				e.printStackTrace();
-			}
-
-			//System.out.println("3");
-
-			try
-			{
-				theWorld = WorldLoader.loadWorld( moduledir , gameLog, io, mundoSemaphore);
-			}
-			catch ( Exception e )
-			/*
-			 * This shouldn't happen, because unchecked exceptions in world initialization scripts are caught before reaching this level,
-			 * and the loadWorld method doesn't throw its own exceptions (it returns null if the world cannot be loaded). But it's defensive
-			 * programming in case AGE forgets to catch some unchecked exception, which has happened in the past.
-			 */
-			{
-				if ( io != null ) ((ColoredSwingClient)io).showAfterLogLoad();
-				if ( io != null ) write ( "Exception on loading world: " + e );
-				e.printStackTrace();
-			}
-			if ( theWorld == null || io.isDisconnected() )
-			{
-				((ColoredSwingClient)io).showAfterLogLoad();
-				return;
-			}
-			mundo = theWorld;
-
-			//{theWorld NOT null}
-
-			final World theFinalWorld = theWorld;
-
-
-			try
-			{
-				SwingUtilities.invokeAndWait 
-				( 
-						new Runnable()
-						{
-							public void run()
-							{
-
-								updateNow();
-
-								//atender telnet
-								//SimpleTelnetClientHandler stch = new SimpleTelnetClientHandler ( theWorld , 6 , (short)8010 );
-								//No. Dar medios para meterla en partidas dedicadas en forma de PartidaEnCurso.
-
-								if ( theFinalWorld.getModuleName() != null && theFinalWorld.getModuleName().length() > 0 )
-									setTitle(theFinalWorld.getModuleName());
-							}
-						}
-				);
-
-			}
-			catch ( Exception e )
-			{
-				((ColoredSwingClient)io).showAfterLogLoad();
-				e.printStackTrace();
-			}
-
-			if ( new VersionComparator().compare(GameEngineThread.getVersionNumber(),theWorld.getRequiredAGEVersion()) < 0 )
-			{
-				String mess = UIMessages.getInstance().getMessage("age.version.warning",
-						"$curversion",GameEngineThread.getVersionNumber(),"$reqversion",theWorld.getRequiredAGEVersion(),
-						"$world",theWorld.getModuleName());
-				mess = mess + " " + UIMessages.getInstance().getMessage("age.download.url");
-				JOptionPane.showMessageDialog(SwingSDIApplet.this, mess, UIMessages.getInstance().getMessage("age.version.warning.title"), JOptionPane.WARNING_MESSAGE);
-			}
-			
-			//usar estado si lo hay
-			if ( stateFile != null )
-			{
-				try
-				{
-					theWorld.loadState ( stateFile );
-				}
-				catch ( Exception exc )
-				{
-					((ColoredSwingClient)io).showAfterLogLoad();
-					write(UIMessages.getInstance().getMessage("swing.cannot.read.state","$file",stateFile));
-					write(exc.toString());
-					exc.printStackTrace();
-				}
-			}
-
-
-			if ( usarLog )
-			{
-				try //different on applet
-				{
-					prepareLog( theWorld );
-				}
-				catch ( Exception exc )
-				{
-					((ColoredSwingClient)io).showAfterLogLoad();
-					write(UIMessages.getInstance().getMessage("swing.cannot.read.log","$exc",exc.toString()));
-					exc.printStackTrace();
-					return;
-				}
-			}
-			else
-			{
-				theWorld.setRandomNumberSeed();
-			}
-			gameLog.addElement(String.valueOf(theWorld.getRandomNumberSeed())); //segunda línea, semilla
-
-			//TODO use invoke method for this to avoid deadlocks:
-			try 
-			{
-				SwingUtilities.invokeAndWait( new Runnable() { public void run() { setVisible(true); } } );
-			} 
-			catch (InvocationTargetException e1) 
-			{
-				e1.printStackTrace();
-			} 
-			catch (InterruptedException e1) 
-			{
-				e1.printStackTrace();
-			}
-
-			
-			mundo = theWorld;
-			synchronized ( mundoSemaphore )
-			{
-				mundoSemaphore.notifyAll();
-			}
-
-			maquinaEstados =
-				new GameEngineThread ( 
-						theWorld, false );
-			
-			maquinaEstados.attachObserver(SwingSDIApplet.this);
-			maquinaEstados.attachObserver(new ServerMenuHandler(SwingSDIApplet.this));
-
-			//System.out.println("STARTING ENGINE THREAD");
-
-			maquinaEstados.start();		
-
-			//System.out.println("ENGINE THREAD STARTED");
-
-			//Esto engaña con los estados, lo quitamos.
-			/*
-							if (noSerCliente)
-								write("Este mundo se está ejecutando en modo Dedicado. Por eso no ves nada aquí: no eres jugador.");
-			 */	
-
-			try
-			{
-				SwingUtilities.invokeAndWait 
-				( 
-						new Runnable()
-						{
-							public void run()
-							{
-								repaint();
-								updateNow();
-								setVisible(false);
-								setVisible(true);
-
-							}
-						}
-				);
-			}
-			catch ( Exception e )
-			{
-				e.printStackTrace();
-			}
-
-			if ( io instanceof ColoredSwingClient )
-				((ColoredSwingClient)io).refreshFocus();
-
-
-
-		} //end run
-	}
+//	class LoaderThread extends Thread 
+//	{
+//
+//		public void run ()
+//		{
+//
+//			try
+//			{
+//				SwingUtilities.invokeAndWait 
+//				( 
+//						new Runnable()
+//						{
+//							public void run()
+//							{
+//
+//								initClient();
+//
+//								if ( usarLog )
+//								{
+//									((ColoredSwingClient)io).hideForLogLoad();
+//									if ( ((ColoredSwingClient)io).getSoundClient() instanceof AGESoundClient )
+//									{
+//										AGESoundClient asc = (AGESoundClient) ((ColoredSwingClient)io).getSoundClient();
+//										asc.deactivate(); //will be activated on log end (player:endOfLog()
+//									}
+//								}
+//								
+//								CommonSwingFunctions.writeIntroductoryInfo(SwingSDIApplet.this);
+//
+//							}
+//						}
+//				);
+//			}
+//			catch ( Exception e )
+//			{
+//				if ( io != null ) ((ColoredSwingClient)io).showAfterLogLoad();
+//				e.printStackTrace();
+//			}
+//
+//			//System.out.println("2");
+//
+//			String worldName;
+//			World theWorld = null;
+//
+//			if ( moduledir == null || moduledir.length() == 0 ) moduledir="aetherworld";
+//
+//
+//			try
+//			{
+//				SwingUtilities.invokeAndWait 
+//				( 
+//						new Runnable()
+//						{
+//							public void run()
+//							{
+//								repaint();
+//								updateNow();
+//							}
+//						}
+//				);
+//			}
+//			catch ( Exception e )
+//			{
+//				((ColoredSwingClient)io).showAfterLogLoad();
+//				e.printStackTrace();
+//			}
+//
+//			//System.out.println("3");
+//
+//			try
+//			{
+//				theWorld = WorldLoader.loadWorld( moduledir , gameLog, io, mundoSemaphore);
+//			}
+//			catch ( Exception e )
+//			/*
+//			 * This shouldn't happen, because unchecked exceptions in world initialization scripts are caught before reaching this level,
+//			 * and the loadWorld method doesn't throw its own exceptions (it returns null if the world cannot be loaded). But it's defensive
+//			 * programming in case AGE forgets to catch some unchecked exception, which has happened in the past.
+//			 */
+//			{
+//				if ( io != null ) ((ColoredSwingClient)io).showAfterLogLoad();
+//				if ( io != null ) write ( "Exception on loading world: " + e );
+//				e.printStackTrace();
+//			}
+//			if ( theWorld == null || io.isDisconnected() )
+//			{
+//				((ColoredSwingClient)io).showAfterLogLoad();
+//				return;
+//			}
+//			mundo = theWorld;
+//
+//			//{theWorld NOT null}
+//
+//			final World theFinalWorld = theWorld;
+//
+//
+//			try
+//			{
+//				SwingUtilities.invokeAndWait 
+//				( 
+//						new Runnable()
+//						{
+//							public void run()
+//							{
+//
+//								updateNow();
+//
+//								//atender telnet
+//								//SimpleTelnetClientHandler stch = new SimpleTelnetClientHandler ( theWorld , 6 , (short)8010 );
+//								//No. Dar medios para meterla en partidas dedicadas en forma de PartidaEnCurso.
+//
+//								if ( theFinalWorld.getModuleName() != null && theFinalWorld.getModuleName().length() > 0 )
+//									setTitle(theFinalWorld.getModuleName());
+//							}
+//						}
+//				);
+//
+//			}
+//			catch ( Exception e )
+//			{
+//				((ColoredSwingClient)io).showAfterLogLoad();
+//				e.printStackTrace();
+//			}
+//
+//			if ( new VersionComparator().compare(GameEngineThread.getVersionNumber(),theWorld.getRequiredAGEVersion()) < 0 )
+//			{
+//				String mess = UIMessages.getInstance().getMessage("age.version.warning",
+//						"$curversion",GameEngineThread.getVersionNumber(),"$reqversion",theWorld.getRequiredAGEVersion(),
+//						"$world",theWorld.getModuleName());
+//				mess = mess + " " + UIMessages.getInstance().getMessage("age.download.url");
+//				JOptionPane.showMessageDialog(SwingSDIApplet.this, mess, UIMessages.getInstance().getMessage("age.version.warning.title"), JOptionPane.WARNING_MESSAGE);
+//			}
+//			
+//			//usar estado si lo hay
+//			if ( stateFile != null )
+//			{
+//				try
+//				{
+//					theWorld.loadState ( stateFile );
+//				}
+//				catch ( Exception exc )
+//				{
+//					((ColoredSwingClient)io).showAfterLogLoad();
+//					write(UIMessages.getInstance().getMessage("swing.cannot.read.state","$file",stateFile));
+//					write(exc.toString());
+//					exc.printStackTrace();
+//				}
+//			}
+//
+//
+//			if ( usarLog )
+//			{
+//				try //different on applet
+//				{
+//					prepareLog( theWorld );
+//				}
+//				catch ( Exception exc )
+//				{
+//					((ColoredSwingClient)io).showAfterLogLoad();
+//					write(UIMessages.getInstance().getMessage("swing.cannot.read.log","$exc",exc.toString()));
+//					exc.printStackTrace();
+//					return;
+//				}
+//			}
+//			else
+//			{
+//				theWorld.setRandomNumberSeed();
+//			}
+//			gameLog.addElement(String.valueOf(theWorld.getRandomNumberSeed())); //segunda línea, semilla
+//
+//			//TODO use invoke method for this to avoid deadlocks:
+//			try 
+//			{
+//				SwingUtilities.invokeAndWait( new Runnable() { public void run() { setVisible(true); } } );
+//			} 
+//			catch (InvocationTargetException e1) 
+//			{
+//				e1.printStackTrace();
+//			} 
+//			catch (InterruptedException e1) 
+//			{
+//				e1.printStackTrace();
+//			}
+//
+//			
+//			mundo = theWorld;
+//			synchronized ( mundoSemaphore )
+//			{
+//				mundoSemaphore.notifyAll();
+//			}
+//
+//			maquinaEstados =
+//				new GameEngineThread ( 
+//						theWorld, false );
+//			
+//			maquinaEstados.attachObserver(SwingSDIApplet.this);
+//			maquinaEstados.attachObserver(new ServerMenuHandler(SwingSDIApplet.this));
+//
+//			//System.out.println("STARTING ENGINE THREAD");
+//
+//			maquinaEstados.start();		
+//
+//			//System.out.println("ENGINE THREAD STARTED");
+//
+//			//Esto engaña con los estados, lo quitamos.
+//			/*
+//							if (noSerCliente)
+//								write("Este mundo se está ejecutando en modo Dedicado. Por eso no ves nada aquí: no eres jugador.");
+//			 */	
+//
+//			try
+//			{
+//				SwingUtilities.invokeAndWait 
+//				( 
+//						new Runnable()
+//						{
+//							public void run()
+//							{
+//								repaint();
+//								updateNow();
+//								setVisible(false);
+//								setVisible(true);
+//
+//							}
+//						}
+//				);
+//			}
+//			catch ( Exception e )
+//			{
+//				e.printStackTrace();
+//			}
+//
+//			if ( io instanceof ColoredSwingClient )
+//				((ColoredSwingClient)io).refreshFocus();
+//
+//
+//
+//		} //end run
+//	}
 
 	public void start()
 	{
@@ -611,8 +612,9 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 
 		setVisible(true);
 
-		loaderThread = this.new LoaderThread( );
-
+		loaderThread //= this.new LoaderThread( );
+			= new LoaderThread ( moduledir, usarLog, stateFile, this , mundoSemaphore );
+		
 		loaderThread.start();
 	}
 
@@ -645,7 +647,8 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 			Thread thr = new Thread() {
 				public void run()
 				{
-					loaderThread = SwingSDIApplet.this.new LoaderThread( );
+					loaderThread //= SwingSDIApplet.this.new LoaderThread( );
+						= new LoaderThread ( moduledir, usarLog, stateFile, SwingSDIApplet.this , mundoSemaphore );
 					loaderThread.start();
 					try
 					{
