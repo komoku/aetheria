@@ -21,10 +21,12 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
+import eu.irreality.age.AGESoundClient;
 import eu.irreality.age.ColoredSwingClient;
 import eu.irreality.age.CommonClientUtilities;
 import eu.irreality.age.FiltroFicheroEstado;
@@ -47,6 +49,7 @@ import eu.irreality.age.swing.SwingMenuAetheria;
 import eu.irreality.age.swing.menu.ServerMenuHandler;
 import eu.irreality.age.swing.sdi.NewFromFileListener;
 import eu.irreality.age.swing.sdi.SwingSDIInterface;
+import eu.irreality.age.util.VersionComparator;
 import eu.irreality.age.windowing.AGEClientWindow;
 import eu.irreality.age.windowing.UpdatingRun;
 
@@ -147,25 +150,17 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 
 								initClient();
 
-								CommonSwingFunctions.writeIntroductoryInfo(SwingSDIApplet.this);
+								if ( logStream != null ) //in non-applet loader threads, this is logFile != null
+								{
+									((ColoredSwingClient)io).hideForLogLoad();
+									if ( ((ColoredSwingClient)io).getSoundClient() instanceof AGESoundClient )
+									{
+										AGESoundClient asc = (AGESoundClient) ((ColoredSwingClient)io).getSoundClient();
+										asc.deactivate(); //will be activated on log end (player:endOfLog()
+									}
+								}
 								
-								/*
-								write("Aetheria Game Engine v " + UIMessages.getInstance().getMessage("age.version") + "\n");
-								//areaTexto.setText("Aetheria Game Engine v 0.4.7b Beta Distribution\n");
-
-								write( UIMessages.getInstance().getMessage("age.copyright") + "\n" );
-								write( UIMessages.getInstance().getMessage("intro.legal") + "\n" );
-
-
-								write("\n=============================================================");
-								write("\n" + io.getColorCode("information") + "Engine-related Version Info:");
-								write("\n" + io.getColorCode("information") + "[OS Layer]           " + System.getProperty("os.name") + " " + System.getProperty("os.version") + " " + System.getProperty("os.arch") + io.getColorCode("reset"));
-								write("\n" + io.getColorCode("information") + "[Java Layer]         " + System.getProperty("java.version") + io.getColorCode("reset"));
-								write("\n" + io.getColorCode("information") + "[Simulation Layer]   " + GameEngineThread.getVersion() + io.getColorCode("reset"));
-								write("\n" + io.getColorCode("information") + "[Object Code Layer]  " + ObjectCode.getInterpreterVersion() + io.getColorCode("reset"));
-								write("\n" + io.getColorCode("information") + "[UI Layer]           " + SwingSDIApplet.getVersion() + io.getColorCode("reset"));
-								write("\n=============================================================\n");
-								*/
+								CommonSwingFunctions.writeIntroductoryInfo(SwingSDIApplet.this);
 
 							}
 						}
@@ -173,14 +168,11 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 			}
 			catch ( Exception e )
 			{
+				if ( io != null ) ((ColoredSwingClient)io).showAfterLogLoad();
 				e.printStackTrace();
 			}
 
-
-			System.out.println("2");
-
-			//areaTexto.setText(areaTexto.getText() + "Running on Aetheria Multiple Game Interface v 1.0 / swing-based MDI interface" );
-
+			//System.out.println("2");
 
 			String worldName;
 			World theWorld = null;
@@ -204,14 +196,32 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 			}
 			catch ( Exception e )
 			{
+				((ColoredSwingClient)io).showAfterLogLoad();
 				e.printStackTrace();
 			}
 
+			//System.out.println("3");
 
-			System.out.println("3");
-
-			theWorld = WorldLoader.loadWorld( moduledir , gameLog, io, mundoSemaphore);
-			if ( theWorld == null || io.isDisconnected() ) return;
+			try
+			{
+				theWorld = WorldLoader.loadWorld( moduledir , gameLog, io, mundoSemaphore);
+			}
+			catch ( Exception e )
+			/*
+			 * This shouldn't happen, because unchecked exceptions in world initialization scripts are caught before reaching this level,
+			 * and the loadWorld method doesn't throw its own exceptions (it returns null if the world cannot be loaded). But it's defensive
+			 * programming in case AGE forgets to catch some unchecked exception, which has happened in the past.
+			 */
+			{
+				if ( io != null ) ((ColoredSwingClient)io).showAfterLogLoad();
+				if ( io != null ) write ( "Exception on loading world: " + e );
+				e.printStackTrace();
+			}
+			if ( theWorld == null || io.isDisconnected() )
+			{
+				((ColoredSwingClient)io).showAfterLogLoad();
+				return;
+			}
 			mundo = theWorld;
 
 			//{theWorld NOT null}
@@ -243,21 +253,19 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 			}
 			catch ( Exception e )
 			{
+				((ColoredSwingClient)io).showAfterLogLoad();
 				e.printStackTrace();
 			}
 
-
-			org.w3c.dom.Document d = null;
-			try
+			if ( new VersionComparator().compare(GameEngineThread.getVersionNumber(),theWorld.getRequiredAGEVersion()) < 0 )
 			{
-				d = theWorld.getXMLRepresentation();
-				System.out.println("D=null?" + (d==null) );
+				String mess = UIMessages.getInstance().getMessage("age.version.warning",
+						"$curversion",GameEngineThread.getVersionNumber(),"$reqversion",theWorld.getRequiredAGEVersion(),
+						"$world",theWorld.getModuleName());
+				mess = mess + " " + UIMessages.getInstance().getMessage("age.download.url");
+				JOptionPane.showMessageDialog(SwingSDIApplet.this, mess, UIMessages.getInstance().getMessage("age.version.warning.title"), JOptionPane.WARNING_MESSAGE);
 			}
-			catch ( javax.xml.parsers.ParserConfigurationException exc )
-			{
-				System.out.println(exc);
-			}
-
+			
 			//usar estado si lo hay
 			if ( stateFile != null )
 			{
@@ -267,7 +275,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 				}
 				catch ( Exception exc )
 				{
-					//write("¡No se ha podido cargar el estado!\n");
+					((ColoredSwingClient)io).showAfterLogLoad();
 					write(UIMessages.getInstance().getMessage("swing.cannot.read.state","$file",stateFile));
 					write(exc.toString());
 					exc.printStackTrace();
@@ -277,7 +285,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 
 			if ( usarLog )
 			{
-				try
+				try //different on applet
 				{
 					logStream.mark(100000);
 					theWorld.prepareLog(logStream);
@@ -286,7 +294,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 				}
 				catch ( Exception exc )
 				{
-					//write("Excepción al leer el fichero de log: " + exc + "\n");
+					((ColoredSwingClient)io).showAfterLogLoad();
 					write(UIMessages.getInstance().getMessage("swing.cannot.read.log","$exc",exc.toString()));
 					exc.printStackTrace();
 					return;
@@ -298,8 +306,21 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 			}
 			gameLog.addElement(String.valueOf(theWorld.getRandomNumberSeed())); //segunda línea, semilla
 
-			setVisible(true);
+			//TODO use invoke method for this to avoid deadlocks:
+			try 
+			{
+				SwingUtilities.invokeAndWait( new Runnable() { public void run() { setVisible(true); } } );
+			} 
+			catch (InvocationTargetException e1) 
+			{
+				e1.printStackTrace();
+			} 
+			catch (InterruptedException e1) 
+			{
+				e1.printStackTrace();
+			}
 
+			
 			mundo = theWorld;
 			synchronized ( mundoSemaphore )
 			{
@@ -318,8 +339,6 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 			maquinaEstados.start();		
 
 			//System.out.println("ENGINE THREAD STARTED");
-
-			//System.out.println("noSerCliente = " + false);
 
 			//Esto engaña con los estados, lo quitamos.
 			/*
