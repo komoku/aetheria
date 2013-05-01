@@ -26,19 +26,17 @@ public class LoaderThread extends Thread
 	private String moduledir;
 	private boolean usarLog;
 	private String stateFile;
-	private boolean noSerCliente;
 	
 	private Object mundoSemaphore;
 	
 	private AGEClientWindow window;
 
-	public LoaderThread ( String moduledir, boolean usarLog, String stateFile, boolean noSerCliente, AGEClientWindow window , Object mundoSemaphore ) 
+	public LoaderThread ( String moduledir, boolean usarLog, String stateFile, AGEClientWindow window , Object mundoSemaphore ) 
 	{
-		super("Loader Thread: " + moduledir);
+		setName(getName() + " - " + "Loader Thread: " + moduledir);
 		this.moduledir = moduledir;
 		this.usarLog = usarLog;
 		this.stateFile = stateFile;
-		this.noSerCliente = noSerCliente;
 		this.window = window;
 		this.mundoSemaphore = mundoSemaphore;
 	}
