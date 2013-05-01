@@ -150,7 +150,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 
 								initClient();
 
-								if ( logStream != null ) //in non-applet loader threads, this is logFile != null
+								if ( usarLog )
 								{
 									((ColoredSwingClient)io).hideForLogLoad();
 									if ( ((ColoredSwingClient)io).getSoundClient() instanceof AGESoundClient )

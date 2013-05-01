@@ -61,7 +61,7 @@ public class LoaderThread extends Thread
 						{
 
 							window.initClient();
-							if ( logFile != null )
+							if ( usarLog )
 							{
 								((ColoredSwingClient)window.getIO()).hideForLogLoad();
 								if ( ((ColoredSwingClient)window.getIO()).getSoundClient() instanceof AGESoundClient )
