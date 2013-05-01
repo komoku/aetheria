@@ -162,7 +162,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow, GameTh
 
 								initClient();
 								
-								if ( logFile != null )
+								if ( usarLog )
 								{
 									((ColoredSwingClient)io).hideForLogLoad();
 									if ( ((ColoredSwingClient)io).getSoundClient() instanceof AGESoundClient )

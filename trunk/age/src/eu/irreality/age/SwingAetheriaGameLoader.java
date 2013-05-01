@@ -485,7 +485,7 @@ de la ventana hasta acabar de cargar.
 										
 											initClient();
 											
-											if ( logFile != null )
+											if ( usarLog )
 											{
 												((ColoredSwingClient)io).hideForLogLoad();
 												if ( ((ColoredSwingClient)io).getSoundClient() instanceof AGESoundClient )
