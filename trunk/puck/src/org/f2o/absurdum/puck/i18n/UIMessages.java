@@ -15,6 +15,7 @@ import java.util.Properties;
 import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
 
 import eu.irreality.age.swing.config.AGEConfiguration;
+import eu.irreality.age.util.UTF8PropertiesLoader;
 
 /**
  * @author carlos
@@ -103,7 +104,11 @@ public /*Singleton*/ class UIMessages
 		{
 			InputStream is = this.getClass().getClassLoader().getResourceAsStream(pathToMessageFile);
 			if ( is == null ) throw new IOException("getResourceAsStream returned null stream for " + pathToMessageFile);
-			properties.load( is );
+
+			//properties.load( is );
+		    //TODO: apply this cheap hack only if java version < 1.6
+		    UTF8PropertiesLoader.loadProperties(properties,is,"UTF-8");
+		    is.close();
 		}
 		catch ( IOException ioe )
 		{
@@ -131,7 +136,7 @@ public /*Singleton*/ class UIMessages
 	 */
 	public String[] getSupportedLanguages()
 	{
-		return new String[] {"es","en","gl"};
+		return new String[] {"es","en","eo","gl"};
 	}
 
 }
