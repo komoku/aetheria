@@ -27,6 +27,7 @@ import eu.irreality.age.swing.FancyAttributeSet;
 import eu.irreality.age.swing.FancyJTextField;
 import eu.irreality.age.swing.FancyJTextPane;
 import eu.irreality.age.swing.FontSizeTransform;
+import eu.irreality.age.swing.FontUtils;
 import eu.irreality.age.swing.IconLoader;
 import eu.irreality.age.swing.ImagePanel;
 import eu.irreality.age.swing.SmoothScrollTimer;
@@ -262,6 +263,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		StyleConstants.setForeground(atributos,c.getForegroundColor());
 		elAreaTexto.repaint();
 		Font laFuente = c.getFont();
+		laFuente = FontUtils.applyKerningAndLigaturesIfPossible(laFuente);
 		elAreaTexto.setFont(laFuente);
 		//System.err.println("Size matters: " + c.getFont().getSize());
 		//elAreaTexto.setFont(c.getFont().deriveFont((float)24.0));
@@ -1966,9 +1968,10 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 			Font f = font;
 			if ( fontTransform != null ) //apply size transform
 			{
-				System.err.println("Changing current output font from " + f.getSize() + " to the fryoleer of " + fontTransform.apply(f.getSize()));
+				//System.err.println("Changing current output font from " + f.getSize() + " to the fryoleer of " + fontTransform.apply(f.getSize()));
 				f = f.deriveFont((float)fontTransform.apply(f.getSize()));
 			}
+			elAreaTexto.setFont(f); //for some unknown reason, this makes kerning work (if it has been applied to the font e.g. via FontUtils).
 			GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(f);
 			((FancyAttributeSet)atributos).setFont(f);
 			StyleConstants.setFontFamily((MutableAttributeSet)atributos,f.getFamily());
@@ -2012,6 +2015,33 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Sets the color for new output.
+	 * @param c
+	 */
+	public void setCurrentOutputColor ( Color c )
+	{
+		StyleConstants.setForeground(atributos,c);
+	}
+	
+	/**
+	 * Sets the bold attribute for new output.
+	 * @param c
+	 */
+	public void setCurrentOutputBold ( boolean bold )
+	{
+		StyleConstants.setBold(atributos, bold);
+	}
+	
+	/**
+	 * Sets the italic attribute for new output.
+	 * @param c
+	 */
+	public void setCurrentOutputItalic ( boolean italic )
+	{
+		StyleConstants.setBold(atributos, italic);
 	}
 	
 	/**
