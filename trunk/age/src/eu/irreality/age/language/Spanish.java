@@ -39,10 +39,12 @@ public class Spanish extends NaturalLanguage
 	
 	//sustituye los comandos al final del verbo por las ZR's correspondientes
 	//this method NO LONGER checks if the input is actually a verb, that should be checked outside.
+	//however, it now (2013-05-07) checks if the OUTPUT is a verb - it won't return outputs with unrecognized verbs.
 	public String substitutePronouns ( Mobile p , String command , Mentions mentions )
 	{
 		String thestring = command;	
 		boolean doneSomething = false;
+		
 		
 		if ( firstWord(thestring).toLowerCase().endsWith ( "las" ) && firstWord(thestring).length() > 3 )
 		{
@@ -82,7 +84,19 @@ public class Spanish extends NaturalLanguage
 			thestring = cut + " " + mentions.getLastMentionedObjectFS() + " " +  restWords(thestring);
 		}
 		
-		//these can appears with the others
+		//intermediate checkpoint: we store the string at this point, and whether the first word in this current string has a recognized verb.
+		//we store this because sometimes a verb may look like it has two clitics, but only actually have one.
+		//for example, suppose the input "mételo" (or "metelo").
+		//after we substitute "lo", what we have ("mete") is a verb.
+		//if we keep substituting (see below) thinking that "te" is a clitic, we will reach "me", but this is no longer a verb. "te" was not a clitic, it was a verb termination!
+		//in cases like that, we will fall back to this intermediate checkpoint.
+		boolean intermStringIsMeaningful = false;
+		if ( doneSomething && isVerb(removeAccents(firstWord(thestring))) )
+			intermStringIsMeaningful = true; //we have done some substitution, and obtained something that can be a verb.
+		String intermString = thestring;
+			
+		
+		//these pronouns can appear with the above ones (in combinations like melo, tela, selo, etc.) They can also appear on its own.
 		if ( firstWord(thestring).toLowerCase().endsWith ( "me" ) || firstWord(thestring).toLowerCase().endsWith ( "te" ) || firstWord(thestring).toLowerCase().endsWith ( "se" ) )
 		{
 			if ( !firstWord(thestring).toLowerCase().endsWith("este") && !firstWord(thestring).toLowerCase().endsWith("norte")  /*&& lenguaje.esVerboComando ( thestring.substring(0,thestring.length()-2) ) */ )
@@ -101,13 +115,29 @@ public class Spanish extends NaturalLanguage
 				thestring = cut + " " + playerRefName + " " +  restWords(thestring);
 			}
 		}
-
-		//escribir ( "Substituted string " + thestring );
-
-		//sanity check (added 2010.04.30): did we obtain a recognised verb? if not, the substitution is not valid (cases like habla -> "hab <so and so>"
+		
+		//if we haven't done any substitutions, we return the original string.
 		if ( !doneSomething ) return command;
 		
-		//{we have done some substitution}
+		if ( !isVerb(removeAccents(firstWord(thestring))) )
+		{
+			if ( intermStringIsMeaningful )
+			{
+				//this is the case where we have made two substitutions, so that the first one produced a correct verb,
+				//but the last one produced something that is not a verb (like substituting "te" and "lo" in "mételo").
+				//in this case, we go back to the intermediate result (substituting "lo" but not "te"), which is likely to be the correct one according to our verb lists.
+				thestring = intermString;
+			}
+			else
+			{
+				//in this case, neither the first nor the second step of the substitution produced a known verb.
+				//therefore, we return the original string (we could be facing a noun ending with something that looks like a critic but isn't, like
+				//"bote" or "cola" - substitutions shouldn't have an effect in this case).
+				return command;
+			}
+		}
+			
+		//{when we reach this point, we have made some substitution and thestring starts with a recognized verb}
 		StringTokenizer st = new StringTokenizer(thestring.toLowerCase());
 		String newVerb = st.nextToken().trim();
 		String unaccentedVerb = this.removeAccents(newVerb); //verbos pierden acentos: cógelo -> cóge <tal> -> coge <tal>
