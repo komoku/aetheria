@@ -179,7 +179,8 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		{
 		UIMessages.getInstance().getMessage("language.es"),
 		UIMessages.getInstance().getMessage("language.en"),
-		UIMessages.getInstance().getMessage("language.eo")
+		UIMessages.getInstance().getMessage("language.eo"),
+		UIMessages.getInstance().getMessage("language.gl")
 		}
 	);
 	private JTextField tfAuthor = new EnhancedJTextField();
@@ -399,6 +400,8 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 			result.setAttribute("language","en");
 		else if (languageString.equals(UIMessages.getInstance().getMessage("language.eo")))
 			result.setAttribute("language","eo");
+		else if (languageString.equals(UIMessages.getInstance().getMessage("language.gl")))
+			result.setAttribute("language","gl");
 		else
 			result.setAttribute("language","es");
 		
@@ -878,6 +881,8 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 			cbLanguage.setSelectedIndex(1);
 		else if ( e.hasAttribute("language") && e.getAttribute("language").equals("eo") )
 			cbLanguage.setSelectedIndex(2);
+		else if ( e.hasAttribute("language") && e.getAttribute("language").equals("gl") )
+			cbLanguage.setSelectedIndex(3);
 		else
 			cbLanguage.setSelectedIndex(0);
 		
