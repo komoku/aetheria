@@ -1,7 +1,7 @@
 ﻿i=inventario
 norte=ir norte
 sur=ir sur
-este=ir leste 
+leste=ir leste 
 oeste=ir oeste
 nordés=ir nordés
 noroeste=ir noroeste
