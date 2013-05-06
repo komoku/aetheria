@@ -1,4 +1,4 @@
-i=inventario
+﻿i=inventario
 norte=ir norte
 sur=ir sur
 este=ir leste 
@@ -9,7 +9,8 @@ sueste=ir sueste
 suroeste=ir suroeste
 n=ir norte
 s=ir sur
-e=ir este 
+e=ir leste
+l=ir leste
 o=ir oeste
 ne=ir nordés
 no=ir noroeste

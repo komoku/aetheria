@@ -1,5 +1,5 @@
 #Mensaxes por defecto de AGE
-#para idioma español
+#para idioma galego
 
 #Cando colles o obxecto $item
 you.get.item=Colles $item.\n
@@ -47,7 +47,7 @@ someone.unwields.item=$1 deixa de brandir $item.\n
 denial.get.ungettable=Non ten moito sentido tentar coller $item.\n
 
 #Cando o parser non entende algo
-erro.parsing=Non entendo...\n
+error.parsing=Non entendo...\n
 
 #Cando non se pode coller un obxecto polo seu peso
 cant.get.item.weight=Levas demasiado peso para coller $item.\n
@@ -438,7 +438,7 @@ coord.conj=e
 direction.n=norte
 direction.s=sur
 direction.w=oeste
-direction.e=este 
+direction.e=leste 
 direction.nw=noroeste
 direction.ne=nordeste
 direction.sw=suroeste

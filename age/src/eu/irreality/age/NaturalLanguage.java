@@ -11,6 +11,7 @@ import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.language.English;
 import eu.irreality.age.language.Esperanto;
+import eu.irreality.age.language.Galician;
 import eu.irreality.age.language.LanguageUtils;
 import eu.irreality.age.language.Mentions;
 import eu.irreality.age.language.Spanish;
@@ -176,6 +177,8 @@ public class NaturalLanguage
 			return new English();
 		else if ( languageCode.equals("eo") )
 			return new Esperanto();
+		else if ( languageCode.equals("gl") )
+			return new Galician();
 		else
 			return new NaturalLanguage(languageCode);
 	}
