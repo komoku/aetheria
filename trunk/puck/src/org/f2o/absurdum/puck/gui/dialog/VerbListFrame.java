@@ -8,7 +8,10 @@ package org.f2o.absurdum.puck.gui.dialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -43,20 +46,26 @@ public class VerbListFrame extends JFrame
 	
 	private JTable theTable;
 	
-	private static VerbListFrame instance;
+	private static Map instances;
 
-	public static VerbListFrame getInstance()
+	public static VerbListFrame getInstance( String languageCode )
 	{
-		if ( instance == null ) 
-			instance = new VerbListFrame();
-		return instance;
+		if ( instances == null ) 
+			instances = Collections.synchronizedMap ( new HashMap() );
+		VerbListFrame candidateInstance = (VerbListFrame) instances.get(languageCode);
+		if ( candidateInstance == null )
+		{
+			candidateInstance = new VerbListFrame(languageCode);
+			instances.put(languageCode,candidateInstance);
+		}
+		return candidateInstance;
 	}
 	
-	private VerbListFrame()
+	private VerbListFrame( String languageCode )
 	{
 		super(UIMessages.getInstance().getMessage("verblist.frametitle"));
 		setSize(600,600);
-		eu.irreality.age.NaturalLanguage lang = eu.irreality.age.NaturalLanguage.getInstance();
+		eu.irreality.age.NaturalLanguage lang = eu.irreality.age.NaturalLanguage.getInstance( languageCode );
 		sourceForms.addAll ( lang.getVerbForms() ); //to sort them we add them to TreeSet.
 		
 		tableData = new Object[sourceForms.size()][2];
