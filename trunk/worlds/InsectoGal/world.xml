@@ -37,6 +37,12 @@ void intro( Player aPlayer )
 		
 	aPlayer.setProperty("sawIntro",true);
 
+    if ( aPlayer.getClient() instanceof ColoredSwingClient )
+    {
+        aPlayer.getClient().setEchoText("A túa orde:  ");
+        aPlayer.getClient().setKeyRequestText("Pulsa unha tecla...");
+    }
+
 	aPlayer.borrarPantalla();
 
 	aPlayer.write("Grylloblatta. Un xénero de insectos da orde Grylloblattodea. Nunca imaxinaches que unha información tan paradigmáticamente tediosa puidese chegar a interesarche o máis mínimo. Nin a ti nin a ninguén. Pero -voltas que dá o destino- hoxe decatácheste de que deste esotérico insecto poden depender moitas vidas.\n");
