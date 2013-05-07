@@ -1,0 +1,810 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<World author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2013-05-07" language="gl" moduleName="Insecto mortal (galego)" parserVersion="1.3.1" type="Aventura rápida" version="1.1" worldDir="." worldName="Insecto mortal (galego)">
+<IdeMetaInf>
+<View xoffset="20.5" yoffset="-16.5" zoom="2.0"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Habitación de Kovacic" x="220" y="260"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Limbo" x="380" y="120"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.CharacterNode" name="Ekaterina" x="220" y="340"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Item falso" x="100" y="120"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Piano de cola" x="340" y="260"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Partitura" x="320" y="200"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Marco" x="120" y="200"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Botón" x="100" y="260"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Caja fuerte" x="120" y="320"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Cama" x="280" y="340"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Cuadro" x="160" y="160"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Alfombra" x="260" y="160"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Perrofake" x="340" y="300"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.AbstractEntityNode" name="Perro" x="380" y="340"/>
+</IdeMetaInf>
+<Code language="BeanShell"><![CDATA[/*
+ * NOTA: Esta aventura é unha demostración de como AGE pode executar aventuras en galego.
+ * Porén, non é unha demostración de como se debe programar unha aventura en galego: non só porque é unha tradución dunha aventura en castelán e como tal ten os nomes
+ * internos dos obxectos e os comentarios do código neste idioma, senon sobre todo porque esta tradución ó galego de "Insecto Letal" está feita en 2013, pero a aventura
+ * orixinal (en castelán) é de 2008, cando AGE estaba en estado de beta incompleta.
+ * Esto quere dicir que esta aventura está programada de maneiras pouco aconsellables porque naquel momento AGE non contaba con toda a funcionalidade que ten
+ * na actualidade.
+ */
+
+/*Introducción del juego para un jugador*/
+
+
+void intro( Player aPlayer )
+{
+
+	if ( aPlayer.getPropertyValueAsBoolean("sawIntro") )
+		return;
+		
+	aPlayer.setProperty("sawIntro",true);
+
+	aPlayer.borrarPantalla();
+
+	aPlayer.write("Grylloblatta. Un xénero de insectos da orde Grylloblattodea. Nunca imaxinaches que unha información tan paradigmáticamente tediosa puidese chegar a interesarche o máis mínimo. Nin a ti nin a ninguén. Pero -voltas que dá o destino- hoxe decatácheste de que deste esotérico insecto poden depender moitas vidas.\n");
+	aPlayer.waitKeyPress();
+	aPlayer.write("Es Ekaterina Voronova, aínda que a fama de implacable que te gañaches fai que algúns xa empecen a coñecerte como Killer Kat. E é, sen dúbida, por esta reputación que os servizos secretos sildavos confiáronche unha importante e perigosa misión... prometéndoche unha zumenta recompensa.\n");
+	aPlayer.waitKeyPress();
+	aPlayer.write("A República de Borduria, inimigo histórico do teu país, desenvolveu unha arma biolóxica de gran poder letal. Os espías sildavos non conseguiron obter moita información sobre ela; pero si que se sabe que é algún tipo de virus ou axente biolóxico que se transmite a través dese repugnante bicho, ese Grylloblatta.\n");
+	aPlayer.waitKeyPress();
+	aPlayer.write("É vital para o teu país conseguir unha mostra do axente, que permita aos científicos estudalo e traballar nun posible antídoto. O axente Kirilenko estivo a piques de conseguir a mostra; pero foi interceptado nun tren polos axentes do BSS, e fusilado o mesmo día.\n");
+	aPlayer.waitKeyPress();
+	aPlayer.write("O segundo intento é o teu. Coa colaboración doutros axentes, preparáchelo todo á perfección, provocando a indisposición dunha das criadas do poderoso xeral Kovacic para substituíla. Tres días estiveches traballando na súa mansión, sen que che permitisen nunca entrar á súa habitación, na que che informan que se atopa unha mostra do axente, e que permanece vixiada polo día e pechada pola noite.\n");
+	aPlayer.waitKeyPress();
+	aPlayer.write("Pero agora, por fin, é a túa ocasión: correu demasiado alcol na festa do Día Nacional de Borduria, todo o mundo na casa está pasándoo ben, e ninguén se fixou en que unha das camareiras subiu polas escaleiras. Ninguén ouviu como reducías ao garda da porta e entrabas na habitación do xeneral. Agora, só che resta atopar a mostra e saír deste inferno.\n");
+	aPlayer.write("\n\n\n");
+
+}
+
+
+/*Inicialización*/
+void serverintro()
+{
+	if ( world.getAbstractEntity("Perro").getPropertyValueAsBoolean("initted") )
+		return;
+		
+	world.getAbstractEntity("Perro").setProperty("initted",true);
+
+
+	world.getAbstractEntity("Perro").setProperty("power",1,5);
+}
+
+
+/*Método de análisis sintáctico de la entrada*/
+void parseCommand( Player aPlayer , String verb , String args )
+{
+	
+	//aPlayer: jugador que introduce un comando.
+	//verb: comando que introduce, por ejemplo "coger"
+	//args: resto de la orden que introduce, por ejemplo "el cuchillo grande"
+	
+	if ( aPlayer.getPropertyValueAsBoolean("askTryPiano") )
+	{
+		if ( verb.equalsIgnoreCase("s") || verb.equalsIgnoreCase("si") || verb.equalsIgnoreCase("sí") )
+		{
+			aPlayer.forceCommand("tocarDeOido o piano");
+            set(aPlayer,"askTryPiano",false);
+			end();
+		}
+		else if ( verb.equalsIgnoreCase("n") || verb.equalsIgnoreCase("no") || args.indexOf("norte") >= 0 || args.indexOf("noroeste") >= 0 )
+		{
+			aPlayer.write("Retíraste do piano, mirándoo con respecto.\n");
+            set(aPlayer,"askTryPiano",false);
+			end();
+		}
+        else
+        {
+            aPlayer.write("¿Queres probar a tocar de oído, si ou non?\n");   
+            end();
+        }
+	}
+
+	else if ( verb.equalsIgnoreCase("ir") )
+	{
+		aPlayer.write("Non vas saír desta habitación ata que non atopes esa mostra. O único que lograrías e chamar máis a atención.\n");
+		end();
+	}
+
+	else if ( verb.equalsIgnoreCase("abrir") && args.toLowerCase().indexOf("porta") >= 0 )
+	{
+		aPlayer.write("Non vas saír desta habitación ata que non atopes esa mostra. O único que lograrías e chamar máis a atención.\n");
+		end();
+	}
+	
+	else if ( ( verb.equalsIgnoreCase("abrir") || verb.equalsIgnoreCase("mirar") || verb.equalsIgnoreCase("tirar") ) && (args.toLowerCase().indexOf("xanela")>=0 || args.toLowerCase().indexOf("fiestra")>=0) )
+	{
+		aPlayer.write("A xanela dá ao xardín, que xa tes moi visto a forza de suplantar a unha das camareiras da mansión. Tes que atopar o Grylloblatta, e as túas informacións din que está dentro desta habitación, non fóra.\n");
+		end();
+	}
+
+	else if ( (verb.equalsIgnoreCase("poñer")||verb.equalsIgnoreCase("pór")) && args.toLowerCase().indexOf("ekaterina") >= 0 && args.toLowerCase().indexOf("baixo") >= 0 && args.toLowerCase().indexOf("cama") >= 0  )
+	{
+		aPlayer.write("Non che serviría de nada agacharte baixo a cama, sobre todo habendo un can. Terás que resolver os teus problemas doutra maneira.\n");
+		end();
+	}
+
+	else if ( verb.equalsIgnoreCase("coller") && ( args.toLowerCase().indexOf("saba") >= 0 || args.toLowerCase().indexOf("saba") >= 0 || args.toLowerCase().indexOf("almoh") >= 0)  )
+	{
+		aPlayer.write("Non ves que a roupa de cama sexa tan interesante como para levala.\n");
+		end();
+	}
+	
+}]]></Code>
+<PlayerList>
+<Player id="Ekaterina"/>
+</PlayerList>
+<VisualConfiguration>
+<Colors>
+<Story color="#006666"/>
+<Information color="#660066"/>
+<Default color="#000000"/>
+<Input color="#0066cc"/>
+<Description color="#000099"/>
+<Foreground color="#000000"/>
+<Important color="#ffffff"/>
+<Denial color="#660000"/>
+<Action color="#006666"/>
+<Background color="#ffffe8"/>
+<Error color="#663300"/>
+</Colors>
+<Font filename="Courier.ttf" name="Arial" size="24.0"/>
+</VisualConfiguration>
+<Rooms>
+<Room name="Habitación de Kovacic">
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">!viewer.getPropertyValueAsBoolean("sawBadTaste")</Condition>Atópaste na suntuosa habitación do xeneral Kovacic. Está profusamente decorada, e o valor de todo o que contén debe de sumar millóns de dólares. Pódese falar moi mal dos xenerais bordurios, pero non se pode dicir que non teñan bo gusto. Unha xanela dá ao xardín.</Description>
+<Description>
+<Condition language="BeanShell">viewer.getPropertyValueAsBoolean("sawBadTaste")</Condition>Atópaste na suntuosa habitación do xeneral Kovacic. Está profusamente decorada, e o valor de todo o que contén debe de sumar millóns de dólares. Por desgraza, a riqueza do xeneral non vai acompañada de bo gusto, a xulgar polo cadro que viches na parede. Unha xanela dá ao xardín.</Description>
+</DescriptionList>
+<ExtraDescriptionList>
+<ExtraDescription>
+<Name>porta</Name>
+<DescriptionList>
+<Description>Si, hai unha porta que leva fóra, pero non pensas abrila ata que non teñas conseguido a mostra. Sería moi perigoso.</Description>
+</DescriptionList>
+</ExtraDescription>
+<ExtraDescription>
+<Name>xanela</Name>
+<Name>fiestra</Name>
+<DescriptionList>
+<Description>Non ves ningún motivo para abrir a xanela ata que consigas a mostra. O único que lograrías é chamar a atención indebidamente.</Description>
+</DescriptionList>
+</ExtraDescription>
+<ExtraDescription>
+<Name>chan</Name>
+<Name>solo</Name>
+<DescriptionList>
+<Description>Un chan de parqué do máis normal.</Description>
+</DescriptionList>
+</ExtraDescription>
+<ExtraDescription>
+<Name>teito</Name>
+<DescriptionList>
+<Description>Non ves nada do outro mundo no teito.</Description>
+</DescriptionList>
+</ExtraDescription>
+</ExtraDescriptionList>
+<PropertyList/>
+<PathList/>
+<Inventory>
+<ItemRef id="Piano de cola"/>
+<ItemRef id="Alfombra"/>
+<ItemRef id="Cuadro"/>
+<ItemRef id="Marco"/>
+<ItemRef id="Cama"/>
+</Inventory>
+<MobileList>
+<MobRef id="Ekaterina"/>
+</MobileList>
+<RelationshipList>
+<Relationship id="Piano de cola">
+<PropertyList/>
+</Relationship>
+<Relationship id="Alfombra">
+<PropertyList/>
+</Relationship>
+<Relationship id="Cuadro">
+<PropertyList/>
+</Relationship>
+<Relationship id="Marco">
+<PropertyList/>
+</Relationship>
+<Relationship id="Cama">
+<PropertyList/>
+</Relationship>
+<Relationship id="Ekaterina">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+<Room name="Limbo">
+<DescriptionList/>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[void parseCommand ( Player p , String verb , String args )
+{	
+	
+	switch ( self.getPropertyValueAsInteger("ending") )
+	{	
+		case 0:
+			p.write("Estás morta. Perdiches a partida: non conseguiches recuperar a mostra, e o teu país é arrasado e saqueado polos bordurios.\n");
+			end();
+			break;
+		case 1:
+			p.write("Conseguiches completar a túa misión con éxito, entregando o exemplar de Grylloblatta co axente biolóxico aos teus servizos secretos.\n");
+			p.write("Grazas á túa admirable actuación, os científicos do teu país conseguen elaborar un antídoto contra a temible arma biolóxica, evitando unha previsible guerra contra Borduria.\n");
+			p.write("Mentres, a reputación da axente Ekaterina Voronova vese cada vez máis reforzada...\n");
+			end();
+			break;
+	}
+
+}]]></Code>
+<PathList/>
+<Inventory/>
+<MobileList/>
+<RelationshipList/>
+</Room>
+</Rooms>
+<Items>
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Item falso" openable="false" unlockable="false" volume="10000" weight="10000">
+<SingularNames>
+<Description>piano de cola</Description>
+</SingularNames>
+<PluralNames>
+<Description>pianos de cola</Description>
+</PluralNames>
+<SingularReferenceNames>
+<Name>piano de cola</Name>
+<Name>piano</Name>
+<Name>atril</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>pianos de cola</Name>
+<Name>pianos</Name>
+<Name>atril</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>Un precioso piano de cola de Steinway &amp; Sons. El sueño de cualquier músico. Tu profesora mataría por uno de éstos. Sobre el atril hay %INVENTORY.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Inventory/>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Piano de cola" openable="false" unlockable="false" volume="10000" weight="10000">
+<SingularNames>
+<Description>piano de cola</Description>
+</SingularNames>
+<PluralNames>
+<Description>pianos de cola</Description>
+</PluralNames>
+<SingularReferenceNames>
+<Name>piano de cola</Name>
+<Name>piano</Name>
+<Name>atril</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>pianos de cola</Name>
+<Name>pianos</Name>
+<Name>atril</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>Un precioso piano de cola de Steinway &amp; Sons. O soño de calquera músico. A túa profesora mataría por un destes. Sobre o atril hai %INVENTORY</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[void before_do_get ( Mobile getter , Inventory inv , String toAppend )
+{
+ 	
+ 	//getter: criatura que coge esta cosa.
+ 	//self: cosa que ha cogido (es decir, esta cosa).
+	getter.writeAction("Non estaría mal levar o piano, xa que é precioso. Pero, por desgraza, non contas con forza sobrehumana para collelo.\n");	
+	end();
+
+}
+
+
+/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "comer"
+	//args: resto de la orden que introduce, por ejemplo "la seta"
+	
+	if ( verb.equalsIgnoreCase("tocar") || verb.equalsIgnoreCase("usar") )
+	{
+		if ( self.getContents().contains(world.getObject("Partitura")) )
+		{
+			aCreature.write("Sentas na banqueta fronte ao piano e, seguindo a partitura, tocas unha digna versión do Concerto nº 3 de Bartok.\n");
+			aCreature.write("O can que hai trala porta parece tranquilizarse!\n");
+			world.getAbstractEntity("Perro").setProperty("power",-300);
+		}
+		else
+		{
+			aCreature.write("Non hai ningunha partitura no atril do piano, e nunca fuches moi boa tocando de oído. Seguro que queres tentalo?\n");
+			aCreature.setProperty("askTryPiano",true);
+		}
+		end();
+	}
+
+	if ( verb.equalsIgnoreCase("tocarDeOido") )
+	{
+		aCreature.write("Tentas tocar de oído o vals en do sostido menor de Chopin; pero a túa actuación é absolutamente infumable.\n");
+		aCreature.write("O can que hai tras a porta parece porse de moi mal humor!\n");
+		int pow = world.getAbstractEntity("Perro").getPropertyValueAsInteger("power");
+		if ( pow < 3 )
+			world.getAbstractEntity("Perro").setProperty("power",3);
+		else if ( pow < 5 ) 
+			world.getAbstractEntity("Perro").setProperty("power",5);
+		end();
+	}
+	
+}]]></Code>
+<Inventory/>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="Partitura" openable="false" unlockable="false" volume="1" weight="1">
+<SingularNames>
+<Description>partitura</Description>
+</SingularNames>
+<PluralNames>
+<Description>partituras</Description>
+</PluralNames>
+<SingularReferenceNames>
+<Name>partitura</Name>
+<Name>folla</Name>
+<Name>papel</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>partituras</Name>
+<Name>follas</Name>
+<Name>papeles</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>Trátase dunha partitura do 3o concerto para piano de Béla Bartók. Escribiuno cando padecía de leucemia terminal, e dedicoullo á súa esposa, din. Tráxico.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Marco" openable="false" unlockable="false" volume="0" weight="0">
+<SingularNames/>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>marco</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>marcos</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>É un marco dourado, bastante charramangueiro, decorado con patróns xeométricos.</Description>
+</DescriptionList>
+<ExtraDescriptionList>
+<ExtraDescription>
+<Name>patrones</Name>
+<DescriptionList>
+<Description>Patróns xeométricos.</Description>
+</DescriptionList>
+</ExtraDescription>
+</ExtraDescriptionList>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "comer"
+	//args: resto de la orden que introduce, por ejemplo "la seta"
+	
+	if ( verb.equalsIgnoreCase("mirar") && !aCreature.getPropertyValueAsBoolean("sawMarco") )
+	{
+		aCreature.write("É un marco dourado bastante charramangueiro, decorado con patróns xeométricos e... goddamnit! Acabas de ver un pequeno botón dourado, camuflado nel.\n");
+		aCreature.setProperty("sawMarco",true);
+		world.getRoom("Habitación de Kovacic").addItem(world.getItem("Botón"));
+		end();
+	}
+
+
+	
+}]]></Code>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Botón" openable="false" unlockable="false" volume="5000" weight="5000">
+<SingularNames/>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>botón</Name>
+<Name>boton</Name>
+<Name>tecla</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>botones</Name>
+<Name>teclas</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>Un pequeno botón dourado camuflado no marco do Lanfranco. Non está mal a artimaña, ninguén se pararía a mirar moito ese cadro.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "comer"
+	//args: resto de la orden que introduce, por ejemplo "la seta"
+	
+	if ( verb.equalsIgnoreCase("coger") )
+	{
+		aCreature.write("Hum. É un destes botóns que se pulsan. Non un botón camo o do pantalón. Así que non ten sentido collelo.\n");
+		end();
+	}
+
+	if ( verb.equalsIgnoreCase("pulsar") || verb.equalsIgnoreCase("presionar") || verb.equalsIgnoreCase("accionar") || verb.equalsIgnoreCase("usar") )
+	{
+
+		if ( !self.getPropertyValueAsBoolean("pressed") )
+		{
+			aCreature.write("Pulsas o botón e, cun leve ruidiño de engrenaxes ben engrasados, unha parte do cadro deslízase detrás doutra e deixa ver unha caixa forte. Si! Aí dentro ten que estar o que buscas.\n"); 
+			world.getRoom("Habitación de Kovacic").addItem(world.getItem("Caja fuerte"));
+			self.setProperty("pressed",true);
+			end();
+		}
+		else
+		{
+			aCreature.write("Pulsas o botón de novo, pero nada sucede.\n");
+			end();
+		}
+	}
+	
+}]]></Code>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="Caja fuerte" openable="false" unlockable="false" volume="600" weight="600">
+<SingularNames>
+<Description>caixa forte</Description>
+</SingularNames>
+<PluralNames>
+<Description>caixas fortes</Description>
+</PluralNames>
+<SingularReferenceNames>
+<Name>caixa forte</Name>
+<Name>caixa</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>caixas fortes</Name>
+<Name>caixas</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>A caixa forte é unha Wuttengeiser modelo XL-44 "Rottweiler". Unha caixa moi boa, a proba de ladróns. Calculas que che levará un tres minutos forzala.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[void before_do_get ( Mobile getter , Inventory inv , String toAppend )
+{
+ 	
+ 	//getter: criatura que coge esta cosa.
+ 	//self: cosa que ha cogido (es decir, esta cosa).
+	getter.writeAction("A caixa forte está encaixada na parede tras o cadro. Imposible levala.\n");	
+	end();
+
+}
+
+
+/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "comer"
+	//args: resto de la orden que introduce, por ejemplo "la seta"
+	
+	if ( verb.equalsIgnoreCase("abrir") )
+	{
+		aCreature.write("A caixa forte está pechada, como é natural. Para abrila, terías que forzala. Tarefa que levaría uns minutos.\n");
+		end();
+	}
+
+	if ( verb.equalsIgnoreCase("forzar") || (verb.equalsIgnoreCase("forzo") ) )
+	{
+		int power = world.getAbstractEntity("Perro").getPropertyValueAsInteger("power");
+		if ( power >= 1 )
+		{
+			aCreature.write("Con moito coidado, concéntraste nos mecanismos da caixa abstraéndote de todo o demais, como che ensinou o mestre cerraxeiro Yan-Kan...\n");
+			aCreature.waitKeyPress();
+			aCreature.write("rrrrrrrrr... CLICK\n");
+			aCreature.waitKeyPress();
+			aCreature.write("rrrrrrrrr... CLICK\n");
+			aCreature.waitKeyPress();
+			aCreature.write("De súpeto, notas algo frío no pescozo. Polo tacto, recoñeces o canón de 5.52 mm dun fusil de asalto bordurio. Damnit! Con tanta concentración, non te deches conta de que entraban na habitación. Probablemente ouviron ao can.\n");
+			aCreature.write("Oes un tremendo estampido, e perdes a vida.\n");
+			aCreature.die();
+			aCreature.setRoom(world.getRoom("Limbo"));
+			world.getRoom("Limbo").setProperty("ending",0);
+			end();
+		}
+		else
+		{
+			aCreature.write("Con moito coidado, concéntraste nos mecanismos da caixa abstraéndote de todo o demais, como che ensinou o mestre cerraxeiro Yan-Kan...\n");
+			aCreature.waitKeyPress();
+			aCreature.write("rrrrrrrrr... CLICK\n");
+			aCreature.waitKeyPress();
+			aCreature.write("rrrrrrrrr... CLICK\n");
+			aCreature.waitKeyPress();
+			aCreature.write("rrrrrrrrr... CLICK\n");
+			aCreature.waitKeyPress();
+			aCreature.write("¡CLACK! ¡CLACK!\n");
+			aCreature.write("A caixa ábrese, e dentro atopas unha pequena caixiña de cristal con buracos, onde campan ás súas anchas catro ou cinco feos insectos: os Grylloblatta!\n");
+			aCreature.write("A partir de aquí, poste en piloto automático. Estás tan ben adestrada para fuxir de sitios, e tiñas tan ben planeada a fuxida desta habitación concreta, que xa non necesitas pensar máis. Saltas pola xanela e corres antes de que ninguén poida darse conta da túa presenza. Nunha volta de man, uns compañeiros recóllente en coche, e felicítante pola misión cumprida.\n");
+			aCreature.write("Parabéns, gañaches. Grazas á túa magnífica actuación, o teu país está a salvo dos belicosos bordurios... polo menos polo momento...\n");
+			aCreature.setRoom(world.getRoom("Limbo"));
+			world.getRoom("Limbo").setProperty("ending",1);
+			end();
+		}
+	}
+	
+}]]></Code>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="Cama" openable="false" unlockable="false" volume="5000" weight="5000">
+<SingularNames>
+<Description>cama con dosel</Description>
+</SingularNames>
+<PluralNames>
+<Description>camas con dosel</Description>
+</PluralNames>
+<SingularReferenceNames>
+<Name>cama con dosel</Name>
+<Name>cama</Name>
+<Name>dosel</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>camas con dosel</Name>
+<Name>camas</Name>
+<Name>doseles</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>Unha luxosa cama con dosel, con sabas e almofadas vermellas.</Description>
+</DescriptionList>
+<ExtraDescriptionList>
+<ExtraDescription>
+<Name>sabas</Name>
+<Name>saba</Name>
+<DescriptionList>
+<Description>Sabas vermellas estándar, nada interesante.</Description>
+</DescriptionList>
+</ExtraDescription>
+<ExtraDescription>
+<Name>almohadas</Name>
+<Name>almohada</Name>
+<DescriptionList>
+<Description>Almofadas vermellas normais, non teñen nada de particular.</Description>
+</DescriptionList>
+</ExtraDescription>
+</ExtraDescriptionList>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "comer"
+	//args: resto de la orden que introduce, por ejemplo "la seta"
+	
+	if ( verb.equalsIgnoreCase("coller") )
+	{
+		aCreature.write("Como vas levar contigo unha cama enteira con dosel? Non estarías a pensar que este xogo estaría tan mal feito como para permitirche facer iso, non?\n"); 
+		end();
+	}
+	
+}]]></Code>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Cuadro" openable="false" unlockable="false" volume="400" weight="400">
+<SingularNames>
+<Description>cadro</Description>
+</SingularNames>
+<PluralNames>
+<Description>cadros</Description>
+</PluralNames>
+<SingularReferenceNames>
+<Name>a Resurrección de Cristo</Name>
+<Name>Resurrección</Name>
+<Name>Lanfranco</Name>
+<Name>cadro</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>cadros</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>Un cadro grande, con marco dourado, de talvez un metro de ancho por dous de alto. Se a memoria non che falla, trátase de "A resurrección de Cristo", de Giovanni Lanfranco. Pero a bandeira que aparece na pintura orixinal foi cambiada por unha bandeira borduria. De acordo, pode ser que os xenerais bordurios non teñan tan bo gusto á fin e ao cabo.</Description>
+</DescriptionList>
+<ExtraDescriptionList>
+<ExtraDescription>
+<Name>bandera</Name>
+<DescriptionList>
+<Description>A bandeira orixinal do cadro de Lanfranco foi cambiada por unha bandeira de Borduria nesta reprodución.</Description>
+</DescriptionList>
+</ExtraDescription>
+</ExtraDescriptionList>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "comer"
+	//args: resto de la orden que introduce, por ejemplo "la seta"
+	
+	if ( verb.equalsIgnoreCase("mirar") )
+	{
+		aCreature.setProperty("sawBadTaste",true);
+	}
+
+	if ( verb.equalsIgnoreCase("coller") )
+	{
+		aCreature.write("O cadro está moi ben fixado á parede, dirías que o marco está aparafusado. Aínda que tivese algún sentido levalo, non habería forma de sacalo sen montar un balbordo de mil diaños e que te collesen nas patacas.\n"); 
+		end();
+	}
+	
+}]]></Code>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="Alfombra" openable="false" unlockable="false" volume="100" weight="100">
+<SingularNames>
+<Description>alfombra persa</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>alfombra persa</Name>
+<Name>alfombra</Name>
+</SingularReferenceNames>
+<PluralReferenceNames>
+<Name>alfombras persas</Name>
+<Name>alfombras</Name>
+</PluralReferenceNames>
+<DescriptionList>
+<Description>Unha suntuosa alfombra persa, decorada con intrincados patróns xeométricos.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[void before_do_get ( Mobile getter , Inventory inv , String toAppend )
+{
+ 	
+ 	//getter: criatura que coge esta cosa.
+ 	//self: cosa que ha cogido (es decir, esta cosa).
+	getter.writeAction("Non necesitas levar unha maldita alfombra persa. Viñeches para cumprir unha misión perigosa, non para facerte cun stock de artigos de luxo.\n");	
+	end();
+
+}
+
+
+/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "comer"
+	//args: resto de la orden que introduce, por ejemplo "la seta"
+	
+	if ( verb.equalsIgnoreCase("levantar") || (verb.equalsIgnoreCase("mirar") && args.indexOf("baixo") >= 0) || verb.equalsIgnoreCase("mover") || verb.equalsIgnoreCase("enrolar") )
+	{
+		if ( !world.getItem("Partitura").getPropertyValueAsBoolean("appeared") )
+		{
+			aCreature.write("Mirando a alfombra para ver o que hai debaixo, atopas unha folla de papel. Trátase dunha partitura!\n");
+			world.getItem("Partitura").setProperty("appeared",true);
+			world.getRoom("Habitación de Kovacic").addItem(world.getItem("Partitura"));
+			end();
+		}
+		else
+		{
+			aCreature.write("Xa non hai nada máis debaixo da alfombra. Enough is enough.\n");
+			end();
+		}
+	}
+	
+}]]></Code>
+<RelationshipList/>
+</Item>
+</Items>
+<Mobiles>
+<Mobile gender="true" hp="10" maxhp="10" maxmp="10" mp="10" name="Ekaterina">
+<SingularNames>
+<Description>Ekaterina</Description>
+<Description>Xogador</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>Ekaterina</Name>
+<Name>Xogador</Name>
+<Name>eu</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>Estás tan calculadamente bela como sempre. Loura, con suxestivo escote e maquillada á perfección. Se non, Kovacic non te tería contratado.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Traits>
+<SkillList/>
+</Traits>
+<Inventory/>
+<RelationshipList/>
+<CurrentRoom id="Habitación de Kovacic"/>
+<LastRoom id="Habitación de Kovacic"/>
+</Mobile>
+</Mobiles>
+<Spells/>
+<AbstractEntities>
+<AbstractEntity name="Perrofake">
+<PropertyList/>
+<RelationshipList/>
+</AbstractEntity>
+<AbstractEntity name="Perro">
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[void update ( PropertyEntry pe , World mundo )
+{
+	updateDog();
+}
+
+void updateDog()
+{
+
+	//increase the dog's bad milk
+	int power = self.getPropertyValueAsInteger("power");
+	self.setProperty("power",power+1,5);	
+
+	Room r = world.getRoom("Habitación de Kovacic");
+
+	//effects according to power
+
+	if ( power == 1 )
+	{
+		r.informActionAuto(null,null,null,"Óense ladridos alén da porta da habitación... merda! Ese repugnante bulldog do xeneral decatouse de que estás aquí.\n",true);
+	}
+	if ( power == 2 )
+	{
+		r.informActionAuto(null,null,null,"O can trala porta ladra: ¡Guau! ¡Guau!\n",true);
+	}
+	if ( power == 3 )
+	{
+		r.informActionAuto(null,null,null,"O can trala porta ladra: ¡GUAU! ¡GUAU!\n",true);
+	}
+	if ( power == 4 )
+	{
+		r.informActionAuto(null,null,null,"O can trala porta ladra: ¡GUAU! ¡GUAU! ¡GRRRRRRRRRRRRRR! ¡GUAU! ¡GRRRRRR!\n",true);
+	}
+	if ( power == 5 )
+	{
+		r.informActionAuto(null,null,null,"O can trala porta ladra: ¡GUAU! ¡GUAU! ¡GUAU! ¡GUAU! ¡GUAU! ¡GUAU! ¡GUAU! ¡GUAU! ¡GRRRRRRRRRRRRRRRRRRRR!\n",true);
+	}
+	if ( power >= 6 )
+	{
+		r.informActionAuto(null,null,null,"O can trala porta ladra: ¡GUAU! ¡GUAU! ¡GUAU! ¡GUAU! ¡GUAU! ¡GUAU! ¡GUAU! ¡GUAU! ¡GRRRRRRRRRRRRRRRRRRRR! ¡GUAU! ¡GUAU! ¡GUAU! ¡GUAU! ¡GRRRRRRRRRRRRRRRRRRRRRRRRR!\n",true);
+		Player p = world.getMobile("Ekaterina");
+		if ( !p.getRoom().equals(world.getRoom("Limbo")) )
+		{
+			p.write("Óense berros tras a porta... parece que o maldito can atraeu a atención de alguén da casa!\n");
+			p.waitKeyPress();
+			p.write("Antes de que che dea tempo a facer gran cousa, abre a porta un grupo de soldados bordurios. Grazas ao teu adestramento en puntaría e artes marciais, vendes cara a túa vida. Consegues eliminar a tres ou catro antes de que che reduzan, pero son superiores en número. Finalmente, un deles crávache a punta unha baioneta no corazón. Reprimes a tentación de gritar, e afrontas con dignidade os teus últimos momentos, mentres os sicarios bordurios xa te carrexan cara a fóra...\n");
+			p.die();
+			p.setRoom(world.getRoom("Limbo"));
+			world.getRoom("Limbo").setProperty("ending",0);
+		}
+	}
+
+
+
+}
+
+
+void extinguish()
+{
+	int curPower = self.getPropertyValueAsInteger("power");
+	int newPower = curPower-1500;
+	self.setProperty("power",newPower,1);
+}]]></Code>
+<RelationshipList/>
+</AbstractEntity>
+</AbstractEntities>
+</World>
