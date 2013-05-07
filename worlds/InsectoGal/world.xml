@@ -51,6 +51,7 @@ void intro( Player aPlayer )
 	aPlayer.waitKeyPress();
 	aPlayer.write("Pero agora, por fin, é a túa ocasión: correu demasiado alcol na festa do Día Nacional de Borduria, todo o mundo na casa está pasándoo ben, e ninguén se fixou en que unha das camareiras subiu polas escaleiras. Ninguén ouviu como reducías ao garda da porta e entrabas na habitación do xeneral. Agora, só che resta atopar a mostra e saír deste inferno.\n");
 	aPlayer.write("\n\n\n");
+    aPlayer.forceCommand("mirar");
 
 }
 
@@ -84,7 +85,7 @@ void parseCommand( Player aPlayer , String verb , String args )
             set(aPlayer,"askTryPiano",false);
 			end();
 		}
-		else if ( verb.equalsIgnoreCase("n") || verb.equalsIgnoreCase("no") || args.indexOf("norte") >= 0 || args.indexOf("noroeste") >= 0 )
+		else if ( verb.equalsIgnoreCase("n") || verb.equalsIgnoreCase("non") || verb.equalsIgnoreCase("no") || args.indexOf("norte") >= 0 || args.indexOf("noroeste") >= 0 )
 		{
 			aPlayer.write("Retíraste do piano, mirándoo con respecto.\n");
             set(aPlayer,"askTryPiano",false);

@@ -48,10 +48,20 @@ public class Galician extends NaturalLanguage
 		result = result.replaceAll("lla$","llea");
 		result = result.replaceAll("llos$","lleos");
 		result = result.replaceAll("llas$","lleas");
-		result = result.replaceAll("llelo$","lleslo");
-		result = result.replaceAll("llela$","llesla");
-		result = result.replaceAll("llelos$","lleslos");
-		result = result.replaceAll("llelas$","lleslas");
+		//the extra ifs are for the special cases coller/recoller/escoller, where the verb ending could be mistaken for a clitic but isn't
+		if ( !result.endsWith("collelo") ) result = result.replaceAll("llelo$","lleslo");
+		if ( !result.endsWith("collela") ) result = result.replaceAll("llela$","llesla");
+		if ( !result.endsWith("collelos") ) result = result.replaceAll("llelos$","lleslos");
+		if ( !result.endsWith("collelas") ) result = result.replaceAll("llelas$","lleslas");
+		
+		//some clitics on infinitive appear transformed:
+		//abrir + a -> abrila (not abrira)
+		//for ease of processing, we undo this linguistic change of r to l.
+		if ( !result.endsWith("lla") ) result = result.replaceAll("la$","ra");
+		if ( !result.endsWith("llo") ) result = result.replaceAll("lo$","ro");
+		if ( !result.endsWith("llas") ) result = result.replaceAll("las$","ras");
+		if ( !result.endsWith("llos") ) result = result.replaceAll("los$","ros");
+		
 		return result;
 	}
 	
