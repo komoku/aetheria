@@ -24,6 +24,9 @@
 	<game downloaded="true" author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2008-11-06" language="es" moduleName="Insecto mortal" parserVersion="1.0" type="Aventura rápida" version="1.1" worldDir="." worldName="Insecto mortal">
 		<main-resource downloaded="true" local="Insecto/world.xml"/>
 	</game>
+	<game downloaded="true" author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2013-05-07" language="gl" moduleName="Insecto mortal (galego)" parserVersion="1.3.1" type="Aventura rápida" version="1.1" worldDir="." worldName="Insecto mortal (galego)">
+		<main-resource downloaded="true" local="InsectoGal/world.xml"/>
+	</game>
 	<game downloaded="true" author="Carlos Gómez Rodríguez (Al-Khwarizmi)" date="2011-11-27" language="en" moduleName="Lethal Insect" parserVersion="1.2.0" type="Very small miniadventure" version="0.1" worldDir="." worldName="Lethal Insect">
 		<main-resource downloaded="true" local="Insect/world.xml"/>
 	</game>

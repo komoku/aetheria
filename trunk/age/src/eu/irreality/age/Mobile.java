@@ -6511,18 +6511,18 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			if ( !eventEnded )
 			{
 				//write( io.getColorCode("action")  + "Pones " + ourItem.constructName2True(1,this) + " en " + ourContainer.constructName2True(1,this) + "." + io.getColorCode("reset")  + "\n"  );
-				writeAction ( mundo.getMessages().getMessage("you.put.into","$item",ourItem.constructName2True(1,this),"$container",ourContainer.constructName2True(1,this),new Object[]{this,ourItem,ourContainer}) );
+				writeAction ( lenguaje.correctMorphologyWithoutTrimming( mundo.getMessages().getMessage("you.put.into","$item",ourItem.constructName2True(1,this),"$container",ourContainer.constructName2True(1,this),new Object[]{this,ourItem,ourContainer}) ) );
 			}
 		}
 		catch ( WeightLimitExceededException wle )
 		{
 			//write ( io.getColorCode("denial") + ourContainer.constructName2True(1,this) + " no puede soportar tanto peso." + io.getColorCode("reset")  + "\n"  );
-			writeDenial ( mundo.getMessages().getMessage("cant.put.into.weight","$item",ourItem.constructName2True(1,this),"$container",ourContainer.constructName2True(1,this),new Object[]{this,ourItem,ourContainer}));
+			writeDenial ( lenguaje.correctMorphologyWithoutTrimming ( mundo.getMessages().getMessage("cant.put.into.weight","$item",ourItem.constructName2True(1,this),"$container",ourContainer.constructName2True(1,this),new Object[]{this,ourItem,ourContainer})));
 		}
 		catch ( VolumeLimitExceededException vle )
 		{
 			//write ( io.getColorCode("denial") + ourItem.constructName2True(1,this) + " no cabe en " +  ourContainer.constructName2True(1,this) + io.getColorCode("reset")  + "\n"  );
-			writeDenial ( mundo.getMessages().getMessage("cant.put.into.weight","$item",ourItem.constructName2True(1,this),"$container",ourContainer.constructName2True(1,this),new Object[]{this,ourItem,ourContainer}));
+			writeDenial ( lenguaje.correctMorphologyWithoutTrimming( mundo.getMessages().getMessage("cant.put.into.weight","$item",ourItem.constructName2True(1,this),"$container",ourContainer.constructName2True(1,this),new Object[]{this,ourItem,ourContainer})));
 		}
 
 	}
