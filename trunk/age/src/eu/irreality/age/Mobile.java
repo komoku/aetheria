@@ -2362,8 +2362,10 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 							}
 							write( io.getColorCode("information") + 
 							//"Llevas " + vestido.constructName2OneItem(this)  + " en " + toOutput + ".\n"
+							lenguaje.correctMorphology(
 							mundo.getMessages().getMessage("you.are.wearing.item","$item",vestido.getOutputNameThe(this),"$limbs",toOutput,new Object[]{this,vestido,toOutput})
-							+ io.getColorCode("reset") );
+							)
+							+ "\n" + io.getColorCode("reset") );
 						}
 					}
 			}
@@ -10262,7 +10264,6 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				cancelPending();
 				return false;
 			}	
-	
 			else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase(mundo.getMessages().getMessage("direction.n"))
 					|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("n") )
 			{
