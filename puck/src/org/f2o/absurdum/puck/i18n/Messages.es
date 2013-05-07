@@ -316,6 +316,6 @@ cb.use.ogg=Audio OGG
 cb.use.spx=Audio SPX
 cb.use.mod=Audio MOD
 cb.use.svg=Gráficos SVG
-applet.multimedia.usage=<html><p>Indica cuáles de estos formatos multimedia utiliza tu mundo</p><p>(si utiliza otros que no aparecen aquí, no hace falta indicarlo)</p>
+applet.multimedia.usage=<html>Indica cuáles de estos formatos multimedia utiliza tu mundo <br/> (si utiliza otros que no aparecen aquí, no hace falta indicarlo)</html>
 dir.expected.file.found=La localización seleccionada es un fichero, debería ser un directorio.
 lib.not.found=Biblioteca no encontrada

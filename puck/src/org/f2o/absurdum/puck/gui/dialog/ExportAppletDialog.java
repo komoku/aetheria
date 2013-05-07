@@ -20,10 +20,13 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 import org.f2o.absurdum.puck.gui.PuckFrame;
 import org.f2o.absurdum.puck.i18n.UIMessages;
@@ -62,6 +65,13 @@ public class ExportAppletDialog extends JDialog
 		getContentPane().setLayout(new BoxLayout(getContentPane(),BoxLayout.PAGE_AXIS));
 		getContentPane().add(Box.createRigidArea(new Dimension(0,10)));
 		
+		JLabel infoLabel = new JLabel(UIMessages.getInstance().getMessage("applet.multimedia.usage"));
+		infoLabel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		infoLabel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+		getContentPane().add(infoLabel);
+		
+		getContentPane().add(Box.createRigidArea(new Dimension(0,5)));
+		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout( new GridLayout(5,1) );
 		mainPanel.add(cbMp3);
@@ -69,7 +79,7 @@ public class ExportAppletDialog extends JDialog
 		mainPanel.add(cbSpx);
 		mainPanel.add(cbMod);
 		mainPanel.add(cbSvg);
-		mainPanel.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("applet.multimedia.usage")));
+		//mainPanel.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("applet.multimedia.usage")));
 		
 		getContentPane().add(mainPanel);
 		
