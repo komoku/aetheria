@@ -386,6 +386,24 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		return s1 + s2 + s3;
 	}
 	
+	
+	/**
+	 * Obtain the language code corresponding to the language that is selected in the world language combo box.
+	 * @return
+	 */
+	public String getSelectedLanguageCode()
+	{
+		String languageString = (String) cbLanguage.getSelectedItem();
+		if (languageString.equals(UIMessages.getInstance().getMessage("language.en")))
+			return "en";
+		else if (languageString.equals(UIMessages.getInstance().getMessage("language.eo")))
+			return "eo";
+		else if (languageString.equals(UIMessages.getInstance().getMessage("language.gl")))
+			return "gl";
+		else
+			return "es";
+	}
+	
 	public org.w3c.dom.Node doGetXML ( Document d )
 	{
 		
@@ -395,6 +413,8 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		result.setAttribute("worldName",tfShortName.getText());
 		result.setAttribute("moduleName",tfLongName.getText());
 		
+		result.setAttribute("language",getSelectedLanguageCode());
+		/*
 		String languageString = (String) cbLanguage.getSelectedItem();
 		if (languageString.equals(UIMessages.getInstance().getMessage("language.en")))
 			result.setAttribute("language","en");
@@ -404,6 +424,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 			result.setAttribute("language","gl");
 		else
 			result.setAttribute("language","es");
+		*/
 		
 		result.setAttribute("worldDir",".");
 		result.setAttribute("author",tfAuthor.getText());

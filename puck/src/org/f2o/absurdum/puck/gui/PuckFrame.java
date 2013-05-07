@@ -1049,7 +1049,8 @@ public class PuckFrame extends JFrame
 		{
 			public void actionPerformed ( ActionEvent e )
 			{
-				VerbListFrame vlf = VerbListFrame.getInstance();
+				WorldPanel wp = (WorldPanel) graphPanel.getWorldNode().getAssociatedPanel();
+				VerbListFrame vlf = VerbListFrame.getInstance( wp.getSelectedLanguageCode() );
 				vlf.setVisible(true);
 			}
 		}
