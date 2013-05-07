@@ -262,4 +262,5 @@ exception.file.not.found=File not found
 exception.io=Problem when reading/writing data
 exception.malformed.game.entry=Malformed game entry
 exception.transformer=Error in XML transformer
+your.command=Your command:
 
