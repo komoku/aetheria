@@ -262,3 +262,4 @@ exception.file.not.found=Dosiero ne trovata
 exception.io=Problemo legi/skribi datumoj
 exception.malformed.game.entry=Enirejo de ludo miskonstruita
 exception.transformer=Eraro en XML transformilo
+your.command=Your command:

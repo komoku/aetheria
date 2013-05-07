@@ -1497,7 +1497,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 	
 	//echo configuration
 	private boolean echoEnabled = true;
-	private String echoText = "Tu orden:  ";
+	//private String echoText = "Tu orden:  ";
+	private String echoText = UIMessages.getInstance().getMessage("your.command") + "  ";
 	
 	public boolean isEchoEnabled()
 	{

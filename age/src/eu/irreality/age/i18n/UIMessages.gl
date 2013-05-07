@@ -262,3 +262,4 @@ exception.file.not.found=Ficheiro non atopado
 exception.io=Problema ó ler/escribir datos
 exception.malformed.game.entry=Entrada de xogo mal construída
 exception.transformer=Erro no transformador XML
+your.command=A túa orde:
