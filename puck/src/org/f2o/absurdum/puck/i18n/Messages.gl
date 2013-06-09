@@ -310,6 +310,7 @@ rsyntax.wrap=Axuste de liña
 rsyntax.tablines=Liñas de tabulación
 rsyntax.tabs.emulated=Indentar con espacios (soft tabs)
 rsyntax.view=Vista
+rsyntax.themes=TEmas de cor
 export.applet.dialogtitle=Exportar como Applet
 cb.use.mp3=Audio MP3
 cb.use.ogg=Audio OGG

@@ -310,6 +310,7 @@ rsyntax.wrap=Linifaldi
 rsyntax.tablines=Tabullinoj
 rsyntax.tabs.emulated=Krommarĝeno kun spacoj (soft tabs)
 rsyntax.view=Vido
+rsyntax.themes=Kolora temoj
 export.applet.dialogtitle=Eksporti kiel Applet
 cb.use.mp3=Audio MP3
 cb.use.ogg=Audio OGG
