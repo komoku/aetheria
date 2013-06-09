@@ -1,5 +1,6 @@
 package org.f2o.absurdum.puck.gui.panels.code;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,6 +9,7 @@ import java.util.Map;
 
 import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.Theme;
 
 /**A configuration option that applies to a range of RSyntaxTextAreas.*/
 public class RSyntaxOption 
@@ -31,6 +33,10 @@ public class RSyntaxOption
 	
 	private static Map optionScopes = Collections.synchronizedMap( new HashMap() );
 	private static Map optionTogglers = Collections.synchronizedMap( new HashMap() );
+	
+	private static String[] themeNames = new String[] { "default","default-alt","dark","eclipse","idea","vs" };
+	private static Theme[] themes = new Theme[themeNames.length];
+	private static String themePackage = "org/f2o/absurdum/puck/staticconf/rsthemes";
 	
 	static
 	{
@@ -65,6 +71,43 @@ public class RSyntaxOption
 				ta.setTabsEmulated(enabled);
 			}
 		});
+		
+		//load themes
+		for ( int i = 0 ; i < themeNames.length ; i++ )
+		{
+			final String themeName = themeNames[i];
+			try
+			{
+				Theme theme = Theme.load(RSyntaxOption.class.getClassLoader().getResourceAsStream(themePackage+"/"+themeName+".xml"));
+				themes[i] = theme;
+			}
+			catch ( IOException ioe )
+			{
+				System.err.println("Could not load theme " + themePackage+"/"+themeName+".xml");
+			}
+		}
+		
+		//theme option togglers
+		for ( int i = 0 ; i < themes.length ; i++ )
+		{
+			final String themeName = themeNames[i];
+			final Theme theme = themes[i];
+			if ( theme != null )
+			{
+				optionTogglers.put("rsyntaxTheme"+themeName, new RSyntaxOptionApplier()
+				{
+					public void setOptionEnabled(RSyntaxTextArea ta, boolean enabled)
+					{
+						if ( enabled )
+						{
+							theme.apply(ta);
+						}
+					}
+				}
+				);
+			}
+		}
+		
 		
 	}
 	
@@ -129,6 +172,14 @@ public class RSyntaxOption
 	}
 
 	
+	/**
+	 * Returns the supported theme names.
+	 * @return
+	 */
+	public static String[] getThemeNames ()
+	{
+		return themeNames;
+	}
 
 	
 }
