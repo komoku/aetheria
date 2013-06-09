@@ -331,6 +331,13 @@ public class RSyntaxBSHCodeFrame extends JFrame
 		RSyntaxOptionToggleAction tabLinesToggleAction = RSyntaxOptionToggleAction.getInstanceFor(UIMessages.getInstance().getMessage("rsyntax.tablines"), "rsyntaxShowTabLines");
 		RSyntaxOptionToggleAction tabsEmulatedToggleAction = RSyntaxOptionToggleAction.getInstanceFor(UIMessages.getInstance().getMessage("rsyntax.tabs.emulated"), "rsyntaxTabsEmulated");
 		
+		String[] themeNames = RSyntaxOption.getThemeNames();
+		RSyntaxOptionToggleAction[] themeToggleActions = new RSyntaxOptionToggleAction[themeNames.length];
+		for ( int i = 0 ; i < themeNames.length ; i++ )
+		{
+			themeToggleActions[i] = RSyntaxOptionToggleAction.getInstanceFor(themeNames[i],"rsyntaxTheme"+themeNames[i]);
+		}
+		
 		//No. This is wrong because it was assuming there are only two text areas, where actually there are two PER ENTITY. Need to re-think this.
 		
 		/*
@@ -373,6 +380,13 @@ public class RSyntaxBSHCodeFrame extends JFrame
 			viewMenu.add(wordWrapToggleAction.getCheckBox());
 			viewMenu.add(tabLinesToggleAction.getCheckBox());
 			viewMenu.add(tabsEmulatedToggleAction.getCheckBox());
+			
+			JMenu themesMenu = new JMenu( UIMessages.getInstance().getMessage("rsyntax.themes") );
+			
+			for ( int j = 0 ; j < themeToggleActions.length ; j++ )
+				themesMenu.add(themeToggleActions[j].getCheckBox());
+			
+			viewMenu.add(themesMenu);
 			
 			areas[i].getPopupMenu().add ( viewMenu );
 		}
