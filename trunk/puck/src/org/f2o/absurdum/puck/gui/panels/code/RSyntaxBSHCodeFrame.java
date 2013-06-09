@@ -337,6 +337,10 @@ public class RSyntaxBSHCodeFrame extends JFrame
 		{
 			themeToggleActions[i] = RSyntaxOptionToggleAction.getInstanceFor(themeNames[i],"rsyntaxTheme"+themeNames[i]);
 		}
+		for ( int i = 0 ; i < themeNames.length ; i++ )
+		{
+			themeToggleActions[i].setGroup(themeToggleActions);
+		}
 		
 		//No. This is wrong because it was assuming there are only two text areas, where actually there are two PER ENTITY. Need to re-think this.
 		

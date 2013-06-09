@@ -34,12 +34,21 @@ public class RSyntaxOptionToggleAction extends AbstractAction
 	/**Map for instances from config properties*/
 	private static Map instances = Collections.synchronizedMap ( new HashMap() );
 	
-	private RSyntaxOptionToggleAction ( String actionName , String configProperty , RSyntaxOption toggler ) 
+	/**Group. If not null, when one is enabled, the others will be disabled*/
+	private RSyntaxOptionToggleAction[] group;
+	
+	private RSyntaxOptionToggleAction ( String actionName , String configProperty , RSyntaxOption toggler , RSyntaxOptionToggleAction[] group ) 
 	{
 		this.toggler = toggler;
 		this.configProperty = configProperty;
+		this.group = group;
 		putValue(NAME, actionName);
 		loadConfig();
+	}
+	
+	private RSyntaxOptionToggleAction ( String actionName , String configProperty , RSyntaxOption toggler )
+	{
+		this(actionName,configProperty,toggler,null);
 	}
 	
 	public static RSyntaxOptionToggleAction getInstanceFor ( String actionName , String configProperty )
@@ -53,9 +62,39 @@ public class RSyntaxOptionToggleAction extends AbstractAction
 		return instance;
 	}
 	
+	public void setGroup ( RSyntaxOptionToggleAction[] group )
+	{
+		this.group = group;
+	}
+	
 	public void actionPerformed(ActionEvent e) 
 	{
+		if ( group != null )
+		{
+			if ( toggler.isOptionEnabled() ) return; //if option is part of a group, it can only be disabled by enabling another one
+			else //disable other options in group
+			{
+				for ( int i = 0 ; i < group.length ; i++ )
+				{
+					if ( group[i] != this )
+						group[i].disable();
+				}
+			}
+		}
+			
 		toggler.setOptionEnabled(!toggler.isOptionEnabled());
+		
+		//save the configuration so it will be kept for future sessions
+		PuckConfiguration.getInstance().setProperty(configProperty, String.valueOf(toggler.isOptionEnabled()));
+	}
+	
+	/**
+	 * This is used for groups, where enabling one option can disable the others.
+	 */
+	public void disable()
+	{
+		toggler.setOptionEnabled(false);
+		getCheckBox().getModel().setSelected(false);
 		
 		//save the configuration so it will be kept for future sessions
 		PuckConfiguration.getInstance().setProperty(configProperty, String.valueOf(toggler.isOptionEnabled()));
