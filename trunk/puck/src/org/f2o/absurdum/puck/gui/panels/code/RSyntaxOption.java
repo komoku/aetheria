@@ -102,16 +102,7 @@ public class RSyntaxOption
 					{
 						if ( enabled )
 						{
-							if ( THEMES_COLOR_ONLY )
-							{
-								float theFontSize = ta.getFont().getSize();
-								theme.apply(ta);
-								ta.setFont(ta.getFont().deriveFont(theFontSize));
-							}
-							else
-							{
-								theme.apply(ta);
-							}
+							applyTheme ( theme , ta );
 						}
 					}
 				}
@@ -120,6 +111,21 @@ public class RSyntaxOption
 		}
 		
 		
+	}
+	
+	private static void applyTheme ( Theme theme , RSyntaxTextArea ta )
+	{
+		RSyntaxTextAreaRegistry.getInstance().setThemeForNewAreas(theme); //so that new text areas are created with the current theme
+		if ( THEMES_COLOR_ONLY )
+		{
+			int theFontSize = ta.getFont().getSize();
+			theme.apply(ta);
+			ta.setFont(ta.getFont().deriveFont(theFontSize));
+		}
+		else
+		{
+			theme.apply(ta);
+		}
 	}
 	
 	private RSyntaxOption ( String configOptionName , int optionScope , RSyntaxOptionApplier toggler )
