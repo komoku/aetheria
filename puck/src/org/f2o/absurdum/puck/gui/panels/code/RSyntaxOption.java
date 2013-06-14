@@ -34,11 +34,11 @@ public class RSyntaxOption
 	private static Map optionScopes = Collections.synchronizedMap( new HashMap() );
 	private static Map optionTogglers = Collections.synchronizedMap( new HashMap() );
 	
+	//maybe move to RSyntaxThemeUtil:
 	private static String[] themeNames = new String[] { "default","default-alt","dark","eclipse","idea","vs" };
 	private static Theme[] themes = new Theme[themeNames.length];
 	private static String themePackage = "org/f2o/absurdum/puck/staticconf/rsthemes";
-	
-	private static boolean THEMES_COLOR_ONLY = true; //apply only color when applying themes (not font size).
+
 	
 	static
 	{
@@ -102,7 +102,7 @@ public class RSyntaxOption
 					{
 						if ( enabled )
 						{
-							applyTheme ( theme , ta );
+							RSyntaxThemeUtil.applyTheme ( theme , ta );
 						}
 					}
 				}
@@ -113,20 +113,7 @@ public class RSyntaxOption
 		
 	}
 	
-	private static void applyTheme ( Theme theme , RSyntaxTextArea ta )
-	{
-		RSyntaxTextAreaRegistry.getInstance().setThemeForNewAreas(theme); //so that new text areas are created with the current theme
-		if ( THEMES_COLOR_ONLY )
-		{
-			int theFontSize = ta.getFont().getSize();
-			theme.apply(ta);
-			ta.setFont(ta.getFont().deriveFont(theFontSize));
-		}
-		else
-		{
-			theme.apply(ta);
-		}
-	}
+
 	
 	private RSyntaxOption ( String configOptionName , int optionScope , RSyntaxOptionApplier toggler )
 	{

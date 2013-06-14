@@ -44,7 +44,7 @@ public class RSyntaxTextAreaRegistry
 	public RSyntaxTextArea createLargeTextArea()
 	{
 		RSyntaxTextArea inst = new RSyntaxTextArea();
-		if ( colorTheme != null ) colorTheme.apply(inst);
+		if ( colorTheme != null ) RSyntaxThemeUtil.applyTheme(colorTheme, inst);
 		largeTextAreas.add(inst);
 		return inst;
 	}
@@ -52,7 +52,7 @@ public class RSyntaxTextAreaRegistry
 	public RSyntaxTextArea createSmallTextArea()
 	{
 		RSyntaxTextArea inst = new RSyntaxTextArea();
-		if ( colorTheme != null ) colorTheme.apply(inst);
+		if ( colorTheme != null ) RSyntaxThemeUtil.applyTheme(colorTheme, inst);
 		smallTextAreas.add(inst);
 		return inst;
 	}
@@ -60,7 +60,7 @@ public class RSyntaxTextAreaRegistry
 	public RSyntaxTextArea createSmallTextArea( int rows , int cols )
 	{
 		RSyntaxTextArea inst = new RSyntaxTextArea( rows , cols );
-		if ( colorTheme != null ) colorTheme.apply(inst);
+		if ( colorTheme != null ) RSyntaxThemeUtil.applyTheme(colorTheme, inst);
 		smallTextAreas.add(inst);
 		return inst;
 	}
