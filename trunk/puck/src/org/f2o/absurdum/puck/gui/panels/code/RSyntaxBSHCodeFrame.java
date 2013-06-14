@@ -263,6 +263,8 @@ public class RSyntaxBSHCodeFrame extends JFrame
 		theTextArea.getPopupMenu().add(new JSeparator());
 		theTextArea.getPopupMenu().add(fontSize);
 		
+		updateFontSize();
+		
 	}
 	
 	/**
