@@ -38,6 +38,8 @@ public class RSyntaxOption
 	private static Theme[] themes = new Theme[themeNames.length];
 	private static String themePackage = "org/f2o/absurdum/puck/staticconf/rsthemes";
 	
+	private static boolean THEMES_COLOR_ONLY = true; //apply only color when applying themes (not font size).
+	
 	static
 	{
 		optionScopes.put("rsyntaxWordWrap", ALL_AREAS);
@@ -100,7 +102,16 @@ public class RSyntaxOption
 					{
 						if ( enabled )
 						{
-							theme.apply(ta);
+							if ( THEMES_COLOR_ONLY )
+							{
+								float theFontSize = ta.getFont().getSize();
+								theme.apply(ta);
+								ta.setFont(ta.getFont().deriveFont(theFontSize));
+							}
+							else
+							{
+								theme.apply(ta);
+							}
 						}
 					}
 				}
