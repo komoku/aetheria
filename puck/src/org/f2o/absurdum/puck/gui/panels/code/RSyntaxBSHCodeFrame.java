@@ -60,7 +60,6 @@ public class RSyntaxBSHCodeFrame extends JFrame
 	private RSyntaxBSHCodePanel codePanel = null;
 	
 	
-	
 	public String getContext()
 	{
 		return context;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.Theme;
 
 /**
  * Creates instances of RSyntaxTextArea and has access to all instances, for purposes like changing options that
@@ -23,6 +24,12 @@ public class RSyntaxTextAreaRegistry
 	/**Singleton instance*/
 	private static RSyntaxTextAreaRegistry instance;
 	
+	/**
+	 * The theme to apply to new code frames
+	 */
+	private Theme colorTheme;
+	
+	
 	
 	private RSyntaxTextAreaRegistry()
 	{
@@ -37,6 +44,7 @@ public class RSyntaxTextAreaRegistry
 	public RSyntaxTextArea createLargeTextArea()
 	{
 		RSyntaxTextArea inst = new RSyntaxTextArea();
+		if ( colorTheme != null ) colorTheme.apply(inst);
 		largeTextAreas.add(inst);
 		return inst;
 	}
@@ -44,6 +52,7 @@ public class RSyntaxTextAreaRegistry
 	public RSyntaxTextArea createSmallTextArea()
 	{
 		RSyntaxTextArea inst = new RSyntaxTextArea();
+		if ( colorTheme != null ) colorTheme.apply(inst);
 		smallTextAreas.add(inst);
 		return inst;
 	}
@@ -51,6 +60,7 @@ public class RSyntaxTextAreaRegistry
 	public RSyntaxTextArea createSmallTextArea( int rows , int cols )
 	{
 		RSyntaxTextArea inst = new RSyntaxTextArea( rows , cols );
+		if ( colorTheme != null ) colorTheme.apply(inst);
 		smallTextAreas.add(inst);
 		return inst;
 	}
@@ -63,6 +73,16 @@ public class RSyntaxTextAreaRegistry
 	public List getSmallTextAreas ()
 	{
 		return smallTextAreas;
+	}
+	
+	public void setThemeForNewAreas ( Theme theme )
+	{
+		colorTheme = theme;
+	}
+	
+	public Theme getThemeForNewAreas ( )
+	{
+		return colorTheme;
 	}
 	
 }
