@@ -228,6 +228,8 @@ public class RSyntaxBSHCodePanel extends BSHCodePanel
 	    
 	    RSyntaxBSHCodeFrame.configureSyncedMenus ( auxFrame.getTextArea() , theTextArea );
 	    
+	    auxFrame.refresh(); //because configureSyncedMenus sets a theme and that overrides the font size with an undesirable font size.
+	    
 	}
 	
 	public String getCode()
