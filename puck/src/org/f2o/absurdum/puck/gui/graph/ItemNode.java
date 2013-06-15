@@ -167,7 +167,7 @@ public class ItemNode extends Node
 		
 		if ( PuckConfiguration.getInstance().getProperty("showItemNames").equals("true") || isHighlighted() )
 		{
-			g.setColor(Color.BLACK);
+			g.setColor(GraphColorSettings.getInstance().getColorSetting("text"));
 			Font oldFont = g.getFont();
 			Font newFont = oldFont.deriveFont(getNameFontSize());
 			g.setFont(newFont);

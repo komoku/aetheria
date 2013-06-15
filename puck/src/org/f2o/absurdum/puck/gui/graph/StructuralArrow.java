@@ -401,7 +401,7 @@ public class StructuralArrow extends Arrow
 		{
 			//normal (continuous) drawing mode
 			//draw the arrow
-			paintSingleArrow(g,srcX,srcY,dstX,dstY,getName(),arrowColor,oldColor);
+			paintSingleArrow(g,srcX,srcY,dstX,dstY,getName(),arrowColor,GraphColorSettings.getInstance().getColorSetting("text"));
 		}
 		else
 		{

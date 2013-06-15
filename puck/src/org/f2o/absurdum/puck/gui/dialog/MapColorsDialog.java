@@ -73,6 +73,7 @@ public class MapColorsDialog extends JDialog
 		JButton buttonHighArrow = new JButton(UIMessages.getInstance().getMessage("button.mapcolors.higharrow"));
 		
 		addColorChangeActionListener ( buttonBackground , "background" );
+		addColorChangeActionListener ( buttonText , "text" );
 		addColorChangeActionListener ( buttonGrid , "grid" );
 		
 		this.getContentPane().setLayout ( new BorderLayout() );
@@ -81,7 +82,7 @@ public class MapColorsDialog extends JDialog
 		mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.PAGE_AXIS));
 		
 		mainPanel.add(buttonBackground);
-		//mainPanel.add(buttonText);
+		mainPanel.add(buttonText);
 		//mainPanel.add(buttonAuxText);
 		mainPanel.add(buttonGrid);
 		//mainPanel.add(buttonArrow);
