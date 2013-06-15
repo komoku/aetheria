@@ -168,7 +168,7 @@ public class AbstractEntityNode extends Node
 		
 		if ( PuckConfiguration.getInstance().getProperty("showAbstractEntityNames").equals("true") || isHighlighted() )
 		{
-			g.setColor(Color.BLACK);
+			g.setColor(GraphColorSettings.getInstance().getColorSetting("text"));
 			Font oldFont = g.getFont();
 			Font newFont = oldFont.deriveFont(getNameFontSize());
 			g.setFont(newFont);

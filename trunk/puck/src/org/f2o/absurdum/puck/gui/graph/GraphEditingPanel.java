@@ -96,10 +96,7 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 	private Map nodeListsByClassN = new HashMap(); //of Vectors (with room nodes, item nodes, etc.) including null
 	
 	
-	/**
-	 * Map of color settings, containing things like the background color, grid color, etc.
-	 */
-	private Map colorSettings = Collections.synchronizedMap ( new HashMap() );
+
 	
 	/**
 	 * Obtains the color setting with the given name.
@@ -108,17 +105,7 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 	 */
 	public Color getColorSetting ( String name )
 	{
-		Color result;
-		result = (Color) colorSettings.get(name);
-		if ( result != null ) return result;
-		String configString = PuckConfiguration.getInstance().getProperty("mapColor."+name);
-		if ( configString != null )
-		{
-			result = ColorUtils.stringToColor(configString);
-			colorSettings.put(name, result);
-			return result;
-		}
-		return null;
+		return GraphColorSettings.getInstance().getColorSetting(name);
 	}
 	
 	/**
@@ -128,8 +115,7 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 	 */
 	public void setColorSetting ( String name , Color color )
 	{
-		colorSettings.put(name,color);
-		PuckConfiguration.getInstance().setProperty("mapColor."+name,ColorUtils.colorToString(color));
+		GraphColorSettings.getInstance().setColorSetting(name,color);
 		if ( name.equals("background") ) //this has to be applied immediately, others are applied on repainting
 			setBackground(color);
 		//repaint(); //done by callers
