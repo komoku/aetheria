@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<World author="" date="" language="es" moduleName="Aventura de texto monojugador" parserVersion="1.3.1" type="" version="" worldDir="." worldName="Aventura de texto monojugador">
+<World author="" date="" language="es" moduleName="Aventura de texto monojugador" parserVersion="1.3.2" type="" version="" worldDir="." worldName="Aventura de texto monojugador">
 <IdeMetaInf>
 <View xoffset="0.0" yoffset="0.0" zoom="2.0"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Limbo" x="120" y="120"/>
