@@ -263,3 +263,5 @@ exception.io=Problemo legi/skribi datumoj
 exception.malformed.game.entry=Enirejo de ludo miskonstruita
 exception.transformer=Eraro en XML transformilo
 your.command=Via ordeno:
+accessible.ageinput=Type your command here
+accessible.ageoutput=Game text

@@ -263,4 +263,5 @@ exception.io=Problem when reading/writing data
 exception.malformed.game.entry=Malformed game entry
 exception.transformer=Error in XML transformer
 your.command=Your command:
-
+accessible.ageinput=Type your command here
+accessible.ageoutput=Game text

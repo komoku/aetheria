@@ -671,6 +671,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		//Thread.yield();
 
 		elAreaTexto = new FancyJTextPane();
+		elAreaTexto.getAccessibleContext().setAccessibleDescription(UIMessages.getInstance().getMessage("accessible.ageoutput"));
 					
 		laVentana.updateNow();
 
@@ -730,6 +731,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		laVentana.getMainPanel().add(elScrolling,BorderLayout.CENTER);
 					
 		elCampoTexto = new FancyJTextField(200);
+		elCampoTexto.getAccessibleContext().setAccessibleDescription(UIMessages.getInstance().getMessage("accessible.ageinput"));
 		
 		/*
 		JPanel promptPanel = new JPanel();
