@@ -90,6 +90,8 @@ public class PuckConfiguration
 		defaultProperties.setProperty("mapColor.grid", "EEEEEE");
 		defaultProperties.setProperty("mapColor.text", "000000");
 		defaultProperties.setProperty("mapColor.auxText", "222222");
+		defaultProperties.setProperty("mapColor.highArrow", "800080");
+		defaultProperties.setProperty("mapColor.arrow", "E080E0");
 		
 	}
 	
