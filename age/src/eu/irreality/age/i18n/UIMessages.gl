@@ -263,3 +263,5 @@ exception.io=Problema ó ler/escribir datos
 exception.malformed.game.entry=Entrada de xogo mal construída
 exception.transformer=Erro no transformador XML
 your.command=A túa orde:
+accessible.ageinput=Escribe a túa orde aquí
+accessible.ageoutput=Texto do xogo
