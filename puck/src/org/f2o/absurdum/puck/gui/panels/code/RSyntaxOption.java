@@ -35,7 +35,7 @@ public class RSyntaxOption
 	private static Map optionTogglers = Collections.synchronizedMap( new HashMap() );
 	
 	//maybe move to RSyntaxThemeUtil:
-	private static String[] themeNames = new String[] { "default","default-alt","dark","eclipse","idea","vs" };
+	private static String[] themeNames = new String[] { "default","default-alt","dark","eclipse","high-contrast","idea","vs" };
 	private static Theme[] themes = new Theme[themeNames.length];
 	private static String themePackage = "org/f2o/absurdum/puck/staticconf/rsthemes";
 
