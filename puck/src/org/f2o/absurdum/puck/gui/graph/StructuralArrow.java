@@ -391,9 +391,9 @@ public class StructuralArrow extends Arrow
 		//init arrow color
 		Color arrowColor;
 		if ( isSelected() )
-			arrowColor = new Color((float)0.5,(float)0.0,(float)0.5);
+			arrowColor = GraphColorSettings.getInstance().getColorSetting("highArrow");
 		else
-			arrowColor = new Color((float)0.9,(float)0.5,(float)0.9);
+			arrowColor = GraphColorSettings.getInstance().getColorSetting("arrow");
 		
 		//choose modes by calculating length
 		double arrowLength = Math.sqrt( (srcX-dstX)*(srcX-dstX)+(srcY-dstY)*(srcY-dstY) );
@@ -424,7 +424,7 @@ public class StructuralArrow extends Arrow
 			Font oldFont = g.getFont();
 			//Font newFont = oldFont.deriveFont(Font.ITALIC,(float)10.0);
 			Font newFont = oldFont.deriveFont(getNameFontSize());
-			g.setColor(Color.DARK_GRAY);
+			g.setColor(GraphColorSettings.getInstance().getColorSetting("auxText"));
 			g.setFont(newFont);
 			
 			//draw text for 1st placeholder

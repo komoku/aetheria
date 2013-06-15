@@ -75,6 +75,9 @@ public class MapColorsDialog extends JDialog
 		addColorChangeActionListener ( buttonBackground , "background" );
 		addColorChangeActionListener ( buttonText , "text" );
 		addColorChangeActionListener ( buttonGrid , "grid" );
+		addColorChangeActionListener ( buttonArrow , "arrow" );
+		addColorChangeActionListener ( buttonHighArrow , "highArrow" );
+		addColorChangeActionListener ( buttonAuxText , "auxText" );
 		
 		this.getContentPane().setLayout ( new BorderLayout() );
 		
@@ -83,10 +86,10 @@ public class MapColorsDialog extends JDialog
 		
 		mainPanel.add(buttonBackground);
 		mainPanel.add(buttonText);
-		//mainPanel.add(buttonAuxText);
+		mainPanel.add(buttonAuxText);
 		mainPanel.add(buttonGrid);
-		//mainPanel.add(buttonArrow);
-		//mainPanel.add(buttonHighArrow);
+		mainPanel.add(buttonArrow);
+		mainPanel.add(buttonHighArrow);
 		
 		this.getContentPane().add(mainPanel,BorderLayout.CENTER);
 		
