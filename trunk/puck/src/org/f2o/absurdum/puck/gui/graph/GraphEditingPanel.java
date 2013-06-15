@@ -25,6 +25,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +58,7 @@ import org.f2o.absurdum.puck.gui.panels.EntityPanel;
 import org.f2o.absurdum.puck.gui.panels.RoomPanel;
 import org.f2o.absurdum.puck.gui.panels.WorldPanel;
 import org.f2o.absurdum.puck.i18n.UIMessages;
+import org.f2o.absurdum.puck.util.ColorUtils;
 import org.w3c.dom.Document;
 
 
@@ -90,9 +92,48 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 	private Vector itemNodes = new Vector();
 	private Vector charNodes = new Vector();
 	
-	
 	private Map nodeListsByClass = new HashMap(); //of Vectors (with room nodes, item nodes, etc.)
 	private Map nodeListsByClassN = new HashMap(); //of Vectors (with room nodes, item nodes, etc.) including null
+	
+	
+	/**
+	 * Map of color settings, containing things like the background color, grid color, etc.
+	 */
+	private Map colorSettings = Collections.synchronizedMap ( new HashMap() );
+	
+	/**
+	 * Obtains the color setting with the given name.
+	 * @param name
+	 * @return
+	 */
+	public Color getColorSetting ( String name )
+	{
+		Color result;
+		result = (Color) colorSettings.get(name);
+		if ( result != null ) return result;
+		String configString = PuckConfiguration.getInstance().getProperty("mapColor."+name);
+		if ( configString != null )
+		{
+			result = ColorUtils.stringToColor(configString);
+			colorSettings.put(name, result);
+			return result;
+		}
+		return null;
+	}
+	
+	/**
+	 * Sets the given color setting. Also sets it in the configuration file.
+	 * @param name
+	 * @param color
+	 */
+	public void setColorSetting ( String name , Color color )
+	{
+		colorSettings.put(name,color);
+		PuckConfiguration.getInstance().setProperty("mapColor."+name,ColorUtils.colorToString(color));
+		if ( name.equals("background") ) //this has to be applied immediately, others are applied on repainting
+			setBackground(color);
+		//repaint(); //done by callers
+	}
 	
 	
 	public boolean isSnapToGridEnabled()
@@ -596,7 +637,8 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 		while ( !finished )
 		{
 			Color prevColor = g.getColor();
-			g.setColor(new Color((float)0.95,(float)0.95,(float)0.95));
+			//g.setColor(new Color((float)0.95,(float)0.95,(float)0.95));
+			g.setColor(getColorSetting("grid"));
 			//g.setColor(Color.LIGHT_GRAY);
 			g.drawLine(mapToPanelX(currentX),0,mapToPanelX(currentX),this.getHeight());
 			g.setColor(prevColor);
@@ -613,7 +655,8 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 		while ( !finished )
 		{
 			Color prevColor = g.getColor();
-			g.setColor(Color.LIGHT_GRAY);
+			//g.setColor(Color.LIGHT_GRAY);
+			g.setColor(getColorSetting("grid"));
 			g.drawLine(0,mapToPanelY(currentY),this.getWidth(),mapToPanelY(currentY));
 			g.setColor(prevColor);
 			if ( mapToPanelY(currentY) > this.getHeight() )
@@ -1170,7 +1213,7 @@ public class GraphEditingPanel extends JPanel implements MouseListener, MouseMot
 	
 	public GraphEditingPanel( PropertiesPanel propP )
 	{
-		setBackground(Color.WHITE);
+		setBackground(getColorSetting("background"));
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
