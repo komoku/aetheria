@@ -86,6 +86,10 @@ public class PuckConfiguration
 		defaultProperties.setProperty("rsyntaxShowTabLines","false");
 		defaultProperties.setProperty("rsyntaxTabsEmulated","true");
 		
+		defaultProperties.setProperty("mapColor.background", "FFFFFF");
+		defaultProperties.setProperty("mapColor.grid", "EEEEEE");
+		defaultProperties.setProperty("mapColor.text", "000000");
+		
 	}
 	
 	private static PuckConfiguration instance;

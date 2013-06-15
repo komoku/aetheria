@@ -15,7 +15,7 @@ public class RSyntaxThemeUtil
 		if ( THEMES_COLOR_ONLY )
 		{
 			int theFontSize = ta.getFont().getSize();
-			System.err.println("Fontsize for " + ta + " is " + theFontSize);
+			//System.err.println("Fontsize for " + ta + " is " + theFontSize);
 			theme.apply(ta);
 			//ta.setFont(ta.getFont().deriveFont(theFontSize));
 			

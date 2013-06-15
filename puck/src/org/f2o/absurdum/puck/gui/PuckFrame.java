@@ -57,6 +57,7 @@ import org.f2o.absurdum.puck.gui.dialog.ExecuteDialog;
 import org.f2o.absurdum.puck.gui.dialog.ExportAppletDialog;
 import org.f2o.absurdum.puck.gui.dialog.FindEntityDialog;
 import org.f2o.absurdum.puck.gui.dialog.IconSizesDialog;
+import org.f2o.absurdum.puck.gui.dialog.MapColorsDialog;
 import org.f2o.absurdum.puck.gui.dialog.ShowHideDialog;
 import org.f2o.absurdum.puck.gui.dialog.VerbListFrame;
 import org.f2o.absurdum.puck.gui.graph.AbstractEntityNode;
@@ -78,6 +79,7 @@ import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.windowing.MenuMnemonicOnTheFly;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
@@ -99,9 +101,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 /**
@@ -125,7 +130,7 @@ public class PuckFrame extends JFrame
 	
 	private ExecuteDialog ed = null;
 	private FindEntityDialog fed = null;
-	
+		
 	
 	/**
 	 * Maximizes this frame if supported by the platform.
@@ -948,6 +953,18 @@ public class PuckFrame extends JFrame
 				}
 		);
 		optionsMenu.add(showHideMenuItem);
+		
+		JMenuItem mapColorsMenuItem = new JMenuItem(UIMessages.getInstance().getMessage("menu.options.mapcolors"));
+		mapColorsMenuItem.addActionListener( new ActionListener() 
+				{
+					public void actionPerformed ( ActionEvent e )
+					{
+						MapColorsDialog dial = new MapColorsDialog ( PuckFrame.this , true );
+						dial.setVisible(true);
+					}
+				}
+		);
+		optionsMenu.add(mapColorsMenuItem);
 		
 		String skinList = PuckConfiguration.getInstance().getProperty("availableSkins");
 		if ( skinList != null && skinList.trim().length() > 0 )
