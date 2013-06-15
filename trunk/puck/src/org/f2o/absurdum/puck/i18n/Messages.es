@@ -329,3 +329,4 @@ button.mapcolors.auxtext=Texto secundario
 button.mapcolors.grid=Cuadrícula
 button.mapcolors.arrow=Flecha
 button.mapcolors.higharrow=Flecha resaltada
+button.mapcolors.change=Cambiar...
