@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.Action;
@@ -247,13 +248,21 @@ public class RSyntaxBSHCodeFrame extends JFrame
 		moreFontSize.addActionListener(new ActionListener(){
 			public void actionPerformed ( ActionEvent evt )
 			{
-				incrementFontSize();
+				for ( Iterator iter = instances.iterator() ; iter.hasNext() ; )
+				{
+					RSyntaxBSHCodeFrame aFrame = (RSyntaxBSHCodeFrame) iter.next();
+					aFrame.incrementFontSize();
+				}
 			}
 		});
 		lessFontSize.addActionListener(new ActionListener(){
 			public void actionPerformed ( ActionEvent evt )
 			{
-				decrementFontSize();
+				for ( Iterator iter = instances.iterator() ; iter.hasNext() ; )
+				{
+					RSyntaxBSHCodeFrame aFrame = (RSyntaxBSHCodeFrame) iter.next();
+					aFrame.decrementFontSize();
+				}
 			}
 		});
 		
