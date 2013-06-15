@@ -329,3 +329,4 @@ button.mapcolors.auxtext=Secondary text
 button.mapcolors.grid=Grid
 button.mapcolors.arrow=Arrow
 button.mapcolors.higharrow=Highlighted arrow
+button.mapcolors.change=Change...
