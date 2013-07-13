@@ -126,7 +126,7 @@ public class ServerProxy extends Thread implements ARSPConstants
 		{
 			try
 			{
-				if ( cliente.isSoundEnabled() );
+				if ( cliente.isSoundEnabled() )
 					cliente.getSoundClient().stopAllSound();
 			}
 			catch ( Exception e )
@@ -138,7 +138,7 @@ public class ServerProxy extends Thread implements ARSPConstants
 		{
 			try
 			{
-				if ( cliente.isSoundEnabled() );
+				if ( cliente.isSoundEnabled() )
 					cliente.getSoundClient().midiInit();
 			}
 			catch ( Exception e )
@@ -150,7 +150,7 @@ public class ServerProxy extends Thread implements ARSPConstants
 		{
 			try
 			{
-			if ( cliente.isSoundEnabled() );
+			if ( cliente.isSoundEnabled() )
 				cliente.getSoundClient().midiPreload(arguments);
 			}
 			catch ( Exception e )
@@ -179,7 +179,7 @@ public class ServerProxy extends Thread implements ARSPConstants
 		{
 			try
 			{
-			if ( cliente.isSoundEnabled() );
+			if ( cliente.isSoundEnabled() )
 				cliente.getSoundClient().midiOpen(arguments);
 			}
 			catch ( Exception e )
@@ -189,19 +189,19 @@ public class ServerProxy extends Thread implements ARSPConstants
 		}
 		else if ( command.equalsIgnoreCase( MIDI_STOP ) )
 		{
-			if ( cliente.isSoundEnabled() );
+			if ( cliente.isSoundEnabled() )
 				cliente.getSoundClient().midiStop();
 		}
 		else if ( command.equalsIgnoreCase( MIDI_CLOSE ) )
 		{
-			if ( cliente.isSoundEnabled() );
+			if ( cliente.isSoundEnabled() )
 				cliente.getSoundClient().midiClose();
 		}
 		else if ( command.equalsIgnoreCase( AUDIO_PRELOAD ) )
 		{
 			try
 			{
-				if ( cliente.isSoundEnabled() );
+				if ( cliente.isSoundEnabled() )
 					cliente.getSoundClient().audioPreload(arguments);
 			}
 			catch ( Exception e )
@@ -213,7 +213,7 @@ public class ServerProxy extends Thread implements ARSPConstants
 		{
 			try
 			{
-				if ( cliente.isSoundEnabled() );
+				if ( cliente.isSoundEnabled() )
 					cliente.getSoundClient().audioUnload(arguments);
 			}
 			catch ( Exception e )
