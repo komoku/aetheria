@@ -107,18 +107,21 @@ public class SwingImageDrawingThread extends Thread
 		//give time to GUI thread
         try
         {
-        	Thread.sleep(200);
-            Thread.currentThread().yield(); // Give a chance to other threads.
+        	//Thread.sleep(200);
+            wait(200);
+        	Thread.currentThread().yield(); // Give a chance to other threads.
         }  catch(InterruptedException e)  { }
         w.repaint();
         try
         {
-        	Thread.sleep(200);
+        	//Thread.sleep(200);
+        	wait(200);
         	Thread.currentThread().yield(); // Give a chance to other threads.
         }  catch(InterruptedException e)  { }
 		
         try {
-	  		Thread.sleep(delay);
+        	wait(delay);
+	  		//Thread.sleep(delay);
        	} catch(InterruptedException ie){}
        	w.dispose();
 			
