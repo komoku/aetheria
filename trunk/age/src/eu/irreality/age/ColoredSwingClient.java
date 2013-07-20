@@ -1544,6 +1544,10 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 	private ImagePanel leftFrame = null;
 	private ImagePanel rightFrame = null;
 	
+	//new frame management
+	private Map framesById = Collections.synchronizedMap(new HashMap());
+	private Map frameIdsByName = Collections.synchronizedMap(new HashMap());
+	
 	public void removeFrames()
 	{
 		if ( isDisconnected() ) return;
@@ -1569,6 +1573,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		bottomFrame = null;
 		leftFrame = null;
 		rightFrame = null;
+		
+		framesById.clear();
 		
 		//get innermost panel
 		Container current = elAreaTexto.getParent();
@@ -1621,6 +1627,39 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * New method that adds a frame with a String for identification and a complete specification for MigLayout, and returns the (new) frame ID, or -1 if the frame hasn't been created.
+	 * @param position
+	 * @param sizeSpec
+	 */
+	public int addFrame ( final String frameName , final String sizeSpec )
+	{
+		if ( isDisconnected() ) return -1;
+		try 
+		{
+			final int[] returnValue = new int[1]; //workaround because we can't mod a variable inside invokeAndWait directly
+			SwingUtilities.invokeAndWait( new Runnable() 
+			{
+				public void run()
+				{
+					returnValue[0] = doAddFrame(frameName,sizeSpec);
+				}
+			}
+			);
+			return returnValue[0];
+		} 
+		catch (InterruptedException e) 
+		{
+			e.printStackTrace();
+			return -1;
+		} 
+		catch (InvocationTargetException e) 
+		{
+			e.printStackTrace();
+			return -1;
 		}
 	}
 	
@@ -1701,6 +1740,38 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 	}
 	
 	
+	private int getUnusedFrameId()
+	{
+		int k = 10;
+		while ( getFrame(k) != null ) k++;
+		return k;
+	}
+	
+	/**
+	 * Adds a frame according to the given MigLayout specs, returns its frame ID and gives it a name.
+	 * @param specs
+	 * @return
+	 */
+	public int doAddFrame ( String frameName , String specs ) /*returns frameId*/
+	{
+		if ( frameName != null && frameNameToId(frameName) >= 0 ) return -1; //frame name already taken
+		int frameId = getUnusedFrameId();
+		ImagePanel newFrame = new ImagePanel();
+		framesById.put(new Integer(frameId),newFrame);	
+		if ( frameName != null ) frameIdsByName.put(frameName, new Integer(frameId));
+		JPanel newMainPanel = new JPanel();
+		newFrame.setBackground(elAreaTexto.getBackground());
+		
+		newMainPanel.setLayout(new MigLayout("fill"));
+		newMainPanel.add(laVentana.getMainPanel(),"dock center, height 10%:100%:100%, width 10%:100%:100%");
+		newMainPanel.add(newFrame, specs);
+		
+		laVentana.setMainPanel(newMainPanel);
+		laVentana.getMainPanel().revalidate();
+		refreshFocus();
+		return frameId;
+	}
+	
 	
 	public void doAddFrame ( int position , String sizeSpec )
 	{
@@ -1756,7 +1827,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 	
 	
 	/**
-	 * Obtains the image frame at a given position.
+	 * Obtains the image frame at a given position or frame ID.
 	 * @param position
 	 * @return
 	 */
@@ -1768,17 +1839,30 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 			case ImageConstants.BOTTOM : return bottomFrame;
 			case ImageConstants.LEFT : return leftFrame;
 			case ImageConstants.RIGHT : return rightFrame;
-			default : return null;
+			default : return (ImagePanel) framesById.get(new Integer(position));
 		}
+	}
+	
+	public int frameNameToId ( String frameName )
+	{
+		Integer result = (Integer) frameIdsByName.get(frameName);
+		if ( result == null ) return -1;
+		else return result.intValue();
 	}
 	
 	public void showImageInFrame ( String fileName , int position )
 	{
 		showImageInFrame ( fileName , position , ImagePanel.NO_SCALING );
 	}
+	
 	public void showImageInFrame ( URL location , int position )
 	{
 		showImageInFrame ( location , position , ImagePanel.NO_SCALING );
+	}
+	
+	public void showImageInFrame ( URL location , String frameName )
+	{
+		showImageInFrame ( location , frameNameToId(frameName) );
 	}
 	
 	public void showImageInFrame ( Icon icon , int position , int scalingMode )
@@ -1796,15 +1880,21 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		theFrame.setScalingMode(scalingMode);
 		theFrame.repaint();
 	}
-	
+		
 	public void showImageInFrame ( String filename , int position , int scalingMode )
 	{
 	    //TODO: support svg here (IconLoader.loadIcon).
 		showImageInFrame ( new ImageIcon(filename) , position , scalingMode );
 	}
+	
 	public void showImageInFrame ( URL location , int position , int scalingMode )
 	{
 		showImageInFrame ( IconLoader.loadIcon(location) , position , scalingMode );
+	}
+	
+	public void showImageInFrame ( URL location , String frameName , int scalingMode )
+	{
+		showImageInFrame ( location , frameNameToId(frameName) , scalingMode );
 	}
 	
 	public void showImageInBackground ( String fileName )
@@ -1841,6 +1931,12 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		else if ( mode == ImageConstants.FRAME )
 			showImageInFrame(url,location,scaling);
 	}
+	
+	public void useImage ( URL url , int mode , String frameName , int scaling )
+	{
+		useImage ( url , mode , frameNameToId(frameName) , scaling );
+	}
+	
 	public void useImage ( String fileName , int mode , int location , int scaling )
 	{
 		useImage ( fileToURL(fileName) , mode , location , scaling );
@@ -1850,15 +1946,22 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 	{ 
 		useImage(fileName,mode,location,ImageConstants.NO_SCALING);
 	}
+	
 	public void useImage ( URL url , int mode , int location ) 
 	{ 
 		useImage(url,mode,location,ImageConstants.NO_SCALING);
+	}
+	
+	public void useImage ( URL url , int mode , String frameName ) 
+	{ 
+		useImage(url,mode,frameName,ImageConstants.NO_SCALING);
 	}
 	
 	public void useImage ( String fileName , int mode )
 	{
 		useImage(fileToURL(fileName),mode);
 	}
+	
 	public void useImage ( URL url , int mode )
 	{
 		if ( mode == ImageConstants.FRAME )
