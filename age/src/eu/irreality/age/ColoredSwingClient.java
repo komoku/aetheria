@@ -1710,9 +1710,9 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 			topFrame = new ImagePanel();
 			topFrame.setBackground(elAreaTexto.getBackground());
 
-			newMainPanel.setLayout(new MigLayout("filly"));
+			newMainPanel.setLayout(new MigLayout("fill"));
 			newMainPanel.add(topFrame, "north, height " + sizeSpec);
-			newMainPanel.add(laVentana.getMainPanel());
+			newMainPanel.add(laVentana.getMainPanel(),"dock center, height 10%:100%:100%");
 			laVentana.setMainPanel(newMainPanel);
 			
 		}
@@ -1722,8 +1722,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 			bottomFrame = new ImagePanel();
 			bottomFrame.setBackground(elAreaTexto.getBackground());
 
-			newMainPanel.setLayout(new MigLayout("filly"));
-			newMainPanel.add(laVentana.getMainPanel());
+			newMainPanel.setLayout(new MigLayout("fill"));
+			newMainPanel.add(laVentana.getMainPanel(),"dock center, height 10%:100%:100%");
 			newMainPanel.add(bottomFrame,"south, height " + sizeSpec);
 			laVentana.setMainPanel(newMainPanel);
 		}
@@ -1733,9 +1733,9 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 			leftFrame = new ImagePanel();
 			leftFrame.setBackground(elAreaTexto.getBackground());
 
-			newMainPanel.setLayout(new MigLayout("fillx"));
+			newMainPanel.setLayout(new MigLayout("fill"));
 			newMainPanel.add(leftFrame,"west, width " + sizeSpec);
-			newMainPanel.add(laVentana.getMainPanel());
+			newMainPanel.add(laVentana.getMainPanel(),"dock center, width 10%:100%:100%");
 			laVentana.setMainPanel(newMainPanel);
 		}
 		else if ( position == ImageConstants.RIGHT )
@@ -1744,8 +1744,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 			rightFrame = new ImagePanel();
 			rightFrame.setBackground(elAreaTexto.getBackground());
 
-			newMainPanel.setLayout(new MigLayout("fillx"));
-			newMainPanel.add(laVentana.getMainPanel());
+			newMainPanel.setLayout(new MigLayout("fill"));
+			newMainPanel.add(laVentana.getMainPanel(),"dock center, width 10%:100%:100%");
 			newMainPanel.add(rightFrame,"east, width " + sizeSpec);
 			laVentana.setMainPanel(newMainPanel);
 		}
