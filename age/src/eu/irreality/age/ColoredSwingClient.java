@@ -21,6 +21,8 @@ import java.awt.*;
 
 import javax.swing.text.*;
 
+import net.miginfocom.swing.MigLayout;
+
 import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.swing.ColorFadeInTimer;
 import eu.irreality.age.swing.FancyAttributeSet;
@@ -1597,6 +1599,31 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		}
 	}
 	
+	/**
+	 * New method that adds a frame with a size specification for MigLayout.
+	 * This admits percentages, for example.
+	 * @param position
+	 * @param sizeSpec
+	 */
+	public void addFrame ( final int position , final String sizeSpec )
+	{
+		if ( isDisconnected() ) return;
+		try {
+			SwingUtilities.invokeAndWait( new Runnable() 
+			{
+				public void run()
+				{
+					doAddFrame(position,sizeSpec);
+				}
+			}
+			);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void doAddFrame ( int position , int size )
 	{
 		if ( position == ImageConstants.TOP )
@@ -1672,6 +1699,61 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		//((JComponent)laVentana).revalidate();
 		refreshFocus();
 	}
+	
+	
+	
+	public void doAddFrame ( int position , String sizeSpec )
+	{
+		if ( position == ImageConstants.TOP )
+		{
+			JPanel newMainPanel = new JPanel();
+			topFrame = new ImagePanel();
+			topFrame.setBackground(elAreaTexto.getBackground());
+
+			newMainPanel.setLayout(new MigLayout("filly"));
+			newMainPanel.add(topFrame, "north, height " + sizeSpec);
+			newMainPanel.add(laVentana.getMainPanel());
+			laVentana.setMainPanel(newMainPanel);
+			
+		}
+		else if ( position == ImageConstants.BOTTOM )
+		{
+			JPanel newMainPanel = new JPanel();
+			bottomFrame = new ImagePanel();
+			bottomFrame.setBackground(elAreaTexto.getBackground());
+
+			newMainPanel.setLayout(new MigLayout("filly"));
+			newMainPanel.add(laVentana.getMainPanel());
+			newMainPanel.add(bottomFrame,"south, height " + sizeSpec);
+			laVentana.setMainPanel(newMainPanel);
+		}
+		else if ( position == ImageConstants.LEFT )
+		{
+			JPanel newMainPanel = new JPanel();
+			leftFrame = new ImagePanel();
+			leftFrame.setBackground(elAreaTexto.getBackground());
+
+			newMainPanel.setLayout(new MigLayout("fillx"));
+			newMainPanel.add(leftFrame,"west, width " + sizeSpec);
+			newMainPanel.add(laVentana.getMainPanel());
+			laVentana.setMainPanel(newMainPanel);
+		}
+		else if ( position == ImageConstants.RIGHT )
+		{
+			JPanel newMainPanel = new JPanel();
+			rightFrame = new ImagePanel();
+			rightFrame.setBackground(elAreaTexto.getBackground());
+
+			newMainPanel.setLayout(new MigLayout("fillx"));
+			newMainPanel.add(laVentana.getMainPanel());
+			newMainPanel.add(rightFrame,"east, width " + sizeSpec);
+			laVentana.setMainPanel(newMainPanel);
+		}
+		laVentana.getMainPanel().revalidate();
+		//((JComponent)laVentana).revalidate();
+		refreshFocus();
+	}
+	
 	
 	/**
 	 * Obtains the image frame at a given position.

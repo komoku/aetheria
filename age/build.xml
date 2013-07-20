@@ -39,7 +39,7 @@
         description="compile the source " >
         <echo message="Compilando AGE..."/>
     <!-- Compile the java code from ${src} into ${build} -->
-    <javac sourcepath="" srcdir="${src}" destdir="${build}" classpath=".;${beanshell}/src/;${lib}/micromod.jar;${lib}/basicplayer3.0.jar;${lib}/jl1.0.jar;${lib}/commons-cli-1.2.jar;${lib}/svgSalamander.jar;${lib}/plugin.jar" target="1.4" source="1.4" debug="true" encoding="iso-8859-1">
+    <javac sourcepath="" srcdir="${src}" destdir="${build}" classpath=".;${beanshell}/src/;${lib}/micromod.jar;${lib}/basicplayer3.0.jar;${lib}/jl1.0.jar;${lib}/commons-cli-1.2.jar;${lib}/svgSalamander.jar;${lib}/plugin.jar;${lib}/miglayout-core-4.2.jar;${lib}/miglayout-swing-4.2.jar" target="1.4" source="1.4" debug="true" encoding="iso-8859-1">
   		<include name="**/*.java"/>
   		<exclude name="**/conf/**"/>
     	<!--exclude does not seem to work-->
@@ -141,6 +141,8 @@
 				<include name="basicplayer3.0.jar"/>
 				<include name="commons-cli-1.2.jar"/>
 				<include name="svgSalamander.jar"/>
+				<include name="miglayout-core-4.2.jar"/>
+				<include name="miglayout-swing-4.2.jar"/>
 			</fileset>
 		</copy>
 		<!--
