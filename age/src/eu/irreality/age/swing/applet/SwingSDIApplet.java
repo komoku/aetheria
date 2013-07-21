@@ -45,6 +45,7 @@ import eu.irreality.age.filemanagement.WorldLoader;
 import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.observer.GameThreadObserver;
 import eu.irreality.age.swing.CommonSwingFunctions;
+import eu.irreality.age.swing.FileSelectorDialogs;
 import eu.irreality.age.swing.SwingMenuAetheria;
 import eu.irreality.age.swing.menu.ServerMenuHandler;
 import eu.irreality.age.swing.sdi.NewFromFileListener;
@@ -866,6 +867,11 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 	{
 		unlinkWorld();
 		saveAndFreeResources();
+	}
+	
+	public String recoverMissingWorldPath()
+	{
+		return null;
 	}
 
 }

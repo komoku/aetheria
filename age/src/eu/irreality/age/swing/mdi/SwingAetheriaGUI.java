@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import eu.irreality.age.SwingAetheriaGameLoader;
 import eu.irreality.age.SwingAetheriaGameLoaderInterface;
 import eu.irreality.age.SwingImageDrawingThread;
+import eu.irreality.age.filemanagement.GameStarter;
 import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.server.ServerConfigurationWindow;
 import eu.irreality.age.server.ServerHandler;
@@ -46,6 +47,15 @@ public class SwingAetheriaGUI extends JFrame
 	{
 		return panel;
 	}
+	
+	//o noes. PartidaEntry. Buff.
+	/*
+	public void startGame ( final String moduledir , final String logFile , final String stateFile )
+	{
+		
+		ServerHandler.getInstance().initPartidaLocal ( pe , ServerHandler.getInstance().getLogWindow() , null ,selector.getSelectedFile().getAbsolutePath() , thePanel );
+	}
+	*/
 	
 	public void closeSubWindows()
 	{

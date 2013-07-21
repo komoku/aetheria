@@ -115,6 +115,16 @@ public class LoaderThread extends Thread
 		try
 		{
 			theWorld = WorldLoader.loadWorld( moduledir , gameLog, io, mundoSemaphore );
+			
+			if ( theWorld == null && usarLog ) //world is not in the path expected by the log. Use an alternative path (depending on the client, this may ask the user, etc.)
+			{
+				String altPath = window.recoverMissingWorldPath();
+				if ( altPath != null )
+				{
+					moduledir = altPath;
+					theWorld = WorldLoader.loadWorld( moduledir , gameLog, io, mundoSemaphore );
+				}
+			}
 		}
 		catch ( Exception e )
 		/*

@@ -22,6 +22,7 @@ import eu.irreality.age.Utility;
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.server.ServerHandler;
+import eu.irreality.age.swing.FileSelectorDialogs;
 
 class LoadFromLogListener implements ActionListener
 {
@@ -34,19 +35,14 @@ class LoadFromLogListener implements ActionListener
 
 	public void actionPerformed ( ActionEvent evt )
 	{
-		final JFileChooser selector = new JFileChooser( Paths.SAVE_PATH );
-		selector.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		selector.setDialogTitle( UIMessages.getInstance().getMessage("dialog.log.title") );
-		selector.setFileFilter ( new FiltroFicheroLog() ); 
+		final String path = FileSelectorDialogs.showOpenLogDialog(window);
 
-		int returnVal = selector.showOpenDialog(window);
-
-		if(returnVal == JFileChooser.APPROVE_OPTION) 
+		if(path != null) 
 		{
 			String worldFile;
 			try
 			{
-				FileInputStream fis = new FileInputStream ( selector.getSelectedFile() );
+				FileInputStream fis = new FileInputStream ( path );
 				BufferedReader br = new BufferedReader ( Utility.getBestInputStreamReader ( fis ) );
 				//primera linea del fichero de log: fichero de mundo
 				worldFile = br.readLine(); 
@@ -62,7 +58,7 @@ class LoadFromLogListener implements ActionListener
 			GameInfo gi = GameInfo.getGameInfoFromFile ( worldFile );
 			final PartidaEntry pe = new PartidaEntry ( gi , "noname" , 200 , null , true , true , true );
 
-			window.startGame( worldFile , true , selector.getSelectedFile().getAbsolutePath() , null );
+			window.startGame( worldFile , true , path , null );
 
 
 			//new SwingAetheriaGameLoader( new File(worldFile).getParent() , thePanel , true , selector.getSelectedFile().getAbsolutePath() , null, true );
