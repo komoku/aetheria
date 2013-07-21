@@ -96,5 +96,16 @@ public interface AGEClientWindow extends AGELoggingWindow, GameThreadObserver
 	public void onAttach ( GameEngineThread thread );
 	public void onDetach ( GameEngineThread thread );
 	
+	
+	
+	/**
+	 * This method can be called when we are loading a log file and its corresponding world is not found.
+	 * It will be used to recover the world path.
+	 * This can be done by using the last world loaded in this window, or by asking the user with a dialog, for example.
+	 * If the path cannot be recovered, null will be returned. It is legal to implement this method in such a way that it always returns null.
+	 * @return
+	 */
+	public String recoverMissingWorldPath();
+	
     
 }

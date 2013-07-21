@@ -10,6 +10,7 @@ import eu.irreality.age.FiltroFicheroMundo;
 import eu.irreality.age.SwingAetheriaGameLoader;
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.i18n.UIMessages;
+import eu.irreality.age.swing.FileSelectorDialogs;
 
 public class EscuchadorNuevoDesdeFichero implements ActionListener
 {
@@ -22,27 +23,9 @@ public class EscuchadorNuevoDesdeFichero implements ActionListener
 
 	public void actionPerformed ( ActionEvent evt )
 	{
-		JFileChooser selector = new JFileChooser( Paths.WORLD_PATH );
-		selector.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		selector.setDialogTitle( UIMessages.getInstance().getMessage("dialog.new.title") );
-		selector.setFileFilter ( new FiltroFicheroMundo() );
-
-		int returnVal = selector.showOpenDialog(thePanel);
-		if(returnVal == JFileChooser.APPROVE_OPTION) 
-		{
-			System.out.println("Nombre: " + selector.getSelectedFile().getAbsolutePath() );
-
-			//if ( selector.getSelectedFile().isFile() )
-			//{
-			//new SwingAetheriaGameLoader( selector.getSelectedFile().getParent() , thePanel , false ,null , null, true );
-			//}
-			//else
-			//{
-			//Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-			new SwingAetheriaGameLoader
-			(selector.getSelectedFile().getAbsolutePath() , thePanel , false , null , null, false );
-			//}
-		}
+		String path = FileSelectorDialogs.showOpenWorldDialog(thePanel);
+		if ( path != null )
+			new SwingAetheriaGameLoader (path , thePanel , false , null , null, false );
 	}
 
 }

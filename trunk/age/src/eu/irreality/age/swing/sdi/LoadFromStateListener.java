@@ -20,6 +20,7 @@ import eu.irreality.age.PartidaEntry;
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.server.ServerHandler;
+import eu.irreality.age.swing.FileSelectorDialogs;
 
 public class LoadFromStateListener implements ActionListener
 {
@@ -32,24 +33,19 @@ public class LoadFromStateListener implements ActionListener
 
 	public void actionPerformed ( ActionEvent evt )
 	{
-		final JFileChooser selector = new JFileChooser( Paths.SAVE_PATH );
-		selector.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		selector.setDialogTitle( UIMessages.getInstance().getMessage("dialog.state.title") );
-		selector.setFileFilter ( new FiltroFicheroEstado() ); 
+		final String path = FileSelectorDialogs.showOpenStateDialog(theWindow);
 
-		int returnVal = selector.showOpenDialog(theWindow);
-
-		if(returnVal == JFileChooser.APPROVE_OPTION) 
+		if( path != null ) 
 		{
 
 			Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-			String worldFile = selector.getSelectedFile().getAbsolutePath(); //world file = state file
+			String worldFile = path; //world file = state file
 
 			//test:
-			GameInfo gi = GameInfo.getGameInfoFromFile ( worldFile );
-			final PartidaEntry pe = new PartidaEntry ( gi , "noname" , 200 , null , true , true , true );
+			//GameInfo gi = GameInfo.getGameInfoFromFile ( worldFile );
+			//final PartidaEntry pe = new PartidaEntry ( gi , "noname" , 200 , null , true , true , true );
 
-			theWindow.startGame( selector.getSelectedFile().getAbsolutePath() , false , null , selector.getSelectedFile().getAbsolutePath() );
+			theWindow.startGame( path , false , null , path );
 
 			//working:
 			//new SwingAetheriaGameLoader( moduledir , thePanel , false , null , selector.getSelectedFile().getAbsolutePath(), true ); //not client is true? yep: don't assign players until second load, stateload (will change w/diff)

@@ -16,6 +16,7 @@ import eu.irreality.age.filemanagement.WorldLoader;
 import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.observer.GameThreadObserver;
 import eu.irreality.age.swing.CommonSwingFunctions;
+import eu.irreality.age.swing.FileSelectorDialogs;
 import eu.irreality.age.swing.SwingMenuAetheria;
 import eu.irreality.age.swing.applet.SwingSDIApplet;
 import eu.irreality.age.swing.config.AGEConfiguration;
@@ -1365,6 +1366,12 @@ de la ventana hasta acabar de cargar.
 		saveAndFreeResources();
 	}
 
+	
+	public String recoverMissingWorldPath()
+	{
+		return FileSelectorDialogs.showOpenWorldDialog(this);
+	}
+	
 
 }
 

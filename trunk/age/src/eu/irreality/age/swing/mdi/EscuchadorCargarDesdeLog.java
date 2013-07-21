@@ -15,6 +15,7 @@ import eu.irreality.age.Utility;
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.server.ServerHandler;
+import eu.irreality.age.swing.FileSelectorDialogs;
 
 public class EscuchadorCargarDesdeLog implements ActionListener
 {
@@ -27,19 +28,14 @@ public class EscuchadorCargarDesdeLog implements ActionListener
 
 	public void actionPerformed ( ActionEvent evt )
 	{
-		final JFileChooser selector = new JFileChooser( Paths.SAVE_PATH );
-		selector.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		selector.setDialogTitle( UIMessages.getInstance().getMessage("dialog.log.title") );
-		selector.setFileFilter ( new FiltroFicheroLog() ); 
+		final String path = FileSelectorDialogs.showOpenLogDialog(thePanel);
 
-		int returnVal = selector.showOpenDialog(thePanel);
-
-		if(returnVal == JFileChooser.APPROVE_OPTION) 
+		if( path != null ) 
 		{
 			String worldFile;
 			try
 			{
-				FileInputStream fis = new FileInputStream ( selector.getSelectedFile() );
+				FileInputStream fis = new FileInputStream ( path );
 				BufferedReader br = new BufferedReader ( Utility.getBestInputStreamReader ( fis ) );
 				//primera linea del fichero de log: fichero de mundo
 				worldFile = br.readLine(); 
@@ -59,7 +55,7 @@ public class EscuchadorCargarDesdeLog implements ActionListener
 			{
 				public void run()
 				{
-					ServerHandler.getInstance().initPartidaLocal ( pe , ServerHandler.getInstance().getLogWindow() , null ,selector.getSelectedFile().getAbsolutePath() , thePanel );
+					ServerHandler.getInstance().initPartidaLocal ( pe , ServerHandler.getInstance().getLogWindow() , null , path , thePanel );
 				}
 			};
 			thr.start();

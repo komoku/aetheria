@@ -52,6 +52,7 @@ import eu.irreality.age.filemanagement.WorldLoader;
 import eu.irreality.age.i18n.UIMessages;
 import eu.irreality.age.observer.GameThreadObserver;
 import eu.irreality.age.swing.CommonSwingFunctions;
+import eu.irreality.age.swing.FileSelectorDialogs;
 import eu.irreality.age.swing.SwingMenuAetheria;
 import eu.irreality.age.swing.UILanguageSelectionMenu;
 import eu.irreality.age.swing.applet.SwingSDIApplet;
@@ -664,6 +665,19 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow, GameTh
 		
 	}
 
+	
+	/**
+	 * Start a game on this window.
+	 * Uses log if logFile != null.
+	 * Uses state if stateFile != null.
+	 * @param moduledir
+	 * @param logFile
+	 * @param stateFile
+	 */
+	public void startGame ( final String moduledir , final String logFile , final String stateFile )
+	{
+		startGame ( moduledir , logFile!=null , logFile , stateFile );
+	}
 
 	public void startGame ( final String moduledir , final boolean usarLog , final String logFile , final String stateFile )
 	{
@@ -881,6 +895,11 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow, GameTh
 	{
 		unlinkWorld();
 		saveAndFreeResources();
+	}
+	
+	public String recoverMissingWorldPath()
+	{
+		return FileSelectorDialogs.showOpenWorldDialog(this);
 	}
 	
 }
