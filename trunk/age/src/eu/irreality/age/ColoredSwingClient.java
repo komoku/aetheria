@@ -1907,7 +1907,14 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		}
 	}
 	
-	public int frameNameToId ( String frameName )
+	public ImagePanel getFrame ( String frameName )
+	{
+		int id = frameNameToId ( frameName );
+		if ( id < 0 ) return null;
+		return getFrame(id);
+	}
+	
+	private int frameNameToId ( String frameName )
 	{
 		Integer result = (Integer) frameIdsByName.get(frameName);
 		if ( result == null ) return -1;
