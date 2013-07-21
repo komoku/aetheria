@@ -1575,6 +1575,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		rightFrame = null;
 		
 		framesById.clear();
+		frameIdsByName.clear();
 		
 		//get innermost panel
 		Container current = elAreaTexto.getParent();
@@ -1662,6 +1663,35 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 			return -1;
 		}
 	}
+	
+	public int splitFrame ( final String parentFrameName , final String childName1 , final String childSpecs1 , final String childName2 , final String childSpecs2 )
+	{
+		if ( isDisconnected() ) return -1;
+		try 
+		{
+			final int[] returnValue = new int[1]; //workaround because we can't mod a variable inside invokeAndWait directly
+			SwingUtilities.invokeAndWait( new Runnable() 
+			{
+				public void run()
+				{
+					returnValue[0] = doSplitFrame(parentFrameName,childName1,childSpecs1,childName2,childSpecs2);
+				}
+			}
+			);
+			return returnValue[0];
+		} 
+		catch (InterruptedException e) 
+		{
+			e.printStackTrace();
+			return -1;
+		} 
+		catch (InvocationTargetException e) 
+		{
+			e.printStackTrace();
+			return -1;
+		}
+	}
+	
 	
 	public void doAddFrame ( int position , int size )
 	{
@@ -1770,6 +1800,40 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		laVentana.getMainPanel().revalidate();
 		refreshFocus();
 		return frameId;
+	}
+	
+	/**
+	 * Splits a frame into two new frames, following MigLayout specifications.
+	 * @param parentFrameName Name of the frame to be split.
+	 * @param childName1 Name of the first frame resulting from the split.
+	 * @param childSpecs1 Layout specifications for the first frame resulting from the split (e.g. "north, width 50%")
+	 * @param childName2 Name of the second frame resulting from the split.
+	 * @param childSpecs2 Layout specifications for the second frame resulting from the split (e.g. "south, width 50%")
+	 * @return The numeric ID of the first child frame. The ID of the second child will be this value plus 1.
+	 */
+	public int doSplitFrame ( String parentFrameName , String childName1 , String childSpecs1 , String childName2 , String childSpecs2 )
+	{
+		if ( childName1 != null && frameNameToId(childName1) >= 0 ) return -1; //child name 1 already taken
+		if ( childName2 != null && frameNameToId(childName2) >= 0 ) return -1; //child name 2 already taken
+		if ( parentFrameName != null && frameNameToId(parentFrameName) < 0 ) return -1; //parent frame does not exist
+		ImagePanel parentFrame = getFrame(frameNameToId(parentFrameName));
+		ImagePanel childFrame1 = new ImagePanel();
+		ImagePanel childFrame2 = new ImagePanel();
+		int childId1 = getUnusedFrameId();
+		framesById.put(new Integer(childId1),childFrame1);	
+		int childId2 = getUnusedFrameId();
+		framesById.put(new Integer(childId2),childFrame2);	
+		if ( childName1 != null ) frameIdsByName.put(childName1, new Integer(childId1));
+		if ( childName2 != null ) frameIdsByName.put(childName2, new Integer(childId2));
+		childFrame1.setBackground(elAreaTexto.getBackground());
+		childFrame2.setBackground(elAreaTexto.getBackground());
+		
+		parentFrame.setLayout(new MigLayout("fill"));
+		parentFrame.add(childFrame1,childSpecs1);
+		parentFrame.add(childFrame2,childSpecs2);
+		parentFrame.revalidate();
+		refreshFocus();
+		return childId1;
 	}
 	
 	
