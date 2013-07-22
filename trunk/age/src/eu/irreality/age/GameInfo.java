@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +19,11 @@ import java.util.Vector;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.stream.StreamSource;
 
 import org.xml.sax.SAXException;
 
@@ -183,12 +190,26 @@ public class GameInfo implements Serializable
 				try
 				{
 					//InputStream str = new FileInputStream (  modulefile  ) /*before: iso reader*/;
-					InputStream str = URLUtils.openFileOrURL( modulefile );
+					
+					//InputStream str = URLUtils.openFileOrURL( modulefile );
+					
 					//InputSource is = new InputSource(str);
-					DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+					
+					System.err.println("Module file: " + modulefile);
+					
+					StreamSource ss; 
+					ss = new StreamSource ( modulefile );
+					
+					Transformer t = TransformerFactory.newInstance().newTransformer();
+					DOMResult r = new DOMResult();
+					t.transform(ss,r);
+					
+					//DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 					//io.escribir(io.getColorCode("information") + "Obteniendo árbol DOM de los datos XML...\n" + io.getColorCode("reset") );
-					d = db.parse(str , new File(modulefile).toURI().toString() /*systemId*/ );
+					//d = db.parse(ss , new File(modulefile).toURI().toString() /*systemId*/ );
+					d = (org.w3c.dom.Document) r.getNode();
 				}
+				/*
 				catch ( FileNotFoundException fnfe )
 				{
 					System.out.println("[Exception: The game from which this savefile comes could have been deleted or moved]");
@@ -209,6 +230,11 @@ public class GameInfo implements Serializable
                                         System.out.println("RES file, nay2.");
                                         ioe.printStackTrace();
 					throw (ioe);
+				}
+				*/
+				catch ( TransformerException te )
+				{
+					System.err.println(te);
 				}
 				//obtain the DOM tree root
 				org.w3c.dom.Element n = d.getDocumentElement();
