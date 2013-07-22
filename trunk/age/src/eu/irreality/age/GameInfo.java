@@ -195,8 +195,6 @@ public class GameInfo implements Serializable
 					
 					//InputSource is = new InputSource(str);
 					
-					System.err.println("Module file: " + modulefile);
-					
 					StreamSource ss; 
 					ss = new StreamSource ( modulefile );
 					
