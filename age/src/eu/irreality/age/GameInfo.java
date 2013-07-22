@@ -187,7 +187,7 @@ public class GameInfo implements Serializable
 					//InputSource is = new InputSource(str);
 					DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 					//io.escribir(io.getColorCode("information") + "Obteniendo árbol DOM de los datos XML...\n" + io.getColorCode("reset") );
-					d = db.parse(str);
+					d = db.parse(str , new File(modulefile).toURI().toString() /*systemId*/ );
 				}
 				catch ( FileNotFoundException fnfe )
 				{
