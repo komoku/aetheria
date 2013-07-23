@@ -158,7 +158,12 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 			    ((AGESoundClient)this.getSoundClient()).deactivate();			
 			}
 		}
+		
 		notifyAll(); //if we are waiting for input, we just exit
+    	
+		//stop smooth scroll timer if it's running
+		if ( smoothScrollTimer != null && smoothScrollTimer.isRunning() )
+    		smoothScrollTimer.stop();
 	}
 	
 	

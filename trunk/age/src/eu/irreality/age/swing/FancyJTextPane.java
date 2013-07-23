@@ -32,9 +32,19 @@ import eu.irreality.age.ImageConstants;
 
 public class FancyJTextPane extends JTextPane implements ImageConstants
 {
+	
+	private static final boolean VECTOR_TO_RASTER = true; //optimization: vector images will be converted to raster, conversion will hold while panel
+														  // size not altered
+															//todo: the false variant really makes no sense. This should probably just be assumed.
 
 		private ImageIcon rasterBackgroundImage;
 		private SVGIcon vectorBackgroundImage;
+		
+		/**The vector background image, converted to a raster image for efficiency*/
+		//private BufferedImage convertedVectorBackgroundImage;
+		
+		/**This is used to know when to update the raster->vector conversion (when window has been moved)*/
+		private Rectangle lastVisibleRect = null;
 		
 		//for the top margin (issue 200 avoidance)
 		private BufferedImage upperSubImage;
@@ -43,6 +53,22 @@ public class FancyJTextPane extends JTextPane implements ImageConstants
 		
 		//if true, top-bottom margins act on viewable area instead of on whole document/text area contents
 		private boolean marginsOnViewableArea = false; //however, setMargins() in ColoredSwingClient will set it to true by default
+		
+		
+		private void updateVectorToRasterConversion ( )
+		{
+			if ( vectorBackgroundImage == null ) return;
+			Rectangle rect = getVisibleRect();
+			if ( rect == null ) return;
+			if ( lastVisibleRect == null || ( rect.width != lastVisibleRect.width || rect.height != lastVisibleRect.height || rasterBackgroundImage == null ) ) //window moved/resized, or image changed
+			{
+				lastVisibleRect = rect;
+				BufferedImage conversion = new BufferedImage(rect.width,rect.height,BufferedImage.TYPE_INT_ARGB);
+				vectorBackgroundImage.setPreferredSize(new Dimension(rect.width,rect.height));
+				vectorBackgroundImage.paintIcon(null, conversion.getGraphics(), 0, 0);
+				rasterBackgroundImage = new ImageIcon(conversion);
+			}
+		}
 		
 		
 		public void setMarginsOnViewableArea ( boolean value )
@@ -113,6 +139,7 @@ public class FancyJTextPane extends JTextPane implements ImageConstants
 			else
 				setOpaque(true);
 			vectorBackgroundImage.setAntiAlias(true);
+			rasterBackgroundImage = null; //new conversion will have to be made
 		    //repaint so that change takes place
 		    javax.swing.SwingUtilities.invokeLater(new Runnable()
 		    {
@@ -225,6 +252,9 @@ public class FancyJTextPane extends JTextPane implements ImageConstants
 		//change to paintComponent to avoid exceptions? done (was paint, also in super call)
 		public void paintComponent(Graphics g)
 		{
+			
+			if ( VECTOR_TO_RASTER ) updateVectorToRasterConversion(); //this is done only if applicable (checks inside method)
+			
 			//super.paint(g);
 			//g.setXORMode(Color.white);
 			Rectangle rect = null;
@@ -235,7 +265,7 @@ public class FancyJTextPane extends JTextPane implements ImageConstants
 				//rect = getVisibleRect();
 				g.drawImage(rasterBackgroundImage.getImage(),rect.x,rect.y,rect.width,rect.height,this);
 			}
-			if ( vectorBackgroundImage != null )
+			else if ( vectorBackgroundImage != null )
 			{
 				//rect = getVisibleRect();
 				vectorBackgroundImage.setPreferredSize(new Dimension(rect.width,rect.height));
@@ -280,7 +310,7 @@ public class FancyJTextPane extends JTextPane implements ImageConstants
 					if ( getMargin().top > 0 ) g.drawImage(upperSubImage,rect.x,rect.y,rect.width,getMargin().top,this);
 					if ( getMargin().bottom > 0 ) g.drawImage(lowerSubImage,rect.x,rect.y+rect.height-getMargin().bottom,rect.width,getMargin().bottom,this);
 				}
-				if ( vectorBackgroundImage != null )
+				else if ( vectorBackgroundImage != null )
 				{
 					if ( getMargin().top > 0 )
 					{
