@@ -401,7 +401,11 @@ public class NewLoaderGamePanel extends JPanel implements ProgressKeepingDelegat
 				{
 					GameEntry game = getSelectedGameEntry();
 					if ( game.isDownloaded() ) launchGame();
-					else if ( game.isDownloadable() ) launchDownload();
+					else if ( game.isDownloadable() )
+					{
+						if ( !game.isDownloadInProgress() )
+							launchDownload();
+					}
 					else JOptionPane.showMessageDialog(NewLoaderGamePanel.this, UIMessages.getInstance().getMessage("gameloader.game.missing.undownloadable"), "Oops!", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
