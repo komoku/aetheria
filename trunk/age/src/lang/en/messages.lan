@@ -105,6 +105,9 @@ cant.put.into.noncontainer=Putting things in $container doesn't seem very useful
 #When you try to put something inside a closed $container.
 cant.put.into.closed=$container is closed.\n
 
+#When you cannot put a container into itself.
+cant.put.into.itself=You can't put $item into itself.\n
+
 #When you try to look at something that doesn't exist
 look.what=What are you trying to look at?\n
 

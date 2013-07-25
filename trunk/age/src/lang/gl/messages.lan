@@ -106,6 +106,9 @@ cant.put.into.noncontainer=Non parece moi útil pór cousas en $container.\n
 #Cando tentas pór algo nun $container que está pechado.
 cant.put.into.closed=$container está pechade$oa.\n
 
+#Cando tentas pór un $item contedor dentro de si mesmo.
+cant.put.into.itself=Non podes pór $item en sí mesm$oa.\n
+
 #Cando tentas mirar algo que non existe
 look.what=Que pretendes mirar?\n
 

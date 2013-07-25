@@ -6485,7 +6485,12 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	public void putInside ( Item ourItem , Item ourContainer )
 	{
 
-
+		if ( ourItem == ourContainer )
+		{
+			//we can't put a container into itself!
+			writeDenial ( lenguaje.correctMorphologyWithoutTrimming ( mundo.getMessages().getMessage("cant.put.into.itself","$item",ourItem.getOutputNameThe(this),"$oa",((ourItem.getGender())?"o":"a"))));
+			return;
+		}
 
 		try
 		{
