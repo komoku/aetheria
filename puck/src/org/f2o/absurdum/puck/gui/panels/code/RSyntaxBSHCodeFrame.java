@@ -248,21 +248,13 @@ public class RSyntaxBSHCodeFrame extends JFrame
 		moreFontSize.addActionListener(new ActionListener(){
 			public void actionPerformed ( ActionEvent evt )
 			{
-				for ( Iterator iter = instances.iterator() ; iter.hasNext() ; )
-				{
-					RSyntaxBSHCodeFrame aFrame = (RSyntaxBSHCodeFrame) iter.next();
-					aFrame.incrementFontSize();
-				}
+				incrementFontSize();
 			}
 		});
 		lessFontSize.addActionListener(new ActionListener(){
 			public void actionPerformed ( ActionEvent evt )
 			{
-				for ( Iterator iter = instances.iterator() ; iter.hasNext() ; )
-				{
-					RSyntaxBSHCodeFrame aFrame = (RSyntaxBSHCodeFrame) iter.next();
-					aFrame.decrementFontSize();
-				}
+				decrementFontSize();
 			}
 		});
 		
@@ -438,16 +430,30 @@ public class RSyntaxBSHCodeFrame extends JFrame
 		return codeFrameFontSize;
 	}
 	
-	private void incrementFontSize()
+	/**
+	 * Increments the selected font size for all RSyntaxBSHCodeFrame instances.
+	 */
+	private static void incrementFontSize()
 	{
 		changeCodeFrameFontSize((float)1.0);
-		updateFontSize();
+		for ( Iterator iter = instances.iterator() ; iter.hasNext() ; )
+		{
+			RSyntaxBSHCodeFrame aFrame = (RSyntaxBSHCodeFrame) iter.next();
+			aFrame.updateFontSize();
+		}
 	}
 	
-	private void decrementFontSize()
+	/**
+	 * Decrements the selected font size for all RSyntaxBSHCodeFrame instances.
+	 */
+	private static void decrementFontSize()
 	{
 		changeCodeFrameFontSize((float)-1.0);
-		updateFontSize();
+		for ( Iterator iter = instances.iterator() ; iter.hasNext() ; )
+		{
+			RSyntaxBSHCodeFrame aFrame = (RSyntaxBSHCodeFrame) iter.next();
+			aFrame.updateFontSize();
+		}
 	}
 	
 	public RSyntaxTextArea getTextArea()
