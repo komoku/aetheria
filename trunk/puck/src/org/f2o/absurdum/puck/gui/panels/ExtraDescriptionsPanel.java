@@ -70,8 +70,8 @@ public class ExtraDescriptionsPanel extends JPanel
 	//privatize it
 	private DefaultListModel listContent = new DefaultListModel();
 	
-	private static int MED_SKIP = 10;
-	private static int SMALL_SKIP = 5;
+	private static int MED_SKIP = 6;
+	private static int SMALL_SKIP = 3;
 	
 	public ExtraDescriptionsPanel ( )
 	{

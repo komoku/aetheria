@@ -102,8 +102,8 @@ public class DescriptionListPanel extends JPanel
 	private JCheckBox propCheckBox = new JCheckBox(UIMessages.getInstance().getMessage("checkbox.propername"));
 	private Vector /*of Boolean*/ propList = new Vector();
 	
-	private static int MED_SKIP = 10;
-	private static int SMALL_SKIP = 5;
+	private static int MED_SKIP = 6;
+	private static int SMALL_SKIP = 3;
 	
 	//debugging
 	private DefaultListModel devVector = new DefaultListModel();
