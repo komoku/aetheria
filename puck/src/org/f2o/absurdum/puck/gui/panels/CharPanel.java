@@ -154,7 +154,16 @@ public class CharPanel extends EntityPanel implements BeanShellCodeHolder
 		genderComboBox = new JComboBox ( new String[] { UIMessages.getInstance().getMessage("gender.m") , UIMessages.getInstance().getMessage("gender.f") } );
 		genderPanel.add(new JLabel(UIMessages.getInstance().getMessage("gender")));
 		genderPanel.add(genderComboBox);
-		firstTab.add(genderPanel);
+		//firstTab.add(genderPanel);
+		
+		JPanel playerPanel = new JPanel();
+		playerPanel.add(cbPlayer);
+		//firstTab.add(playerPanel);
+		
+		JPanel playerGenderPanel = new JPanel();
+		playerGenderPanel.add(genderPanel);
+		playerGenderPanel.add(playerPanel);
+		firstTab.add(playerGenderPanel);
 		
 		/*
 		JPanel hpPanel = new JPanel();
@@ -172,8 +181,9 @@ public class CharPanel extends EntityPanel implements BeanShellCodeHolder
 		firstTab.add(mpPanel);
 		*/
 		
+		
 		JPanel hpmpPanel = new JPanel();
-		hpmpPanel.setLayout(new BoxLayout(hpmpPanel,BoxLayout.LINE_AXIS));
+		//hpmpPanel.setLayout(new BoxLayout(hpmpPanel,BoxLayout.LINE_AXIS));
 		JPanel hpPanel = new JPanel();
 		hpPanel.add(new JLabel(UIMessages.getInstance().getMessage("char.hp")));
 		hpPanel.add(tfHP);
@@ -191,15 +201,13 @@ public class CharPanel extends EntityPanel implements BeanShellCodeHolder
 		maxmpPanel.add(tfMaxMP);
 		hpmpPanel.add(maxmpPanel);
 		
-		JPanel hpmpPanelWrapper = new JPanel();
-		hpmpPanelWrapper.add(hpmpPanel);
-		firstTab.add(hpmpPanelWrapper);
+		//JPanel hpmpPanelWrapper = new JPanel();
+		//hpmpPanelWrapper.add(hpmpPanel);
+		//firstTab.add(hpmpPanelWrapper);
+		firstTab.add(hpmpPanel);
 		
 		
-		
-		JPanel playerPanel = new JPanel();
-		playerPanel.add(cbPlayer);
-		firstTab.add(playerPanel);
+
 		
 		
 		dlp = new DescriptionListPanel(5);
