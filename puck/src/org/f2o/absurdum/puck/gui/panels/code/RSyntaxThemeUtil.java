@@ -24,12 +24,12 @@ public class RSyntaxThemeUtil
 		         ss = (SyntaxScheme) ss.clone();
 		         for (int i = 0; i < ss.getStyleCount(); i++) {
 		            if (ss.getStyle(i) != null) {
-		               ss.getStyle(i).font = ss.getStyle(i).font.deriveFont(theFontSize);
+		               ss.getStyle(i).font = ss.getStyle(i).font.deriveFont((float)theFontSize);
 		            }
 		         }
 		         ta.setSyntaxScheme(ss);
 		         
-		         ta.setFont(ta.getFont().deriveFont(theFontSize));
+		         ta.setFont(ta.getFont().deriveFont((float)theFontSize));
 			
 		}
 		else
