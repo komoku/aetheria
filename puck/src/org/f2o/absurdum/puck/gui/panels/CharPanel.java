@@ -72,10 +72,10 @@ public class CharPanel extends EntityPanel implements BeanShellCodeHolder
 	private CharacterNode node;
 	
 	
-	private JTextField tfHP = new EnhancedJTextField("10",5);
-	private JTextField tfMaxHP = new EnhancedJTextField("10",5);
-	private JTextField tfMP = new EnhancedJTextField("10",5);
-	private JTextField tfMaxMP = new EnhancedJTextField("10",5);
+	private JTextField tfHP = new EnhancedJTextField("10",3);
+	private JTextField tfMaxHP = new EnhancedJTextField("10",3);
+	private JTextField tfMP = new EnhancedJTextField("10",3);
+	private JTextField tfMaxMP = new EnhancedJTextField("10",3);
 	private JComboBox genderComboBox = new JComboBox();
 	
 	private JCheckBox cbPlayer = new JCheckBox(UIMessages.getInstance().getMessage("char.isplayer"));
@@ -156,6 +156,7 @@ public class CharPanel extends EntityPanel implements BeanShellCodeHolder
 		genderPanel.add(genderComboBox);
 		firstTab.add(genderPanel);
 		
+		/*
 		JPanel hpPanel = new JPanel();
 		hpPanel.add(new JLabel(UIMessages.getInstance().getMessage("char.hp")));
 		hpPanel.add(tfHP);
@@ -169,6 +170,32 @@ public class CharPanel extends EntityPanel implements BeanShellCodeHolder
 		mpPanel.add(new JLabel(UIMessages.getInstance().getMessage("char.mpmax")));
 		mpPanel.add(tfMaxMP);
 		firstTab.add(mpPanel);
+		*/
+		
+		JPanel hpmpPanel = new JPanel();
+		hpmpPanel.setLayout(new BoxLayout(hpmpPanel,BoxLayout.LINE_AXIS));
+		JPanel hpPanel = new JPanel();
+		hpPanel.add(new JLabel(UIMessages.getInstance().getMessage("char.hp")));
+		hpPanel.add(tfHP);
+		hpmpPanel.add(hpPanel);
+		JPanel maxhpPanel = new JPanel();
+		maxhpPanel.add(new JLabel(UIMessages.getInstance().getMessage("char.hpmax")));
+		maxhpPanel.add(tfMaxHP);
+		hpmpPanel.add(maxhpPanel);
+		JPanel mpPanel = new JPanel();
+		mpPanel.add(new JLabel(UIMessages.getInstance().getMessage("char.mp")));
+		mpPanel.add(tfMP);
+		hpmpPanel.add(mpPanel);
+		JPanel maxmpPanel = new JPanel();
+		maxmpPanel.add(new JLabel(UIMessages.getInstance().getMessage("char.mpmax")));
+		maxmpPanel.add(tfMaxMP);
+		hpmpPanel.add(maxmpPanel);
+		
+		JPanel hpmpPanelWrapper = new JPanel();
+		hpmpPanelWrapper.add(hpmpPanel);
+		firstTab.add(hpmpPanelWrapper);
+		
+		
 		
 		JPanel playerPanel = new JPanel();
 		playerPanel.add(cbPlayer);
