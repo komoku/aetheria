@@ -486,3 +486,18 @@ unnamed.item=algo
 
 #Nome para mostrar cando hai que falar dun Path que non ten nome para mostrar a un observador dado (por exemplo, "Fulano vaise cara a...")
 unnamed.path=algunha parte
+
+#Alguén di algo
+someone.says.something=$1 di \"$text\".\n
+
+#Dis algo
+you.say.something=Dis \"$text\".\n
+
+#Alguén di algo a alguén
+someone.tells.someone.something=$1 di \"$text\" a $2.\n
+
+#Alguén diche algo
+someone.tells.you.something=$1 diche \"$text\".\n
+
+#Dis algo a alguén
+you.tell.someone.something=Dis \"$text\" a $2.\n
