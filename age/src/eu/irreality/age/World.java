@@ -1750,7 +1750,8 @@ public class World implements Informador , SupportingCode
 			Room theRoom = getRoom ( i.intValue() );
 			//the following check is needed in case someone uses getRoom() by mistake with the unique name of another entity (like a Mobile).
 			//In this case, the low-level getRoom() would return the room with the same relative ID as the requested Mobile. 
-			if ( theRoom.getUniqueName().equals(ident) ) return theRoom; 
+			//Also, if the Room is not initialized yet, theRoom will be null here.
+			if ( theRoom != null && theRoom.getUniqueName().equals(ident) ) return theRoom; 
 			else return null;	
 		}
 	}
@@ -1843,7 +1844,8 @@ public class World implements Informador , SupportingCode
 			Item theItem = getItem ( i.intValue() );
 			//the following check is needed in case someone uses getItem() by mistake with the unique name of another entity (like a Mobile).
 			//In this case, the low-level getItem() would return the item with the same relative ID as the requested Mobile. 
-			if ( theItem.getUniqueName().equals(ident) ) return theItem; 
+			//Also, if the Item is not initialized yet, theItem will be null here.
+			if ( theItem != null && theItem.getUniqueName().equals(ident) ) return theItem; 
 			else return null;		
 		}
 	}
@@ -1888,7 +1890,8 @@ public class World implements Informador , SupportingCode
 			Mobile theMob = getMob ( i.intValue() );
 			//this check is needed in case someone uses getMob() by mistake with the unique name of another entity (like a Room).
 			//In this case, the low-level getMob() would return the mobile with the same relative ID as the requested Room. 
-			if ( theMob.getUniqueName().equals(ident) ) return theMob; 
+			//Also, if the Mobile is not initialized yet, theMob will be null here.
+			if ( theMob != null && theMob.getUniqueName().equals(ident) ) return theMob; 
 			else return null;	
 		}
 	}
@@ -1969,7 +1972,8 @@ public class World implements Informador , SupportingCode
 			AbstractEntity theAbstractEntity = getAbstractEntity ( i.intValue() );
 			//the following check is needed in case someone uses getAbstractEntity() by mistake with the unique name of another entity (like a Mobile).
 			//In this case, the low-level getAbstractEntity() would return the abstract entity with the same relative ID as the requested Mobile. 
-			if ( theAbstractEntity.getUniqueName().equals(ident) ) return theAbstractEntity; 
+			//Also, if the AbstractEntity is not initialized yet, theAbstractEntity will be null here.
+			if ( theAbstractEntity != null && theAbstractEntity.getUniqueName().equals(ident) ) return theAbstractEntity; 
 			else return null;		
 		}
 	}
@@ -2003,7 +2007,8 @@ public class World implements Informador , SupportingCode
 			Spell theSpell = getSpell ( i.intValue() );
 			//the following check is needed in case someone uses getSpell() by mistake with the unique name of another entity (like a Mobile).
 			//In this case, the low-level getSpell() would return the spell with the same relative ID as the requested Mobile. 
-			if ( theSpell.getUniqueName().equals(ident) ) return theSpell; 
+			//Also, if the Spell is not initialized yet, theSpell will be null here.
+			if ( theSpell != null && theSpell.getUniqueName().equals(ident) ) return theSpell; 
 			else return null;			
 		}
 	}
