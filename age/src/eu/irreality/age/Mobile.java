@@ -2155,29 +2155,28 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 
 	public void say ( String text )
 	{
-		//escribir("\n");
 		if ( text.trim().equals("") ) return;
-		habitacionActual.reportActionAuto ( this , null , null , "$1 dice \"" + text + "\".\n" , true );
-		//setNewState( 1 , 1 );
-		//ZR_verbo = command;
-		//return true;
-		//for ( int i = 0 ; i < habitacionActual.mobsInRoom.size() ; i++ ) ;
+		//habitacionActual.reportActionAuto ( this , null , null , "$1 dice \"" + text + "\".\n" , true );
+		habitacionActual.reportAction ( this , null , null , mundo.getMessages().getMessage("someone.says.something","$text",text) , mundo.getMessages().getMessage("someone.says.something","$text",text) , mundo.getMessages().getMessage("you.say.something","$text",text)  , true );
 	}
 	
 	public void say ( String text , String style )
 	{
 		if ( text.trim().equals("") ) return;
-		habitacionActual.reportActionAuto ( this , null , null , "$1 dice \"" + text + "\".\n" , style , true );	
+		//habitacionActual.reportActionAuto ( this , null , null , "$1 dice \"" + text + "\".\n" , style , true );
+		habitacionActual.reportAction ( this , null , null , mundo.getMessages().getMessage("someone.says.something","$text",text) , mundo.getMessages().getMessage("someone.says.something","$text",text) , mundo.getMessages().getMessage("you.say.something","$text",text)  ,  style , true );
 	}
 
 	public void sayTo ( Mobile m , String text )
 	{
-		habitacionActual.reportAction ( this , m , null , "$1 dice \"" + text + "\" a $2.\n" , "$1 te dice \"" + text + "\".\n" , "dices \"" + text + "\" a $2.\n" , true );
+		//habitacionActual.reportAction ( this , m , null , "$1 dice \"" + text + "\" a $2.\n" , "$1 te dice \"" + text + "\".\n" , "dices \"" + text + "\" a $2.\n" , true );
+		habitacionActual.reportAction ( this , m , null , mundo.getMessages().getMessage("someone.tells.someone.something","$text",text) , mundo.getMessages().getMessage("someone.tells.you.something","$text",text) , mundo.getMessages().getMessage("you.tell.someone.something","$text",text) , true );
 	}
 	
 	public void sayTo ( Mobile m , String text , String style )
 	{
-		habitacionActual.reportAction ( this , m , null , "$1 dice \"" + text + "\" a $2.\n" , "$1 te dice \"" + text + "\".\n" , "dices \"" + text + "\" a $2.\n" , style , true );
+		//habitacionActual.reportAction ( this , m , null , "$1 dice \"" + text + "\" a $2.\n" , "$1 te dice \"" + text + "\".\n" , "dices \"" + text + "\" a $2.\n" , style , true );
+		habitacionActual.reportAction ( this , m , null , mundo.getMessages().getMessage("someone.tells.someone.something","$text",text) , mundo.getMessages().getMessage("someone.tells.you.something","$text",text) , mundo.getMessages().getMessage("you.tell.someone.something","$text",text) , style , true );
 	}
 
 	//	procesa el comando decir

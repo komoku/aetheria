@@ -486,3 +486,21 @@ unnamed.item=io
 
 #Nombre para mostrar cuando hay que hablar de un Path que no tiene nombre para mostrar a un observador dado (por ejemplo, "Fulano se va hacia...")
 unnamed.path=iu loko
+
+#You say something
+you.say.something=You say \"$text\".\n
+
+#Someone says something
+someone.says.something=$1 says \"$text\".\n
+
+#You say something
+you.say.something=You say \"$text\".\n
+
+#Someone tells someone something
+someone.tells.someone.something=$1 says \"$text\" to $2.\n
+
+#Someone tells you something
+someone.tells.you.something=$1 says \"$text\" to you.\n
+
+#You tell someone something
+you.tell.someone.something=You say \"$text\" to $2.\n
