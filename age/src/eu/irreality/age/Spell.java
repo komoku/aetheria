@@ -908,4 +908,62 @@ public class Spell extends Entity implements SupportingCode, UniqueNamed
 		return (List) ((ArrayList)respondToPlur).clone();
 	}
 	
+	
+	/**
+	 * Adds a new singular reference name, with lower priority than the existing reference names.
+	 */
+	public void addSingularReferenceName(String newName)
+	{
+		respondToSing.add(newName);
+		mundo.getSpellChecker().addNewName(newName);
+	}
+	
+	/**
+	 * Adds a new singular reference name, located at the given index that defines its priority.
+	 */
+	public void addSingularReferenceName(int index,String newName)
+	{
+		respondToSing.add(index,newName);
+		mundo.getSpellChecker().addNewName(newName);
+	}
+	
+	/**
+	 * Removes a singular reference name from the list of such names, if present. Returns whether it has actually been removed or not.
+	 * Note that this does not remove any word from the world's vocabulary used by the spell checker.
+	 * Call the rebuild() method in the world's spell checker if this effect is desired (but beware, that takes a nontrivial amount of time)
+	 */
+	public boolean removeSingularReferenceName(String oldName)
+	{
+		return respondToSing.remove(oldName);
+	}
+	
+	/**
+	 * Adds a new plural reference name, with lower priority than the existing reference names.
+	 */
+	public void addPluralReferenceName(String newName)
+	{
+		respondToPlur.add(newName);
+		mundo.getSpellChecker().addNewName(newName);
+	}
+	
+	/**
+	 * Adds a new plural reference name, located at the given index that defines its priority.
+	 */
+	public void addPluralReferenceName(int index,String newName)
+	{
+		respondToPlur.add(index,newName);
+		mundo.getSpellChecker().addNewName(newName);
+	}
+	
+	/**
+	 * Removes a plural reference name from the list of such names, if present. Returns whether it has actually been removed or not.
+	 * Note that this does not remove any word from the world's vocabulary used by the spell checker.
+	 * Call the rebuild() method in the world's spell checker if this effect is desired (but beware, that takes a nontrivial amount of time)
+	 */
+	public boolean removePluralReferenceName(String oldName)
+	{
+		return respondToPlur.remove(oldName);
+	}
+	
+	
 }
