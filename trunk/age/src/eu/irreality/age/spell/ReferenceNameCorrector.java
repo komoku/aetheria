@@ -8,6 +8,7 @@ package eu.irreality.age.spell;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -57,6 +58,7 @@ public class ReferenceNameCorrector implements SpellingCorrector
 		}
 		return s;
 	}
+	
 	
 	/**
 	 * Builds a corrector that uses a dictionary extracted from the reference names of the given
@@ -134,6 +136,23 @@ public class ReferenceNameCorrector implements SpellingCorrector
 	public void addDictionaryWord(String word) throws UnsupportedOperationException 
 	{	
 		theCorrector.addDictionaryWord(word);
+	}
+	
+	/**
+	 * Adds a new reference name (single-word or multiword) to the corrector.
+	 * This can be used by games that dynamically add reference names to entities.
+	 * @param name
+	 */
+	public void addReferenceName(String name)
+	{
+		List singleElementList = new ArrayList();
+		singleElementList.add(name);
+		Set relevantWords = extractRelevantWords(singleElementList);
+		for ( Iterator it = relevantWords.iterator() ; it.hasNext(); )
+		{
+			String word = (String) it.next();
+			addDictionaryWord(word);
+		}
 	}
 
 	public Correction getBestCorrection(String word) 

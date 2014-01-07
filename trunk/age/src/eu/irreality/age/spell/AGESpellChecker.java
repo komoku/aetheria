@@ -23,7 +23,7 @@ public class AGESpellChecker
 	NaturalLanguage lang;
 	
 	SpellingCorrector verbCorrector;
-	SpellingCorrector nameCorrector;
+	ReferenceNameCorrector nameCorrector;
 	
 	private static int MINLENGTH = 3;
 	
@@ -110,7 +110,15 @@ public class AGESpellChecker
 		return result.toString();
 	}
 	
-	
+	/**
+	 * Adds a new name to the names known by the spell checker.
+	 * This can be used by games that add reference names dynamically.
+	 * @param s The name to be added.
+	 */
+	public void addNewName ( String s )
+	{
+		nameCorrector.addReferenceName(s);
+	}
 	
 	
 }
