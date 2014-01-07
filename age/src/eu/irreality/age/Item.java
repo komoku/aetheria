@@ -45,8 +45,8 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	/**Género.*/
 	/*13*/ protected boolean gender; //true=masculino
 	/**Responder a... (comandos)*/
-	/*14*/ protected String respondToSing;
-	/*15*/ protected String respondToPlur;
+	/*14*/ protected List respondToSing = new ArrayList();
+	/*15*/ protected List respondToPlur = new ArrayList();
 	
 	
 	/**Volumen.*/
@@ -527,12 +527,12 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 				case 14:
 				//respondToSing
 				{
-					respondToSing = linea; break;
+					respondToSing = Conversions.getReferenceNameList(linea); break;
 				}
 				case 15:
 				//respondToPlur
 				{
-					respondToPlur = linea; break;	
+					respondToPlur = Conversions.getReferenceNameList(linea); break;	
 				}
 				case 16:
 				//weight line
@@ -926,6 +926,10 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		//nombre1$nombre2
 		//WE CAN REWRITE ALL THESE USING "Utility.loadNameListFromXML()" AND MAKE
 		//THEM SHORTER. DO IT IF NEEDIN' TO MODIFY. 
+		
+		/*
+		 * legacy removed 2014-01-07
+		 * 
 		org.w3c.dom.NodeList singRefNamesNodes = e.getElementsByTagName("SingularReferenceNames" );
 		if ( singRefNamesNodes.getLength() > 0 )
 		{
@@ -953,6 +957,11 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 					respondToSing += "$";	
 			}
 		}
+		*/
+		
+		//singular reference names (respondToSing)
+		respondToSing = Utility.loadNameListFromXML ( mundo , e , "SingularReferenceNames" , true );
+		
 		//plural reference names (respondToPlur) just same as singular reference names.
 		
 		//System.err.println("respondToSing of item " + this + " initted to " + respondToSing);
@@ -1818,7 +1827,7 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	*/
 	public int matchesCommand ( String commandArgs , boolean pluralOrSingular )
 	{
-		String listaDeInteres;
+		List listaDeInteres;
 		if ( pluralOrSingular ) // plural
 			listaDeInteres = respondToPlur;
 		else
@@ -2560,12 +2569,13 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	//un comando. Útil para zonas de referencia.
 	public String getBestReferenceName ( boolean pluralOrSingular )
 	{
-		String theList;
+		List theList;
 		if ( pluralOrSingular ) //true? plural
 			theList = respondToPlur;
 		else
 			theList = respondToSing;
-		String tmp = StringMethods.getTok(theList,1,'$');	
+		String tmp = // StringMethods.getTok(theList,1,'$');
+				(String) theList.get(0);
 		return ( Character.toLowerCase( tmp.charAt(0) ) ) + tmp.substring(1);
 	}
 	
@@ -2785,30 +2795,12 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		//"respond to" names (temp XML representation)
 		if ( respondToSing != null )
 		{
-			org.w3c.dom.Element respTo = doc.createElement("SingularReferenceNames");
-			StringTokenizer st = new StringTokenizer ( respondToSing , "$" );
-			while ( st.hasMoreTokens() )
-			{
-				String tok = st.nextToken();
-				org.w3c.dom.Element esteNombre = doc.createElement("Name");
-				org.w3c.dom.Text elNombre = doc.createTextNode(tok);
-				esteNombre.appendChild(elNombre);
-				respTo.appendChild(esteNombre);
-			}
+			org.w3c.dom.Element respTo = getNameListXMLRepresentation(doc,respondToSing,"SingularReferenceNames");
 			suElemento.appendChild(respTo);
 		}
 		if ( respondToPlur != null )
 		{
-			org.w3c.dom.Element respTo = doc.createElement("PluralReferenceNames");
-			StringTokenizer st = new StringTokenizer ( respondToPlur , "$" );
-			while ( st.hasMoreTokens() )
-			{
-				String tok = st.nextToken();
-				org.w3c.dom.Element esteNombre = doc.createElement("Name");
-				org.w3c.dom.Text elNombre = doc.createTextNode(tok);
-				esteNombre.appendChild(elNombre);
-				respTo.appendChild(esteNombre);
-			}
+			org.w3c.dom.Element respTo = getNameListXMLRepresentation(doc,respondToPlur,"PluralReferenceNames");
 			suElemento.appendChild(respTo);
 		}
 
@@ -2971,8 +2963,22 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 		
 		it.gender = true; //masculino
 	
-		it.respondToSing = it.title + "$cadáver$cadaver$cuerpo$muerto$"+m.respondToSing;
-		it.respondToPlur = it.title + "$cadáveres$cadaveres$cuerpos$muertos"+m.respondToPlur;
+		it.respondToSing = new ArrayList();
+		it.respondToSing.add(it.title);
+		it.respondToSing.add("cadáver"); //TODO localize this
+		it.respondToSing.add("cadaver");
+		it.respondToSing.add("cuerpo");
+		it.respondToSing.add("muerto");
+		it.respondToSing.addAll(m.respondToSing);
+		
+		it.respondToPlur = new ArrayList();
+		it.respondToPlur.add(it.title);
+		
+		it.respondToSing.add("cadáveres"); //TODO localize this
+		it.respondToSing.add("cadaveres");
+		it.respondToSing.add("cuerpos");
+		it.respondToSing.add("muertos");
+		it.respondToSing.addAll(m.respondToPlur);
 		
 		//temp!
 		it.volume = 1000;
@@ -3243,7 +3249,8 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	 */
 	public List getSingularReferenceNames()
 	{
-		return Conversions.getReferenceNameList(respondToSing);
+		return //Conversions.getReferenceNameList(respondToSing);
+				(List) ((ArrayList)respondToSing).clone();
 	}
 	
 	/**
@@ -3252,7 +3259,8 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 	public List getPluralReferenceNames()
 	{
 		//System.err.println("The item: " + this + " with pl. names: " + respondToPlur);
-		return Conversions.getReferenceNameList(respondToPlur);
+		return //Conversions.getReferenceNameList(respondToPlur);
+				(List) ((ArrayList)respondToPlur).clone();
 	}
 	
 	public ObjectCode getAssociatedCode() 
