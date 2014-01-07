@@ -99,8 +99,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	/**G�nero.*/
 	/*13*/ protected boolean gender; //true=masculino
 	/**Responder a... (comandos): listas de pattern-matching.*/
-	/*14*/ protected String respondToSing;
-	/*15*/ protected String respondToPlur;
+	/*14*/ protected List respondToSing = new ArrayList();
+	/*15*/ protected List respondToPlur = new ArrayList();
 
 
 	/*20*/ protected Inventory inventory;
@@ -373,12 +373,12 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			case 14:
 				//respondToSing
 			{
-				respondToSing = linea; break;
+				respondToSing = Conversions.getReferenceNameList(linea); break;
 			}
 			case 15:
 				//respondToPlur
 			{
-				respondToPlur = linea; break;	
+				respondToPlur = Conversions.getReferenceNameList(linea); break;	
 			}
 
 			case 20:
@@ -1429,13 +1429,13 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	 */
 	public String getBestReferenceName ( boolean pluralOrSingular )
 	{
-		String theList;
+		List theList;
 		if ( pluralOrSingular ) //true? plural
 			theList = respondToPlur;
 		else
 			theList = respondToSing;
-		if ( theList.length() == 0 ) return null;
-		String tmp = StringMethods.getTok(theList,1,'$');	
+		if ( theList.size() == 0 ) return null;
+		String tmp = (String) theList.get(0);
 		return ( Character.toLowerCase( tmp.charAt(0) ) ) + tmp.substring(1);	
 	}
 
@@ -1449,29 +1449,11 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	 */
 	public int matchesCommand ( String commandArgs , boolean pluralOrSingular )
 	{
-		String listaDeInteres;
+		List listaDeInteres;
 		if ( pluralOrSingular ) // plural
 			listaDeInteres = respondToPlur;
 		else
 			listaDeInteres = respondToSing;
-		/*
-		int nToksArg = StringMethods.numToks( commandArgs , ' ');
-		int nToksList = StringMethods.numToks( listaDeInteres , '$');
-		for ( int i = 1 ; i <= nToksArg ; i++ )
-		{
-			String currentToAnalyze = StringMethods.getToks( commandArgs , i , nToksArg , ' ' );
-			//"mirar la piedra peque�a" -> commandArgs="la piedra peque�a" -> vamos analizando "la piedra peque�a", "piedra peque�a", ...
-			for ( int j = 1 ; j <= nToksList ; j++ )
-			{
-				if ( StringMethods.getTok( listaDeInteres , j , '$' ) .equalsIgnoreCase(currentToAnalyze) ) 
-				{
-					return j;
-				}
-			}
-			//TODO: here, add reverse analysis. gettoks from 1 to moving i.
-		}
-		return 0;
-		*/
 		return matchesCommand ( commandArgs , listaDeInteres , mundo.getCommandMatchingMode() );
 	}
 
@@ -4880,30 +4862,12 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		//"respond to" names (temp XML representation)
 		if ( respondToSing != null )
 		{
-			org.w3c.dom.Element respTo = doc.createElement("SingularReferenceNames");
-			StringTokenizer st = new StringTokenizer ( respondToSing , "$" );
-			while ( st.hasMoreTokens() )
-			{
-				String tok = st.nextToken();
-				org.w3c.dom.Element esteNombre = doc.createElement("Name");
-				org.w3c.dom.Text elNombre = doc.createTextNode(tok);
-				esteNombre.appendChild(elNombre);
-				respTo.appendChild(esteNombre);
-			}
+			org.w3c.dom.Element respTo = getNameListXMLRepresentation(doc,respondToSing,"SingularReferenceNames");
 			suElemento.appendChild(respTo);
 		}
 		if ( respondToPlur != null )
 		{
-			org.w3c.dom.Element respTo = doc.createElement("PluralReferenceNames");
-			StringTokenizer st = new StringTokenizer ( respondToPlur , "$" );
-			while ( st.hasMoreTokens() )
-			{
-				String tok = st.nextToken();
-				org.w3c.dom.Element esteNombre = doc.createElement("Name");
-				org.w3c.dom.Text elNombre = doc.createTextNode(tok);
-				esteNombre.appendChild(elNombre);
-				respTo.appendChild(esteNombre);
-			}
+			org.w3c.dom.Element respTo = getNameListXMLRepresentation(doc,respondToPlur,"PluralReferenceNames");
 			suElemento.appendChild(respTo);
 		}
 
@@ -7909,7 +7873,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	 */
 	public List getSingularReferenceNames()
 	{
-		return Conversions.getReferenceNameList(respondToSing);
+		return (List) ((ArrayList)respondToSing).clone();
 	}
 	
 	/**
@@ -7917,7 +7881,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	 */
 	public List getPluralReferenceNames()
 	{
-		return Conversions.getReferenceNameList(respondToPlur);
+		return (List) ((ArrayList)respondToPlur).clone();
 	}
 
 	public ObjectCode getAssociatedCode() 

@@ -37,8 +37,8 @@ public class Spell extends Entity implements SupportingCode, UniqueNamed
 	
 	
 	//reference names, added 2012-03-29
-	protected String respondToSing;
-	protected String respondToPlur;
+	protected List respondToSing;
+	protected List respondToPlur;
 	
 	//world reference, added 2012-03-29
 	private World mundo;
@@ -426,34 +426,15 @@ public class Spell extends Entity implements SupportingCode, UniqueNamed
 			}				
 			*/	
 			
-			
 			//"respond to" names (temp XML representation)
 			if ( respondToSing != null )
 			{
-				org.w3c.dom.Element respTo = doc.createElement("SingularReferenceNames");
-				StringTokenizer st = new StringTokenizer ( respondToSing , "$" );
-				while ( st.hasMoreTokens() )
-				{
-					String tok = st.nextToken();
-					org.w3c.dom.Element esteNombre = doc.createElement("Name");
-					org.w3c.dom.Text elNombre = doc.createTextNode(tok);
-					esteNombre.appendChild(elNombre);
-					respTo.appendChild(esteNombre);
-				}
+				org.w3c.dom.Element respTo = getNameListXMLRepresentation(doc,respondToSing,"SingularReferenceNames");
 				suElemento.appendChild(respTo);
 			}
 			if ( respondToPlur != null )
 			{
-				org.w3c.dom.Element respTo = doc.createElement("PluralReferenceNames");
-				StringTokenizer st = new StringTokenizer ( respondToPlur , "$" );
-				while ( st.hasMoreTokens() )
-				{
-					String tok = st.nextToken();
-					org.w3c.dom.Element esteNombre = doc.createElement("Name");
-					org.w3c.dom.Text elNombre = doc.createTextNode(tok);
-					esteNombre.appendChild(elNombre);
-					respTo.appendChild(esteNombre);
-				}
+				org.w3c.dom.Element respTo = getNameListXMLRepresentation(doc,respondToPlur,"PluralReferenceNames");
 				suElemento.appendChild(respTo);
 			}
 			
@@ -879,7 +860,7 @@ public class Spell extends Entity implements SupportingCode, UniqueNamed
 	*/
 	public int matchesCommand ( String commandArgs , boolean pluralOrSingular )
 	{
-		String listaDeInteres;
+		List listaDeInteres;
 		if ( pluralOrSingular ) // plural
 			listaDeInteres = respondToPlur;
 		else
@@ -916,7 +897,7 @@ public class Spell extends Entity implements SupportingCode, UniqueNamed
 	 */
 	public List getSingularReferenceNames()
 	{
-		return Conversions.getReferenceNameList(respondToSing);
+		return (List) ((ArrayList)respondToSing).clone();
 	}
 	
 	/**
@@ -924,7 +905,7 @@ public class Spell extends Entity implements SupportingCode, UniqueNamed
 	 */
 	public List getPluralReferenceNames()
 	{
-		return Conversions.getReferenceNameList(respondToPlur);
+		return (List) ((ArrayList)respondToPlur).clone();
 	}
 	
 }

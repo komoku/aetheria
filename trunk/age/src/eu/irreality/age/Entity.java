@@ -589,20 +589,21 @@ public abstract class Entity
 	 * @param referenceList ordered list of reference names
 	 * @return 0 si no se da por aludido, 1 si sí, y con qué prioridad. (+ nº = - prioridad). La prioridad es el orden que ocupa el nombre que se corresponde con el comando dado en la lista de nombres.
 	 */
-	protected int legacyMatchesCommand ( String commandArgs , String referenceNameList )
+	protected int legacyMatchesCommand ( String commandArgs , List referenceNameList )
 	{
 		int nToksArg = StringMethods.numToks( commandArgs , ' ');
-		int nToksList = StringMethods.numToks( referenceNameList , '$');
+		//int nToksList = StringMethods.numToks( referenceNameList , '$');
 		for ( int i = 1 ; i <= nToksArg ; i++ )
 		{
 			String currentToAnalyze = StringMethods.getToks( commandArgs , i , nToksArg , ' ' );
 			//"mirar la piedra pequeña" -> commandArgs="la piedra pequeña" -> vamos analizando "la piedra pequeña", "piedra pequeña", ...
-			for ( int j = 1 ; j <= nToksList ; j++ )
+			//for ( int j = 1 ; j <= nToksList ; j++ )
+			for ( int j = 0 ; j < referenceNameList.size() ; j++ )
 			{
-				if ( StringMethods.getTok( referenceNameList , j , '$' ) .equalsIgnoreCase(currentToAnalyze) ) 
-				{
-					return j;
-				}
+				//if ( StringMethods.getTok( referenceNameList , j , '$' ) .equalsIgnoreCase(currentToAnalyze) ) 
+				//	return j;
+				if ( ((String)referenceNameList.get(j)).equalsIgnoreCase(currentToAnalyze) )
+					return j+1;
 			}
 			//TODO: here, add reverse analysis. gettoks from 1 to moving i.
 		}
@@ -616,13 +617,16 @@ public abstract class Entity
 	 * @param referenceNameList
 	 * @return
 	 */
-	protected int lenientMatchesCommand ( String commandArgs , String referenceNameList )
+	protected int lenientMatchesCommand ( String commandArgs , List referenceNameList )
 	{
-		StringTokenizer st = new StringTokenizer ( referenceNameList , "$" );
+		//StringTokenizer st = new StringTokenizer ( referenceNameList , "$" );
+		Iterator it = referenceNameList.iterator();
 		int j = 1; //current token being read, starting at 1
-		while ( st.hasMoreTokens() )
+		//while ( st.hasMoreTokens() )
+		while ( it.hasNext() )
 		{
-			String currentReferenceName = st.nextToken();
+			String currentReferenceName = //st.nextToken();
+					(String) it.next();
 			if ( commandArgs.toLowerCase().contains(currentReferenceName.toLowerCase()) )
 				return j;
 		}
@@ -647,13 +651,16 @@ public abstract class Entity
 	 * @param referenceNameList
 	 * @return
 	 */
-	protected int moderateMatchesCommand ( String commandArgs , String referenceNameList )
+	protected int moderateMatchesCommand ( String commandArgs , List referenceNameList )
 	{
-		StringTokenizer st = new StringTokenizer ( referenceNameList , "$" );
+		//StringTokenizer st = new StringTokenizer ( referenceNameList , "$" );
+		Iterator it = referenceNameList.iterator();
 		int j = 1; //current token being read, starting at 1
-		while ( st.hasMoreTokens() )
+		//while ( st.hasMoreTokens() )
+		while ( it.hasNext() )
 		{
-			String currentReferenceName = st.nextToken();
+			String currentReferenceName = // st.nextToken();
+					(String) it.next();
 			int position = commandArgs.toLowerCase().indexOf(currentReferenceName.toLowerCase());
 			if ( position < 0 ) //does not match
 				continue;
@@ -691,7 +698,7 @@ public abstract class Entity
 	 * @param referenceList ordered list of reference names
 	 * @return 0 si no se da por aludido, 1 si sí, y con qué prioridad. (+ nº = - prioridad). La prioridad es el orden que ocupa el nombre que se corresponde con el comando dado en la lista de nombres.
 	 */
-	protected int matchesCommand ( String commandArgs , String referenceNameList , int commandMatchingMode )
+	protected int matchesCommand ( String commandArgs , List referenceNameList , int commandMatchingMode )
 	{
 		if ( commandMatchingMode == LEGACY_COMMAND_MATCHING )
 			return legacyMatchesCommand ( commandArgs , referenceNameList );
@@ -760,9 +767,28 @@ public abstract class Entity
 		return (( mask & ( getPropertyValueAsInteger("state") ^ comparand ) ) == 0 ); 
 	}
 	
-	
-	
-	
+		
+	/**
+	 * Create and return the XML representation for a name list. Used for reference names.
+	 * @param doc The document in which to create the XML element.
+	 * @param inputList List of Strings with names, e.g. reference names.
+	 * @param outputElementName Name of the XML element containing the name list.
+	 * @return
+	 */
+	public org.w3c.dom.Element getNameListXMLRepresentation ( org.w3c.dom.Document doc , List inputList , String outputElementName )
+	{
+		org.w3c.dom.Element respTo = doc.createElement(outputElementName);
+		Iterator it = inputList.iterator();
+		while ( it.hasNext() )
+		{
+			String tok = (String) it.next();
+			org.w3c.dom.Element esteNombre = doc.createElement("Name");
+			org.w3c.dom.Text elNombre = doc.createTextNode(tok);
+			esteNombre.appendChild(elNombre);
+			respTo.appendChild(esteNombre);
+		}
+		return respTo;
+	}
 	
 	public org.w3c.dom.Node getPropListXMLRepresentation ( org.w3c.dom.Document doc )	
 	{
@@ -774,7 +800,8 @@ public abstract class Entity
 			e.appendChild (nodoProp);
 		}
 		return e;
-	}
+	}	
+	
 	
 	//n es el nodo asociado a la entidad.
 	public void readPropListFromXML ( World mundo , org.w3c.dom.Node n ) throws XMLtoWorldException

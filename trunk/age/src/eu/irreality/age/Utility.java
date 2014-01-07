@@ -390,7 +390,7 @@ public class Utility
 			
 	}
 	
-	private static String loadNameListFromXML ( World mundo , org.w3c.dom.Element namesNode ) throws XMLtoWorldException
+	private static List loadNameListFromXML ( World mundo , org.w3c.dom.Element namesNode ) throws XMLtoWorldException
 	{
 
 		//an example of this is singular reference names (respondToSing), XML format is:
@@ -408,6 +408,11 @@ public class Utility
 		*/	
 			org.w3c.dom.NodeList nameNodes = namesNode.getElementsByTagName("Name");
 			
+			
+			
+		/*
+		 * legacy reference name list: support removed 2014-01-07
+		 * 
 			//init ourString
 			String ourString = "";
 			
@@ -430,11 +435,31 @@ public class Utility
 			}
 		
 		return ourString;
-	
+		*/
+			
+			//init ourList
+			List ourList = new ArrayList();
+			
+			for ( int i = 0 ; i < nameNodes.getLength() ; i++ )
+			{
+				//get this name node
+				org.w3c.dom.Element nameNode = (org.w3c.dom.Element) nameNodes.item(i);
+				
+				//get first text node in this name node -- WE ASSUME THERE IS ONE!!
+				org.w3c.dom.Node hijo = nameNode.getFirstChild();
+				while ( !( hijo instanceof org.w3c.dom.Text ) )
+					hijo = hijo.getNextSibling();
+				
+				//{hijo is an org.w3c.dom.Text}
+				
+				ourList.add( hijo.getNodeValue() );			
+					
+			}
+		return ourList;
 	}
 	
 	//e: entity Element
-	public static String loadNameListFromXML ( World mundo , org.w3c.dom.Element e , String tagName , boolean nullifyIfNotFound ) throws XMLtoWorldException
+	public static List loadNameListFromXML ( World mundo , org.w3c.dom.Element e , String tagName , boolean nullifyIfNotFound ) throws XMLtoWorldException
 	{
 	
 		org.w3c.dom.NodeList singRefNamesNodes = e.getElementsByTagName ( tagName );
@@ -449,7 +474,7 @@ public class Utility
 			if ( nullifyIfNotFound ) 
 				return null;
 			else
-				return "";	
+				return new ArrayList();	
 		}
 	
 	}

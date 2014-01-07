@@ -40,8 +40,11 @@ public class Player extends Mobile implements Informador
 		properName = true;
 
 		//max priority as reference
-		respondToSing = nombre+"$"+respondToSing;
-		respondToPlur = nombre+"$"+respondToPlur;
+		respondToSing.add(0,nombre);
+		respondToPlur.add(0,nombre);
+		
+		//respondToSing = nombre+"$"+respondToSing;
+		//respondToPlur = nombre+"$"+respondToPlur;
 
 		singNames = new Description[1];
 		singNames[0] = new Description(nombre,0,0);
