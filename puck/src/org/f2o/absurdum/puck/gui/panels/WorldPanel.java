@@ -18,6 +18,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -439,10 +440,17 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		viewElt.setAttribute("yoffset",String.valueOf(this.getGraphEditingPanel().getViewYOffset()));
 		viewElt.setAttribute("zoom",String.valueOf(this.getGraphEditingPanel().getViewZoom()));
 		metaElt.appendChild(viewElt);
-		for ( int i = 0 ; i < gep.getNodes().size() ; i++ )
+		
+		//We sort the world's nodes by unique name so that nodes are saved to the XML in a consistent order.
+		//This is to make it easier to work with diffs, patches, version control, etc. on the world files.
+		Vector sortedNodes = new Vector();
+		sortedNodes.addAll(gep.getNodes());
+		Collections.sort(sortedNodes);
+		
+		for ( int i = 0 ; i < sortedNodes.size() ; i++ )
 		{
 			Element nodeElt = d.createElement("Node");
-			Node n = (Node) gep.getNodes().get(i);
+			Node n = (Node) sortedNodes.get(i);
 			nodeElt.setAttribute("name",n.getName());
 			nodeElt.setAttribute("class",n.getClass().getName());
 			nodeElt.setAttribute("x",String.valueOf(n.getBounds().x));
