@@ -503,7 +503,9 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 			
 
 		Element roomsElt = d.createElement("Rooms");
-		List roomNodes = gep.getRoomNodes(true);
+		List roomNodes = new Vector();
+		roomNodes.addAll(gep.getRoomNodes(false));
+		Collections.sort(roomNodes);
 		for ( int i = 0 ; i < roomNodes.size() ; i++ )
 		{
 			if ( roomNodes.get(i) instanceof RoomNode )
@@ -514,7 +516,9 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		}
 		
 		Element itemsElt = d.createElement("Items");
-		List itemNodes = gep.getItemNodes(true);
+		List itemNodes = new Vector();
+		itemNodes.addAll(gep.getItemNodes(false));
+		Collections.sort(itemNodes);
 		for ( int i = 0 ; i < itemNodes.size() ; i++ )
 		{
 			if ( itemNodes.get(i) instanceof ItemNode )
@@ -526,7 +530,9 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		
 		Element mobsElt = d.createElement("Mobiles");
 		Element playersElt = d.createElement("PlayerList");
-		List charNodes = gep.getCharNodes(true);
+		List charNodes = new Vector();
+		charNodes.addAll(gep.getCharNodes(false));
+		Collections.sort(charNodes);
 		for ( int i = 0 ; i < charNodes.size() ; i++ )
 		{
 			if ( charNodes.get(i) instanceof CharacterNode )
@@ -575,7 +581,9 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		}
 		
 		Element abstractEntitiesElt = d.createElement("AbstractEntities");
-		List abstractEntityNodes = gep.getNodes(AbstractEntityNode.class,true);
+		List abstractEntityNodes = new Vector();
+		abstractEntityNodes.addAll(gep.getNodes(AbstractEntityNode.class,false));
+		Collections.sort(abstractEntityNodes);
 		for ( int i = 0 ; i < abstractEntityNodes.size() ; i++ )
 		{
 			if ( abstractEntityNodes.get(i) instanceof AbstractEntityNode )
@@ -586,7 +594,9 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		}
 		
 		Element spellsElt = d.createElement("Spells");
-		List spellNodes = gep.getNodes(SpellNode.class,true);
+		List spellNodes = new Vector();
+		spellNodes.addAll(gep.getNodes(SpellNode.class,false));
+		Collections.sort(spellNodes);
 		for ( int i = 0 ; i < spellNodes.size() ; i++ )
 		{
 			if ( spellNodes.get(i) instanceof SpellNode )
