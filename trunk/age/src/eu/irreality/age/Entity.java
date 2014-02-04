@@ -621,10 +621,11 @@ public abstract class Entity
 	{
 		//StringTokenizer st = new StringTokenizer ( referenceNameList , "$" );
 		Iterator it = referenceNameList.iterator();
-		int j = 1; //current token being read, starting at 1
+		int j = 0; //current token being read, starting at 1 (we set to 0 here because we're going to do j++ inside the while loop)
 		//while ( st.hasMoreTokens() )
 		while ( it.hasNext() )
 		{
+			j++;
 			String currentReferenceName = //st.nextToken();
 					(String) it.next();
 			if ( commandArgs.toLowerCase().contains(currentReferenceName.toLowerCase()) )
@@ -655,10 +656,11 @@ public abstract class Entity
 	{
 		//StringTokenizer st = new StringTokenizer ( referenceNameList , "$" );
 		Iterator it = referenceNameList.iterator();
-		int j = 1; //current token being read, starting at 1
+		int j = 0; //current token being read, starting at 1 (we set to 0 here because we're going to do j++ inside the while loop)
 		//while ( st.hasMoreTokens() )
 		while ( it.hasNext() )
 		{
+			j++;
 			String currentReferenceName = // st.nextToken();
 					(String) it.next();
 			int position = commandArgs.toLowerCase().indexOf(currentReferenceName.toLowerCase());
