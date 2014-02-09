@@ -16,21 +16,30 @@ import org.f2o.absurdum.puck.gui.graph.GraphEditingPanel;
  Created 21/11/2007 20:23:43
  */
 
-public class ExecAgeTool extends AbstractAction 
+public class ExecAgeTool extends ToolAction 
 {
 	
 	private PuckFrame frame;
 	
 	public ExecAgeTool ( PuckFrame frame )
 	{
+		super(null);
 		this.frame = frame;
+	}
+	
+	public boolean isToolSelectionPersistent()
+	{
+		//Persistent tool selection makes no sense for this tool, so we return false.
+		return false;
 	}
 
 	public void actionPerformed(ActionEvent arg0) 
 	{
-		
-		frame.runCurrentFileInAge();
-		
+		frame.runCurrentFileInAge();	
 	}
+	
+	//We are overriding actionPerformed directly here, so loadTool() and unloadTool() are unused.
+	public void loadTool() {}
+	public void unloadTool() {}
 	
 }

@@ -23,37 +23,41 @@ import org.f2o.absurdum.puck.gui.graph.Node;
  *
  * Created at regulus, 19-jul-2005 19:51:01
  */
-public class AddNodeTool extends AbstractAction 
+public class AddNodeTool extends ToolAction 
 {
 
 	private Node prototype;
-	private GraphEditingPanel panel;
 	private MouseListener listener;
 	private MouseMotionListener motionListener;
 	
+	private int lastSpecialNodeLocationX;
+	private int lastSpecialNodeLocationY;
+	
 	public AddNodeTool ( Node prototype , GraphEditingPanel panel )
 	{
+		super(panel);
+		
 		this.prototype = prototype;
-		this.panel = panel;
 		
 		listener = new MouseListener()
 		{
 			public void mouseClicked(MouseEvent arg0) 
 			{
-				Node n = AddNodeTool.this.panel.getSpecialNode();
+				Node n = getPanel().getSpecialNode();
 				/*
 				AddNodeTool.this.panel.setToolListener(null);
 				AddNodeTool.this.panel.setToolMotionListener(null);
 				*/
-				AddNodeTool.this.panel.resetToolListeners();
-				AddNodeTool.this.panel.setSpecialNode(null);
-				AddNodeTool.this.panel.addNode(n);
-				AddNodeTool.this.panel.resetSelections();
-				AddNodeTool.this.panel.selectNode(n);
-				AddNodeTool.this.panel.getPropertiesPanel().show(n);
-				AddNodeTool.this.panel.getPropertiesPanel().repaint();
-				AddNodeTool.this.panel.repaint();
-				AddNodeTool.this.panel.setCursor(CursorHandler.getInstance().getCursor("DEFAULT"));
+				//getPanel().resetToolListeners();
+				getPanel().setSpecialNode(null);
+				getPanel().addNode(n);
+				getPanel().resetSelections();
+				getPanel().selectNode(n);
+				getPanel().getPropertiesPanel().show(n);
+				getPanel().getPropertiesPanel().repaint();
+				getPanel().repaint();
+				//getPanel().setCursor(CursorHandler.getInstance().getCursor("DEFAULT"));
+				toolDone();
 			}
 			public void mouseEntered(MouseEvent arg0) 
 			{
@@ -89,19 +93,22 @@ public class AddNodeTool extends AbstractAction
 						AddNodeTool.this.panel.getGraphics(),arg0.getX(),arg0.getY());
 				*/
 				
-				int newLocationX = AddNodeTool.this.panel.panelToMapX(arg0.getX());
-				int newLocationY = AddNodeTool.this.panel.panelToMapY(arg0.getY());
+				int newLocationX = getPanel().panelToMapX(arg0.getX());
+				int newLocationY = getPanel().panelToMapY(arg0.getY());
 				
-				if ( AddNodeTool.this.panel.isSnapToGridEnabled( ))
+				if ( getPanel().isSnapToGridEnabled( ))
 				{
 					newLocationX = (newLocationX/20)*20;
 					newLocationY = (newLocationY/20)*20;
 				}
 				
-				AddNodeTool.this.panel.getSpecialNode().setLocation(newLocationX,newLocationY);
+				lastSpecialNodeLocationX = newLocationX;
+				lastSpecialNodeLocationY = newLocationY;
+				
+				getPanel().getSpecialNode().setLocation(newLocationX,newLocationY);
 				
 				
-				AddNodeTool.this.panel.repaint();
+				getPanel().repaint();
 				
 				/*
 				AddNodeTool.this.panel.repaint();
@@ -124,15 +131,20 @@ public class AddNodeTool extends AbstractAction
 
 		
 	}
-
-	public void actionPerformed(ActionEvent arg0) 
+	
+	public void loadTool()
 	{
-		
-		panel.setToolListener(listener);
-		panel.setToolMotionListener(motionListener);
-		panel.setSpecialNode((Node)prototype.clone());
-		panel.setCursor(CursorHandler.getInstance().getCursor("ADD"));
-		
+		getPanel().setToolListener(listener);
+		getPanel().setToolMotionListener(motionListener);
+		getPanel().setSpecialNode((Node)prototype.clone());
+		getPanel().getSpecialNode().setLocation(lastSpecialNodeLocationX,lastSpecialNodeLocationY);
+		getPanel().setCursor(CursorHandler.getInstance().getCursor("ADD"));
+	}
+	
+	public void unloadTool()
+	{
+		getPanel().resetToolListeners();
+		getPanel().setCursor(CursorHandler.getInstance().getCursor("DEFAULT"));
 	}
 
 }

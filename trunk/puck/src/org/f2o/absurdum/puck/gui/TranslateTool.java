@@ -26,10 +26,9 @@ import org.f2o.absurdum.puck.gui.graph.GraphEditingPanel;
  *
  * Created at regulus, 16-dic-2006 13:59:55
  */
-public class TranslateTool extends AbstractAction
+public class TranslateTool extends ToolAction
 {
 
-	private GraphEditingPanel panel;
 	private MouseListener listener;
 	private MouseMotionListener motionListener;
 	
@@ -43,7 +42,8 @@ public class TranslateTool extends AbstractAction
 	public TranslateTool ( GraphEditingPanel panel )
 	{
 		
-		this.panel = panel;
+		super(panel);
+		
 		
 		listener = new MouseAdapter()
 		{
@@ -57,11 +57,11 @@ public class TranslateTool extends AbstractAction
 					TranslateTool.this.panel.setToolListener(null);
 					TranslateTool.this.panel.setToolMotionListener(null);
 					*/
-					TranslateTool.this.panel.resetToolListeners();
+					toolDone();
 					//ZoomTool.this.panel.setSpecialNode(null);
-					TranslateTool.this.panel.getPropertiesPanel().repaint();
-					TranslateTool.this.panel.repaint();
-					TranslateTool.this.panel.setCursor(CursorHandler.getInstance().getCursor("DEFAULT"));
+					getPanel().getPropertiesPanel().repaint();
+					getPanel().repaint();
+					
 
 				}
 			}
@@ -82,17 +82,17 @@ public class TranslateTool extends AbstractAction
 						
 						if ( "push".equals(PuckConfiguration.getInstance().getProperty("translateMode")) )
 						{
-							TranslateTool.this.panel.setViewXOffset( TranslateTool.this.panel.getViewXOffset() + Math.ceil(diffX / TranslateTool.this.panel.getViewZoom() * speedFactor));
-							TranslateTool.this.panel.setViewYOffset( TranslateTool.this.panel.getViewYOffset() + Math.ceil(diffY / TranslateTool.this.panel.getViewZoom() * speedFactor));
+							getPanel().setViewXOffset( getPanel().getViewXOffset() + Math.ceil(diffX / getPanel().getViewZoom() * speedFactor));
+							getPanel().setViewYOffset( getPanel().getViewYOffset() + Math.ceil(diffY / getPanel().getViewZoom() * speedFactor));
 						}
 						else //"hold"
 						{
 							System.out.println("HOLD IT!");
-							TranslateTool.this.panel.setViewXOffset( TranslateTool.this.panel.getViewXOffset() - Math.ceil(diffX / TranslateTool.this.panel.getViewZoom() * speedFactor));
-							TranslateTool.this.panel.setViewYOffset( TranslateTool.this.panel.getViewYOffset() - Math.ceil(diffY / TranslateTool.this.panel.getViewZoom() * speedFactor));
+							getPanel().setViewXOffset( getPanel().getViewXOffset() - Math.ceil(diffX / getPanel().getViewZoom() * speedFactor));
+							getPanel().setViewYOffset( getPanel().getViewYOffset() - Math.ceil(diffY / getPanel().getViewZoom() * speedFactor));
 						}
 						
-						TranslateTool.this.panel.repaint();
+						getPanel().repaint();
 					}
 					lastX = arg0.getX();
 					lastY = arg0.getY();
@@ -103,13 +103,19 @@ public class TranslateTool extends AbstractAction
 	}
 	
 	
-	public void actionPerformed(ActionEvent arg0) 
+	public void loadTool()
 	{
 		
-		panel.setToolListener(listener);
-		panel.setToolMotionListener(motionListener);
-		panel.setCursor(CursorHandler.getInstance().getCursor("MOVE"));
+		getPanel().setToolListener(listener);
+		getPanel().setToolMotionListener(motionListener);
+		getPanel().setCursor(CursorHandler.getInstance().getCursor("MOVE"));
 		
+	}
+	
+	public void unloadTool()
+	{
+		getPanel().resetToolListeners();
+		getPanel().setCursor(CursorHandler.getInstance().getCursor("DEFAULT"));
 	}
 
 
