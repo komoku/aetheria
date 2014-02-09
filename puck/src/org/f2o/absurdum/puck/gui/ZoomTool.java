@@ -25,10 +25,9 @@ import org.f2o.absurdum.puck.gui.graph.Node;
  *
  * Created at regulus, 16-dic-2006 11:53:27
  */
-public class ZoomTool extends AbstractAction
+public class ZoomTool extends ToolAction
 {
 
-	private GraphEditingPanel panel;
 	private MouseListener listener;
 	private MouseMotionListener motionListener;
 	
@@ -40,7 +39,7 @@ public class ZoomTool extends AbstractAction
 	public ZoomTool ( GraphEditingPanel panel )
 	{
 		
-		this.panel = panel;
+		super(panel);
 		
 		listener = new MouseAdapter()
 		{
@@ -54,11 +53,13 @@ public class ZoomTool extends AbstractAction
 					ZoomTool.this.panel.setToolListener(null);
 					ZoomTool.this.panel.setToolMotionListener(null);
 					*/
-					ZoomTool.this.panel.resetToolListeners();
+					
+					toolDone();
+					
 					//ZoomTool.this.panel.setSpecialNode(null);
-					ZoomTool.this.panel.getPropertiesPanel().repaint();
-					ZoomTool.this.panel.repaint();
-					ZoomTool.this.panel.setCursor(CursorHandler.getInstance().getCursor("DEFAULT"));
+					getPanel().getPropertiesPanel().repaint();
+					getPanel().repaint();
+					
 
 				}
 			}
@@ -76,8 +77,8 @@ public class ZoomTool extends AbstractAction
 					{
 						int diff = arg0.getY()-lastY;
 						double factor = Math.pow(2.0,diff/100.0);
-						ZoomTool.this.panel.multiplyZoom(factor);
-						ZoomTool.this.panel.repaint();
+						getPanel().multiplyZoom(factor);
+						getPanel().repaint();
 					}
 					lastX = arg0.getX();
 					lastY = arg0.getY();
@@ -104,13 +105,17 @@ public class ZoomTool extends AbstractAction
 	}
 	
 	
-	public void actionPerformed(ActionEvent arg0) 
+	public void loadTool()
 	{
-		
-		panel.setToolListener(listener);
-		panel.setToolMotionListener(motionListener);
-		panel.setCursor(CursorHandler.getInstance().getCursor("ZOOM"));
-		
+		getPanel().setToolListener(listener);
+		getPanel().setToolMotionListener(motionListener);
+		getPanel().setCursor(CursorHandler.getInstance().getCursor("ZOOM"));
+	}
+	
+	public void unloadTool()
+	{
+		getPanel().resetToolListeners();
+		getPanel().setCursor(CursorHandler.getInstance().getCursor("DEFAULT"));
 	}
 
 	

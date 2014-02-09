@@ -27,11 +27,10 @@ import org.f2o.absurdum.puck.gui.graph.Node;
  *
  * Created at regulus, 19-jul-2005 19:51:01
  */
-public class AddArrowTool extends AbstractAction 
+public class AddArrowTool extends ToolAction 
 {
 
 	private Arrow prototype;
-	private GraphEditingPanel panel;
 	private MouseListener listener;
 	private MouseMotionListener motionListener;
 	
@@ -39,8 +38,8 @@ public class AddArrowTool extends AbstractAction
 	
 	public AddArrowTool ( Arrow prototype , GraphEditingPanel panel )
 	{
+		super(panel);
 		this.prototype = prototype;
-		this.panel = panel;
 		
 		listener = new MouseListener()
 		{
@@ -48,7 +47,7 @@ public class AddArrowTool extends AbstractAction
 			{
 				if ( source == null )
 				{
-					Node n = AddArrowTool.this.panel.nodeAt(AddArrowTool.this.panel.panelToMapX(arg0.getX()),AddArrowTool.this.panel.panelToMapY(arg0.getY()));
+					Node n = getPanel().nodeAt(getPanel().panelToMapX(arg0.getX()),getPanel().panelToMapY(arg0.getY()));
 					
 					//structural arrows only allowed from rooms
 					//nay! chars have items, etc.
@@ -58,41 +57,39 @@ public class AddArrowTool extends AbstractAction
 					source = n;
 					if ( n != null )
 					{
-						InvisibleNode in = new InvisibleNode(AddArrowTool.this.panel.panelToMapX(arg0.getX()),AddArrowTool.this.panel.panelToMapY(arg0.getY()));
-						AddArrowTool.this.panel.setSpecialNode(in);
+						InvisibleNode in = new InvisibleNode(getPanel().panelToMapX(arg0.getX()),getPanel().panelToMapY(arg0.getY()));
+						getPanel().setSpecialNode(in);
 						Arrow a = (Arrow) AddArrowTool.this.prototype.clone();
 						a.setSource(source);
 						a.setDestination(in);
-						AddArrowTool.this.panel.setSpecialArrow(a);
+						getPanel().setSpecialArrow(a);
 					}
 					
 				}
 				else
 				{
-					Node n = AddArrowTool.this.panel.nodeAt(AddArrowTool.this.panel.panelToMapX(arg0.getX()),AddArrowTool.this.panel.panelToMapY(arg0.getY()));
+					Node n = getPanel().nodeAt(getPanel().panelToMapX(arg0.getX()),getPanel().panelToMapY(arg0.getY()));
 					if ( n != null )
 					{
 						Arrow a = (Arrow) AddArrowTool.this.prototype.clone();
 						a.setSource(source);
 						a.setDestination(n);
-						AddArrowTool.this.panel.setSpecialNode(null);
-						AddArrowTool.this.panel.setSpecialArrow(null);
+						getPanel().setSpecialNode(null);
+						getPanel().setSpecialArrow(null);
 						source.addArrow(a); //this adds it to the panel
-						AddArrowTool.this.panel.resetSelections();
-						AddArrowTool.this.panel.selectArrow(a);
-						AddArrowTool.this.panel.getPropertiesPanel().show(a);
-						AddArrowTool.this.panel.getPropertiesPanel().repaint();
+						getPanel().resetSelections();
+						getPanel().selectArrow(a);
+						getPanel().getPropertiesPanel().show(a);
+						getPanel().getPropertiesPanel().repaint();
 						source = null;
 						/*
 						AddArrowTool.this.panel.setToolListener(null);
 						AddArrowTool.this.panel.setToolMotionListener(new DefaultMouseMotionListener(AddArrowTool.this.panel));
-						*/
-						AddArrowTool.this.panel.resetToolListeners();
-						AddArrowTool.this.panel.setCursor(CursorHandler.getInstance().getCursor("DEFAULT"));
-						
+						*/			
+						toolDone();
 					}
 				}
-				AddArrowTool.this.panel.repaint();
+				getPanel().repaint();
 
 			}
 			public void mouseEntered(MouseEvent arg0) 
@@ -128,10 +125,10 @@ public class AddArrowTool extends AbstractAction
 				AddNodeTool.this.prototype.paint(
 						AddNodeTool.this.panel.getGraphics(),arg0.getX(),arg0.getY());
 				*/
-				if ( AddArrowTool.this.panel.getSpecialNode() != null )
+				if ( getPanel().getSpecialNode() != null )
 				{
-					AddArrowTool.this.panel.getSpecialNode().setLocation(AddArrowTool.this.panel.panelToMapX(arg0.getX()),AddArrowTool.this.panel.panelToMapY(arg0.getY()));
-					AddArrowTool.this.panel.repaint();
+					getPanel().getSpecialNode().setLocation(getPanel().panelToMapX(arg0.getX()),getPanel().panelToMapY(arg0.getY()));
+					getPanel().repaint();
 				}
 				
 				/*
@@ -160,23 +157,28 @@ public class AddArrowTool extends AbstractAction
 	{
 		//cleanup arrows without destination from prior uses of this tool
 		source=null;
-		panel.setSpecialNode(null);
-		if ( panel.getSpecialArrow() != null )
+		getPanel().setSpecialNode(null);
+		if ( getPanel().getSpecialArrow() != null )
 		{
-			Arrow a = panel.getSpecialArrow();
+			Arrow a = getPanel().getSpecialArrow();
 			a.getSource().removeArrow(a);
 		}
-		panel.setSpecialArrow(null);
+		getPanel().setSpecialArrow(null);
 	}
 	
-	public void actionPerformed(ActionEvent arg0) 
+	public void loadTool() 
 	{
-		
 		cleanup();
-		panel.setToolListener(listener);
-		panel.setToolMotionListener(motionListener);
-		panel.setCursor(CursorHandler.getInstance().getCursor("ADDARROW"));
-		
+		getPanel().setToolListener(listener);
+		getPanel().setToolMotionListener(motionListener);
+		getPanel().setCursor(CursorHandler.getInstance().getCursor("ADDARROW"));	
 	}
 
+	public void unloadTool()
+	{
+		cleanup();
+		getPanel().resetToolListeners();
+		getPanel().setCursor(CursorHandler.getInstance().getCursor("DEFAULT"));
+	}
+	
 }
