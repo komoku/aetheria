@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+import org.f2o.absurdum.puck.gui.config.PuckConfiguration;
 import org.f2o.absurdum.puck.gui.cursors.CursorHandler;
 import org.f2o.absurdum.puck.gui.graph.GraphEditingPanel;
 import org.f2o.absurdum.puck.gui.graph.Node;
@@ -11,16 +12,17 @@ import org.f2o.absurdum.puck.gui.graph.Node;
 public abstract class ToolAction extends AbstractAction 
 {
 	
-	private static boolean toolSelectionPersistent = false;
+	//private static boolean toolSelectionPersistentDefaultValue = false;
 	
 	private GraphEditingPanel panel;
 	
 	/**
 	 * Returns whether the tool should remain selected after use.
+	 * Can be overridden by subclasses.
 	 */
 	public boolean isToolSelectionPersistent()
 	{
-		return toolSelectionPersistent;
+		return "multipleUse".equalsIgnoreCase(PuckConfiguration.getInstance().getProperty("toolSelectionMode"));
 	}
 	
 	public ToolAction ( GraphEditingPanel panel )

@@ -934,6 +934,27 @@ public class PuckFrame extends JFrame
 		translationModeMenu.add(pushMenuItem);
 		optionsMenu.add(translationModeMenu);
 		
+		JMenuItem toolSelectionModeMenu = new JMenu(UIMessages.getInstance().getMessage("menu.options.toolselection"));
+		ButtonGroup toolSelectionGroup = new ButtonGroup();
+		final JRadioButtonMenuItem oneUseMenuItem = new JRadioButtonMenuItem(UIMessages.getInstance().getMessage("menu.options.toolselection.oneuse"));
+		final JRadioButtonMenuItem multipleUseMenuItem = new JRadioButtonMenuItem(UIMessages.getInstance().getMessage("menu.options.toolselection.multipleuse"));
+		multipleUseMenuItem.setSelected("multipleUse".equalsIgnoreCase(PuckConfiguration.getInstance().getProperty("toolSelectionMode")));
+		if (!multipleUseMenuItem.isSelected()) oneUseMenuItem.setSelected(true);
+		toolSelectionGroup.add(oneUseMenuItem);
+		toolSelectionGroup.add(multipleUseMenuItem);
+		oneUseMenuItem.addItemListener ( new ItemListener() 
+		{
+			public void itemStateChanged(ItemEvent arg0) 
+			{
+				if ( oneUseMenuItem.isSelected() ) PuckConfiguration.getInstance().setProperty("toolSelectionMode", "oneUse");
+				else PuckConfiguration.getInstance().setProperty("toolSelectionMode", "multipleUse");
+			}	
+		}
+		);
+		toolSelectionModeMenu.add(oneUseMenuItem);
+		toolSelectionModeMenu.add(multipleUseMenuItem);
+		optionsMenu.add(toolSelectionModeMenu);
+		
 		JMenuItem sizesMenuItem = new JMenuItem(UIMessages.getInstance().getMessage("menu.options.iconsizes"));
 		sizesMenuItem.addActionListener( new ActionListener() 
 				{

@@ -50,6 +50,8 @@ public class PuckToolBar extends JToolBar
 	
 	private ButtonGroup toggleButtons = new ButtonGroup();
 	
+	private static final int HUMONGOUS_NUMBER = Integer.MAX_VALUE / 4;
+	
 
 	
     private JToggleButton addToggleButton(ToolAction a) {
@@ -112,7 +114,18 @@ public class PuckToolBar extends JToolBar
 		associatedPanel = gep;
 		associatedPropertiesPanel = right;
 		associatedFrame = frame;
-		ToolAction a = new AddNodeTool(new RoomNode(0,0),associatedPanel);
+		
+		ToolAction a = new SelectTool(associatedPanel);
+		a.putValue(Action.NAME,UIMessages.getInstance().getMessage("tool.select"));
+		//a.putValue(Action.SMALL_ICON,new ImageIcon(ImageManager.getInstance().getImage("select")));
+		//a.putValue(SELECTED_ICON, new ImageIcon(ImageManager.getInstance().getImage("selectPushed")));
+		a.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_ESCAPE));
+		a.putValue(Action.ACCELERATOR_KEY, new Integer(KeyEvent.VK_ESCAPE));
+		a.putValue(Action.SHORT_DESCRIPTION,UIMessages.getInstance().getMessage("tool.select"));
+		//addToggleButton(a);
+		
+		
+		a = new AddNodeTool(new RoomNode(HUMONGOUS_NUMBER,HUMONGOUS_NUMBER),associatedPanel);
 		a.putValue(Action.NAME,UIMessages.getInstance().getMessage("tool.addroom"));
 		//a.putValue(Action.SMALL_ICON,new ImageIcon(getClass().getClassLoader().getResource(ADD_ROOM_IMAGE)));
 		a.putValue(Action.SMALL_ICON,new ImageIcon(ImageManager.getInstance().getImage("addRoom")));
@@ -121,7 +134,7 @@ public class PuckToolBar extends JToolBar
 		a.putValue(Action.SHORT_DESCRIPTION,UIMessages.getInstance().getMessage("tool.addroom"));
 		addToggleButton(a);
 		
-		a = new AddNodeTool(new ItemNode(0,0),associatedPanel);
+		a = new AddNodeTool(new ItemNode(HUMONGOUS_NUMBER,HUMONGOUS_NUMBER),associatedPanel);
 		a.putValue(Action.NAME,UIMessages.getInstance().getMessage("tool.additem"));
 		//a.putValue(Action.SMALL_ICON,new ImageIcon(getClass().getClassLoader().getResource(ADD_ITEM_IMAGE)));
 		a.putValue(Action.SMALL_ICON,new ImageIcon(ImageManager.getInstance().getImage("addItem")));
@@ -130,7 +143,7 @@ public class PuckToolBar extends JToolBar
 		a.putValue(Action.SHORT_DESCRIPTION,UIMessages.getInstance().getMessage("tool.additem"));
 		addToggleButton(a);
 		
-		a = new AddNodeTool(new CharacterNode(0,0),associatedPanel);
+		a = new AddNodeTool(new CharacterNode(HUMONGOUS_NUMBER,HUMONGOUS_NUMBER),associatedPanel);
 		a.putValue(Action.NAME,UIMessages.getInstance().getMessage("tool.addchar"));
 		//a.putValue(Action.SMALL_ICON,new ImageIcon(getClass().getClassLoader().getResource(ADD_CHAR_IMAGE)));
 		a.putValue(Action.SMALL_ICON,new ImageIcon(ImageManager.getInstance().getImage("addChar")));
@@ -139,7 +152,7 @@ public class PuckToolBar extends JToolBar
 		a.putValue(Action.SHORT_DESCRIPTION,UIMessages.getInstance().getMessage("tool.addchar"));
 		addToggleButton(a);
 		
-		a = new AddNodeTool(new SpellNode(0,0),associatedPanel);
+		a = new AddNodeTool(new SpellNode(HUMONGOUS_NUMBER,HUMONGOUS_NUMBER),associatedPanel);
 		a.putValue(Action.NAME,UIMessages.getInstance().getMessage("tool.addspell"));
 		//a.putValue(Action.SMALL_ICON,new ImageIcon(getClass().getClassLoader().getResource(ADD_SPELL_IMAGE)));
 		a.putValue(Action.SMALL_ICON,new ImageIcon(ImageManager.getInstance().getImage("addSpell")));
@@ -151,7 +164,7 @@ public class PuckToolBar extends JToolBar
 		//watch the add of "action" incl. createActionComponent and do something similar here
 		// - hmm, but rollover won't work.
 		
-		a = new AddNodeTool(new AbstractEntityNode(0,0),associatedPanel);
+		a = new AddNodeTool(new AbstractEntityNode(HUMONGOUS_NUMBER,HUMONGOUS_NUMBER),associatedPanel);
 		a.putValue(Action.NAME,UIMessages.getInstance().getMessage("tool.addabstract"));
 		//a.putValue(Action.SMALL_ICON,new ImageIcon(getClass().getClassLoader().getResource(ADD_ABSTRACT_IMAGE)));
 		a.putValue(Action.SMALL_ICON,new ImageIcon(ImageManager.getInstance().getImage("addAbstract")));
