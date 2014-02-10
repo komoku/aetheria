@@ -137,7 +137,7 @@ public class AddNodeTool extends ToolAction
 		getPanel().setToolListener(listener);
 		getPanel().setToolMotionListener(motionListener);
 		getPanel().setSpecialNode((Node)prototype.clone());
-		getPanel().getSpecialNode().setLocation(lastSpecialNodeLocationX,lastSpecialNodeLocationY);
+		//getPanel().getSpecialNode().setLocation(lastSpecialNodeLocationX,lastSpecialNodeLocationY);
 		getPanel().setCursor(CursorHandler.getInstance().getCursor("ADD"));
 	}
 	
