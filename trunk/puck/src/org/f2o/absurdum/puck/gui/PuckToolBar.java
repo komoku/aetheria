@@ -18,9 +18,11 @@ import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 
 import org.f2o.absurdum.puck.gui.graph.AbstractEntityNode;
 import org.f2o.absurdum.puck.gui.graph.CharacterNode;
@@ -122,6 +124,11 @@ public class PuckToolBar extends JToolBar
 		a.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_ESCAPE));
 		a.putValue(Action.ACCELERATOR_KEY, new Integer(KeyEvent.VK_ESCAPE));
 		a.putValue(Action.SHORT_DESCRIPTION,UIMessages.getInstance().getMessage("tool.select"));
+		//bind Esc to the selection tool
+		KeyStroke escapeKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false);
+		frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escapeKeyStroke, "ESCAPE");
+		frame.getRootPane().getActionMap().put("ESCAPE", a);
+		
 		//addToggleButton(a);
 		
 		
