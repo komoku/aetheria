@@ -120,7 +120,7 @@ public class PuckFrame extends JFrame
 	private JPanel left; 
 	private JPanel right; 
 	private JSplitPane split; 
-	private JToolBar tools;
+	private PuckToolBar tools;
 	private GraphEditingPanel graphPanel;
 	private PropertiesPanel propPanel;
 	private JMenu openRecentMenu;
@@ -156,9 +156,13 @@ public class PuckFrame extends JFrame
 	private void refreshToolBar()
 	{
 		if ( tools != null )
+		{
+			tools.unloadActiveTool();
 			left.remove(tools);
+		}
 		tools = new PuckToolBar(graphPanel , propPanel , this);
 		left.add(tools,BorderLayout.WEST);
+		left.revalidate();
 	}
 	
 	public void setSkin ( String skinName )

@@ -46,8 +46,15 @@ public abstract class ToolAction extends AbstractAction
 		
 	}
 	
+	/**When tool has been selected*/
 	public void actionPerformed(ActionEvent arg0) 
 	{
+		//if tool needs special node/arrow, it will init them in loadTool. But clear those from previously-used tools.
+		if ( panel.getSpecialNode() != null ) panel.setSpecialNode(null);
+		if ( panel.getSpecialArrow() != null ) panel.setSpecialArrow(null);
+		panel.repaint();
+		
+		//template method that loads the tool
 		loadTool();
 	}
 
