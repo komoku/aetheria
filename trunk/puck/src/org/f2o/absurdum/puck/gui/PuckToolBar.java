@@ -99,7 +99,12 @@ public class PuckToolBar extends JToolBar
         b.setVerticalTextPosition(JToggleButton.BOTTOM);
         return b;
     }
-	
+    
+    public void unloadActiveTool()
+    {
+    	new SelectTool(associatedPanel).actionPerformed(null); //execute the select tool programmatically
+    	toggleButtons.clearSelection();
+    }	
 	
 	public PuckToolBar ( GraphEditingPanel gep , PropertiesPanel right , PuckFrame frame )
 	{
