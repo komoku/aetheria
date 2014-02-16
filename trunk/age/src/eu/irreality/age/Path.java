@@ -290,6 +290,16 @@ public class Path extends Entity implements Descriptible
 		return destination;
 	}
 	
+	/**
+	 * Method to get the path destination, added 2014-02-17.
+	 * Sadly the AGE core still uses a lot of numeric room IDs to implement moving, but this way
+	 * at least the programmer can easily access the destination of a path.
+	 */
+	public Room getDestination ( )
+	{
+		return mundo.getRoom(destination);
+	}
+	
 	public String getDescription ( long comparand )
 	{
 		String desString="";
