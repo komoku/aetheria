@@ -10294,6 +10294,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				cancelPending();
 				return false;
 			}	
+			/*
 			else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase(mundo.getMessages().getMessage("direction.n"))
 					|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("n") )
 			{
@@ -10374,6 +10375,10 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				//return go (habitacionActual.getExit( true,Path.ABAJO ));
 				actionArgs[0] = habitacionActual.getExit ( true , Path.ABAJO );
 			}	
+			*/ //refactored 2014-02-17, let's see how it works.
+			actionArgs[0] = habitacionActual.getStandardExitMatchingArguments( arguments );
+			if ( actionArgs[0] != null )
+				mentions.setLastMentionedVerb(command);
 			
 			//else
 			if ( actionArgs[0] == null || !((Path)actionArgs[0]).isValid() ) //changed to admit a custom exit to have a standard name

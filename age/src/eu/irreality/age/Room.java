@@ -671,7 +671,7 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 	}
 	
 	/**
-	 * Obtains the path from this room that best matches the given arguments.
+	 * Obtains the non-standard path from this room that best matches the given arguments.
 	 * @param arguments
 	 * @return
 	 */
@@ -717,6 +717,118 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 		
 		return result;
 	}
+	
+	
+	/**
+	 * Obtains the standard path from this room that best matches the given arguments, if there's any.
+	 * @param arguments
+	 * @return
+	 */
+	public Path getStandardExitMatchingArguments ( String arguments )
+	{
+		
+		Path standardPath = null;
+		
+		if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase(mundo.getMessages().getMessage("direction.n"))
+				|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("n") )
+		{
+			//mentions.setLastMentionedVerb(command);
+			//return go (getExit( true,Path.NORTE ));
+	
+			standardPath = getExit ( true , Path.NORTE );
+	
+		}
+		else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase(mundo.getMessages().getMessage("direction.s"))
+				|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("s") )
+		{
+			//mentions.setLastMentionedVerb(command);
+			//return go (getExit( true,Path.SUR ));
+			standardPath = getExit ( true , Path.SUR );
+		}
+		else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase(mundo.getMessages().getMessage("direction.w"))
+				|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("o") )
+		{
+			//mentions.setLastMentionedVerb(command);
+			//return go (getExit( true,Path.OESTE ));
+			standardPath = getExit ( true , Path.OESTE );
+		}
+		else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase(mundo.getMessages().getMessage("direction.e"))
+				|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("e") )
+		{
+			//mentions.setLastMentionedVerb(command);
+			//return go (getExit( true,Path.ESTE ));
+			standardPath = getExit ( true , Path.ESTE );
+		}	
+	
+		else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("sudeste")
+				|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("se") 
+				|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("sureste") )
+		{
+			//mentions.setLastMentionedVerb(command);
+			//return go (getExit( true,Path.ESTE ));
+			standardPath = getExit ( true , Path.SUDESTE );
+		}	
+	
+		else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("sudoeste")
+				|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("so")
+				|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("suroeste") )
+		{
+			//mentions.setLastMentionedVerb(command);
+			//return go (getExit( true,Path.ESTE ));
+			standardPath = getExit ( true , Path.SUROESTE );
+		}	
+	
+		else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("nordeste")
+				|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("noreste")
+				|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("ne") )
+		{
+			//mentions.setLastMentionedVerb(command);
+			//return go (getExit( true,Path.ESTE ));
+			standardPath = getExit ( true , Path.NORDESTE );
+		}	
+	
+		else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("noroeste")
+				|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("no") )
+		{
+			//mentions.setLastMentionedVerb(command);
+			//return go (getExit( true,Path.ESTE ));
+			standardPath = getExit ( true , Path.NOROESTE );
+		}	
+	
+		else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("arriba")
+				|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("ar") )
+		{
+			//mentions.setLastMentionedVerb(command);
+			//return go (getExit( true,Path.ARRIBA ));
+			standardPath = getExit ( true , Path.ARRIBA );
+		}	
+		else if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("abajo")
+				|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("ab") )
+		{
+			//mentions.setLastMentionedVerb(command);
+			//return go (getExit( true,Path.ABAJO ));
+			standardPath = getExit ( true , Path.ABAJO );
+		}	
+		
+		return standardPath;
+		
+	}
+	
+	/**
+	 * Gets the best exit from this room that matches the given arguments, period.
+	 * Encapsulates all the standard vs. nonstandard exit nonsense. Works with every kind of exit paths.
+	 * @param arguments
+	 * @return
+	 */
+	public Path getExitMatchingArguments ( String arguments )
+	{
+		Path standardPath = getStandardExitMatchingArguments ( arguments );
+		if ( standardPath == null || !standardPath.isValid() )
+			return getNonStandardExitMatchingArguments ( arguments );
+		else
+			return standardPath;
+	}
+		
 	
 	public String getExitName ( boolean isStandard , int exitn )
 	{
