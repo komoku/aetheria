@@ -248,7 +248,8 @@ public class WorldLoader
 				}
 			}
 			//gameLog.addElement( moduledir + "/world.xml"); //primera línea del log, fichero de mundo
-			gameLog.addElement(theWorld.getResource("world.xml").toString()); //URL a fichero de mundo
+			//gameLog.addElement(theWorld.getResource("world.xml").toString()); //URL a fichero de mundo
+			gameLog.addElement(url.toString()); //above line didn't work if name of the world wasn't world.xml!
 			return theWorld;
 		} 
 		catch ( IOException ioe )
