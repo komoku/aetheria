@@ -45,7 +45,8 @@ class LoadFromLogListener implements ActionListener
 				FileInputStream fis = new FileInputStream ( path );
 				BufferedReader br = new BufferedReader ( Utility.getBestInputStreamReader ( fis ) );
 				//primera linea del fichero de log: fichero de mundo
-				worldFile = br.readLine(); 
+				worldFile = br.readLine();
+				if ( worldFile == null ) worldFile="";
 			}
 			catch ( Exception fnfe )
 			{
