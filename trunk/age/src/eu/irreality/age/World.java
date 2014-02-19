@@ -1566,7 +1566,8 @@ public class World implements Informador , SupportingCode
 			//URLClassLoader ucl = new URLClassLoader ( new URL[] { url } , this.getClass().getClassLoader() );
 			is = getResourceAsStream("world.xml");
 			//is = ucl.getResourceAsStream("world.xml");
-			if ( is == null ) throw new IOException("Resource world.xml could not be found in URL " + url);
+			if ( is == null ) is = getResourceAsStream("world.agw");
+			if ( is == null ) throw new IOException("Could not find resource named world.xml or world.agz in zipped URL " + url);
 			//this.setResourceJarFile(url);
 		}
 		try

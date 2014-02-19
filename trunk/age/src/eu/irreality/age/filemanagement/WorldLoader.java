@@ -16,6 +16,7 @@ public class WorldLoader
 	
 	/**
 	 * As far as I know, unused from 2013-03-16.
+	 * Lol, and I changed it on 2014-02-20, despite it definitely being unused. That's what I get for not deleting old code.
 	 * @param moduledir
 	 * @param gameLog
 	 * @param io
@@ -28,6 +29,7 @@ public class WorldLoader
 		//*nos han dado un nombre de fichero: mundo loquesea.xml
 		//*nos han dado un directorio y el mundo es directorio/world.xml
 		//*nos han dado un directorio y el mundo es directorio/world.dat <- NO LONGER SUPPORTED
+		//*nos han dado un directorio y el mundo es directorio/world.agw
 		
 		World theWorld = null;
 		
@@ -66,12 +68,10 @@ public class WorldLoader
 
 			//nos han dado un directorio
 
-			//buscar a ver si el mundo es un world.xml
+			//buscar a ver si el mundo es un world.agw
 			try
 			{
-				System.out.println("Attempting world location: "  + moduledir + "/world.xml" );
-				theWorld = new World (  moduledir + "/world.xml" , io , false );
-				System.out.println("World generated.\n");
+				theWorld = new World (  moduledir + "/world.agw" , io , false );
 				if ( mundoSemaphore != null )
 				{
 					synchronized ( mundoSemaphore )
@@ -79,18 +79,29 @@ public class WorldLoader
 						mundoSemaphore.notifyAll();
 					}
 				}
-				gameLog.addElement( moduledir + "/world.xml"); //primera línea del log, fichero de mundo
+				gameLog.addElement( moduledir + "/world.agw"); //primera línea del log, fichero de mundo
 			}
 			catch ( java.io.IOException e )
 			{
-
-				io.write( UIMessages.getInstance().getMessage("load.world.cannot.read.world.ondir") + " " + moduledir + "\n");
-				System.out.println(e);
-				//io.write("No puedo encontrar el mundo en el directorio " + moduledir + "\n");
-
-				
-				//buscar a ver si el mundo es un world.dat? no en este cliente.
-			}
+				//no era un world.agw. Probar a ver si es entonces un world.xml
+				try
+				{
+					theWorld = new World (  moduledir + "/world.xml" , io , false );
+					if ( mundoSemaphore != null )
+					{
+						synchronized ( mundoSemaphore )
+						{
+							mundoSemaphore.notifyAll();
+						}
+					}
+					gameLog.addElement( moduledir + "/world.xml"); //primera línea del log, fichero de mundo
+				}
+				catch ( java.io.IOException e2 )
+				{
+					io.write( UIMessages.getInstance().getMessage("load.world.cannot.read.world.ondir") + " " + moduledir + "\n");
+					System.out.println(e2);
+				} //inner catch
+			} //outer catch
 
 		}
 
@@ -128,8 +139,7 @@ public class WorldLoader
 				url = new URL( "jar", "" , url+"!/world.xml");
 			} 
 			catch (MalformedURLException e) 
-			{
-				
+			{		
 				e.printStackTrace();
 			}
 			return url.toString();
@@ -214,6 +224,40 @@ public class WorldLoader
 		return url;
 	}
 	
+	/**
+	 * Called by loadWorld (URL, Vector, InputOutputClient, Object) when a concrete URL has been obtained from the pathname.
+	 * @param url
+	 * @param gameLog
+	 * @param io
+	 * @param mundoSemaphore
+	 * @return
+	 */
+	private static World loadWorldFromURL ( URL url , Vector gameLog , InputOutputClient io , Object mundoSemaphore ) throws IOException
+	{
+		World theWorld = new World ( url , io , false ); //cases 3, 4, 5 covered here (apart from 6, 7 which were collapsed into 3 before)
+		System.out.println("World generated.\n");
+		if ( mundoSemaphore != null )
+		{
+			synchronized ( mundoSemaphore )
+			{
+				mundoSemaphore.notifyAll();
+			}
+		}
+		//gameLog.addElement( moduledir + "/world.xml"); //primera línea del log, fichero de mundo
+		//gameLog.addElement(theWorld.getResource("world.xml").toString()); //URL a fichero de mundo
+		gameLog.addElement(url.toString()); //above line didn't work if name of the world wasn't world.xml!
+		return theWorld;
+	}
+	
+	/**
+	 * Multi-use world loader method that can take pathnames or URLs to directories, plain world files or zipped world files.
+	 * All in one.
+	 * @param pathnameOrUrl
+	 * @param gameLog
+	 * @param io
+	 * @param mundoSemaphore
+	 * @return
+	 */
 	public static World loadWorld ( String pathnameOrUrl , Vector gameLog , InputOutputClient io , Object mundoSemaphore )
 	{
 		//tres posibilidades:
@@ -235,25 +279,46 @@ public class WorldLoader
 		
 		World theWorld = null;
 		
+		URL url = null;
+		
 		try
 		{
-			URL url = getURLForWorldLoad (pathnameOrUrl);
-			theWorld = new World ( url , io , false ); //cases 3, 4, 5 covered here (apart from 6, 7 which were collapsed into 3 before)
-			System.out.println("World generated.\n");
-			if ( mundoSemaphore != null )
+			try
 			{
-				synchronized ( mundoSemaphore )
-				{
-					mundoSemaphore.notifyAll();
-				}
+				url = getURLForWorldLoad (pathnameOrUrl);
 			}
-			//gameLog.addElement( moduledir + "/world.xml"); //primera línea del log, fichero de mundo
-			//gameLog.addElement(theWorld.getResource("world.xml").toString()); //URL a fichero de mundo
-			gameLog.addElement(url.toString()); //above line didn't work if name of the world wasn't world.xml!
-			return theWorld;
+			catch ( MalformedURLException mue ) //path given was not a correct URL/pathname
+			{
+				io.write( UIMessages.getInstance().getMessage("load.world.cannot.read.world") + " " + pathnameOrUrl + "\n"); 
+				mue.printStackTrace();
+				return null; 
+			}
+			return loadWorldFromURL ( url , gameLog , io , mundoSemaphore );
 		} 
 		catch ( IOException ioe )
 		{
+			//if we tried with .xml, now try with the new extension .agw. Note that we only do this if we added a world.xml that wasn't originally there in the pathnameOrUrl parameter.
+			if ( url.toString().endsWith(".xml") && !pathnameOrUrl.endsWith(".xml") )
+			{
+				try
+				{
+					url = new URL( url.toString().substring(0,url.toString().length()-3) + "agw" );
+				}
+				catch ( MalformedURLException mue ) //this shouldn't really happen if it didn't happen above
+				{
+					io.write( UIMessages.getInstance().getMessage("load.world.cannot.read.world") + " " + pathnameOrUrl + "\n"); 
+					mue.printStackTrace();
+					return null; 
+				}
+				try
+				{
+					return loadWorldFromURL ( url , gameLog , io , mundoSemaphore );
+				}
+				catch ( IOException ioe2 )
+				{
+					; //we will report the first exception, not this one
+				}
+			}
 			io.write( UIMessages.getInstance().getMessage("load.world.cannot.read.world") + " " + pathnameOrUrl + "\n"); 
 			ioe.printStackTrace();
 			return null; 
