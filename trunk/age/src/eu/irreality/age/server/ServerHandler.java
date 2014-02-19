@@ -4,11 +4,13 @@
  */
 package eu.irreality.age.server;
 import java.io.*;
+
 import javax.swing.*;
 import javax.swing.text.*;
 
 import eu.irreality.age.AGEClientHandler;
 import eu.irreality.age.GameEngineThread;
+import eu.irreality.age.GameInfo;
 import eu.irreality.age.InputOutputClient;
 import eu.irreality.age.server.IrcServerEntry;
 import eu.irreality.age.NullInputOutputClient;
@@ -283,7 +285,8 @@ public class ServerHandler //Singleton!
 	public void initPartidaLocal ( final PartidaEntry pe , ServerLogWindow slw , /*nullable*/ final String stateFile , /*nullable*/ final String logFile , final JDesktopPane thePanel )
 	{
 	
-		final String ficheroMundo = pe.getGameInfo().getFile();
+		GameInfo ge = pe.getGameInfo();
+		final String ficheroMundo = (ge==null)? "" : pe.getGameInfo().getFile();
 		Debug.println("The world file: " + ficheroMundo);
 		World theWorld;
 		//InputOutputClient worldIO = slw.addTab();

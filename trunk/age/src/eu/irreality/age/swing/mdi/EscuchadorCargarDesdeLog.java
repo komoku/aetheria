@@ -39,6 +39,7 @@ public class EscuchadorCargarDesdeLog implements ActionListener
 				BufferedReader br = new BufferedReader ( Utility.getBestInputStreamReader ( fis ) );
 				//primera linea del fichero de log: fichero de mundo
 				worldFile = br.readLine(); 
+				if ( worldFile == null ) worldFile="";
 			}
 			catch ( Exception fnfe )
 			{
@@ -48,7 +49,7 @@ public class EscuchadorCargarDesdeLog implements ActionListener
 			Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 
 			//test:
-			GameInfo gi = GameInfo.getGameInfoFromFile ( worldFile );
+			GameInfo gi = GameInfo.getGameInfoFromFile ( worldFile ); //this returns null for world not found
 			final PartidaEntry pe = new PartidaEntry ( gi , "noname" , 200 , null , true , true , true );
 
 			Thread thr = new Thread()
