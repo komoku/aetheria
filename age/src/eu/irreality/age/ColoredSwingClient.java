@@ -1253,7 +1253,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 	private void scrollToBottom()
 	{
 		
-		if ( !smoothScrolling || !showTextEffects )
+		if ( !smoothScrolling || !showTextEffects || processingLog )
 		{
 			fastScrollToBottom();
 		}
