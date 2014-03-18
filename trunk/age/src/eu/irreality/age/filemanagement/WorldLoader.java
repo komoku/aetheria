@@ -121,11 +121,17 @@ public class WorldLoader
 	 * If the given pathname or URL points to a compressed file that can contain a world (jar, zip, agz); then this method returns
 	 * the pathname that points inside the file to recover world.xml.
 	 * If the given pathname does not point to a compressed file, then this method returns the same string that was passed as a parameter.
+	 * Warning: this version of the method only supports world.xml, not world.agz, right now.
 	 * @param pathnameOrUrl
 	 * @return
 	 * @throws IOException 
 	 */
 	public static String goIntoFileIfCompressed ( String pathnameOrUrl )
+	{
+		return goIntoFileIfCompressed ( pathnameOrUrl , "world.xml" );
+	}
+	
+	public static String goIntoFileIfCompressed ( String pathnameOrUrl , String worldFileName )
 	{
 		if ( !pathnameOrUrl.endsWith(".jar") && !pathnameOrUrl.endsWith(".zip") && !pathnameOrUrl.endsWith(".agz") )
 			return pathnameOrUrl; //this url does not point to a compressed file
@@ -136,7 +142,7 @@ public class WorldLoader
 			URL url = URLUtils.stringToURL(pathnameOrUrl);
 			try 
 			{
-				url = new URL( "jar", "" , url+"!/world.xml");
+				url = new URL( "jar", "" , url+"!/" + worldFileName);
 			} 
 			catch (MalformedURLException e) 
 			{		
