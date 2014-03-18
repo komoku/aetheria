@@ -1253,7 +1253,9 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 	private void scrollToBottom()
 	{
 		
-		if ( !smoothScrolling || !showTextEffects || processingLog )
+		if ( processingLog ) return; //we are processing the log, we don't need to scroll because component is not visible. We'll scroll when the log is done (then we'll call fastScrollToBottom() once).
+		
+		if ( !smoothScrolling || !showTextEffects )
 		{
 			fastScrollToBottom();
 		}
@@ -2519,6 +2521,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 				//laVentana.getMainPanel().setVisible(true);
 				JPanel glass = (JPanel)(/*(JFrame)*/laVentana).getGlassPane();
 				laVentana.getMainPanel().setVisible(true);
+				elCampoTexto.requestFocusInWindow();
 				glass.setVisible(false);
 			//}
 		}
