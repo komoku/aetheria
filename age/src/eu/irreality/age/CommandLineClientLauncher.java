@@ -144,10 +144,19 @@ public class CommandLineClientLauncher
 				}
 				catch ( java.io.IOException ioe )
 				{
-					//io.write("No puedo leer el fichero del mundo: " + inputAsFile + "\n"); 
-					io.write(UIMessages.getInstance().getMessage("clclient.cannot.read.world","$file",inputAsFile.toString())+"\n");
-					ioe.printStackTrace();
-					return; 
+					try
+					{
+						theWorld = new World ( URLUtils.stringToURL(WorldLoader.goIntoFileIfCompressed(worldPath,"world.agz")) , io , false );
+						System.out.println("World generated.\n");
+						gameLog.addElement( inputAsFile.getAbsolutePath() ); //primera línea del log, fichero de mundo
+					}
+					catch ( java.io.IOException ioe2 )
+					{
+						//io.write("No puedo leer el fichero del mundo: " + inputAsFile + "\n"); 
+						io.write(UIMessages.getInstance().getMessage("clclient.cannot.read.world","$file",inputAsFile.toString())+"\n");
+						ioe.printStackTrace();
+						return;
+					}
 				}
 				
 			}
