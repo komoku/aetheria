@@ -136,6 +136,27 @@ public class GameInfo implements Serializable
 	}
 	
 	
+	private static org.w3c.dom.Document documentFromFile ( String moduleFile ) throws TransformerException
+	{
+		//InputStream str = new FileInputStream (  modulefile  ) /*before: iso reader*/;
+		
+		//InputStream str = URLUtils.openFileOrURL( modulefile );
+		
+		//InputSource is = new InputSource(str);
+		
+		StreamSource ss; 
+		ss = new StreamSource ( moduleFile );
+		
+		Transformer t = TransformerFactory.newInstance().newTransformer();
+		DOMResult r = new DOMResult();
+		t.transform(ss,r);
+		
+		//DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		//io.escribir(io.getColorCode("information") + "Obteniendo árbol DOM de los datos XML...\n" + io.getColorCode("reset") );
+		//d = db.parse(ss , new File(modulefile).toURI().toString() /*systemId*/ );
+		return (org.w3c.dom.Document) r.getNode();
+	}
+	
 	public static GameInfo getGameInfo ( String modulefile ) throws FileNotFoundException, IOException
 	{
 	
@@ -162,7 +183,7 @@ public class GameInfo implements Serializable
 				//use it
 				//create .dat equivalent for use the next time
 
-		if ( ( modulefile.toLowerCase().endsWith ( ".xml" ) || modulefile.toLowerCase().endsWith ( ".asf" /*state*/ ) ) )
+		if ( ( modulefile.toLowerCase().endsWith ( ".xml" ) || modulefile.toLowerCase().endsWith ( ".agw" ) || modulefile.toLowerCase().endsWith ( ".asf" /*state*/ ) ) )
 		{
 		
 			//create .dat equivalent of .xml file [only if file is a real file]
@@ -189,50 +210,23 @@ public class GameInfo implements Serializable
 				org.w3c.dom.Document d = null;
 				try
 				{
-					//InputStream str = new FileInputStream (  modulefile  ) /*before: iso reader*/;
-					
-					//InputStream str = URLUtils.openFileOrURL( modulefile );
-					
-					//InputSource is = new InputSource(str);
-					
-					StreamSource ss; 
-					ss = new StreamSource ( modulefile );
-					
-					Transformer t = TransformerFactory.newInstance().newTransformer();
-					DOMResult r = new DOMResult();
-					t.transform(ss,r);
-					
-					//DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-					//io.escribir(io.getColorCode("information") + "Obteniendo árbol DOM de los datos XML...\n" + io.getColorCode("reset") );
-					//d = db.parse(ss , new File(modulefile).toURI().toString() /*systemId*/ );
-					d = (org.w3c.dom.Document) r.getNode();
+					d = documentFromFile(modulefile);
 				}
-				/*
-				catch ( FileNotFoundException fnfe )
-				{
-					System.out.println("[Exception: The game from which this savefile comes could have been deleted or moved]");
-
-                                        fnfe.printStackTrace();
-					throw ( fnfe );
-				}
-				catch ( ParserConfigurationException pce )
-				{
-					System.out.println(pce);
-				}
-				catch ( SAXException se ) //parse()
-				{
-					System.out.println(se);
-				}
-				catch ( IOException ioe ) //parse()
-				{
-                                        System.out.println("RES file, nay2.");
-                                        ioe.printStackTrace();
-					throw (ioe);
-				}
-				*/
 				catch ( TransformerException te )
 				{
-					System.err.println(te);
+					if ( modulefile.endsWith(".xml") )
+						modulefile = modulefile.substring(0,modulefile.toString().length()-3) + "agw";
+					try
+					{
+						d = documentFromFile(modulefile);
+					}
+					catch ( TransformerException te2 )
+					{
+						//we report the first exception
+						System.err.println(te);
+						System.err.println("Trying with .agw extension wasn't successful either");
+						return null;
+					}
 				}
 				//obtain the DOM tree root
 				org.w3c.dom.Element n = d.getDocumentElement();
