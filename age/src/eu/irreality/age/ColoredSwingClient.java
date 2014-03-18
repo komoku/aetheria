@@ -2503,6 +2503,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 			loadingLabel.setFont(loadingLabel.getFont().deriveFont(25.0f));
 			glass.add(loadingLabel);
 			glass.setVisible(true);
+			laVentana.getMainPanel().setVisible(false);
 			//laVentana.getMainPanel().setVisible(false);
 		//}
 	}
@@ -2517,6 +2518,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 			//{
 				//laVentana.getMainPanel().setVisible(true);
 				JPanel glass = (JPanel)(/*(JFrame)*/laVentana).getGlassPane();
+				laVentana.getMainPanel().setVisible(true);
 				glass.setVisible(false);
 			//}
 		}
