@@ -87,6 +87,9 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 	
 	private Hashtable colorCodesTable = new Hashtable();
 	
+	//to avoid slowness on log loading for very long logs, we only show the last maxLogCharactersShown characters.
+	private int maxLogCharactersShown = 200000;
+	
 	/**
 	 * If set to true, the text area won't autoscroll to the bottom when text is added.
 	 * Autoscrolling to the bottom is nice for sighted used, but not so for the blind using screen readers, 
@@ -2494,6 +2497,24 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 	
 
 	
+	
+	private void trimHistoryIfLong()
+	{
+		//trim the text history if it got really long
+		if ( elAreaTexto.getDocument().getLength() > maxLogCharactersShown )
+		{
+			try
+			{
+				elAreaTexto.getDocument().remove(0, elAreaTexto.getDocument().getLength() - maxLogCharactersShown );
+				elAreaTexto.getDocument().insertString(0, "(...)\n",atributos);
+			}
+			catch ( BadLocationException ble )
+			{
+				System.err.println(ble);
+			}
+		}
+	}
+	
 	public void hideForLogLoad()
 	{
 		processingLog = true;
@@ -2529,6 +2550,9 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		if ( processingLog )
 		{
 			processingLog = false;
+			
+			trimHistoryIfLong();
+			
 			fastScrollToBottom();
 			//if ( laVentana instanceof JFrame )
 			//{
