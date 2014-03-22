@@ -2506,7 +2506,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 			try
 			{
 				elAreaTexto.getDocument().remove(0, elAreaTexto.getDocument().getLength() - maxLogCharactersShown );
-				elAreaTexto.getDocument().insertString(0, "(...)\n",atributos);
+				elAreaTexto.getDocument().insertString(0, "(...)\n\n",atributos);
 			}
 			catch ( BadLocationException ble )
 			{
