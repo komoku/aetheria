@@ -1331,7 +1331,9 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		{	
 			//the following if makes the client not write the echo line when we are loading a log of a real time game and we find empty inputs caused by player waits.
 			//I think the condition Thread.currentThread() instanceof GameEngineThread is unnecessary (always should hold) but I write it just in case, to avoid ClassCastException in the next condition.
-			if ( ! ( processingLog && Thread.currentThread() instanceof GameEngineThread && ((GameEngineThread)Thread.currentThread()).isRealTimeEnabled() && s.length() == 0 ) )
+			//if ( ! ( processingLog && Thread.currentThread() instanceof GameEngineThread && ((GameEngineThread)Thread.currentThread()).isRealTimeEnabled() && s.length() == 0 ) )
+			//the following if makes the client not write empty echo lines in logs in general, not only in real time games. Switch to the line above if we want this in real time only.
+			if ( ! ( processingLog && s.length() == 0 ) )
 			{
 				write("\n");
 				write( getColorCode("input") + echoText + s.trim() + getColorCode("reset") + "\n" );
