@@ -51,6 +51,7 @@ public class Translation
 			try
 			{
 				theMap = loadTranslationMap ( sourceLanguageCode , targetLanguageCode );
+				translationTables.put ( sourceLanguageCode + "-" + targetLanguageCode , theMap ); //so that we don't need to load it again
 			}
 			catch ( IOException ioe )
 			{
