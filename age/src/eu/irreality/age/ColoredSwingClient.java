@@ -1234,8 +1234,14 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		{
 			public void run()
 			{
+				//this is slow in the first execution after loading a very large log that inserts a lot of stuff into the text area:
 				elAreaTexto.scrollRectToVisible(new Rectangle(0,(int)elAreaTexto.getPreferredSize().getHeight(),10,10));
-				//elAreaTexto.setVisible(true);
+				
+				//this not really faster - it also calls BoxView.setSize, BoxView.layout, etc. on the inside.
+				//if ( !elScrolling.isValid() ) elScrolling.validate();
+				//BoundedRangeModel brm = elScrolling.getVerticalScrollBar().getModel();
+				//brm.setValue(brm.getMaximum());
+				
 				elAreaTexto.repaint();
 			}
 		});
