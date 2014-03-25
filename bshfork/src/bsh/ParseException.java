@@ -266,8 +266,8 @@ public class ParseException extends EvalError {
 	// Begin BeanShell Modification - override error methods and toString
 
 	public int getErrorLineNumber() 
-	{
-		return currentToken.next.beginLine;
+	{		//carlos - got fix for NPE from beanshell2 fork revision r109
+		if (currentToken == null) 		{			String message = getMessage();			int index = message.indexOf(" at line ");			if (index > -1) 			{				message = message.substring(index + 9);				index = message.indexOf(',');				try 				{					if (index == -1) 					{						return Integer.parseInt(message);					}					return Integer.parseInt(message.substring(0, index));				} 				catch (NumberFormatException e) {					// ignore, we have no valid line information, just return -1 for now				}			}			return -1;		} 		else		{			//the original method just returned this, which can be null			return currentToken.next.beginLine;		}
 	}
 
 	public String getErrorText() { 

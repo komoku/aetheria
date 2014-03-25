@@ -68,8 +68,28 @@ public class ExceptionPrinter
 	{
 		StringBuffer report = new StringBuffer();
 		report.append("*Location: " + te.getErrorSourceFile() + "\n" );
-		//report.append("*Line: " + te.getErrorLineNumber() + "\n" ); //does not work
-		//report.append("*Offending text: " + te.getErrorText() + "\n" ); //does not work
+		
+		//error line number: fails sometimes with an internal NullPointerException (this is a beanshell bug) - no longer, got bugfix from beanshell2
+		int lineNumber = -1;
+		//try
+		//{
+			lineNumber = te.getErrorLineNumber();
+		//}
+		//catch ( NullPointerException npe ) { ; }		
+		if ( lineNumber > 0 )
+			report.append("*Line: " + lineNumber + "\n" );
+		//else
+		//	report.append("*Line unknown\n");	
+		
+		//error text: still produces NullPointerException in somecases. Beanshell bug, at the moment unfixed. We work around it here.
+		String offendingText = null;
+		try
+		{
+			offendingText = te.getErrorText();
+		}
+		catch ( NullPointerException npe ) { ; }
+		if ( offendingText != null ) report.append("*Offending text: " + te.getErrorText() + "\n" );
+		
 		report.append("*Message: " + te.getMessage());
 		//report.append("*Stack trace: " + getStackTrace(te) + "\n" );
 		//report.append("*Cause report: " + getExceptionReport ( te.getCause() ) );
