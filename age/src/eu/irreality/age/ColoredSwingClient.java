@@ -1236,9 +1236,16 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		SwingUtilities.invokeLater( new Runnable()
 		{
 			public void run()
-			{
+			{				
+				//ensures that the preferred size that follows is up to date
+				elAreaTexto.revalidate();
+				
 				//this is slow in the first execution after loading a very large log that inserts a lot of stuff into the text area:
 				elAreaTexto.scrollRectToVisible(new Rectangle(0,(int)elAreaTexto.getPreferredSize().getHeight(),10,10));
+				
+				//System.err.println("Pref size " + elAreaTexto.getPreferredSize().getHeight());
+				//System.err.println("Len " + elAreaTexto.getDocument().getLength());
+				//new Throwable().printStackTrace();
 				
 				//this not really faster - it also calls BoxView.setSize, BoxView.layout, etc. on the inside.
 				//if ( !elScrolling.isValid() ) elScrolling.validate();
@@ -2558,20 +2565,32 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 	{
 		if ( processingLog )
 		{
-			processingLog = false;
+
 			
-			trimHistoryIfLong();
+			execInDispatchThread( new Runnable() 
+			{
+				public void run()
+				{
+					processingLog = false;
+					
+					trimHistoryIfLong();
+					
+					//if ( laVentana instanceof JFrame )
+					//{
+						//laVentana.getMainPanel().setVisible(true);
+						JPanel glass = (JPanel)(/*(JFrame)*/laVentana).getGlassPane();
+						hiddenMainPanel.setVisible(true);
+						hiddenMainPanel = null;
+						elCampoTexto.requestFocusInWindow();
+						glass.setVisible(false);
+						
+						fastScrollToBottom();
+					//}
+				}
+			}
+			);
 			
-			fastScrollToBottom();
-			//if ( laVentana instanceof JFrame )
-			//{
-				//laVentana.getMainPanel().setVisible(true);
-				JPanel glass = (JPanel)(/*(JFrame)*/laVentana).getGlassPane();
-				hiddenMainPanel.setVisible(true);
-				hiddenMainPanel = null;
-				elCampoTexto.requestFocusInWindow();
-				glass.setVisible(false);
-			//}
+
 		}
 	}
 	
