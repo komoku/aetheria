@@ -88,7 +88,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 	private Hashtable colorCodesTable = new Hashtable();
 	
 	//to avoid slowness on log loading for very long logs, we only show the last maxLogCharactersShown characters.
-	private int maxLogCharactersShown = 200000;
+	private int maxLogCharactersShown = 100000;
 	
 	/**
 	 * If set to true, the text area won't autoscroll to the bottom when text is added.
@@ -2582,9 +2582,10 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 						hiddenMainPanel.setVisible(true);
 						hiddenMainPanel = null;
 						elCampoTexto.requestFocusInWindow();
+						fastScrollToBottom();
 						glass.setVisible(false);
 						
-						fastScrollToBottom();
+						//fastScrollToBottom();
 					//}
 				}
 			}
