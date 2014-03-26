@@ -2515,6 +2515,14 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		}
 	}
 	
+	/**
+	 * We store the main panel here while it is hidden for log load.
+	 * Need not match the current main panel.
+	 * This is because, during log load, the frame's main panel may change (due to adding frames).
+	 * We want to unhide whatever panel *was* the main panel at the time of starting to load the log.
+	 */
+	private JPanel hiddenMainPanel;
+	
 	public void hideForLogLoad()
 	{
 		processingLog = true;
@@ -2541,6 +2549,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 			glass.add(loadingLabel);
 			glass.setVisible(true);
 			laVentana.getMainPanel().setVisible(false);
+			hiddenMainPanel = laVentana.getMainPanel();
 			//laVentana.getMainPanel().setVisible(false);
 		//}
 	}
@@ -2558,7 +2567,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 			//{
 				//laVentana.getMainPanel().setVisible(true);
 				JPanel glass = (JPanel)(/*(JFrame)*/laVentana).getGlassPane();
-				laVentana.getMainPanel().setVisible(true);
+				hiddenMainPanel.setVisible(true);
+				hiddenMainPanel = null;
 				elCampoTexto.requestFocusInWindow();
 				glass.setVisible(false);
 			//}
