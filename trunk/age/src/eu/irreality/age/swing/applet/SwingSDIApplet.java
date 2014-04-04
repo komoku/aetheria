@@ -683,7 +683,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 	public void guardarLog()
 	{
 		//write("AVISO: La funcionalidad de guardar partidas es EXPERIMENTAL y es posible que tenga errores. Además, sólo se puede guardar una partida a la vez, requiere que tu navegador acepte cookies, y el juego salvado no es permanente sino que podía borrarse si tu navegador elimina las cookies cada cierto tiempo.\n");
-		//write("Puedes guardar partidas de forma totalmente fiable (y tener guardadas múltiples partidas a la vez) si te descargas el Aetheria Game Engine, que permite jugar a aventuras como ésta con plena funcionalidad. Bájalo en http://code.google.com/p/aetheria/downloads/list\n");
+		//write("Puedes guardar partidas de forma totalmente fiable (y tener guardadas múltiples partidas a la vez) si te descargas el Aetheria Game Engine, que permite jugar a aventuras como ésta con plena funcionalidad. Bájalo en http://code.google.com/p/aetheria/\n");
 		write(UIMessages.getInstance().getMessage("applet.save.warning"));
 		
 		String logToString = "";
@@ -761,7 +761,7 @@ public class SwingSDIApplet extends JApplet implements AGEClientWindow, GameThre
 	
 	public void guardarEstado()
 	{
-		//write("AVISO: Desde el navegador no se pueden guardar partidas. Pero puedes guardar partidas si te descargas el Aetheria Game Engine, que permite jugar a aventuras como ésta con plena funcionalidad. Bájalo en http://code.google.com/p/aetheria/downloads/list\n");
+		//write("AVISO: Desde el navegador no se pueden guardar partidas. Pero puedes guardar partidas si te descargas el Aetheria Game Engine, que permite jugar a aventuras como ésta con plena funcionalidad. Bájalo en http://code.google.com/p/aetheria/\n");
 		write(UIMessages.getInstance().getMessage("applet.state.warning") + "\n");
 		guardarLog();
 		
