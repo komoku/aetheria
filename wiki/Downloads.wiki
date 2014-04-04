@@ -19,3 +19,7 @@ The latest version is 1.3.2, released 2013-08-16.
  * [http://aetheria.googlecode.com/files/AgeDevelopersKit-1.3.2-201308161955.zip Developer's Kit]
  * [http://aetheria.googlecode.com/files/AgePlayersKit-1.3.2-201308161955.zip Player's Kit]
  * [http://aetheria.googlecode.com/files/AgeMinimal-1.3.2-201308161955.zip Minimal Player's Kit]
+
+= Older versions =
+
+Older versions can be downloaded here: [http://code.google.com/p/aetheria/downloads/list Old download page]
