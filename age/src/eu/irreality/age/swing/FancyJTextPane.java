@@ -65,6 +65,7 @@ public class FancyJTextPane extends JTextPane implements ImageConstants
 				lastVisibleRect = rect;
 				BufferedImage conversion = new BufferedImage(rect.width,rect.height,BufferedImage.TYPE_INT_ARGB);
 				vectorBackgroundImage.setPreferredSize(new Dimension(rect.width,rect.height));
+				vectorBackgroundImage.setScaleToFit(true);
 				vectorBackgroundImage.paintIcon(null, conversion.getGraphics(), 0, 0);
 				rasterBackgroundImage = new ImageIcon(conversion);
 			}
