@@ -345,7 +345,7 @@ public class Path extends Entity implements Descriptible
              
              if ( isStandard() && direction != NO_DIRECTION ) //redundant and, if it's standard it should have a direction
              {
-            	 if ( argumentsToDirection(toParse) == direction )
+            	 if ( mundo.argumentsToDirection(toParse) == direction )
             		 return true;
              }
              return false;
@@ -744,43 +744,7 @@ public class Path extends Entity implements Descriptible
 	
 	
 	
-	/**
-	 * Parses arguments to see if they denote a standard exit direction, and returns it (NO_DIRECTION for none).
-	 * Inspired on moderateMatchesCommand from class Entity. 
-	 * @param arguments
-	 * @return
-	 */
-	public int argumentsToDirection ( String arguments )
-	{
-		
-		for ( int direction = 0 ; direction <= 9 ; direction++ )
-		{
 
-			List referenceNameList = mundo.getNamesForDirection(direction);
-			Iterator it = referenceNameList.iterator();
-			int j = 0; //current token being read, starting at 1 (we set to 0 here because we're going to do j++ inside the while loop)
-			//while ( st.hasMoreTokens() )
-			while ( it.hasNext() )
-			{
-				j++;
-				String currentReferenceName = // st.nextToken();
-						(String) it.next();
-				int position = arguments.toLowerCase().indexOf(currentReferenceName.toLowerCase());
-				if ( position < 0 ) //does not match
-					continue;
-				if ( position != 0 && !Character.isWhitespace(arguments.charAt(position-1)) ) //matches but starts at a place other than beginning/whitespace
-					continue;
-				if ( position+currentReferenceName.length() != arguments.length() && !Character.isWhitespace(arguments.charAt(position+currentReferenceName.length())) ) //matches but ends at a place other than end/whitespace
-					continue;
-				//if we have reached this point, the match is acceptable
-				return direction;
-			}
-
-		}
-		
-		return NO_DIRECTION;
-		
-	}
 	
 	
 	
