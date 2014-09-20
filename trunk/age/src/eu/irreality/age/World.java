@@ -3257,52 +3257,52 @@ public class World implements Informador , SupportingCode
 		{
 		case Path.NORTE:
 			result.add( getMessages().getMessage("direction.n") );
-			result.add("n");
+			//result.add("n");
 			break;
 		case Path.SUR:
 			result.add( getMessages().getMessage("direction.s") );
-			result.add("s");
+			//result.add("s");
 			break;
 		case Path.OESTE:
 			result.add( getMessages().getMessage("direction.w") );
-			result.add("o");
+			//result.add("o");
 			break;
 		case Path.ESTE:
 			result.add( getMessages().getMessage("direction.e") );
-			result.add("e");
+			//result.add("e");
 			break;
 		case Path.SUDESTE:
 			result.add( getMessages().getMessage("direction.se") ); //not added I think
-			result.add("sudeste");
-			result.add("se");
-			result.add("sureste");
+			//result.add("sudeste");
+			//result.add("se");
+			//result.add("sureste"); //alias
 			break;
 		case Path.SUROESTE:
 			result.add( getMessages().getMessage("direction.sw") ); //not added I think
-			result.add("sudoeste");
-			result.add("so");
-			result.add("suroeste");
+			//result.add("sudoeste"); //alias
+			//result.add("so");
+			//result.add("suroeste"); 
 			break;
 		case Path.NORDESTE:
 			result.add( getMessages().getMessage("direction.ne") ); //not added I think
-			result.add("nordeste");
-			result.add("ne");
-			result.add("noreste");
+			//result.add("nordeste");
+			//result.add("ne");
+			//result.add("noreste"); //alias
 			break;
 		case Path.NOROESTE:
 			result.add( getMessages().getMessage("direction.nw") ); //not added I think
-			result.add("noroeste");
-			result.add("no");
+			//result.add("noroeste");
+			//result.add("no");
 			break;
 		case Path.ARRIBA:
 			result.add( getMessages().getMessage("direction.u") );
-			result.add("arriba");
-			result.add("ar");
+			//result.add("arriba");
+			//result.add("ar");
 			break;
 		case Path.ABAJO:
 			result.add( getMessages().getMessage("direction.d") );
-			result.add("abajo");
-			result.add("ab");
+			//result.add("abajo");
+			//result.add("ab");
 			break;
 			
 		}
