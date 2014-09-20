@@ -2280,6 +2280,7 @@ public class World implements Informador , SupportingCode
 		Messages.clearCache(this); //so that the default instance changes to the default messages for the new language
 		messages = Messages.getDefaultInstance(this); //language code taken from lenguaje
 		spellChecker = null; //will be initted again in the next call to getSpellChecker().
+		namesForDirections = null; //will be initted again when a direction name gets requested.
 	}
 	
 
@@ -3224,5 +3225,90 @@ public class World implements Informador , SupportingCode
 	{
 		return new VersionComparator().compare(getParserVersion(),version) >= 0;		
 	}
+	
+	
+	
+	private List[] namesForDirections = null;
+	
+	/**
+	 * This is the right way of obtaining the names of a direction in a multilanguage way.
+	 */
+	public List getNamesForDirection ( int direction )
+	{
+		if ( direction < 0 || direction > 9 ) return null;
+		if ( namesForDirections == null ) namesForDirections = new List[10];
+		if ( namesForDirections[direction] == null )
+		{
+			namesForDirections[direction] = doGetNamesForDirection(direction);
+		}
+		return namesForDirections[direction];
+	}
+	
+	
+	/**
+	 * Get the name of a standard direction in a multilanguage way, without caching.
+	 * @param direction
+	 * @return
+	 */
+	private List doGetNamesForDirection ( int direction )
+	{
+		List result = new ArrayList();
+		switch ( direction )
+		{
+		case Path.NORTE:
+			result.add( getMessages().getMessage("direction.n") );
+			result.add("n");
+			break;
+		case Path.SUR:
+			result.add( getMessages().getMessage("direction.s") );
+			result.add("s");
+			break;
+		case Path.OESTE:
+			result.add( getMessages().getMessage("direction.w") );
+			result.add("o");
+			break;
+		case Path.ESTE:
+			result.add( getMessages().getMessage("direction.e") );
+			result.add("e");
+			break;
+		case Path.SUDESTE:
+			result.add( getMessages().getMessage("direction.se") ); //not added I think
+			result.add("sudeste");
+			result.add("se");
+			result.add("sureste");
+			break;
+		case Path.SUROESTE:
+			result.add( getMessages().getMessage("direction.sw") ); //not added I think
+			result.add("sudoeste");
+			result.add("so");
+			result.add("suroeste");
+			break;
+		case Path.NORDESTE:
+			result.add( getMessages().getMessage("direction.ne") ); //not added I think
+			result.add("nordeste");
+			result.add("ne");
+			result.add("noreste");
+			break;
+		case Path.NOROESTE:
+			result.add( getMessages().getMessage("direction.nw") ); //not added I think
+			result.add("noroeste");
+			result.add("no");
+			break;
+		case Path.ARRIBA:
+			result.add( getMessages().getMessage("direction.u") );
+			result.add("arriba");
+			result.add("ar");
+			break;
+		case Path.ABAJO:
+			result.add( getMessages().getMessage("direction.d") );
+			result.add("abajo");
+			result.add("ab");
+			break;
+			
+		}
+		return result;
+	}
+		
+	
 	
 }

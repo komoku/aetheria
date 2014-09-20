@@ -5,6 +5,7 @@
 package eu.irreality.age;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import eu.irreality.age.debug.Debug;
@@ -27,12 +28,14 @@ public class Path extends Entity implements Descriptible
 		NORTH=NORTE,SOUTH=SUR,WEST=OESTE,EAST=ESTE,
 		NORTHWEST=NOROESTE,NORTHEAST=NORDESTE,SOUTHWEST=SUROESTE,
 		SOUTHEAST=SUDESTE,UP=ARRIBA,DOWN=ABAJO;
+	public static final int NO_DIRECTION = -1;
 	
 	private World mundo;
 
 	/**
 	 * This method is only used to save Path objects to XML, and NOT to parse direction names or output them to
 	 * the player. Therefore, it is not a multilanguage method and must not be used as such.
+	 * The correct multi-language way to do this is to use the getNamesForDirection(int direction) method in class World.
 	 * @param dir
 	 * @return
 	 */
@@ -85,6 +88,8 @@ public class Path extends Entity implements Descriptible
 		
 	}
 	
+	
+	
 	//INSTANCE VARIABLES
 	
 	protected byte exitTime;
@@ -99,6 +104,8 @@ public class Path extends Entity implements Descriptible
 	Inventory keys; //llaves que lo abren
 	
 	protected Item associatedItem = null; //el item del que toma el estado (si no es null)
+	
+	private int direction = NO_DIRECTION; //from 2014-09-20 we store the direction of standard exits explicitly. Not storing it was unwieldy.
 	
 	
 	public void setDestination ( Room r )
@@ -335,6 +342,12 @@ public class Path extends Entity implements Descriptible
              for ( int i = 0 ; i < exitCommand.length ; i++ )
                      //if ( exitCommand[i].equalsIgnoreCase(toParse) ) return true;
                      if ( toParse.toLowerCase().endsWith(exitCommand[i].toLowerCase()) ) return true;
+             
+             if ( isStandard() && direction != NO_DIRECTION ) //redundant and, if it's standard it should have a direction
+             {
+            	 if ( argumentsToDirection(toParse) == direction )
+            		 return true;
+             }
              return false;
      }
 	
@@ -638,14 +651,27 @@ public class Path extends Entity implements Descriptible
 				}
 			}
 			
+			//for standard exits, we now store the direction explicitly (2014-09-20)
+			if ( e.hasAttribute("direction") )
+			{
+				direction = Path.nameToDirection( e.getAttribute("direction") );
+			}
 
 		} //end if the node is an element
 			
 	
 	}
 	
-	
+	/**
+	 * Obtains the direction of the exit, if it's standard (if not, it will be -1: NO_DIRECTION)
+	 * @return
+	 */
+	public int getDirection()
+	{
+		return direction;
+	}
 
+	//probably we could do this more elegantly now because we store the direction in the Path explicitly, but well, it's here
 	public org.w3c.dom.Node getXMLRepresentation ( org.w3c.dom.Document doc , String standardExitNameAttr )
 	{
 		org.w3c.dom.Node n = getXMLRepresentation ( doc );
@@ -714,6 +740,49 @@ public class Path extends Entity implements Descriptible
 		//a path has no ID! (at the mom't at least)
 		return -1;
 	}
+	
+	
+	
+	
+	/**
+	 * Parses arguments to see if they denote a standard exit direction, and returns it (NO_DIRECTION for none).
+	 * Inspired on moderateMatchesCommand from class Entity. 
+	 * @param arguments
+	 * @return
+	 */
+	public int argumentsToDirection ( String arguments )
+	{
+		
+		for ( int direction = 0 ; direction <= 9 ; direction++ )
+		{
+
+			List referenceNameList = mundo.getNamesForDirection(direction);
+			Iterator it = referenceNameList.iterator();
+			int j = 0; //current token being read, starting at 1 (we set to 0 here because we're going to do j++ inside the while loop)
+			//while ( st.hasMoreTokens() )
+			while ( it.hasNext() )
+			{
+				j++;
+				String currentReferenceName = // st.nextToken();
+						(String) it.next();
+				int position = arguments.toLowerCase().indexOf(currentReferenceName.toLowerCase());
+				if ( position < 0 ) //does not match
+					continue;
+				if ( position != 0 && !Character.isWhitespace(arguments.charAt(position-1)) ) //matches but starts at a place other than beginning/whitespace
+					continue;
+				if ( position+currentReferenceName.length() != arguments.length() && !Character.isWhitespace(arguments.charAt(position+currentReferenceName.length())) ) //matches but ends at a place other than end/whitespace
+					continue;
+				//if we have reached this point, the match is acceptable
+				return direction;
+			}
+
+		}
+		
+		return NO_DIRECTION;
+		
+	}
+	
+	
 	
 	
 }
