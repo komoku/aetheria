@@ -729,6 +729,14 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 		
 		Path standardPath = null;
 		
+		int direction = mundo.argumentsToDirection(arguments);
+		
+		if ( direction != Path.NO_DIRECTION )
+			standardPath = getExit ( true , direction );
+		
+		//this logic is now moved to world: argumentsToDirection (which calls getNamesForDirection).
+		
+		/*
 		if ( StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase(mundo.getMessages().getMessage("direction.n"))
 				|| StringMethods.getTok( arguments , StringMethods.numToks( arguments,' ' ) , ' ' ).equalsIgnoreCase("n") )
 		{
@@ -809,6 +817,7 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 			//return go (getExit( true,Path.ABAJO ));
 			standardPath = getExit ( true , Path.ABAJO );
 		}	
+		*/
 		
 		return standardPath;
 		
