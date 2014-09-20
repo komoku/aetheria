@@ -683,6 +683,7 @@ public class NaturalLanguage
 	{
 		if ( this.getLanguageCode().equals(targetLanguage) ) return verb; //translation from one language to itself
 		String translation = Translation.translate( verb , this.getLanguageCode() , targetLanguage );
+		if ( translation == null ) translation = Translation.translate( verb.toLowerCase() , this.getLanguageCode() , targetLanguage );
 		if ( translation == null && !nullIfNotFound ) translation = verb;
 		return translation;
 	}
