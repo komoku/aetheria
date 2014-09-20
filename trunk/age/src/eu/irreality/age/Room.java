@@ -724,7 +724,7 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 	 * @param arguments
 	 * @return
 	 */
-	public Path getStandardExitMatchingArguments ( String arguments ) //TODO: use getNamesForDirection (in class World), or similar, here.
+	public Path getStandardExitMatchingArguments ( String arguments ) 
 	{
 		
 		Path standardPath = null;
