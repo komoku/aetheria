@@ -51,11 +51,13 @@ public class AGESpellChecker
 	 * @param word The word that is to be corrected.
 	 * @param useVerbs use the verb dictionary if true.
 	 * @param useNames use the name dictionary if true.
-	 * @param caseInsensitive make the correction case-insensitive.
+	 * @param caseInsensitive make the correction case-insensitive. Note that this makes the result (if correction kicks in) always lowercase, i.e. "COSER" and "COZER" will be corrected to "coser".
 	 * @return
 	 */
 	public String correctVerbOrName ( String w , boolean useVerbs , boolean useNames , boolean caseInsensitive )
 	{
+		//TODO Eventually make this consistent, i.e., if original word was uppercase, return uppercase correction.
+		
 		/*
 		StringTokenizer st = new StringTokenizer ( commandString );
 		if ( !st.hasMoreTokens() ) return commandString;
@@ -77,6 +79,13 @@ public class AGESpellChecker
 				corrected = verbCorrection.getWord();
 			else if ( useNames && nameCorrection != null && nameCorrection.getDistance() < 1.01 )
 				corrected = nameCorrection.getWord();
+		}
+		else
+		{
+			//we don't correct anything for words of length <= minlength, but if we recognized the word as a verb, we set lowercase for consistency.
+			//(not for nouns, we don't have data about which words of length <= 2 appear in reference names)
+			if ( useVerbs && lang.isVerb(word) )
+				corrected = word;
 		}
 		/*
 		if ( corrected != null ) word = corrected;
