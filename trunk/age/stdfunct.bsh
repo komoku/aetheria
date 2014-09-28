@@ -98,6 +98,36 @@ Entity entity ( String s )
 	return world.getEntity(s);
 }
 
+Item item ( int id )
+{
+	return world.getItem(id);
+}
+
+Mobile mobile ( int id )
+{
+	return world.getMobile(id);
+}
+
+Room room ( int id )
+{
+	return world.getRoom(id);
+}
+
+AbstractEntity abstractEntity ( int id )
+{
+	return world.getAbstractEntity(id);
+}
+
+Spell spell ( int id )
+{
+	return world.getSpell(id);
+}
+
+Entity entity ( int id )
+{
+	return world.getEntity(id);
+}
+
 Object getProperty ( Entity e , String propName )
 {
 	return e.getPropertyValueAsWrapper ( propName );
