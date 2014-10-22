@@ -1052,21 +1052,25 @@ public class Item extends Entity implements Descriptible , SupportingCode , Name
 			idnumber += 30000000; //prefijo de objeto	
 	
 		
-		//eventos onInit()
-		try
+		//from 2014-10-22, onInit() is not executed when loading states, see issue #310
+		if ( !mundo.comesFromLoadedState() )
 		{
-			boolean ejecutado = execCode ( "onInit" ,
-			new Object[]
+			//eventos onInit()
+			try
 			{
+				boolean ejecutado = execCode ( "onInit" ,
+				new Object[]
+				{
+				}
+				);
+				
 			}
-			);
-			
-		}
-		catch ( ScriptException te )
-		{
-			te.printStackTrace();
-			mundo.writeError("BeanShell error on initting item " + this + ": error was " + te);
-			mundo.writeError(ExceptionPrinter.getExceptionReport(te));
+			catch ( ScriptException te )
+			{
+				te.printStackTrace();
+				mundo.writeError("BeanShell error on initting item " + this + ": error was " + te);
+				mundo.writeError(ExceptionPrinter.getExceptionReport(te));
+			}
 		}
 		
 	}

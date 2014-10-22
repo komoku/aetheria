@@ -321,21 +321,24 @@ public class AbstractEntity extends Entity implements SupportingCode, UniqueName
 			idnumber += 40000000; //prefijo de abstr. ent.	
 		
 		
-		
-		//eventos onInit()
-		try
+		//from 2014-10-22, onInit() is not executed when loading states, see issue #310
+		if ( !mundo.comesFromLoadedState() )
 		{
-			boolean ejecutado = execCode ( "onInit" ,
-			new Object[]
+			//eventos onInit()
+			try
 			{
+				boolean ejecutado = execCode ( "onInit" ,
+				new Object[]
+				{
+				}
+				);
+				
 			}
-			);
-			
-		}
-		catch ( ScriptException te )
-		{
-			te.printStackTrace();
-			mundo.write("BeanShell error on initting abstract entity " + this + ": error was " + te);
+			catch ( ScriptException te )
+			{
+				te.printStackTrace();
+				mundo.write("BeanShell error on initting abstract entity " + this + ": error was " + te);
+			}
 		}
 		
 	

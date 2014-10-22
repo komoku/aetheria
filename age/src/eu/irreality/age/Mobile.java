@@ -1082,21 +1082,25 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 			wornItems = new Inventory(10000,10000);
 		}
 
-		//eventos onInit()
-		try
+		//from 2014-10-22, onInit() is not executed when loading states, see issue #310
+		if ( !mundo.comesFromLoadedState() )
 		{
-			boolean ejecutado = execCode ( "onInit" ,
-					new Object[]
-					           {
-					           }
-			);
-
-		}
-		catch ( ScriptException te )
-		{
-			te.printStackTrace();
-			mundo.write("BeanShell error on initting mobile " + this + ": error was " + te);
-			mundo.writeError(ExceptionPrinter.getExceptionReport(te));
+			//eventos onInit()
+			try
+			{
+				boolean ejecutado = execCode ( "onInit" ,
+						new Object[]
+						           {
+						           }
+				);
+	
+			}
+			catch ( ScriptException te )
+			{
+				te.printStackTrace();
+				mundo.write("BeanShell error on initting mobile " + this + ": error was " + te);
+				mundo.writeError(ExceptionPrinter.getExceptionReport(te));
+			}
 		}
 
 	}

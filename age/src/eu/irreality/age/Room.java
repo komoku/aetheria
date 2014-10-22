@@ -541,21 +541,27 @@ public class Room extends Entity implements Descriptible , SupportingCode, Uniqu
 		else if ( getID() < 10000000 )
 			idnumber += 10000000; //prefijo de habitacion	
 	
-		//eventos onInit()
-		try
+		
+		//from 2014-10-22, onInit() is not executed when loading states, see issue #310
+		if ( !mundo.comesFromLoadedState() )
 		{
-			boolean ejecutado = execCode ( "onInit" ,
-			new Object[]
+			//eventos onInit()
+			try
 			{
+				boolean ejecutado = execCode ( "onInit" ,
+				new Object[]
+				{
+				}
+				);
+				
 			}
-			);
-			
+			catch ( ScriptException te )
+			{
+				mundo.writeError(ExceptionPrinter.getExceptionReport(te));
+				te.printStackTrace();
+			}
 		}
-		catch ( ScriptException te )
-		{
-			mundo.writeError(ExceptionPrinter.getExceptionReport(te));
-			te.printStackTrace();
-		}
+		
 		
 	}
 	

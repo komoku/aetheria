@@ -2890,11 +2890,11 @@ public class World implements Informador , SupportingCode
 	
 	
 	/**Indicates whether we have loaded a state in this World.*/
-	private boolean loadedState = false;
+	private boolean fromState = false;
 	
 	public boolean comesFromLoadedState()
 	{
-		return loadedState;
+		return fromState;
 	}
 	
 	public void loadState ( String statefname ) throws FileNotFoundException,ParserConfigurationException,SAXException,IOException,XMLtoWorldException
@@ -2946,12 +2946,13 @@ public class World implements Informador , SupportingCode
 		
 		d = db.parse( fis );
 		
+		
+		//marks that this world comes from loading a state
+		fromState = true;
 	
 		org.w3c.dom.Element n = d.getDocumentElement();
 			
 		loadWorldFromXML ( n , io , false ); //be a client! (provisional)
-
-		loadedState = true;
 		
 	}
 	
