@@ -1,4 +1,4 @@
-age.version=1.3.3
+age.version=1.3.4
 age.copyright=© 1999-2012 Carlos Gómez (solrac888@yahoo.com)
 intro.legal=Véase license.txt para consultar la licencia de AGE y del software de terceros incluido.
 filter.statefile=Ficheros de estado de AGE (*.asf)
