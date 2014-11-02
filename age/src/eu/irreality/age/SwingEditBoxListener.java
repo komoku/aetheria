@@ -103,15 +103,30 @@ class SwingEditBoxListener implements ActionListener , KeyListener
 		}
 		else
 		{
-			//System.err.println("[DN] editbox action performed, in PAK state");
-			setPressAnyKeyState(false);
-			//System.err.println("[DN] PAK state unset: " + press_any_key + " - setting input string to null");
-			
-			//notificar
-			cl.setInputString(null);
-			//cl.notify();
-			//esperando.resumeExecution();
+			returnFromPressAnyKeyState();
 		}
+	}
+	
+	/**
+	 * Returns from the "press any key" state, returning the edit box to its normal condition in which text can be typed,
+	 * and notifying the game engine thread which was caught in the client object so that world simulation continues.
+	 */
+	private void returnFromPressAnyKeyState ( )
+	{
+		setPressAnyKeyState(false);
+		
+		//note that this method call includes a notify(), which means that the game engine thread will resume execution. 
+		cl.setInputString(null);
+	}
+	
+	/**
+	 * Returns from the "press any key" state, if the edit box is on that state, returning the edit box to its normal condition in which text can be typed,
+	 * and notifying the game engine thread which was caught in the client object so that world simulation continues.
+	 * If the edit box is not on that state, does nothing.
+	 */
+	public void returnFromPressAnyKeyStateIfNeeded ( )
+	{
+		if ( press_any_key ) returnFromPressAnyKeyState();
 	}
 	
 	private static boolean isPageUpDownEvent ( KeyEvent e )
@@ -166,8 +181,7 @@ class SwingEditBoxListener implements ActionListener , KeyListener
 			if ( e.getKeyCode() != KeyEvent.VK_ENTER )
 			{
 				//ya pulsaron la tecla, continúa la ejecución normal.
-				setPressAnyKeyState(false);
-				cl.setInputString(null);
+				returnFromPressAnyKeyState();
 				e.consume();
 				consumeKeyEvents = true; //consume also the typed and released events
 				//cl.notify();
