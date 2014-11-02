@@ -1393,6 +1393,28 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		
 	}
 	
+	/**
+	 * Sets the client to way for a key press for a given number of milliseconds.
+	 * The client continues executing in a normal way when the player presses a key or the milliseconds are elapsed, whatever happens first.
+	 * @param millis Milliseconds to wait.
+	 */
+	public synchronized void waitKeyPress ( long millis )
+	{
+		if ( deactivated ) return;
+		elEscuchador.setPressAnyKeyState(true);
+		try
+		{
+			wait(millis);
+		}
+		catch ( InterruptedException intex )
+		{
+			System.out.println(intex);
+		}
+		//here either we have been notified (triggered by player keypress), or millis milliseconds have elapsed.
+		//in the latter case, we need to return from the "press any key" state (in the former case, we have already done it).
+		elEscuchador.returnFromPressAnyKeyStateIfNeeded();
+	}
+	
 	
 	//bloqueante.
 	public synchronized String getInput(Player pl)
