@@ -36,4 +36,5 @@ kill=attack
 assassinate=attack
 eradicate=attack
 obliterate=attack
-pick_up=take
+(pick )(.*)( up)=take $2
+pick\s*up=take
