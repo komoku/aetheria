@@ -35,7 +35,7 @@ public class FontSizeTransform
 		}
 		else //if ( type == MULTIPLY )
 		{
-			return (int) ( size * param );
+			return (int) Math.round ( size * param );
 		}
 	}
 	
