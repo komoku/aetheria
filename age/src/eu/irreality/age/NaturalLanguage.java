@@ -6,6 +6,8 @@ package eu.irreality.age;
 import java.lang.*;
 import java.io.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.i18n.UIMessages;
@@ -34,8 +36,11 @@ public class NaturalLanguage
 	private Map imperativoAInfinitivo;
 	private Map infinitivoAImperativo;
 	private Map sinonimos;
-	private Map alias;
 	private Map terceraASegunda;
+	
+	//we keep these two kinds of aliases separate for efficiency when applying them: we could consider all aliases to be regex aliases, but it would be impractical to match all aliases against each string
+	private Map simpleAliases; //aliases that are just words
+	private Map regexAliases; //aliases that are regular expressions
 	
 	//common words that may appear in sentences even though they don't refer to world objects, and thus will not be subject to spelling correction
 	private List commonWords;
@@ -220,13 +225,13 @@ public class NaturalLanguage
 		}
 		try
 		{
-			alias = LanguageUtils.loadTableFromPath ( getAliasPath() , '=' );
+			simpleAliases = LanguageUtils.loadTableFromPath ( getAliasPath() , '=' );
 		}
 		catch ( Exception exc )
 		{
 			//System.err.println("Aviso: no se ha encontrado fichero de alias, la tabla de alias estará vacía.");
 			System.err.println(UIMessages.getInstance().getMessage("warning.no.alias.file"));
-			alias = new Hashtable(1);
+			simpleAliases = new Hashtable(1);
 		}
 		try
 		{
@@ -247,6 +252,19 @@ public class NaturalLanguage
 		{
 			System.err.println(UIMessages.getInstance().getMessage("warning.no.common.file"));
 			commonWords = new ArrayList();
+		}
+		
+		//split aliases into simple and regex aliases
+		regexAliases = new LinkedHashMap();
+		for ( Iterator iter = simpleAliases.keySet().iterator() ; iter.hasNext() ; )
+		{
+			String key = (String) iter.next();
+			if ( !isSimpleAliasString(key) )
+			{
+				String value = (String) simpleAliases.get(key);
+				iter.remove();
+				regexAliases.put(key,value);
+			}
 		}
 		
 	}
@@ -278,9 +296,14 @@ public class NaturalLanguage
 		return getAlias(palabra);
 	}
 
+	/**
+	 * Note that this only works on simple aliases, not on regex aliases.
+	 * @param palabra
+	 * @return
+	 */
 	public String getAlias ( String palabra )
 	{
-		return (String) alias.get ( palabra.toLowerCase() );
+		return (String) simpleAliases.get ( palabra.toLowerCase() );
 	}
 	
 	public String sustituirSinonimos ( String s )
@@ -402,6 +425,18 @@ public class NaturalLanguage
 		return imperativoAInfinitivo.keySet();
 	}
 	
+	
+	/**
+	 * Returns true if the string can be used as the source for a simple alias (i.e. it's a word).
+	 * If not, it is considered to be a regex alias.
+	 * @param s
+	 * @return
+	 */
+	private static boolean isSimpleAliasString ( String s )
+	{
+		return s.matches("\\p{L}*"); //meaning a string of Unicode letters from any alphabet.
+	}
+	
 	/**
 	 * Adds an entry to the aliases table.
 	 * @param source The source of the alias.
@@ -409,7 +444,10 @@ public class NaturalLanguage
 	 */
 	public void addAlias ( String source , String target )
 	{
-		alias.put(source,target);
+		if ( isSimpleAliasString ( source ) )
+			simpleAliases.put(source,target);
+		else
+			regexAliases.put(source,target);
 	}
 	
 	/**
@@ -419,8 +457,16 @@ public class NaturalLanguage
 	 */
 	public void removeAlias ( String source , String target )
 	{
-		if ( alias.get(source).equals(target) )
-			removeAlias(source);
+		if ( isSimpleAliasString ( source ) )
+		{
+			if ( simpleAliases.get(source).equals(target) )
+				removeAlias(source);
+		}
+		else
+		{
+			if ( regexAliases.get(source).equals(target) )
+				removeAlias(source);
+		}
 	}
 	
 	/**
@@ -429,7 +475,10 @@ public class NaturalLanguage
 	 */
 	public void removeAlias ( String source )
 	{
-		alias.remove(source);
+		if ( isSimpleAliasString ( source ) )
+			simpleAliases.remove(source);
+		else
+			regexAliases.remove(source);
 	}
 	
 
@@ -465,15 +514,32 @@ public class NaturalLanguage
 			}
 		}
 	}
+	 
+	/**Holds the compiled pattern objects for regex aliases. The pattern for each regex alias is compiled the first time the alias is used.*/
+	private HashMap regexAliasPatterns = new HashMap();
 	
-	
-	public String sustituirAlias ( String s )
+	/**
+	 * Applies the regex alias with the given source regex to the given string.
+	 * @param aliasSource
+	 * @param toApplyTo
+	 * @return
+	 */
+	private String applyRegexAlias ( String sourceRegex , String toApplyTo )
 	{
-		/*
-		String al = obtenerAlias(s);
-		if ( al == null ) return s;
-		else return al;
-		*/
+		String target = (String) regexAliases.get(sourceRegex);
+		Pattern pattern = (Pattern) regexAliasPatterns.get(sourceRegex);
+		if ( pattern == null )
+		{
+			pattern = Pattern.compile(sourceRegex);
+			regexAliasPatterns.put(sourceRegex, pattern);
+		}
+		Matcher matcher = pattern.matcher(toApplyTo);
+		return matcher.replaceAll(target);
+	}
+	
+	public String substituteAlias ( String s )
+	{
+		//1. substitute with simple aliases
 		StringTokenizer st = new StringTokenizer ( s , " " , true );
 		String nueva = "";
 		while ( st.hasMoreTokens() )
@@ -489,6 +555,14 @@ public class NaturalLanguage
 				nueva += sin;
 			}
 		}
+		
+		//2. substitute with regex aliases
+		for ( Iterator iter = regexAliases.keySet().iterator() ; iter.hasNext() ; )
+		{
+			String key = (String) iter.next();
+			nueva = applyRegexAlias(key,nueva);
+		}
+		
 		return nueva;
 	}
 	
@@ -580,10 +654,20 @@ public class NaturalLanguage
 			String nextWord = (String) iter.next();
 			verbCorrector.addDictionaryWord(nextWord);
 		}
-		for ( Iterator iter = alias.keySet().iterator() ; iter.hasNext() ; )
+		for ( Iterator iter = simpleAliases.keySet().iterator() ; iter.hasNext() ; )
 		{
 			String nextAlias = (String)iter.next();
 			StringTokenizer st = new StringTokenizer(nextAlias); //as of 2011-12-16 there are no multiword aliases, but there may be in the future
+			if ( st.hasMoreTokens() )
+			{
+				verbCorrector.addDictionaryWord(st.nextToken());
+			}
+		}
+		for ( Iterator iter = regexAliases.keySet().iterator() ; iter.hasNext() ; )
+		{
+			String nextAlias = (String)iter.next();
+			nextAlias = nextAlias.replaceAll("\\p{P}", ""); //remove punctuation from the regex alias
+			StringTokenizer st = new StringTokenizer(nextAlias); //tokenize to get words
 			if ( st.hasMoreTokens() )
 			{
 				verbCorrector.addDictionaryWord(st.nextToken());
