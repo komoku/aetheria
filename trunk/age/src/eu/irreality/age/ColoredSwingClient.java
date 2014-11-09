@@ -855,7 +855,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		elAreaTexto.setText("--");
 		doc = elAreaTexto.getDocument();
 		
-		elScrolling.addMouseWheelListener(this); //zoom con rueda
+		elAreaTexto.addMouseWheelListener(this); //zoom con rueda
 		
 		
 		initClientMenu(laVentana);
@@ -2232,10 +2232,16 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 	{
 		
 		execInDispatchThread ( new Runnable() { public void run() { 
-		
-			//scale existing fonts (the past)
+			
+			//calculate ratio that we are applying to the old zoom factor
 			double oldFactor = getFontZoomFactor();
 			double ratio = factor / oldFactor;
+			
+			//if ratio > 1, the font size transformation may make us "lose" the bottom, so we will need scrolling if we're at the bottom.
+			boolean needScrolling = false;
+			if ( scrollPaneAtBottom && ratio > 1.0 ) needScrolling = true;
+			
+			//scale existing fonts (the past)
 			elAreaTexto.scaleFonts(ratio);
 			
 			//add the transform so that it affects future font changes (the future)
@@ -2252,6 +2258,8 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 			StyleConstants.setFontFamily((MutableAttributeSet)atributos,f.getFamily());
 			StyleConstants.setFontSize((MutableAttributeSet)atributos,f.getSize());
 		
+			if ( needScrolling ) fastScrollToBottom(); //if ratio > 1, the font size transformation may make us "lose" the bottom.
+			
 		} } );
 		
 	}
@@ -2669,6 +2677,12 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 			}
 			elAreaTexto.repaint();
 			e.consume();
+		}
+		else
+		{
+			//keep processing the event. This will reach the scroll pane containing the text area, and trigger the default handling of the mouse wheel event
+			//which is scrolling.
+			e.getComponent().getParent().dispatchEvent(e);
 		}
 	}
 	
