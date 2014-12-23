@@ -51,6 +51,7 @@ public class ExportAppletDialog extends JDialog
 	private JCheckBox cbSpx = new JCheckBox(UIMessages.getInstance().getMessage("cb.use.spx"));
 	private JCheckBox cbMod = new JCheckBox(UIMessages.getInstance().getMessage("cb.use.mod"));
 	private JCheckBox cbSvg = new JCheckBox(UIMessages.getInstance().getMessage("cb.use.svg"));
+	private JCheckBox cbFrames = new JCheckBox(UIMessages.getInstance().getMessage("cb.use.frames"));
 	
 	public ExportAppletDialog ( PuckFrame pf )
 	{
@@ -73,12 +74,13 @@ public class ExportAppletDialog extends JDialog
 		getContentPane().add(Box.createRigidArea(new Dimension(0,5)));
 		
 		JPanel mainPanel = new JPanel();
-		mainPanel.setLayout( new GridLayout(5,1) );
+		mainPanel.setLayout( new GridLayout(6,1) );
 		mainPanel.add(cbMp3);
 		mainPanel.add(cbOgg);
 		mainPanel.add(cbSpx);
 		mainPanel.add(cbMod);
 		mainPanel.add(cbSvg);
+		mainPanel.add(cbFrames);
 		//mainPanel.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("applet.multimedia.usage")));
 		
 		getContentPane().add(mainPanel);
@@ -241,6 +243,11 @@ public class ExportAppletDialog extends JDialog
 		if ( cbSvg.isSelected() )
 		{
 			exportLib(targetLibFile,findLibFileStartingWith("svgSalamander"),libHtmlString);
+		}
+		if ( cbFrames.isSelected() )
+		{
+			exportLib(targetLibFile,findLibFileStartingWith("miglayout-core"),libHtmlString);
+			exportLib(targetLibFile,findLibFileStartingWith("miglayout-swing"),libHtmlString);
 		}
 		
 		//copy the AgeCore.jar file

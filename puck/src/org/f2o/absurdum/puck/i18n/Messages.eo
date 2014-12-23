@@ -320,6 +320,7 @@ cb.use.ogg=Audio OGG
 cb.use.spx=Audio SPX
 cb.use.mod=Audio MOD
 cb.use.svg=Bildoj SVG
+cb.use.frames=Frames
 applet.multimedia.usage=<html>Indiki kiujn formatojn estas uzitaj via mondo<br/>(se ĝi uzas aliajn ne listigitaj ĉi tie, vi ne konstatas tio)</html>
 dir.expected.file.found=La selektita loko estas dosiero, ĝi devus esti dosierujo.
 lib.not.found=Biblioteko ne trovita
