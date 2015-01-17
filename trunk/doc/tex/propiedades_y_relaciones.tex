@@ -197,15 +197,6 @@ long getTime ( Entity ent , String name )
 Que nos devuelve el temporizador asociado a la propiedad \textsf{name} de la
 entidad \textsf{ent}.
 
-También podemos usar
-
-\begin{lstlisting}
-void setTime ( Entity ent , String name , long time )
-\end{lstlisting}
-
-Si queremos cambiar el valor del temporizador de la propiedad \textsf{name}
-de la entidad \textsf{ent}; pero dejando el valor de la propiedad como está.
-
 Los temporizadores de las propiedades no son útiles si no se define además
 el método de actualización que, como acabamos de explicar, se ejecutará
 cuando el temporizador de cada propiedad llegue a cero. Para definir este
@@ -227,7 +218,7 @@ void update ( PropertyEntry pe , World w )
 }
 \end{lstlisting}
 
-El método update se llamará cada vez que el contador de una propiedad
+El método \textsf{update} se llamará cada vez que el contador de una propiedad
 cualquiera de la entidad en la que estamos (\textsf{self}) llegue a cero.
 Para saber cuál es exactamente la propiedad cuyo temporizador ha llegado a
 cero, podemos utilizar \verb|pe.getName()|: el primer parámetro del método,
@@ -298,7 +289,12 @@ menos en el caso de aventuras monojugador nos servirá.
 Es útil saber que, si no queremos que una propiedad llame nunca a su método
 update, podemos conseguirlo poniendo su temporizador al valor $-1$. El valor
 $-1$ significa \comillas{infinito}, es decir, la propiedad tardará infinito en
-actualizarse (no se actualizará nunca).
+actualizarse (no se actualizará nunca). Nótese también que \textbf{un temporizador
+debería ponerse siempre a un valor positivo o bien a -1 (infinito), nunca a
+cero. Poner un temporizador a cero no garantiza que el correspondiente método
+update vaya a ejecutarse inmediatamente; sino que su comportamiento está
+indefinido, así que debe evitarse}. Para ejecutar algún código inmediatamente,
+es mejor simplemente llamar a ese código en lugar de usar temporizadores.
 
 En el ejemplo de esta sección, hemos visto un posible uso de las propiedades
 con temporizador: tener un objeto que cambie cíclicamente de estado cada
