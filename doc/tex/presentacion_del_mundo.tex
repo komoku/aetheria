@@ -432,17 +432,21 @@ que muestra una imagen de la habitación en la que se encuentra el jugador
 en la parte superior de la ventana y el texto de la descripción debajo,
 entre otras funcionalidades.
 
-\subsubsection{Métodos para crear y borrar frames}
-
-Los siguientes métodos se pueden ejecutar sobre un objeto de la clase
-\textsf{MultimediaInputOutputClient}:\footnote{el método \textsf{getIO()} de la
-clase \textsf{Player} nos devuelve una instancia de
+Los siguientes métodos para crear y borrar frames se pueden ejecutar sobre un
+objeto de la clase \textsf{MultimediaInputOutputClient}:\footnote{el método
+\textsf{getClient()} de la clase Player nos devuelve una instancia de
 \textsf{MultimediaInputOutputClient} cuando el jugador esté utilizando un
 cliente de juego con soporte multimedia, como lo es el interfaz de ventanas de
 Aetheria Game Engine. Nótese que otros clientes, como el de línea de comandos
 \textsf{cheapAGE}, pueden no soportar multimedia y por lo tanto no permitir el
 uso de frames. Hay más información sobre esto (incluyendo cómo se comprueba si
 un cliente soporta multimedia) en la sección \ref{sec:imagenes} sobre imágenes.}
+
+
+\subsubsection{Métodos para crear frames}
+
+Los siguientes métodos se pueden ejecutar sobre un objeto de la clase
+\textsf{MultimediaInputOutputClient}:
 
 \begin{lstlisting}
 /*clase InputOutputClient*/ void addFrame ( int position , int size )
@@ -462,13 +466,89 @@ posición (o sea, por ejemplo, no puede haber dos marcos encima del texto a la
 vez).}
 \end{itemize}
 
+Si queremos tener más flexibilidad, incluyendo la posibilidad de crear un número
+arbitrario de frames y de utilizar tamaños relativos (porcentajes, por ejemplo)
+en lugar de absolutos, tendremos que usar este otro método, más potente aunque
+más complicado de utilizar. Este método sólo está disponible a partir de la
+versión 1.3.2 de AGE:
+
+\begin{lstlisting}
+/*clase InputOutputClient*/ void addFrame ( String frameName , String frameSpecs )
+\end{lstlisting}
+
+Este método crea un marco asignándole el nombre 'frameName'. La cadena
+'frameSpecs' se usa para dar instrucciones a AGE sobre el tamaño del frame, su
+localización, si su tamaño es estático o puede modificarse al cambiar el tamaño
+de la ventana, etc.
+
+Algunos ejemplos de lo que podemos poner en la cadena 'frameSpecs':
+
+\begin{itemize}
+  \item{"east, width 200": frame situado a la derecha (este), con ancho
+   preferido 200 pixels - esto quiere decir que el frame intentará tener 200
+   pixels de ancho, pero \comillas{competirá} con el resto de elementos de la
+   ventana, así que su tamaño real puede depender del tamaño de la ventana.}
+  \item{"west, width 200!": frame situado a la izquierda, con ancho fijo 200
+   pixels. El signo de admiración indica que el tamaño es fijo.}
+  \item{"east, width 100:200:400": frame situado a la derecha que tendrá una
+   anchura que variará entre 100 y 400 pixels (dependiendo de cómo redimensione
+   la ventana el usuario), siendo 200 pixels el valor preferido.}
+  \item{"west, width 50\%": frame situado a la izquierda, con ancho preferido del
+   50\% relativo al tamaño de la ventana. De nuevo, competirá con el resto de
+   elementos.}
+  \item{"north, height 50\%!": frame situado arriba, que tendrá siempre la altura
+   de la mitad de la ventana.}
+  \item{"south, height max(300,30\%)!": frame situado abajo, cuya altura será el
+   máximo entre 300 pixels y el 30\% de la altura de la ventana.}
+\end{itemize}
+
+Aunque estos ejemplos deberían cubrir todos los casos típicos que se podrían
+necesitar en aventuras en AGE, las cadenas de especificación todavía tienen más
+funcionalidad que no se muestra aquí. Para más detalles avanzados sobre cómo
+podemos configurar el tamaño de los frames creados con este método, conviene
+saber que utiliza la librería MigLayout. Las cadenas que podemos utilizar aquí
+aparecen especificadas en la documentación de dicha librería, véase la sección
+\comillas{Component Constraints} de la MigLayout cheat sheet.
+
+Por último, a veces puede convenir dividir un frame en dos partes, por ejemplo
+para tener un sub-frame arriba a la izquierda y otro arriba a la derecha. Esto
+se hace con el siguiente método, también disponible sólo desde la versión 1.3.2
+de AGE:
+\begin{lstlisting}
+/*clase InputOutputClient*/ void splitFrame ( String parentName , String childName1 , String childSpecs1 , String childName2 , String childSpecs2 )
+\end{lstlisting}
+
+Este método toma el frame cuyo nombre es 'parentName' (que tiene que haber sido
+creado mediante el método anterior, que asigna nombre a los frames) y lo divide
+en dos sub-frames, el primero con nombre 'childName1' y el segundo con nombre
+'childName2'. Los parámetros 'childSpecs1' y 'childSpecs2' dan información a AGE
+sobre el tamaño y localización de los frames hijos, teniendo el mismo formato
+que el parámetro 'frameSpecs' del método anterior.
+
+Así, podríamos usar el siguiente código para tener un frame superior izquierdo y
+otro superior derecho, del mismo tamaño, y cada uno con una imagen escalada al
+tamaño del frame:
+
+\begin{lstlisting}
+InputOutputClient cliente = jugador.getClient();
+if ( cliente instanceof MultimediaInputOutputClient && cliente.isGraphicsEnabled() )
+{
+  cliente.addFrame ( "izquierdo" , "west, height 25%!" )
+  cliente.splitFrame ( "izquierdo" , "izarriba", "north, height 50%!", "izabajo", "south, height 50%!" )
+  cliente.useImage( world.getResource("imagensuperiorizquierda.png") , ImageConstants.FRAME , "izarriba" , ImageConstants.FIT_BOTH )
+  cliente.useImage( world.getResource("imageninferiorizquierda.png") , ImageConstants.FRAME , "izabajo" , ImageConstants.FIT_BOTH )
+}
+\end{lstlisting}
+
+\subsubsection{Método para borrar frames}
+
 \begin{lstlisting}
 /*clase InputOutputClient*/ void removeFrames ()
 \end{lstlisting}
 
 Este método quita todos los marcos que se hayan creado. Esto es útil si una
 aventura tiene partes que muestran imágenes y otras que no. Más tarde se pueden
-volver a crear los marcos con \textsf{addFrame()}.
+volver a crear los marcos con los métodos \textsf{addFrame()}.
 
 \subsubsection{Métodos para mostrar imágenes en frames}
 
@@ -486,11 +566,17 @@ mostrar imágenes en los frames, podría interesarte este método:
 /*clase InputOutputClient*/ JPanel getFrame ( int position )
 \end{lstlisting}
 
-Dicho método devuelve el panel que se utiliza internamente para representar el
-frame, y puede ser utilizado por programadores que conozcan la API de Swing y
-que quieran dibujar directamente sobre él. Por supuesto, no hace falta este
-método para mostrar imágenes en frames, basta con los anteriores, que serán los
-que interesen a la gran mayoría de usuarios.
+\begin{lstlisting}
+/*clase InputOutputClient*/ JPanel getFrame ( String name )
+\end{lstlisting}
+
+Estos métodos devuelven el panel que se utiliza internamente para representar el
+frame, dada la posición (\textsf{ImageConstants.TOP}, etc.) en el primer caso, o
+el nombre del frame en el segundo caso, utilizándose un método u otro según si
+hemos dado o no nombre al frame. Pueden ser utilizados por programadores que
+conozcan la API de Swing y que quieran dibujar directamente sobre él. Por
+supuesto, no hacen falta estos métodos para mostrar imágenes en frames, basta
+con los anteriores, que serán los que interesen a la gran mayoría de usuarios.
 
 \subsubsection{Ejemplos de código}
 

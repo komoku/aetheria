@@ -222,13 +222,35 @@ plátano y cómelo} se romperá en las dos órdenes \comillas{coge el plátano} y
 \comillas{cómelo}. Cada una de ellas se tratará como una orden independiente de
 cara a todos los métodos \textsf{parseCommand}.}
 \item {Sustituir los pronombres: cada uno de los pronombres enclíticos se
-sustituye por el nombre que referencia, que se supone que es el último
-nombre referenciado que coincide en género con el pronombre. Así, el \comillas{lo}
-de \comillas{cómelo} se sustituiría por \comillas{plátano}, dando lugar a \comillas{cóme plátano}
-(sic). Nótese que la sustitución de pronombres funciona también entre
-distintas órdenes, es decir, si el jugador primero teclea \comillas{coge el plátano},
-y más tarde en una línea separada teclea \comillas{cómelo}, el pronombre será
-sustituido igualmente.}
+sustituye por el nombre que referencia, con los siguientes criterios:
+  \begin{enumerate}
+	  \item{Para los pronombres \comillas{lo} y \comillas{la}, se supone que el
+	   nombre al que hace referencia el pronombre es el último nombre
+	   referenciado por una orden que coincide en género con ese pronombre. Así,
+	   el \comillas{lo} de \comillas{cómelo} se sustituiría por \comillas{plátano},
+	   dando lugar a \comillas{cóme plátano} (sic). Nótese que la sustitución de
+	   pronombres funciona también entre distintas órdenes, es decir, si el
+	   jugador primero teclea \comillas{coge el plátano}, y más tarde en una
+	   línea separada teclea \comillas{cómelo}, el pronombre será sustituido
+	   igualmente.}
+	  \item{Para el pronombre \comillas{te}, se supone que el nombre al que hace
+	   referencia el pronombre es el primer nombre de referencia del jugador.
+	   Así, si por ejemplo el jugador tiene como nombre de referencia Manolo y
+	   escribe \comillas{mírate}, el resultado será \comillas{míra Manolo}, que
+	   por defecto en AGE mostrará la descripción de Manolo (pues el jugador
+	   funciona como cualquier otra criatura, pudiéndose referir a él
+	   las órdenes mediante sus nombres de referencia).}
+	  \item{Nótese que el tratamiento del pronombre \comillas{te} lo sustituye
+	   siempre, incluso en aquéllos casos que se dan en castellano donde el
+	   pronombre sólo tiene un valor enfático y no personal. Un ejemplo podría
+	   ser \comillas{cómete el plátano}: en esa oración, el \comillas{te} no
+	   significa que el jugador quiera comerse a sí mismo; pero AGE lo
+	   sustituirá de igual modo (dando lugar a un \comillas{cóme Manolo el
+	   plátano}) y será responsabilidad del programador de la aventura tratar
+	   ese caso (véase tratamiento de te enfático o pronombre en la entrada para
+	   más detalles).}
+  \end{enumerate}
+}
 \item {Corregir automáticamente (sólo desde versión 1.0.2): desde la versión
 1.0.2 de AGE, si la primera palabra de la orden es algo que se parece mucho
 a un verbo conocido pero no lo es (por ejemplo, \comillas{cgoer}), se cambia por

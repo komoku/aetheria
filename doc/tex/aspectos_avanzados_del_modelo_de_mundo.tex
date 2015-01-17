@@ -89,13 +89,13 @@ conocimientos sobre la entidad.}
 
 Así, ejemplos de posibles condiciones podrían ser:
 
-\textsf{get(self,"oxidada")} -- esta descripción es sólo para si la cosa
+\textsf{get(self,"{}oxidada")} -- esta descripción es sólo para si la cosa
 que describimos (una espada, por ejemplo) está oxidada.
 
-\textsf{!get(self,"oxidada")} -- lo contrario, se muestra sólo si la espada
+\textsf{!get(self,"{}oxidada")} -- lo contrario, se muestra sólo si la espada
 no está oxidada.
 
-\textsf{get(viewer,"conoce",self)} -- descripción que se muestra sólo si el
+\textsf{get(viewer,"{}conoce",self)} -- descripción que se muestra sólo si el
 jugador que está mirando al personaje que describimos ya lo conoce (hecho
 descrito por una relación \comillas{conoce}).
 
@@ -987,13 +987,6 @@ documentación.
 														haber recibido un golpe. Hasta que el
 														temporizador del \comillas{state} llegue a cero, no
 														podrá emprender otra acción. & \\
-\hline
-\end{tabular}}
-
-{\footnotesize\begin{tabular}{|l|p{6cm}|p{2.5cm}|}
-\hline
-\textbf{Valor de \comillas{state}} & \textbf{Significado de \comillas{state}} & \textbf{Significado de \comillas{target}} \\
-\hline
 \hline
 \textsf{Mobile.DODGE\_RECOVER} & La criatura está recuperándose después de
 														haber llevado a cabo una esquivada con éxito.
