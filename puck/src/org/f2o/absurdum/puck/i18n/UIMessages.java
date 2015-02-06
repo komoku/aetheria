@@ -136,7 +136,7 @@ public /*Singleton*/ class UIMessages
 	 */
 	public String[] getSupportedLanguages()
 	{
-		return new String[] {"es","en","eo","gl"};
+		return new String[] {"es","en","eo","gl","ca"};
 	}
 
 }

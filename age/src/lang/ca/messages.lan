@@ -1,0 +1,507 @@
+﻿#Missatges per defecte d'AGE
+#per català
+
+#Quan agafes el $item
+you.get.item=Agafes $item.\n
+
+#Quan agafes l'objecte $item que està dintre del contenedor ($location)
+you.get.item.from.location=Agafes $item $location.\n
+
+#Quan $1 agafa l'objecte $item
+someone.gets.item=$1 agafa $item.\n
+
+#Quan $1 agafa l'objecte $item que está en contenedores ($location)
+someone.gets.item.from.location=$1 agafa $item $location.\n
+
+#Quan deixas l'objecte $item
+you.drop.item=Deixes $item.\n
+
+#Quan $1 deixa l'objecte $item
+someone.drops.item=$1 deixa $item.\n
+
+#Quan et poses l'objecte $item en $limbs
+you.wear.item=Et poses $item a $limbs.\n
+
+#Quan $1 es posa $item a $limbs
+someone.wears.item=$1 es posa $item.\n
+
+#Quan et treus $item
+you.unwear.item=Et treus $item.\n
+
+#Quan $1 es treu l'objete $item
+someone.unwears.item=$1 es treu $item.\n
+
+#Quan brandes l'objete $item en $limbs
+you.wield.item=Brandes $item a $limbs.\n
+
+#Quan $1 branda l'objeto $item en $limbs
+someone.wields.item=$1 branda $item.\n
+
+#Quan deixas de brandar l'objete $item
+you.unwield.item=Deixas de brandar $item.\n
+
+#Quan $1 deixa de brandar l'objeto $item
+someone.unwields.item=$1 deixa de brandar $item.\n
+
+#Quan no pots agafar un item perquè no és agafable (fix en el lloc)
+denial.get.ungettable=No té gaire sentit intentar agafar $item.\n
+
+#Quan el parser no entén alguna cosa
+error.parsing=No entenc...\n
+
+#Quan no es pot agafar un objecte pel seu pes
+cant.get.item.weight=Portes massa pes per agafar $item.\n
+
+#Quan no es pot agafar un objecte pel seu volum
+cant.get.item.volume=Portes objectes voluminosos per agafar $item.\n
+
+#Quan no es pot deixar un objecte pel seu pes
+cant.drop.item.weight=No pots deixar aquí $item, hi ha massa pes.\n
+
+#Quan no es pot deixar un objecte per que no hi ha lloc
+cant.drop.item.volume=No pots deixar aquí $item, no hi ha espai suficient.\n
+
+#Quan intentes obrir una cosa no obrible ($item)
+item.not.openable=És absurd obrir això.
+
+#Quan intentes tancar una cosa no tancable ($item)
+item.not.closeable=És absurd tancar això.
+
+#Quan intentes obrir amb clau una cosa no obrible amb clau ($item)
+item.not.unlockable=No sembla que es pugui obrir això d'aquesta manera.
+
+#Quan intentes tancar amb clau una cosa no cerrable amb clau ($item)
+item.not.lockable=No sembla que es pugui tancar això d'aquesta manera.
+
+#Quan intentes brandar una cosa que no és una arma
+wield.non.weapon=No sembla que $item sigui un arm.\n
+
+#Quan intentes brandar una cosa que ja estàs brandant
+wield.already.wielded=Ja estàs brandant $item.\n
+
+#Quan intentes vestir una cosa que ja estàs vestint
+wear.already.worn=Ja portes posat $item.\n
+
+#Quan intentes vestir alguna cosa en un membre on ja tens posada una altra cosa
+wear.already.worn=Has de treure't alguna cosa per poder vestir $item.\n
+
+#Quan intentes brandar una arma que requereix algun tipus de membre que no tens
+wield.no.suitable.limbs=No sembla adequat per als de la teva espècie.\n
+
+#Quan intentes vestir una armadura que requereix algun tipus de membre que no tens 
+wear.no.suitable.limbs=No sembla adequat per als de la teva espècie.\n
+
+#Quan poses $item en $container
+you.put.into=Poses $item a $container.\n  
+
+#Quan no pots posar $item en $container per que pesa massa
+cant.put.into.weight=$container no pot soportar tant de pes.\n
+
+#Quan no pots posar $item en $container por que no hi cap (per volum)
+cant.put.into.volume=$item no hi cap en $container.\n
+
+#Quan intentes posar alguna cosa en un $container que realment no és contenedor.
+cant.put.into.noncontainer=No sembla gaire útil posar coses a $container.\n
+
+#Quan intentes ficar alguna cosa en un $container que està tancat.
+cant.put.into.closed=$container està tancat$oa.\n  <-------------------------------------------------------------------------tancat/tancada
+
+#Quan intentes posar un $item contenedor dins de si mateix.
+cant.put.into.itself=No pots posar $item en si mateix$oa.\n  <-------------------------------------------------------------------------mateix/mateixa
+
+#Quan intentes mirar quelcom que no existeix
+look.what=¿Què preténs veure?\n
+
+#Quan intentes obrir quelcom que no existeix
+open.what=¿Què preténs obrir?\n
+
+#Quan intentes tancar quelcom que no està 
+close.what=¿Què preténs tancar?\n
+
+#Quan intentes agafar quelcom que no està a l'habitació
+get.what=¿Què preténs agafar?\n
+
+#Quan intentes deixar quelcom que no existeix o no tens
+drop.what=¿Què preténs deixar?\n
+
+#Quan intentes desvestir quelcom que no existeix o no portes posat
+unwear.what=¿Què preténs treure't?\n
+
+#Quan intentes vestir quelcom que no existeix o no tens
+wear.what=¿Què preténs vestir?\n
+
+#Quan intentes brandar quelcom que no existeix o no tens
+wield.what=¿Quina arma preténs brandar?\n
+
+#Quan intentes enfundar quelcom que no existeix o no estàs brandant
+unwield.what=¿Quina arma preténs enfundar?\n
+
+#Quan intentes anar cap a un lloc que no es reconeix
+go.where=¿Com? ¿Cap a on vols anar?\n
+
+#Quan intentes anar cap a una sortida marcada com a no vàlida (no utilitzat actualment)
+go.where=¿Com? ¿Anar on?\n
+
+#Quan el verb apareix sense arguments
+go.nowhere=¿Anar a on?\n
+
+#Quan intentes anar cap a una direcció estàndard (nord, etc.) però no hi ha sortida
+go.noexit=No sembla que hi hagi sortida en aquesta direcció.\n
+
+#Quan intentes atacar a algú que no està
+attack.what=¿Com? ¿Atacar a qui?\n
+
+#Quan intentes bloquejar a algú que no està
+block.what=¿Com? ¿Defensar-se de qui?\n
+
+#Quan intentes esquivar a algú que no està
+dodge.what=No t'ataquen. ¿Esquivar què?\n
+
+#Quan intentes posar quelcom en alguna cosa i els objectes no es reconeixen
+put.what.where=¿Com? ¿Posar què a on?\n
+
+#Llista d'objectes en una habitació
+items.here=Aquí hi ha $inventory.
+
+#Si hi ha un personatge a l'habitació
+mobile.here=Aquí está $list.
+
+#Si hi ha diferents personatges a l'habitació
+mobiles.here=Aquí estan $list.
+
+#Mostrar inventari (amb coses)
+you.have.items=Tens $inventory.\n
+
+#Mostrar inventari (buit)
+you.have.nothing=No tens res.\n
+
+#Mostrar la prenda que portes posada
+you.are.wearing.item=Portes $item a $limbs.\n
+
+#Mostrar l'arma que portes brandada
+you.are.wielding.item=Estàs brandant $item a $limbs.\n
+
+#Intentar conjurar un conjur que no existeix o no coneixes
+cast.no.spell=No coneixes l'encanteri.\n
+
+#Quan mores
+you.die=Mors.\n
+
+#Quan algú mor
+someone.dies=$1 mor.\n
+
+#Intentant obrir quelcom del terra en un comandament amb diferents objectius (obrir les caixes, etc.)
+you.try.open.from.floor=Intentes obrir $item:
+
+#Intentant obrir quelcom de l'inventari en un comandament amb diferents objectius (obrir les caixes, etc.)
+you.try.open.from.inventory=Tractes d'obrir $item que portes:
+
+#Intentant tancar quelcom del terra en un comandament amb diferents objectius (obrir les caixes, etc.)
+you.try.close.from.floor=Intentes tancar $item:
+
+##Intentant tancar quelcom de l'inventari en un comandament amb diferents objectius (obrir les caixes, etc.)
+you.try.close.from.inventory=Tractes de tancar $item que portes:
+
+#Quan es tecleja un verb que està a la llista de verbs però del que no em definit cap comportament
+undefined.action=¿Com? ¿$command?\n
+
+#Quan la propietat noPronounDisambiguation d'un jugador té el valor de true i s'utilitza "el/la/l'/les/los" on l'acció anterior feia referència a dues entitats. Es pot utilitzar $command per a referir-se al verb.
+ambiguous.pronoun=No entenc gaire bé una ordre pronominal quan l'ordre anterior feia referència a dos objectes.\n
+
+#Quan intentes tornar però no hi ha cap sortida que et faci tornar a l'habitació anterior.
+cant.go.back=No veus la manera de tornar...\n
+
+#Combat: encert amb l'arma, dany numèric ($1 ataca a $2 amb $weapon, encerta, li infligeix $damage mal)
+someone.hits.someone.numeric=$1 encerta a $2 amb $weapon infligint-li $damage punts de dolor...\n
+enemy.hits.you.numeric=$1 t'encerta amb $weapon infligint-te $damage punts de dolor...\n
+you.hit.enemy.numeric=Encertes a $2 amb $weapon infligint-li $damage punts de dolor...\n
+
+#Combat: encert amb arma, dany subjectiu
+someone.hits.someone=$1 encerta a $2 amb $weapon infligint-li $damage...\n
+enemy.hits.you=$1 t'encerta amb $weapon infligint-te $damage...\n
+you.hit.enemy=Encertes a $2 amb $weapon infligint-li $damage...\n
+
+#Combat: encert amb arma, però sense danys
+someone.hits.someone.nodamage=$1 encerta a $2 amb $weapon però no li fan mal...\n
+enemy.hits.you.nodamage=$1 t'encerta amb $weapon però no et fa mal...\n
+you.hit.enemy.nodamage=Encertes a $2 amb $weapon però no li fas mal...\n
+
+#Combat: errada amb arma
+someone.misses.someone=L'atac de $1 falla a $2.\n
+enemy.misses.you=L'atac de $1 et falla.\n
+you.miss.enemy=El teu atac falla a $2.\n
+
+#Informes de daño
+damage.5=molt lleugers danys
+damage.10=lleugers danys
+damage.18=algún dany
+damage.25=un dany significatiu
+damage.33=danys moderats
+damage.40=bastant dany
+damage.50=severs danys
+damage.60=molt de dany
+damage.70=gran dany
+damage.80=enorme dany
+damage.90=terribles ferides
+damage.lethal=dany mortal
+
+#Informes de ferides
+woundstatus.1=està intact$oa
+woundstatus.5=té alguna esgarrinxada
+woundstatus.10=té lleugeres ferides
+woundstatus.18=té ferides poc greus
+woundstatus.25=té ferides de certa consideració
+woundstatus.33=té ferides importants
+woundstatus.40=té ferides greus
+woundstatus.50=té ferides preocupants
+woundstatus.60=està greument ferit$da
+woundstatus.70=està molt greument ferit$da
+woundstatus.80=està críticament ferit$da
+woundstatus.90=està a les últimes
+woundstatus.100=té un peu a la tomba
+woundstatus.lethal=està mortalment ferit$da
+
+#Manà insuficient per a fer el conjur $spell
+not.enough.mana=No tens prou manà per a executar aquest conjur.\n
+
+#Interrupcions: t'interrumpeixen un moviment, un atac o un llançament de conjur per la causa $cause.
+interrupted.move=$cause interrumpeix el teu intent de marxar.\n
+interrupted.attack=$cause interrumpeix el teu intent d'atac.\n
+interrupted.cast=$cause interrumpeix el teu intent de fer màgia.\n
+
+#$1 ataca a algú que ja no està
+someone.attacks.absent=$1 interrumpeix el seu atac davant l'ausència del seu contrincant.\n
+someone.attacks.you.absent=$1 vacil·la davant la teva ausència.\n
+you.attack.absent=Et disposaves a atacar; però vacil·les davant l'ausència del teu enemic.\n
+
+#$1 ataca a algú que ja està mort
+someone.attacks.dead=$1 interromp el seu atac davant de la mort del seu contrincant.\n
+someone.attacks.you.dead=$1 vacil·la davant la teva mort.\n
+you.attack.dead=Et disposaves a atacar; però vacil·les davant de la mort del teu enemic.\n
+
+#Combat: xoc d'armes a l'aire
+someone.clashes.someone=Les armes de $1 i $2 xoquen a l'aire...\n
+enemy.clashes.you=La teva arma y la de $1 xoquen a l'aire...\n
+you.clash.enemy=La teva arma y la de $2 xoquen a l'aire...\n
+
+#Combat: A $2 no li dona temps de bloquejar l'atac de $1
+you.fail.block.time.someone=No et dona temps de bloquejar l'atac de $1...\n
+someone.fails.block.time.you=A $2 no li dona temps de bloquejar el teu atac...\n
+
+#Combat: A $2 no li dona temps a esquivar l'atac de $1
+you.fail.dodge.time.someone=No et dona temps a esquivar l'atac de $1...\n
+someone.fails.dodge.time.you=A $2 no li dona temps a esquivar el teu atac...\n
+
+#Combat: $1 estava atacant a $2, que estava bloquejant l'atac. Però $1 falla així que ara $2 té la iniciativa.
+someone.fails.blocking.you=Tens la iniciativa...\n
+you.fail.blocking.someone=Veient el teu atac fallit, $2 interromp el seu moviment defensiu...\n
+
+#Combat: $1 estava atacant a $2, que estava esquivant l'atac. Però $1 falla així que ara $2 té la iniciativa.
+someone.fails.dodging.you=Tens la iniciativa...\n
+you.fail.dodging.someone=Veient el teu atac fallit, $2 interromp la seva esquivada...\n
+
+#Combat: bloqueig amb arma, dany numèric ($1 ataca a $2 amb $weapon, $2 bloqueja, tot i això $1 li infligeix $damage dany)
+someone.hits.blocked.someone.numeric=$2 es defensa de $1 amb $weapon rebent $damage punts de dany...\n
+enemy.hits.blocked.you.numeric=Et defenses de $1 amb $weapon recibent $damage punts de dany...\n
+you.hit.blocked.enemy.numeric=$2 es defensa amb $weapon recibent $damage punts de dany...\n
+
+#Combat: bloqueig amb arma, dany subjectiu
+someone.hits.blocked.someone=$2 es defensa de $1 amb $weapon rebent $damage...\n
+enemy.hits.blocked.you=Et defenses de $1 amb $weapon rebent $damage...\n
+you.hit.blocked.enemy=$2 es defensa amb $weapon rebent $damage...\n
+
+#Combat: bloqueig amb arma, sense danys
+someone.hits.blocked.someone.nodamage=$2 es defensa de $1 amb $weapon, desviant l'atac...\n
+enemy.hits.blocked.you.nodamage=Et defenses de $1 amb $weapon, desviant el seu atac...\n
+you.hit.blocked.enemy.nodamage=$2 es defensa amb $weapon, desviant el teu atac...\n
+
+#Combat: encert amb arma en front de bloqueig fallit, dany numèric ($1 ataca a $2 amb $weapon, $2 no aconsegueix bloqueja, $1 encerta, l'infligeix $damage dany)
+someone.hits.block.failed.someone.numeric=$2 no aconsegueix parar l'atac de $1, que l'encerta amb $weapon infligint-li $damage punts de dany...\n
+enemy.hits.block.failed.you.numeric=No aconsegueixes parar l'atac de $1, que t'encerta amb $weapon infligint-te $damage punts de dany...\n
+you.hit.block.failed.enemy.numeric=$2 no aconsegueix parar el teu atac, l'encertes amb $weapon infligint-li $damage punts de dany...\n
+
+#Combat: encert amb arma en front de bloqueig fallit, dany subjectiu
+someone.hits.block.failed.someone=$2 no aconsegueix parar l'atac de $1, que l'encerta amb $weapon infligint-li $damage...\n
+enemy.hits.block.failed.you=No aconsegueixes parar l'atac de $1, que t'encerta amb $weapon infligint-te $damage...\n
+you.hit.block.failed.enemy=$2 no aconsegueix parar el teu atac, li encertes amb $weapon infligint-li $damage...\n
+
+#Combat: encert amb arma en front del bloqueig fallit, però sense danys
+someone.hits.block.failed.someone.nodamage=$2 no aconsegueix parar l'atac de $1, que l'encerta amb $weapon però no li fa mal...\n
+enemy.hits.block.failed.you.nodamage=No aconsegueix parar l'atac de $1, que t'encerta amb $weapon pero no et fa mal...\n
+you.hit.block.failed.enemy.nodamage=$2 no aconsegueix parar el teu atac, l'encertes amb $weapon però no li fas mal...\n
+
+#Combat: errada d'arma en front de bloqueig (ja no es determina si el bloqueig té èxit o no)
+someone.misses.blocked.someone=L'atac de $1 falla a $2.\n
+enemy.misses.blocked.you=L'atac de $1 et falla.\n
+you.miss.blocked.enemy=El teu atac falla a $2.\n
+
+#Combat: $2 esquiva a $1 amb èxit
+someone.dodged.by.someone=$2 esquiva hàbilment l'atac de $1.\n
+enemy.dodged.by.you=Esquives l'atac de $1.\n
+you.dodged.by.enemy=$2 esquiva el teu atac.\n
+
+#Combat: encert amb arma en front d'esquivada errònea, dany numèric ($1 ataca a $2 amb $weapon, $2 no aconsegeueix esquivar, $1 encerta, l'infligeix $damage dany)
+someone.hits.dodge.failed.someone.numeric=$2 intenta esquivar el cop de $1; però no ho aconsegueix, $1 l'encerta amb $weapon infligint-li $damage punts de dany...\n
+enemy.hits.dodge.failed.you.numeric=El teu intent d'esquivar falla, i $1 t'encerta amb $weapon infligint-te $damage punts de dany...\n
+you.hit.dodge.failed.enemy.numeric=Tot i intentar esquivar l'atac, encertes a $2 amb $weapon, infligint-li $damage punts de dany...\n
+
+#Combat: encert amb arma en front d'esquivada errònea, dany subjectiu
+someone.hits.dodge.failed.someone=$2 intenta esquivar el cop de $1; però no ho aconsegueix, $1 l'encerta amb $weapon infligint-li $damage...\n
+enemy.hits.dodge.failed.you=El teu intent d'esquivar falla, i $1 t'encerta amb $weapon infligint-te $damage...\n
+you.hit.dodge.failed.enemy=Tot i intentar esquivar l'atac, encertes a $2 amb $weapon, infligint-li $damage...\n
+
+#Combat: encert amb arma en front d'esquivada errònea, però sense danys
+someone.hits.dodge.failed.someone.nodamage=$2 intenta esquivar el cop de $1; però no ho aconsegueix, $1 l'encerta amb $weapon però no li fa mal.\n\n
+enemy.hits.dodge.failed.you.nodamage=El teu intent d'esquivar falla, i $1 t'encerta amb $weapon però no et fa mal.\n
+you.hit.dodge.failed.enemy.nodamage=Tot i intentar esquivar l'atac, encertes a $2 amb $weapon; però no li fas mal.\n
+
+#Combat: fallada amb arma front a esquivada (ja no es determina si l'esquivada té èxit o no)
+someone.misses.dodged.someone=L'atac de $1 falla a $2.\n
+enemy.misses.dodged.you=L'atac de $1 et falla. Tens la iniciativa...\n
+you.miss.dodged.enemy=El teu atac falla a $2. Et desequilibres...\n
+
+#Combat: l'armadura $armor de $1 absorbeix totalmente un impacte
+someones.armor.absorbed=$armor de $1 absorbeix totalment l'impacte.\n
+your.armor.absorbed=$armor et protegeix absorbint totalment l'impacte.\n
+
+#Combat: atac amb arma
+someone.attacks.someone=$1 ataca a $2 amb $weapon.\n
+enemy.attacks.you=$1 t'ataca amb $weapon.\n
+you.attack.enemy=Ataques a $2 amb $weapon.\n
+
+#Combat: intentar bloquejar
+someone.tries.to.block.someone=$1 intenta defensar-se de $2 amb $weapon.\n
+enemy.tries.to.block.you=$1 intenta defensar-se amb $weapon.\n
+you.try.to.block.enemy=Intentes defensar-te de $2 amb $weapon.\n
+
+#Combat: intentar esquivar
+someone.tries.to.dodge.someone=$1 intenta esquivar l'atac de $2.\n
+enemy.tries.to.dodge.you=$1 intenta esquivar-te.\n
+you.try.to.dodge.enemy=Intentes esquivar l'atac de $2.\n
+
+#Intentar vestir una arma ($item)
+cant.wear.weapon=¿Vestir $item? Sembla més apropiat brandar-l$oa.\n
+
+#Intentar brandar una peçamde roba ($item)
+cant.wield.wearable=¿Brandar $item? Sembla més apropiat vestir-l$oa.\n
+
+#Intentar vestir quelcom que no és una peça de vestir ($item)
+item.not.wearable=No sembla que $item sigui quelcom que es pugui vestir.\n
+
+#Intentar vestir quelcom quan no tens membres
+cant.wear.without.limbs=No pots posar-te roba si no tens cap membre.\n
+
+#Mostrar membre lliure
+you.have.free.limb=Tens lliure $limb.\n
+
+#Mostrar membre ocupat per brandar $item
+you.use.limb.wielding=A $limb ja estàs brandant $item.\n
+
+#Mostrar membre ocupat per vestir $item
+you.use.limb.wearing=Portes posat $item a $limb.\n
+
+#Quan no es pot brandar un objecte pel seu pes
+cant.wield.item.weight=No pots brandar $item, pesa massa.\n
+
+#Quan no es pot vestir un objecte pel seu pes
+cant.wear.item.weight=No pots vestir $item, pesa massa.\n
+
+#Quan no es pot brandar un objecte pel seu volum
+cant.wield.item.volume=No pots brandar $item, ocupa massa.\n
+
+#Quan no es pot vestir un objecte pel seu volum
+cant.wear.item.volume=No pots vestir $item, ocupa massa.\n
+
+#Quan no es pot vestir quelcom perque els membres estan ocupats
+wear.busy.limbs=Has de treure't alguna cosa per poder vestir $item.\n
+
+#Quan no es pot brandar quelcom perque els membres estan ocupats
+wield.busy.limbs=Has de guardar alguna arma per a poder brandar $item.\n
+
+#Intentes suïcidar-te però no tens una arma per fer-ho
+no.suicide.weapon=No estàs brandant cap arma útil per a suïcidar-te.\n
+
+#Intentes atacar però no tens cap arma per fer-ho
+no.attack.weapon=No estàs brandant cap arma útil per atacar.\n
+
+#$1 es suïcida amb l'arma $3 (si, $3)
+someone.suicides=$1 es suïcida amb $3.\n
+you.suicide=Et suïcides amb $3.\n
+
+####
+#Articles: definit masculí/femení, indefinit masculí/femení
+#Falta l', que pertany al singular, tant del masculí com del femení:http://www.uoc.edu/serveilinguistic/criteris/gramatica/determinants.html 
+####
+
+art.def.m=el
+art.def.f=la
+art.ind.m=un
+art.ind.f=una
+
+#Conjunció de coordinació
+coord.conj=i
+
+#Direccions
+direction.n=nord
+direction.s=sud
+direction.w=oest
+direction.e=est
+direction.nw=nord-oest
+direction.ne=nord-est
+direction.sw=sud-oest
+direction.se=sud-est
+direction.u=adalt
+direction.d=abaix
+
+#Direccions (full name): creature comes from...
+direction.full.n=el nord
+direction.full.s=el sud
+direction.full.w=l'oest
+direction.full.e=l'est
+direction.full.nw=el nord-oest
+direction.full.ne=el nord-est
+direction.full.sw=el sud-oest
+direction.full.se=el sud-est
+direction.full.u=adalt
+direction.full.d=abaix
+
+#obrir/tancar comportament predeterminat
+you.unlock.item=Obre $item amb $key.
+cant.unlock.key=No sembla que $item s'obri amb $key.
+you.lock.item=Tanques $item amb $key.
+cant.lock.key=No sembla que $item es pugui tancar amb $key.
+cant.open.already.open=Però si $item ja està obert$a...
+cant.open.locked=Sembla que $item està tancat$oa amb clau.<---------------------------------------------------------tancat/tancada
+you.open.item=Obres $item.
+cant.close.already.closed=Però si $item ja està cerrad$oa...<---------------------------------------------------------tancat/tancada
+you.close.item=Tanques $item.
+
+#mostrar inventari, etc. quan està buit
+nothing=res
+
+#the from in "you get the notebook FROM the chest"<--------------------------------------------------------- no se que quiere decir
+get.prep.from=de
+
+#Nom per mostrar quan s'ha de parlar d'un Mòbil que no té nom per mostrar a un observador donat (per exemple, en accions)
+unnamed.mobile=algú
+
+#Nom per mostrar quan s'ha de parlar d'un ítem que no té nom per mostrar a un observador donat (per exemple, en accions)
+unnamed.item=quelcom
+
+#Nom per mostrar quan s'ha de parlar d'un lloc que no té nom per mostrar a un observador donat (per exemple, "Fulano marxa cap a...")
+unnamed.path=algún lloc
+
+#Algú diu alguna cosa
+someone.says.something=$1 diu \"$text\".\n
+
+#Dius alguna cosa
+you.say.something=Dius \"$text\".\n
+
+#Algú diu alguna cosa a algú altre
+someone.tells.someone.something=$1 diu \"$text\" a $2.\n
+
+#Algú et diu alguna cosa
+someone.tells.you.something=$1 et diu \"$text\".\n
+
+#Dius alguna cosa a algú altre
+you.tell.someone.something=Dius \"$text\" a $2.\n

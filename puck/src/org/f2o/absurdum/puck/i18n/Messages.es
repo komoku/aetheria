@@ -301,6 +301,7 @@ language.es=Español
 language.en=Inglés
 language.gl=Gallego
 language.eo=Esperanto
+language.ca=Catalán
 language.changed=El idioma de PUCK se ha cambiado a español; pero necesitarás cerrar y volver a abrir PUCK para ver toda la interfaz en español.
 language.changed.title=Cambio de idioma
 online.documentation=<html><p>Puedes consultar información detallada sobre cómo construir mundos en PUCK en la documentación online: <FONT color=\"#000099\"><U>http://www.caad.es/aetheria/doc/</U></FONT>.</p></html>

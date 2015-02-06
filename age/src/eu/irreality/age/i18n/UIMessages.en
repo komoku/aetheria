@@ -247,6 +247,7 @@ language.es=Spanish
 language.en=English
 language.gl=Galician
 language.eo=Esperanto
+language.ca=Catalan
 language.changed=AGE's interface language has been changed to English, but you will need to restart AGE for the change to totally take place.
 language.changed.title=Language change
 about.frame.title=About AGE
