@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.i18n.UIMessages;
+import eu.irreality.age.language.Catalan;
 import eu.irreality.age.language.English;
 import eu.irreality.age.language.Esperanto;
 import eu.irreality.age.language.Galician;
@@ -184,6 +185,8 @@ public class NaturalLanguage
 			return new Esperanto();
 		else if ( languageCode.equals("gl") )
 			return new Galician();
+		else if ( languageCode.equals("ca") )
+			return new Catalan();
 		else
 			return new NaturalLanguage(languageCode);
 	}

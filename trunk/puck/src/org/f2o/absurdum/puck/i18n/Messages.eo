@@ -301,6 +301,7 @@ language.es=Hispana
 language.en=Angla
 language.gl=Galego
 language.eo=Esperanto
+language.ca=Kataluna
 language.changed=La lingvo de PUCK estis ŝanĝita Esperanton; sed vi bezonas fermi kaj malfermi PUCK por vidi tutan la interfacon en Esperanto.
 language.changed.title=Ŝanĝi lingvo
 online.documentation=<html><p>Vi povas trovi detalajn informojn pri kiel konstrui mondoj de PUCK en la reta dokumentaro: <FONT color=\"#000099\"><U>http://www.caad.es/aetheria/doc/</U></FONT>.</p></html>
