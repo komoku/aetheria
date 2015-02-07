@@ -891,6 +891,8 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 			cbLanguage.setSelectedIndex(2);
 		else if ( e.hasAttribute("language") && e.getAttribute("language").equals("gl") )
 			cbLanguage.setSelectedIndex(3);
+		else if ( e.hasAttribute("language") && e.getAttribute("language").equals("ca") )
+			cbLanguage.setSelectedIndex(4);
 		else
 			cbLanguage.setSelectedIndex(0);
 		

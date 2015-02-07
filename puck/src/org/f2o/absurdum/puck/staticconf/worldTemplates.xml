@@ -7,7 +7,9 @@
 		<item name="Single-player text adventure" description="Single-player text adventure" template-ref="en/single-en.xml"/>
 	</templates>
 	<templates language="gl" name="Crear dende plantilla" description="Crear dende plantilla">
-		<item name="Aventura de texto monoxogador" description="Aventura de texto monoxogador" template-ref="es/single-es.xml"/>
-		<!-- Cambiar a gl/single-gl.xml cuando esté listo el soporte de aventuras en gallego -->
+		<item name="Aventura de texto monoxogador" description="Aventura de texto monoxogador" template-ref="gl/single-gl.xml"/>
+	</templates>
+	<templates language="ca" name="Crear des plantilla" description="Crear des plantilla">
+		<item name="Aventura de text monojugador" description="Aventura de text monojugador" template-ref="ca/single-ca.xml"/>
 	</templates>
 </puck-world-templates>

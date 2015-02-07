@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<World author="" date="" language="gl" moduleName="Aventura de texto monoxogador" parserVersion="1.3.4" type="" version="" worldDir="." worldName="Aventura de texto monoxogador">
+<World author="" date="" language="ca" moduleName="Aventura de text monojugador" parserVersion="1.3.4" type="" version="" worldDir="." worldName="Aventura de text monojugador">
 <IdeMetaInf>
 <View xoffset="0.0" yoffset="0.0" zoom="2.0"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Limbo" x="120" y="120"/>
@@ -7,7 +7,7 @@
 <Node class="org.f2o.absurdum.puck.gui.graph.CharacterNode" name="Jugador" x="180" y="120"/>
 </IdeMetaInf>
 <PlayerList>
-<Player id="Xogador"/>
+<Player id="Jugador"/>
 </PlayerList>
 <VisualConfiguration>
 <Colors>
@@ -28,7 +28,7 @@
 <Rooms>
 <Room name="Limbo">
 <DescriptionList>
-<Description>Éste é un bo lugar para enviar todas as entidades das que te queiras desfacer na túa aventura: monstros que morran, obxectos que desaparezan ou que se transformen noutros, etc.</Description>
+<Description>Aquest és un bon lloc per enviar totes les entitats de les quals et vulguis desfer en la teva aventura: monstres que morin, objectes que desapareguin o que es transformin en uns altres, etc.</Description>
 </DescriptionList>
 <ExtraDescriptionList/>
 <PropertyList/>
@@ -37,19 +37,19 @@
 <MobileList/>
 <RelationshipList/>
 </Room>
-<Room name="Habitación inicial">
+<Room name="Habitació inicial">
 <DescriptionList>
-<Description>A sala na que comeza a aventura.</Description>
+<Description>La sala en la qual comença l'aventura</Description>
 </DescriptionList>
 <ExtraDescriptionList/>
 <PropertyList/>
 <PathList/>
 <Inventory/>
 <MobileList>
-<MobRef id="Xogador"/>
+<MobRef id="Jugador"/>
 </MobileList>
 <RelationshipList>
-<Relationship id="Xogador">
+<Relationship id="Jugador">
 <PropertyList/>
 </Relationship>
 </RelationshipList>
@@ -57,15 +57,15 @@
 </Rooms>
 <Items/>
 <Mobiles>
-<Mobile gender="true" hp="10" maxhp="10" maxmp="10" mp="10" name="Xogador">
+<Mobile gender="true" hp="10" maxhp="10" maxmp="10" mp="10" name="Jugador">
 <SingularNames/>
 <PluralNames/>
 <SingularReferenceNames>
-<Name>xogador</Name>
+<Name>jugador</Name>
 </SingularReferenceNames>
 <PluralReferenceNames/>
 <DescriptionList>
-<Description>Es ti, o heroe desta historia.</Description>
+<Description>Ets tu, l'heroi d'aquesta història.</Description>
 </DescriptionList>
 <ExtraDescriptionList/>
 <PropertyList/>
@@ -74,8 +74,8 @@
 </Traits>
 <Inventory/>
 <RelationshipList/>
-<CurrentRoom id="Habitación inicial"/>
-<LastRoom id="Habitación inicial"/>
+<CurrentRoom id="Habitació inicial"/>
+<LastRoom id="Habitació inicial"/>
 </Mobile>
 </Mobiles>
 <Spells/>
