@@ -75,6 +75,7 @@ import org.f2o.absurdum.puck.gui.templates.WorldTemplateMenuBuilder;
 import org.f2o.absurdum.puck.i18n.UIMessages;
 import org.w3c.dom.Document;
 
+import eu.irreality.age.FiltroFicheroMundo;
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.windowing.MenuMnemonicOnTheFly;
 
@@ -771,6 +772,7 @@ public class PuckFrame extends JFrame
 						//propPanel.setVisible(false);
 						
 						JFileChooser jfc = new JFileChooser(".");
+						jfc.setFileFilter( new FiltroFicheroMundo() );
 						int opt = jfc.showOpenDialog(PuckFrame.this);
 						if ( opt == JFileChooser.APPROVE_OPTION )
 						{
