@@ -128,8 +128,10 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 	private JButton bInput = new JButton("Input");
 	*/
 	
-	private 		final String [] colorCodes = new String[]{ "Background" , "Foreground" , "Default" , "Description" ,
+	private final String [] colorCodes = new String[]{ "Background" , "Foreground" , "Default" , "Description" ,
 			"Information" , "Action" , "Denial" , "Error" , "Story" , "Important", "Input" };
+	
+	private final String [] supportedWorldLanguages = new String[]{ "es", "en", "eo", "gl", "ca" };
 	
 	private HashMap colorsMap = new HashMap();
 	private HashMap buttonsMap = new HashMap();
@@ -149,6 +151,14 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		setDefaultWorldVersion();
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		entitiesPanel = new EntityListPanel(gep);
+		
+		//init languages combo box in a generic way, from supported world languages
+		String[] languageComboBoxLines = new String[supportedWorldLanguages.length];
+		for ( int i = 0 ; i < supportedWorldLanguages.length ; i++ )
+		{
+			languageComboBoxLines[i] = UIMessages.getInstance().getMessage("language." + supportedWorldLanguages[i]);
+		}
+		cbLanguage = new JComboBox( languageComboBoxLines );
 	}
 	
 	public String toString()
@@ -174,18 +184,8 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 	
 	private JTextField tfShortName = new EnhancedJTextField();
 	private JTextField tfLongName = new EnhancedJTextField();
-
-	//TODO: make this more general
-	private JComboBox cbLanguage = new JComboBox(
-		new String[]
-		{
-		UIMessages.getInstance().getMessage("language.es"),
-		UIMessages.getInstance().getMessage("language.en"),
-		UIMessages.getInstance().getMessage("language.eo"),
-		UIMessages.getInstance().getMessage("language.gl"),
-		UIMessages.getInstance().getMessage("language.ca")
-		}
-	);
+	
+	private JComboBox cbLanguage;
 	private JTextField tfAuthor = new EnhancedJTextField();
 	private JTextField tfVersion = new EnhancedJTextField();
 	private JTextField tfAgeVersion = new EnhancedJTextField();
@@ -381,17 +381,8 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 	 */
 	public String getSelectedLanguageCode()
 	{
-		String languageString = (String) cbLanguage.getSelectedItem();
-		if (languageString.equals(UIMessages.getInstance().getMessage("language.en")))
-			return "en";
-		else if (languageString.equals(UIMessages.getInstance().getMessage("language.eo")))
-			return "eo";
-		else if (languageString.equals(UIMessages.getInstance().getMessage("language.gl")))
-			return "gl";
-		else if (languageString.equals(UIMessages.getInstance().getMessage("language.ca")))
-			return "ca";
-		else
-			return "es";
+		int index = cbLanguage.getSelectedIndex();
+		return supportedWorldLanguages[index];
 	}
 	
 	public org.w3c.dom.Node doGetXML ( Document d )
