@@ -263,10 +263,20 @@ public class PuckFrame extends JFrame
 	public boolean saveAs (  ) throws Exception
 	{
 		JFileChooser jfc = new JFileChooser(".");
+		FiltroFicheroMundo filter = new FiltroFicheroMundo();
+		jfc.setFileFilter(filter);
 		int opt = jfc.showSaveDialog(PuckFrame.this);
 		if ( opt == JFileChooser.APPROVE_OPTION )
 		{
 			File f = jfc.getSelectedFile();
+			
+			if ( jfc.getFileFilter() == filter && !filter.acceptFilename(f) )
+			{
+				String fileName = f.getAbsolutePath();
+			    fileName += ".agw";
+			    f = new File(fileName);
+			}
+			
 			saveToFile(f);
 			editingFileName = f.toString();
 			refreshTitle();
