@@ -132,6 +132,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 			"Information" , "Action" , "Denial" , "Error" , "Story" , "Important", "Input" };
 	
 	private final String [] supportedWorldLanguages = new String[]{ "es", "en", "eo", "gl", "ca" };
+	private final Map languageToIndex; //es->0, etc.
 	
 	private HashMap colorsMap = new HashMap();
 	private HashMap buttonsMap = new HashMap();
@@ -152,13 +153,23 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		entitiesPanel = new EntityListPanel(gep);
 		
-		//init languages combo box in a generic way, from supported world languages
+		//init languages combo box and languageToIndex set in a generic way, from supported world languages
+		languageToIndex = new HashMap();
 		String[] languageComboBoxLines = new String[supportedWorldLanguages.length];
 		for ( int i = 0 ; i < supportedWorldLanguages.length ; i++ )
 		{
 			languageComboBoxLines[i] = UIMessages.getInstance().getMessage("language." + supportedWorldLanguages[i]);
+			languageToIndex.put(supportedWorldLanguages[i], i);
 		}
 		cbLanguage = new JComboBox( languageComboBoxLines );
+
+	}
+	
+	private int languageToIndex ( String language )
+	{
+		Integer index = (Integer) languageToIndex.get(language);
+		if ( index != null ) return index.intValue();
+		else return 0;
 	}
 	
 	public String toString()
@@ -876,6 +887,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		tfLongName.setText(e.getAttribute("moduleName"));
 		
 		//languages combo box
+		/*
 		if ( e.hasAttribute("language") && e.getAttribute("language").equals("en") )
 			cbLanguage.setSelectedIndex(1);
 		else if ( e.hasAttribute("language") && e.getAttribute("language").equals("eo") )
@@ -886,6 +898,8 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 			cbLanguage.setSelectedIndex(4);
 		else
 			cbLanguage.setSelectedIndex(0);
+		*/
+		cbLanguage.setSelectedIndex(languageToIndex(e.getAttribute("language")));
 		
 		tfAuthor.setText(e.getAttribute("author"));
 		tfVersion.setText(e.getAttribute("version"));
