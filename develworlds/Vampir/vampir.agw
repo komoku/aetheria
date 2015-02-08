@@ -1,0 +1,1076 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<World author="Jaume Alcazo Castellarnau (Versió de Carlos Gómez Rodirguez. Traducció al català edlobez)" date="2015-02-7" language="ca" moduleName="Vampir: Cròniques de reXXe" parserVersion="" type="Clásica" version="0.1" worldDir="." worldName="Vampiro">
+<IdeMetaInf>
+<View xoffset="-78.29013324981733" yoffset="-59.29013324981727" zoom="1.4845235706290523"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Ataúd" x="100" y="20"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Biblioteca" x="280" y="180"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Cocina" x="160" y="180"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Dormitorio" x="160" y="120"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="El Final" x="140" y="60"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Escaleras" x="220" y="120"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Escaleras superiores" x="200" y="60"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Limbo" x="300" y="300"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Pasillo" x="220" y="180"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Sala de estar" x="280" y="120"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Sótano" x="240" y="60"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.RoomNode" name="Vestíbulo" x="220" y="240"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="armario" x="100" y="140"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="barril" x="280" y="20"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="cos" x="140" y="300"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="crucifijo plateado" x="320" y="240"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="cuchillo" x="100" y="180"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="estaca afilada" x="340" y="20"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="llavecita" x="100" y="80"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="martillo" x="200" y="20"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="palanca" x="340" y="180"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.CharacterNode" name="reXXe" x="140" y="240"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="ristra de ajos" x="40" y="60"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="trozo de madera" x="340" y="60"/>
+<Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="vestit barat" x="60" y="260"/>
+</IdeMetaInf>
+<Code language="BeanShell"><![CDATA[/*
+ *  Traducido 7/2/2015
+ */
+void intro( Player pl )
+{
+	InputOutputClient io = pl.getIO();
+	String storyCode = io.getColorCode("story");
+	String defaultCode = io.getColorCode("default");
+	io.write("-- Memòries de reXXe --\n");
+	io.write("© 1998 Jaume Alcazo Castellarnau\n");
+	io.write("\n");
+	io.write("Aquesta és la versió programada en AGE del joc \"Vampiro\" original d'Aventures Alcazo. Per a més informació tecleja HISTÒRIA en el joc.\n");
+	io.write("\n");
+	io.write("Moltes gràcies per jugar.\n");
+	io.write("\n\n\n\n");
+	io.write(storyCode);
+	io.write("Despertes atordit. Després d'uns segons t'aixeques en el fred sòl de pedra i veus que estàs en un castell. Ara recordes! Ets reXXe i la teva missió és la de matar al vampir. Has de matar al vampir que viu en la part superior del castell...\n");
+	io.write(defaultCode);
+	io.write("\n");
+}
+
+/*Método de análisis sintáctico de la entrada*/
+void parseCommand( Player aPlayer , String verb , String args )
+{
+          //  aPlayer.write ("Verbo: " + verb + " args: " + args + "\n");
+	
+	if ( verb.equalsIgnoreCase("historia") )
+	{
+		aPlayer.write("Aquest joc és original d'Aventures Alcazo i el copyright pertany al Jaume Alcazo Castellarnau,");
+		aPlayer.write(" qui ha cedit els fonts amb fins educatius. (Tecleja Alcazo per saber més del joc original)."); 
+		aPlayer.write("La versió que estàs jugant ha estat reprogramada a partir d'especificacions txtMap (pel Baltasar)");
+		aPlayer.write(" i una versió Inform (pel Zak) usant PUCK, l'editor gràfic d'AGE, en un projecte ideat pel JLD");
+		aPlayer.write(" consistent en implementar el mateix joc usant diferents llenguatges, per poder comparar entre ells.");
+		aPlayer.write(" En tot cas, la idea del joc i el seu desenvolupament segueix sent (c) den Jaume Alcazo Castellarnau.\n\n");
+		aPlayer.write("Encara que el joc és el mateix, l'aspecte de la pantalla en jugar no intenta semblar-se a l'original den Alcazo, ");
+		aPlayer.write(" sinó que té el típic aspecte dels jocs programats en AGE. No obstant això, s'ha renunciat a característiques ");
+		aPlayer.write(" típiques dels jocs en AGE que afectaven al text (com les descripcions de moviment) per mantenir la fidelitat");
+		aPlayer.write(" l'original.");
+		end();
+	}
+	else if ( verb.equalsIgnoreCase("alcazo") )
+	{
+		aPlayer.write("Primera aventura ~ seriosa ~ d'Aventures Alcazo. Guió, textos i programació den Jaume Alcazo, proves el Jaume Alcazo, proves addicionals l'Iván Alcazo. \nVa ser necessària un matí de espremuda neuronal den Jaume Alcazo per obtenir l'argument (ja veus). Va ser necessària una tarda per programar i ha estat revisada en algunes ocasions en dies posteriors als esmentats. \n\nVersió 1.75. \n\nTecleja AJUDA per obtenir la solució de l'aventura \n\nGràcies per jugar");
+		end();
+	}
+	else if ( verb.equalsIgnoreCase("ajudar") )
+	{
+		aPlayer.write("Ja, T'ho has cregut! :-))) No; pensa una mica, amic, és l'aventura més senzilla del món, si no pots amb això, no podràs amb cap.\n");
+		end();	
+	}	
+	else if ( verb.startsWith("afil") )
+	{
+		madera = world.getItem("trozo de madera");
+		cuchillo = world.getItem("cuchillo");
+		estaca = world.getItem("estaca afilada");
+		if ( ParserMethods.refersToEntities ( args , madera , cuchillo , false , false ) )
+		{
+			if ( ( aPlayer.hasItem(madera) || aPlayer.hasItem(madera) ) && aPlayer.hasItem(cuchillo) )
+			{
+				aPlayer.writeAction("Afiles la fusta amb el ganivet i obtens una estaca!\n");
+				aPlayer.removeItem(madera);
+				aPlayer.getRoom().removeItem(madera);
+				aPlayer.addItem(estaca);
+				end();
+			}
+		}
+		else if ( ParserMethods.refersToEntities ( args , madera , cuchillo , false , false ) )
+		{
+			aPlayer.write("Ja està força afilada.\n");
+			end();
+		}
+		else
+		{
+			aPlayer.write("Per afilar necessitaries alguna cosa per afilar i algun tipus d'eina.\n");
+			end();
+		}
+	}
+	
+}]]></Code>
+<PlayerList>
+<Player id="reXXe"/>
+</PlayerList>
+<VisualConfiguration>
+<Colors>
+<Story color="#ccccff"/>
+<Information color="#99ffcc"/>
+<Default color="#ffffff"/>
+<Input color="#6666ff"/>
+<Description color="#ccffcc"/>
+<Foreground color="#ffffff"/>
+<Important color="#ffffff"/>
+<Denial color="#ff9999"/>
+<Action color="#ffcc99"/>
+<Background color="#000000"/>
+<Error color="#ff3333"/>
+</Colors>
+<Font filename="Courier.ttf" name="Arial" size="16.0"/>
+</VisualConfiguration>
+<Rooms>
+<Room name="Biblioteca">
+<DescriptionList>
+<Description>Et trobes a la biblioteca del castell. Òbviament està plena de llibres interessants, però malauradament no tens temps per llegir-los. \nSortides visibles: oest.</Description>
+</DescriptionList>
+<ExtraDescriptionList>
+<ExtraDescription>
+<Name>llibre</Name>
+<Name>llibres</Name>
+<DescriptionList>
+<Description>Munts de llibres, però no tinc temps per llegir ara.</Description>
+</DescriptionList>
+</ExtraDescription>
+</ExtraDescriptionList>
+<PropertyList/>
+<PathList>
+<Path destination="Pasillo" direction="oeste" exitTime="0" standard="true">
+<PropertyList/>
+<DescriptionList/>
+<CommandList/>
+</Path>
+</PathList>
+<Inventory>
+<ItemRef id="crucifijo plateado"/>
+<ItemRef id="palanca"/>
+</Inventory>
+<MobileList/>
+<RelationshipList>
+<Relationship id="Pasillo">
+<PropertyList/>
+</Relationship>
+<Relationship id="crucifijo plateado">
+<PropertyList/>
+</Relationship>
+<Relationship id="palanca">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+<Room name="Cocina">
+<DescriptionList>
+<Description>Estàs en la cuina del castell. Això està ple de casseroles i d'atuells per cuinar. Hi ha un forn, una aigüera i un armari petit.
+Sortides visibles: est.</Description>
+</DescriptionList>
+<ExtraDescriptionList>
+<ExtraDescription>
+<Name>casseroles</Name>
+<Name>atuells</Name>
+<Name>casserole</Name>
+<Name>atuell</Name>
+<Name>cassole</Name>
+<Name>cassoles</Name>
+<DescriptionList>
+<Description>Simples cassoles i atuells de cuina.</Description>
+</DescriptionList>
+</ExtraDescription>
+<ExtraDescription>
+<Name>forn</Name>
+<DescriptionList>
+<Description>Un simple forn, no té cap importància.</Description>
+</DescriptionList>
+</ExtraDescription>
+<ExtraDescription>
+<Name>pica</Name>
+<Name>aigüera</Name>
+<DescriptionList>
+<Description>És una aigüera de pedra. L'aigüera està buida.</Description>
+</DescriptionList>
+</ExtraDescription>
+</ExtraDescriptionList>
+<PropertyList/>
+<PathList>
+<Path destination="Pasillo" direction="este" exitTime="0" standard="true">
+<PropertyList/>
+<DescriptionList/>
+<CommandList/>
+</Path>
+</PathList>
+<Inventory>
+<ItemRef id="cuchillo"/>
+<ItemRef id="armario"/>
+</Inventory>
+<MobileList/>
+<RelationshipList>
+<Relationship id="Pasillo">
+<PropertyList/>
+</Relationship>
+<Relationship id="cuchillo">
+<PropertyList/>
+</Relationship>
+<Relationship id="armario">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+<Room name="Dormitorio">
+<DescriptionList>
+<Description>Estàs en un dormitori no gaire gran ni tampoc molt petit. És bastant auster. Només hi ha un llit i un armari. \nSortides visibles: est.</Description>
+</DescriptionList>
+<ExtraDescriptionList>
+<ExtraDescription>
+<Name>llit</Name>
+<DescriptionList>
+<Description>Està coberta de llençols.</Description>
+</DescriptionList>
+</ExtraDescription>
+<ExtraDescription>
+<Name>armari rober</Name>
+<Name>armari</Name>
+<Name>rober</Name>
+<Name>armari de roba</Name>
+<DescriptionList>
+<Description>L'armari està buit.</Description>
+</DescriptionList>
+</ExtraDescription>
+<ExtraDescription>
+<Name>llençol</Name>
+<Name>llençols</Name>
+<DescriptionList>
+<Description>Llençols normals i corrents.</Description>
+</DescriptionList>
+</ExtraDescription>
+</ExtraDescriptionList>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada en una habitación*/
+void parseCommand( Player aPlayer , String verb , String args )
+{
+	
+	//aPlayer: jugador que introduce un comando.
+	//verb: comando que introduce, por ejemplo "coger"
+	//args: resto de la orden que introduce, por ejemplo "el cuchillo grande"
+	
+	if ( verb.equalsIgnoreCase("mirar") && ( args.indexOf("llençol") >= 0 || args.indexOf("llençols") >= 0 ) )
+	{
+		aPlayer.writeAction("Entre elles trobes una petita claueta.\n\n");
+		Item thing = world.getItem("llavecita");
+		self.addItem(thing);
+		end();
+	}	
+	
+}]]></Code>
+<PathList>
+<Path destination="Escaleras" direction="este" exitTime="0" standard="true">
+<PropertyList/>
+<DescriptionList/>
+<CommandList/>
+</Path>
+</PathList>
+<Inventory/>
+<MobileList/>
+<RelationshipList>
+<Relationship id="Escaleras">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+<Room name="El Final">
+<DescriptionList>
+<Description>Estàs en una habitació nua. Únicament hi ha un altar al centre. A sobre de l'altar pots veure un taüt. \nSortides visibles: aquest.</Description>
+</DescriptionList>
+<ExtraDescriptionList>
+<ExtraDescription>
+<Name>altar</Name>
+<DescriptionList>
+<Description>És un altar de dura pedra. A sobre d'aquest hi ha el taüt.</Description>
+</DescriptionList>
+</ExtraDescription>
+</ExtraDescriptionList>
+<PropertyList/>
+<PathList>
+<Path destination="Escaleras superiores" direction="este" exitTime="0" standard="true">
+<PropertyList/>
+<DescriptionList/>
+<CommandList/>
+</Path>
+</PathList>
+<Inventory>
+<ItemRef id="Ataúd"/>
+</Inventory>
+<MobileList/>
+<RelationshipList>
+<Relationship id="Escaleras superiores">
+<PropertyList/>
+</Relationship>
+<Relationship id="Ataúd">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+<Room name="Escaleras">
+<DescriptionList>
+<Description>Et trobes al final del passadís. Davant teu veus unes escales que pugen i altres que baixen. A l'oest hi ha el dormitori i l'est la sala d'estar. \nSortides visibles: sud, est, oest, a dalt, a baix.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada en una habitación*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+
+    //aCreature: criatura que introduce un comando.
+    //verb: comando que introduce, por ejemplo "coger"
+    //args: resto de la orden que introduce, por ejemplo "el cuchillo grande"
+
+
+    //terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
+    //por defecto ante ella
+    //terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
+    //comando y ejecución de la acción correspondiente
+    //aCreature.write ("\nVerb: " + verb + " Args: " + args + "\n");
+
+}]]></Code>
+<PathList>
+<Path destination="Pasillo" direction="sur" exitTime="0" standard="true">
+<PropertyList/>
+<DescriptionList/>
+<CommandList/>
+</Path>
+<Path destination="Sala de estar" direction="este" exitTime="0" standard="true">
+<PropertyList/>
+<DescriptionList/>
+<CommandList/>
+</Path>
+<Path destination="Dormitorio" direction="oeste" exitTime="0" standard="true">
+<PropertyList/>
+<DescriptionList/>
+<CommandList/>
+</Path>
+<Path destination="Sótano" direction="abajo" exitTime="0" standard="true">
+<PropertyList/>
+<DescriptionList/>
+<CommandList>
+<Command name="baixar"/>
+</CommandList>
+</Path>
+<Path destination="Escaleras superiores" direction="arriba" exitTime="0" standard="true">
+<PropertyList/>
+<DescriptionList/>
+<CommandList>
+<Command name="pujar"/>
+</CommandList>
+</Path>
+</PathList>
+<Inventory/>
+<MobileList/>
+<RelationshipList>
+<Relationship id="Pasillo">
+<PropertyList/>
+</Relationship>
+<Relationship id="Sala de estar">
+<PropertyList/>
+</Relationship>
+<Relationship id="Dormitorio">
+<PropertyList/>
+</Relationship>
+<Relationship id="Sótano">
+<PropertyList/>
+</Relationship>
+<Relationship id="Escaleras superiores">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+<Room name="Escaleras superiores">
+<DescriptionList>
+<Description>Estàs al pis superior del castell. Aquí fa encara més fred que a baix. Darrere teu estan les escales que baixen i cap a l'oest está la habitació del vampir.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<PathList>
+<Path destination="El Final" direction="oeste" exitTime="0" standard="true">
+<PropertyList/>
+<DescriptionList/>
+<CommandList/>
+</Path>
+<Path destination="Escaleras" direction="abajo" exitTime="0" standard="true">
+<PropertyList/>
+<DescriptionList/>
+<CommandList>
+<Command name="baixar"/>
+</CommandList>
+</Path>
+</PathList>
+<Inventory/>
+<MobileList/>
+<RelationshipList>
+<Relationship id="El Final">
+<PropertyList/>
+</Relationship>
+<Relationship id="Escaleras">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+<Room name="Limbo">
+<DescriptionList>
+<Description>No estàs enlloc, ja has guanyat.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada en una habitación*/
+void parseCommand( Player aPlayer , String verb , String args )
+{
+	
+	//aPlayer: jugador que introduce un comando.
+	//verb: comando que introduce, por ejemplo "coger"
+	//args: resto de la orden que introduce, por ejemplo "el cuchillo grande"
+	
+	
+	//terminar con end(): interceptamos la frase, no se ejecuta lo que se tenga que ejecutar
+	//por defecto ante ella
+	//terminar normal: después de nuestro procesado, se lleva a cabo el análisis normal del
+	//comando y ejecución de la acción correspondiente
+	
+	aPlayer.write("Ja has guanyat. No hi ha res més a fer.\n");
+
+
+}]]></Code>
+<PathList/>
+<Inventory/>
+<MobileList/>
+<RelationshipList/>
+</Room>
+<Room name="Pasillo">
+<DescriptionList>
+<Description>Et trobes al mig del passadís principal d'aquest pis. A l'oest hi ha la cuina i l'est la biblioteca. El passadís segueix cap al nord. \nSortides visibles: nord, sud, est, oest.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<PathList>
+<Path destination="Vestíbulo" direction="sur" exitTime="0" standard="true">
+<PropertyList/>
+<DescriptionList/>
+<CommandList/>
+</Path>
+<Path destination="Biblioteca" direction="este" exitTime="0" standard="true">
+<PropertyList/>
+<DescriptionList/>
+<CommandList/>
+</Path>
+<Path destination="Cocina" direction="oeste" exitTime="0" standard="true">
+<PropertyList/>
+<DescriptionList/>
+<CommandList/>
+</Path>
+<Path destination="Escaleras" direction="norte" exitTime="0" standard="true">
+<PropertyList/>
+<DescriptionList/>
+<CommandList/>
+</Path>
+</PathList>
+<Inventory/>
+<MobileList/>
+<RelationshipList>
+<Relationship id="Vestíbulo">
+<PropertyList/>
+</Relationship>
+<Relationship id="Biblioteca">
+<PropertyList/>
+</Relationship>
+<Relationship id="Cocina">
+<PropertyList/>
+</Relationship>
+<Relationship id="Escaleras">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+<Room name="Sala de estar">
+<DescriptionList>
+<Description>És la sala més acollidora de tot el castell. En la xemeneia les últimes restes d'algun foc espurneja alegrement. Hi ha una taula gran amb una cadira al costat. De la paret pengen alguns trofeus de caça i adorns diversos. \nSortides visibles: oest.</Description>
+</DescriptionList>
+<ExtraDescriptionList>
+<ExtraDescription>
+<Name>xemeneia</Name>
+<DescriptionList>
+<Description>És una xemeneia feta de maons i molt elegant.</Description>
+</DescriptionList>
+</ExtraDescription>
+<ExtraDescription>
+<Name>trofeus</Name>
+<Name>trofeu</Name>
+<DescriptionList>
+<Description>Insignificants trofeus.</Description>
+</DescriptionList>
+</ExtraDescription>
+<ExtraDescription>
+<Name>adorn</Name>
+<Name>adorns</Name>
+<DescriptionList>
+<Description>Adornen.</Description>
+</DescriptionList>
+</ExtraDescription>
+<ExtraDescription>
+<Name>taula</Name>
+<DescriptionList>
+<Description>Una taula de caoba, força gran.</Description>
+</DescriptionList>
+</ExtraDescription>
+<ExtraDescription>
+<Name>cadira</Name>
+<DescriptionList>
+<Description>Una còmoda cadira.</Description>
+</DescriptionList>
+</ExtraDescription>
+<ExtraDescription>
+<Name>restes</Name>
+<Name>reste</Name>
+<DescriptionList>
+<Description>Són les restes d'algun foc recent.</Description>
+</DescriptionList>
+</ExtraDescription>
+<ExtraDescription>
+<Name>foc</Name>
+<DescriptionList>
+<Description>Són les restes d'algun foc recent.</Description>
+</DescriptionList>
+</ExtraDescription>
+</ExtraDescriptionList>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada en una habitación*/
+void parseCommand( Player aPlayer , String verb , String args )
+{
+	
+	//aPlayer: jugador que introduce un comando.
+	//verb: comando que introduce, por ejemplo "coger"
+	//args: resto de la orden que introduce, por ejemplo "el cuchillo grande"
+	
+	if ( verb.equalsIgnoreCase("mirar") && ( args.indexOf("restes") >= 0 || args.indexOf("reste") >= 0 ||args.indexOf("foc") >= 0 ) )
+	{
+		if ( !self.getPropertyValueAsBoolean("wood_was_delivered") )
+		{
+			self.setProperty("wood_was_delivered",true);
+			aPlayer.writeAction("Entre les restes del foc trobes un tros de fusta.\n\n");
+			Item thing = world.getItem("trozo de madera");
+			self.addItem(thing);
+			end();
+		}
+	}	
+	
+}]]></Code>
+<PathList>
+<Path destination="Escaleras" direction="oeste" exitTime="0" standard="true">
+<PropertyList/>
+<DescriptionList/>
+<CommandList/>
+</Path>
+</PathList>
+<Inventory/>
+<MobileList/>
+<RelationshipList>
+<Relationship id="Escaleras">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+<Room name="Sótano">
+<DescriptionList>
+<Description>En aquest petit soterrani fa molta calor, sents una sensació de recolliment. Està tot molt brut. Aquí hi ha un barril, també hi ha unes escales que pugen.\nSortides visibles: a dalt.</Description>
+</DescriptionList>
+<ExtraDescriptionList>
+<ExtraDescription>
+<Name>escales</Name>
+<Name>graons</Name>
+<Name>graon</Name>
+<Name>escale</Name>
+<DescriptionList>
+<Description>Aquests graons condueixen al pis superior.</Description>
+</DescriptionList>
+</ExtraDescription>
+</ExtraDescriptionList>
+<PropertyList/>
+<PathList>
+<Path destination="Escaleras" direction="arriba" exitTime="0" standard="true">
+<PropertyList/>
+<DescriptionList/>
+<CommandList>
+<Command name="pujar"/>
+</CommandList>
+</Path>
+</PathList>
+<Inventory>
+<ItemRef id="barril"/>
+</Inventory>
+<MobileList/>
+<RelationshipList>
+<Relationship id="Escaleras">
+<PropertyList/>
+</Relationship>
+<Relationship id="barril">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+<Room name="Vestíbulo">
+<DescriptionList>
+<Description>Estàs al vestíbul del castell. L'ambient és molt humit i fred. Estàs en un passadís que s'estén cap al nord. Al sud queda la porta d'entrada al castell. \nSortides visibles: nord.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<PathList>
+<Path destination="Pasillo" direction="norte" exitTime="0" standard="true">
+<PropertyList/>
+<DescriptionList/>
+<CommandList/>
+</Path>
+</PathList>
+<Inventory/>
+<MobileList>
+<MobRef id="reXXe"/>
+</MobileList>
+<RelationshipList>
+<Relationship id="Pasillo">
+<PropertyList/>
+</Relationship>
+<Relationship id="reXXe">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Room>
+</Rooms>
+<Items>
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="Ataúd" openable="false" unlockable="false" volume="50000" weight="50000">
+<SingularNames/>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>taüt</Name>
+<Name>taut</Name>
+<Name>caixa de pi</Name>
+<Name>caixa</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>Una senzilla caixa de pi.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "comer"
+	//args: resto de la orden que introduce, por ejemplo "la seta"
+	
+	if ( verb.equalsIgnoreCase("obrir") )
+	{
+
+		if ( aCreature.hasItem( world.getItem("ristra de ajos") )
+		&& aCreature.hasItem( world.getItem("crucifijo plateado") )
+		&& aCreature.hasItem( world.getItem("estaca afilada") )
+		&& aCreature.hasItem( world.getItem("martillo") ) )
+			bien(aCreature);
+		else
+			mal(aCreature);
+		end();
+	}
+
+}
+
+void mal ( Mobile aCreature )
+{
+	aCreature.write("Necessito quatre coses abans de posar fi a la \"vida\" del vampir. A saber: un crucifix, una ristra d'alls, una estaca afilada i un martell.");
+}
+
+void bien ( Mobile aCreature )
+{
+	aCreature.write("Obres el taüt. Dins contemples l'horrible cara del vampir. Protegit pels alls i el crucifix comences la teva horrible tasca. Li claves l'estaca al pit i d'un terrible cop de martell l'enfonses en el més profund del seu ésser. Amb un crit d'agonia es desfà en pols i tu acabes la teva missió aquí.\n\n");
+	aCreature.write("Per ara...\n\n");
+	aCreature.write("               Finis.");
+	aCreature.writeAction("\n\n\n\n\n¡¡¡¡¡¡¡HAS GUANAYT!!!!!!!\n\n\n"); 
+	aCreature.setRoom(world.getRoom("Limbo"));
+}]]></Code>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="true" gender="true" lockable="true" name="armario" openable="true" unlockable="true" volume="50000" weight="50000">
+<SingularNames>
+<Description>armari</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>armari</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">self.isLocked()</Condition>Està tancat amb clau.</Description>
+<Description>
+<Condition language="BeanShell">self.isClosed() &amp;&amp; !self.isLocked()</Condition>Està tancat.</Description>
+<Description>
+<Condition language="BeanShell">self.isOpen()</Condition>A l'armari hi ha %INVENTORY</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<OpenDescriptionList>
+<Description>
+<Condition language="BeanShell">self.isClosed() &amp;&amp; !self.isLocked()</Condition>SUCCESS:Obres l'armari.</Description>
+<Description>
+<Condition language="BeanShell">self.isLocked()</Condition>FAIL:No aconsegueixes obrir l'armari, està tancat amb clau.</Description>
+<Description>
+<Condition language="BeanShell">!self.isClosed()</Condition>FAIL:L'armari ja està obert.</Description>
+</OpenDescriptionList>
+<CloseDescriptionList>
+<Description>
+<Condition language="BeanShell">!self.isClosed()</Condition>SUCCESS:Tanques l'armari.</Description>
+<Description>
+<Condition language="BeanShell">self.isClosed()</Condition>FAIL:L'armari ja està tancat.</Description>
+</CloseDescriptionList>
+<LockDescriptionList>
+<Description>
+<Condition language="BeanShell">!self.isLocked() &amp;&amp; self.isClosed()</Condition>SUCCESS:La claueta encaixa al pany, ara l'armari està tancat amb clau.</Description>
+<Description>
+<Condition language="BeanShell">!self.isLocked() &amp;&amp; self.isClosed()</Condition>FAIL:No sembla encaixar al pany.</Description>
+<Description>
+<Condition language="BeanShell">self.isLocked()</Condition>FAIL:L'armari ja està tancat amb clau.</Description>
+<Description>
+<Condition language="BeanShell">!self.isClosed()</Condition>FAIL:Primer tanca l'armari.</Description>
+</LockDescriptionList>
+<UnlockDescriptionList>
+<Description>
+<Condition language="BeanShell">self.isLocked()</Condition>SUCCESS:La claueta encaixa perfectament al pany, ara l'armari no està tancat amb clau.</Description>
+<Description>
+<Condition language="BeanShell">self.isLocked()</Condition>FAIL:No sembla encaixar al pany.</Description>
+<Description>
+<Condition language="BeanShell">!self.isLocked()</Condition>FAIL:L'armari no està tancat amb clau.</Description>
+</UnlockDescriptionList>
+<PropertyList>
+<PropertyEntry name="locked" timeUnitsLeft="0" value="true"/>
+<PropertyEntry name="closed" timeUnitsLeft="0" value="true"/>
+</PropertyList>
+<Code language="BeanShell"><![CDATA[/*Método de análisis sintáctico de la entrada referida a una cosa*/
+void parseCommand( Mobile aCreature , String verb , String args )
+{
+	
+	//aCreature: criatura que introduce un comando.
+	//verb: comando que introduce, por ejemplo "comer"
+	//args: resto de la orden que introduce, por ejemplo "la seta"
+	
+	if ( verb.equalsIgnoreCase("mirar") )
+	{
+		if ( !self.getPropertyValueAsBoolean("garlic_was_found") && !self.isClosed() )
+		{
+			self.setProperty("garlic_was_found",true);
+			aCreature.write("En examinar-ho et cau al terra una ristra d'alls que estava en el seu interior.");
+			Item thing = world.getItem("ristra de ajos");
+			aCreature.getRoom().addItem(thing);
+		}
+	}
+	
+}]]></Code>
+<Inventory/>
+<KeyList>
+<Inventory>
+<ItemRef id="llavecita"/>
+</Inventory>
+</KeyList>
+<RelationshipList>
+<Relationship id="llavecita">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Item>
+<Item canGet="true" closeable="true" gender="true" lockable="false" name="barril" openable="true" unlockable="true" volume="50000" weight="50000">
+<SingularNames>
+<Description>barril</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>barril</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>
+<Condition language="BeanShell">self.isClosed()</Condition>No pots veure el que hi ha dins del barril perquè està tancat.</Description>
+<Description>
+<Condition language="BeanShell">!self.isClosed()</Condition>El barril està obert. En el seu interior hi ha %INVENTORY</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<OpenDescriptionList>
+<Description>
+<Condition language="BeanShell">!self.isLocked()</Condition>SUCCESS:Obres el barril.</Description>
+<Description>
+<Condition language="BeanShell">self.isLocked()</Condition>FAIL:Intentes obrir-lo, però no tens prou força.</Description>
+</OpenDescriptionList>
+<CloseDescriptionList>
+<Description>
+<Condition language="BeanShell">!self.isClosed()</Condition>SUCCESS:Tancas el barril.</Description>
+<Description>
+<Condition language="BeanShell">self.isClosed()</Condition>FAIL:El barril ja està tancado</Description>
+</CloseDescriptionList>
+<UnlockDescriptionList>
+<Description>
+<Condition language="BeanShell">self.isLocked()</Condition>FAIL:Intentes obrir-lo, però no tens prou força.</Description>
+<Description>
+<Condition language="BeanShell">self.isLocked()</Condition>SUCCESS:Fent palanca, aconsegueixes obrir el barril.</Description>
+<Description>
+<Condition language="BeanShell">!self.isLocked()</Condition>SUCCESS:El barril ja no oposa resistència.</Description>
+</UnlockDescriptionList>
+<PropertyList>
+<PropertyEntry name="locked" timeUnitsLeft="0" value="true"/>
+<PropertyEntry name="closed" timeUnitsLeft="0" value="true"/>
+</PropertyList>
+<Inventory>
+<ItemRef id="martillo"/>
+</Inventory>
+<KeyList>
+<Inventory>
+<ItemRef id="palanca"/>
+</Inventory>
+</KeyList>
+<RelationshipList>
+<Relationship id="martillo">
+<PropertyList/>
+</Relationship>
+<Relationship id="palanca">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+</Item>
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="cos" openable="false" unlockable="false" volume="0" weight="0">
+<SingularNames>
+<Description>cos</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>cos</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>El teu cos? No està malament del tot.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<RelationshipList>
+<Relationship id="vestit barat">
+<PropertyList>
+<PropertyEntry name="wears" timeUnitsLeft="0" value="true"/>
+</PropertyList>
+</Relationship>
+</RelationshipList>
+</Item>
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="crucifijo plateado" openable="false" unlockable="false" volume="0" weight="0">
+<SingularNames>
+<Description>crucifix platejat</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>crucifix platejat</Name>
+<Name>crucifix</Name>
+<Name>creu platejada</Name>
+<Name>creu</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>És un petit crucifix platejat. És un dels quatre elements que ens serviran per derrotar al vampir.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="cuchillo" openable="false" unlockable="false" volume="0" weight="0">
+<SingularNames>
+<Description>ganivet</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>ganivet</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>Un simple ganivet de cuina. Punxa.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="estaca afilada" openable="false" unlockable="false" volume="0" weight="0">
+<SingularNames>
+<Description>estaca afilada</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>estaca de fusta</Name>
+<Name>estaca afilada</Name>
+<Name>estaca</Name>
+<Name>fusta</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>Un tros de fusta rectangular i allargat, un dels seus extrems està afilat acuradament.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="llavecita" openable="false" unlockable="false" volume="0" weight="0">
+<SingularNames>
+<Description>claueta</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>claueta</Name>
+<Name>clau</Name>
+<Name>clau petita</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>Aquesta petita claueta té la pinta d'obrir un armari o alguna cosa així.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="martillo" openable="false" unlockable="false" volume="0" weight="0">
+<SingularNames>
+<Description>martell</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>martell</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>Un martell gran. És un dels elements que em permetran acabar amb el vampir.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="palanca" openable="false" unlockable="false" volume="0" weight="0">
+<SingularNames>
+<Description>palanca</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>palanca</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>És una palanca d'acer toledà. Serveix per forçar coses.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="false" lockable="false" name="ristra de ajos" openable="false" unlockable="false" volume="0" weight="0">
+<SingularNames>
+<Description>ristra d'alls</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>ristra d'alls</Name>
+<Name>ristra</Name>
+<Name>alls</Name>
+<Name>all</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>És una ristra d'alls que expel·leixen una olor una mica fastigós. És un dels quatre elements que em serviran per derrotar al vampir.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="trozo de madera" openable="false" unlockable="false" volume="0" weight="0">
+<SingularNames>
+<Description>tros de fusta</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>tros de fusta</Name>
+<Name>fusta</Name>
+<Name>tros</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>Un tros de fusta, rectangular i allargat.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<PropertyList/>
+<RelationshipList/>
+</Item>
+<Item canGet="true" closeable="false" gender="true" lockable="false" name="vestit barat" openable="false" type="wearable" unlockable="false" volume="0" weight="0">
+<SingularNames>
+<Description>vestit barat</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>vestit barat</Name>
+<Name>vestit</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList>
+<Description>És un vestit barat comprat a les rebaixes.</Description>
+</DescriptionList>
+<ExtraDescriptionList/>
+<WearableSpecs>
+<WearableLimbs>
+<Requirement>
+<Name>cos</Name>
+</Requirement>
+</WearableLimbs>
+<DamageList/>
+</WearableSpecs>
+<PropertyList/>
+<RelationshipList/>
+</Item>
+</Items>
+<Mobiles>
+<Mobile gender="true" hp="10" maxhp="10" maxmp="10" mp="10" name="reXXe">
+<SingularNames>
+<Description>reXXe</Description>
+</SingularNames>
+<PluralNames/>
+<SingularReferenceNames>
+<Name>reXXe</Name>
+</SingularReferenceNames>
+<PluralReferenceNames/>
+<DescriptionList/>
+<ExtraDescriptionList/>
+<PropertyList/>
+<Traits>
+<SkillList>
+<Skill name="FUE" value="12"/>
+<Skill name="STR" value="12"/>
+</SkillList>
+</Traits>
+<Inventory>
+<ItemRef id="vestit barat"/>
+</Inventory>
+<Parts>
+<Inventory>
+<ItemRef id="cos"/>
+</Inventory>
+</Parts>
+<RelationshipList>
+<Relationship id="vestit barat">
+<PropertyList/>
+</Relationship>
+<Relationship id="cos">
+<PropertyList/>
+</Relationship>
+</RelationshipList>
+<CurrentRoom id="Vestíbulo"/>
+<LastRoom id="Vestíbulo"/>
+</Mobile>
+</Mobiles>
+<Spells/>
+<AbstractEntities/>
+</World>
