@@ -15,13 +15,19 @@ Each version comes in three distributions:
 
 = Latest version =
 
-The latest version is 1.3.4, released 2014-11-01.
+The latest version is 1.3.5, released 2015-02-08.
+
+ * [http://www.caad.es/aetheria/downloads/AgeDevelopersKit-1.3.5-201502081539.zip Developer's Kit]
+ * [http://www.caad.es/aetheria/downloads/AgePlayersKit-1.3.5-201502081539.zip Player's Kit]
+ * [http://www.caad.es/aetheria/downloads/AgeMinimal-1.3.5-201502081539.zip Minimal Player's Kit]
+
+= Not so latest versions =
+
+The next to latest version is 1.3.4, released 2014-11-01.
 
  * [http://www.caad.es/aetheria/downloads/AgeDevelopersKit-1.3.4-201411011654.zip Developer's Kit]
  * [http://www.caad.es/aetheria/downloads/AgePlayersKit-1.3.4-201411011654.zip Player's Kit]
  * [http://www.caad.es/aetheria/downloads/AgeMinimal-1.3.4-201411011654.zip Minimal Player's Kit]
-
-= Not so latest versions =
 
 The previous version is 1.3.3, released 2014-04-28.
 
