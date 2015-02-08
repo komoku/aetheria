@@ -104,10 +104,10 @@ cant.put.into.volume=$item no hi cap en $container.\n
 cant.put.into.noncontainer=No sembla gaire útil posar coses a $container.\n
 
 #Quan intentes ficar alguna cosa en un $container que està tancat.
-cant.put.into.closed=$container està tancat$oa.\n  <-------------------------------------------------------------------------tancat/tancada
+cant.put.into.closed=$container està tancat$oa.\n
 
 #Quan intentes posar un $item contenedor dins de si mateix.
-cant.put.into.itself=No pots posar $item en si mateix$oa.\n  <-------------------------------------------------------------------------mateix/mateixa
+cant.put.into.itself=No pots posar $item en si mateix$oa.\n
 
 #Quan intentes mirar quelcom que no existeix
 look.what=¿Què preténs veure?\n
@@ -450,8 +450,8 @@ direction.nw=nord-oest
 direction.ne=nord-est
 direction.sw=sud-oest
 direction.se=sud-est
-direction.u=adalt
-direction.d=abaix
+direction.u=dalt
+direction.d=baix
 
 #Direccions (full name): creature comes from...
 direction.full.n=el nord
@@ -462,8 +462,8 @@ direction.full.nw=el nord-oest
 direction.full.ne=el nord-est
 direction.full.sw=el sud-oest
 direction.full.se=el sud-est
-direction.full.u=adalt
-direction.full.d=abaix
+direction.full.u=dalt
+direction.full.d=baix
 
 #obrir/tancar comportament predeterminat
 you.unlock.item=Obre $item amb $key.
@@ -471,15 +471,15 @@ cant.unlock.key=No sembla que $item s'obri amb $key.
 you.lock.item=Tanques $item amb $key.
 cant.lock.key=No sembla que $item es pugui tancar amb $key.
 cant.open.already.open=Però si $item ja està obert$a...
-cant.open.locked=Sembla que $item està tancat$oa amb clau.<---------------------------------------------------------tancat/tancada
+cant.open.locked=Sembla que $item està tancat$oa amb clau.
 you.open.item=Obres $item.
-cant.close.already.closed=Però si $item ja està cerrad$oa...<---------------------------------------------------------tancat/tancada
+cant.close.already.closed=Però si $item ja està cerrad$oa...
 you.close.item=Tanques $item.
 
 #mostrar inventari, etc. quan està buit
 nothing=res
 
-#the from in "you get the notebook FROM the chest"<--------------------------------------------------------- no se que quiere decir
+#the from in "you get the notebook FROM the chest"
 get.prep.from=de
 
 #Nom per mostrar quan s'ha de parlar d'un Mòbil que no té nom per mostrar a un observador donat (per exemple, en accions)
