@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<World author="Jaume Alcazo Castellarnau (Versió de Carlos Gómez Rodirguez. Traducció al català edlobez)" date="2015-02-7" language="ca" moduleName="Vampir: Cròniques de reXXe" parserVersion="" type="Clásica" version="0.1" worldDir="." worldName="Vampiro">
+<World author="Jaume Alcazo Castellarnau (Versió de Carlos Gómez Rodirguez. Traducció al català edlobez)" date="2015-02-7" language="ca" moduleName="Vampir: Cròniques de reXXe" parserVersion="1.3.5" type="Clásica" version="0.1" worldDir="." worldName="Vampiro">
 <IdeMetaInf>
 <View xoffset="-78.29013324981733" yoffset="-59.29013324981727" zoom="1.4845235706290523"/>
 <Node class="org.f2o.absurdum.puck.gui.graph.ItemNode" name="Ataúd" x="100" y="20"/>
