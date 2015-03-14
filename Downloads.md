@@ -1,0 +1,44 @@
+# Downloads #
+
+Here you can download the latest versions of the Aetheria Game Engine.
+
+All the downloads are compatible with Windows, Mac and Linux, as long as you have Java installed.
+
+Each version comes in three distributions:
+
+  * Developer's Kit: the most complete kit, allowing developers to build playable universes as well as play them.
+  * Player's Kit: You can use this kit to run AGE playable universes. Includes some very basic games and a loader (AGE Catalog) that you can use to get more online.
+  * Minimal Player's Kit: For those who want to run playable universes in command-line mode only. Users should normally download the standard player's or developer's kit, only download this one if you know what you are doing.
+
+
+# Latest version #
+
+The latest version is 1.3.5, released 2015-02-08.
+
+  * [Developer's Kit](http://www.caad.es/aetheria/downloads/AgeDevelopersKit-1.3.5-201502081539.zip)
+  * [Player's Kit](http://www.caad.es/aetheria/downloads/AgePlayersKit-1.3.5-201502081539.zip)
+  * [Minimal Player's Kit](http://www.caad.es/aetheria/downloads/AgeMinimal-1.3.5-201502081539.zip)
+
+# Not so latest versions #
+
+The next to latest version is 1.3.4, released 2014-11-01.
+
+  * [Developer's Kit](http://www.caad.es/aetheria/downloads/AgeDevelopersKit-1.3.4-201411011654.zip)
+  * [Player's Kit](http://www.caad.es/aetheria/downloads/AgePlayersKit-1.3.4-201411011654.zip)
+  * [Minimal Player's Kit](http://www.caad.es/aetheria/downloads/AgeMinimal-1.3.4-201411011654.zip)
+
+The previous version is 1.3.3, released 2014-04-28.
+
+  * [Developer's Kit](http://www.caad.es/aetheria/downloads/AgeDevelopersKit-1.3.3-201404282201.zip)
+  * [Player's Kit](http://www.caad.es/aetheria/downloads/AgePlayersKit-1.3.3-201404282201.zip)
+  * [Minimal Player's Kit](http://www.caad.es/aetheria/downloads/AgeMinimal-1.3.3-201404282201.zip)
+
+Prior to that, we had version 1.3.2, released 2013-08-16.
+
+  * [Developer's Kit](http://aetheria.googlecode.com/files/AgeDevelopersKit-1.3.2-201308161955.zip)
+  * [Player's Kit](http://aetheria.googlecode.com/files/AgePlayersKit-1.3.2-201308161955.zip)
+  * [Minimal Player's Kit](http://aetheria.googlecode.com/files/AgeMinimal-1.3.2-201308161955.zip)
+
+# Older versions #
+
+Older versions can be downloaded here: [Old download page](http://code.google.com/p/aetheria/downloads/list)
