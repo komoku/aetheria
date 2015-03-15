@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 
@@ -74,13 +76,32 @@ public class AddArrowTool extends ToolAction
 						Arrow a = (Arrow) AddArrowTool.this.prototype.clone();
 						a.setSource(source);
 						a.setDestination(n);
+						
+						//check if there already exists an arrow to that destination
+						boolean alreadyExists = false;
+						List arrows = source.getArrows();
+						for (Iterator iterator = arrows.iterator(); iterator.hasNext();) 
+						{
+							Arrow ar = (Arrow) iterator.next();
+							if ( ar.getDestination() != null && ar.getDestination().equals(n) )
+							{
+								alreadyExists = true;
+								break;
+							}
+						}
+						
 						getPanel().setSpecialNode(null);
 						getPanel().setSpecialArrow(null);
-						source.addArrow(a); //this adds it to the panel
-						getPanel().resetSelections();
-						getPanel().selectArrow(a);
-						getPanel().getPropertiesPanel().show(a);
-						getPanel().getPropertiesPanel().repaint();
+						
+						if ( !alreadyExists )
+						{
+							source.addArrow(a); //this adds it to the panel
+							getPanel().resetSelections();
+							getPanel().selectArrow(a);
+							getPanel().getPropertiesPanel().show(a);
+							getPanel().getPropertiesPanel().repaint();
+						}
+						
 						source = null;
 						/*
 						AddArrowTool.this.panel.setToolListener(null);
