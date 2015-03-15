@@ -182,11 +182,17 @@ public class RoomPanel extends EntityPanel implements BeanShellCodeHolder
 			}
 			else if ( gep instanceof RoomHasCharPanel )
 			{
-				mobsElt.appendChild(((RoomHasCharPanel)gep).getXML(d));
+				if ( ((RoomHasCharPanel)gep).getRelationshipType().equals(UIMessages.getInstance().getMessage("structural.room.char")) ) //there is a contains structural relationship to char
+				{
+					mobsElt.appendChild(((RoomHasCharPanel)gep).getXML(d));
+				}
 			}
 			else if ( gep instanceof RoomHasItemPanel )
 			{
-				invElt.appendChild(((RoomHasItemPanel)gep).getXML(d));
+				if ( ((RoomHasItemPanel)gep).getRelationshipType().equals(UIMessages.getInstance().getMessage("structural.room.item")) ) //there is a contains structural relationship to item
+				{
+					invElt.appendChild(((RoomHasItemPanel)gep).getXML(d));
+				}
 			}
 			/*
 			 * refactored up in hierarchy
