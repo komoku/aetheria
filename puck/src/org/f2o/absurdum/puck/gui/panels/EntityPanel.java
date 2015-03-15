@@ -184,7 +184,8 @@ public class EntityPanel extends GraphElementPanel
 			{
 				ArrowPanel relPanel = (ArrowPanel) gep;
 				Node n = relPanel.getCustomRelationshipXML(d);
-				if ( n.hasChildNodes() ) //if it doesn't have children there are no custom relationships, would be worthless to append it
+				if ( n!=null && n.hasChildNodes() ) //if it's null or it doesn't have children there are no custom relationships, would be worthless to append it 
+													//(actually second operand of && is unnecessary I think)
 					relationshipsElt.appendChild(n);
 			}
 		}

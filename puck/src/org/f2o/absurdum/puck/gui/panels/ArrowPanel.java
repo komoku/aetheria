@@ -225,6 +225,12 @@ public class ArrowPanel extends GraphElementPanel
 		
 		Element elt = (Element) customRelationshipsPanel.getXML(d);
 		
+		/*
+		 * If the PropertyList is empty, then we don't really need the RelationshipList node, it's useless.
+		 * This happens if the panel was created for a structural relationship (has, has part, etc.) and thus the custom relationship panel is empty.
+		 */
+		if ( elt.getChildNodes().getLength() == 0 ) return null; 
+		
 		result.appendChild(elt);
 		
 		return result;
