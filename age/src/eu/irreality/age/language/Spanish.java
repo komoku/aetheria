@@ -45,7 +45,19 @@ public class Spanish extends NaturalLanguage
 		String thestring = command;	
 		boolean doneSomething = false;
 		
+		//first, change proclitic pronouns appearing before the verb to their clitic form, which will be handled later
+		StringTokenizer st = new StringTokenizer ( thestring );
+		String firstWord = null;
+		String secondWord = null;
+		if ( st.hasMoreTokens() ) firstWord = st.nextToken().trim().toLowerCase();
+		if ( st.hasMoreTokens() ) secondWord = st.nextToken().trim();
+		if ( secondWord != null && isVerb(secondWord) )
+		{
+			if ( "las".equals(firstWord) || "los".equals(firstWord) || "me".equals(firstWord) || "lo".equals(firstWord) || "la".equals(firstWord) )
+				thestring = secondWord + firstWord + " " + (st.hasMoreTokens()?st.nextToken(""):"");
+		}
 		
+		//now, do clitic pronoun substitutions		
 		if ( firstWord(thestring).toLowerCase().endsWith ( "las" ) && firstWord(thestring).length() > 3 )
 		{
 			//Pronombre femenino plural.
@@ -138,10 +150,10 @@ public class Spanish extends NaturalLanguage
 		}
 			
 		//{when we reach this point, we have made some substitution and thestring starts with a recognized verb}
-		StringTokenizer st = new StringTokenizer(thestring.toLowerCase());
-		String newVerb = st.nextToken().trim();
+		StringTokenizer st2 = new StringTokenizer(thestring.toLowerCase());
+		String newVerb = st2.nextToken().trim();
 		String unaccentedVerb = this.removeAccents(newVerb); //verbos pierden acentos: cógelo -> cóge <tal> -> coge <tal>
-		return unaccentedVerb + st.nextToken("");
+		return unaccentedVerb + st2.nextToken("");
 	}
 	
 	
