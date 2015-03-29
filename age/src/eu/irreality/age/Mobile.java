@@ -11405,14 +11405,14 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 	/**
 	 * Substitutes pronouns AND aplies spell checking if enabled
 	 */
-	public String substitutePronounsInSentence(String commandstring) {
+	public String substitutePronounsInSentence(String commandstring) { //matalo con el cuchillo
 		StringTokenizer st = new StringTokenizer(commandstring);
 		String originalVerb = st.nextToken(); //matalo
-		String expandedVerb = lenguaje.substitutePronouns ( this , originalVerb , mentions ); //mata Juanito 
-		String expandedVerbWithoutPronoun = firstWord ( expandedVerb ); //mata
-		String expandedString = expandedVerb + " " + restWords(commandstring); //mata Juanito con el cuchillo
+		String expandedString = lenguaje.substitutePronouns ( this , commandstring , mentions ); //mata Juanito con el cuchillo
+		String expandedVerbWithoutPronoun = firstWord ( expandedString ); //mata
+		//String expandedString = expandedVerb + " " + restWords(commandstring); //mata Juanito con el cuchillo
 		String workingString;
-		if ( !lenguaje.isVerb(originalVerb) && lenguaje.isVerb(firstWord(expandedVerbWithoutPronoun)) ) 
+		if ( /*!lenguaje.isVerb(originalVerb) &&*/ lenguaje.isVerb(firstWord(expandedVerbWithoutPronoun)) ) 
 			workingString = expandedString; //pronoun substitution was useful
 		else
 			workingString = commandstring; //first word could be something like "habla" or "bote", better not to expand it if not sure.

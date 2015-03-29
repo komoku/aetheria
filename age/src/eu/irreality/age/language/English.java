@@ -80,14 +80,15 @@ public class English extends NaturalLanguage
 		StringTokenizer st = new StringTokenizer(sentence," \n\t,.-_", true);
 		StringBuffer result = new StringBuffer();
 		boolean substituting = true;
+		String curWord;
 		while ( st.hasMoreTokens() )
-			if ( st.nextToken().equals(fromWord) && substituting )
+			if ( (curWord = st.nextToken()).equals(fromWord) && substituting )
 			{
 				result.append(toWord);
 				if ( oneOnly ) substituting = false;
 			}
 			else
-				result.append(fromWord);
+				result.append(curWord);
 		return result.toString();
 	}
 	
@@ -95,23 +96,35 @@ public class English extends NaturalLanguage
 	public String substitutePronouns ( Mobile m , String command , Mentions mentions )
 	{
 		String theString = command;
-		if ( containsWord(command,"him") )
+		
+		//first, eliminate the proclitic pronoun "I" if the sentence is in the first person ("I" followed by verb)
+		StringTokenizer st = new StringTokenizer ( theString );
+		String firstWord = null;
+		String secondWord = null;
+		if ( st.hasMoreTokens() ) firstWord = st.nextToken().trim().toUpperCase();
+		if ( st.hasMoreTokens() ) secondWord = st.nextToken().trim();
+		if ( "I".equals(firstWord) && secondWord != null && isVerb(secondWord) ) //first person detected!
+			theString = theString.substring(2);
+		
+		//then, locate personal pronouns and substitute them
+		if ( containsWord(theString,"him") )
 		{
 			theString = substituteWord(theString,"him",mentions.getLastMentionedObjectMS(),false);
 		}
-		if ( containsWord(command,"her") )
+		if ( containsWord(theString,"her") )
 		{
-			theString = substituteWord(theString,"him",mentions.getLastMentionedObjectFS(),false);
+			theString = substituteWord(theString,"her",mentions.getLastMentionedObjectFS(),false);
 		}
-		if ( containsWord(command,"them") )
+		if ( containsWord(theString,"them") )
 		{
-			theString = substituteWord(theString,"him",mentions.getLastMentionedObjectP(),false);
+			theString = substituteWord(theString,"them",mentions.getLastMentionedObjectP(),false);
 		}
-		if ( containsWord(command,"it") )
+		if ( containsWord(theString,"it") )
 		{
-			theString = substituteWord(theString,"him",mentions.getLastMentionedObjectS(),false);
+			theString = substituteWord(theString,"it",mentions.getLastMentionedObjectS(),false);
 		}
 		return theString;
+		
 	}
 	
 	//change a to an when needed
@@ -193,25 +206,6 @@ public class English extends NaturalLanguage
 		
 		//3. no phrasal verb: standard approach.
 		return super.extractArguments(sentence);
-	}
-	
-	/**
-	 * Overridden for first person support in English ("I take the sword").
-	 * If sentence begins with the word "I" followed immediately with a verb, then it removes "I" and then applies the generic substituteVerb.
-	 * Else, it just applies the generic substituteVerb directly.
-	 * @see eu.irreality.age.NaturalLanguage#substituteVerb(java.lang.String)
-	 */
-	public String substituteVerb ( String s )
-	{
-		StringTokenizer st = new StringTokenizer ( s );
-		String firstWord = null;
-		String secondWord = null;
-		if ( st.hasMoreTokens() ) firstWord = st.nextToken().trim().toUpperCase();
-		if ( st.hasMoreTokens() ) secondWord = st.nextToken().trim();
-		if ( "I".equals(firstWord) && secondWord != null && toInfinitive(secondWord) != null ) //first person detected!
-			return super.substituteVerb(s.substring(2));
-		else
-			return super.substituteVerb(s);
 	}
 	
 }
