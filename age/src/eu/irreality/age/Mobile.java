@@ -10215,7 +10215,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 				//commandstring = commandstring.trim();
 				//if ( !getPropertyValueAsBoolean("noVerbSpellChecking") )
 				//	commandstring = lenguaje.correctVerb(commandstring); //ddone above
-				commandstring = lenguaje.sustituirVerbo ( commandstring );
+				commandstring = lenguaje.substituteVerb ( commandstring );
 				commandstring = lenguaje.substituteAlias ( commandstring );
 				commandstring = commandstring.trim();
 				command = lenguaje.extractVerb(commandstring); //StringMethods.getTok(commandstring,1,' ').trim();	
@@ -10245,7 +10245,7 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		//commandstring = lenguaje.sustituirVerbos ( commandstring );
 		//if ( !getPropertyValueAsBoolean("noVerbSpellChecking") )
 			//commandstring = lenguaje.correctVerb(commandstring); //done above
-		commandstring = lenguaje.sustituirVerbo ( commandstring );		
+		commandstring = lenguaje.substituteVerb ( commandstring );		
 		commandstring = lenguaje.substituteAlias ( commandstring );
 	
 		commandstring = commandstring.trim();
