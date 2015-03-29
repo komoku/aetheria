@@ -195,4 +195,23 @@ public class English extends NaturalLanguage
 		return super.extractArguments(sentence);
 	}
 	
+	/**
+	 * Overridden for first person support in English ("I take the sword").
+	 * If sentence begins with the word "I" followed immediately with a verb, then it removes "I" and then applies the generic substituteVerb.
+	 * Else, it just applies the generic substituteVerb directly.
+	 * @see eu.irreality.age.NaturalLanguage#substituteVerb(java.lang.String)
+	 */
+	public String substituteVerb ( String s )
+	{
+		StringTokenizer st = new StringTokenizer ( s );
+		String firstWord = null;
+		String secondWord = null;
+		if ( st.hasMoreTokens() ) firstWord = st.nextToken().trim().toUpperCase();
+		if ( st.hasMoreTokens() ) secondWord = st.nextToken().trim();
+		if ( "I".equals(firstWord) && secondWord != null && toInfinitive(secondWord) != null ) //first person detected!
+			return super.substituteVerb(s.substring(2));
+		else
+			return super.substituteVerb(s);
+	}
+	
 }

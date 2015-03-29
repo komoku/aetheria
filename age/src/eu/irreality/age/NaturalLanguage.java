@@ -329,7 +329,19 @@ public class NaturalLanguage
 		return nueva;
 	}
 	
+	/**
+	 * @deprecated Use {@link #substituteVerbs(String)} instead
+	 */
 	public String sustituirVerbos ( String s )
+	{
+		return substituteVerbs(s);
+	}
+
+	/**
+	 * Replaces every verb appearing in the sentence with its canonical form.
+	 * As of 2015-03-29, unused by the existing languages supported in AGE, but kept because it might be useful for future languages.  
+	 */
+	public String substituteVerbs ( String s )
 	{
 		StringTokenizer st = new StringTokenizer ( s , " " , true );
 		String nueva = "";
@@ -350,7 +362,16 @@ public class NaturalLanguage
 	}
 	
 	//sustituye verbo como en sustituirVerbos() pero sólo si el verbo es la primera palabra
+	/**
+	 * @deprecated Use {@link #substituteVerb(String)} instead
+	 */
 	public String sustituirVerbo ( String s )
+	{
+		return substituteVerb(s);
+	}
+
+	//sustituye verbo como en substituteVerbs() pero sólo si el verbo es la primera palabra
+	public String substituteVerb ( String s )
 	{
 		StringTokenizer st = new StringTokenizer ( s , " " , true );
 		String nueva = "";
