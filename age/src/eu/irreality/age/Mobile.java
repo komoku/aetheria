@@ -10204,7 +10204,8 @@ public class Mobile extends Entity implements Descriptible , SupportingCode , Na
 		
 		
 		//conservative mode check
-		if ( getPropertyValueAsBoolean("noPronounDisambiguation") && matchedTwoEntitiesPermissive )
+		//this feature is only implemented for Spanish pronouns
+		if ( "es".equals(lenguaje.getLanguageCode()) && getPropertyValueAsBoolean("noPronounDisambiguation") && matchedTwoEntitiesPermissive )
 		{
 			if ( firstWord(commandstring).toLowerCase().endsWith ( "las" ) && firstWord(commandstring).length() > 3 
 					|| firstWord(commandstring).toLowerCase().endsWith ( "los" ) && firstWord(commandstring).length() > 3
