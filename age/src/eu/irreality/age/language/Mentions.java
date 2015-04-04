@@ -9,7 +9,7 @@ public class Mentions
 {
 
 	//verb
-	private String lastMentionedVerb = "mirar";
+	private String lastMentionedVerb =""; //will be set to each language's default verb from outside, by the Mobile class
 	
 	//masculine singular
 	private String lastMentionedObjectMS="";

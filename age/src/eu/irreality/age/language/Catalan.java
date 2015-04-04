@@ -293,5 +293,13 @@ public class Catalan extends NaturalLanguage
 		return base;
 	}
 	
+	/**
+	 * Returns the default verb, i.e., verb that will be used by default if a reference name is typed
+	 * at the beginning of a game without specifying a verb.
+	 */
+	public String getDefaultVerb()
+	{
+		return "mirar";
+	}
 	
 }
