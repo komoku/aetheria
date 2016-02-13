@@ -2,112 +2,112 @@
 #para idioma esperanto
 
 #Cuando coges el objeto $item
-you.get.item=Vi prenas $item.\n
+you.get.item=Vi prenas $itemn.\n
 
 #Cuando coges el objeto $item que está en contenedores ($location)
-you.get.item.from.location=Vi prenas $item el $location.\n
+you.get.item.from.location=Vi elprenas $itemn el $location.\n
 
 #Cuando $1 coge el objeto $item
-someone.gets.item=$1 prenas $item.\n
+someone.gets.item=$1 prenas $itemn.\n
 
 #Cuando $1 coge el objeto $item que está en contenedores ($location)
-someone.gets.item.from.location=$1 prenas $item el $location.\n
+someone.gets.item.from.location=$1 elprenas $item el $location.\n
 
 #Cuando dejas el objeto $item
-you.drop.item=Vi lasas $item.\n
+you.drop.item=Vi lasas $itemn.\n
 
 #Cuando $1 deja el objeto $item
-someone.drops.item=$1 lasas $item.\n
+someone.drops.item=$1 lasas $itemn.\n
 
 #Cuando te pones el objeto $item en $limbs
-you.wear.item=Vi metas $item en $limbs.\n
+you.wear.item=Vi metas $itemn en $limbs.\n
 
 #Cuando $1 se pone el objeto $item en $limbs
-someone.wears.item=$1 metas $item.\n
+someone.wears.item=$1 metasn $item.\n
 
 #Cuando te quitas el objeto $item
-you.unwear.item=Vi deprenas $item.\n
+you.unwear.item=Vi deprenas $itemn.\n
 
 #Cuando $1 se quita el objeto $item
-someone.unwears.item=$1 deprenas $item.\n
+someone.unwears.item=$1 deprenas $itemn.\n
 
 #Cuando blandes el objeto $item en $limbs
-you.wield.item=Vi svengas $item kun $limbs.\n
+you.wield.item=Vi svengas $itemn kun $limbs.\n
 
 #Cuando $1 blande el objeto $item en $limbs
-someone.wields.item=$1 svengas $item.\n
+someone.wields.item=$1 svengasn $item.\n
 
 #Cuando dejas de blandir el objeto $item
-you.unwield.item=Vi ĉesas svingante $item.\n
+you.unwield.item=Vi ĉesas svingi $itemn.\n
 
 #Cuando $1 deja de blandir el objeto $item
-someone.unwields.item=$1 ĉesas svingante $item.\n
+someone.unwields.item=$1 ĉesas svingi $itemn.\n
 
 #Cuando no puedes coger un item porque no es cogible (fijo en el sitio)
-denial.get.ungettable=Estas neniu utilas preni $item.\n
+denial.get.ungettable=Ĝi ne havas utilon preni $itemn.\n
 
 #Cuando el parser no entiende algo
 error.parsing=mi ne scias...\n
 
 #Cuando no se puede coger un objeto por su peso
-cant.get.item.weight=Vi portas tro pezo por preni $item.\n
+cant.get.item.weight=Vi portas tro pezo por preni $itemn.\n
 
 #Cuando no se puede coger un objeto por su volumen
-cant.get.item.volume=Vi portas dikigitaj celoj por preni $item.\n
+cant.get.item.volume=Vi portas dikaj aĵoj por preni $itemn.\n
 
 #Cuando no se puede dejar un objeto por su peso
-cant.drop.item.weight=Vi ne povas lasi tie $item, tro da pezo.\n
+cant.drop.item.weight=Vi ne povas lasi $itemn ĉi tie, tro da pezo.\n
 
 #Cuando no se puede dejar un objeto por su volumen
-cant.drop.item.volume=Vi ne povas lasi tie $item, ne sufiĉa spaco.\n
+cant.drop.item.volume=Vi ne povas lasi $itemn ĉi tie, ne sufiĉa spaco.\n
 
 #Cuando intentas abrir una cosa no abrible ($item)
-item.not.openable=Estas absurde malfermi tio.
+item.not.openable=Ĝi estas absurde malfermi $itemn.
 
 #Cuando intentas cerrar una cosa no cerrable ($item)
-item.not.closeable=Estas absurde fermi tio.
+item.not.closeable=Ĝi estas absurde fermi $itemn.
 
 #Cuando intentas abrir con llave una cosa no abrible con llave ($item)
-item.not.unlockable=Ne ŝajnas de povi malfermi ĝin tiel.
+item.not.unlockable=Ĝi ŝajnas ke $item ne povas malŝlosi tiel.
 
 #Cuando intentas cerrar con llave una cosa no cerrable con llave ($item)
-item.not.lockable=Ne ŝajnas de povi fermi ĝin tiel.
+item.not.lockable=Ĝi ŝajnas ke $item ne povas ŝlosi tiel.
 
 #Cuando intentas blandir algo que no es un arma
-wield.non.weapon=Ne ŝajnas ke $item estas armilo.\n
+wield.non.weapon=Ĝi ŝajnas ke $item ne estas armilo.\n
 
 #Cuando intentas blandir algo que ya estás blandiendo
-wield.already.wielded=Jam svingas $item.\n
+wield.already.wielded=Vi jam svingas $item.\n
 
 #Cuando intentas vestir algo que ya estás vistiendo
-wear.already.worn=Vi jam surportas $item.\n
+wear.already.worn=Vi jam vestas $itemn.\n
 
 #Cuando intentas vestir algo en un miembro donde ya tienes puesta otra cosa
-wear.already.worn=Vi devas demeti ion per povi vesti $item.\n
+wear.already.worn=Demetu ion por povi vesti $itemn.\n
 
 #Cuando intentas blandir un arma que requiere algún tipo de miembro que no tienes
-wield.no.suitable.limbs=Ne ŝajnas netaŭga por via speco.\n
+wield.no.suitable.limbs=Tiu armilo ne taŭgas al via speco.\n
 
 #Cuando intentas vestir una armadura que requiere algún tipo de miembro que no tienes
-wear.no.suitable.limbs=Ne ŝajnas netaŭga por via speco.\n
+wear.no.suitable.limbs=Tiu ne taŭgas al via speco.\n
 
 #Cuando pones $item en $container
-you.put.into=Vi metas $item en $container.\n
+you.put.into=Vi enmetas $itemn en $container.\n
 
 #Cuando no puedes poner $item en $container porque pesa demasiado
-cant.put.into.weight=$container ne povas toleri tiel pezo.\n
+cant.put.into.weight=$container ne povas teni tiom pezo.\n
 
 #Cuando no puedes poner $item en $container porque no cabe (por volumen)
-cant.put.into.volume=$item ne eniras en $container.\n
+cant.put.into.volume=$item estas ege kaj ne eniras en $container.\n
 
 #Cuando intentas poner algo en un $container que realmente no es contenedor.
-cant.put.into.noncontainer=Ne ŝajnas utile meti aĵoj en $container.\n
+cant.put.into.noncontainer=Ĝi ne povas meti aĵojn en $container.\n
 
 #Cuando intentas poner algo en un $container que está cerrado.
-cant.put.into.closed=$container estas ferma.\n
+cant.put.into.closed=$container estas fermita.\n
 
 #When you cannot put a container into itself. Pending translation.
-cant.put.into.itself=You can't put $item into itself.\n
+cant.put.into.itself=Vi ne povas enmeti $itemn en si mem.\n
 
 #Cuando intentas mirar algo que no existe
 look.what=Kion vi volas rigardi?\n
@@ -137,37 +137,37 @@ wield.what=Kion armilon vi volas svingi?\n
 unwield.what=Kion armilon vi volas eningigi?\n
 
 #Cuando intentas ir hacia un sitio que no se reconoce
-go.where=Ĉu. Kie vi volas iri?\n
+go.where=Kie vi volas iri?\n
 
 #Cuando intentas ir hacia una salida marcada como no válida (no usado actualmente)
-go.where=Ĉu. Kie vi iras?\n
+go.where=Kie vi iras?\n
 
 #Cuando el verbo ir aparece sin argumentos
 go.nowhere=Kie vi iras?\n
 
 #Cuando intentas ir hacia una dirección estándar (norte, etc.) pero no hay salida
-go.noexit=Ne ŝajnas ke estas eliro en tiu direckto.\n
+go.noexit=Ne ŝajnas esti eliro tien.\n
 
 #Cuando intentas atacar a alguien que no está
-attack.what=Ĉu. Ĉu ataki al kiu?\n
+attack.what=Ĉu ataki al kiu?\n
 
 #Cuando intentas bloquear a alguien que no está
-block.what=Ĉu. Ĉu protekti de kiu?\n
+block.what=Ĉu protekti de kiu?\n
 
 #Cuando intentas esquivar a alguien que no está
 dodge.what=Ne atakas vin. Kio vi volas ekeviti?\n
 
 #Cuando intentas poner algo en algo y los objetos no se reconocen
-put.what.where=Ĉu. Ĉu meti kio kie?\n
+put.what.where=Ĉu meti kio kie?\n
 
 #Lista de objetos en una habitación
-items.here=Tie estas $inventory.
+items.here=Ĉi tie estas $inventory.
 
 #Si hay un personaje en una habitación
-mobile.here=Tie estas $list.
+mobile.here=Ĉi tie estas $list.
 
 #Si hay varios personajes en una habitación
-mobiles.here=Tie estas $list.
+mobiles.here=Ĉi tie estas $list.
 
 #Mostrar inventario (con cosas)
 you.have.items=Vi havas $inventory.\n
@@ -176,60 +176,60 @@ you.have.items=Vi havas $inventory.\n
 you.have.nothing=Vi havas nenion.\n
 
 #Mostrar prenda que llevas puesta
-you.are.wearing.item=Vi portas $item en $limbs.\n
+you.are.wearing.item=Vi portas $itemn en $limbs.\n
 
 #Mostrar arma que llevas blandida
-you.are.wielding.item=Vi svingas $item en $limbs.\n
+you.are.wielding.item=Vi svingas $itemn en $limbs.\n
 
 #Intentar conjurar conjuro que no existe o conoces
-cast.no.spell=Vi ne konas tia sorĉo.\n
+cast.no.spell=Vi ne konas tiu sorĉo.\n
 
 #Cuando mueres
-you.die=Vi mortas.\n
+you.die=Vi mortas, forpasas, malaperas.\n
 
 #Cuando alguien muere
 someone.dies=$1 mortas.\n
 
 #Intentando abrir algo del suelo en un comando con varios objetivos (abrir las cajas, etc.)
-you.try.open.from.floor=Vi provas malfermi $item:
+you.try.open.from.floor=Vi provas malfermi $itemn:
 
 #Intentando abrir algo del inventario en un comando con varios objetivos (abrir las cajas, etc.)
-you.try.open.from.inventory=Vi provas malfermi $item kiu vi portas:
+you.try.open.from.inventory=Vi provas malfermi $itemn kiuj vi portas:
 
 #Intentando cerrar algo del suelo en un comando con varios objetivos (cerrar las cajas, etc.)
-you.try.close.from.floor=Vi provas fermi $item:
+you.try.close.from.floor=Vi provas fermi $itemn:
 
 #Intentando cerrar algo del inventario en un comando con varios objetivos (cerrar las cajas, etc.)
-you.try.close.from.inventory=Vi provas fermi $item kiu vi portas:
+you.try.close.from.inventory=Vi provas fermi $itemn kiuj vi portas:
 
 #Cuando se teclea un verbo que está en las listas de verbos pero para el que no hemos definido comportamiento
-undefined.action=Ĉu. Ĉu $command?\n
+undefined.action=Ĉu $command?\n
 
 #Cuando la propiedad noPronounDisambiguation de un jugador está puesto a true y se usa un pronombre "lo/la/los/las" donde la acción anterior se refería a dos entidades. Se puede usar $command para referirse al verbo.
-ambiguous.pronoun=Mi ne komprenas tre bone komando kiam la antaŭa komando rilatas pri du celoj.\n
+ambiguous.pronoun=Mi ne komprenas $command komando kiam la antaŭa komando rilatas du aĵoj.\n
 
 #Cuando intentas volver pero no hay ninguna salida que conduzca a la habitación anterior
 cant.go.back=Vi ne vidas kiel reveni...\n
 
 #Combate: acierto con arma, daño numérico ($1 ataca a $2 con $weapon, acierta, le inflige $damage daño)
-someone.hits.someone.numeric=$1 trafas $2n kun $weapon okazigi siajn $damage punktojn da damaĝo...\n
-enemy.hits.you.numeric=$1 trafas vin kun $weapon okazigi viajn $damage punktojn da damaĝo...\n
-you.hit.enemy.numeric=Vi trafas $2n kun $weapon okazigi siajn $damage punktojn da damaĝo...\n
+someone.hits.someone.numeric=$1 trafas $2n kun $weapon kaj faras $damage punktojn da damaĝo...\n
+enemy.hits.you.numeric=$1 trafas vin kun $weapon kaj faras $damage punktojn da damaĝo...\n
+you.hit.enemy.numeric=Vi trafas $2n kun $weapon kaj faras $damage punktojn da damaĝo...\n
 
 #Combate: acierto con arma, daño subjetivo
-someone.hits.someone=$1 trafas $2n kun $weapon okazigi sian $damage...\n
-enemy.hits.you=$1 trafas vin kun $weapon okazigi vian $damage...\n
-you.hit.enemy= Vi trafas $2n kun $weapon okazigi sian $damage...\n
+someone.hits.someone=$1 trafas $2n kun $weapon kaj faras $damage...\n
+enemy.hits.you=$1 trafas vin kun $weapon kaj faras $damage...\n
+you.hit.enemy= Vi trafas $2n kun $weapon kaj faras $damage...\n
 
 #Combate: acierto con arma, pero sin daños
-someone.hits.someone.nodamage=$1 trafas $2n kun $weapon sed ne damaĝigas...\n
-enemy.hits.you.nodamage=$1 trafas vin kun $weapon sed ne damaĝigas...\n
-you.hit.enemy.nodamage=Vi trafas $2n kun $weapon sen ne damaĝigas...\n
+someone.hits.someone.nodamage=$1 trafas $2n kun $weapon sed ne damaĝas...\n
+enemy.hits.you.nodamage=$1 trafas vin kun $weapon sed ne damaĝas...\n
+you.hit.enemy.nodamage=Vi trafas $2n kun $weapon sen ne damaĝas...\n
 
 #Combate: fallo con arma
-someone.misses.someone=La atako de $1 ne atingas $2n.\n
-enemy.misses.you=La atako de $1 ne atigas vin.\n
-you.miss.enemy=Via atako ne atigas $2n.\n
+someone.misses.someone=La atako de $1 ne trafas $2n.\n
+enemy.misses.you=La atako de $1 ne trafas vin.\n
+you.miss.enemy=Via atako ne trafas $2n.\n
 
 #Informes de daño
 damage.5=tre malgravajn damaĝojn
@@ -241,12 +241,12 @@ damage.40=tre damaĝo
 damage.50=severajn damaĝojn
 damage.60=molte damaĝo
 damage.70=granda damaĝo
-damage.80=ega damaĝo
+damage.80=treega damaĝo
 damage.90=teruraj vundoj
 damage.lethal=mortiga damaĝo
 
 #Informes de heridas
-woundstatus.1=estas nerompita
+woundstatus.1=estas nedamnita
 woundstatus.5=havas iun lezeto
 woundstatus.10=havas leĝerajn lezojn
 woundstatus.18=havas iujn seriozajn lezojn
@@ -262,22 +262,22 @@ woundstatus.100=havas piedo en la tombo
 woundstatus.lethal=estas morte vundita
 
 #Maná insuficiente para conjurar $spell
-not.enough.mana=Vi ne havas sufiĉen manaon por ĵeti tiu sorĉo.\n
+not.enough.mana=Vi ne havas sufiĉe manaon por sorĉi.\n
 
 #Interrupciones: te interrumpen un movimiento, un ataque o un lanzamiento de hechizo por causa $cause.
-interrupted.move=$cause interrompas vian provon iri.\n
-interrupted.attack=$cause interrompas vian provon ataki.\n
-interrupted.cast=$cause interrompas vian provon fari magion.\n
+interrupted.move=$cause interrompas vian provon por eliri.\n
+interrupted.attack=$cause interrompas vian provon por ataki.\n
+interrupted.cast=$cause interrompas vian provon por fari magion.\n
 
 #$1 ataca a alguien que ya no está
-someone.attacks.absent=$1 interrompas la atakon per la foresto de la kontraŭulo.\n
-someone.attacks.you.absent=$1 dubas via foresto.\n
-you.attack.absent=Ĉi tie vi disponas al ataki; sed dubas per la foresto de via malamikulo.\n
+someone.attacks.absent=$1 interrompas la atakon ĉar la kontraŭulo foriris.\n
+someone.attacks.you.absent=$1 dubas pro via foriro.\n
+you.attack.absent=Ĉi tie vi komencas ataki; sed dubas ĉar la malamiko foriris.\n
 
 #$1 ataca a alguien que ya está muerto
-someone.attacks.dead=$1 interrompas la atakon per la morto de la kontraŭulo.\n
-someone.attacks.you.dead=$1 dubas via morto.\n
-you.attack.dead=Ĉi tie vi disponas al ataki; sed dubas per la morto de via malamikulo.\n
+someone.attacks.dead=$1 interrompas la atakon ĉar la kontraŭutlo mortiĝis.\n
+someone.attacks.you.dead=$1 dubas pro via morto.\n
+you.attack.dead=Ĉi tie vi komencas ataki; sed dubas ĉar la malamiko mortiĝis.\n
 
 #Combate: choque de armas en el aire
 someone.clashes.someone=La armiloj de $1 kaj $2 kolizias en la aero...\n
@@ -438,28 +438,28 @@ art.ind.f=
 coord.conj=kaj
 
 #Directions
-direction.n=norda
-direction.s=suda
-direction.w=okcidenta
-direction.e=orienta
-direction.nw=nordokcidenta
-direction.ne=nordorienta
-direction.sw=sudokcidenta
-direction.se=sudorienta
-direction.u=supre
-direction.d=sube
+direction.n=norden
+direction.s=suden
+direction.w=okcidenten
+direction.e=orienten
+direction.nw=nordokcidenten
+direction.ne=nordorienten
+direction.sw=sudokcidenten
+direction.se=sudorienten
+direction.u=supren
+direction.d=malsupren
 
 #Directions (full name): creature comes from...
-direction.full.n=la nordo
-direction.full.s=la sudo
-direction.full.w=la okcidento
-direction.full.e=la oriento
-direction.full.nw=la nordokcidento
-direction.full.ne=la nordoriento
-direction.full.sw=la sudokcidento
-direction.full.se=la sudoriento
-direction.full.u=supre
-direction.full.d=sube
+direction.full.n=norden
+direction.full.s=suden
+direction.full.w=okcidenten
+direction.full.e=orienten
+direction.full.nw=nordokcidenten
+direction.full.ne=nordorienten
+direction.full.sw=sudokcidenten
+direction.full.se=sudorienten
+direction.full.u=supren
+direction.full.d=malsupren
 
 #open/close default behaviour
 you.unlock.item=Vi malfermas $item pri $key.
@@ -488,19 +488,19 @@ unnamed.item=io
 unnamed.path=iu loko
 
 #You say something
-you.say.something=You say \"$text\".\n
+you.say.something=Vi diras \"$text\".\n
 
 #Someone says something
-someone.says.something=$1 says \"$text\".\n
+someone.says.something=$1 diras \"$text\".\n
 
 #You say something
-you.say.something=You say \"$text\".\n
+you.say.something=Vi diras \"$text\".\n
 
 #Someone tells someone something
-someone.tells.someone.something=$1 says \"$text\" to $2.\n
+someone.tells.someone.something=$1 diras \"$text\" al $2.\n
 
 #Someone tells you something
-someone.tells.you.something=$1 says \"$text\" to you.\n
+someone.tells.you.something=$1 diras vin \"$text\".\n
 
 #You tell someone something
-you.tell.someone.something=You say \"$text\" to $2.\n
+you.tell.someone.something=Vi diras \"$text\" al $2.\n
