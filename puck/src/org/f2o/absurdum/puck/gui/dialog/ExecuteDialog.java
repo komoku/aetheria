@@ -170,7 +170,7 @@ public class ExecuteDialog extends JDialog
 	    public void actionPerformed(ActionEvent e)
 	    {
 			boolean saved = frame.saveOrSaveAs();
-			if ( !saved ) dispose();
+			if ( !saved ) { dispose(); return; }
 			String logFile = null;
 			if ( logCheckBox.isSelected() && logTextField.getText() != null && logTextField.getText().length() > 0 ) logFile = logTextField.getText();
 			boolean mdiOption = mdiButton.isSelected();
