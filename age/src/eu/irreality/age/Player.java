@@ -379,78 +379,89 @@ public class Player extends Mobile implements Informador
 	synchronized public boolean obtainAndExecCommand ( World mundo ) throws java.io.IOException
 	{
 
-		/*Pueden darse dos casos:
-		- Que hayan quedado comandos pendientes de ejecución de otra vez: estarán
-		en la cola de comandos pendientes.
-		- Que no: esperamos una entrada por la editbox, que cambiará la variable
-		"commandstring" poniendo el nuevo comando y despertará el thread del wait.
-		 */		
-
-		secondChance = false; //luego se pone a true en obtainCommandFromQueue() si hace falta
+		/*
+		 * This loop is so that we can have metacommands that don't consume time.
+		 * In normal cases, we execute a command and return from the function so only one iteration is ran.
+		 * But when a metacommand is used, we do 'continue' so the function doesn't return (and no game time is consumed).
+		 */
+		for(;;)
+		{
 		
-		//mirar si cola de comandos vacia
-		//el !forced es porque si hemos forzado un comando, pasa por delante de la cola
-		if ( !commandQueue.isEmpty() && !forced ) //obtain enqueued piece of command - this was not a directly input command so it is not subject to preprocessCommand and eval
-		{
-			if ( !obtainCommandFromQueue() ) return false;
-		}
-		else
-		{
-			if ( forced )
+			/*Pueden darse dos casos:
+			- Que hayan quedado comandos pendientes de ejecución de otra vez: estarán
+			en la cola de comandos pendientes.
+			- Que no: esperamos una entrada por la editbox, que cambiará la variable
+			"commandstring" poniendo el nuevo comando y despertará el thread del wait.
+			 */		
+	
+			secondChance = false; //luego se pone a true en obtainCommandFromQueue() si hace falta
+			
+			//mirar si cola de comandos vacia
+			//el !forced es porque si hemos forzado un comando, pasa por delante de la cola
+			if ( !commandQueue.isEmpty() && !forced ) //obtain enqueued piece of command - this was not a directly input command so it is not subject to preprocessCommand and eval
 			{
-				forced = false;
-				io.forceInput ( force_string , false );
-				commandstring = force_string;
-			}
-			else if ( from_log )
-			{
-				String newCommand = logReader.readLine();
-				if ( newCommand == null )
-				{
-					from_log = false;
-					mundo.endOfLog();
-					return obtainAndExecCommand(mundo);
-				}		
-				else
-				{
-					io.forceInput ( newCommand , true );
-					commandstring = newCommand;
-				}
+				if ( !obtainCommandFromQueue() ) return false;
 			}
 			else
 			{
-				//obtain command from player input
-				//in asynchronous mode, we get it via a nonblocking call
-				//in synchronous mode, we get it via a blocking call (we wait for input)
-
-				if ( !obtainCommandFromClient() ) return true; //true bc. if player disconnected, we return true
-
+				if ( forced )
+				{
+					forced = false;
+					io.forceInput ( force_string , false );
+					commandstring = force_string;
+				}
+				else if ( from_log )
+				{
+					String newCommand = logReader.readLine();
+					if ( newCommand == null )
+					{
+						from_log = false;
+						mundo.endOfLog();
+						return obtainAndExecCommand(mundo);
+					}		
+					else
+					{
+						io.forceInput ( newCommand , true );
+						commandstring = newCommand;
+					}
+				}
+				else
+				{
+					//obtain command from player input
+					//in asynchronous mode, we get it via a nonblocking call
+					//in synchronous mode, we get it via a blocking call (we wait for input)
+	
+					if ( !obtainCommandFromClient() ) return true; //true bc. if player disconnected, we return true
+	
+				}
+	
+				//Process raw command:
+				
+				/*Preparación del comando:*/
+				if ( commandstring != null ) commandstring = commandstring.trim();
+				
+				/*Llamada a preprocessCommand() configurable*/
+				if ( runPreprocessCommand() ) return true;
+	
+				//comando nulo
+				if ( commandstring == null || commandstring.equals("") ) return false;
+	
+				/*Comandos eval - continue porque no se ejecuta un comando normal, es un metacomando de fuera del mundo*/
+				if ( runEvalIfApplicable() ) continue;
+				
+				/*Separate commands composed of several sentences. The sentences are placed in the queue. False is returned only if the command is actually
+				 * empty (e.g. a command consisting only of commands)*/	
+				if ( !separateSentences() ) return false;
+	
 			}
-
-			//Process raw command:
+	
+			//modular execCommand()
+	
+			if ( commandstring.isEmpty() ) return false; //empty strings can result if, for example, input was ",something", etc.
 			
-			/*Preparación del comando:*/
-			if ( commandstring != null ) commandstring = commandstring.trim();
-			
-			/*Llamada a preprocessCommand() configurable*/
-			if ( runPreprocessCommand() ) return true;
-
-			//comando nulo
-			if ( commandstring == null || commandstring.equals("") ) return false;
-
-			/*Comandos eval - false porque no se ejecuta un comando normal, es un metacomando de fuera del mundo*/
-			if ( runEvalIfApplicable() ) return false;
-			
-			/*Separamos las subfrases*/	
-			if ( !separateSentences() ) return false;
-
-		}
-
-		//modular execCommand()
-
-		if ( commandstring.isEmpty() ) return false; //empty strings can result if, for example, input was ",something", etc.
+			return execCommand ( commandstring  );
 		
-		return execCommand ( commandstring  );
+		}
 
 	}
 
