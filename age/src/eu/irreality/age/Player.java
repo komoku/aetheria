@@ -459,6 +459,10 @@ public class Player extends Mobile implements Informador
 	
 			if ( commandstring.isEmpty() ) return false; //empty strings can result if, for example, input was ",something", etc.
 			
+			//TODO:
+			//The idea was that execCommand returns false on denials and "I don't understand". 
+			//If this worked well, we could always use the return value for the loop (or loop outside, when we call this function).
+			//But this has to be done when there is some time, as it needs some care...
 			return execCommand ( commandstring  );
 		
 		}
