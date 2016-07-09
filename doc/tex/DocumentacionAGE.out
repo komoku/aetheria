@@ -1,97 +1,131 @@
-\BOOKMARK [0][-]{chapter.1}{Uso b\341sico de puck}{}
-\BOOKMARK [1][-]{section.1.1}{Crear mundos con PUCK}{chapter.1}
-\BOOKMARK [1][-]{section.1.2}{Creaci\363n de Mundos para AGE con PUCK: Resumen}{chapter.1}
-\BOOKMARK [1][-]{section.1.3}{Primeros Pasos: Creando Habitaciones y Caminos}{chapter.1}
-\BOOKMARK [2][-]{subsection.1.3.1}{Habitaciones y Caminos}{section.1.3}
-\BOOKMARK [2][-]{subsection.1.3.2}{Creando un Personaje Jugador}{section.1.3}
-\BOOKMARK [1][-]{section.1.4}{Seres inertes}{chapter.1}
-\BOOKMARK [2][-]{subsection.1.4.1}{Descripciones de componentes}{section.1.4}
-\BOOKMARK [2][-]{subsection.1.4.2}{Cosas}{section.1.4}
-\BOOKMARK [0][-]{chapter.2}{Uso del lenguaje BeanShell}{}
-\BOOKMARK [1][-]{section.2.1}{Primeros pasos con BeanShell}{chapter.2}
-\BOOKMARK [2][-]{subsection.2.1.1}{Los formularios de c\363digo}{section.2.1}
-\BOOKMARK [2][-]{subsection.2.1.2}{Los m\351todos}{section.2.1}
-\BOOKMARK [2][-]{subsection.2.1.3}{Variables y entrada/salida sencilla}{section.2.1}
-\BOOKMARK [2][-]{subsection.2.1.4}{La estructura condicional \(if\)}{section.2.1}
-\BOOKMARK [2][-]{subsection.2.1.5}{Los bucles}{section.2.1}
-\BOOKMARK [2][-]{subsection.2.1.6}{Recapitulaci\363n}{section.2.1}
-\BOOKMARK [1][-]{section.2.2}{Manipulaci\363n b\341sica de entidades}{chapter.2}
-\BOOKMARK [2][-]{subsection.2.2.1}{M\351todo de an\341lisis de la entrada referida a una entidad}{section.2.2}
-\BOOKMARK [2][-]{subsection.2.2.2}{M\351todos para quitar, poner y mover entidades}{section.2.2}
-\BOOKMARK [2][-]{subsection.2.2.3}{Las variables self y world}{section.2.2}
-\BOOKMARK [2][-]{subsection.2.2.4}{M\351todos para comprobar d\363nde est\341n las entidades}{section.2.2}
-\BOOKMARK [2][-]{subsection.2.2.5}{M\351todo de an\341lisis de la entrada referida a dos entidades}{section.2.2}
-\BOOKMARK [2][-]{subsection.2.2.6}{Variantes del m\351todo referido a dos entidades}{section.2.2}
-\BOOKMARK [1][-]{section.2.3}{propiedades y relaciones}{chapter.2}
-\BOOKMARK [2][-]{subsection.2.3.1}{Propiedades}{section.2.3}
-\BOOKMARK [2][-]{subsection.2.3.2}{Temporizaci\363n y m\351todo update}{section.2.3}
-\BOOKMARK [2][-]{subsection.2.3.3}{Inicializaci\363n de propiedades}{section.2.3}
-\BOOKMARK [2][-]{subsection.2.3.4}{Relaciones}{section.2.3}
-\BOOKMARK [1][-]{section.2.4}{Manejo de arrays y listas}{chapter.2}
-\BOOKMARK [2][-]{subsection.2.4.1}{Arrays}{section.2.4}
-\BOOKMARK [2][-]{subsection.2.4.2}{Listas}{section.2.4}
-\BOOKMARK [1][-]{section.2.5}{Errores comunes con BeanShell}{chapter.2}
-\BOOKMARK [2][-]{subsection.2.5.1}{Mensajes de error}{section.2.5}
-\BOOKMARK [2][-]{subsection.2.5.2}{Tipos de error comunes}{section.2.5}
-\BOOKMARK [2][-]{subsection.2.5.3}{Funcionalidad de depuraci\363n}{section.2.5}
-\BOOKMARK [0][-]{chapter.3}{Aspectos avanzados del modelo de mundo}{}
-\BOOKMARK [1][-]{section.3.1}{Descripciones y nombres din\341micos}{chapter.3}
-\BOOKMARK [2][-]{subsection.3.1.1}{Descripciones din\341micas}{section.3.1}
-\BOOKMARK [2][-]{subsection.3.1.2}{Nombres din\341micos}{section.3.1}
-\BOOKMARK [1][-]{section.3.2}{Cosas abribles y cerrables}{chapter.3}
-\BOOKMARK [2][-]{subsection.3.2.1}{Definiendo cosas abribles y cerrables}{section.3.2}
-\BOOKMARK [2][-]{subsection.3.2.2}{Llaves}{section.3.2}
-\BOOKMARK [2][-]{subsection.3.2.3}{Puertas}{section.3.2}
-\BOOKMARK [2][-]{subsection.3.2.4}{Contenedores abribles y cerrables}{section.3.2}
-\BOOKMARK [1][-]{section.3.3}{Miembros, prendas y armaduras}{chapter.3}
-\BOOKMARK [2][-]{subsection.3.3.1}{Miembros}{section.3.3}
-\BOOKMARK [2][-]{subsection.3.3.2}{Prendas}{section.3.3}
-\BOOKMARK [1][-]{section.3.4}{Estados de las criaturas}{chapter.3}
-\BOOKMARK [2][-]{subsection.3.4.1}{Las propiedades ``state'' y ``target''}{section.3.4}
-\BOOKMARK [2][-]{subsection.3.4.2}{Cambios de estado}{section.3.4}
-\BOOKMARK [2][-]{subsection.3.4.3}{Programaci\363n con estados}{section.3.4}
-\BOOKMARK [1][-]{section.3.5}{Combate y armas}{chapter.3}
-\BOOKMARK [1][-]{section.3.6}{Entidades abstractas}{chapter.3}
-\BOOKMARK [1][-]{section.3.7}{Conjuros}{chapter.3}
-\BOOKMARK [1][-]{section.3.8}{Mensajes por defecto}{chapter.3}
-\BOOKMARK [2][-]{subsection.3.8.1}{Cambiar los mensajes por defecto}{section.3.8}
-\BOOKMARK [2][-]{subsection.3.8.2}{Generar din\341micamente los mensajes por defecto}{section.3.8}
-\BOOKMARK [0][-]{chapter.4}{M\351todos redefinibles}{}
-\BOOKMARK [1][-]{section.4.1}{Eventos}{chapter.4}
-\BOOKMARK [1][-]{section.4.2}{Otros m\351todos redefinibles}{chapter.4}
-\BOOKMARK [2][-]{subsection.4.2.1}{M\351todos de Mobile \(para PSIs\)}{section.4.2}
-\BOOKMARK [2][-]{subsection.4.2.2}{Ejemplo de uso}{section.4.2}
-\BOOKMARK [0][-]{chapter.5}{El an\341lisis de la entrada}{}
-\BOOKMARK [1][-]{section.5.1}{M\351todos de an\341lisis de la entrada \(parseCommand\)}{chapter.5}
-\BOOKMARK [2][-]{subsection.5.1.1}{Los m\351todos de an\341lisis de la entrada}{section.5.1}
-\BOOKMARK [2][-]{subsection.5.1.2}{Ejemplo de uso}{section.5.1}
-\BOOKMARK [2][-]{subsection.5.1.3}{Tipos de m\351todos de an\341lisis de la entrada}{section.5.1}
-\BOOKMARK [2][-]{subsection.5.1.4}{El proceso de an\341lisis de AGE}{section.5.1}
-\BOOKMARK [1][-]{section.5.2}{Preprocesado de la entrada}{chapter.5}
-\BOOKMARK [1][-]{section.5.3}{Gesti\363n de verbos}{chapter.5}
-\BOOKMARK [0][-]{chapter.6}{Presentaci\363n del mundo}{}
-\BOOKMARK [1][-]{section.6.1}{Estilos de texto}{chapter.6}
-\BOOKMARK [1][-]{section.6.2}{Prompt}{chapter.6}
-\BOOKMARK [2][-]{subsection.6.2.1}{M\351todos de manipulaci\363n del prompt}{section.6.2}
-\BOOKMARK [2][-]{subsection.6.2.2}{Ejemplos de c\363digo}{section.6.2}
-\BOOKMARK [1][-]{section.6.3}{Tipograf\355as en AGE}{chapter.6}
-\BOOKMARK [2][-]{subsection.6.3.1}{Control b\341sico de la tipograf\355a}{section.6.3}
-\BOOKMARK [2][-]{subsection.6.3.2}{Control avanzado de la tipograf\355a}{section.6.3}
-\BOOKMARK [1][-]{section.6.4}{M\351todos gr\341ficos}{chapter.6}
-\BOOKMARK [2][-]{subsection.6.4.1}{Im\341genes}{section.6.4}
-\BOOKMARK [2][-]{subsection.6.4.2}{Frames}{section.6.4}
-\BOOKMARK [1][-]{section.6.5}{sonido}{chapter.6}
-\BOOKMARK [2][-]{subsection.6.5.1}{Audio}{section.6.5}
-\BOOKMARK [2][-]{subsection.6.5.2}{M\372sica MIDI}{section.6.5}
-\BOOKMARK [1][-]{section.6.6}{Otros aspectos de la presentaci\363n}{chapter.6}
-\BOOKMARK [0][-]{chapter.7}{Referencia de m\351todos invocables}{}
-\BOOKMARK [1][-]{section.7.1}{Manipulaci\363n del modelo de mundo}{chapter.7}
-\BOOKMARK [1][-]{section.7.2}{Obtenci\363n de nombres de cosas y criaturas}{chapter.7}
-\BOOKMARK [2][-]{subsection.7.2.1}{Obtenci\363n de nombres para mostrar}{section.7.2}
-\BOOKMARK [1][-]{section.7.3}{Notificaci\363n de acciones y sucesos}{chapter.7}
-\BOOKMARK [2][-]{subsection.7.3.1}{Notificar sobre algo que ha ocurrido en una habitaci\363n}{section.7.3}
-\BOOKMARK [2][-]{subsection.7.3.2}{Notificar sobre algo que ha ocurrido con una cosa}{section.7.3}
-\BOOKMARK [2][-]{subsection.7.3.3}{Notificar sobre algo que ha ocurrido con una criatura}{section.7.3}
-\BOOKMARK [1][-]{section.7.4}{Presentaci\363n general}{chapter.7}
-\BOOKMARK [1][-]{section.7.5}{M\351todos \372tiles de la API de Java}{chapter.7}
-\BOOKMARK [0][-]{chapter.8}{Distribuci\363n como juego online}{}
+\BOOKMARK [0][-]{chapter.1}{Uso b\341sico de PUCK}{}% 1
+\BOOKMARK [1][-]{section.1.1}{Crear mundos con PUCK}{chapter.1}% 2
+\BOOKMARK [1][-]{section.1.2}{Creaci\363n de Mundos para AGE con PUCK: Resumen}{chapter.1}% 3
+\BOOKMARK [1][-]{section.1.3}{Primeros Pasos: Creando Habitaciones y Caminos}{chapter.1}% 4
+\BOOKMARK [2][-]{subsection.1.3.1}{Habitaciones y Caminos}{section.1.3}% 5
+\BOOKMARK [2][-]{subsection.1.3.2}{Creando un Personaje Jugador}{section.1.3}% 6
+\BOOKMARK [1][-]{section.1.4}{Seres inertes}{chapter.1}% 7
+\BOOKMARK [2][-]{subsection.1.4.1}{Descripciones de componentes}{section.1.4}% 8
+\BOOKMARK [2][-]{subsection.1.4.2}{Cosas}{section.1.4}% 9
+\BOOKMARK [0][-]{chapter.2}{Uso del lenguaje BeanShell}{}% 10
+\BOOKMARK [1][-]{section.2.1}{Primeros pasos con BeanShell}{chapter.2}% 11
+\BOOKMARK [2][-]{subsection.2.1.1}{Los formularios de c\363digo}{section.2.1}% 12
+\BOOKMARK [2][-]{subsection.2.1.2}{Los m\351todos}{section.2.1}% 13
+\BOOKMARK [2][-]{subsection.2.1.3}{Variables y entrada/salida sencilla}{section.2.1}% 14
+\BOOKMARK [2][-]{subsection.2.1.4}{La estructura condicional \(if\)}{section.2.1}% 15
+\BOOKMARK [2][-]{subsection.2.1.5}{Los bucles}{section.2.1}% 16
+\BOOKMARK [2][-]{subsection.2.1.6}{Recapitulaci\363n}{section.2.1}% 17
+\BOOKMARK [1][-]{section.2.2}{Manipulaci\363n b\341sica de entidades}{chapter.2}% 18
+\BOOKMARK [2][-]{subsection.2.2.1}{M\351todo de an\341lisis de la entrada referida a una entidad}{section.2.2}% 19
+\BOOKMARK [2][-]{subsection.2.2.2}{M\351todos para quitar, poner y mover entidades}{section.2.2}% 20
+\BOOKMARK [2][-]{subsection.2.2.3}{Las variables self y world}{section.2.2}% 21
+\BOOKMARK [2][-]{subsection.2.2.4}{M\351todos para comprobar d\363nde est\341n las entidades}{section.2.2}% 22
+\BOOKMARK [2][-]{subsection.2.2.5}{M\351todo de an\341lisis de la entrada referida a dos entidades}{section.2.2}% 23
+\BOOKMARK [2][-]{subsection.2.2.6}{Variantes del m\351todo referido a dos entidades}{section.2.2}% 24
+\BOOKMARK [1][-]{section.2.3}{propiedades y relaciones}{chapter.2}% 25
+\BOOKMARK [2][-]{subsection.2.3.1}{Propiedades}{section.2.3}% 26
+\BOOKMARK [2][-]{subsection.2.3.2}{Temporizaci\363n y m\351todo update}{section.2.3}% 27
+\BOOKMARK [2][-]{subsection.2.3.3}{Inicializaci\363n de propiedades}{section.2.3}% 28
+\BOOKMARK [2][-]{subsection.2.3.4}{Relaciones}{section.2.3}% 29
+\BOOKMARK [1][-]{section.2.4}{Manejo de arrays y listas}{chapter.2}% 30
+\BOOKMARK [2][-]{subsection.2.4.1}{Arrays}{section.2.4}% 31
+\BOOKMARK [2][-]{subsection.2.4.2}{Listas}{section.2.4}% 32
+\BOOKMARK [1][-]{section.2.5}{Errores comunes con BeanShell}{chapter.2}% 33
+\BOOKMARK [2][-]{subsection.2.5.1}{Mensajes de error}{section.2.5}% 34
+\BOOKMARK [2][-]{subsection.2.5.2}{Tipos de error comunes}{section.2.5}% 35
+\BOOKMARK [2][-]{subsection.2.5.3}{Funcionalidad de depuraci\363n}{section.2.5}% 36
+\BOOKMARK [0][-]{chapter.3}{Aspectos avanzados del modelo de mundo}{}% 37
+\BOOKMARK [1][-]{section.3.1}{Descripciones y nombres din\341micos}{chapter.3}% 38
+\BOOKMARK [2][-]{subsection.3.1.1}{Descripciones din\341micas}{section.3.1}% 39
+\BOOKMARK [2][-]{subsection.3.1.2}{Nombres din\341micos}{section.3.1}% 40
+\BOOKMARK [1][-]{section.3.2}{Cosas abribles y cerrables}{chapter.3}% 41
+\BOOKMARK [2][-]{subsection.3.2.1}{Definiendo cosas abribles y cerrables}{section.3.2}% 42
+\BOOKMARK [2][-]{subsection.3.2.2}{Llaves}{section.3.2}% 43
+\BOOKMARK [2][-]{subsection.3.2.3}{Puertas}{section.3.2}% 44
+\BOOKMARK [2][-]{subsection.3.2.4}{Contenedores abribles y cerrables}{section.3.2}% 45
+\BOOKMARK [1][-]{section.3.3}{Contenedores}{chapter.3}% 46
+\BOOKMARK [2][-]{subsection.3.3.1}{Definici\363n y uso de contenedores}{section.3.3}% 47
+\BOOKMARK [2][-]{subsection.3.3.2}{Acciones sobre objetos contenidos}{section.3.3}% 48
+\BOOKMARK [1][-]{section.3.4}{Miembros y prendas}{chapter.3}% 49
+\BOOKMARK [2][-]{subsection.3.4.1}{Miembros}{section.3.4}% 50
+\BOOKMARK [2][-]{subsection.3.4.2}{Prendas}{section.3.4}% 51
+\BOOKMARK [1][-]{section.3.5}{Estados de las criaturas}{chapter.3}% 52
+\BOOKMARK [2][-]{subsection.3.5.1}{Las propiedades \253state\273 y \253target\273}{section.3.5}% 53
+\BOOKMARK [2][-]{subsection.3.5.2}{Cambios de estado}{section.3.5}% 54
+\BOOKMARK [2][-]{subsection.3.5.3}{Programaci\363n con estados}{section.3.5}% 55
+\BOOKMARK [1][-]{section.3.6}{Combate y armas}{chapter.3}% 56
+\BOOKMARK [2][-]{subsection.3.6.1}{Elementos de rol b\341sicos}{section.3.6}% 57
+\BOOKMARK [2][-]{subsection.3.6.2}{Mec\341nica de combate}{section.3.6}% 58
+\BOOKMARK [2][-]{subsection.3.6.3}{Armas}{section.3.6}% 59
+\BOOKMARK [2][-]{subsection.3.6.4}{Matem\341tica de las armas}{section.3.6}% 60
+\BOOKMARK [2][-]{subsection.3.6.5}{Esquivadas}{section.3.6}% 61
+\BOOKMARK [2][-]{subsection.3.6.6}{Armaduras}{section.3.6}% 62
+\BOOKMARK [2][-]{subsection.3.6.7}{Entrando en combate}{section.3.6}% 63
+\BOOKMARK [1][-]{section.3.7}{Entidades abstractas}{chapter.3}% 64
+\BOOKMARK [1][-]{section.3.8}{Hechizos}{chapter.3}% 65
+\BOOKMARK [2][-]{subsection.3.8.1}{Creaci\363n de hechizos en PUCK}{section.3.8}% 66
+\BOOKMARK [2][-]{subsection.3.8.2}{Uso de hechizos por los jugadores}{section.3.8}% 67
+\BOOKMARK [2][-]{subsection.3.8.3}{Funcionamiento de los hechizos}{section.3.8}% 68
+\BOOKMARK [2][-]{subsection.3.8.4}{Gesti\363n de los puntos m\341gicos}{section.3.8}% 69
+\BOOKMARK [2][-]{subsection.3.8.5}{Uso de hechizos por los personajes no jugadores}{section.3.8}% 70
+\BOOKMARK [1][-]{section.3.9}{Mensajes por defecto}{chapter.3}% 71
+\BOOKMARK [2][-]{subsection.3.9.1}{Cambiar los mensajes por defecto}{section.3.9}% 72
+\BOOKMARK [2][-]{subsection.3.9.2}{Generar din\341micamente los mensajes por defecto}{section.3.9}% 73
+\BOOKMARK [1][-]{section.3.10}{Manejo de eventos}{chapter.3}% 74
+\BOOKMARK [2][-]{subsection.3.10.1}{M\351todos de captura de eventos}{section.3.10}% 75
+\BOOKMARK [2][-]{subsection.3.10.2}{Conversaciones}{section.3.10}% 76
+\BOOKMARK [0][-]{chapter.4}{M\351todos redefinibles}{}% 77
+\BOOKMARK [1][-]{section.4.1}{Eventos}{chapter.4}% 78
+\BOOKMARK [1][-]{section.4.2}{Otros m\351todos redefinibles}{chapter.4}% 79
+\BOOKMARK [2][-]{subsection.4.2.1}{M\351todos de Mobile \(para PSIs\)}{section.4.2}% 80
+\BOOKMARK [2][-]{subsection.4.2.2}{Ejemplo de uso}{section.4.2}% 81
+\BOOKMARK [0][-]{chapter.5}{El an\341lisis de la entrada}{}% 82
+\BOOKMARK [1][-]{section.5.1}{M\351todos de an\341lisis de la entrada \(parseCommand\)}{chapter.5}% 83
+\BOOKMARK [2][-]{subsection.5.1.1}{Los m\351todos de an\341lisis de la entrada}{section.5.1}% 84
+\BOOKMARK [2][-]{subsection.5.1.2}{Ejemplo de uso}{section.5.1}% 85
+\BOOKMARK [2][-]{subsection.5.1.3}{Tipos de m\351todos de an\341lisis de la entrada}{section.5.1}% 86
+\BOOKMARK [2][-]{subsection.5.1.4}{El proceso de an\341lisis de AGE}{section.5.1}% 87
+\BOOKMARK [1][-]{section.5.2}{Preprocesado de la entrada}{chapter.5}% 88
+\BOOKMARK [1][-]{section.5.3}{Gesti\363n de verbos}{chapter.5}% 89
+\BOOKMARK [2][-]{subsection.5.3.1}{Visualizaci\363n de la lista de verbos por defecto}{section.5.3}% 90
+\BOOKMARK [2][-]{subsection.5.3.2}{A\361adir y quitar verbos}{section.5.3}% 91
+\BOOKMARK [2][-]{subsection.5.3.3}{Verbos adivinables y no adivinables}{section.5.3}% 92
+\BOOKMARK [0][-]{chapter.6}{Presentaci\363n del mundo}{}% 93
+\BOOKMARK [1][-]{section.6.1}{Estilos de texto}{chapter.6}% 94
+\BOOKMARK [1][-]{section.6.2}{Prompt}{chapter.6}% 95
+\BOOKMARK [2][-]{subsection.6.2.1}{M\351todos de manipulaci\363n del prompt}{section.6.2}% 96
+\BOOKMARK [2][-]{subsection.6.2.2}{Ejemplos de c\363digo}{section.6.2}% 97
+\BOOKMARK [1][-]{section.6.3}{Tipograf\355as en AGE}{chapter.6}% 98
+\BOOKMARK [2][-]{subsection.6.3.1}{Control b\341sico de la tipograf\355a}{section.6.3}% 99
+\BOOKMARK [2][-]{subsection.6.3.2}{Control avanzado de la tipograf\355a}{section.6.3}% 100
+\BOOKMARK [1][-]{section.6.4}{M\351todos gr\341ficos}{chapter.6}% 101
+\BOOKMARK [2][-]{subsection.6.4.1}{Im\341genes}{section.6.4}% 102
+\BOOKMARK [2][-]{subsection.6.4.2}{Frames}{section.6.4}% 103
+\BOOKMARK [1][-]{section.6.5}{sonido}{chapter.6}% 104
+\BOOKMARK [2][-]{subsection.6.5.1}{Audio}{section.6.5}% 105
+\BOOKMARK [2][-]{subsection.6.5.2}{M\372sica MIDI}{section.6.5}% 106
+\BOOKMARK [1][-]{section.6.6}{Otros aspectos de la presentaci\363n}{chapter.6}% 107
+\BOOKMARK [0][-]{chapter.7}{Referencia de m\351todos invocables}{}% 108
+\BOOKMARK [1][-]{section.7.1}{Manipulaci\363n del modelo de mundo}{chapter.7}% 109
+\BOOKMARK [1][-]{section.7.2}{Obtenci\363n de nombres de cosas y criaturas}{chapter.7}% 110
+\BOOKMARK [2][-]{subsection.7.2.1}{Obtenci\363n de nombres para mostrar}{section.7.2}% 111
+\BOOKMARK [1][-]{section.7.3}{Notificaci\363n de acciones y sucesos}{chapter.7}% 112
+\BOOKMARK [2][-]{subsection.7.3.1}{Notificar sobre algo que ha ocurrido en una habitaci\363n}{section.7.3}% 113
+\BOOKMARK [2][-]{subsection.7.3.2}{Notificar sobre algo que ha ocurrido con una cosa}{section.7.3}% 114
+\BOOKMARK [2][-]{subsection.7.3.3}{Notificar sobre algo que ha ocurrido con una criatura}{section.7.3}% 115
+\BOOKMARK [1][-]{section.7.4}{Ejecuci\363n autom\341tica de \363rdenes}{chapter.7}% 116
+\BOOKMARK [2][-]{subsection.7.4.1}{A\361adir una orden a la cola de \363rdenes}{section.7.4}% 117
+\BOOKMARK [2][-]{subsection.7.4.2}{Ejecutar una orden lo antes posible}{section.7.4}% 118
+\BOOKMARK [1][-]{section.7.5}{Presentaci\363n general}{chapter.7}% 119
+\BOOKMARK [1][-]{section.7.6}{Lista de m\351todos invocables de cosa \(clase Item\)}{chapter.7}% 120
+\BOOKMARK [1][-]{section.7.7}{Lista de m\351todos invocables de criatura \(clase Mobile\)}{chapter.7}% 121
+\BOOKMARK [1][-]{section.7.8}{M\351todos \372tiles de la API de Java}{chapter.7}% 122
+\BOOKMARK [0][-]{chapter.8}{Distribuci\363n como juego online}{}% 123
+\BOOKMARK [0][-]{chapter.9}{Glosario}{}% 124
+\BOOKMARK [1][-]{section.9.1}{La mina}{chapter.9}% 125
+\BOOKMARK [1][-]{section.9.2}{Pamelizaci\363n}{chapter.9}% 126
+\BOOKMARK [1][-]{section.9.3}{S\355ndrome del huevo frito}{chapter.9}% 127
+\BOOKMARK [1][-]{section.9.4}{Universojugablista vs. Interlectores}{chapter.9}% 128
+\BOOKMARK [1][-]{section.9.5}{Puerta americana vs. puerta espa\361ola}{chapter.9}% 129
+\BOOKMARK [1][-]{section.9.6}{\253Bujero\273 negro}{chapter.9}% 130
+\BOOKMARK [1][-]{section.9.7}{Manta a manta}{chapter.9}% 131

@@ -1081,7 +1081,7 @@ Por supuesto, podemos sobreescribir el método update de los personajes no
 jugadores definiendo comportamientos más complejos, y así obtener criaturas
 que se muevan, sigan rutas, cojan objetos, desempeñen tareas, etc.
 
-\subsection {Programación con estados}
+\subsection {Programación con estados}\label{sec:prog-estados}
 
 Como programadores de aventuras, el uso más evidente de la propiedad \comillas{state}
 es el de comprobar lo que está haciendo una criatura. Por ejemplo, si
@@ -2075,4 +2075,479 @@ El método debe devolver el mensaje que queremos que se muestre en ese caso,
 o bien \textsf{null} si no queremos alterar el comportamiento para ese
 mensaje y objetos sino delegar en el mecanismo por defecto de mensajes del
 mundo o de AGE.
+
+\section{Manejo de eventos}
+
+Para simular un mundo realmente dinámico, es importante conseguir que las
+entidades del mundo puedan reaccionar automáticamente ante los sucesos que
+ocurren en su entorno. Por ejemplo, nos puede interesar que un hombre nos
+salude al entrar en su jardín, que un puente se derrumbe al pasar por él,
+que una capa vuelva invisible al personaje que se la pone, que un gnomo se
+enfade si le roban su sombrero, o que un personaje nos responda cuando le
+hablamos. Muchas de estas cosas se pueden conseguir con un manejo
+cuidadoso de las propiedades y el método update (\ref{sec:Temporizacion}),
+sobre todo en conjunción con la gestión de los estados de las criaturas
+(\ref{sec:prog-estados}). Sin embargo, si bien esta forma de hacer las
+cosas es muy potente, puede resultar incómoda, sobre todo si necesitamos
+gestionar muchas posibles reacciones. Por ello, AGE proporciona un
+mecanismo específico, más sencillo, para que los distintos componentes del
+mundo puedan reaccionar a sucesos, o \textit{eventos}, que ocurren en él. Para
+ello, el programador sólo tiene que definir en sus entidades los llamados
+\textit{métodos de captura de eventos}, que son métodos que AGE ejecuta
+automáticamente cuando sucede un evento dado.
+
+Conviene aclarar que, a lo largo de esta sección y el resto de la 
+documentación, se utilizará la palabra \comillas{evento} con dos 
+sentidos diferentes: por un lado, el evento propiamente dicho (un 
+suceso que desencadena una reacción), y por otro, el método de captura 
+del evento (el método que ejecuta AGE, permitiendo al programador 
+definir dicha reacción).
+
+\subsection{Métodos de captura de eventos}
+
+Como acabamos de anticipar, el método de captura de un evento (que, 
+para abreviar, también llamaremos \textit{evento} a secas) es un método 
+que AGE ejecuta automáticamente cuando ocurre en el mundo un suceso 
+determinado. Normalmente, un evento se define en una entidad dada y se 
+ejecuta como reacción a algo que sucede en el entorno de esa entidad. 
+
+Por ejemplo, en una habitación podemos definir un evento que se active 
+cuando una criatura entre en dicha habitación. Para ello, podemos ir a 
+la pestaña \comillas{Código y propiedades} de dicha habitación, 
+agrandar el campo de código y, en el menú contextual (botón derecho), 
+seleccionar \comillas{Insertar código - Definir eventos de habitación}. 
+Al hacer esto, veremos en el menú desplegable los distintos eventos de 
+habitación que están disponibles, y podremos seleccionar el que nos 
+interesa, en este caso \comillas{Al entrar en la habitación}, que nos 
+genera una plantilla como sigue:
+
+\begin{lstlisting}
+/*
+Método que captura el evento lanzado cuando una criatura entra en una habitación.
+*/
+void onEnterRoom ( Mobile aCreature )
+{
+
+    //aCreature: criatura que entra en la habitación.
+    //self: habitación en la que entra (es decir, esta habitación).
+
+}
+\end{lstlisting}
+
+Tal y como explican los comentarios de la plantilla, el método (que 
+llamamos evento \textsf{onEnterRoom}) sólo recibe un parámetro: un 
+\textsf{Mobile} que representa la criatura que ha entrado en la habitación. 
+Así, cada vez que alguien entre, AGE va a ejecutar automáticamente el 
+evento, pasándonos como parámetro el personaje que ha entrado por si 
+necesitamos hacer algo con él (como hacerle caer en una trampa). Por 
+supuesto, somos libres de no utilizar el parámetro si no queremos 
+interactuar con la criatura en cuestión (tal vez queremos que cuando 
+alguien entre en la habitación suceda algo que no involucre 
+directamente a ese personaje, como que suene una alarma).
+
+A modo de ejemplo, supongamos que nuestra habitación es una tienda de 
+alfombras, atendida en todo momento por Manolo, el esforzado tendero, 
+que tiene como nombre único \comillas{manolo}. Podemos hacer que nos 
+salude y nos ofrezca su selecta mercancía cada vez que entremos, de la 
+siguiente manera:
+
+\begin{lstlisting}
+/*
+Método que captura el evento lanzado cuando una criatura entra en una habitación.
+*/
+void onEnterRoom ( Mobile aCreature )
+{
+
+    //aCreature: criatura que entra en la habitación.
+    //self: habitación en la que entra (es decir, esta habitación).
+    mobile("manolo").say("¡Bienvenido, oh, potencial cliente!"); 
+    mobile("manolo").say("Tengo las mejores alfombras al oeste del Pecos, a unos precios de escándalo.");
+
+}
+\end{lstlisting}
+
+Con este código, el tendero dará su saludo a cualquier personaje o 
+criatura que entre en la tienda. Nótese que sólo tiene sentido si 
+Manolo está siempre en su tienda: si puede estar en otro sitio, 
+tendríamos que comprobar primero que realmente está presente:
+
+\begin{lstlisting}
+/*
+Método que captura el evento lanzado cuando una criatura entra en una habitación.
+*/
+void onEnterRoom ( Mobile aCreature )
+{
+
+    //aCreature: criatura que entra en la habitación.
+    //self: habitación en la que entra (es decir, esta habitación).
+    Mobile tendero = mobile("manolo");
+    if ( self.hasMobile( tendero ) )
+    {
+        tendero.say("¡Bienvenido, oh, potencial cliente!"); 
+        tendero.say("Tengo las mejores alfombras al oeste del Pecos, a unos precios de escándalo.");
+    }
+
+}
+\end{lstlisting}
+
+Si bien en este ejemplo no se utiliza el parámetro de entrada del 
+método, puede haber ocasiones en las que sea necesario. Por ejemplo, 
+imaginemos que a Manolo no le gustan los perros, y no los admite en su 
+tienda. Entonces, su reacción tendrá que ser diferente según si la 
+criatura que entra es un ser humano o un perro. Suponiendo que en 
+nuestra aventura tenemos una propiedad \comillas{esperro} que 
+identifica a los perros, podríamos hacer algo como lo siguiente:
+
+\begin{lstlisting}
+/*
+Método que captura el evento lanzado cuando una criatura entra en una habitación.
+*/
+void onEnterRoom ( Mobile aCreature )
+{
+
+    //aCreature: criatura que entra en la habitación.
+    //self: habitación en la que entra (es decir, esta habitación).
+    Mobile tendero = mobile("manolo");
+    if ( self.hasMobile( tendero ) )
+    {
+        if ( get( aCreature,"esPerro" ) )
+        {
+            tendero.say("¡Vade retro, sucio cánido! Los de tu especie no son bienvenidos aquí.");
+        }
+        else
+        {
+            tendero.say("¡Bienvenido, oh, potencial cliente!"); 
+            tendero.say("Tengo las mejores alfombras al oeste del Pecos, a unos precios de escándalo.");
+        }
+    }
+
+}
+\end{lstlisting}
+
+De la misma manera que reaccionamos a la entrada de una criatura en una 
+habitación, existen otros eventos que podemos definir tanto en 
+habitaciones como en criaturas y cosas para reaccionar ante otros 
+muchos sucesos que pueden producirse en el mundo. Para utilizar un 
+evento, sólo hay que saber su nombre, cuándo se ejecuta y qué parámetro 
+o parámetros necesita (o simplemente buscarlo en el menú contextual de 
+PUCK y mirar la plantilla). Puedes consultar la documentación de todos 
+los eventos, con una breve explicación de cómo se utiliza cada uno, en 
+la lista de eventos (\ref{sec:eventos}).
+
+Sin embargo, un aspecto concreto que se puede implementar con eventos 
+es lo suficientemente importante como para dedicarle su propio 
+epígrafe: la implementación de conversaciones con personajes.
+
+\subsection{Conversaciones}
+
+Una particularidad muy característica de los juegos de texto es la 
+posibilidad de que haya personajes en el mundo que conversen 
+automáticamente con los jugadores. Esto se puede implementar de maneras 
+muy diferentes, como pueden ser los menús o árboles de conversación, la 
+conversación por temas seleccionables, o la conversación libre.
+
+El sistema AGE está diseñado para dar soporte sencillo a la 
+conversación libre, es decir, aquélla donde un jugador o personaje 
+puede decir cualquier cosa (sin estar restringido a seleccionar 
+posibilidades de un menú, o a una estructura fija de pregunta). Si bien 
+otros modos de conversación (como puede ser por menús) se pueden 
+implementar, no se proporcionan herramientas para ellos por defecto, al 
+menos por el momento, teniendo que programar los menús el creador de la 
+aventura. Sin embargo, AGE sí que tiene un sistema pensado para 
+facilitar la conversación libre. Dicho sistema funciona de la siguiente 
+manera:
+
+\begin{itemize}
+  \item {En cualquier momento, un jugador o personaje puede decir algo. 
+  En el caso de los jugadores, esto sucede normalmente como 
+  consecuencia de una orden: por defecto, si un jugador teclea 
+  \comillas{decir ''hola''} el resultado será que su personaje dice 
+  \comillas{hola}. En el caso de los personajes no jugadores, podemos 
+  hacer que digan algo llamando a \textsf{personaje.say(''hola'')}.}
+
+  \item{Cuando un personaje dice algo, se envía una notificación a la 
+  habitación que contiene el texto que ha dicho. Esto tiene como 
+  consecuencia que se muestra un mensaje a los personajes que estén 
+  allí, para informar de lo que ha pasado (por defecto, se mostrará 
+  \textsf{Dices ''hola''.} si lo has dicho tú, o \textsf{Fulanito dice 
+  ''hola''.}, si es otro personaje el que ha hablado).
+
+\begin{verbatim}
+> decir "hola"
+Dices "hola".
+\end{verbatim}
+}
+
+  \item {El hecho de que alguien haya hablado en la habitación actual 
+  se puede capturar mediante un evento \textsf{onSay}, que toma como 
+  parámetros el personaje que ha hablado y el texto que ha dicho.}
+
+\end{itemize}
+
+Sabiendo esto, podemos programar personajes que conversen libremente a 
+base de definir su evento \textsf{onSay}. Para acceder a la plantilla 
+de este evento, basta con ir al menú contextual en el panel de código 
+del personaje, y seleccionar \comillas{Insertar código - Definir 
+eventos de personaje - Al oír a alguien decir algo}. Entonces, 
+aparecerá la siguiente plantilla:
+
+\begin{lstlisting}
+//evento que se ejecuta cuando alguien dice algo en la habitación
+//en la que está este personaje
+
+//subject: personaje que ha hablado
+//text: lo que ha dicho
+
+void onSay( Mobile subject , String text )
+{
+
+}
+\end{lstlisting}
+
+Supongamos que queremos mejorar a Manolo, el vendedor, para que sea 
+capaz de responder a algunas preguntas de sus clientes. Para ello, 
+definiremos este evento en el código de Manolo. Cada vez que alguien 
+diga algo en su tienda, se invocará el método \textsf{onSay}, con el 
+parámetro \textsf{subject} indicando quién ha hablado (esto no incluye al 
+propio Manolo) y el parámetro \textsf{text}, que es una cadena, conteniendo 
+lo que ha dicho.
+
+Para implementar la conversación, tendremos que analizar el contenido 
+de la cadena \textsf{text}, mirando si podemos reconocer todo o parte 
+de lo que dice. Para ello, podemos hacer uso de la rica funcionalidad 
+de cadenas que nos proporciona Java, incluyendo todo tipo de métodos de 
+comparación y de reconocimiento de patrones con expresiones regulares.
+
+Empecemos haciendo que responda si le dicen \comillas{hola}. La forma 
+más elemental de hacerlo sería añadir esto al evento:
+
+\begin{lstlisting}
+if ( equals ( text , "hola" ) )
+    self.say("Y hola a ti también, apreciado cliente");
+\end{lstlisting}
+
+Efectivamente, con esto conseguiremos que el tendero responda a ese 
+saludo:
+
+\begin{verbatim}
+> decir "hola"
+Dices "hola".
+Manolo dice "Y hola a ti también, apreciado cliente".
+\end{verbatim}
+
+Sin embargo, esta implementación no es muy flexible, porque sólo 
+responderá si le dicen exactamente \comillas{hola}, y no si le dicen, 
+por ejemplo, \comillas{hola Manolo}. Podemos flexibilizarla haciendo 
+algo como:
+
+\begin{lstlisting}
+if ( text.toLowerCase().startsWith("hola") )
+    self.say("Y hola a ti también, apreciado cliente");
+\end{lstlisting}
+
+\textsf{startsWith} es un método de Java que nos dice si nuestra cadena 
+empieza por el parámetro que se le pasa, en este caso \comillas{hola}. 
+El método \textsf{toLowerCase()} es una función de paso del texto a 
+minúsculas, que es necesaria aquí porque los métodos de manejo de 
+cadenas de Java (como \textsf{startsWith}), a diferencia de las 
+funciones que vienen con AGE, son sensibles a mayúsculas y minúsculas. 
+Por lo tanto, es conveniente pasar la cadena \textsf{text} a minúsculas 
+antes de usar estos métodos sobre ella, al menos si queremos que Manolo 
+sea capaz de entender tanto \comillas{hola} como \comillas{Hola} u 
+\comillas{HOLA}. En la práctica, sobre todo si vamos a tener un evento 
+\textsf{onSay} largo, lo más cómodo probablemente sea hacer esto al 
+principio del evento, y luego desentendernos:
+
+\begin{lstlisting}
+//evento que se ejecuta cuando alguien dice algo en la habitación
+//en la que está este personaje
+
+//subject: personaje que ha hablado
+//text: lo que ha dicho
+
+void onSay( Mobile subject , String text )
+{
+    text = text.toLowerCase(); //a partir de aquí, sabemos que text ya está en minúsculas
+    if ( text.startsWith("hola") )
+        self.say("Y hola a ti también, apreciado cliente");
+}
+\end{lstlisting}
+
+Si en lugar de comprobar por qué empieza lo que se ha dicho en la 
+habitación preferimos saber si contiene (no necesariamente al 
+principio) una cadena dada, podemos utilizar otro método de las cadenas 
+Java, en este caso \textsf{contains}. Por ejemplo, podemos hacer que 
+Manolo reaccione cuando se le menciona un perro en cualquier posición 
+dentro de una oración:
+
+\begin{lstlisting}
+//evento que se ejecuta cuando alguien dice algo en la habitación
+//en la que está este personaje
+
+//subject: personaje que ha hablado
+//text: lo que ha dicho
+
+void onSay( Mobile subject , String text )
+{
+    text = text.toLowerCase(); //a partir de aquí, sabemos que text ya está en minúsculas
+    if ( text.startsWith("hola") )
+        self.say("Y hola a ti también, apreciado cliente");
+    else if ( text.contains("perr") )
+        self.say("Perros. Puaj. No quiero a esas sucias criaturas cerca de mi pulcra tienda. ¡Ni las menciones!");
+}
+\end{lstlisting}
+
+Como se puede ver, \textsf{contains} funciona de manera muy similar a 
+\textsf{startsWith}: es un método booleano, tal que 
+\textsf{a.contains(b)} devuelve \textsf{true} si la cadena \textsf{a} 
+contiene en su interior a la cadena \textsf{b}, y \textsf{false} en 
+caso contrario.
+
+Con métodos como \textsf{startsWith} y \textsf{contains} se puede 
+implementar, con un poco de meticulosidad y cuidado, conversaciones muy 
+completas, y son una buena opción para empezar. El lector que quiera 
+profundizar en las capacidades de Java para operar con cadenas también 
+puede consultar la 
+\href{http://docs.oracle.com/javase/6/docs/api/java/lang/String.html}{documentación 
+de la clase String} de Java, donde aparecen muchos más métodos que se 
+pueden utilizar con cadenas además de los que acabamos de ver. Muchos 
+de ellos pueden ser de interés para implementar conversaciones más 
+ricas.
+
+Adicionalmente, el programador avanzado hará bien en consultar la 
+\href{https://docs.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html}{documentación 
+de la clase Pattern}, donde se especifica cómo crear y aplicar las 
+expresiones regulares. Las expresiones regulares son una notación para 
+expresar patrones de cadenas que nos permiten comprobar si una cadena 
+cumple una condición de forma mucho más concisa y sencilla (una vez que 
+uno las conoce) que con combinaciones de operaciones como 
+\textsf{contains}, \textsf{toLowerCase}, \textsf{startsWith} y demás. 
+Por ejemplo, si queremos comprobar si una cadena \textsf{s} es o bien 
+\comillas{perro} o bien \comillas{perra}, una manera de hacerlo sería
+
+\begin{lstlisting}
+if ( s.equals("perro") || s.equals("perra") ) ...
+\end{lstlisting}
+
+Pero con expresiones regulares, podemos hacer esto en su lugar:
+
+\begin{lstlisting}
+if ( s.matches("perr[oa]") ) ...
+\end{lstlisting}
+
+Donde \comillas{[oa]} significa que en esa posición hay o bien la letra 
+\comillas{o}, o bien la letra \comillas{a}. De ese mismo modo, las 
+expresiones regulares permiten expresar otras muchas cosas, no sólo 
+sobre caracteres individuales sino también sobre rangos numéricos, 
+alfanuméricos, límites entre palabras, etc.
+
+Por ejemplo, si nos fijamos bien en el último código para la 
+conversación con Manolo, podemos darnos cuenta de que la forma de 
+detectar si el interlocutor le habla de perros no es la más adecuada. 
+Estamos mirando si el texto contiene \comillas{perr}, pero esto también 
+va a suceder si alguien le dice a Manolo que está \comillas{emperrado} 
+en regatearle el precio de una alfombra, o que el dibujo de uno de sus 
+productos es \comillas{hiperrealista}. Con expresiones regulares, 
+podemos afinarlo mucho más, convirtiendo la línea en algo como:
+
+\begin{lstlisting}
+else if ( text.matches(".*\\bperr[oa]s?\\b.*") )
+\end{lstlisting}
+
+que mira si la cadena contiene las palabras \comillas{perro}, 
+\comillas{perra}, \comillas{perros} o \comillas{perras}: los \verb|\\b| 
+representan un límite de palabra (es decir, un carácter de espaciado, o 
+bien el principio o final de la cadena), los \textsf{.*} representan 
+que puede haber cualquier número de caracteres (incluyendo 0) antes o 
+después de esa palabra, y la interrogación después de la letra 
+\comillas{s} quiere decir que ésta es opcional.
+
+En este documento no detallaremos toda la lista de posibles expresiones 
+regulares que se pueden construir, ya que se pueden encontrar tanto en 
+la documentación de Java (de la 
+\href{https://docs.oracle.com/javase/6/docs/api/java/util/regex/Pattern.html}{clase 
+Pattern} antes mencionada) como en numerosos libros y tutoriales 
+online.
+
+Con estos mimbres y lo visto en secciones anteriores de la 
+documentación, se pueden construir personajes con conversaciones muy 
+ricas y complejas. Por supuesto, lo que se puede hacer va mucho más 
+allá de las secuencias de \textsf{if} como hemos visto en el caso de 
+Manolo, ya que podemos aprovechar los estados y relaciones de AGE para 
+hacer que la conversación de un personaje cambie según el contexto del 
+diálogo. A modo de ejemplo, el siguiente código de conversación 
+pertenece a una mujer que se encuentra el héroe de la aventura 
+\comillas{Fuego} (se ha editado un poco para modernizar el código, ya 
+que esa aventura se hizo en una versión antigua de AGE y de Java menos 
+potente que la actual, donde conseguir algunas cosas era más 
+engorroso):
+
+\begin{lstlisting}
+(...)
+
+else if ( lText.contains("hola") || lText.contains("buenas") 
+	|| lText.contains("saludo") || lText.contains("buenos d") )
+	{
+		//nos están saludando, saludamos de vuelta
+		self.say("Hola...");
+		//miramos si conocemos el nombre del interlocutor
+		String nombre = get ( self , "nombre", m );
+		if ( nombre == null || nombre.equals("unknown") )
+		{
+			//si no conocemos el nombre, se lo preguntamos. Esperamos que nos lo diga.
+			self.say("¿Cómo te llamas?");
+			set ( self , "esperandonombre" , m , true );
+		}
+	}
+
+(...)
+
+else
+{
+	//si estamos esperando nombre, asumiremos que lo que nos dice lo es.
+	if ( get ( self , "esperandonombre" , m ) )
+	{
+		if ( !lText.matches("(\\w*\\W*){1,3}") )
+		{
+			//si nos dice algo con más de tres palabras, probablemente no nos esté diciendo su nombre de verdad. Se ha ido por las ramas.
+			self.say("Uy, ese nombre es muy largo. Dudo que pueda recordarlo. ¿No te puedo llamar por algún nombre más corto?");	
+		}
+		else
+		{
+			//hacer que el nombre empiece por mayúscula
+			if ( !Character.isUpperCase(lText.charAt(0)) )
+				lText = Character.toUpperCase(lText.charAt(0)) + lText.substring(1);
+			//actualizar las relaciones, reflejando que conocemos el nombre del personaje (y cuál es)
+			set ( self , "nombre" , m , (String)lText );
+			set ( self , "esperandonombre" , m , false );
+			self.say("Encantado, " + self.getRelationshipPropertyValueAsString ( m , "nombre" ) + ". Yo soy María.");	
+		}
+	}	
+	else
+	{
+
+(...)
+\end{lstlisting}
+
+En este ejemplo, cuando alguien saluda a María, ésta le pregunta su 
+nombre. Cuando el interlocutor se lo dice, María se queda con el dato 
+(almacenado en una relación con el interlocutor, llamada 
+\comillas{nombre}) y lo usará a lo largo de la conversación:
+
+\begin{verbatim}
+> decir "hola"
+Dices "hola".
+La mujer dice "Hola...".
+La mujer dice "¿Cómo te llamas?".
+> decir "juan"
+La mujer dice "Encantado, Juan. Yo soy María."
+\end{verbatim}
+
+De este modo, a partir de propiedades y relaciones, podemos hacer que 
+las reacciones de los personajes a lo que les decimos varíen de acuerdo 
+a lo que se ha dicho antes en la conversación, y por supuesto también a 
+otros factores como identidad del interlocutor, humor actual del 
+personaje, situación en el mundo, eventos que hayan sucedido, y un 
+largo etcétera. El único límite es la imaginación y el esfuerzo 
+dedicado a añadir detalle a la simulación.
 
