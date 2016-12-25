@@ -342,7 +342,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 
 		fontPanel.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("label.font")));
 
-		tfFontName.setText("Courier New");
+		tfFontName.setText("Lucida Sans Typewriter");
 		styleAndAddTwo(fontPanel,
 		  new JLabel(UIMessages.getInstance().getMessage("label.font.name")),
 		  tfFontName

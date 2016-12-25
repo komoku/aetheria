@@ -1,5 +1,5 @@
 /*
- * (c) 2000-2009 Carlos Gómez Rodríguez, todos los derechos reservados / all rights reserved.
+ * (c) 2000-2009 Carlos Gï¿½mez Rodrï¿½guez, todos los derechos reservados / all rights reserved.
  * Licencia en license/bsd.txt / License in license/bsd.txt
  */
 package eu.irreality.age;
@@ -8,6 +8,7 @@ import java.awt.*;
 
 import eu.irreality.age.debug.Debug;
 import eu.irreality.age.filemanagement.URLUtils;
+import eu.irreality.age.swing.config.AGEConfiguration;
 
 public class VisualConfiguration
 {
@@ -151,7 +152,7 @@ public class VisualConfiguration
 
 
 	/**
-	* Toma la información de configuración del documento XML.
+	* Toma la informaciï¿½n de configuraciï¿½n del documento XML.
 	* Fontdir puede ser null (busca en el directorio actual)
 	*
 	*/
@@ -330,7 +331,7 @@ public class VisualConfiguration
 		
 		/*Funcionamiento de la carga de fuentes:
 			Si hay un atributo filename=".." y se encuentra el fichero, la fuente cargada es
-			ésa con tamaño dado en el atributo size=".." (o el tamaño por defecto)
+			ï¿½sa con tamaï¿½o dado en el atributo size=".." (o el tamaï¿½o por defecto)
 			De lo contrario, se escoge la fuente instalada en el sistema de nombre dada por
 			el atributo name=".."
 			Y si no, pues nada. Por defecto habemus.
@@ -341,8 +342,8 @@ public class VisualConfiguration
 		if ( nl.getLength() > 0 )
 		{
 			
-			/*String*/ fontName = "Courier New";
-			/*float*/ fontSize = (float) 12.0;
+			/*String*/ fontName = AGEConfiguration.getInstance().getProperty("cscDefaultFontName");
+			/*float*/ fontSize = (float) AGEConfiguration.getInstance().getIntegerProperty("cscDefaultFontSize");
 		
 			org.w3c.dom.Element el = (org.w3c.dom.Element) nl.item(0);
 			
@@ -365,6 +366,24 @@ public class VisualConfiguration
 				return;
 			}
 			
+			//first load using the font name
+			if ( fontName != null )
+			{
+				Font oldFont = laFuente;
+				laFuente = new Font(fontName, Font.PLAIN, (int)fontSize);
+				if ( laFuente.getFamily().equals(Font.DIALOG) && !fontName.equals(Font.DIALOG) )
+				{
+					//Java didn't recognize the name we gave it and just gave us the default "Dialog" font. So we roll this back and will try more refined methods
+					//(or use our default font - oldFont -, not Java's)
+					laFuente = oldFont;
+					usingDefaultFont = true;
+				}
+				else
+					usingDefaultFont = false;
+			}
+				
+			
+			//now try more refined method
 			Font fuenteElegida;
 			for ( int f = 0 ; f < fuentes.length ; f++ )
 			{

@@ -68,7 +68,7 @@ public class AGEConfiguration
 		defaultProperties.setProperty("cscTextFx","true");
 		defaultProperties.setProperty("cscBlindAcc","false");
 		
-		defaultProperties.setProperty("cscDefaultFontName","Courier New");
+		defaultProperties.setProperty("cscDefaultFontName","Lucida Sans Typewriter");
 		defaultProperties.setProperty("cscDefaultFontSize","16");
 		
 		defaultProperties.setProperty("lastRemoteIp","127.0.0.1");
