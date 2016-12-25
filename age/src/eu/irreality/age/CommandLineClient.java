@@ -34,6 +34,8 @@ public class CommandLineClient implements InputOutputClient
 	private boolean rebotFriendly = false;
 	private boolean unstrict = false;
 	
+	protected World mundo; //needed for saving states
+	
 	private static String getDefaultEncoding()
 	{
 		String osName = System.getProperty("os.name").toLowerCase();
@@ -76,6 +78,10 @@ public class CommandLineClient implements InputOutputClient
 				writer.println("save <filename.alf>: save the game");
 			else
 				writer.println("/save <filename.alf>: save the game");
+			if ( unstrict )
+				writer.println("sstate <filename.asf>: save state");
+			else
+				writer.println("/sstate <filename.asf>: save state");
 			if ( unstrict )
 				writer.println("quit, exit, fin: quit the game");
 			else
@@ -163,11 +169,18 @@ public class CommandLineClient implements InputOutputClient
 				writer.println("Quitting CheapAGE. Bye!");
 				System.exit(0);
 			}
-			else if ( lowerLine.startsWith("/save") || lowerLine.startsWith("salvar") 
+			else if ( lowerLine.startsWith("/save") || lowerLine.startsWith("/salvar") 
 					|| ( unstrict && (lowerLine.equalsIgnoreCase("save") || lowerLine.startsWith("salvar")) ) )
 			{
 				writer.println("Saving the game...");
 				processSaveLogCommand(line);
+				return getInput(pl);
+			}
+			else if ( lowerLine.startsWith("/sstate") || lowerLine.startsWith("/sestado") 
+					|| ( unstrict && (lowerLine.equalsIgnoreCase("sstate") || lowerLine.startsWith("sestado")) ) )
+			{
+				writer.println("Saving the game state...");
+				processSaveStateCommand(line);
 				return getInput(pl);
 			}
 			gameLog.addElement(line);
@@ -246,16 +259,9 @@ public class CommandLineClient implements InputOutputClient
 	}
 
 	
-	//copypasted from SwingAetheriaGameLoader::guardarLog
 	public void saveLog ( File f ) throws java.io.IOException , java.io.FileNotFoundException
 	{
-		FileOutputStream fin = new FileOutputStream ( f );
-		PrintWriter fwrite = new java.io.PrintWriter ( new java.io.BufferedWriter ( Utility.getBestOutputStreamWriter ( fin ) ) );
-		for ( int i = 0 ; i < gameLog.size() ; i++ )
-		{
-			fwrite.println( (String)gameLog.elementAt(i) );
-		}
-		fwrite.flush();	
+		CommonClientUtilities.guardarLog(f, gameLog);
 	}
 	
 	private void processSaveLogCommand ( String command )
@@ -271,6 +277,36 @@ public class CommandLineClient implements InputOutputClient
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public void saveState ( File f ) throws java.io.IOException , java.io.FileNotFoundException
+	{
+		CommonClientUtilities.guardarEstado(f,mundo);
+	}
+	
+	private void processSaveStateCommand ( String command )
+	{
+		String path = command.substring(command.indexOf(" ")+1);
+		File f = new File(Paths.SAVE_PATH,path);
+		try
+		{
+			saveState(f);
+			System.out.println("State saved to " + f);
+		}
+		catch ( Exception e )
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public World getWorld()
+	{
+		return mundo;
+	}
+	
+	public void setWorld ( World w )
+	{
+		mundo = w;
 	}
 	
 	/*
