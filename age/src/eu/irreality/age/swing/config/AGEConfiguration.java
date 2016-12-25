@@ -1,7 +1,7 @@
 package eu.irreality.age.swing.config;
 
 /*
- * (c) 2005-2010 Carlos Gómez Rodríguez, todos los derechos reservados / all rights reserved.
+ * (c) 2005-2010 Carlos Gï¿½mez Rodrï¿½guez, todos los derechos reservados / all rights reserved.
  * Licencia en license/bsd.txt / License in license/bsd.txt
  */
 
@@ -63,6 +63,10 @@ public class AGEConfiguration
 		defaultProperties.setProperty("mdiSubwindowMaximized", "true");
 		defaultProperties.setProperty("mdiSubwindowLocationX","0");
 		defaultProperties.setProperty("mdiSubwindowLocationY","0");
+		
+		//defaultProperties.setProperty("cscSound","true"); //not saved at the moment
+		defaultProperties.setProperty("cscTextFx","true");
+		defaultProperties.setProperty("cscBlindAcc","false");
 		
 		defaultProperties.setProperty("lastRemoteIp","127.0.0.1");
 		
