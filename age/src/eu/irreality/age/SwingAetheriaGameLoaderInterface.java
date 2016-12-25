@@ -1,5 +1,5 @@
 /*
- * (c) 2000-2009 Carlos Gómez Rodríguez, todos los derechos reservados / all rights reserved.
+ * (c) 2000-2009 Carlos Gï¿½mez Rodrï¿½guez, todos los derechos reservados / all rights reserved.
  * Licencia en license/bsd.txt / License in license/bsd.txt
  */
 package eu.irreality.age;
@@ -30,6 +30,7 @@ import org.w3c.dom.*;
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.server.ServerHandler;
 import eu.irreality.age.server.ServerLogWindow;
+import eu.irreality.age.swing.config.AGEConfiguration;
 import eu.irreality.age.swing.mdi.MDIMenuBar;
 import eu.irreality.age.swing.mdi.SwingAetheriaGUI;
 import eu.irreality.age.swing.sdi.SwingSDIInterface;
@@ -78,43 +79,20 @@ public class SwingAetheriaGameLoaderInterface
 	public static void loadFont()
 	{
 
-		//cargar configuración del ini
+		//cargar configuraciï¿½n del ini
 
 		String fontName = "Courier New";
-		int fontSize = 12;
+		int fontSize = 15;
 		try
 		{
-			BufferedReader iniReader = new BufferedReader ( Utility.getBestInputStreamReader ( new FileInputStream( "age.cfg" ) ) );
-			String linea;
-			for ( int line = 1 ; line < 100 ; line++ )
-			{
-				linea = iniReader.readLine();
-				if ( linea != null )
-				{
-					//System.out.println("Linea " + linea );
-					String codigo = StringMethods.getTok(linea,1,'=').trim().toLowerCase();
-					if ( codigo.equals("font name") )
-					{
-						//System.out.println("Nombre: " + StringMethods.getTok(linea,2,'=').trim() );
-						fontName = StringMethods.getTok(linea,2,'=').trim(); 
-					}
-					else if ( codigo.equals("font size" ) )
-					{
-						fontSize = Integer.parseInt(StringMethods.getTok(linea,2,'=').trim());
-					}
-				}
-			}
+			
+			fontName = AGEConfiguration.getInstance().getProperty("cscDefaultFontName");
+			fontSize = AGEConfiguration.getInstance().getIntegerProperty("cscDefaultFontSize");
+			
+
 		}
 		//las excepciones nos la sudan porque hay valores por defecto
-		catch ( FileNotFoundException fnfe )
-		{
-			;
-		}
 		catch ( NumberFormatException nfe )
-		{
-			;
-		}
-		catch ( IOException ioe )
 		{
 			;
 		}
