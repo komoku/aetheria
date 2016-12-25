@@ -115,7 +115,7 @@ public class SwingAetheriaGameLoaderInterface
 		//System.err.println("He seleccionado mi fuente, y es: " + SwingAetheriaGameLoaderInterface.font  );
 
 		//font not selected? maybe it's a family name, not a specific font name. This should build it if that is the case
-		SwingAetheriaGameLoaderInterface.font = new Font(fontName, Font.PLAIN, fontSize);
+		if ( SwingAetheriaGameLoaderInterface.font == null ) SwingAetheriaGameLoaderInterface.font = new Font(fontName, Font.PLAIN, fontSize);
 		
 		//font not selected? be less picky
 		if ( SwingAetheriaGameLoaderInterface.font == null )
