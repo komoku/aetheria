@@ -118,7 +118,10 @@ public class SwingAetheriaGameLoaderInterface
 		if ( SwingAetheriaGameLoaderInterface.font == null ) SwingAetheriaGameLoaderInterface.font = new Font(fontName, Font.PLAIN, fontSize);
 		
 		//font not selected? be less picky
-		if ( SwingAetheriaGameLoaderInterface.font == null )
+		//null is just defensive programming
+		//Dialog is what new Font(...) sets the font to if it doesn't recognize the fontName parameter. So if the font was set to dialog when our fontName didn't correspond
+		//to that, it means that new Font(...) had no idea of what to do.
+		if ( (SwingAetheriaGameLoaderInterface.font == null) || SwingAetheriaGameLoaderInterface.font.equals(Font.DIALOG) && !fontName.equals(Font.DIALOG) )
 		{
 			String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
 			Arrays.sort(fonts);
@@ -132,8 +135,11 @@ public class SwingAetheriaGameLoaderInterface
 		}
 
 		//still not selected? well, in that case just default to font 0
-		if ( SwingAetheriaGameLoaderInterface.font == null )
-			SwingAetheriaGameLoaderInterface.font=fuentes[0].deriveFont((float)fontSize);
+		//if ( SwingAetheriaGameLoaderInterface.font == null )
+		//	SwingAetheriaGameLoaderInterface.font=fuentes[0].deriveFont((float)fontSize);
+		
+		//nope. now we default to dialog
+		
 	}
 
 
