@@ -132,7 +132,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 			"Information" , "Action" , "Denial" , "Error" , "Story" , "Important", "Input" };
 	
 	private final Color [] defaultColors = new Color[]{ 
-			new Color(Integer.parseInt("FFFFEE",16)), //background 
+			new Color(Integer.parseInt("F7F7F7",16)), //background 
 			new Color(Integer.parseInt("000000",16)), //foreground 
 			new Color(Integer.parseInt("000000",16)), //default 
 			new Color(Integer.parseInt("000099",16)), //description 
