@@ -131,6 +131,20 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 	private final String [] colorCodes = new String[]{ "Background" , "Foreground" , "Default" , "Description" ,
 			"Information" , "Action" , "Denial" , "Error" , "Story" , "Important", "Input" };
 	
+	private final Color [] defaultColors = new Color[]{ 
+			new Color(Integer.parseInt("FFFFEE",16)), //background 
+			new Color(Integer.parseInt("000000",16)), //foreground 
+			new Color(Integer.parseInt("000000",16)), //default 
+			new Color(Integer.parseInt("000099",16)), //description 
+			new Color(Integer.parseInt("660066",16)), //information
+			new Color(Integer.parseInt("006600",16)), //action 
+			new Color(Integer.parseInt("660000",16)), //denial 
+			new Color(Integer.parseInt("663300",16)), //error 
+			new Color(Integer.parseInt("006666",16)), //story 
+			new Color(Integer.parseInt("CC6600",16)), //important 
+			new Color(Integer.parseInt("0066CC",16)), //input 
+	};
+	
 	private final String [] supportedWorldLanguages = new String[]{ "es", "en", "eo", "gl", "ca" };
 	private final Map languageToIndex; //es->0, etc.
 	
@@ -293,7 +307,6 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		JPanel colorsPanel = new JPanel( new GridLayout(0, 2) );
 		colorsPanel.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("label.colors")));
 		
-		Color _bgColor = Color.black;
 		final JButton[] _buttons = new JButton[colorCodes.length];
 		for ( int i = 0 ; i < colorCodes.length ; i++ )
 		{
@@ -301,13 +314,12 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 			Color color;
  			_buttons[i] = new JButton(colorCodes[i]);
 			colorsPanel.add(_buttons[i]);
-			if ( i == 0 ) color = _bgColor;
-			else if ( colorCodes[i].equals("Error")) color = Color.red;
-			else color = Color.white;
+
+			color = defaultColors[i];
 			colorsMap.put(colorCodes[i],color);
 			buttonsMap.put(colorCodes[i],_buttons[i]);
-			_buttons[i].setForeground(color);
-			if ( i != 0 ) _buttons[i].setBackground(_bgColor);
+			if ( i > 0 ) //one of the foreground colors
+				_buttons[i].setForeground(color);
 			_buttons[i].addActionListener( new ActionListener() 
 					{
 						public void actionPerformed ( ActionEvent evt )
@@ -330,14 +342,16 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 			);
 		}
 		
-		
+		//set background of the visual configuration color buttons to background color
+		for ( int k = 1 ; k < colorCodes.length ; k++ )
+			_buttons[k].setBackground(defaultColors[0]); //background color
 		
 		secondTab.add(colorsPanel);
 		
 		JPanel fontPanel = new JPanel(new SpringLayout());
 		fontPanel.setMaximumSize(new Dimension(
   		  (int)fontPanel.getMaximumSize().getWidth(),
-  		  (int)(15+6)*3) // FIXME: Take into account the font size.
+  		  (int)(18+6)*3) // FIXME: Take into account the font size.
   		);
 
 		fontPanel.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("label.font")));
@@ -353,7 +367,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		  tfFontFile
 		);
 		
-		tfFontSize.setText("15");
+		tfFontSize.setText("18");
 		styleAndAddTwo(fontPanel,
 		  new JLabel(UIMessages.getInstance().getMessage("label.font.size")),
 		  tfFontSize
@@ -487,19 +501,19 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		
 		Element fontElt = d.createElement("Font");
 		fontElt.setAttribute("name","Arial");
-		fontElt.setAttribute("size","15.0");
+		fontElt.setAttribute("size","18.0");
 		fontElt.setAttribute("filename","");
 		
 		fontElt.setAttribute("name", tfFontName.getText());
 		fontElt.setAttribute("filename", tfFontFile.getText());
-		double size = 15.0;
+		double size = 18.0;
 		try
 		{
 			size = Double.valueOf(tfFontSize.getText()).doubleValue();
 		}
 		catch ( NumberFormatException nfe )
 		{
-			System.err.println("Illegal value in font size field (must be a number): size set to default value 15.0");
+			System.err.println("Illegal value in font size field (must be a number): size set to default value 18.0");
 		}
 		fontElt.setAttribute("size",String.valueOf(size));
 		

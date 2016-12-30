@@ -11,17 +11,17 @@
 </PlayerList>
 <VisualConfiguration>
 <Colors>
-<Story color="#ffffff"/>
-<Information color="#ffffff"/>
-<Default color="#ffffff"/>
-<Input color="#ffffff"/>
-<Description color="#ffffff"/>
-<Foreground color="#ffffff"/>
-<Important color="#ffffff"/>
-<Denial color="#ffffff"/>
-<Action color="#ffffff"/>
-<Background color="#000000"/>
-<Error color="#ff0000"/>
+<Action color="#006600"/>
+<Input color="#0066cc"/>
+<Description color="#000099"/>
+<Background color="#ffffee"/>
+<Important color="#cc6600"/>
+<Foreground color="#000000"/>
+<Error color="#663300"/>
+<Denial color="#660000"/>
+<Information color="#660066"/>
+<Default color="#000000"/>
+<Story color="#006666"/>
 </Colors>
 <Font filename="" name="Lucida Sans Typewriter" size="15.0"/>
 </VisualConfiguration>
