@@ -23,7 +23,7 @@
 <Background color="#000000"/>
 <Error color="#ff0000"/>
 </Colors>
-<Font filename="" name="Courier New" size="15.0"/>
+<Font filename="" name="Lucida Sans Typewriter" size="15.0"/>
 </VisualConfiguration>
 <Rooms>
 <Room name="Limbo">

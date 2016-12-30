@@ -1,5 +1,5 @@
 /*
- * (c) 2000-2009 Carlos Gómez Rodríguez, todos los derechos reservados / all rights reserved.
+ * (c) 2000-2009 Carlos Gï¿½mez Rodrï¿½guez, todos los derechos reservados / all rights reserved.
  * Licencia en license/bsd.txt / License in license/bsd.txt
  */
 package eu.irreality.age;
@@ -30,6 +30,7 @@ import org.w3c.dom.*;
 import eu.irreality.age.filemanagement.Paths;
 import eu.irreality.age.server.ServerHandler;
 import eu.irreality.age.server.ServerLogWindow;
+import eu.irreality.age.swing.config.AGEConfiguration;
 import eu.irreality.age.swing.mdi.MDIMenuBar;
 import eu.irreality.age.swing.mdi.SwingAetheriaGUI;
 import eu.irreality.age.swing.sdi.SwingSDIInterface;
@@ -78,43 +79,20 @@ public class SwingAetheriaGameLoaderInterface
 	public static void loadFont()
 	{
 
-		//cargar configuración del ini
+		//cargar configuraciï¿½n del ini
 
-		String fontName = "Courier New";
-		int fontSize = 12;
+		String fontName = "Lucida Sans Typewriter";
+		int fontSize = 15;
 		try
 		{
-			BufferedReader iniReader = new BufferedReader ( Utility.getBestInputStreamReader ( new FileInputStream( "age.cfg" ) ) );
-			String linea;
-			for ( int line = 1 ; line < 100 ; line++ )
-			{
-				linea = iniReader.readLine();
-				if ( linea != null )
-				{
-					//System.out.println("Linea " + linea );
-					String codigo = StringMethods.getTok(linea,1,'=').trim().toLowerCase();
-					if ( codigo.equals("font name") )
-					{
-						//System.out.println("Nombre: " + StringMethods.getTok(linea,2,'=').trim() );
-						fontName = StringMethods.getTok(linea,2,'=').trim(); 
-					}
-					else if ( codigo.equals("font size" ) )
-					{
-						fontSize = Integer.parseInt(StringMethods.getTok(linea,2,'=').trim());
-					}
-				}
-			}
+			
+			fontName = AGEConfiguration.getInstance().getProperty("cscDefaultFontName");
+			fontSize = AGEConfiguration.getInstance().getIntegerProperty("cscDefaultFontSize");
+			
+
 		}
 		//las excepciones nos la sudan porque hay valores por defecto
-		catch ( FileNotFoundException fnfe )
-		{
-			;
-		}
 		catch ( NumberFormatException nfe )
-		{
-			;
-		}
-		catch ( IOException ioe )
 		{
 			;
 		}
@@ -136,8 +114,14 @@ public class SwingAetheriaGameLoaderInterface
 
 		//System.err.println("He seleccionado mi fuente, y es: " + SwingAetheriaGameLoaderInterface.font  );
 
+		//font not selected? maybe it's a family name, not a specific font name. This should build it if that is the case
+		if ( SwingAetheriaGameLoaderInterface.font == null ) SwingAetheriaGameLoaderInterface.font = new Font(fontName, Font.PLAIN, fontSize);
+		
 		//font not selected? be less picky
-		if ( SwingAetheriaGameLoaderInterface.font == null )
+		//null is just defensive programming
+		//Dialog is what new Font(...) sets the font to if it doesn't recognize the fontName parameter. So if the font was set to dialog when our fontName didn't correspond
+		//to that, it means that new Font(...) had no idea of what to do.
+		if ( (SwingAetheriaGameLoaderInterface.font == null) || SwingAetheriaGameLoaderInterface.font.equals(Font.DIALOG) && !fontName.equals(Font.DIALOG) )
 		{
 			String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
 			Arrays.sort(fonts);
@@ -151,8 +135,11 @@ public class SwingAetheriaGameLoaderInterface
 		}
 
 		//still not selected? well, in that case just default to font 0
-		if ( SwingAetheriaGameLoaderInterface.font == null )
-			SwingAetheriaGameLoaderInterface.font=fuentes[0].deriveFont((float)fontSize);
+		//if ( SwingAetheriaGameLoaderInterface.font == null )
+		//	SwingAetheriaGameLoaderInterface.font=fuentes[0].deriveFont((float)fontSize);
+		
+		//nope. now we default to dialog
+		
 	}
 
 

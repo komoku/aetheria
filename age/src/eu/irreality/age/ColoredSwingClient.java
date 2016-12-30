@@ -1,5 +1,5 @@
 /*
- * (c) 2000-2009 Carlos Gómez Rodríguez, todos los derechos reservados / all rights reserved.
+ * (c) 2000-2009 Carlos Gï¿½mez Rodrï¿½guez, todos los derechos reservados / all rights reserved.
  * Licencia en license/bsd.txt / License in license/bsd.txt
  */
 package eu.irreality.age;
@@ -33,6 +33,7 @@ import eu.irreality.age.swing.FontUtils;
 import eu.irreality.age.swing.IconLoader;
 import eu.irreality.age.swing.ImagePanel;
 import eu.irreality.age.swing.SmoothScrollTimer;
+import eu.irreality.age.swing.config.AGEConfiguration;
 import eu.irreality.age.windowing.AGEClientWindow;
 import eu.irreality.age.windowing.MenuMnemonicOnTheFly;
 
@@ -59,7 +60,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 	private boolean textFadeIn = false; //whether we apply text fade-in
 	private int textFadeInDuration = 500; //duration of text fade-in (if it's applied)
 	
-	private boolean showTextEffects = true; //whether we show text effects - if false, they won't be shown even if textFadeIn/smoothScrolling are set to true
+	private boolean showTextEffects = AGEConfiguration.getInstance().getBooleanProperty("cscTextFx"); //whether we show text effects - if false, they won't be shown even if textFadeIn/smoothScrolling are set to true
 
 	//for colored output
 	private Document doc;
@@ -95,7 +96,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 	 * Autoscrolling to the bottom is nice for sighted used, but not so for the blind using screen readers, 
 	 * since they have to manually scroll back so that their readers read the new text.
 	 */
-	private boolean accessibleScrollMode = false;
+	private boolean accessibleScrollMode = AGEConfiguration.getInstance().getBooleanProperty("cscBlindAcc");
 	
 	/**
 	 * This font size transform will be applied in all the calls to setCurrentOutputFont(). 
@@ -104,10 +105,10 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 	
 	public boolean isSoundEnabled()
 	{
-		return true; //más tarde dar opciones, sound on/off, etc.
+		return true; //mï¿½s tarde dar opciones, sound on/off, etc.
 	}
 	
-	//en proxys de clientes remotos, p.ej, se devolvería un SoundClientProxy.
+	//en proxys de clientes remotos, p.ej, se devolverï¿½a un SoundClientProxy.
 	public SoundClient getSoundClient()
 	{
 		if ( sonido == null )
@@ -515,10 +516,10 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		JMenu fontSizeMenu = new JMenu ( UIMessages.getInstance().getMessage("csclient.pres.fontsize") );
 		final JCheckBoxMenuItem fullScreenOption = new JCheckBoxMenuItem( UIMessages.getInstance().getMessage("csclient.pres.fullscreen") ,window.isFullScreenMode());
 		final JCheckBoxMenuItem soundOption = new JCheckBoxMenuItem( UIMessages.getInstance().getMessage("csclient.pres.sound") ,true);
-		final JCheckBoxMenuItem textEffectsOption = new JCheckBoxMenuItem( UIMessages.getInstance().getMessage("csclient.pres.textfx") ,true);
-		final JCheckBoxMenuItem accessibleScrollOption = new JCheckBoxMenuItem( UIMessages.getInstance().getMessage("csclient.pres.blindacc") ,false);
+		final JCheckBoxMenuItem textEffectsOption = new JCheckBoxMenuItem( UIMessages.getInstance().getMessage("csclient.pres.textfx") , showTextEffects ); //true by default, saved btw. executions
+		final JCheckBoxMenuItem accessibleScrollOption = new JCheckBoxMenuItem( UIMessages.getInstance().getMessage("csclient.pres.blindacc") , accessibleScrollMode ); //false by default, saved btw. executions
 		JMenuBar mb = window.getTheJMenuBar();
-		window.setTheJMenuBar(mb); //nótese el "the", es para que la tenga como atributo. Si luego se quita para el modo fullscreen se puede volver a poner.
+		window.setTheJMenuBar(mb); //nï¿½tese el "the", es para que la tenga como atributo. Si luego se quita para el modo fullscreen se puede volver a poner.
 		clientConfigurationMenu.add ( colorConfigurationMenu );
 		clientConfigurationMenu.add ( fontSizeMenu );
 		if ( window.supportsFullScreen() )
@@ -627,10 +628,12 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 				if ( textEffectsOption.isSelected() )
 				{
 					enableTextEffects();
+					AGEConfiguration.getInstance().setProperty("cscTextFx","true");
 				}
 				else
 				{
 					disableTextEffects();
+					AGEConfiguration.getInstance().setProperty("cscTextFx","false");
 				}
 			}
 		} );
@@ -641,10 +644,12 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 				if ( accessibleScrollOption.isSelected() )
 				{
 					accessibleScrollMode = true;
+					AGEConfiguration.getInstance().setProperty("cscBlindAcc","true");
 				}
 				else
 				{
 					accessibleScrollMode = false;
+					AGEConfiguration.getInstance().setProperty("cscBlindAcc","false");
 				}
 			}
 		} );
@@ -664,7 +669,7 @@ public class ColoredSwingClient implements MultimediaInputOutputClient, MouseWhe
 		window.repaint();
 	}
 	
-	//crea él los componentes, añadiéndolos a la ventana S.A.G.L. dada
+	//crea ï¿½l los componentes, aï¿½adiï¿½ndolos a la ventana S.A.G.L. dada
 	public ColoredSwingClient ( AGEClientWindow window , Vector gameLog )
 	{
 		laVentana = window;

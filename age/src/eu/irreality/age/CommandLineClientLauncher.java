@@ -133,14 +133,14 @@ public class CommandLineClientLauncher
 			{
 				
 				//nos han dado un fichero
-				//eventualmente esto debería ser the way to go, y el else de este if ser eliminado por antiguo, pero de momento aún se usa el else (TODO)
+				//eventualmente esto deberï¿½a ser the way to go, y el else de este if ser eliminado por antiguo, pero de momento aï¿½n se usa el else (TODO)
 				
 				System.out.println("Attempting world location: " +  inputAsFile );
 				try
 				{
 					theWorld = new World ( URLUtils.stringToURL(WorldLoader.goIntoFileIfCompressed(worldPath)) , io , false );
 					System.out.println("World generated.\n");
-					gameLog.addElement( inputAsFile.getAbsolutePath() ); //primera línea del log, fichero de mundo
+					gameLog.addElement( inputAsFile.getAbsolutePath() ); //primera lï¿½nea del log, fichero de mundo
 				}
 				catch ( java.io.IOException ioe )
 				{
@@ -148,7 +148,7 @@ public class CommandLineClientLauncher
 					{
 						theWorld = new World ( URLUtils.stringToURL(WorldLoader.goIntoFileIfCompressed(worldPath,"world.agz")) , io , false );
 						System.out.println("World generated.\n");
-						gameLog.addElement( inputAsFile.getAbsolutePath() ); //primera línea del log, fichero de mundo
+						gameLog.addElement( inputAsFile.getAbsolutePath() ); //primera lï¿½nea del log, fichero de mundo
 					}
 					catch ( java.io.IOException ioe2 )
 					{
@@ -171,7 +171,7 @@ public class CommandLineClientLauncher
 					System.out.println("Attempting world location: " + worldPath + "/world.xml" );
 					theWorld = new World ( worldPath + "/world.xml" , io , false );
 					System.out.println("World generated.\n");
-					gameLog.addElement(worldPath + "/world.xml"); //primera línea del log, fichero de mundo
+					gameLog.addElement(worldPath + "/world.xml"); //primera lï¿½nea del log, fichero de mundo
 				}
 				catch ( java.io.IOException e )
 				{
@@ -183,6 +183,7 @@ public class CommandLineClientLauncher
 			
 			//{theWorld NOT null}
 			
+			((CommandLineClient)io).setWorld(theWorld);
 			
 	        //set save dir if requested
 	        if ( saveDirPath != null )
@@ -200,7 +201,6 @@ public class CommandLineClientLauncher
 				}
 				catch ( Exception exc )
 				{
-					//io.write("¡No se ha podido cargar el estado!\n");
 					io.write(UIMessages.getInstance().getMessage("clclient.cannot.read.state","$file",statePath)+"\n");
 					io.write(exc.toString());
 					exc.printStackTrace();
@@ -217,7 +217,6 @@ public class CommandLineClientLauncher
 				}
 				catch ( Exception exc )
 				{
-					//io.write("Excepción al leer el fichero de log: " + exc + "\n");
 					io.write(UIMessages.getInstance().getMessage("clclient.cannot.read.log","$file",logPath)+"\n");
 					exc.printStackTrace();
 					return;
@@ -228,7 +227,7 @@ public class CommandLineClientLauncher
 				theWorld.setRandomNumberSeed();
 			}
 			
-			gameLog.addElement(String.valueOf(theWorld.getRandomNumberSeed())); //segunda línea, semilla
+			gameLog.addElement(String.valueOf(theWorld.getRandomNumberSeed())); //segunda lï¿½nea, semilla
 			
 			GameEngineThread maquinaEstados =
 				new GameEngineThread ( 
