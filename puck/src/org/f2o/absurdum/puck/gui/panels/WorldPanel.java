@@ -1,5 +1,5 @@
 /*
- * (c) 2005-2009 Carlos Gómez Rodríguez, todos los derechos reservados / all rights reserved.
+ * (c) 2005-2009 Carlos Gï¿½mez Rodrï¿½guez, todos los derechos reservados / all rights reserved.
  * Licencia en license/bsd.txt / License in license/bsd.txt
  * 
  * Created at regulus on 20-jul-2005 18:51:54
@@ -342,7 +342,7 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 
 		fontPanel.setBorder(BorderFactory.createTitledBorder(UIMessages.getInstance().getMessage("label.font")));
 
-		tfFontName.setText("Courier New");
+		tfFontName.setText("Lucida Sans Typewriter");
 		styleAndAddTwo(fontPanel,
 		  new JLabel(UIMessages.getInstance().getMessage("label.font.name")),
 		  tfFontName
@@ -486,20 +486,20 @@ public class WorldPanel extends GraphElementPanel implements BeanShellCodeHolder
 		}
 		
 		Element fontElt = d.createElement("Font");
-		fontElt.setAttribute("name","Courier");
-		fontElt.setAttribute("size","12.0");
+		fontElt.setAttribute("name","Arial");
+		fontElt.setAttribute("size","15.0");
 		fontElt.setAttribute("filename","");
 		
 		fontElt.setAttribute("name", tfFontName.getText());
 		fontElt.setAttribute("filename", tfFontFile.getText());
-		double size = 12.0;
+		double size = 15.0;
 		try
 		{
 			size = Double.valueOf(tfFontSize.getText()).doubleValue();
 		}
 		catch ( NumberFormatException nfe )
 		{
-			System.err.println("Illegal value in font size field (must be a number): size set to default value 12.0");
+			System.err.println("Illegal value in font size field (must be a number): size set to default value 15.0");
 		}
 		fontElt.setAttribute("size",String.valueOf(size));
 		
