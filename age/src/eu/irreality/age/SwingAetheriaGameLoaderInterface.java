@@ -121,7 +121,7 @@ public class SwingAetheriaGameLoaderInterface
 		//null is just defensive programming
 		//Dialog is what new Font(...) sets the font to if it doesn't recognize the fontName parameter. So if the font was set to dialog when our fontName didn't correspond
 		//to that, it means that new Font(...) had no idea of what to do.
-		if ( (SwingAetheriaGameLoaderInterface.font == null) || SwingAetheriaGameLoaderInterface.font.equals(Font.DIALOG) && !fontName.equals(Font.DIALOG) )
+		if ( (SwingAetheriaGameLoaderInterface.font == null) || ( SwingAetheriaGameLoaderInterface.font.getFamily().equals(Font.DIALOG) && !fontName.equals(Font.DIALOG) ) )
 		{
 			String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
 			Arrays.sort(fonts);
