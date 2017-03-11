@@ -1,5 +1,5 @@
 /*
- * (c) 2000-2009 Carlos Gómez Rodríguez, todos los derechos reservados / all rights reserved.
+ * (c) 2000-2009 Carlos Gï¿½mez Rodrï¿½guez, todos los derechos reservados / all rights reserved.
  * Licencia en license/bsd.txt / License in license/bsd.txt
  */
 package eu.irreality.age;
@@ -33,7 +33,7 @@ import java.lang.reflect.InvocationTargetException;
 
 
 
-//ventana que carga el juego del directorio dado y llama al Game Engine, la máquina de estados.
+//ventana que carga el juego del directorio dado y llama al Game Engine, la mï¿½quina de estados.
 
 public class SwingAetheriaGameLoader extends JInternalFrame implements Informador, AGEClientWindow, GameThreadObserver
 {
@@ -46,7 +46,7 @@ public class SwingAetheriaGameLoader extends JInternalFrame implements Informado
 	*/
 	protected static boolean exitFlag;
 	/**
-	* Realizará E/S general y se pasará a todos los informadores.
+	* Realizarï¿½ E/S general y se pasarï¿½ a todos los informadores.
 	*/
 	protected InputOutputClient io;
 	/**
@@ -65,10 +65,10 @@ public class SwingAetheriaGameLoader extends JInternalFrame implements Informado
 	/*Frame auxiliar para full-screen mode.*/
 	private JFrame fullScreenFrame;
 	
-	/*Nos dice si el modo full-screen está activado o no.*/
+	/*Nos dice si el modo full-screen estï¿½ activado o no.*/
 	private boolean fullScreenMode;
 	
-	/*Barra de menú. Nos interesa tenerla aquí aunque esté removed de la ventana. Por el fullscreen.*/
+	/*Barra de menï¿½. Nos interesa tenerla aquï¿½ aunque estï¿½ removed de la ventana. Por el fullscreen.*/
 	private JMenuBar barraMenu;
 	
 	//
@@ -128,7 +128,7 @@ public class SwingAetheriaGameLoader extends JInternalFrame implements Informado
 		c.start();
 	}
 	
-/* Viejo constructor: todo funciona(ba cuando lo comenté); pero no se muestra el texto
+/* Viejo constructor: todo funciona(ba cuando lo comentï¿½); pero no se muestra el texto
 de la ventana hasta acabar de cargar.
 	public SwingAetheriaGameLoader ( String moduledir , JDesktopPane gui , boolean usarLog , String logFile )
 	{
@@ -147,11 +147,11 @@ de la ventana hasta acabar de cargar.
 		setSize(600,600);
 		if ( moduledir.equalsIgnoreCase("") )
 		{
-			setTitle("Aetheria Game Engine. Módulo: aetherworld");
+			setTitle("Aetheria Game Engine. Mï¿½dulo: aetherworld");
 		}
 		else
 		{
-			setTitle("Aetheria Game Engine. Módulo: " + moduledir);
+			setTitle("Aetheria Game Engine. Mï¿½dulo: " + moduledir);
 		}
 		getContentPane().setLayout( new BorderLayout() );
 		gui.add(this);
@@ -242,12 +242,12 @@ de la ventana hasta acabar de cargar.
 		 }
 		catch ( java.io.FileNotFoundException loadworldfileioerror )
 		{ 
-			escribir("No encontrado el fichero del mundo. Tal vez el directorio seleccionado no sea un directorio de mundo AGE válido.\n"); 
+			escribir("No encontrado el fichero del mundo. Tal vez el directorio seleccionado no sea un directorio de mundo AGE vï¿½lido.\n"); 
 		  	return; 
 		}
 		catch ( java.io.IOException loadworldfileioerror2 )
 		{
-			escribir("No puedo leer el fichero del mundo. Tal vez el directorio seleccionado no sea un directorio de mundo AGE válido.\n"); 
+			escribir("No puedo leer el fichero del mundo. Tal vez el directorio seleccionado no sea un directorio de mundo AGE vï¿½lido.\n"); 
 		  	return; 
 		}
 		
@@ -256,7 +256,7 @@ de la ventana hasta acabar de cargar.
 		//doUpdate2 = new UpdatingThread( this , doUpdate );
 		//doUpdate2.start();
 		
-		gameLog.addElement(maindir + moduledir + "/world.dat"); //primera línea del log, fichero de mundo
+		gameLog.addElement(maindir + moduledir + "/world.dat"); //primera lï¿½nea del log, fichero de mundo
 		
 		//Thread.currentThread().yield();
 		
@@ -281,11 +281,11 @@ de la ventana hasta acabar de cargar.
 			try
 			{
 				
-				theProtagonist.prepareLog ( logFile ); //el jugador ejecutará los comandos del log
+				theProtagonist.prepareLog ( logFile ); //el jugador ejecutarï¿½ los comandos del log
 			}
 			catch ( Exception exc )
 			{
-				escribir("Excepción al leer el fichero de log.\n");
+				escribir("Excepciï¿½n al leer el fichero de log.\n");
 				return;
 			}
 		}
@@ -297,11 +297,11 @@ de la ventana hasta acabar de cargar.
 		timeCount=0;
 		
 		theWorld.escribir("\n\nAVISO IMPORTANTE:\n");
-		theWorld.escribir("Ésta es una versión Alpha del Aetheria Game Engine. Ello quiere decir que el programa no está terminado, y si lo tienes es porque lo he difundido para que la gente vaya conociéndolo y para localizar los fallos y puntos débiles. Por lo tanto:\n");
-		theWorld.escribir("- Las funciones del programa están muy incompletas, faltando características que estarán presentes en la versión final (personajes seudointeligentes, combate, etcétera).\n");
-		theWorld.escribir("- Se mostrarán muchas veces mensajes que no son necesarios (debug) y no aparecerán, en aras de una mayor simplicidad y manejabilidad, en el programa final.\n");
-		theWorld.escribir("- Pueden aparecer errores, ya sea en forma de excepciones, mensajes de error o bloqueo del programa. Si esto sucede, te agradecería que me informaras del error (qué estabas haciendo cuando apareció, y mensajes de error que salieron, si es que salieron) en la dirección aetheria@irreality.org. Así podré eliminarlo y mejorar el programa.\n");
-		theWorld.escribir("La web del AGE es http://aetheria.irreality.org - ahí irán apareciendo las novedades y las nuevas versiones del engine.\n\n");
+		theWorld.escribir("ï¿½sta es una versiï¿½n Alpha del Aetheria Game Engine. Ello quiere decir que el programa no estï¿½ terminado, y si lo tienes es porque lo he difundido para que la gente vaya conociï¿½ndolo y para localizar los fallos y puntos dï¿½biles. Por lo tanto:\n");
+		theWorld.escribir("- Las funciones del programa estï¿½n muy incompletas, faltando caracterï¿½sticas que estarï¿½n presentes en la versiï¿½n final (personajes seudointeligentes, combate, etcï¿½tera).\n");
+		theWorld.escribir("- Se mostrarï¿½n muchas veces mensajes que no son necesarios (debug) y no aparecerï¿½n, en aras de una mayor simplicidad y manejabilidad, en el programa final.\n");
+		theWorld.escribir("- Pueden aparecer errores, ya sea en forma de excepciones, mensajes de error o bloqueo del programa. Si esto sucede, te agradecerï¿½a que me informaras del error (quï¿½ estabas haciendo cuando apareciï¿½, y mensajes de error que salieron, si es que salieron) en la direcciï¿½n aetheria@irreality.org. Asï¿½ podrï¿½ eliminarlo y mejorar el programa.\n");
+		theWorld.escribir("La web del AGE es http://aetheria.irreality.org - ahï¿½ irï¿½n apareciendo las novedades y las nuevas versiones del engine.\n\n");
 		
 		
 		GameEngineThread maquinaEstados =
@@ -416,7 +416,7 @@ de la ventana hasta acabar de cargar.
 		
 		new SwingMenuAetheria(this).addToWindow();
 		
-	//	setDefaultCloseOperation ( JInternalFrame.DO_NOTHING_ON_CLOSE ); //se encarga el listener a continuación
+	//	setDefaultCloseOperation ( JInternalFrame.DO_NOTHING_ON_CLOSE ); //se encarga el listener a continuaciï¿½n
 		addInternalFrameListener ( new InternalFrameAdapter()
 		{ 
 			public void internalFrameClosing ( InternalFrameEvent e )
@@ -475,9 +475,9 @@ de la ventana hasta acabar de cargar.
 	{
 		/**TEMPORAL. CAMBIAR ESTO.**/
 		/**El log debe ser multiplayer.**/
-		/*Quitar esta línea:*/
+		/*Quitar esta lï¿½nea:*/
 		//DONE!!
-		//theWorld.getPlayer().prepareLog ( logFile ); //el jugador ejecutará los comandos del log
+		//theWorld.getPlayer().prepareLog ( logFile ); //el jugador ejecutarï¿½ los comandos del log
 		
 		theWorld.prepareLog(logFile);								
 		theWorld.setRandomNumberSeed( logFile );
@@ -646,10 +646,10 @@ de la ventana hasta acabar de cargar.
 //									"$world",theWorld.getModuleName());
 //							mess = mess + " " + UIMessages.getInstance().getMessage("age.download.url");
 //							/*
-//							String mess = "Estás usando la versión " +
+//							String mess = "Estï¿½s usando la versiï¿½n " +
 //								GameEngineThread.getVersionNumber() + " de AGE; pero el mundo " + theWorld.getModuleName() +
-//								" requiere la versión " + theWorld.getRequiredAGEVersion() + " como mínimo. Podría no funcionar " +
-//								" si no te bajas una nueva versión de AGE en http://code.google.com/p/aetheria";
+//								" requiere la versiï¿½n " + theWorld.getRequiredAGEVersion() + " como mï¿½nimo. Podrï¿½a no funcionar " +
+//								" si no te bajas una nueva versiï¿½n de AGE en http://code.google.com/p/aetheria";
 //							*/
 //							JOptionPane.showMessageDialog(SwingAetheriaGameLoader.this, mess, UIMessages.getInstance().getMessage("age.version.warning.title"), JOptionPane.WARNING_MESSAGE);
 //						}
@@ -691,8 +691,8 @@ de la ventana hasta acabar de cargar.
 //							
 //								//Debug.println("Nodo:" + ((javax.xml.transform.dom.DOMSource)s).getNode());
 //							
-//								tr.transform(s,sr); //si esto tira un NullPointerException, la experiencia indica que puede ser por dejar algún atributo a null, y esto puede pasar en código descuidado si no se ponen todos los atributos posibles en un tag XML.
-//								//nota: también puede ser porque falte un elemento.
+//								tr.transform(s,sr); //si esto tira un NullPointerException, la experiencia indica que puede ser por dejar algï¿½n atributo a null, y esto puede pasar en cï¿½digo descuidado si no se ponen todos los atributos posibles en un tag XML.
+//								//nota: tambiï¿½n puede ser porque falte un elemento.
 //								
 //							}
 //							catch ( javax.xml.transform.TransformerConfigurationException tfe ) //newTransformer()
@@ -736,7 +736,7 @@ de la ventana hasta acabar de cargar.
 //							catch ( Exception exc )
 //							{
 //								((ColoredSwingClient)io).showAfterLogLoad();
-//								//write("Excepción al leer el fichero de log: " + exc + "\n");
+//								//write("Excepciï¿½n al leer el fichero de log: " + exc + "\n");
 //								write(UIMessages.getInstance().getMessage("swing.cannot.read.log","$exc",exc.toString()));
 //								exc.printStackTrace();
 //								return;
@@ -746,7 +746,7 @@ de la ventana hasta acabar de cargar.
 //						{
 //							theWorld.setRandomNumberSeed();
 //						}
-//						gameLog.addElement(String.valueOf(theWorld.getRandomNumberSeed())); //segunda línea, semilla
+//						gameLog.addElement(String.valueOf(theWorld.getRandomNumberSeed())); //segunda lï¿½nea, semilla
 //						
 //						//TODO use invoke method for this to avoid deadlocks:
 //						try 
@@ -797,10 +797,10 @@ de la ventana hasta acabar de cargar.
 //					
 //						//System.out.println("ENGINE THREAD STARTED");
 //						
-//						//Esto engaña con los estados, lo quitamos.
+//						//Esto engaï¿½a con los estados, lo quitamos.
 //						/*
 //						if (noSerCliente)
-//							write("Este mundo se está ejecutando en modo Dedicado. Por eso no ves nada aquí: no eres jugador.");
+//							write("Este mundo se estï¿½ ejecutando en modo Dedicado. Por eso no ves nada aquï¿½: no eres jugador.");
 //						*/	
 //									
 //						try
@@ -1011,7 +1011,7 @@ de la ventana hasta acabar de cargar.
 	public void setFullScreenMode ( boolean onOrOff )
 	{
 
-		//una inicialización que nunca va a hacer daño, nos pidan lo que nos pidan		
+		//una inicializaciï¿½n que nunca va a hacer daï¿½o, nos pidan lo que nos pidan		
 		if ( fullScreenFrame == null ) 
 			fullScreenFrame = new JFrame();
 			
@@ -1040,10 +1040,10 @@ de la ventana hasta acabar de cargar.
 				
 			fullScreenMode = true;
 			
-			//darle el panel y el menú a la nueva ventana
+			//darle el panel y el menï¿½ a la nueva ventana
 			remove ( getMainPanel() );
 			fullScreenFrame.getContentPane().add ( getMainPanel() );
-			//mainPanel = null; <- no, sigue apuntando a lo mismo; aunque no esté.
+			//mainPanel = null; <- no, sigue apuntando a lo mismo; aunque no estï¿½.
 			setJMenuBar ( new JMenuBar() ); //set j, no set the j
 			fullScreenFrame.setJMenuBar ( barraMenu );
 						
@@ -1107,7 +1107,7 @@ de la ventana hasta acabar de cargar.
 				
 			fullScreenMode = false;
 			
-			//darle el panel y el menú a esta ventana
+			//darle el panel y el menï¿½ a esta ventana
 			fullScreenFrame.setJMenuBar ( new JMenuBar() );
 			fullScreenFrame.remove ( mainPanel );
 			setMainPanel ( mainPanel ); //this adds it
@@ -1293,6 +1293,8 @@ de la ventana hasta acabar de cargar.
 	
 		File elFichero = null;
 	
+		File savePath = new File(Paths.SAVE_PATH);
+		if ( !savePath.exists() ) savePath.mkdirs();
 		JFileChooser selectorFichero = new JFileChooser( Paths.SAVE_PATH );
 		selectorFichero.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		FiltroFicheroLog filtro = new FiltroFicheroLog();
@@ -1321,6 +1323,8 @@ de la ventana hasta acabar de cargar.
 	{
 		File elFichero = null;
 		
+		File savePath = new File(Paths.SAVE_PATH);
+		if ( !savePath.exists() ) savePath.mkdirs();
 		JFileChooser selectorFichero = new JFileChooser( Paths.SAVE_PATH );
 		selectorFichero.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		FiltroFicheroEstado filtro = new FiltroFicheroEstado();

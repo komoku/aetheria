@@ -321,7 +321,7 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow, GameTh
 //			{
 //				theWorld.setRandomNumberSeed();
 //			}
-//			gameLog.addElement(String.valueOf(theWorld.getRandomNumberSeed())); //segunda línea, semilla
+//			gameLog.addElement(String.valueOf(theWorld.getRandomNumberSeed())); //segunda lï¿½nea, semilla
 //
 //			//TODO use invoke method for this to avoid deadlocks:
 //			try 
@@ -357,10 +357,10 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow, GameTh
 //
 //			//System.out.println("ENGINE THREAD STARTED");
 //
-//			//Esto engaña con los estados, lo quitamos.
+//			//Esto engaï¿½a con los estados, lo quitamos.
 //			/*
 //						if (noSerCliente)
-//							write("Este mundo se está ejecutando en modo Dedicado. Por eso no ves nada aquí: no eres jugador.");
+//							write("Este mundo se estï¿½ ejecutando en modo Dedicado. Por eso no ves nada aquï¿½: no eres jugador.");
 //			 */	
 //
 //			try
@@ -780,6 +780,8 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow, GameTh
 
 		File elFichero = null;
 
+		File savePath = new File(Paths.SAVE_PATH);
+		if ( !savePath.exists() ) savePath.mkdirs();
 		JFileChooser selectorFichero = new JFileChooser( Paths.SAVE_PATH );
 		selectorFichero.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		FiltroFicheroLog filtro = new FiltroFicheroLog();
@@ -808,6 +810,8 @@ public class SwingSDIInterface extends JFrame implements AGEClientWindow, GameTh
 	{
 		File elFichero = null;
 
+		File savePath = new File(Paths.SAVE_PATH);
+		if ( !savePath.exists() ) savePath.mkdirs();
 		JFileChooser selectorFichero = new JFileChooser( Paths.SAVE_PATH );
 		selectorFichero.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		FiltroFicheroEstado filtro = new FiltroFicheroEstado();

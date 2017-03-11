@@ -1,6 +1,7 @@
 package eu.irreality.age.swing;
 
 import java.awt.Component;
+import java.io.File;
 
 import javax.swing.JFileChooser;
 
@@ -42,6 +43,8 @@ public class FileSelectorDialogs
 	 */
 	public static String showOpenLogDialog( Component parent )
 	{
+		File savePath = new File(Paths.SAVE_PATH);
+		if ( !savePath.exists() ) savePath.mkdirs();
 		final JFileChooser selector = new JFileChooser( Paths.SAVE_PATH );
 		selector.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		selector.setDialogTitle( UIMessages.getInstance().getMessage("dialog.log.title") );
@@ -63,6 +66,8 @@ public class FileSelectorDialogs
 	 */
 	public static String showOpenStateDialog( Component parent )
 	{
+		File savePath = new File(Paths.SAVE_PATH);
+		if ( !savePath.exists() ) savePath.mkdirs();
 		final JFileChooser selector = new JFileChooser( Paths.SAVE_PATH );
 		selector.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		selector.setDialogTitle( UIMessages.getInstance().getMessage("dialog.state.title") );
